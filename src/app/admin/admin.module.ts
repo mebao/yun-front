@@ -1,0 +1,136 @@
+import { NgModule }                        from '@angular/core';
+import { CommonModule }                    from '@angular/common';
+import { FormsModule }                     from '@angular/forms';
+import { FileUploadModule }                from 'ng2-file-upload';
+
+import { AdminComponent }                  from './admin.component';
+
+import { AdminRoutingModule }              from './admin-routing.module';
+
+import { AuthGuardRole }                   from './auth-guard-role.service';
+
+//nav
+import { LeftNavComponent }                from './nav/left-nav.component';
+import { HeaderNavComponent }              from './nav/header-nav.component';
+
+//modal
+import { ModalToastComponent }             from '../common/modal/modal-toast.component';
+import { NodataComponent }                 from '../common/nodata/nodata.component';
+
+//common
+import { DropDownComponent }               from '../common/dropdown/dropdown.component';
+
+//error
+import { PageNotFoundComponent }           from '../error/page-not-found.component';
+import { NoPermissionsComponent }                   from '../error/no-permissions.component';
+
+import { HomeComponent }                   from './home/home.component';
+import { CreateUserComponent }             from './user/create-user.component';
+import { SchedulingConfigListComponent }   from './scheduling/scheduling-config-list.component';
+import { SchedulingConfigComponent }       from './scheduling/scheduling-config.component';
+import { SchedulingComponent }             from './scheduling/scheduling.component';
+import { BookingComponent }          from './booking/booking.component';
+import { BookingListComponent }            from './booking/booking-list.component';
+import { ChildServiceComponent }           from './service/child-service.component';
+import { ChildServiceListComponent }       from './service/child-service-list.component';
+import { ClinicServiceComponent }          from './service/clinic-service.component';
+import { ClinicServiceListComponent }      from './service/clinic-service-list.component';
+import { DoctorServiceComponent }          from './service/doctor-service.component';
+import { DoctorServiceListComponent }      from './service/doctor-service-list.component';
+import { UserListComponent }               from './user/user-list.component';
+import { UserInfoComponent }               from './user/user-info.component';
+import { DoctorListComponent }             from './user/doctor-list.component';
+import { CrmUserListComponent }            from './user/crm-user-list.component';
+import { CrmUserComponent }                from './user/crm-user.component';
+import { WorkbenchReceptionComponent }     from './workbench/workbench-reception.component';
+import { DoctorInfoComponent }             from './user/doctor-info.component';
+import { BookingInComponent }              from './booking/booking-in.component';
+import { BookingInfoComponent }            from './booking/booking-info.component';
+import { BookingConfirmComponent }         from './booking/booking-confirm.component';
+import { UploadComponent }                 from './user/upload.component';
+import { BookingAddServiceComponent }      from './booking/booking-add-service.component';
+import { BookingAddFeeComponent }          from './booking/booking-add-fee.component';
+import { ClinicroomComponent }             from './clinicroom/clinicroom.component';
+import { ClinicroomListComponent }         from './clinicroom/clinicroom-list.component';
+import { ClinicroomRecordsComponent }      from './clinicroom/clinicroom-records.component';
+import { MedicalComponent }                from './medical/medical.component';
+import { MedicalListComponent }            from './medical/medical-list.component';
+import { MedicalSupplierComponent }        from './medical/medical-supplier.component';
+import { MedicalSupplierListComponent }    from './medical/medical-supplier-list.component';
+import { MedicalPurchaseComponent }        from './medical/medical-purchase.component';
+import { MedicalPurchaseListComponent }    from './medical/medical-purchase-list.component';
+import { MedicalHasListComponent }         from './medical/medical-has-list.component';
+import { MedicalHasComponent }             from './medical/medical-has.component';
+import { MedicalLostListComponent }        from './medical/medical-lost-list.component';
+import { MedicalLostComponent }            from './medical/medical-lost.component';
+import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
+import { PrescriptListComponent }          from './prescript/prescript-list.component';
+
+import { AdminService }                    from './admin.service';
+
+@NgModule({
+	imports: [
+		CommonModule,
+		AdminRoutingModule,
+		FormsModule,
+		FileUploadModule,
+	],
+	declarations: [
+		AdminComponent,
+		LeftNavComponent,
+		HeaderNavComponent,
+		DropDownComponent,
+		HomeComponent,
+		CreateUserComponent,
+		SchedulingConfigListComponent,
+		SchedulingConfigComponent,
+		SchedulingComponent,
+		BookingComponent,
+		BookingListComponent,
+		BookingInComponent,
+		BookingInfoComponent,
+		ChildServiceComponent,
+		ChildServiceListComponent,
+		ClinicServiceComponent,
+		ClinicServiceListComponent,
+		DoctorServiceComponent,
+		DoctorServiceListComponent,
+		UserListComponent,
+		UserInfoComponent,
+		DoctorListComponent,
+		DoctorInfoComponent,
+		CrmUserListComponent,
+		CrmUserComponent,
+		WorkbenchReceptionComponent,
+		ModalToastComponent,
+		NodataComponent,
+		BookingConfirmComponent,
+		PageNotFoundComponent,
+		NoPermissionsComponent,
+		UploadComponent,
+		BookingAddServiceComponent,
+		BookingAddFeeComponent,
+		ClinicroomComponent,
+		ClinicroomListComponent,
+		ClinicroomRecordsComponent,
+		MedicalComponent,
+		MedicalListComponent,
+		MedicalSupplierComponent,
+		MedicalSupplierListComponent,
+		MedicalPurchaseComponent,
+		MedicalPurchaseListComponent,
+		MedicalHasListComponent,
+		MedicalHasComponent,
+		MedicalLostListComponent,
+		MedicalLostComponent,
+		DoctorPrescriptComponent,
+		PrescriptListComponent,
+	],
+	providers: [
+		AdminService,
+		AuthGuardRole,
+	]
+})
+export class AdminModule{
+	
+}

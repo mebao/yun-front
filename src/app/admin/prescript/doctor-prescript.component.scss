@@ -1,0 +1,22 @@
+.admin-doctor-prescript{
+	.info-tab{
+		.item{
+			label{
+			    width: 70px;
+			    margin-right: 10px;
+			    padding: 10px 0;
+			}
+			.info{
+			    padding: 10px 0;
+			}
+		}
+	}
+	.ms-tab{
+		.ms-bar{
+			background-color: #efefef;
+			padding: 10px;
+			cursor: pointer;
+			line-height: 1em;
+		}
+	}
+}

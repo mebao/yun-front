@@ -1,0 +1,18 @@
+.admin-doctor-list{
+	table{
+		.description{
+			max-height: 80px;
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+		.img-tab{
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}

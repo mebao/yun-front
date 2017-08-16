@@ -1,0 +1,27 @@
+<div class="login-page">
+	<div class="pure-g">
+		<div class="pure-u-1-5"></div>
+		<div class="pure-u-3-5 flex">
+			<div class="flex-1"></div>
+			<div class="mt50 w400p form-tab">
+				<div class="title text-center">嘉宝康乐</div>
+				<form class="pure-form">
+				    <fieldset class="pure-group">
+			            <input id="username" type="text" #username class="w100" placeholder="请输入用户名">
+			            <input id="password" type="password" #password class="w100" placeholder="请输入密码">
+				    </fieldset>
+					<button (click)="login(username.value, password.value)" class="pure-button pure-button-primary w100">登录</button>
+				</form>
+			</div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="pure-u-1-5"></div>
+	</div>
+</div>
+<div class="modal-toast" *ngIf="toast.show == 1">
+	<div class="container">
+		<div class="content {{toast.type}} pad10">
+			{{toast.text}}
+		</div>
+	</div>
+</div>

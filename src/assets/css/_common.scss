@@ -1,0 +1,81 @@
+*{
+	font-family: 'Microsoft YaHei',微软雅黑,'Microsoft Yahei',黑体,宋体,Arial,Simsun,Helvetica,sans-serif;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	outline: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	font-size: 12px;
+}
+html{
+	height: 100%;
+}
+
+body{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	overflow: hidden;
+	letter-spacing: 1px;
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+}
+a{
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;cursor: pointer;
+	color: #333;
+	text-decoration: none;
+}
+a:link{
+	text-decoration:none;
+}
+a:visited{
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:none;
+}
+a:active{
+	text-decoration:none;
+}
+
+.text-left{
+	text-align: left;
+}
+.text-center{
+	text-align: center;
+}
+.text-right{
+	text-align: right;
+}
+
+.mouse-cursor{
+	cursor: pointer;
+}
+.appearance-button{
+	appearance: button;
+	-moz-appearance: button;
+	-webkit-appearance: button;
+}
+
+.bg-white{
+	background-color: #fff;
+}
+
+.hide{
+	display: none;
+}
+
+.b-none{
+	border: none;
+}
+
+form .alert.alert-danger{
+	color: #CA3C3C;
+}
