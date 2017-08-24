@@ -1,0 +1,39 @@
+.admin-doctor-booking{
+	.doctor-info{
+		border: 1px solid #efefef;
+		width: 200px;
+		.img-tab{
+			img{
+				max-width: 100%;
+			}
+		}
+	}
+	.booking-info{
+		border: 1px solid #efefef;
+	}
+	.list-tab{
+		border: 1px solid #cbcbcb;
+		.list-bar{
+		    font-weight: bold;
+		    color: #000;
+			background-color: #e0e0e0;
+			.item{
+				padding: .5em 1em;
+			}
+		}
+		.list-info{
+			.item{
+				padding: 1em;
+				border-bottom: 1px solid #cbcbcb;
+				&.noButtom{
+					border-bottom: none;
+				}
+			}
+			&.last{
+				.item{
+					border-bottom: none;
+				}
+			}
+		}
+	}
+}

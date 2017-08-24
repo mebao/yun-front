@@ -8,6 +8,10 @@ import { AdminService }                from '../admin.service';
 	templateUrl: './booking-list.component.html'
 })
 export class BookingListComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	selectedTab: number;
 	url: string;
 	clinics: [{}];
@@ -65,6 +69,10 @@ export class BookingListComponent implements OnInit{
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '预约列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

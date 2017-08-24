@@ -8,6 +8,11 @@ import { AdminService }                             from '../admin.service';
 	templateUrl: 'booking-add-fee.component.html'
 })
 export class BookingAddFeeComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
+	doctorId: string;
 	toast: {
 		show: number,
 		text: string,
@@ -16,11 +21,13 @@ export class BookingAddFeeComponent{
 	bookingInfo: {
 		booking_id: string,
 		project_name: string,
+		price: string,
+		num: string,
 		fee: string,
 		remarks: string,
 		feeId: string,
 	};
-	buttonText: string;
+	editType: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -29,6 +36,10 @@ export class BookingAddFeeComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '其它费用',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -38,6 +49,8 @@ export class BookingAddFeeComponent{
 		this.bookingInfo = {
 			booking_id: '',
 			project_name: '',
+			price: '',
+			num: '',
 			fee: '',
 			remarks: '',
 			feeId: '',
@@ -46,16 +59,19 @@ export class BookingAddFeeComponent{
 		this.route.queryParams.subscribe((params) => {
 			this.bookingInfo.booking_id = params['id'];
 			this.bookingInfo.feeId = params['feeId'];
+			this.doctorId = params['doctorId'];
 		})
 
 		if(this.bookingInfo.feeId){
-			this.buttonText = '修改';
+			this.editType = 'update';
 			var fee = JSON.parse(sessionStorage.getItem('fee'));
 			this.bookingInfo.project_name = fee.projectName;
+			this.bookingInfo.price = fee.price;
+			this.bookingInfo.num = fee.number;
 			this.bookingInfo.fee = fee.fee;
 			this.bookingInfo.remarks = fee.remark;
 		}else{
-			this.buttonText = '提交';
+			this.editType = 'create';
 		}
 	}
 
@@ -68,16 +84,14 @@ export class BookingAddFeeComponent{
 			this.toastTab('费用不可为空', 'error');
 			return;
 		}
-		if(f.value.remarks == ''){
-			this.toastTab('备注说明不可为空', 'error');
-			return;
-		}
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			booking_id: this.bookingInfo.booking_id,
-			project_name: f.value.project_name,
-			fee: f.value.fee,
+			project_name: this.bookingInfo.project_name,
+			price: this.bookingInfo.price,
+			num: this.bookingInfo.num,
+			fee: this.bookingInfo.fee,
 			remarks: f.value.remarks,
 			id: this.bookingInfo.feeId ? this.bookingInfo.feeId : null,
 		}
@@ -85,9 +99,13 @@ export class BookingAddFeeComponent{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				this.toastTab('费用添加成功', '');
+				if(this.editType == 'create'){
+					this.toastTab('费用添加成功', '');
+				}else{
+					this.toastTab('费用修改成功', '');
+				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: this.bookingInfo.booking_id}});
+					this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
 				}, 2000);
 			}
 		})

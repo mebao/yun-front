@@ -3,7 +3,7 @@
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
 		<div class="content admin-doctor-list">
-			<div class="x_title">医生列表</div>
+			<top-bar [data]="topBar"></top-bar>
 			<div class="">
 				<table *ngIf="doctorlist.length > 0" class="list" class="pure-table pure-table-horizontal w100">
 					<thead>

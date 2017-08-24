@@ -8,6 +8,10 @@ import { AdminService }                      from '../admin.service';
 	templateUrl: './clinic-service.component.html'
 })
 export class ClinicServiceComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	childServiceList: [{}];
 	id: string;
 	fee: string;
@@ -31,6 +35,10 @@ export class ClinicServiceComponent implements OnInit{
 	) {}
 
 	ngOnInit(): void{
+		this.topBar = {
+			title: '诊所服务',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

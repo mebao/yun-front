@@ -9,6 +9,10 @@ import { AdminService }                      from '../admin.service';
 	styleUrls: ['./clinicroom-list.component.scss'],
 })
 export class ClinicroomListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -29,6 +33,10 @@ export class ClinicroomListComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '诊室列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -42,6 +50,53 @@ export class ClinicroomListComponent{
 		this.conditionId = '';
 
 		this.getList();
+	}
+
+	getList() {
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.clinicconditions(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.conditions = results.conditions;
+				this.getDoctorAndBooking(results.doctorList, results.childList);
+				this.hasData = true;
+			}
+		})
+	}
+
+	getDoctorAndBooking(doctorList, childList) {
+		//查询专家
+		var adminlistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&role=2';
+		this.adminService.adminlist(adminlistUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.adminlist.length > 0){
+					for(var i = 0; i < results.adminlist.length; i++){
+						var use = true;
+						//判断医生是否在诊
+						if(doctorList.length > 0){
+							for(var doctorId in doctorList){
+								if(results.adminlist[i].id == doctorList[doctorId]){
+									use = false;
+								}
+							}
+						}
+						results.adminlist[i].use = use;
+						results.adminlist[i].string = JSON.stringify(results.adminlist[i]);
+					}
+				}
+				this.doctorlist = results.adminlist;
+			}
+		})
 
 		//查询今日预约
 		var todayDate = this.adminService.getDayByDate(new Date());
@@ -57,59 +112,23 @@ export class ClinicroomListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
 					for(var i = 0; i < results.weekbooks.length; i++){
+						var use = true;
+						//判断医生是否在诊
+						if(childList.length > 0){
+							for(var doctorId in childList){
+								if(results.weekbooks[i].childId == childList[doctorId]){
+									use = false;
+								}
+							}
+						}
+						results.weekbooks[i].use = use;
 						results.weekbooks[i].string = JSON.stringify(results.weekbooks[i]);
 					}
 				}
 				this.bookinglist = results.weekbooks;
 			}
 		})
-	}
-
-	getList() {
-		var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.clinicconditions(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.conditions = results.conditions;
-				this.getDoctor(results.doctorList);
-				this.hasData = true;
-			}
-		})
-	}
-
-	getDoctor(list) {
-		//查询专家
-		var adminlistUrl = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&role=2';
-		this.adminService.adminlist(adminlistUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.adminlist.length > 0){
-					for(var i = 0; i < results.adminlist.length; i++){
-						var use = true;
-						//判断医生是否在诊
-						if(list.length > 0){
-							for(var doctorId in list){
-								if(results.adminlist[i].id == list[doctorId]){
-									use = false;
-								}
-							}
-						}
-						results.adminlist[i].use = use;
-						results.adminlist[i].string = JSON.stringify(results.adminlist[i]);
-					}
-				}
-				this.doctorlist = results.adminlist;
-			}
-		})
+		
 	}
 
 	goCreate() {
@@ -143,7 +162,7 @@ export class ClinicroomListComponent{
 		this.conditionId = _id;
 		var bookingInfo = JSON.parse(booking);
 		if(bookingInfo.services[0].userDoctorId != doctorId){
-			this.confirmText = '该诊室医生与预约医生不匹配';
+			this.confirmText = '该诊室医生与预约医生不匹配，是否继续分配？';
 		}else{
 			this.confirmText = '确认为该诊室分配该用户';
 		}

@@ -8,6 +8,10 @@ import { AdminService }                 from '../admin.service';
 	templateUrl: './child-service.component.html'
 })
 export class ChildServiceComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	id: number;
 	type: string;
 	childService: ChildServcie = {
@@ -28,6 +32,10 @@ export class ChildServiceComponent{
 	) {}
 
 	ngOnInit(): void{
+		this.topBar = {
+			title: '小孩服务',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

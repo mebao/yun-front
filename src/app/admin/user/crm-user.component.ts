@@ -11,6 +11,10 @@ import { DropDownComponent }            from '../../common/dropdown/dropdown.com
 	templateUrl: './crm-user.component.html'
 })
 export class CrmUserComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	clinics: any[];
 	roles: any[];
 	academicTitle: any[];
@@ -101,6 +105,10 @@ export class CrmUserComponent implements OnInit{
 			this.editType = 'create';
 		}
 
+		this.topBar = {
+			title: this.editType == 'create' ? '创建工作人员' : '修改工作人员信息',
+			back: true,
+		}
 
 		//获取头像上传token
 		var tokenUrl  = '?type=childCircle';

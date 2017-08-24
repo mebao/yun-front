@@ -9,6 +9,10 @@ import { AdminService }                              from '../admin.service';
 	styleUrls: ['./prescript-list.component.scss'],
 })
 export class PrescriptListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -30,6 +34,10 @@ export class PrescriptListComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '药方列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

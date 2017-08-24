@@ -9,6 +9,10 @@ import { AdminService }                       from '../admin.service';
 	styleUrls: ['./crm-user-list.component.scss'],
 })
 export class CrmUserListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -29,6 +33,10 @@ export class CrmUserListComponent{
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '用户列表',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

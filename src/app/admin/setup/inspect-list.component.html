@@ -1,0 +1,33 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-clinicroom">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="">
+				<button (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
+			</div>
+			<div>
+				<table class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>项目名</th>
+							<th>项目价格</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let project of projectlist">
+							<td>{{project.name}}</td>
+							<td>{{project.price}}</td>
+							<td>
+								<button (click)="update(project)" class="pure-button pure-button-primary">修改</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

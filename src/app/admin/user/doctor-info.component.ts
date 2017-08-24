@@ -8,6 +8,10 @@ import { AdminService }                  from '../admin.service';
 	templateUrl: './doctor-info.component.html'
 })
 export class DoctorInfoComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	doctor_id: string;
 	info: {
 		doctorId: string;
@@ -35,6 +39,10 @@ export class DoctorInfoComponent{
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '医生服务及排班信息',
+			back: true,
+		}
 		this.stopCondition = false;
 		this.toast = {
 			show: 0,

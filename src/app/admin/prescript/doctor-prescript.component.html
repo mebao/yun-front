@@ -3,7 +3,7 @@
 	<div class="right-content flex-1">
 		<header-nav [title]="'kkk'"></header-nav>
 		<div class="content admin-doctor-prescript">
-			<div class="x_title">开方</div>
+			<top-bar [data]="topBar"></top-bar>
 			<div class="info-tab">
 				<div class="item flex">
 					<label>预约人</label>
@@ -35,7 +35,7 @@
 					<div class="pure-g">
 						<div class="pure-u-8-24 pr10">
 							<label for="name">药方名</label>
-							<input type="text" id="name" name="name" ngModel placeholder="请输入药方名">
+							<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" placeholder="请输入药方名">
 						</div>
 					</div>
 					<div *ngFor="let ms of plist" class="ms-tab mt5">
@@ -56,26 +56,88 @@
 								</div>
 							</div>
 							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-8-24 pr10">
+								<div class="pure-u-6-24 pr10">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
-											<span>医疗用品</span>
+											<span>药品名</span>
 											<span class="required">*</span>
 										</label>
-										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
+										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
 											<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-												<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
+												<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
 											</ng-container>
 										</select>
 									</div>
 								</div>
-								<div class="pure-u-8-24 pl5 pr5">
+								<div class="pure-u-3-24 pr10">
 									<div class="pure-control-group">
-										<label for="num_{{ms.key}}">
-											<span>数量</span>
+										<label for="one_num_{{ms.key}}">
+											<span>单次剂量</span>
 											<span class="required">*</span>
 										</label>
-										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" ngModel>
+										<div class="flex flex-tab">
+											<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" placeholder="请输入单次剂量">
+											<select disabled="">
+												<option>{{ms.ms.oneUnit}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="pure-u-3-24 pr10">
+									<div class="pure-control-group">
+										<label for="frequency_{{ms.key}}">
+											<span>用法</span>
+											<span class="required">*</span>
+										</label>
+										<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" [(ngModel)]="ms.ms.frequency">
+											<ng-container *ngFor="let frequency of frequencylist">
+												<option value="{{frequency}}">{{frequency}}</option>
+											</ng-container>
+										</select>
+									</div>
+								</div>
+								<div class="pure-u-3-24 pr10">
+									<div class="pure-control-group">
+										<label for="usage_{{ms.key}}">
+											<span>用药频次</span>
+											<span class="required">*</span>
+										</label>
+										<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage">
+											<ng-container *ngFor="let usage of usagelsit">
+												<option value="{{usage}}">{{usage}}</option>
+											</ng-container>
+										</select>
+									</div>
+								</div>
+								<div class="pure-u-3-24 pr10">
+									<div class="pure-control-group">
+										<label for="days_{{ms.key}}">
+											<span>天数</span>
+											<span class="required">*</span>
+										</label>
+										<input type="number" id="days_{{ms.key}}" name="days_{{ms.key}}" [(ngModel)]="ms.ms.days">
+									</div>
+								</div>
+								<div class="pure-u-3-24 pl5 pr5">
+									<div class="pure-control-group">
+										<label for="num_{{ms.key}}">
+											<span>总量</span>
+											<span class="required">*</span>
+										</label>
+										<div class="flex flex-tab">
+											<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
+											<select disabled="">
+												<option>{{ms.ms.unit}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="pure-u-3-24 pl5 pr5">
+									<div class="pure-control-group">
+										<label for="remark_{{ms.key}}">
+											<span>说明</span>
+										</label>
+										<input type="text" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark">
 									</div>
 								</div>
 							</div>
@@ -87,12 +149,12 @@
 					<div class="pure-g">
 						<div class="pure-u-8-24 pr10">
 							<label for="remark">备注</label>
-							<textarea id="remark" name="remark" ngModel placeholder="请输入备注"></textarea>
+							<textarea id="remark" name="remark" [(ngModel)]="prescriptInfo.remark" placeholder="请输入备注"></textarea>
 						</div>
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary">创建</button>
+					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary">{{this.editType == 'create' ? '创建' : '修改'}}</button>
 				</div>
 			</form>
 		</div>

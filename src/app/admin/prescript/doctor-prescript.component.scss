@@ -19,4 +19,17 @@
 			line-height: 1em;
 		}
 	}
+	.flex-tab{
+		input{
+			margin-top: 0;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		select{
+			margin-top: 0;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			border-width: 1px 1px 1px 0;
+		}
+	}
 }

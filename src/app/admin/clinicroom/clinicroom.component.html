@@ -3,14 +3,17 @@
 	<div class="right-content flex-1">
 		<header-nav [title]="'kkk'"></header-nav>
 		<div class="content admin-clinicroom">
-			<div class="x_title">{{editType == 'create' ? '创建诊室' : '修改诊室信息'}}</div>
+			<top-bar [data]="topBar"></top-bar>
 			<div class="pure-g">
 				<div class="pure-u-1-5"></div>
 				<div class="pure-u-3-5">
-					<form #f="ngForm" class="pure-form pure-form-stacked">
+					<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 						<fieldset>
 							<div class="pure-control-group">
-								<label for="name">诊室名称</label>
+								<label for="name">
+									<span>诊室名称</span>
+									<span class="required">*</span>
+								</label>
 								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="bookingInfo.name" placeholder="请输入诊室名称" required="">
 								<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
 								    <div [hidden]="!name.errors.required">
@@ -19,7 +22,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
-								<label for="type">诊室类型</label>
+								<label for="type">
+									<span>诊室类型</span>
+									<span class="required">*</span>
+								</label>
 								<select id="type" name="type" #type="ngModel" [(ngModel)]="bookingInfo.type" required="">
 									<option value="PT">普通诊室</option>
 									<option value="TN">推拿室</option>
@@ -33,7 +39,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
-								<label for="room_no">诊室编号</label>
+								<label for="room_no">
+									<span>诊室编号</span>
+									<span class="required">*</span>
+								</label>
 								<input type="text" id="room_no" name="room_no" #room_no="ngModel" [(ngModel)]="bookingInfo.room_no" placeholder="请输入诊室编号" required="">
 								<div *ngIf="room_no.errors && (room_no.dity || room_no.touched)" class="alert alert-danger">
 									<div [hidden]="!room_no.errors.required">
@@ -42,7 +51,9 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
-								<label for="remark">备注</label>
+								<label for="remark">
+									<span>备注</span>
+								</label>
 								<textarea type="text" id="remark" name="remark" placeholder="请输入备注"></textarea>
 							</div>
 						</fieldset>

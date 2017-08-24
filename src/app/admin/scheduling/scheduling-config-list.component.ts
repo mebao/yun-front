@@ -8,6 +8,10 @@ import { AdminService }                    from '../admin.service';
 	templateUrl: './scheduling-config-list.component.html',
 })
 export class SchedulingConfigListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -24,6 +28,10 @@ export class SchedulingConfigListComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '排班配置列表',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

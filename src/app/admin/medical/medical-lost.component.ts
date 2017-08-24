@@ -9,6 +9,10 @@ import { AdminService }                            from '../admin.service';
 	styleUrls: ['./medical-lost.component.scss'],
 })
 export class MedicalLostComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -26,6 +30,10 @@ export class MedicalLostComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '医疗用品报损',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

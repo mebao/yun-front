@@ -1,0 +1,109 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-booking-charge">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="flex pure-form">
+				<div class="pure-control-group mr10">
+					<label for="doctor_id">医生：</label>
+					<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
+						<ng-container *ngFor="let doctor of doctorlist">
+							<option value="{{doctor.id}}">{{doctor.realName}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="service_id">科室：</label>
+					<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
+						<ng-container *ngFor="let service of servicelist">
+							<option value="{{service.serviceId}}">{{service.serviceName}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="creator_name">用户名：</label>
+					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" class="w100p" placeholder="请输入用户名">
+				</div>
+				<div class="pure-control-group">
+					<label for="mobile">手机号码：</label>
+					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" class="w100p" placeholder="请输入手机号码">
+				</div>
+				<div class="flex-1"></div>
+			</div>
+			<div class="flex pure-form mt10">
+				<div class="flex-1"></div>
+				<div class="pure-control-group mr10">
+					<label for="cdate_big">创建时间大于：</label>
+					<input type="date" id="cdate_big" name="cdate_big" [(ngModel)]="searchInfo.cdate_big">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="cdate_less">创建时间小于：</label>
+					<input type="date" id="cdate_less" name="cdate_less" [(ngModel)]="searchInfo.cdate_less">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="bdate_big">预约时间大于：</label>
+					<input type="date" id="bdate_big" name="bdate_big" [(ngModel)]="searchInfo.bdate_big">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="bdate_less">预约时间小于：</label>
+					<input type="date" id="bdate_less" name="bdate_less" [(ngModel)]="searchInfo.bdate_less">
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+			<div class="bookinglist">
+				<div class="pure-g">
+					<div class="pure-u-6-24 booking-tab pad10" *ngFor="let booking of bookinglist">
+						<div class="info pad10">
+							<div class="flex">
+								<div class="w70p">预约医生：</div>
+								<div class="flex-1">
+									{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}
+								</div>
+							</div>
+							<div class="flex">
+								<div class="w70p">预约服务：</div>
+								<div class="flex-1">
+									{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}
+								</div>
+							</div>
+							<div class="flex">
+								<div class="w70p">预约日期：</div>
+								<div class="flex-1">
+									{{booking.bookingDate}}
+								</div>
+							</div>
+							<div class="flex">
+								<div class="w70p">预约时间：</div>
+								<div class="flex-1">
+									{{booking.time}}
+								</div>
+							</div>
+							<div class="flex">
+								<div class="w70p">小孩姓名：</div>
+								<div class="flex-1">
+									{{booking.childName}}
+								</div>
+							</div>
+							<div class="flex">
+								<div class="w70p">小孩年龄：</div>
+								<div class="flex-1">
+									{{booking.age}}
+								</div>
+							</div>
+						</div>
+						<div class="flex">
+							<a class="edit flex-1 pad10 text-center" (click)="info(booking)">
+								费用：{{booking.allFee}}
+							</a>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="hasData && bookinglist.length == 0">
+					<nodata title="未查询到预约信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

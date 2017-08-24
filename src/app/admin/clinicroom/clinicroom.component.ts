@@ -9,6 +9,10 @@ import { AdminService }                   from '../admin.service';
 	styleUrls: ['./clinicroom.component.scss']
 })
 export class ClinicroomComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -73,6 +77,11 @@ export class ClinicroomComponent{
 			})
 		}else{
 			this.editType = 'create';
+		}
+
+		this.topBar = {
+			title: this.editType == 'create' ? '创建诊室' : '修改诊室信息',
+			back: true,
 		}
 	}
 

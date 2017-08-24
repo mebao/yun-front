@@ -9,6 +9,10 @@ import { AdminService }                          from '../admin.service';
 	styleUrls: ['./medical-purchase.component.scss'],
 })
 export class MedicalPurchaseComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -29,6 +33,10 @@ export class MedicalPurchaseComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '医疗用品进货',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

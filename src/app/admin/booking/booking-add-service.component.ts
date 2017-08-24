@@ -1,5 +1,5 @@
 import { Component, OnInit }                      from '@angular/core';
-import { ActivatedRoute }                         from '@angular/router';
+import { ActivatedRoute, Router }                 from '@angular/router';
 
 import { AdminService }                           from '../admin.service';
 
@@ -8,6 +8,11 @@ import { AdminService }                           from '../admin.service';
 	templateUrl: './booking-add-service.component.html'
 })
 export class BookingAddServiceComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
+	doctorId: string;
 	toast: {
 		show: number,
 		text: string,
@@ -29,9 +34,14 @@ export class BookingAddServiceComponent{
 	constructor(
 		public adminService: AdminService,
 		private route: ActivatedRoute,
+		private router: Router,
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '追加服务',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -49,6 +59,7 @@ export class BookingAddServiceComponent{
 
 		this.route.queryParams.subscribe((params) => {
 			this.bookingInfo.booking_id = params['id'];
+			this.doctorId = params['doctorId'];
 		});
 
 		//查询诊所服务
@@ -165,6 +176,9 @@ export class BookingAddServiceComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				this.toastTab('追加服务成功', '');
+				setTimeout(() => {
+					this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
+				});
 			}
 		})
 	}

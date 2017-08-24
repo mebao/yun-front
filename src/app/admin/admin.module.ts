@@ -12,6 +12,7 @@ import { AuthGuardRole }                   from './auth-guard-role.service';
 //nav
 import { LeftNavComponent }                from './nav/left-nav.component';
 import { HeaderNavComponent }              from './nav/header-nav.component';
+import { TopBarComponent }                 from './nav/top-bar.component';
 
 //modal
 import { ModalToastComponent }             from '../common/modal/modal-toast.component';
@@ -19,6 +20,7 @@ import { NodataComponent }                 from '../common/nodata/nodata.compone
 
 //common
 import { DropDownComponent }               from '../common/dropdown/dropdown.component';
+import { SelectSearchComponent }           from '../common/form/select-search.component';
 
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
@@ -65,6 +67,10 @@ import { MedicalLostListComponent }        from './medical/medical-lost-list.com
 import { MedicalLostComponent }            from './medical/medical-lost.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { PrescriptListComponent }          from './prescript/prescript-list.component';
+import { BookingChargeComponent }          from './booking/booking-charge.component';
+import { DoctorBookingComponent }          from './user/doctor-booking.component';
+import { SetupInspectComponent }           from './setup/inspect.component';
+import { SetupInspectListComponent }       from './setup/inspect-list.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -79,7 +85,9 @@ import { AdminService }                    from './admin.service';
 		AdminComponent,
 		LeftNavComponent,
 		HeaderNavComponent,
+		TopBarComponent,
 		DropDownComponent,
+		SelectSearchComponent,
 		HomeComponent,
 		CreateUserComponent,
 		SchedulingConfigListComponent,
@@ -125,6 +133,10 @@ import { AdminService }                    from './admin.service';
 		MedicalLostComponent,
 		DoctorPrescriptComponent,
 		PrescriptListComponent,
+		BookingChargeComponent,
+		DoctorBookingComponent,
+		SetupInspectComponent,
+		SetupInspectListComponent,
 	],
 	providers: [
 		AdminService,

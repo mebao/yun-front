@@ -8,6 +8,10 @@ import { AdminService }                        from '../admin.service';
 	templateUrl: './medical-list.component.html',
 })
 export class MedicalListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -27,6 +31,10 @@ export class MedicalListComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '医疗用品',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

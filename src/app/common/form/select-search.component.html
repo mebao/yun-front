@@ -1,0 +1,9 @@
+<div class="select-list-page">
+	<div (click)="changeShow();" [ngClass]="{'active': show}" class="label">{{selectedValue == '' ? title : selectedValue}}</div>
+	<div *ngIf="show" class="select-tab">
+		<input type="text" (keyup)="changeSearch($event.target.value)">
+		<div class="select-list">
+			<div class="option" *ngFor="let option of selectList" (click)="selected(option)">{{option.value}}</div>
+		</div>
+	</div>
+</div>

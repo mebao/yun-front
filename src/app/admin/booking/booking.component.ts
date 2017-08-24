@@ -8,6 +8,10 @@ import { AdminService }                             from '../admin.service';
 	templateUrl : './booking.component.html'
 })
 export class BookingComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	id: number;
 	bookingInfo: {
 		type: string,
@@ -35,6 +39,7 @@ export class BookingComponent implements OnInit{
 		type: string;
 		userDoctorId: string;
 		userDoctorName: string;
+		mobile: string;
 	};
 	users: [{}];
 	servicelist: [{}];
@@ -50,6 +55,8 @@ export class BookingComponent implements OnInit{
 		text: string,
 		type:  string,
 	};
+	selectSearchTitle: string;
+	childlist: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -58,6 +65,10 @@ export class BookingComponent implements OnInit{
 	) {}
 
 	ngOnInit(): void{
+		this.topBar = {
+			title: '预约',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -77,6 +88,8 @@ export class BookingComponent implements OnInit{
 			birth_date: '',
 		}
 
+		this.selectSearchTitle = '请选择小孩';
+
 		//修改
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
@@ -94,6 +107,18 @@ export class BookingComponent implements OnInit{
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking = results.weekbooks[0];
+					//获取小孩和家长信息
+					this.bookingInfo.creator = JSON.stringify({
+						id: this.booking.creatorId,
+						name: this.booking.creatorName,
+						mobile: this.booking.mobile,
+					});
+					this.bookingInfo.child = JSON.stringify({
+						childName: this.booking.childName,
+						childId: this.booking.childId,
+					});
+					this.bookingInfo.child_name = this.booking.childName;
+
 					this.getData();
 					//类型普通
 					// if(this.bookingInfo.type == 'PT'){
@@ -140,26 +165,22 @@ export class BookingComponent implements OnInit{
 			}
 		})
 
-		//获取用户信息
-		var urlOptions = '?username=' + this.adminService.getUser().username
+		//查询小孩列表
+		var searchchildUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&childs=1';
-		this.adminService.searchuser(urlOptions).then((data) => {
+		this.adminService.searchchild(searchchildUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				for(var i =0; i < results.users.length; i++){
-					results.users[i].string = JSON.stringify(results.users[i]);
-					if(this.editType == 'update' && results.users[i].id == this.booking.creatorId){
-						//修改
-						this.bookingInfo.creator = results.users[i].string;
-						this.creatorChange(this.bookingInfo.creator);
-					}
+				for(var i =0; i < results.child.length; i++){
+					results.child[i].string = JSON.stringify(results.child[i]);
+					results.child[i].key = JSON.stringify(results.child[i]);
+					results.child[i].value = results.child[i].childName;
 				}
-				this.users = results.users;
+				this.childlist = results.child;
 			}
-		})
+		});
 
 		//普通预约dutys
 		var dutys = [];
@@ -292,21 +313,50 @@ export class BookingComponent implements OnInit{
 		}
 	}
 
-	//切换用户
-	creatorChange(value) {
-		var creator = JSON.parse(value);
-		this.showChildTab = true;
-		if(creator.childs.length > 0){
-			for(var i = 0; i < creator.childs.length; i++){
-				creator.childs[i].string = JSON.stringify(creator.childs[i]);
-				if(this.editType == 'update' && creator.childs[i].childId == this.booking.childId){
-					//修改
-					this.bookingInfo.child = creator.childs[i].string;
+
+	//切换小孩
+	onVoted(_value) {
+		this.bookingInfo.child = _value;
+		//根据小孩信息查询家长信息
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&child_id=' + JSON.parse(_value).childId;
+		this.adminService.searchuser(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				// for(var i =0; i < results.users.length; i++){
+				// 	results.users[i].string = JSON.stringify(results.users[i]);
+				// 	results.users[i].key = JSON.stringify(results.users[i]);
+				// 	results.users[i].value = results.users[i].name;
+				// 	if(this.editType == 'update' && results.users[i].id == this.booking.creatorId){
+				// 		//修改
+				// 		this.bookingInfo.creator = results.users[i].string;
+				// 		this.creatorChange(this.bookingInfo.creator);
+				// 	}
+				// }
+				if(results.users.length > 0){
+					this.bookingInfo.creator = JSON.stringify(results.users[0]);
 				}
 			}
-		}
-		this.childs = creator.childs;
+		});
+
 	}
+	// creatorChange(value) {
+	// 	var creator = JSON.parse(value);
+	// 	this.showChildTab = true;
+	// 	if(creator.childs.length > 0){
+	// 		for(var i = 0; i < creator.childs.length; i++){
+	// 			creator.childs[i].string = JSON.stringify(creator.childs[i]);
+	// 			if(this.editType == 'update' && creator.childs[i].childId == this.booking.childId){
+	// 				//修改
+	// 				this.bookingInfo.child = creator.childs[i].string;
+	// 			}
+	// 		}
+	// 	}
+	// 	this.childs = creator.childs;
+	// }
 
 	create(f): void{
 		// if(f.value.type == ''){
@@ -329,26 +379,26 @@ export class BookingComponent implements OnInit{
 			this.toastTab('预约时间段不可为空', 'error');
 			return;
 		}
-		if(f.value.creator == ''){
+		if(this.bookingInfo.creator == ''){
 			this.toastTab('预约用户不可为空', 'error');
 			return;
 		}
-		if(this.childs.length > 0 && f.value.child == ''){
+		if(this.bookingInfo.child == ''){
 			this.toastTab('小孩不可为空', 'error');
 			return;
 		}
-		if(this.childs.length == 0 && f.value.child_name == ''){
-			this.toastTab('小孩姓名不可为空', 'error');
-			return;
-		}
-		if(this.childs.length == 0 && f.value.gender == ''){
-			this.toastTab('性别不可为空', 'error');
-			return;
-		}
-		if(this.childs.length == 0 && f.value.birth_date == ''){
-			this.toastTab('出生年月不可为空', 'error');
-			return;
-		}
+		// if(this.childs.length == 0 && f.value.child_name == ''){
+		// 	this.toastTab('小孩姓名不可为空', 'error');
+		// 	return;
+		// }
+		// if(this.childs.length == 0 && f.value.gender == ''){
+		// 	this.toastTab('性别不可为空', 'error');
+		// 	return;
+		// }
+		// if(this.childs.length == 0 && f.value.birth_date == ''){
+		// 	this.toastTab('出生年月不可为空', 'error');
+		// 	return;
+		// }
 		var param = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -362,11 +412,11 @@ export class BookingComponent implements OnInit{
 			creator_id: JSON.parse(this.bookingInfo.creator).id,
 			creator_name: JSON.parse(this.bookingInfo.creator).name,
 			mobile: JSON.parse(this.bookingInfo.creator).mobile,
-			child_name: this.childs.length == 0 ? f.value.child_name : JSON.parse(this.bookingInfo.child).childName,
-			child_id: this.childs.length == 0 ? null : JSON.parse(this.bookingInfo.child).childId,
-			age: this.editType == 'update' ? JSON.parse(this.bookingInfo.child).age : (this.childs.length == 0 ? null : JSON.parse(f.value.child).age),
-			gender: this.childs.length == 0 ? f.value.gender : null,
-			birth_date: this.childs.length == 0 ? f.value.birth_date : null,
+			child_name: JSON.parse(this.bookingInfo.child).childName,
+			child_id: JSON.parse(this.bookingInfo.child).childId,
+			// age: this.editType == 'update' ? JSON.parse(this.bookingInfo.child).age : (this.childs.length == 0 ? null : JSON.parse(f.value.child).age),
+			// gender: this.childs.length == 0 ? f.value.gender : null,
+			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
@@ -411,6 +461,7 @@ export class BookingComponent implements OnInit{
 			}
 	    }, 2000);
 	}
+
 }
 
 interface Time{

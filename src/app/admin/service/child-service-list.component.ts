@@ -8,6 +8,10 @@ import { AdminService }                          from '../admin.service';
 	templateUrl: './child-service-list.component.html'
 })
 export class ChildServiceListComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	childServiceList: any[];
 	toast: {
 		show: number,
@@ -19,6 +23,10 @@ export class ChildServiceListComponent implements OnInit{
 	constructor(public adminService: AdminService, public router: Router) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '小孩服务列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

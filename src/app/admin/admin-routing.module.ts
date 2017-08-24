@@ -48,6 +48,10 @@ import { MedicalLostListComponent }         from './medical/medical-lost-list.co
 import { MedicalLostComponent }             from './medical/medical-lost.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
 import { PrescriptListComponent }           from './prescript/prescript-list.component';
+import { BookingChargeComponent }           from './booking/booking-charge.component';
+import { DoctorBookingComponent }           from './user/doctor-booking.component';
+import { SetupInspectComponent }            from './setup/inspect.component';
+import { SetupInspectListComponent }        from './setup/inspect-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -110,6 +114,22 @@ const adminRoutes: Routes = [
 					{path: 'doctorPrescript',         component: DoctorPrescriptComponent},
 					{path: 'prescriptList',           component: PrescriptListComponent},
 					{path: 'noPermissions',           component: NoPermissionsComponent},
+					{
+						path: 'bookingCharge',
+						component: BookingChargeComponent,
+					},
+					{
+						path: 'doctorBooking',
+						component: DoctorBookingComponent,
+					},
+					{
+						path: 'setupInspect',
+						component: SetupInspectComponent,
+					},
+					{
+						path: 'setupInspectList',
+						component: SetupInspectListComponent,
+					},
 					{path: '**',                      component: PageNotFoundComponent},
 				]
 			}

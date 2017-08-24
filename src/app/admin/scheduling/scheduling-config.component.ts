@@ -10,6 +10,10 @@ import { LeftNavComponent }                    from '../nav/left-nav.component';
 	templateUrl: './scheduling-config.component.html'
 })
 export class SchedulingConfigComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	dutytime: any[];
 	dutylist: any[];
 	config: {
@@ -54,6 +58,10 @@ export class SchedulingConfigComponent implements OnInit{
 	}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '排班配置',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

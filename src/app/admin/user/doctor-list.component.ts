@@ -9,6 +9,10 @@ import { AdminService }                         from '../admin.service';
 	styleUrls: ['./doctor-list.component.scss'],
 })
 export class DoctorListComponent implements OnInit{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	doctorlist: any[];
 	toast: {
 		show: number,
@@ -23,6 +27,10 @@ export class DoctorListComponent implements OnInit{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '医生列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

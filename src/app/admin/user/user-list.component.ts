@@ -9,6 +9,10 @@ import { AdminService }                       from '../admin.service';
 	styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -17,6 +21,11 @@ export class UserListComponent{
 	hasData: boolean;
 	users: any[];
 	role: string;
+	modalConfirmTab: boolean;
+	selector: {
+		id: string,
+		text: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -24,16 +33,29 @@ export class UserListComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '用户列表',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
 			type: '',
 		};
 		this.hasData = false;
+		this.modalConfirmTab = false;
+		this.selector = {
+			id: '',
+			text: '',
+		}
 
 		this.users = [];
 		this.role = this.adminService.getUser().role;
 
+		this.getData();
+	}
+
+	getData() {
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.searchuser(urlOptions).then((data) => {
@@ -44,7 +66,7 @@ export class UserListComponent{
 				this.users = results.users;
 				this.hasData = true;
 			}
-		})
+		});
 	}
 
 	goUrl(_url) {
@@ -53,6 +75,32 @@ export class UserListComponent{
 
 	goInfo(_id) {
 		this.router.navigate(['./admin/userInfo'], {queryParams: {id: _id}});
+	}
+
+	delete(_id) {
+		this.selector = {
+			id: _id,
+			text: '确认删除该用户？',
+		}
+		this.modalConfirmTab = true;
+	}
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	confirm() {
+		this.modalConfirmTab = false;
+		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token;
+		this.adminService.deleteuser(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.getData();
+				this.toastTab('删除成功', '');
+			}
+		});
 	}
 	
 	toastTab(text, type) {

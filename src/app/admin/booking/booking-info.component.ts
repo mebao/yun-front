@@ -8,6 +8,10 @@ import { AdminService }                     from '../admin.service';
 	templateUrl: './booking-info.component.html',
 })
 export class BookingInfoComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	id: string;
 	toast: {
 		show: number,
@@ -43,6 +47,10 @@ export class BookingInfoComponent{
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '预约详情',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -101,28 +109,8 @@ export class BookingInfoComponent{
 		})
 	}
 
-	updateFee(fee) {
-		sessionStorage.setItem('fee', JSON.stringify(fee));
-		this.router.navigate(['./admin/bookingAddFee'], {queryParams: {id: this.booking.bookingId, feeId: fee.feeId}});
-	}
-
 	updateBooking() {
 		this.router.navigate(['./admin/booking'], {queryParams: {id: this.id}});
-	}
-
-	prescript() {
-		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id}});
-	}
-
-
-	//追加服务
-	addService() {
-		this.router.navigate(['./admin/bookingAddService'], {queryParams: {id: this.id}});
-	}
-
-	//追加费用
-	addfee() {
-		this.router.navigate(['./admin/bookingAddFee'], {queryParams: {id: this.id}});
 	}
 
 	toastTab(text, type) {

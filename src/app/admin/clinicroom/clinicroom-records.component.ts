@@ -7,6 +7,10 @@ import { AdminService }                    from '../admin.service';
 	templateUrl: './clinicroom-records.component.html',
 })
 export class ClinicroomRecordsComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -26,6 +30,10 @@ export class ClinicroomRecordsComponent{
 	constructor(public adminService: AdminService) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '诊室使用记录',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

@@ -9,6 +9,10 @@ import { AdminService }                          from '../admin.service';
 	styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -27,6 +31,12 @@ export class UserInfoComponent{
 	shengxiaoList: any[];
 	childlist: any[];
 	token: string;
+	editType: string;
+	modalConfirmTab: boolean;
+	selector: {
+		id: string,
+		text: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -34,6 +44,10 @@ export class UserInfoComponent{
 	) {}
 	
 	ngOnInit() {
+		this.topBar = {
+			title: '用户详情',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -49,6 +63,12 @@ export class UserInfoComponent{
 			name: '',
 			mobile: '',
 			gender: '',
+		}
+
+		this.modalConfirmTab = false;
+		this.selector = {
+			id: '',
+			text: '',
 		}
 
 		this.childs = [];
@@ -143,6 +163,7 @@ export class UserInfoComponent{
     }
 
 	addChild() {
+		this.editType = 'create';
 		var key = this.childlist.length + 1;
 		if(this.childlist.length > 0){
 			for(var i = 0; i < this.childlist.length; i++){
@@ -150,6 +171,33 @@ export class UserInfoComponent{
 			}
 		}
 		this.childlist.push({key: key, show: true, use: true});
+	}
+
+	update(childInfo) {
+		this.editType = 'update';
+		var key = this.childlist.length + 1;
+		if(this.childlist.length > 0){
+			for(var i = 0; i < this.childlist.length; i++){
+				this.childlist[i].show = false;
+			}
+		}
+		var child = {
+			key: key,
+			show: true,
+			use: true,
+			id: childInfo.childId,
+			name: childInfo.childName,
+			nickname: childInfo.nickName,
+			gender: childInfo.gender == '男' ? 'M' : 'F',
+			birth_date: childInfo.birthday,
+			blood_type: childInfo.bloodType,
+			height: childInfo.height,
+			weight: childInfo.weight,
+			horoscope: childInfo.horoscope,
+			shengxiao: childInfo.shengxiao,
+			imageUrl: childInfo.imageUrl,
+		}
+		this.childlist.push(child);
 	}
 
 	hideTab(_key) {
@@ -180,6 +228,7 @@ export class UserInfoComponent{
 					child['username'] = this.adminService.getUser().username;
 					child['token'] = this.adminService.getUser().token;
 					child['user_id'] = this.id;
+					child['id'] = f.value['id_' + this.childlist[i].key];
 					//判断姓名
 					if(f.value['name_' + this.childlist[i].key]){
 						child['name'] = f.value['name_' + this.childlist[i].key];
@@ -202,12 +251,17 @@ export class UserInfoComponent{
 						return;
 					}
 					//判断头像(不必传)
-					if(document.getElementById('file_' + this.childlist[i].key).getAttribute('value') == ''){
-						child['remote_domain'] = '';
-						child['remote_file_key'] = '';
+					//判断是否存在头像，并且没有修改
+					if(this.childlist[i].imageUrl && this.childlist[i].imageUrl != ''){
+						
 					}else{
-						child['remote_domain'] = 'http://og03472zu.bkt.clouddn.com';
-						child['remote_file_key'] = document.getElementById('file_' + this.childlist[i].key).getAttribute('value');
+						if(document.getElementById('file_' + this.childlist[i].key).getAttribute('value') == ''){
+							child['remote_domain'] = '';
+							child['remote_file_key'] = '';
+						}else{
+							child['remote_domain'] = 'http://og03472zu.bkt.clouddn.com';
+							child['remote_file_key'] = document.getElementById('file_' + this.childlist[i].key).getAttribute('value');
+						}
 					}
 
 					//判断血型
@@ -238,19 +292,64 @@ export class UserInfoComponent{
 				}
 			}
 			for(var i = 0; i < childData.length; i++){
-				this.adminService.crmchild(childData[i]).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						this.toastTab('小孩创建成功', '');
-						this.getUserInfo();
-						this.childlist = [];
-					}
-				})
+				if(this.editType == 'create'){
+					//新增小孩
+					this.adminService.crmchild(childData[i]).then((data) => {
+						if(data.status == 'no'){
+							this.toastTab(data.errorMsg, 'error');
+						}else{
+							this.toastTab('小孩创建成功', '');
+							this.getUserInfo();
+							this.childlist = [];
+						}
+					});
+				}else{
+					//修改小孩
+					this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
+						if(data.status == 'no'){
+							this.toastTab(data.errorMsg, 'error');
+						}else{
+							this.toastTab('修改成功', '');
+							this.getUserInfo();
+							this.childlist = [];
+						}
+					});
+				}
 			}
 		}else{
 			this.toastTab('请先录入小孩信息', 'error');
 		}
+	}
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	delete(child) {
+		this.selector = {
+			id: child.childId,
+			text: '确认删除该小孩？',
+		}
+		this.modalConfirmTab = true;
+	}
+
+	confirm() {
+		this.modalConfirmTab = false;
+		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+		}
+		this.adminService.deletechild(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('删除成功', '');
+				this.getUserInfo();
+				this.childlist = [];
+			}
+		});
 	}
 
 	toastTab(text, type) {

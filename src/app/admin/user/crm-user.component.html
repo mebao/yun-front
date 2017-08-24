@@ -3,7 +3,7 @@
 	<div class="right-content flex-1">
 		<header-nav [title]="'kkk'"></header-nav>
 		<div class="content admin-crm-user">
-			<div class="x_title">{{editType == 'create' ? '创建工作人员' : '修改工作人员信息'}}</div>
+			<top-bar [data]="topBar"></top-bar>
 			<form #f="ngForm" class="pure-form pure-form-stacked">
 				<fieldset>
 					<div class="flex">

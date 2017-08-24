@@ -1,5 +1,6 @@
 import { Headers, Http, RequestOptions }          from '@angular/http';
 import { Injectable }                             from '@angular/core';
+
 import { Data }                                   from './data';
 
 import 'rxjs/add/operator/toPromise';
@@ -9,7 +10,9 @@ export class AdminService{
 	// private url = 'http://192.168.31.114/mebnew';
 	private url = 'http://wapapi.jiabaokangle.com';
 
-	constructor(private http: Http) {}
+	constructor(
+		private http: Http,
+	) {}
 
 	//创建用户
 	private createUrl = this.url + '/mebcrm/admincreate';
@@ -487,6 +490,105 @@ export class AdminService{
 	private medicalsupplieslostUrl = this.url + '/mebcrm/medicalsupplieslost';
 	medicalsupplieslost(params): Promise<Data>{
 		return this.http.post(this.medicalsupplieslostUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//删除用户,用户下面的小孩
+	private deleteuserUrl = this.url + '/mebcrm/deleteuser/';
+	deleteuser(urlOptions): Promise<Data>{
+		return this.http.delete(this.deleteuserUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改小孩信息
+	private updatechildUrl = this.url + '/mebcrm/updatechild/';
+	updatechild(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updatechildUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询小孩
+	private searchchildUrl = this.url + '/mebcrm/searchchild';
+	searchchild(urlOptions): Promise<Data>{
+		return this.http.get(this.searchchildUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//删除小孩
+	private deletechildUrl = this.url + '/mebcrm/deletechild/';
+	deletechild(urlOptions): Promise<Data>{
+		return this.http.delete(this.deletechildUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看诊所的检查项目
+	private checkprojectsUrl = this.url + '/mebcrm/checkprojects';
+	checkprojects(urlOptions): Promise<Data>{
+		return this.http.get(this.checkprojectsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建诊所检查项目
+	private cliniccheckprojectUrl = this.url + '/mebcrm/cliniccheckproject';
+	cliniccheckproject(params): Promise<Data>{
+		return this.http.post(this.cliniccheckprojectUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改诊所检查项目费用
+	private updatecliniccheckfeeUrl = this.url + '/mebcrm/updatecliniccheckfee/';
+	updatecliniccheckfee(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updatecliniccheckfeeUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建用户检查单
+	private usercheckprojectUrl = this.url + '/mebcrm/usercheckproject';
+	usercheckproject(params): Promise<Data>{
+		return this.http.post(this.usercheckprojectUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看用户检查项目
+	private usercheckprojectsUrl = this.url + '/mebcrm/usercheckprojects';
+	usercheckprojects(urlOptions): Promise<Data>{
+		return this.http.get(this.usercheckprojectsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//删除药方
+	private deleteprescriptUrl = this.url + '/mebcrm/deleteprescript/';
+	deleteprescript(urlOptions): Promise<Data>{
+		return this.http.delete(this.deleteprescriptUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改药方数据
+	private updateprescriptUrl = this.url + '/mebcrm/updateprescript/';
+	updateprescript(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updateprescriptUrl + urlOptions, JSON.stringify(params))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

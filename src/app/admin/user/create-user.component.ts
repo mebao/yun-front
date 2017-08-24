@@ -9,6 +9,10 @@ import { LeftNavComponent }              from '../nav/left-nav.component';
 	templateUrl: './create-user.component.html'
 })
 export class CreateUserComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	role: string;
 	user: {
 		name: string,
@@ -33,6 +37,10 @@ export class CreateUserComponent{
 	) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '创建用户',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',

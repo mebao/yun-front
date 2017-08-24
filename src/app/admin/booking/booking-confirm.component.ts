@@ -7,6 +7,10 @@ import { AdminService }                     from '../admin.service';
 	templateUrl: './booking-confirm.component.html'
 })
 export class BookingConfirmComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	url: string;
 	weekNum: number;
 	weektitle: any[];
@@ -53,6 +57,10 @@ export class BookingConfirmComponent{
 	constructor(public adminService: AdminService) {}
 
 	ngOnInit(): void {
+		this.topBar = {
+			title: '预约确认',
+			back: false,
+		}
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId

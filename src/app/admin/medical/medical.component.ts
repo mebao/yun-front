@@ -8,6 +8,10 @@ import { AdminService }                          from '../admin.service';
 	templateUrl: './medical.component.html',
 })
 export class MedicalComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	toast: {
 		show: number,
 		text: string,
@@ -18,9 +22,12 @@ export class MedicalComponent{
 		name: string,
 		type: string,
 		unit: string,
+		one_unit: string,
 		usage: string,
 	};
 	editType: string;
+	drugUnits: any[];
+	OneUnits: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -29,6 +36,10 @@ export class MedicalComponent{
 	) {}
 
 	ngOnInit() {
+		this.topBar = {
+			title: '医疗用品',
+			back: true,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
@@ -40,6 +51,7 @@ export class MedicalComponent{
 			name: '',
 			type: '',
 			unit: '',
+			one_unit: '',
 			usage: '',
 		}
 
@@ -68,6 +80,17 @@ export class MedicalComponent{
 		}else{
 			this.editType = 'create';
 		}
+
+		//计量单位
+		this.adminService.clinicdata().then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.drugUnits = results.drugUnits;
+				this.OneUnits = results.OneUnits;
+			}
+		});
 	}
 
 	create(f) {
@@ -83,6 +106,10 @@ export class MedicalComponent{
 			this.toastTab('单位不可为空', 'error');
 			return;
 		}
+		if(f.value.one_unit == ''){
+			this.toastTab('剂量单位不可为空', 'error');
+			return;
+		}
 		if(f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
 			return;
@@ -95,6 +122,7 @@ export class MedicalComponent{
 			type: f.value.type,
 			unit: f.value.unit,
 			usage: f.value.usage,
+			one_unit: f.value.one_unit,
 		}
 
 		var urlOptions = '';

@@ -78,13 +78,6 @@
 			background-color: #fff;
 			border: 1px solid #E6E9ED;
 			padding: 10px 15px;
-			.x_title{
-				font-size: 18px;
-				color: #173267;
-				padding: 10px 0;
-				border-bottom: 2px solid #efefef;
-				margin-bottom: 20px;
-			}
 		}
 	}
 }
@@ -124,6 +117,14 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 	}
 }
 
+.second-title{
+	color: #173267;
+	font-size: 14px;
+	padding: 10px 0;
+	border-bottom: 1px solid #efefef;	
+	margin-bottom: 10px;
+}
+
 /*登录*/
 .login-page{
 	.form-tab{
@@ -154,12 +155,6 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 
 /*创建普通用户*/
 .admin-create-user-page{
-	input, select{
-		width: 100%;
-	}
-	label{
-		padding: 5px 0;
-	}
 	.add-child-tab{
 		.bar{
 			height: 40px;
@@ -184,16 +179,6 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 	.space-line{
 		width: 50px;
 		padding: 8px 20px;
-	}
-}
-
-/*排班*/
-.admin-scheduling-page{
-	input, select{
-		width: 100%;
-	}
-	label{
-		padding: 5px 0;
 	}
 }
 
@@ -363,74 +348,6 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 			border-color: #39A99D;
 			color: #39A99D;
 			display: block;
-		}
-	}
-}
-
-/*前台工作台*/
-.admin-workbench-reception{
-	.list-tab{
-		border: 1px solid #efefef;
-		.title-tab{
-			.title{
-				padding: 5px;
-				border-right: 1px solid #efefef;
-				&:last-child{
-					border-right: none;
-				}
-			}
-		}
-		.doctor-list{
-			.item{
-				border-top: 1px solid #efefef;
-				.img-tab{
-					border-right: 1px solid #efefef;
-					img{
-						width: 40px;
-						height: 40px;
-						border-radius: 50%;
-					}
-				}
-				.info{
-					border-right: 1px solid #efefef;
-					&:last-child{
-						border-right: none;
-					}
-				}
-			}
-		}
-	}
-}
-
-/*排班*/
-.admin-scheduling-page{
-	.list-tab{
-		border: 1px solid #efefef;
-		.title-tab .title{
-			padding: 5px;
-			border-right: 1px solid #efefef;
-			&:last-child{
-				border-right: none;
-			}
-		}
-		.doctor-list{
-			.item{
-				border-top: 1px solid #efefef;
-				.img-tab{
-					border-right: 1px solid #efefef;
-					img{
-						width: 40px;
-						height: 40px;
-						border-radius: 50%;
-					}
-				}
-				.info{
-					border-right: 1px solid #efefef;
-					&:last-child{
-						border-right: none;
-					}
-				}
-			}
 		}
 	}
 }

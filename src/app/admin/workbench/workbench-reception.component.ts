@@ -5,11 +5,17 @@ import { AdminService }                  from '../admin.service';
 @Component({
 	selector: 'app-scheduling',
 	templateUrl: './workbench-reception.component.html',
+	styleUrls: ['./workbench-reception.component.scss'],
 })
 export class WorkbenchReceptionComponent{
+	topBar: {
+		title: string,
+		back: boolean,
+	};
 	weektitle: any[];
 	schedulinglist: any[];
-	weekNum: number;
+	weekNumConfig: number;
+	weekNumBooking: number;
 	url: string;
 	toast: {
 		show: number,
@@ -20,17 +26,23 @@ export class WorkbenchReceptionComponent{
 	constructor(public adminService: AdminService) {}
 
 	ngOnInit(): void{
+		this.topBar = {
+			title: '前台工作台',
+			back: false,
+		}
 		this.toast = {
 			show: 0,
 			text: '',
 			type: '',
 		};
 
-		this.weekNum = 0;
+		this.weekNumConfig = 0;
+		this.weekNumBooking = 0;
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		var urlOptions = this.url + '&weekindex=' + this.weekNum;
+		
+		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
 	}
 
@@ -41,7 +53,7 @@ export class WorkbenchReceptionComponent{
 			}else{
 				var adminduty = JSON.parse(JSON.stringify(data.results)).adminduty;
 				if(adminduty.length > 0){
-					var weekArray = this.adminService.getWeekByNumber(this.weekNum);
+					var weekArray = this.adminService.getWeekByNumber(this.weekNumConfig);
 					var weektitle = [];
 					//先遍历医生
 					for(var i = 0; i < adminduty.length; i++){
@@ -52,6 +64,7 @@ export class WorkbenchReceptionComponent{
 								title: this.adminService.getWeekTitle(j)
 							}
 							var scheduling = {
+								dutyConfigList: [],
 								dutyDay: weekArray[j],
 								dutyId: '',
 								dutyName: ''
@@ -60,6 +73,7 @@ export class WorkbenchReceptionComponent{
 								for(var k = 0; k < adminduty[i].DutyList.length; k++){
 									if(weekArray[j] == adminduty[i].DutyList[k].dutyDay){
 										scheduling = adminduty[i].DutyList[k];
+										scheduling.dutyConfigList = adminduty[i].DutyList[k].dutyConfig.split(' / ');
 									}
 								}
 							}
@@ -77,20 +91,20 @@ export class WorkbenchReceptionComponent{
 	}
 
 	prec() {
-		this.weekNum--;
-		var urlOptions = this.url + '&weekindex=' + this.weekNum;
+		this.weekNumConfig--;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
 	}
 
 	now() {
-		this.weekNum = 0;
-		var urlOptions = this.url + '&weekindex=' + this.weekNum;
+		this.weekNumConfig = 0;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
 	}
 
 	next() {
-		this.weekNum++;
-		var urlOptions = this.url + '&weekindex=' + this.weekNum;
+		this.weekNumConfig++;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
 	}
 
