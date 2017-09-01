@@ -9,11 +9,16 @@ import { AdminService }                  from '../admin.service';
 })
 export class LeftNavComponent{
 	@Input() title: string;
+	userRole: string;
 
 	constructor(
 		public adminService: AdminService,
 		private router: Router,
 	) {}
+
+	ngOnInit() {
+		this.userRole = this.adminService.getUser().role;
+	}
 
 	logout() {
 		this.adminService.delCookie('user');

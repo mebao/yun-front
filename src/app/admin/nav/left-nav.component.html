@@ -2,17 +2,23 @@
 	<nav>
 		<a routerLink="../workbenchReception"            routerLinkActive="active">前台工作台</a>
 	  	<a routerLink="../scheduling"                    routerLinkActive="active">排班</a>
+	  	<a routerLink="../bookingList"                   routerLinkActive="active">预约列表</a>
 		<a routerLink="../bookingConfirm"                routerLinkActive="active">预约确认</a>
 	  	<a routerLink="../bookingIn"                     routerLinkActive="active">登记</a>
-	  	<a routerLink="../bookingList"                   routerLinkActive="active">预约列表</a>
 	  	<a routerLink="../bookingCharge"                 routerLinkActive="active">收费</a>
 	  	<a [routerLink]="['../childServiceList']"        routerLinkActive="active">小孩服务列表</a>
 	  	<a routerLink="../clinicroomList"                routerLinkActive="active">诊室列表</a>
-	  	<a routerLink="../prescriptList"                 routerLinkActive="active">药方</a>
 	  	<a routerLink="../doctorList"                    routerLinkActive="active">医生列表</a>
-	  	<a routerLink="../medicalList"                   routerLinkActive="active">医疗用品</a>
+	  	<a routerLink="../medicalSupplierList"           routerLinkActive="active">供应商管理</a>
+	  	<a routerLink="../materialList"                  routerLinkActive="active">物资管理</a>
+	  	<a routerLink="../medicalList"                   routerLinkActive="active">药房</a>
+	  	<a routerLink="../prescriptList"                 routerLinkActive="active">药方</a>
 	  	<a routerLink="../setupInspectList"              routerLinkActive="active">检查项目</a>
+	  	<a routerLink="../inspectResultsList"            routerLinkActive="active">实验室检查</a>
+	  	<a routerLink="../bookingFollowupsList"          routerLinkActive="active">随访管理</a>
+	  	<a routerLink="../childList"                     routerLinkActive="active">病人库</a>
 	  	<a routerLink="../userList"                      routerLinkActive="active">用户管理</a>
+	  	<a routerLink="../crmUserList" routerLinkActive="active" *ngIf="userRole == '0'">后台用户管理</a>
 	  	<a (click)="logout()">退出</a>
 	</nav>
 </div>

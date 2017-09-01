@@ -47,12 +47,14 @@
 								<div class="pure-u-8-24 pr10">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
-											<span>医疗用品</span>
+											<span>药品</span>
 											<span class="required">*</span>
 										</label>
 										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
 											<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-												<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
+												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
+												</ng-container>
 											</ng-container>
 										</select>
 									</div>
@@ -60,10 +62,10 @@
 								<div class="pure-u-8-24 pl5 pr5">
 									<div class="pure-control-group">
 										<label for="num_{{ms.key}}">
-											<span>进货数量</span>
+											<span>入库数量</span>
 											<span class="required">*</span>
 										</label>
-										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" ngModel placeholder="请输入进货数量" (change)="feeChange(f)">
+										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" ngModel placeholder="请输入入库数量" (change)="feeChange(f)">
 									</div>
 								</div>
 								<div class="pure-u-8-24 pl10">
@@ -73,15 +75,6 @@
 											<span class="required">*</span>
 										</label>
 										<input type="number" id="bid_{{ms.key}}" name="bid_{{ms.key}}" ngModel (change)="feeChange(f)">
-									</div>
-								</div>
-								<div class="pure-u-8-24 pr10">
-									<div class="pure-control-group">
-										<label for="price_{{ms.key}}">
-											<span>售价</span>
-											<span class="required">*</span>
-										</label>
-										<input type="text" id="price_{{ms.key}}" name="price_{{ms.key}}" ngModel placeholder="请输入售价">
 									</div>
 								</div>
 								<div class="pure-u-8-24 pl5 pr5">
@@ -100,7 +93,7 @@
 						</div>
 					</div>
 					<div class="mt10">
-						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
+						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 					</div>
 					<div class="pure-g">
 						<div class="pure-u-8-24 pr10">

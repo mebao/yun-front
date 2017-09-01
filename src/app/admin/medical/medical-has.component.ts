@@ -38,7 +38,7 @@ export class MedicalHasComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '诊所医疗用品信息',
+			title: '药品入库',
 			back: true,
 		}
 		this.toast = {
@@ -121,7 +121,7 @@ export class MedicalHasComponent{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				this.toastTab('诊所医疗用品信息修改成功', '');
+				this.toastTab('药品库存信息修改成功', '');
 				setTimeout(() => {
 					this.router.navigate(['./admin/medicalHasList']);
 				}, 2000);

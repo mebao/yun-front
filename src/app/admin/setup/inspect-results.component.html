@@ -1,0 +1,67 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-clinicroom">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="pure-g">
+				<div class="pure-u-1-5 booking-tab">
+					<div class="img-tab">
+						<img src="{{bookingInfo.imageUrl}}">
+					</div>
+					<div>{{bookingInfo.childName}}</div>
+				</div>
+				<div class="pure-u-4-5">
+					<div class="second-bar-tab flex">
+						<div class="item" (click)="changeTab(check.id)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
+					</div>
+					<div *ngFor="let check of checkProjectList">
+						<div *ngIf="selectTab == check.id">
+							<div class="pt10 pb10">开单医生：{{check.doctorName}}</div>
+							<form #f="ngForm" class="pure-form">
+								<input type="hidden" name="num" [(ngModel)]="check.resultListNum">
+								<input type="hidden" name="user_cid" [(ngModel)]="check.id">
+								<table class="pure-table pure-table-horizontal">
+									<thead>
+										<tr>
+											<th class="w5">序号</th>
+											<th class="w10">项目</th>
+											<th class="w25">检查结果</th>
+											<th class="w15">备注</th>
+											<th class="w5">代码</th>
+											<th class="w5">单位</th>
+											<th class="35">参考值</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let result of check.resultList; let index=index;">
+											<td>
+												{{result.checkInfoId}}
+												<input type="hidden" name="check_info_id_{{index}}" [(ngModel)]="result.checkInfoId">
+											</td>
+											<td>{{result.checkInfoName}}</td>
+											<td>
+												<input type="text" name="values_{{index}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'">
+											</td>
+											<td>
+												<input type="text" name="remark_{{index}}" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'">
+											</td>
+											<td>{{result.code}}</td>
+											<td>{{result.unit}}</td>
+											<td>{{result.references}}</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="pt20">
+									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary">修改</button>
+									<button (click)="save(f)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary">保存</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

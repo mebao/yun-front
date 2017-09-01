@@ -8,11 +8,12 @@
 				<button (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
 			</div>
 			<div>
-				<table class="pure-table pure-table-horizontal w100 mt10">
+				<table *ngIf="projectlist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>
 						<tr>
 							<th>项目名</th>
 							<th>项目价格</th>
+							<th>状态</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -20,12 +21,16 @@
 						<tr *ngFor="let project of projectlist">
 							<td>{{project.name}}</td>
 							<td>{{project.price}}</td>
+							<td>{{project.canUse == '1' ? '可用' : '停用'}}</td>
 							<td>
 								<button (click)="update(project)" class="pure-button pure-button-primary">修改</button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<div *ngIf="hasData && projectlist.length == 0" class="mt10">
+					<nodata title="未查询到检查项目"></nodata>
+				</div>
 			</div>
 		</div>
 	</div>

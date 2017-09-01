@@ -1,4 +1,5 @@
 import { Component, OnInit }             from '@angular/core';
+import { Router, ActivatedRoute }        from '@angular/router';
 
 import { AdminService }                  from '../admin.service';
 
@@ -22,8 +23,15 @@ export class WorkbenchReceptionComponent{
 		text: string,
 		type:  string,
 	};
+	doctorBookingList: any[];
+	weekBookingTitle: any[];
+	modalTab: boolean;
+	showBookinglist: any[];
 
-	constructor(public adminService: AdminService) {}
+	constructor(
+		public adminService: AdminService,
+		private router: Router,
+	) {}
 
 	ngOnInit(): void{
 		this.topBar = {
@@ -35,6 +43,9 @@ export class WorkbenchReceptionComponent{
 			text: '',
 			type: '',
 		};
+		this.doctorBookingList = [];
+		this.modalTab = false;
+		this.showBookinglist = [];
 
 		this.weekNumConfig = 0;
 		this.weekNumBooking = 0;
@@ -44,6 +55,9 @@ export class WorkbenchReceptionComponent{
 		
 		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
+
+		var bookingListUrl = this.url + '&weekindex=' + this.weekNumBooking;
+		this.getBookingList(bookingListUrl);
 	}
 
 	getList(urlOptions) {
@@ -90,6 +104,57 @@ export class WorkbenchReceptionComponent{
 		})
 	}
 
+	getBookingList(urlOptions) {
+		this.adminService.doctorbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					var weekArray = this.adminService.getWeekByNumber(this.weekNumBooking);
+					var weekBookingTitle = [];
+					this.doctorBookingList = [];
+					for(var i = 0; i < results.list.length; i++){
+						var doctorBooking = {
+							doctorId: results.list[i].doctorId,
+							doctorName: results.list[i].doctorName,
+							avatarUrl: results.list[i].avatarUrl,
+							bookingWeekList: [],
+						}
+						for(var j = 0; j < weekArray.length; j++){
+							var title = {
+								date: weekArray[j],
+								title: this.adminService.getWeekTitle(j)
+							}
+							var dayBooking = {
+								date: weekArray[j],
+								bookingList: [],
+								num: '',
+								string: '',
+							}
+							if(results.list[i].serviceList.length > 0){
+								for(var k = 0; k < results.list[i].serviceList.length; k++){
+									//判断今天是否有预约
+									if(weekArray[j] == results.list[i].serviceList[k].bookingDate){
+										dayBooking.bookingList.push(results.list[i].serviceList[k]);
+									}
+								}
+							}
+							dayBooking.num = dayBooking.bookingList.length.toString();
+							dayBooking.string = JSON.stringify(dayBooking.bookingList);
+							doctorBooking.bookingWeekList.push(dayBooking);
+							if(i == 0){
+								weekBookingTitle.push(title);
+							}
+						}
+						this.doctorBookingList.push(doctorBooking);
+					}
+					this.weekBookingTitle = weekBookingTitle;
+				}
+			}
+		})
+	}
+
 	prec() {
 		this.weekNumConfig--;
 		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
@@ -106,6 +171,37 @@ export class WorkbenchReceptionComponent{
 		this.weekNumConfig++;
 		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
+	}
+
+	precBooking() {
+		this.weekNumBooking--;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
+		this.getBookingList(urlOptions);
+	}
+
+	nowBooking() {
+		this.weekNumBooking = 0;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
+		this.getBookingList(urlOptions);
+	}
+
+	nextBooking() {
+		this.weekNumBooking++;
+		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
+		this.getBookingList(urlOptions);
+	}
+
+	close() {
+		this.modalTab = false;
+	}
+
+	showBooking(day) {
+		this.showBookinglist = JSON.parse(day.string);
+		this.modalTab = true;
+	}
+
+	info(_id) {
+		this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

@@ -34,7 +34,7 @@ export class CrmUserListComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '用户列表',
+			title: '后台用户列表',
 			back: true,
 		}
 		this.toast = {
@@ -87,7 +87,10 @@ export class CrmUserListComponent{
 
 	confirm() {
 		this.modalConfirmTab = false;
-		this.adminService.deleteadmin(this.selector.id).then((data) => {
+		var urlOptions = this.selector.id
+			 + '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+		this.adminService.deleteadmin(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

@@ -4,13 +4,9 @@
 		<header-nav></header-nav>
 		<div class="content admin-crm-user-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="tab flex">
-				<div class="item" (click)="goUrl('./admin/userList')">客户列表</div>
-				<div class="item active">工作人员列表</div>
-			</div>
 			<div class="mt10">
 				<div class="button-tab pure-form flex">
-					<button (click)="goUrl('./admin/crmUser')" class="pure-button pure-button-primary">新增工作人员</button>
+					<button (click)="goUrl('./admin/crmUser')" class="pure-button pure-button-primary">新增后台用户</button>
 					<div class="flex-1 text-right">
 						<label for="role">筛选角色：</label>
 						<select id="role" name="role" [(ngModel)]="role" (change)="roleChange()">

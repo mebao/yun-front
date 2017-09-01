@@ -1,0 +1,98 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-material">
+			<top-bar [data]="topBar"></top-bar>
+			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+				<fieldset>
+					<div class="pure-g">
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="name">
+									<span>物资名</span>
+								</label>
+								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入药品名" required="">
+								<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
+									<div [hidden]="!name.errors.required">
+										物资名不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="type">
+									<span>物资类型</span>
+								</label>
+								<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="">
+									<option value="3">医用耗材</option>
+									<option value="4">其他</option>
+								</select>
+								<div *ngIf="type.errors && (type.dity || type.touched)" class="alert alert-danger">
+									<div [hidden]="!type.errors.required">
+										物资类型不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="unit">
+									<span>单位</span>
+								</label>
+								<select id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" required="">
+									<ng-container *ngFor="let unit of drugUnits">
+										<option value="{{unit}}">{{unit}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="unit.errors && (unit.dity || unit.touched)" class="alert alert-danger">
+									<div [hidden]="!unit.errors.required">
+										单位不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="one_unit">
+									<span>计量单位</span>
+								</label>
+								<select id="one_unit" name="one_unit" #one_unit="ngModel" [(ngModel)]="info.oneUnit" required="">
+									<option></option>
+									<ng-container *ngFor="let unit of OneUnits">
+										<option value="{{unit}}">{{unit}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="one_unit.errors && (one_unit.dity || one_unit.touched)" class="alert alert-danger">
+									<div [hidden]="!one_unit.errors.required">
+										计量单位不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="usage">
+									<span>一般用法</span>
+								</label>
+								<textarea id="usage" name="usage" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
+								<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">
+									<div [hidden]="!usage.errors.required">
+										一般用法不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="text-center">
+					<button (click)="create(f)" class="pure-button pure-button-primary">{{this.editType == 'create' ? '创建' : '修改'}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -1,0 +1,71 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-material-purchase-list">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="second-bar-tab flex">
+				<div class="item" (click)="goUrl('./admin/materialList')">物资管理</div>
+				<div class="item active">入库管理</div>
+				<div class="item" (click)="goUrl('./admin/materialHasList')">库存管理</div>
+				<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
+				<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
+			</div>
+			<div class="flex pure-form mt10">
+				<div class="flex-1">
+					<button (click)="goUrl('./admin/materialPurchase')" class="pure-button pure-button-primary">新增入库</button>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="b_date">入库时间大于：</label>
+					<input type="date" id="b_date" name="b_date" [(ngModel)]="info.b_date">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="l_date">入库时间小于：</label>
+					<input type="date" id="l_date" name="l_date" [(ngModel)]="info.l_date">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="type">类型：</label>
+					<select id="type" name="type" [(ngModel)]="info.type">
+						<option value="3">医用耗材</option>
+						<option value="4">其他</option>
+					</select>
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+			<div class="">
+				<div *ngIf="list.length > 0" class="list-tab mt10">
+					<div class="list-bar pure-g">
+						<div class="pure-u-3-24 item">供应商</div>
+						<div class="pure-u-3-24 item">物资</div>
+						<div class="pure-u-2-24 item">单位</div>
+						<div class="pure-u-2-24 item">类型</div>
+						<div class="pure-u-2-24 item">入库数量</div>
+						<div class="pure-u-3-24 item">单价</div>
+						<div class="pure-u-3-24 item">费用</div>
+						<div class="pure-u-3-24 item">总费用</div>
+						<div class="pure-u-3-24 item">入库时间</div>
+					</div>
+					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first;">
+						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
+							<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
+								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.supplierName : ''}}</div>
+								<div class="pure-u-3-24 item">{{info.msName}}</div>
+								<div class="pure-u-2-24 item">{{info.unit}}</div>
+								<div class="pure-u-2-24 item">{{info.typeText}}</div>
+								<div class="pure-u-2-24 item">{{info.num}}</div>
+								<div class="pure-u-3-24 item">{{info.bid}}</div>
+								<div class="pure-u-3-24 item">{{info.fee}}</div>
+								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.fee : ''}}</div>
+								<div class="pure-u-3-24 item">{{item.purshaseTime}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="hasData && list.length == 0" class="mt10">
+					<nodata title="未查询到入库信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

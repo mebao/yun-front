@@ -27,12 +27,14 @@
 								<div class="pure-u-8-24 pr10">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
-											<span>医疗用品</span>
+											<span>药品</span>
 											<span class="required">*</span>
 										</label>
 										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
 											<ng-container *ngFor="let medicalSupplie of list">
-												<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
+												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
+												</ng-container>
 											</ng-container>
 										</select>
 									</div>
@@ -50,7 +52,7 @@
 						</div>
 					</div>
 					<div class="mt10">
-						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
+						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 					</div>
 					<div class="pure-g">
 						<div class="pure-u-8-24">

@@ -1,0 +1,52 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-user-list">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="mt10">
+				<div class="flex pure-form">
+					<div class="flex-1"></div>
+					<div class="pure-control-group mr10">
+						<label for="name">姓名：</label>
+						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
+					</div>
+					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+				</div>
+				<table *ngIf="childList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th class="w70p"></th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>年龄</th>
+							<th>生日</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let child of childList; let index=index;">
+							<td>
+								<div class="img-tab-defalut">
+									<img src="{{child.imageUrl}}">
+								</div>
+							</td>
+							<td>{{child.childName}}</td>
+							<td>{{child.gender}}</td>
+							<td>{{child.age}}</td>
+							<td>{{child.birthday}}</td>
+							<td>
+								<button (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
+								<button (click)="goInfo(child.id)" class="pure-button pure-button-primary">预约</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasData && childList.length == 0" class="mt10">
+					<nodata title="未查询到病人信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

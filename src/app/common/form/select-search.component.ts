@@ -11,6 +11,7 @@ export class SelectSearchComponent{
 	@Output() onVoted = new EventEmitter<string>();
 	selectedValue: string;
 	show: boolean;
+	searchBoolean: boolean;
 
 	constructor() {
 	}
@@ -18,6 +19,7 @@ export class SelectSearchComponent{
 	ngOnInit() {
 		this.show = false;
 		this.selectedValue = '';
+		this.searchBoolean = true;
 	}
 
 	changeShow() {
@@ -25,18 +27,21 @@ export class SelectSearchComponent{
 	}
 
 	changeSearch(_value) {
+		//若是第一次进入，将selectList存储到sessionStorage中
+		if(this.searchBoolean){
+			sessionStorage.setItem('selectList', JSON.stringify(this.selectList));
+			this.searchBoolean = false;
+		}
+		var selectList = JSON.parse(sessionStorage.getItem('selectList'));
 		var searchArr = [];
-		var otherArr = [];
-		if(this.selectList.length > 0){
-			for(var i = 0; i < this.selectList.length; i++){
-				if(this.selectList[i].value && this.selectList[i].value.toString().indexOf(_value) != -1){
-					searchArr.push(this.selectList[i]);
-				}else{
-					otherArr.push(this.selectList[i]);
+		if(selectList.length > 0){
+			for(var i = 0; i < selectList.length; i++){
+				if(selectList[i].value && selectList[i].value.toString().indexOf(_value) != -1){
+					searchArr.push(selectList[i]);
 				}
 			}
 		}
-		this.selectList = searchArr.concat(otherArr);
+		this.selectList = searchArr;
 	}
 
 	selected(_value) {

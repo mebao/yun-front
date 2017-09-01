@@ -26,6 +26,12 @@ export class UserListComponent{
 		id: string,
 		text: string,
 	}
+	searchInfo: {
+		name: string,
+		mobile: string,
+		child_name: string,
+	}
+	url: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -34,7 +40,7 @@ export class UserListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '用户列表',
+			title: '用户管理',
 			back: false,
 		}
 		this.toast = {
@@ -49,15 +55,22 @@ export class UserListComponent{
 			text: '',
 		}
 
+		this.searchInfo = {
+			name: '',
+			mobile: '',
+			child_name: '',
+		}
+
 		this.users = [];
 		this.role = this.adminService.getUser().role;
 
-		this.getData();
+		this.url = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token;
+
+		this.search();
 	}
 
-	getData() {
-		var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+	getData(urlOptions) {
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -67,6 +80,21 @@ export class UserListComponent{
 				this.hasData = true;
 			}
 		});
+	}
+
+	search() {
+		var urlOptions = this.url;
+		if(this.searchInfo.name != ''){
+			urlOptions += '&name=' + this.searchInfo.name;
+		}
+		if(this.searchInfo.mobile != ''){
+			urlOptions += '&mobile=' + this.searchInfo.mobile;
+		}
+		if(this.searchInfo.child_name != ''){
+			urlOptions += '&child_name=' + this.searchInfo.child_name;
+		}
+
+		this.getData(urlOptions);
 	}
 
 	goUrl(_url) {
@@ -97,7 +125,7 @@ export class UserListComponent{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				this.getData();
+				this.search();
 				this.toastTab('删除成功', '');
 			}
 		});

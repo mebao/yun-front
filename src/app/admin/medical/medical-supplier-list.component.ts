@@ -32,8 +32,8 @@ export class MedicalSupplierListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品',
-			back: true,
+			title: '供应商管理',
+			back: false,
 		}
 		this.toast = {
 			show: 0,

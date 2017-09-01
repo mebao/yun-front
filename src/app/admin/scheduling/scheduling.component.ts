@@ -58,7 +58,20 @@ export class SchedulingComponent{
 			{key: '16:00', value: '16:00'},
 			{key: '16:30', value: '16:30'},
 			{key: '17:00', value: '17:00'},
-			{key: '17:30', value: '17:30'}
+			{key: '17:30', value: '17:30'},
+			{key: '18:00', value: '18:00'},
+			{key: '18:30', value: '18:30'},
+			{key: '19:00', value: '19:00'},
+			{key: '19:30', value: '19:30'},
+			{key: '20:00', value: '20:00'},
+			{key: '20:30', value: '20:30'},
+			{key: '21:00', value: '21:00'},
+			{key: '21:30', value: '21:30'},
+			{key: '22:00', value: '22:00'},
+			{key: '22:30', value: '22:30'},
+			{key: '23:00', value: '23:00'},
+			{key: '23:30', value: '23:30'},
+			{key: '00:00', value: '00:00'},
 		];
 		this.dutylist = [{id: 1, use: true}];
 	}
@@ -187,7 +200,20 @@ export class SchedulingComponent{
 			{key: 16, value: '16:00', use: true},
 			{key: 17, value: '16:30', use: true},
 			{key: 18, value: '17:00', use: true},
-			{key: 29, value: '17:30', use: true}
+			{key: 19, value: '17:30', use: true},
+			{key: 20, value: '18:00', use: true},
+			{key: 21, value: '18:30', use: true},
+			{key: 22, value: '19:00', use: true},
+			{key: 23, value: '19:30', use: true},
+			{key: 24, value: '20:00', use: true},
+			{key: 25, value: '20:30', use: true},
+			{key: 26, value: '21:00', use: true},
+			{key: 27, value: '21:30', use: true},
+			{key: 28, value: '22:00', use: true},
+			{key: 29, value: '22:30', use: true},
+			{key: 30, value: '23:00', use: true},
+			{key: 31, value: '23:30', use: true},
+			{key: 32, value: '00:00', use: true},
 		]
 		//构造时间段
 		var dutylist = [];
@@ -351,7 +377,20 @@ export class SchedulingComponent{
 					{key: 16, value: '16:00', use: true},
 					{key: 17, value: '16:30', use: true},
 					{key: 18, value: '17:00', use: true},
-					{key: 19, value: '17:30', use: true}
+					{key: 19, value: '17:30', use: true},
+					{key: 20, value: '18:00', use: true},
+					{key: 21, value: '18:30', use: true},
+					{key: 22, value: '19:00', use: true},
+					{key: 23, value: '19:30', use: true},
+					{key: 24, value: '20:00', use: true},
+					{key: 25, value: '20:30', use: true},
+					{key: 26, value: '21:00', use: true},
+					{key: 27, value: '21:30', use: true},
+					{key: 28, value: '22:00', use: true},
+					{key: 29, value: '22:30', use: true},
+					{key: 30, value: '23:00', use: true},
+					{key: 31, value: '23:30', use: true},
+					{key: 32, value: '00:00', use: true},
 				]
 				//清空排班配置
 				this.dutylist = [];

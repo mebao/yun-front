@@ -26,6 +26,13 @@
 					&:last-child{
 						border-right: none;
 					}
+					span{
+					    padding: 0 15px;
+					    border-radius: 4px;
+					    background-color: #D9534F;
+					    color: #efefef;
+					    cursor: pointer;
+					}
 				}
 			}
 		}

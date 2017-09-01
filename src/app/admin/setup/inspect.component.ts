@@ -22,6 +22,7 @@ export class SetupInspectComponent{
 		project_name: string,
 		price: string,
 		can_discount: string,
+		can_use: string,
 	};
 	projectlist: any[];
 	editType: string;
@@ -50,6 +51,7 @@ export class SetupInspectComponent{
 			project_name: '',
 			price: '',
 			can_discount: '',
+			can_use: '',
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -61,6 +63,7 @@ export class SetupInspectComponent{
 
 			this.inspectInfo.project_name = JSON.parse(sessionStorage.getItem('inspect')).name;
 			this.inspectInfo.price = JSON.parse(sessionStorage.getItem('inspect')).price;
+			this.inspectInfo.can_use = JSON.parse(sessionStorage.getItem('inspect')).canUse;
 		}else{
 			this.editType = 'create';
 
@@ -101,6 +104,9 @@ export class SetupInspectComponent{
 					this.toastTab(data.errorMsg, 'error');
 				}else{
 					this.toastTab('检查项目创建成功', '');
+					setTimeout(() => {
+						this.router.navigate(['./admin/setupInspectList']);
+					}, 2000);
 				}
 			});
 		}else{
@@ -112,13 +118,16 @@ export class SetupInspectComponent{
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
 				price: f.value.price,
+				can_use: f.value.can_use,
 			}
-			this.adminService.updatecliniccheckfee(this.id, updateParams).then((data) => {
+			this.adminService.updateclinicproject(this.id, updateParams).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
 					this.toastTab('检查项目修改成功', '');
-					this.router.navigate(['./admin/setupInspectList']);
+					setTimeout(() => {
+						this.router.navigate(['./admin/setupInspectList']);
+					}, 2000);
 				}
 			});
 		}

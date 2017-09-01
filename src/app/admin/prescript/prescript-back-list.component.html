@@ -1,0 +1,88 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-prescript-back-list">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="second-bar-tab flex">
+				<div class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
+				<div class="item active">退药</div>
+			</div>
+			<div class="pure-form flex mt10">
+				<div class="flex-1"></div>
+				<div class="pure-control-group mr10">
+					<label for="is_back">状态：</label>
+					<select id="is_back" name="is_back" [(ngModel)]="searchInfo.is_back">
+						<option value="1">医生同意退药</option>
+						<option value="2">已成功退药</option>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="doctor_name">医生名：</label>
+					<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" class="w100p" placeholder="请输入医生名">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="user_name">用户名：</label>
+					<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" class="w100p" placeholder="请输入用户名">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="child_name">小孩名：</label>
+					<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" class="w100p" placeholder="请输入小孩名">
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+			<div class="">
+				<div *ngIf="list.length > 0" class="list-tab mt10">
+					<div class="list-bar pure-g">
+						<div class="pure-u-3-24 item">药方名</div>
+						<div class="pure-u-2-24 item">就诊医生</div>
+						<div class="pure-u-2-24 item">用户名</div>
+						<div class="pure-u-2-24 item">小孩名</div>
+						<div class="pure-u-3-24 item">日期</div>
+						<div class="pure-u-3-24 item">备注</div>
+						<div class="pure-u-3-24 item">药品名</div>
+						<div class="pure-u-2-24 item">药品单位</div>
+						<div class="pure-u-2-24 item">退药数量</div>
+						<div class="pure-u-2-24 item">操作</div>
+					</div>
+					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first;">
+						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
+							<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
+								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.name : ''}}</div>
+								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.doctorName : ''}}</div>
+								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.userName : ''}}</div>
+								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.childName : ''}}</div>
+								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.date : ''}}</div>
+								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.remark : ''}}</div>
+								<div class="pure-u-3-24 item">{{info.pname}}</div>
+								<div class="pure-u-2-24 item">{{info.unit}}</div>
+								<div class="pure-u-2-24 item">{{info.back_num}}</div>
+								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
+									<span *ngIf="infoFirst && (item.isBack == '2')">已退药</span>
+									<button *ngIf="infoFirst && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="hasData && list.length == 0" class="mt10">
+					<nodata title="未查询到退药信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">待确认</div>
+		<div class="content pad10">
+			{{select.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

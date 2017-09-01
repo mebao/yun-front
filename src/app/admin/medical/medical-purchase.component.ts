@@ -34,7 +34,7 @@ export class MedicalPurchaseComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品进货',
+			title: '药品入库',
 			back: true,
 		}
 		this.toast = {
@@ -129,14 +129,14 @@ export class MedicalPurchaseComponent{
 				num++;
 				if(f.value['num_' + key] != ''){
 					if(isNaN(Number(f.value['num_' + key]))){
-						this.toastTab('第' + num + '条医疗用品进货数量请输入数字', 'error');
+						this.toastTab('第' + num + '条药品入库数量请输入数字', 'error');
 						return;
 					}
 					numBoolean = true;
 				}
 				if(f.value['bid_' + key] != ''){
 					if(isNaN(Number(f.value['bid_' + key]))){
-						this.toastTab('第' + num + '条医疗用品进价请输入数字', 'error');
+						this.toastTab('第' + num + '条药品进价请输入数字', 'error');
 						return;
 					}
 					bidBoolean = true;
@@ -167,36 +167,34 @@ export class MedicalPurchaseComponent{
 						bid: '',
 						type: '',
 						usage: '',
+						one_unit: '',
 						price: '',
 						can_discount: '',
 					}
 					var key = this.mslist[i].key;
 					num++;
 					if(f.value['ms_' + key] == ''){
-						this.toastTab('第' + num + '条医疗用品不可为空', 'error');
+						this.toastTab('第' + num + '条药品不可为空', 'error');
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
 					msParams.unit = JSON.parse(f.value['ms_' + key]).unit;
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
+					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
 					if(f.value['num_' + key] == ''){
-						this.toastTab('第' + num + '条医疗用品进货数量不可为空', 'error');
+						this.toastTab('第' + num + '条药品入库数量不可为空', 'error');
 						return;
 					}
 					msParams.num = f.value['num_' + key];
 					if(f.value['bid_' + key] == ''){
-						this.toastTab('第' + num + '条医疗用品进价不可为空', 'error');
+						this.toastTab('第' + num + '条药品进价不可为空', 'error');
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];
-					if(f.value['price_' + key] == ''){
-						this.toastTab('第' + num + '条医疗用品售价不可为空', 'error');
-						return;
-					}
-					msParams.price = f.value['price_' + key];
+					msParams.price = '';
 					if(f.value['can_discount_' + key] == ''){
-						this.toastTab('第' + num + '条医疗用品优惠类型不可为空', 'error');
+						this.toastTab('第' + num + '条药品优惠类型不可为空', 'error');
 						return;
 					}
 					msParams.can_discount = f.value['can_discount_' + key];
@@ -218,7 +216,7 @@ export class MedicalPurchaseComponent{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				this.toastTab('医疗用品进货创建成功', '');
+				this.toastTab('药品入库创建成功', '');
 				setTimeout(() => {
 					this.router.navigate(['./admin/medicalPurchaseList']);
 				}, 2000);

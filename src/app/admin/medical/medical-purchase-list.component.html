@@ -5,23 +5,30 @@
 		<div class="content admin-medical-purchase-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/medicalList')">医疗用品列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalSupplierList')">医疗用品供应商列表</div>
-				<div class="item active">医疗用品进货列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalHasList')">诊所医疗用品列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalLostList')">医疗用品报废</div>
+				<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
+				<div class="item active">入库管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1">
-					<button (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增医疗用品进货</button>
+					<button (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
 				</div>
 				<div class="pure-control-group mr10">
-					<label for="b_date">进货时间大于：</label>
+					<label for="b_date">入库时间大于：</label>
 					<input type="date" id="b_date" name="b_date" [(ngModel)]="info.b_date">
 				</div>
 				<div class="pure-control-group mr10">
-					<label for="l_date">进货时间小于：</label>
+					<label for="l_date">入库时间小于：</label>
 					<input type="date" id="l_date" name="l_date" [(ngModel)]="info.l_date">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="type">类型：</label>
+					<select id="type" name="type" [(ngModel)]="info.type">
+						<option value="1">中药</option>
+						<option value="2">西药</option>
+					</select>
 				</div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
@@ -29,14 +36,14 @@
 				<div *ngIf="list.length > 0" class="list-tab mt10">
 					<div class="list-bar pure-g">
 						<div class="pure-u-3-24 item">供应商</div>
-						<div class="pure-u-3-24 item">医疗用品</div>
+						<div class="pure-u-3-24 item">药品</div>
 						<div class="pure-u-2-24 item">单位</div>
 						<div class="pure-u-2-24 item">类型</div>
-						<div class="pure-u-2-24 item">进货数量</div>
+						<div class="pure-u-2-24 item">入库数量</div>
 						<div class="pure-u-3-24 item">单价</div>
 						<div class="pure-u-3-24 item">费用</div>
 						<div class="pure-u-3-24 item">总费用</div>
-						<div class="pure-u-3-24 item">进货时间</div>
+						<div class="pure-u-3-24 item">入库时间</div>
 					</div>
 					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first;">
 						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
@@ -55,7 +62,7 @@
 					</div>
 				</div>
 				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到进货信息"></nodata>
+					<nodata title="未查询到入库信息"></nodata>
 				</div>
 			</div>
 		</div>

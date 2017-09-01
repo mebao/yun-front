@@ -1,0 +1,79 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-medical-has">
+			<top-bar [data]="topBar"></top-bar>
+			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+				<fieldset>
+					<div class="pure-g">
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="type">
+									<span>药品类型</span>
+									<span class="required">*</span>
+								</label>
+								<select id="type" name="type" [(ngModel)]="info.type" (change)="search()" [disabled]="editType == 'update'">
+									<option value="1">中药</option>
+									<option value="2">西药</option>
+								</select>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="medical">
+									<span>药品</span>
+									<span class="required">*</span>
+								</label>
+								<select id="medical" name="medical" [(ngModel)]="info.medical" #medical="ngModel" required="" [disabled]="editType == 'update'">
+									<ng-container *ngFor="let medical of medicalList">
+										<option value="{{medical.string}}">{{medical.name}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="medical.errors && (medical.dity || medical.touched)" class="alert alert-danger">
+									<div [hidden]="!medical.errors.required">
+										药品不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="reality_stock">
+									<span>实际库存</span>
+									<span class="required">*</span>
+								</label>
+								<input type="number" id="reality_stock" name="reality_stock" #reality_stock="ngModel" [(ngModel)]="info.reality_stock" placeholder="请输入实际库存" required="">
+								<div *ngIf="reality_stock.errors && (reality_stock.dity || reality_stock.touched)" class="alert alert-danger">
+									<div [hidden]="!reality_stock.errors.required">
+										实际库存不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="check_time">
+									<span>检查时间</span>
+								</label>
+								<input type="date" id="check_time" name="check_time" #check_time="ngModel" [(ngModel)]="info.check_time" [disabled]="editType == 'update'">
+							</div>
+						</div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="remark">备注</label>
+								<textarea id="remark" name="remark" #remark="ngModel" [(ngModel)]="info.remark" placeholder="请输入备注"></textarea>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="text-center">
+					<button (click)="create(f)" class="pure-button pure-button-primary">{{editType == 'create' ? '添加' : '修改'}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

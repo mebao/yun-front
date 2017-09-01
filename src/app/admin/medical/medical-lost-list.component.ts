@@ -24,6 +24,7 @@ export class MedicalLostListComponent{
 	info: {
 		b_date: string,
 		l_date: string,
+		type: string,
 	}
 
 	constructor(
@@ -33,7 +34,7 @@ export class MedicalLostListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品',
+			title: '药房管理',
 			back: true,
 		}
 		this.toast = {
@@ -47,12 +48,14 @@ export class MedicalLostListComponent{
 		this.info = {
 			b_date: '',
 			l_date: '',
+			type: '1',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.getData(this.url);
+
+		this.search();
 		
 	}
 
@@ -75,6 +78,9 @@ export class MedicalLostListComponent{
 		}
 		if(this.info.l_date != ''){
 			urlOptions += '&l_date=' + this.info.l_date;
+		}
+		if(this.info.type != ''){
+			urlOptions += '&type=' + this.info.type;
 		}
 		this.getData(urlOptions);
 	}

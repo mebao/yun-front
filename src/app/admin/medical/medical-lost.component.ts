@@ -31,7 +31,7 @@ export class MedicalLostComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品报损',
+			title: '药品报损',
 			back: true,
 		}
 		this.toast = {
@@ -112,6 +112,10 @@ export class MedicalLostComponent{
 						return;
 					}
 					lost.num = f.value['num_' + this.lostlist[i].key];
+					if(lost.num > JSON.parse(f.value['ms_' + this.lostlist[i].key]).stock){
+						this.toastTab(JSON.parse(f.value['ms_' + this.lostlist[i].key]).name + '库存' + JSON.parse(f.value['ms_' + this.lostlist[i].key]).stock + JSON.parse(f.value['ms_' + this.lostlist[i].key]).unit + '，所选药品数量超过库存现有量', 'error');
+						return;
+					}
 					mslosts.push(lost);
 					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).bid) * Number(lost.num); 
 				}

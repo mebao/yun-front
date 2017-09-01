@@ -28,6 +28,20 @@
     background-color: rgba(0,0,0,.3);
 }
 
+.cursor-p{
+	cursor: pointer;
+}
+
+.img-tab-defalut{
+	width: 70px;
+	height: 70px;
+	img{
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+}
+
 /*左右布局*/
 .container{
 	height: 100%;
@@ -82,12 +96,19 @@
 	}
 }
 
-input[type=text][disabled], input[type=number][disabled], select[disabled]{
+input[type=text][disabled], input[type=number][disabled], input[type=date][disabled], select[disabled], textarea[disabled]{
 	color: #6e6e6e!important;
 }
 
 .form-tab{
-	input, select, textarea{
+	input, select{
+		width: 100%;
+		height: 2.5em;
+	}
+	input[type="radio"]{
+		width: auto;
+	}
+	textarea{
 		width: 100%;
 	}
 	label{
@@ -96,6 +117,23 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 			color: $color-error;
 			font-weight: bold;
 		}
+	}
+}
+
+.card-tab{
+	.info{
+		background-color: #39A99D;
+		color: #fff;
+		height: 110px;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	.edit{
+		border-width: 0 1px 1px 1px;
+		border-style: solid;
+		border-color: #39A99D;
+		color: #39A99D;
+		display: block;
 	}
 }
 
@@ -319,12 +357,6 @@ input[type=text][disabled], input[type=number][disabled], select[disabled]{
 .modal{
 	.container{
 		.content{
-			.list{
-				.item{
-					border-top: 1px solid #efefef;
-					cursor: pointer;
-				}
-			}
 		}
 		.button-tab{
 			border-top: 1px solid #efefef;

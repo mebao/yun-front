@@ -4,7 +4,11 @@
 		<header-nav></header-nav>
 		<div class="content admin-prescript-list">
 			<top-bar [data]="topBar"></top-bar>
-			<form #f="ngForm" class="pure-form flex">
+			<div class="second-bar-tab flex">
+				<div class="item active">出药</div>
+				<div class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
+			</div>
+			<form #f="ngForm" class="pure-form flex mt10">
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="isout">出药：</label>

@@ -71,6 +71,27 @@ import { BookingChargeComponent }          from './booking/booking-charge.compon
 import { DoctorBookingComponent }          from './user/doctor-booking.component';
 import { SetupInspectComponent }           from './setup/inspect.component';
 import { SetupInspectListComponent }       from './setup/inspect-list.component';
+import { MaterialListComponent }           from './material/material-list.component';
+import { MaterialComponent }               from './material/material.component';
+import { MaterialPurchaseListComponent }   from './material/material-purchase-list.component';
+import { MaterialPurchaseComponent }       from './material/material-purchase.component';
+import { MaterialHasListComponent }        from './material/material-has-list.component';
+import { MaterialHasComponent }            from './material/material-has.component';
+import { MaterialLostListComponent }       from './material/material-lost-list.component';
+import { MaterialLostComponent }           from './material/material-lost.component';
+import { InspectResultsListComponent }     from './setup/inspect-results-list.component';
+import { InspectResultsComponent }         from './setup/inspect-results.component';
+import { BookingFollowupsComponent }       from './booking/booking-followups.component';
+import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
+import { MaterialCheckListComponent }      from './material/material-check-list.component';
+import { MaterialCheckComponent }          from './material/material-check.component';
+import { MedicalCheckListComponent }       from './medical/medical-check-list.component';
+import { MedicalCheckComponent }           from './medical/medical-check.component';
+import { PrescriptBackListComponent }      from './prescript/prescript-back-list.component';
+import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.component';
+import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
+import { ChildListComponent }              from './user/child-list.component';
+import { ChildInfoComponent }              from './user/child-info.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -137,6 +158,27 @@ import { AdminService }                    from './admin.service';
 		DoctorBookingComponent,
 		SetupInspectComponent,
 		SetupInspectListComponent,
+		MaterialListComponent,
+		MaterialComponent,
+		MaterialPurchaseListComponent,
+		MaterialPurchaseComponent,
+		MaterialHasListComponent,
+		MaterialHasComponent,
+		MaterialLostListComponent,
+		MaterialLostComponent,
+		InspectResultsListComponent,
+		InspectResultsComponent,
+		BookingFollowupsComponent,
+		BookingFollowupsListComponent,
+		MaterialCheckListComponent,
+		MaterialCheckComponent,
+		MedicalCheckListComponent,
+		MedicalCheckComponent,
+		PrescriptBackListComponent,
+		BookingGrowthrecordComponent,
+		BookingCasehistoryComponent,
+		ChildListComponent,
+		ChildInfoComponent,
 	],
 	providers: [
 		AdminService,

@@ -33,35 +33,57 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="second-title">医生预约信息</div>
+			<div class="second-title">医生预约信息</div>
 			<div class="button-tab pb10">
-				<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-				<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-				<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+				<button (click)="precBooking()" class="pure-button pure-button-primary">上一周</button>
+				<button (click)="nowBooking()" class="pure-button pure-button-primary">本周</button>
+				<button (click)="nextBooking()" class="pure-button pure-button-primary">下一周</button>
 			</div>
 			<div class="list-tab">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
 					<div class="pure-u-1-24 title">医生</div>
-					<div class="pure-u-3-24 title" *ngFor="let title of weektitle">
+					<div class="pure-u-3-24 title" *ngFor="let title of weekBookingTitle">
 						<span class="pr5">{{title.title}}</span>
 						<span>{{title.date}}</span>
 					</div>
 				</div>
 				<div class="doctor-list">
-					<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
+					<div class="pure-g item" *ngFor="let doctorBooking of doctorBookingList">
 						<div class="pure-u-2-24 img-tab pad10 text-center">
-							<img src="{{scheduling.avatarUrl}}" />
+							<img src="{{doctorBooking.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20">{{scheduling.realName}}</div>	
-						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling">
-							<div *ngFor="let config of day.dutyConfigList">
-								{{config}}
-							</div>
+						<div class="pure-u-1-24 info text-center pt20">{{doctorBooking.doctorName}}</div>	
+						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of doctorBooking.bookingWeekList">
+							<span (click)="showBooking(day)" *ngIf="day.num != '0'">{{day.num}}</span>
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTab">
+	<div class="modal-mask" (click)="close()"></div>
+	<div class="container">
+		<div class="title">预约信息</div>
+		<div class="content pad10">
+			<div class="pure-g pt10 pb10">
+				<div class="pure-u-4-24">预约服务</div>
+				<div class="pure-u-4-24">预约时间</div>
+			</div>
+			<div class="list">
+				<div (click)="info(showBooking.bookingId)" class="pure-g item pt10 pb10" *ngFor="let showBooking of showBookinglist">
+					<div class="pure-u-4-24">{{showBooking.serviceName}}</div>
+					<div class="pure-u-4-24">
+						<span>{{showBooking.bookingDate}}</span>
+						<span>{{showBooking.time}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="close()" class="pure-button pure-button-primary">取消</button>
 		</div>
 	</div>
 </div>

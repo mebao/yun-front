@@ -1,0 +1,86 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-material-has">
+			<top-bar [data]="topBar"></top-bar>
+			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+				<fieldset>
+					<div class="pure-g">
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="name">物资名</label>
+								<input type="text" id="name" name="name" [(ngModel)]="info.name" disabled="">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="unit">单位</label>
+								<input type="text" id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" placeholder="请输入单位" required="">
+								<div *ngIf="unit.errors && (unit.dity || unit.touched)" class="alert alert-danger">
+									<div [hidden]="!unit.errors.required">
+										单位不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="type">类型</label>
+								<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="">
+									<option value="3">医用耗材</option>
+									<option value="4">其他</option>
+								</select>
+								<div *ngIf="type.errors && (type.dity || type.touched)" class="alert alert-danger">
+									<div [hidden]="type.error.required">
+										类型不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="usage">一般用法</label>
+								<textarea id="usage" name="usage" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
+								<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">
+									<div [hidden]="!usage.errors.required">
+										一般用法不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="price">售价</label>
+								<input type="number" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
+								<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
+									<div [hidden]="!price.errors.required">
+										售价不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="canDiscount">是否优惠</label>
+								<select id="canDiscount" name="canDiscount" #canDiscount="ngModel" [(ngModel)]="info.canDiscount" required="">
+									<option value="0">不可优惠</option>
+									<option value="1">可优惠</option>
+								</select>
+								<div *ngIf="canDiscount.errors && (canDiscount.dity || canDiscount.touched)" class="alert alert-danger">
+									<div [hidden]="!canDiscount.errors.required">
+										是否优惠不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<button (click)="update(f)" class="pure-button pure-button-primary">修改</button>
+			</form>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -94,7 +94,9 @@ export class CrmUserComponent implements OnInit{
 								if(JSON.stringify(results.adminlist[i].doctorProfile).length != 2){
 									this.addDoctor = true;
 								}
-								document.getElementById('imgEle').setAttribute('src', results.adminlist[i].avatarUrl);
+								if(results.adminlist[i].avatarUrl && results.adminlist[i].avatarUrl != ''){
+									document.getElementById('imgEle').setAttribute('src', results.adminlist[i].avatarUrl);
+								}
 								document.getElementById('file').setAttribute('value', results.adminlist[i].avatarUrl);
 							}
 						}
@@ -106,7 +108,7 @@ export class CrmUserComponent implements OnInit{
 		}
 
 		this.topBar = {
-			title: this.editType == 'create' ? '创建工作人员' : '修改工作人员信息',
+			title: this.editType == 'create' ? '创建后台用户' : '修改后台用户信息',
 			back: true,
 		}
 
@@ -187,11 +189,6 @@ export class CrmUserComponent implements OnInit{
     }
 
 	create(f): void {
-		var imgUrl = document.getElementById('file').getAttribute('value');
-		if(imgUrl == ''){
-			this.toastTab('头像未上传', 'error');
-			return;
-		}
 		if(f.value.mobile == ''){
 			this.toastTab('手机号码不可为空', 'error');
 			return;
@@ -230,6 +227,8 @@ export class CrmUserComponent implements OnInit{
 				return;
 			}
 		}
+
+		var imgUrl = document.getElementById('file').getAttribute('value');
 		if(this.editType == 'create'){
 			var param = {
 				username: this.adminService.getUser().username,
@@ -243,7 +242,7 @@ export class CrmUserComponent implements OnInit{
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,
 				description: this.addDoctor ? f.value.description : null,
-				avatar_url: this.addDoctor ? 'http://static.jiabaokangle.com/' + imgUrl : null,
+				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : ('http://static.jiabaokangle.com/' + imgUrl)) : null,
 			}
 			this.adminService.create(param).then((data) => {
 				if(data.status == 'no'){
@@ -266,7 +265,7 @@ export class CrmUserComponent implements OnInit{
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,
 				description: this.addDoctor ? f.value.description : null,
-				avatar_url: this.addDoctor ? (imgUrl.indexOf('http') == -1 ? 'http://static.jiabaokangle.com/' + imgUrl : imgUrl) : null,
+				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : (imgUrl.indexOf('http') == -1 ? 'http://static.jiabaokangle.com/' + imgUrl : imgUrl)) : null,
 			}
 			this.adminService.adminupdate(this.id, updateParam).then((data) => {
 				if(data.status == 'no'){

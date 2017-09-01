@@ -162,7 +162,25 @@ export class ClinicroomListComponent{
 		this.conditionId = _id;
 		var bookingInfo = JSON.parse(booking);
 		if(bookingInfo.services[0].userDoctorId != doctorId){
-			this.confirmText = '该诊室医生与预约医生不匹配，是否继续分配？';
+			//判断不匹配医生是否有该服务项目，若没有，不允许分配
+			//获取当前预约服务
+			// var service = booking.services[0].serviceId;
+			// var hasService = false;
+			// for(var i = 0; i < this.doctorlist.length; i++){
+			// 	if(doctorId == this.doctorlist[i].id && this.doctorlist[i].serviceList.length > 0){
+			// 		for(var j = 0; j < this.doctorlist[i].serviceList.length; j++){
+			// 			if(service == this.doctorlist[i].serviceList[j].serviceId){
+			// 				hasService = true;
+			// 			}
+			// 		}
+			// 	}
+			// }
+			// if(hasService){
+				this.confirmText = '该诊室医生与预约医生不匹配，是否继续分配？';
+			// }else{
+			// 	this.toastTab('该诊室医生与预约医生不匹配，并且该医生不存在' + booking.services[0].serviceName + '服务，不可分配。', 'error');
+			// 	return;
+			// }
 		}else{
 			this.confirmText = '确认为该诊室分配该用户';
 		}

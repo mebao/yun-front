@@ -28,8 +28,6 @@
 								<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="">
 									<option value="1">中药</option>
 									<option value="2">西药</option>
-									<option value="3">医用耗材</option>
-									<option value="4">其他</option>
 								</select>
 								<div *ngIf="type.errors && (type.dity || type.touched)" class="alert alert-danger">
 									<div [hidden]="!type.errors.required">

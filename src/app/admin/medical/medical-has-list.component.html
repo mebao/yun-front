@@ -5,11 +5,11 @@
 		<div class="content admin-clinicroom-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/medicalList')">医疗用品列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalSupplierList')">医疗用品供应商列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">医疗用品进货列表</div>
-				<div class="item active">诊所医疗用品列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalLostList')">医疗用品报废</div>
+				<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">入库管理</div>
+				<div class="item active">库存管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1"></div>
@@ -20,11 +20,8 @@
 				<div class="pure-control-group mr10">
 					<label for="type">用品类型：</label>
 					<select id="type" name="type" [(ngModel)]="info.type">
-						<option value=""></option>
 						<option value="1">中药</option>
 						<option value="2">西药</option>
-						<option value="3">医用耗材</option>
-						<option value="4">其他</option>
 					</select>
 				</div>
 				<div class="pure-control-group mr10">
@@ -41,7 +38,7 @@
 				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>
 						<tr>
-							<th>医疗用品</th>
+							<th>药品</th>
 							<th>单位</th>
 							<th>药品类型</th>
 							<th>一般用法</th>
@@ -69,7 +66,7 @@
 					</tbody>
 				</table>
 				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到医疗用品信息"></nodata>
+					<nodata title="未查询到药品信息"></nodata>
 				</div>
 			</div>
 		</div>

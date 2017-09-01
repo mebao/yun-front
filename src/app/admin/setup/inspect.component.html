@@ -60,6 +60,15 @@
 									</select>
 								</div>
 							</div>
+							<div *ngIf="editType == 'update'" class="pure-u-8-24 pl10">
+								<div class="pure-control-group">
+									<label for="can_use">状态</label>
+									<select id="can_use" name="can_use" [(ngModel)]="inspectInfo.can_use">
+										<option value="0">停用</option>
+										<option value="1">启用</option>
+									</select>
+								</div>
+							</div>
 						</div>
 					</fieldset>
 					<div class="text-center">

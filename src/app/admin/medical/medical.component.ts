@@ -37,7 +37,7 @@ export class MedicalComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品',
+			title: '药品',
 			back: true,
 		}
 		this.toast = {
@@ -135,9 +135,9 @@ export class MedicalComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				if(this.editType == 'update'){
-					this.toastTab('医疗用品修改成功', '');
+					this.toastTab('药品修改成功', '');
 				}else{
-					this.toastTab('医疗用品创建成功', '');
+					this.toastTab('药品创建成功', '');
 				}
 				setTimeout(() => {
 					this.router.navigate(['./admin/medicalList']);

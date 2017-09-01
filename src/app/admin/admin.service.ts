@@ -7,8 +7,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	// private url = 'http://192.168.31.114/mebnew';
-	private url = 'http://wapapi.jiabaokangle.com';
+	private url = 'http://192.168.31.200/jiabaokangle';
+	// private url = 'http://wapapi.jiabaokangle.com';
 
 	constructor(
 		private http: Http,
@@ -549,10 +549,10 @@ export class AdminService{
 			.catch();
 	}
 
-	//修改诊所检查项目费用
-	private updatecliniccheckfeeUrl = this.url + '/mebcrm/updatecliniccheckfee/';
-	updatecliniccheckfee(urlOptions, params): Promise<Data>{
-		return this.http.post(this.updatecliniccheckfeeUrl + urlOptions, JSON.stringify(params))
+	//修改诊所检查项目
+	private updateclinicprojectUrl = this.url + '/mebcrm/updateclinicproject/';
+	updateclinicproject(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updateclinicprojectUrl + urlOptions, JSON.stringify(params))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -589,6 +589,141 @@ export class AdminService{
 	private updateprescriptUrl = this.url + '/mebcrm/updateprescript/';
 	updateprescript(urlOptions, params): Promise<Data>{
 		return this.http.post(this.updateprescriptUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询所有医生的服务信息
+	private doctorbookingUrl = this.url + '/mebcrm/doctorbooking';
+	doctorbooking(urlOptions): Promise<Data>{
+		return this.http.get(this.doctorbookingUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//填写用户检查结果
+	private usercheckresultUrl = this.url + '/mebcrm/usercheckresult/';
+	usercheckresult(urlOptions, params): Promise<Data>{
+		return this.http.post(this.usercheckresultUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改检查结果
+	private updatecheckresultUrl = this.url + '/mebcrm/updatecheckresult/';
+	updatecheckresult(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updatecheckresultUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看用户回访结果
+	private userfollowupsUrl = this.url + '/mebcrm/userfollowups';
+	userfollowups(urlOptions): Promise<Data>{
+		return this.http.get(this.userfollowupsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建用户回访
+	private userfollowupUrl = this.url + '/mebcrm/userfollowup';
+	userfollowup(params): Promise<Data>{
+		return this.http.post(this.userfollowupUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//填写用户回访结果
+	private followupresultUrl = this.url + '/mebcrm/followupresult/';
+	followupresult(urlOptions, params): Promise<Data>{
+		return this.http.post(this.followupresultUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询库存盘点记录
+	private searchstockUrl = this.url + '/mebcrm/searchstock';
+	searchstock(urlOptions): Promise<Data>{
+		return this.http.get(this.searchstockUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//库存盘点
+	private clinicstockUrl = this.url + '/mebcrm/clinicstock';
+	clinicstock(params): Promise<Data>{
+		return this.http.post(this.clinicstockUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//医生同意退药并修改药方
+	private doctorbackUrl = this.url + '/mebcrm/doctorback/';
+	doctorback(urlOptions, params): Promise<Data>{
+		return this.http.post(this.doctorbackUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询医生同意退药处方数据
+	private searchbackdrugUrl = this.url + '/mebcrm/searchbackdrug';
+	searchbackdrug(urlOptions): Promise<Data>{
+		return this.http.get(this.searchbackdrugUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//药剂师实际退药操作
+	private backdrugUrl = this.url + '/mebcrm/backdrug/';
+	backdrug(urlOptions, params): Promise<Data>{
+		return this.http.post(this.backdrugUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询小孩成长记录
+	private childgrowthrecordsUrl = this.url + '/mebcrm/childgrowthrecords';
+	childgrowthrecords(urlOptions): Promise<Data>{
+		return this.http.get(this.childgrowthrecordsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建小孩成长记录
+	private childgrowthrecordUrl = this.url + '/mebcrm/childgrowthrecord';
+	childgrowthrecord(urlOptions, params): Promise<Data>{
+		return this.http.post(this.childgrowthrecordUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查询小孩病历
+	private searchcasehistoryUrl = this.url + '/mebcrm/searchcasehistory';
+	searchcasehistory(urlOptions): Promise<Data>{
+		return this.http.get(this.searchcasehistoryUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建小孩病历
+	private casehistoryUrl = this.url + '/mebcrm/casehistory';
+	casehistory(urlOptions, params): Promise<Data>{
+		return this.http.post(this.casehistoryUrl + urlOptions, JSON.stringify(params))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

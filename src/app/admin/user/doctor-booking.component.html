@@ -20,13 +20,16 @@
 				</div>
 				<div class="flex-1 booking-info pad10">
 					<div class="second-bar-tab flex mb10">
-						<div (click)="changeTab('3')" [ngClass]="{'active': selectedTab == '3'}" class="item">检查单</div>
+						<div (click)="changeTab('3')" [ngClass]="{'active': selectedTab == '3'}" class="item">检查项目</div>
 						<div (click)="changeTab('4')" [ngClass]="{'active': selectedTab == '4'}" class="item">处方</div>
 						<div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div>
 						<div (click)="changeTab('2')" [ngClass]="{'active': selectedTab == '2'}" class="item">费用列表</div>
+						<div (click)="changeTab('5')" [ngClass]="{'active': selectedTab == '5'}" class="item">随访</div>
+						<div (click)="changeTab('6')" [ngClass]="{'active': selectedTab == '6'}" class="item">成长记录</div>
+						<div (click)="changeTab('7')" [ngClass]="{'active': selectedTab == '7'}" class="item">病例</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '3'}" class="tab">
-						<table class="pure-table w100">
+						<table *ngIf="checkDataList.length > 0" class="pure-table w100">
 							<thead>
 								<tr>
 									<th class="w10"></th>
@@ -40,6 +43,9 @@
 								</tr>
 							</tbody>
 						</table>
+						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
+							<nodata title="未查询到检查项目"></nodata>
+						</div>
 						<form #fCheck="ngForm" class="pure-form pure-form-stacked form-tab">
 							<fieldset>
 								<div *ngIf="addCheckInfo.editType != ''" class="pure-g">
@@ -48,7 +54,9 @@
 											<label for="check">检查项目</label>
 											<select id="check" name="check" #check="ngModel" [(ngModel)]="addCheckInfo.check" required="" [disabled]="editType == 'update'">
 												<ng-container *ngFor="let check of checklist">
-													<option value="{{check.string}}">{{check.name}}</option>
+													<ng-container *ngIf="check.canUse == '1'">
+														<option value="{{check.string}}">{{check.name}}</option>
+													</ng-container>
 												</ng-container>
 											</select>
 											<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
@@ -70,7 +78,7 @@
 						</form>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '4'}" class="tab">
-						<div class="list-tab mt10">
+						<div *ngIf="prescriptList.length > 0" class="list-tab mt10">
 							<div class="list-bar pure-g">
 								<div class="pure-u-3-24 item">药方名</div>
 								<div class="pure-u-2-24 item">就诊医生</div>
@@ -97,19 +105,25 @@
 										<div class="pure-u-2-24 item">{{info.num}}</div>
 										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
 											<span *ngIf="!infoFirst"></span>
-											<span *ngIf="infoFirst && item.apotId">-</span>
+											<div *ngIf="item.apotId && (item.isBack != 0) && infoFirst">-</div>
 											<div *ngIf="infoFirst && (!item.apotId)">
 												<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
 											</div>
 											<div *ngIf="infoFirst && (!item.apotId)" class="mt10">
 												<button (click)="deletePrescript(item.id)" class="pure-button pure-button-primary">删除</button>
 											</div>
+											<div *ngIf="item.apotId && (item.isBack == 0) && infoFirst" class="mt10">
+												<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="mt10 flex">
+						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10">
+							<nodata title="未查询到处方"></nodata>
+						</div>
+						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
 							<div *ngIf="canEdit" class="flex-1">
 								<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
 							</div>
@@ -225,6 +239,94 @@
 								<div>总费用：{{booking.totalFee}}</div>
 							</div>
 						</form>
+					</div>
+					<div [ngClass]="{'hidden': selectedTab != '5'}" class="tab">
+						<table *ngIf="followupsList.length > 0" class="pure-table w100">
+							<thead>
+								<tr>
+									<th></th>
+									<th>随访人员</th>
+									<th>随访时间</th>
+									<th>随访内容和原因</th>
+									<th>备注</th>
+									<th>结果</th>
+									<th>状态</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let followups of followupsList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{index + 1}}</td>
+									<td>{{followups.upUserName}}</td>
+									<td>{{followups.time}}</td>
+									<td>{{followups.account}}</td>
+									<td>{{followups.remarks}}</td>
+									<td>{{followups.results}}</td>
+									<td>{{followups.status}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div *ngIf="hasFollowupsData && followupsList.length == 0" class="mt10">
+							<nodata title="未查询到随访"></nodata>
+						</div>
+						<div class="mt20">
+							<button (click)="addFollowups()" class="pure-button pure-button-primary">新增随访</button>
+						</div>
+					</div>
+					<div [ngClass]="{'hidden': selectedTab != '6'}" class="tab">
+						<table *ngIf="growthrecordList.length > 0" class="pure-table w100">
+							<thead>
+								<tr>
+									<th></th>
+									<th>小孩</th>
+									<th>个人史</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let growthrecord of growthrecordList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{index + 1}}</td>
+									<td>{{growthrecord.childName}}</td>
+									<td>{{growthrecord.personalHistory}}</td>
+									<td>
+										<button (click)="updateGrowthrecord(growthrecord)" class="pure-button pure-button-primary">修改</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div *ngIf="hasGrowthrecordData && growthrecordList.length == 0" class="mt10">
+							<nodata title="未查询到成长记录"></nodata>
+						</div>
+						<div *ngIf="hasGrowthrecordData && growthrecordList.length == 0" class="mt20">
+							<button (click)="addGrowthrecord()" class="pure-button pure-button-primary">新增成长记录</button>
+						</div>
+					</div>
+					<div [ngClass]="{'hidden': selectedTab != '7'}" class="tab">
+						<table *ngIf="growthrecordList.length > 0" class="pure-table w100">
+							<thead>
+								<tr>
+									<th></th>
+									<th>小孩</th>
+									<th>主诉</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let casehistory of casehistoryList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{index + 1}}</td>
+									<td>{{casehistory.childName}}</td>
+									<td>{{casehistory.topicComment}}</td>
+									<td>
+										<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt10">
+							<nodata title="未查询到病例"></nodata>
+						</div>
+						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
+							<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病例</button>
+						</div>
 					</div>
 				</div>
 			</div>

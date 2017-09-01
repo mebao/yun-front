@@ -63,38 +63,45 @@
 	<div class="container">
 		<div class="title">待确认</div>
 		<div class="content pad10">
-			<div class="pure-g pt10 pb10">
-				<div class="pure-u-3-24">创建人</div>
-				<div class="pure-u-3-24">手机号码</div>
-				<div class="pure-u-3-24">姓名</div>
-				<div class="pure-u-3-24">年龄</div>
-				<div class="pure-u-3-24">预约医生</div>
-				<div class="pure-u-3-24">预约服务</div>
-				<div class="pure-u-3-24">预约时间</div>
-				<div *ngIf="use" class="pure-u-3-24">确认预约</div>
-			</div>
-			<div class="list">
-				<div class="pure-g item pt10 pb10" *ngFor="let showBooking of showBookinglist">
-					<div class="pure-u-3-24">{{showBooking.creatorName}}</div>
-					<div class="pure-u-3-24">{{showBooking.mobile}}</div>
-					<div class="pure-u-3-24">{{showBooking.childName}}</div>
-					<div class="pure-u-3-24">{{showBooking.age}}</div>
-					<div class="pure-u-3-24">{{showBooking.userDoctorName}}</div>
-					<div class="pure-u-3-24">{{showBooking.serviceName}}</div>
-					<div class="pure-u-3-24">
-						<span>{{showBooking.bookingDate}}</span>
-						<span>{{showBooking.time}}</span>
-					</div>
-					<div *ngIf="use" class="pure-u-3-24">
-						<div>
-							<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">确认</button>
-						</div>
-						<div class="pt10">
-							<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button pure-button-primary">取消</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<table class="pure-table pure-table-horizontal w100">
+				<thead>
+					<tr>
+						<th>创建人</th>
+						<th>手机号码</th>
+						<th>姓名</th>
+						<th>年龄</th>
+						<th>预约医生</th>
+						<th>预约服务</th>
+						<th>预约时间</th>
+						<th>确认预约</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let showBooking of showBookinglist">
+						<td>{{showBooking.creatorName}}</td>
+						<td>{{showBooking.mobile}}</td>
+						<td>{{showBooking.childName}}</td>
+						<td>{{showBooking.age}}</td>
+						<td>{{showBooking.services[0].userDoctorName}}</td>
+						<td>{{showBooking.services[0].serviceName}}</td>
+						<td>
+							<span>{{showBooking.bookingDate}}</span>
+							<span>{{showBooking.time}}</span>
+						</td>
+						<td>
+							<div *ngIf="use">
+								<div>
+									<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">确认</button>
+								</div>
+								<div class="pt10">
+									<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button pure-button-primary">取消</button>
+								</div>
+							</div>
+							<div *ngIf="!use">-</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button pure-button-primary">取消</button>

@@ -97,6 +97,10 @@ export class PrescriptListComponent{
 		this.getData(urlOptions);
 	}
 
+	goUrl(_url) {
+		this.router.navigate([_url]);
+	}
+
 	closeConfirm() {
 		this.modalConfirmTab = false;
 	}

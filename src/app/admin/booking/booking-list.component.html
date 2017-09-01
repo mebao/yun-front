@@ -142,34 +142,38 @@
 	<div class="container">
 		<div class="title">预约信息</div>
 		<div class="content pad10">
-			<div class="pure-g pt10 pb10">
-				<div class="pure-u-2-24">姓名</div>
-				<div class="pure-u-3-24">年龄</div>
-				<div class="pure-u-4-24">预约医生</div>
-				<div class="pure-u-4-24">预约服务</div>
-				<div class="pure-u-4-24">预约时间</div>
-				<div class="pure-u-4-24">状态</div>
-				<div class="pure-u-3-34">操作</div>
-			</div>
-			<div class="list">
-				<div (click)="info(showBooking.bookingId)" class="pure-g item pt10 pb10" *ngFor="let showBooking of showBookinglist">
-					<div class="pure-u-2-24">{{showBooking.childName}}</div>
-					<div class="pure-u-3-24">{{showBooking.age}}</div>
-					<div class="pure-u-4-24">{{showBooking.services.length > 0 ? showBooking.services[0].userDoctorName : ''}}</div>
-					<div class="pure-u-4-24">{{showBooking.services.length > 0 ? showBooking.services[0].serviceName : ''}}</div>
-					<div class="pure-u-4-24">
-						<span>{{showBooking.bookingDate}}</span>
-						<span>{{showBooking.time}}</span>
-					</div>
-					<div class="pure-u-4-24">{{showBooking.statusText}}</div>
-					<div *ngIf="showBooking.status == 3">
-						<button (click)="complete(showBooking); $event.stopPropagation();" class="pure-button pure-button-primary">完成预约</button>
-					</div>
-					<div *ngIf="showBooking.status != 3">
-						-
-					</div>
-				</div>
-			</div>
+			<table class="pure-table pure-table-horizontal w100">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>年龄</th>
+						<th>预约医生</th>
+						<th>预约服务</th>
+						<th>预约时间</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr (click)="info(showBooking.bookingId)" *ngFor="let showBooking of showBookinglist" class="cursor-p">
+						<td>{{showBooking.childName}}</td>
+						<td>{{showBooking.age}}</td>
+						<td>{{showBooking.services.length > 0 ? showBooking.services[0].userDoctorName : ''}}</td>
+						<td>{{showBooking.services.length > 0 ? showBooking.services[0].serviceName : ''}}</td>
+						<td>
+							<span>{{showBooking.bookingDate}}</span>
+							<span>{{showBooking.time}}</span>
+						</td>
+						<td>{{showBooking.statusText}}</td>
+						<td *ngIf="showBooking.status == 3">
+							<button (click)="complete(showBooking); $event.stopPropagation();" class="pure-button pure-button-primary">完成预约</button>
+						</td>
+						<td *ngIf="showBooking.status != 3">
+							-
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button pure-button-primary">取消</button>

@@ -1,0 +1,256 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-booking-growthrecord">
+			<top-bar [data]="topBar"></top-bar>
+			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+				<fieldset>
+					<div class="pure-g">
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="name">姓名：</label>
+								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" disabled="">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="age">年龄：</label>
+								<input type="text" id="age" name="age" #age="ngModel" [(ngModel)]="info.age" disabled="">
+							</div>
+						</div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="personal_history">个人史：</label>
+								<textarea id="personal_history" name="personal_history" #personal_history="ngModel" [(ngModel)]="info.personal_history" placeholder="主要记录孕产、喂养、生长发育、行为情绪、疾病防治等有临床意义者，以及家长需要说明的问题。（例行体检，无特殊者无需记录）。"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="feeding_way">喂养方式：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('1', 'feeding_way')" [ngClass]="{'active': info.feeding_way == '1'}">
+										母乳
+									</div>
+									<div class="radio mr10" (click)="changeRedio('2', 'feeding_way')" [ngClass]="{'active': info.feeding_way == '2'}">
+										人工/混合
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="feeding_volume">奶量：</label>
+								<input type="number" id="feeding_volume" name="feeding_volume" #feeding_volume="ngModel" [(ngModel)]="info.feeding_volume" placeholder="ml/天">
+							</div>
+						</div>
+						<div class="pure-u-8-24"></div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="allergy">过敏史：</label>
+								<textarea id="allergy" name="allergy" #allergy="ngModel" [(ngModel)]="info.allergy" placeholder="食物、药物及其他"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="blood_pressure">血压：</label>
+								<input type="number" id="blood_pressure" name="blood_pressure" #blood_pressure="ngModel" [(ngModel)]="info.blood_pressure" placeholder="mmHg">
+							</div>
+						</div>
+						<div class="pure-u-16-24"></div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="weight">体重：</label>
+								<input type="number" id="weight" name="weight" #weight="ngModel" [(ngModel)]="info.weight" placeholder="Kg">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="head_circum">头围：</label>
+								<input type="number" id="head_circum" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum" placeholder="（3岁及以下）cm">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="breast_circum">胸围：</label>
+								<input type="number" id="breast_circum" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum" placeholder="cm">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="height">身高：</label>
+								<input type="number" id="height" name="height" #height="ngModel" [(ngModel)]="info.height" placeholder="cm">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="teeth">牙齿：</label>
+								<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth" placeholder="枚">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="fontanelle">囟门：</label>
+								<input type="number" id="fontanelle" name="fontanelle" #fontanelle="ngModel" [(ngModel)]="info.fontanelle" placeholder="（1岁至1岁半）cm">
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="mental_state">精神状态：</label>
+								<textarea id="mental_state" name="mental_state" #mental_state="ngModel" [(ngModel)]="info.mental_state"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="heart_lung">心肺：</label>
+								<textarea id="heart_lung" name="heart_lung" #heart_lung="ngModel" [(ngModel)]="info.heart_lung"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="liver">肝脏：</label>
+								<textarea id="liver" name="liver" #liver="ngModel" [(ngModel)]="info.liver"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="spleen">脾脏：</label>
+								<textarea id="spleen" name="spleen" #spleen="ngModel" [(ngModel)]="info.spleen"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="torticollis_screening">斜颈筛查：</label>
+								<input type="text" id="torticollis_screening" name="torticollis_screening" #torticollis_screening="ngModel" [(ngModel)]="info.torticollis_screening">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="hip_screening">先髋筛查：</label>
+								<input type="text" id="hip_screening" name="hip_screening" #hip_screening="ngModel" [(ngModel)]="info.hip_screening">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="genital">生殖器：</label>
+								<input type="text" id="genital" name="genital" #genital="ngModel" [(ngModel)]="info.genital">
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="nervous_system">神经系统：</label>
+								<textarea id="nervous_system" name="nervous_system" #nervous_system="ngModel" [(ngModel)]="info.nervous_system"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="other">其他：</label>
+								<textarea id="other" name="other" #other="ngModel" [(ngModel)]="info.other"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="blood_routine_examination">血常规：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('正常', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '正常'}">
+										正常
+									</div>
+									<div class="radio mr10" (click)="changeRedio('贫血', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '贫血'}">
+										贫血
+									</div>
+									<div class="radio mr10" (click)="changeRedio('白细胞高值', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '白细胞高值'}">
+										白细胞高值
+									</div>
+									<div class="mr10" (click)="changeRedio('', 'blood_routine_examination_other')">
+										<input type="text" name="blood_routine_examination_other" #blood_routine_examination_other="ngModel" [(ngModel)]="info.blood_routine_examination_other" placeholder="其他" class="mt0 mb0 w210p">
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="routine_urine">尿常规：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('正常', 'routine_urine')" [ngClass]="{'active': info.routine_urine == '正常'}">
+										正常
+									</div>
+									<div class="mr10" (click)="changeRedio('', 'routine_urine_other')">
+										<input type="text" name="routine_urine_other" #routine_urine_other="ngModel" [(ngModel)]="info.routine_urine_other" placeholder="其他" class="mt0 mb0 w210p">
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="bone_density">骨密度：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('正常', 'bone_density')" [ngClass]="{'active': info.bone_density == '正常'}">
+										正常
+									</div>
+									<div class="radio mr10" (click)="changeRedio('钙缺乏', 'bone_density')" [ngClass]="{'active': info.bone_density == '钙缺乏'}">
+										钙缺乏
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="BALP">骨碱性磷酸酶（锌元素缺乏会影响准确性）：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('正常', 'BALP')" [ngClass]="{'active': info.BALP == '正常'}">
+										正常
+									</div>
+									<div class="mr10" (click)="changeRedio('', 'BALP_other')">
+										<input type="text" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0 w210p">
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="trace_element">微量元素：</label>
+								<div class="flex">
+									<div class="radio mr10" (click)="changeRedio('正常', 'trace_element')" [ngClass]="{'active': info.trace_element == '正常'}">
+										正常
+									</div>
+									<div class="mr10" (click)="changeRedio('', 'trace_element_other')">
+										<input type="text" name="trace_element_other" #trace_element_other="ngModel" [(ngModel)]="info.trace_element_other" placeholder="其他" class="mt0 mb0 w210p">
+									</div>
+									<div class="flex-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="prescription">处方：</label>
+								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" disabled=""></textarea>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="check_date">检查日期：</label>
+								<input type="date" id="check_date" name="check_date" #check_date="ngModel" [(ngModel)]="info.check_date">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="review_date">复查日期：</label>
+								<input type="date" id="review_date" name="review_date" #review_date="ngModel" [(ngModel)]="info.review_date">
+							</div>
+						</div>
+					</div>
+					<div class="text-center mt10">
+						<button (click)="create(f)" class="pure-button pure-button-primary">{{editType == 'create' ? '创建' : '修改'}}</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

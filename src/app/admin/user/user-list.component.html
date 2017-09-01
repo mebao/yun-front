@@ -4,14 +4,24 @@
 		<header-nav></header-nav>
 		<div class="content admin-user-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="tab flex">
-				<div class="item active">客户列表</div>
-				<div class="item" *ngIf="role == '0'" (click)="goUrl('./admin/crmUserList')">工作人员列表</div>
-				<!-- <div class="item" (click)="goUrl('./admin/crmUserList')">工作人员列表</div> -->
-			</div>
 			<div class="mt10">
-				<div class="button-tab">
-					<button (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增客户</button>
+				<div class="flex pure-form">
+					<div class="flex-1">
+						<button (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="name">姓名：</label>
+						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="mobile">手机号码：</label>
+						<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="child_name">小孩姓名：</label>
+						<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入小孩姓名">
+					</div>
+					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 				</div>
 				<table *ngIf="users.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>

@@ -114,7 +114,7 @@ export class BookingChargeComponent{
 								allFee += Number(results.weekbooks[i].fees[j].fee);
 							}
 						}
-						results.weekbooks[i].allFee = allFee;
+						results.weekbooks[i].allFee = parseFloat(allFee.toString());
 					}
 				}
 				this.bookinglist = results.weekbooks;

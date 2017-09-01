@@ -49,6 +49,7 @@ export class DoctorBookingComponent implements OnInit{
 		editType: string,
 	};
 	checklist: any[];
+	hasCheckData: boolean;
 	checkDataList: any[];
 	toast: {
 		show: number,
@@ -56,6 +57,7 @@ export class DoctorBookingComponent implements OnInit{
 		type:  string,
 	};
 	//开方
+	hasPrescriptData: boolean;
 	prescriptList: any[];
 	booking: {
 		age: string,
@@ -84,6 +86,15 @@ export class DoctorBookingComponent implements OnInit{
 		id: string,
 		text: string,
 	}
+	//随访
+	hasFollowupsData: boolean;
+	followupsList: any[];
+	//成长记录
+	growthrecordList: any[];
+	hasGrowthrecordData: boolean;
+	//病例
+	casehistoryList: any[];
+	hasCasehistoryData: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -130,7 +141,12 @@ export class DoctorBookingComponent implements OnInit{
 			status: '',
 			totalFee: '',
 		};
-		this.selectedTab = '3';
+		//判断sessionStorage中是否已经缓存
+		if(sessionStorage.getItem('doctorBookingTab')){
+			this.selectedTab = sessionStorage.getItem('doctorBookingTab');
+		}else{
+			this.selectedTab = '3';
+		}
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
@@ -165,10 +181,55 @@ export class DoctorBookingComponent implements OnInit{
 		this.getBookingData();
 
 		//获取检查信息
+		this.hasCheckData = false;
+		this.checkDataList = [];
 		this.getCheckData();
 
 		//获取开方信息
+		this.hasPrescriptData = false;
+		this.prescriptList = [];
 		this.getPrescriptData();
+
+		//随访
+		this.hasFollowupsData = false;
+		this.followupsList = [];
+		this.adminService.userfollowups(this.url).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.followupsList = results.list;
+				this.hasFollowupsData = true;
+			}
+		});
+
+		//成长记录
+		this.hasGrowthrecordData = false;
+		this.growthrecordList = [];
+		var growthrecordUrl = this.url + '&booking_id=' + this.id;
+		this.adminService.childgrowthrecords(growthrecordUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.growthrecordList = results.list;
+				this.hasGrowthrecordData = true;
+			}
+		});
+
+		//病例
+		this.casehistoryList = [];
+		this.hasCasehistoryData = false;
+		var casehistoryUrl = this.url + '&booking_id=' + this.id;
+		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.casehistoryList = results.list;
+				this.hasCasehistoryData = true;
+			}
+		});
 
 		this.doctorInfo = {
 			avatarUrl: '',
@@ -249,18 +310,20 @@ export class DoctorBookingComponent implements OnInit{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.checkDataList = results.list;
+				this.hasCheckData = true;
 			}
 		});
 	}
 
 	getPrescriptData() {
-		var urlOptions = this.url + '&booking_id=' + this.id;
+		var urlOptions = this.url + '&booking_id=' + this.id + '&isout=1&today=1';
 		this.adminService.searchprescript(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.prescriptList = results.list;
+				this.hasPrescriptData = true;
 			}
 		});
 	}
@@ -378,6 +441,7 @@ export class DoctorBookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				this.toastTab('检查创建成功', '');
+				this.getCheckData();
 				//清空检查信息
 				this.addCheckInfo = {
 					booking_id: '',
@@ -405,6 +469,12 @@ export class DoctorBookingComponent implements OnInit{
 		this.modalConfirmTab = true;
 	}
 
+	//退药
+	backdrug(info) {
+		sessionStorage.setItem('prescript', JSON.stringify(info));
+		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'back'}});
+	}
+
 	closeConfirm() {
 		this.modalConfirmTab = false;
 	}
@@ -425,8 +495,64 @@ export class DoctorBookingComponent implements OnInit{
 
 	changeTab(_value) {
 		this.selectedTab = _value;
+		sessionStorage.setItem('doctorBookingTab', _value);
 	}
 	
+	//新增随访
+	addFollowups() {
+		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+	}
+
+	//新增成长记录
+	addGrowthrecord() {
+		//判断是否有药方
+		if(this.prescriptList.length > 0){
+			sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
+		}else{
+			sessionStorage.setItem('prescript', '');
+		}
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		this.router.navigate(['./admin/bookingGrowthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+	}
+
+	//修改成长记录
+	updateGrowthrecord(growthrecord) {
+		//判断是否有药方
+		if(this.prescriptList.length > 0){
+			sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
+		}else{
+			sessionStorage.setItem('prescript', '');
+		}
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		sessionStorage.setItem('growthrecord', JSON.stringify(growthrecord));
+		this.router.navigate(['./admin/bookingGrowthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update'}});
+	}
+
+	//新增病例
+	addCasehistory() {
+		//判断是否有药方
+		if(this.prescriptList.length > 0){
+			sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
+		}else{
+			sessionStorage.setItem('prescript', '');
+		}
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+	}
+
+	//修改病例
+	updateCasehistory(casehistory) {
+		//判断是否有药方
+		if(this.prescriptList.length > 0){
+			sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
+		}else{
+			sessionStorage.setItem('prescript', '');
+		}
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
+		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update'}});
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

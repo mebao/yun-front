@@ -5,15 +5,15 @@
 		<div class="content admin-medical-lost-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/medicalList')">医疗用品列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalSupplierList')">医疗用品供应商列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">医疗用品进货列表</div>
-				<div class="item" (click)="goUrl('./admin/medicalHasList')">诊所医疗用品列表</div>
-				<div class="item active">医疗用品报废</div>
+				<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">入库管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
+				<div class="item active">报损管理</div>
+				<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1">
-					<button (click)="goUrl('./admin/medicalLost')" class="pure-button pure-button-primary">新增医疗用品报损</button>
+					<button (click)="goUrl('./admin/medicalLost')" class="pure-button pure-button-primary">新增药品报损</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="b_date">开始时间：</label>
@@ -23,13 +23,20 @@
 					<label for="l_date">结束时间：</label>
 					<input type="date" id="l_date" name="l_date" [(ngModel)]="info.l_date">
 				</div>
+				<div class="pure-control-group mr10">
+					<label for="type">用品类型：</label>
+					<select id="type" name="type" [(ngModel)]="info.type">
+						<option value="1">中药</option>
+						<option value="2">西药</option>
+					</select>
+				</div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div class="">
 				<div *ngIf="list.length > 0" class="list-tab mt10">
 					<div class="list-bar pure-g">
 						<div class="pure-u-2-24 item"></div>
-						<div class="pure-u-5-24 item">医疗用品</div>
+						<div class="pure-u-5-24 item">药品</div>
 						<div class="pure-u-2-24 item">单位</div>
 						<div class="pure-u-2-24 item">类型</div>
 						<div class="pure-u-2-24 item">报损数量</div>

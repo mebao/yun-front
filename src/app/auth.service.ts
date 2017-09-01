@@ -10,8 +10,8 @@ import { Data } from './admin/data';
 
 @Injectable()
 export class AuthService {
-	// private url = 'http://192.168.31.114/mebnew';
-	private url = 'http://wapapi.jiabaokangle.com';
+	private url = 'http://192.168.31.200/jiabaokangle';
+	// private url = 'http://wapapi.jiabaokangle.com';
 
   	isLoggedIn: boolean = true;
 

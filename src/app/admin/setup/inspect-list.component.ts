@@ -18,6 +18,7 @@ export class SetupInspectListComponent{
 		type:  string,
 	};
 	projectlist: any[];
+	hasData: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -36,6 +37,9 @@ export class SetupInspectListComponent{
 			type: '',
 		}
 
+		this.projectlist = [];
+		this.hasData = false;
+
 		//获取检查项目列表
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -46,6 +50,7 @@ export class SetupInspectListComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.projectlist = results.list;
+				this.hasData = true;
 			}
 		});
 	}

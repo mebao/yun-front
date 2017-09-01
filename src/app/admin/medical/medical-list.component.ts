@@ -32,7 +32,7 @@ export class MedicalListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品',
+			title: '药房管理',
 			back: false,
 		}
 		this.toast = {
@@ -43,14 +43,14 @@ export class MedicalListComponent{
 		this.hasData = false;
 		this.info = {
 			name: '',
-			type: '',
+			type: '1',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 		this.medicalSupplies = [];
 
-		this.getData(this.url);
+		this.search();
 	}
 
 	getData(urlOptions) {

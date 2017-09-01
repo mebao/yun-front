@@ -34,7 +34,7 @@ export class MedicalHasListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医疗用品',
+			title: '药房管理',
 			back: true,
 		}
 		this.toast = {
@@ -47,7 +47,7 @@ export class MedicalHasListComponent{
 		this.list = [];
 		this.info = {
 			name: '',
-			type: '',
+			type: '1',
 			l_stock: '',
 			b_stock: '',
 		}
@@ -55,7 +55,8 @@ export class MedicalHasListComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.getData(this.url);
+
+		this.search();
 	}
 
 	getData(urlOptions) {
