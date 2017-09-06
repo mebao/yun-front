@@ -24,7 +24,12 @@ export class UserListComponent{
 	modalConfirmTab: boolean;
 	selector: {
 		id: string,
+		member: string,
 		text: string,
+		balance: string,
+		amount: string,
+		give_amount: string,
+		pay_way: string,
 	}
 	searchInfo: {
 		name: string,
@@ -32,6 +37,11 @@ export class UserListComponent{
 		child_name: string,
 	}
 	url: string;
+	//设置会员
+	modalTab: boolean;
+	memberList: any[];
+	//充值
+	modalTabCharge: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -52,7 +62,12 @@ export class UserListComponent{
 		this.modalConfirmTab = false;
 		this.selector = {
 			id: '',
+			member: '',
 			text: '',
+			balance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
 		}
 
 		this.searchInfo = {
@@ -67,7 +82,31 @@ export class UserListComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 
+		//设置会员
+		this.modalTab = false;
+		this.memberList = [];
+
+		//充值
+		this.modalTabCharge = false;
+
 		this.search();
+
+		//获取会员列表
+		var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&status=1';
+		this.adminService.memberlist(memberUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].string = JSON.stringify(results.list[i]);
+					}
+				}
+				this.memberList = results.list;
+			}
+		});
 	}
 
 	getData(urlOptions) {
@@ -105,10 +144,16 @@ export class UserListComponent{
 		this.router.navigate(['./admin/userInfo'], {queryParams: {id: _id}});
 	}
 
+	//删除用户
 	delete(_id) {
 		this.selector = {
 			id: _id,
+			member: '',
 			text: '确认删除该用户？',
+			balance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -127,6 +172,108 @@ export class UserListComponent{
 			}else{
 				this.search();
 				this.toastTab('删除成功', '');
+			}
+		});
+	}
+
+	//设置会员
+	close() {
+		this.modalTab = false;
+	}
+
+	setMember(user) {
+		this.modalTab = true;
+		this.selector = {
+			id: user.id,
+			member: '',
+			text: user.name,
+			balance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+		}
+		if(this.memberList.length > 0){
+			for(var i = 0; i < this.memberList.length; i++){
+				if(this.memberList[i].id == user.memberId){
+					this.selector.member = this.memberList[i].string;
+				}
+			}
+		}
+	}
+
+	confirmMember() {
+		if(this.selector.member == ''){
+			this.toastTab('会员类型不可为空', 'error');
+			return;
+		}
+		this.modalTab = false;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			member_id: JSON.parse(this.selector.member).id,
+			member_name: JSON.parse(this.selector.member).name,
+		}
+		this.adminService.setmember(this.selector.id, params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('会员设置成功', '');
+				this.search();
+			}
+		});
+	}
+
+	//充值
+	closeCharge() {
+		this.modalTabCharge = false;
+	}
+
+	charge(user) {
+		this.modalTabCharge = true;
+		this.selector = {
+			id: user.id,
+			member: '',
+			text: user.name,
+			balance: user.balance ? user.balance : 0,
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+		}
+	}
+
+	confirmCharge() {
+		if(this.selector.amount == ''){
+			this.toastTab('支付金额不可为空', 'error');
+			return;
+		}
+		if(this.selector.give_amount == ''){
+			this.toastTab('赠送金额不可为空', 'error');
+			return;
+		}
+		if(this.selector.pay_way == ''){
+			this.toastTab('支付方式不可为空', 'error');
+			return;
+		}
+
+		this.modalTabCharge = false;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			user_id: this.selector.id,
+			user_name: this.selector.text,
+			amount: this.selector.amount,
+			give_amount: this.selector.give_amount,
+			pay_way: this.selector.pay_way,
+			type: '2',
+		}
+
+		this.adminService.userrecharge(params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('充值成功', '');
+				this.search();
 			}
 		});
 	}

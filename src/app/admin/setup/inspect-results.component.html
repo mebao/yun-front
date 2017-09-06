@@ -21,6 +21,7 @@
 							<form #f="ngForm" class="pure-form">
 								<input type="hidden" name="num" [(ngModel)]="check.resultListNum">
 								<input type="hidden" name="user_cid" [(ngModel)]="check.id">
+								<input type="hidden" name="editType" [(ngModel)]="check.editType">
 								<table class="pure-table pure-table-horizontal">
 									<thead>
 										<tr>
@@ -36,7 +37,7 @@
 									<tbody>
 										<tr *ngFor="let result of check.resultList; let index=index;">
 											<td>
-												{{result.checkInfoId}}
+												{{index + 1}}
 												<input type="hidden" name="check_info_id_{{index}}" [(ngModel)]="result.checkInfoId">
 											</td>
 											<td>{{result.checkInfoName}}</td>

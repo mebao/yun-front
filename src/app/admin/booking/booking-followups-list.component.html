@@ -44,8 +44,8 @@
 					<tbody>
 						<tr *ngFor="let followups of followupsList">
 							<td>
-								<div class="img-tab">
-									<img src="{{followups.imageUrl}}">
+								<div class="img-tab-default">
+									<img (click)="childInfo(followups.childId)" src="{{followups.imageUrl}}" class="cursor-p">
 								</div>
 							</td>
 							<td>{{followups.childName}}</td>

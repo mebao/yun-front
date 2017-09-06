@@ -1,0 +1,176 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-booking-payment">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="pure-g">
+				<div class="pure-u-1-5 booking-tab pr10">
+					<div class="info">
+						姓名：{{bookingInfo.childName}}
+					</div>
+					<div class="info">
+						年龄：{{bookingInfo.age}}
+					</div>
+					<div class="info">
+						家长：{{bookingInfo.creatorName}}
+					</div>
+				</div>
+				<div class="pure-u-4-5">
+					<div class="second-bar-tab flex">
+						<div class="item active">费用详情</div>
+					</div>
+					<div class="section">
+						<div class="title">医生服务费用</div>
+						<div class="pad10">
+							<table class="pure-table pure-table-horizontal w100">
+								<thead>
+									<tr>
+										<th>科室</th>
+										<th>费用</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let service of fee.feeInfo.serviceFeeList">
+										<td>{{service.projectName}}</td>
+										<td>{{service.fee}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">折扣：{{userMember.service}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">费用：{{fee.feeInfo.serviceFee}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title">检查项目费用</div>
+						<div class="pad10">
+							<table class="pure-table pure-table-horizontal w100">
+								<thead>
+									<tr>
+										<th>检查</th>
+										<th>费用</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let check of fee.feeInfo.checkFeeList">
+										<td>{{check.projectName}}</td>
+										<td>{{check.fee}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">折扣：{{userMember.check}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">费用：{{fee.feeInfo.checkFee}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title">药方药品费用</div>
+						<div class="pad10">
+							<table class="pure-table pure-table-horizontal w100">
+								<thead>
+									<tr>
+										<th>药品</th>
+										<th>单价</th>
+										<th>总量</th>
+										<th>是否优惠</th>
+									</tr>
+								</thead>
+								<tbody>
+									<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList">
+										<tr *ngFor="let info of medical.info">
+											<td>{{info.pname}}</td>
+											<td>{{info.price}}</td>
+											<td>{{info.num}}</td>
+											<td>{{info.canDiscount == '0' ? '不可优惠' : '可以优惠'}}</td>
+										</tr>
+									</ng-container>
+									<tr>
+										<td colspan="4" class="text-right">折扣：{{userMember.prescript}}</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text-right">费用：{{fee.feeInfo.medicalFee}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title">其他费用</div>
+						<div class="pad10">
+							<table class="pure-table pure-table-horizontal w100">
+								<thead>
+									<tr>
+										<th>消费项目</th>
+										<th>费用</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let other of fee.feeInfo.otherFeeList">
+										<td>{{other.projectName}}</td>
+										<td>{{other.fee}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">折扣：{{userMember.other}}</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="text-right">费用：{{fee.feeInfo.otherFee}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title text-right">总费用：{{fee.fee}}</div>
+					</div>
+					<div class="mt10 text-right">
+						<button *ngIf="bookingInfo.status == '5'" class="pure-button">订单已完成</button>
+						<button *ngIf="bookingInfo.status != '5' && fee.canPay == '1'" (click)="pay()" class="pure-button pure-button-primary">支付</button>
+						<button *ngIf="bookingInfo.status != '5' && fee.canPay == '0'" class="pure-button">操作未完成，不能完成支付(退药操作未完成)</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTab">
+	<div class="modal-mask" (click)="close()"></div>
+	<div class="container">
+		<div class="title">支付</div>
+		<div class="content pad10 pure-form">
+			<div class="pure-control-group flex">
+				<label for="user" class="w100p">用户：</label>
+				<div class="flex-1 p-group">{{this.bookingInfo.creatorName}}</div>
+			</div>
+			<div *ngIf="userMember.member" class="pure-control-group flex">
+				<label for="member" class="w100p">余额：</label>
+				<div class="flex-1 p-group">{{this.userMember.balance}}</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="fee" class="w100p">消费金额：</label>
+				<div class="flex-1 p-group">{{this.fee.fee}}</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="pay_way" class="w100p">支付方式：</label>
+				<select id="pay_way" name="pay_way" [(ngModel)]="payInfo.payWay">
+					<option value="ali">支付宝支付</option>
+					<option value="wechat">微信支付</option>
+					<option value="card">刷卡支付</option>
+					<option value="member" [disabled]="!userMember.member || !payInfo.memberBalance">会员余额支付{{userMember.member ? (payInfo.memberBalance ? '' : '（余额不足）') : '（暂未升级会员）'}}</option>
+					<option value="money">现金支付</option>
+				</select>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="close()" class="pure-button">取消</button>
+			<button (click)="confirmPay()" class="pure-button pure-button-primary">确认支付</button>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

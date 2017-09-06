@@ -4,12 +4,15 @@
 		<header-nav></header-nav>
 		<div class="content admin-scheduling-page">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="button-tab pb10">
-				<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-				<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-				<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+			<div class="flex">
+				<div class="flex-1">
+					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
+					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
+					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+				</div>
+				<button (click)="copyPrec()" class="pure-button pure-button-primary">复制上周排版</button>
 			</div>
-			<div class="list-tab">
+			<div class="list-tab mt10">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
 					<div class="pure-u-1-24 title">医生</div>
@@ -82,6 +85,19 @@
 				<button (click)="create(f);" class="pure-button pure-button-primary">排班</button>
 			</div>
 		</form>
+	</div>
+</div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">待确认</div>
+		<div class="content pad10">
+			{{selector.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+		</div>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

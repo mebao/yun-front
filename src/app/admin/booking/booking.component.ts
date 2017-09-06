@@ -57,6 +57,11 @@ export class BookingComponent implements OnInit{
 	};
 	selectSearchTitle: string;
 	childlist: any[];
+	//从病人库直接预约
+	listChild: {
+		childId: string,
+		childName: string,
+	};
 
 	constructor(
 		public adminService: AdminService,
@@ -90,9 +95,18 @@ export class BookingComponent implements OnInit{
 
 		this.selectSearchTitle = '请选择小孩';
 
+		this.listChild = {
+			childId: '',
+			childName: '',
+		}
+
 		//修改
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
+			this.listChild = {
+				childId: params.childId,
+				childName: params.childName,
+			}
 		});
 		if(this.id){
 			//修改
@@ -134,6 +148,13 @@ export class BookingComponent implements OnInit{
 			})
 		}else{
 			//创建
+			//从病人库直接预约
+			if(this.listChild.childId){
+				this.bookingInfo.child = JSON.stringify(this.listChild);
+				this.bookingInfo.child_name = this.listChild.childName;
+				//获取家长信息
+				this.onVoted(this.bookingInfo.child);
+			}
 			this.editType = 'create';
 			this.getData();
 		}

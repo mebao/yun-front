@@ -222,10 +222,6 @@ export class CrmUserComponent implements OnInit{
 				this.toastTab('医生职称不可为空', 'error');
 				return;
 			}
-			if(f.value.description == ''){
-				this.toastTab('医生简介不可为空', 'error');
-				return;
-			}
 		}
 
 		var imgUrl = document.getElementById('file').getAttribute('value');

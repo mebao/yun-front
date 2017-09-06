@@ -24,7 +24,6 @@ export class InspectResultsComponent{
 		imageUrl: string,
 		childName: string,
 	};
-	editType: string;
 	buttonType: string;
 
 	constructor(
@@ -49,7 +48,6 @@ export class InspectResultsComponent{
 			imageUrl: '',
 			childName: '',
 		}
-		this.editType = 'create';
 		this.buttonType = 'update';
 
 		this.route.queryParams.subscribe((params) => {
@@ -82,7 +80,9 @@ export class InspectResultsComponent{
 						results.list[i].resultListNum = results.list[i].resultList.length;
 						if(results.list[i].resultList.length > 0){
 							if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
-								this.editType = 'update';
+								results.list[i].editType = 'update';
+							}else{
+								results.list[i].editType = 'create';
 							}
 						}
 					}
@@ -105,7 +105,6 @@ export class InspectResultsComponent{
 	}
 
 	save(f) {
-		console.log(f.value);
 		if(f.value.num > 0){
 			var resultList = [];
 			for(var i = 0; i < f.value.num; i++){
@@ -129,7 +128,7 @@ export class InspectResultsComponent{
 				token: this.adminService.getUser().token,
 				values: resultList,
 			}
-			if(this.editType == 'create'){
+			if(f.value.editType == 'create'){
 				this.adminService.usercheckresult(f.value.user_cid, params).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');

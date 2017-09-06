@@ -12,7 +12,16 @@ export class AdminService{
 
 	constructor(
 		private http: Http,
-	) {}
+	) {
+		//初始化缓存数据
+		this.clinicdata().then((data) => {
+			if(data.status == 'no'){
+				alert(data.errorMsg);
+			}else{
+				sessionStorage.setItem('clinicdata', JSON.stringify(data.results));
+			}
+		});
+	}
 
 	//创建用户
 	private createUrl = this.url + '/mebcrm/admincreate';
@@ -729,6 +738,87 @@ export class AdminService{
 			.catch();
 	}
 
+	//增加会员类型
+	private addmemberUrl = this.url + '/mebcrm/addmember';
+	addmember(params): Promise<Data>{
+		return this.http.post(this.addmemberUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看诊所会员
+	private memberlistUrl = this.url + '/mebcrm/memberlist';
+	memberlist(urlOptions): Promise<Data>{
+		return this.http.get(this.memberlistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改会员
+	private updatememberUrl = this.url + '/mebcrm/updatemember/';
+	updatemember(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updatememberUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//复制排版
+	private copydutyUrl = this.url + '/mebcrm/copyduty/';
+	copyduty(urlOptions, params): Promise<Data>{
+		return this.http.post(this.copydutyUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//设置会员
+	private setmemberUrl = this.url + '/mebcrm/setmember/';
+	setmember(urlOptions, params): Promise<Data>{
+		return this.http.post(this.setmemberUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//用户充值
+	private userrechargeUrl = this.url + '/mebcrm/userrecharge';
+	userrecharge(params): Promise<Data>{
+		return this.http.post(this.userrechargeUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看交易记录
+	private searchtranUrl = this.url + '/mebcrm/searchtran';
+	searchtran(urlOptions): Promise<Data>{
+		return this.http.get(this.searchtranUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//预约费用详情
+	private bookingfeeUrl = this.url + '/mebcrm/bookingfee/';
+	bookingfee(urlOptions): Promise<Data>{
+		return this.http.get(this.bookingfeeUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//支付费用 完成预约
+	private feepayUrl = this.url + '/mebcrm/feepay/';
+	feepay(urlOptions, params): Promise<Data>{
+		return this.http.post(this.feepayUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
@@ -752,6 +842,31 @@ export class AdminService{
 		}
 		return weekArray;
 	}
+
+	//保留两位小数
+	toDecimal2(x) {
+        var f = parseFloat(x);
+        if (isNaN(f)) {
+            return '0.00';
+        }
+        var f = Math.round(x * 100) / 100;
+        var s = f.toString();
+        var rs = s.indexOf('.');
+        if (rs < 0) {
+            rs = s.length;
+            s += '.';
+        }
+    	//小数点不足两位
+    	if(s.length <= rs + 2){
+	        while (s.length <= rs + 2) {
+	            s += '0';
+	        }
+    	}else{
+    		//小数点超过两位
+    		s = s.substring(0, rs + 3);
+    	}
+        return s;
+    }
 
 	//根据date获取日期
 	getDayByDate(date) {

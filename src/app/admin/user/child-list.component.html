@@ -27,8 +27,8 @@
 					<tbody>
 						<tr *ngFor="let child of childList; let index=index;">
 							<td>
-								<div class="img-tab-defalut">
-									<img src="{{child.imageUrl}}">
+								<div class="img-tab-default">
+									<img (click)="childInfo(child.childId)" src="{{child.imageUrl}}" class="cursor-p">
 								</div>
 							</td>
 							<td>{{child.childName}}</td>
@@ -37,7 +37,7 @@
 							<td>{{child.birthday}}</td>
 							<td>
 								<button (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
-								<button (click)="goInfo(child.id)" class="pure-button pure-button-primary">预约</button>
+								<button (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
 							</td>
 						</tr>
 					</tbody>

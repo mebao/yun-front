@@ -102,11 +102,11 @@
 									</div>
 								</div>
 							</div>
-							<div *ngIf="editType != 'update'" class="pure-control-group">
+							<div *ngIf="editType != 'update' && !listChild.childId" class="pure-control-group">
 								<label for="child">预约小孩</label>
 								<select-search [title]="selectSearchTitle" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
 							</div>
-							<div *ngIf="editType == 'update'" class="pure-control-group">
+							<div *ngIf="editType == 'update' || listChild.childId" class="pure-control-group">
 								<label for="child">预约小孩</label>
 								<select id="child" name="child" disabled="">
 									<option value="">{{bookingInfo.child_name}}</option>

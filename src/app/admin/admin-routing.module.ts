@@ -73,6 +73,10 @@ import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord
 import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
 import { ChildListComponent }               from './user/child-list.component';
 import { ChildInfoComponent }               from './user/child-info.component';
+import { MemberComponent }                  from './setup/member.component';
+import { MemberListComponent }              from './setup/member-list.component';
+import { TransactionRecordListComponent }   from './user/transaction-record-list.component';
+import { BookingPaymentComponent }          from './booking/booking-payment.component';
 
 const adminRoutes: Routes = [
 	{
@@ -234,6 +238,22 @@ const adminRoutes: Routes = [
 					{
 						path: 'childInfo',
 						component: ChildInfoComponent,
+					},
+					{
+						path: 'member',
+						component: MemberComponent,
+					},
+					{
+						path: 'memberList',
+						component: MemberListComponent,
+					},
+					{
+						path: 'transactionRecordList',
+						component: TransactionRecordListComponent,
+					},
+					{
+						path: 'bookingPayment',
+						component: BookingPaymentComponent,
 					},
 					{
 						path: '**',

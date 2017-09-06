@@ -6,7 +6,6 @@ import { AdminService }                           from '../admin.service';
 @Component({
 	selector: 'admin-inspect-results-list',
 	templateUrl: './inspect-results-list.component.html',
-	styleUrls: ['./inspect-results-list.component.scss'],
 })
 export class InspectResultsListComponent{
 	topBar: {
@@ -108,6 +107,11 @@ export class InspectResultsListComponent{
 
 	check(_id) {
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});
+	}
+	
+	//小孩详情
+	childInfo(_id) {
+		window.open('./admin/childInfo?id=' + _id);
 	}
 
 	toastTab(text, type) {

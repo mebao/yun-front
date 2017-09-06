@@ -68,13 +68,16 @@
 									</div>
 								</div>
 							</fieldset>
-							<div class="mt10 flex">
-								<div *ngIf="canEdit" class="flex-1">
-									<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
-									<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
-									<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div class="mt10 flex">
+									<div *ngIf="canEdit" class="flex-1">
+										<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
+										<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
+										<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+									</div>
 								</div>
-							</div>
+							</ng-container>
 						</form>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '4'}" class="tab">
@@ -104,17 +107,20 @@
 										<div class="pure-u-2-24 item">{{info.unit}}</div>
 										<div class="pure-u-2-24 item">{{info.num}}</div>
 										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
-											<span *ngIf="!infoFirst"></span>
-											<div *ngIf="item.apotId && (item.isBack != 0) && infoFirst">-</div>
-											<div *ngIf="infoFirst && (!item.apotId)">
-												<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
-											</div>
-											<div *ngIf="infoFirst && (!item.apotId)" class="mt10">
-												<button (click)="deletePrescript(item.id)" class="pure-button pure-button-primary">删除</button>
-											</div>
-											<div *ngIf="item.apotId && (item.isBack == 0) && infoFirst" class="mt10">
-												<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
-											</div>
+											<!-- 订单未完成，可操作 -->
+											<ng-container *ngIf="booking.status != '5'">
+												<span *ngIf="!infoFirst"></span>
+												<div *ngIf="item.apotId && (item.isBack != 0) && infoFirst">-</div>
+												<div *ngIf="infoFirst && (!item.apotId)">
+													<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
+												</div>
+												<div *ngIf="infoFirst && (!item.apotId)" class="mt10">
+													<button (click)="deletePrescript(item.id)" class="pure-button pure-button-primary">删除</button>
+												</div>
+												<div *ngIf="item.apotId && (item.isBack == 0) && infoFirst" class="mt10">
+													<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
+												</div>
+											</ng-container>
 										</div>
 									</div>
 								</div>
@@ -123,11 +129,14 @@
 						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10">
 							<nodata title="未查询到处方"></nodata>
 						</div>
-						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
-							<div *ngIf="canEdit" class="flex-1">
-								<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
+						<!-- 订单未完成，可操作 -->
+						<ng-container *ngIf="booking.status != '5'">
+							<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
+								<div *ngIf="canEdit" class="flex-1">
+									<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
+								</div>
 							</div>
-						</div>
+						</ng-container>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '1'}" class="tab">
 						<table class="pure-table w100">
@@ -150,11 +159,14 @@
 								</tr>
 							</tbody>
 						</table>
-						<div *ngIf="canEdit" class="flex mt10">
-							<div class="flex-1">
-								<button (click)="addService()" class="pure-button pure-button-primary">追加服务</button>
+						<!-- 订单未完成，可操作 -->
+						<ng-container *ngIf="booking.status != '5'">
+							<div *ngIf="canEdit" class="flex mt10">
+								<div class="flex-1">
+									<button (click)="addService()" class="pure-button pure-button-primary">追加服务</button>
+								</div>
 							</div>
-						</div>
+						</ng-container>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '2'}" class="tab">
 						<table class="pure-table w100">
@@ -178,7 +190,10 @@
 									<td>{{fee.fee}}</td>
 									<td>{{fee.remark}}</td>
 									<td>
-										<button (click)="updateFee(fee)" class="pure-button pure-button-primary">修改</button>
+										<!-- 订单未完成，可操作 -->
+										<ng-container *ngIf="booking.status != '5'">
+											<button (click)="updateFee(fee)" class="pure-button pure-button-primary">修改</button>
+										</ng-container>
 									</td>
 								</tr>
 							</tbody>
@@ -228,16 +243,16 @@
 									</div>
 								</div>
 							</fieldset>
-							<div class="mt10 flex">
-								<div class="flex-1">
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div class="mt10">
 									<div *ngIf="canEdit">
 										<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" class="pure-button pure-button-primary">添加其它费用</button>
 										<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" class="pure-button">取消</button>
 										<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary">{{addFeeInfo.editType == 'create' ? '创建' : '修改'}}</button>
 									</div>
 								</div>
-								<div>总费用：{{booking.totalFee}}</div>
-							</div>
+							</ng-container>
 						</form>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '5'}" class="tab">

@@ -6,7 +6,6 @@ import { AdminService }                       from '../admin.service';
 @Component({
 	selector: 'admin-booking-followups-list',
 	templateUrl: './booking-followups-list.component.html',
-	styleUrls: ['./booking-followups-list.component.scss'],
 })
 export class BookingFollowupsListComponent{
 	topBar: {
@@ -142,6 +141,11 @@ export class BookingFollowupsListComponent{
 				this.search();
 			}
 		});
+	}
+	
+	//小孩详情
+	childInfo(_id) {
+		window.open('./admin/childInfo?id=' + _id);
 	}
 
 	toastTab(text, type) {

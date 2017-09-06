@@ -121,8 +121,8 @@ export class DoctorServiceComponent{
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
-			service_id: JSON.parse(f.value.service).serviceId,
-			service_name: JSON.parse(f.value.service).serviceName,
+			service_id: JSON.parse(this.serviceModel.service).serviceId,
+			service_name: JSON.parse(this.serviceModel.service).serviceName,
 			clinic_id: this.adminService.getUser().clinicId,
 			user_doctor_id: this.serviceModel.doctor_id,
 			fee: f.value.fee,

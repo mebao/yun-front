@@ -166,8 +166,6 @@ export class BookingCasehistoryComponent{
 				time: '',
 			}
 		}
-
-		console.log(this.info);
 	}
 
 	//redio切换

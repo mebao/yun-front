@@ -125,9 +125,6 @@ export class ChildInfoComponent{
 						}
 					}
 				}
-				console.log(this.userInfo);
-				console.log(this.childInfo);
-				console.log(this.otherChildList);
 			}
 		});
 	}

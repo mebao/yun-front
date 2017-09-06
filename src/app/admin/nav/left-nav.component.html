@@ -18,7 +18,9 @@
 	  	<a routerLink="../bookingFollowupsList"          routerLinkActive="active">随访管理</a>
 	  	<a routerLink="../childList"                     routerLinkActive="active">病人库</a>
 	  	<a routerLink="../userList"                      routerLinkActive="active">用户管理</a>
-	  	<a routerLink="../crmUserList" routerLinkActive="active" *ngIf="userRole == '0'">后台用户管理</a>
+	  	<a routerLink="../memberList"                    routerLinkActive="active">会员管理</a>
+	  	<a routerLink="../crmUserList"                   routerLinkActive="active" *ngIf="userRole == '0'">后台用户管理</a>
+	  	<a routerLink="../transactionRecordList"         routerLinkActive="active">交易记录</a>
 	  	<a (click)="logout()">退出</a>
 	</nav>
 </div>

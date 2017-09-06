@@ -143,7 +143,10 @@ export class BookingChargeComponent{
 	}
 
 	//查看
-	info(booking){//可编辑日期
+	info(booking){
+		//可编辑日期
+		//重置详情选中模块
+		sessionStorage.setItem('doctorBookingTab', '3');
 		this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: booking.bookingId, doctorId: booking.services.length > 0 ? booking.services[0].userDoctorId : ''}});
 	}
 
@@ -163,6 +166,12 @@ export class BookingChargeComponent{
 			urlOptions += '&creator_name=' + this.searchInfo.creator_name;
 		}
 		return urlOptions;
+	}
+
+	//付款
+	payment(booking) {
+		sessionStorage.setItem('bookingInfo', JSON.stringify(booking));
+		this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: booking.bookingId}});
 	}
 
 	toastTab(text, type) {

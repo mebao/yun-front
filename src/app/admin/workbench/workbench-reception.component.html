@@ -5,12 +5,14 @@
 		<div class="content admin-workbench-reception">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="second-title">医生排班信息</div>
-			<div class="button-tab pb10">
-				<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-				<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-				<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+			<div class="flex">
+				<div class="flex-1">
+					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
+					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
+					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+				</div>
 			</div>
-			<div class="list-tab">
+			<div class="list-tab mt10">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
 					<div class="pure-u-1-24 title">医生</div>
@@ -34,12 +36,14 @@
 				</div>
 			</div>
 			<div class="second-title">医生预约信息</div>
-			<div class="button-tab pb10">
-				<button (click)="precBooking()" class="pure-button pure-button-primary">上一周</button>
-				<button (click)="nowBooking()" class="pure-button pure-button-primary">本周</button>
-				<button (click)="nextBooking()" class="pure-button pure-button-primary">下一周</button>
+			<div class="flex">
+				<div class="flex-1">
+					<button (click)="precBooking()" class="pure-button pure-button-primary">上一周</button>
+					<button (click)="nowBooking()" class="pure-button pure-button-primary">本周</button>
+					<button (click)="nextBooking()" class="pure-button pure-button-primary">下一周</button>
+				</div>
 			</div>
-			<div class="list-tab">
+			<div class="list-tab mt10">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
 					<div class="pure-u-1-24 title">医生</div>

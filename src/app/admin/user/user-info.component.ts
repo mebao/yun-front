@@ -1,5 +1,5 @@
 import { Component, OnInit }                     from '@angular/core';
-import { ActivatedRoute }                        from '@angular/router';
+import { ActivatedRoute, Router }                from '@angular/router';
 
 import { AdminService }                          from '../admin.service';
 
@@ -41,6 +41,7 @@ export class UserInfoComponent{
 	constructor(
 		public adminService: AdminService,
 		private route: ActivatedRoute,
+		private router: Router,
 	) {}
 	
 	ngOnInit() {
@@ -350,6 +351,11 @@ export class UserInfoComponent{
 				this.childlist = [];
 			}
 		});
+	}
+
+	//小孩详情
+	childInfo(_id) {
+		window.open('./admin/childInfo?id=' + _id);
 	}
 
 	toastTab(text, type) {

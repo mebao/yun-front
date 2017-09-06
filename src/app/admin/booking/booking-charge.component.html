@@ -54,48 +54,59 @@
 			<div class="bookinglist">
 				<div class="pure-g">
 					<div class="pure-u-6-24 booking-tab pad10" *ngFor="let booking of bookinglist">
-						<div class="info pad10">
-							<div class="flex">
-								<div class="w70p">预约医生：</div>
-								<div class="flex-1">
-									{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}
+						<div class="tab" [ngClass]="{'cancel': booking.status == '0', 'complete': booking.status == '5', 'in': (booking.status != '0' && booking.status != '1' && booking.status != '2' && booking.status != '5')}">
+							<div class="info pad10">
+								<div class="flex">
+									<div class="flex-1"></div>
+									<div class="status">
+										{{booking.statusText}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">小孩姓名：</div>
+									<div class="flex-1">
+										{{booking.childName}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">小孩年龄：</div>
+									<div class="flex-1">
+										{{booking.age}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">预约服务：</div>
+									<div class="flex-1">
+										{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">预约日期：</div>
+									<div class="flex-1">
+										{{booking.bookingDate}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">预约时间：</div>
+									<div class="flex-1">
+										{{booking.time}}
+									</div>
+								</div>
+								<div class="flex">
+									<div class="w70p">预约医生：</div>
+									<div class="flex-1">
+										{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}
+									</div>
 								</div>
 							</div>
 							<div class="flex">
-								<div class="w70p">预约服务：</div>
-								<div class="flex-1">
-									{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}
-								</div>
+								<a *ngIf="booking.status == '4' || booking.status == '5'" class="edit pay flex-1 pad10 text-center" (click)="payment(booking)">
+									收费
+								</a>
+								<a class="edit flex-1 pad10 text-center" (click)="info(booking)">
+									详情
+								</a>
 							</div>
-							<div class="flex">
-								<div class="w70p">预约日期：</div>
-								<div class="flex-1">
-									{{booking.bookingDate}}
-								</div>
-							</div>
-							<div class="flex">
-								<div class="w70p">预约时间：</div>
-								<div class="flex-1">
-									{{booking.time}}
-								</div>
-							</div>
-							<div class="flex">
-								<div class="w70p">小孩姓名：</div>
-								<div class="flex-1">
-									{{booking.childName}}
-								</div>
-							</div>
-							<div class="flex">
-								<div class="w70p">小孩年龄：</div>
-								<div class="flex-1">
-									{{booking.age}}
-								</div>
-							</div>
-						</div>
-						<div class="flex">
-							<a class="edit flex-1 pad10 text-center" (click)="info(booking)">
-								费用：{{booking.allFee}}元
-							</a>
 						</div>
 					</div>
 				</div>

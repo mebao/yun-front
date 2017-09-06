@@ -92,6 +92,10 @@ import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.
 import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
 import { ChildListComponent }              from './user/child-list.component';
 import { ChildInfoComponent }              from './user/child-info.component';
+import { MemberComponent }                 from './setup/member.component';
+import { MemberListComponent }             from './setup/member-list.component';
+import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
+import { BookingPaymentComponent }         from './booking/booking-payment.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -179,6 +183,10 @@ import { AdminService }                    from './admin.service';
 		BookingCasehistoryComponent,
 		ChildListComponent,
 		ChildInfoComponent,
+		MemberComponent,
+		MemberListComponent,
+		TransactionRecordListComponent,
+		BookingPaymentComponent,
 	],
 	providers: [
 		AdminService,

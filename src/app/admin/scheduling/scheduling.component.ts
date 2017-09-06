@@ -36,6 +36,10 @@ export class SchedulingComponent{
 	//排班配置
 	dutylist: any[];
 	dutytime: any[];
+	modalConfirmTab: boolean;
+	selector: {
+		text: string,
+	}
 
 	constructor(public adminService: AdminService) {
 		this.dutytime = [
@@ -104,6 +108,11 @@ export class SchedulingComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		var urlOptions = this.url + '&weekindex=' + this.weekNum;
 		this.getList(urlOptions);
+
+		this.modalConfirmTab = false;
+		this.selector = {
+			text: '',
+		}
 	}
 
 	getList(urlOptions) {
@@ -179,7 +188,6 @@ export class SchedulingComponent{
 	}
 
 	create(f: NgForm) {
-		this.modalTab = false;
 		var dutyDemo = [
 			{key: 0, value: '08:00', use: true},
 			{key: 1, value: '08:30', use: true},
@@ -221,12 +229,12 @@ export class SchedulingComponent{
 		for(var i = 0; i < this.dutylist.length; i++){
 			if(this.dutylist[i].use){
 				//开始时间未选择
-				if(f.value['duty'+i+'start'] == ''){
+				if(!f.value['duty'+i+'start'] || f.value['duty'+i+'start'] == ''){
 					this.toastTab('第' + (dutylist.length + 1) + '条排班时间，开始时间不可为空', 'error');
 					return;
 				}
 				//结束时间未选择
-				if(f.value['duty'+i+'end'] == ''){
+				if(!f.value['duty'+i+'end'] || f.value['duty'+i+'end'] == ''){
 					this.toastTab('第' + (dutylist.length + 1) + '条排班时间，结束时间不可为空', 'error');
 					return;
 				}
@@ -258,6 +266,7 @@ export class SchedulingComponent{
 				}
 			}
 		}
+		this.modalTab = false;
 		//设置之前先删除，判断是否可以删除
 		if(this.changeData.value != ''){
 			this.delete('update', dutylist);
@@ -428,6 +437,34 @@ export class SchedulingComponent{
 
 	close() {
 		this.modalTab = false;
+	}
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	copyPrec() {
+		this.modalConfirmTab = true;
+		this.selector.text = '确认复制上周排版？';
+	}
+
+	confirm() {
+		this.modalConfirmTab = false;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			lastindex: this.weekNum - 1,
+			nextindex: this.weekNum,
+		}
+
+		this.adminService.copyduty(this.adminService.getUser().clinicId, params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('复制排版成功', '');
+				this.getList(this.url + '&weekindex=' + this.weekNum);
+			}
+		});
 	}
 
 	toastTab(text, type) {

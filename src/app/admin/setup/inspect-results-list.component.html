@@ -27,7 +27,7 @@
 						<label for="ischeck">是否检查：</label>
 						<select id="ischeck" name="ischeck" [(ngModel)]="info.ischeck">
 							<option value="">未检查</option>
-							<option value="1">已检查</option>
+							<option value="1">所有</option>
 						</select>
 					</div>
 					<div class="pure-control-group mr10">
@@ -44,8 +44,8 @@
 				<div *ngIf="userCheckList.length > 0" class="pure-g">
 					<div class="pure-u-6-24 card-tab pad10" *ngFor="let userCheck of userCheckList">
 						<div class="info pad10 flex">
-							<div class="img-tab mr10">
-								<img src="{{userCheck.imageUrl == '' ? '../assets/images/img.png' : userCheck.imageUrl}}">
+							<div class="img-tab-default mr10">
+								<img (click)="childInfo(userCheck.childId)" src="{{userCheck.imageUrl == '' ? '../assets/images/img.png' : userCheck.imageUrl}}" class="cursor-p">
 							</div>
 							<div class="flex-1">
 								<div>{{userCheck.childName}}</div>

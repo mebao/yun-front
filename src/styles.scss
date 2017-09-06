@@ -32,7 +32,7 @@
 	cursor: pointer;
 }
 
-.img-tab-defalut{
+.img-tab-default{
 	width: 70px;
 	height: 70px;
 	img{
@@ -181,16 +181,6 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
-/*创建用户*/
-.admin-crm-user{
-	input, select{
-		width: 100%;
-	}
-	label{
-		padding: 5px 0;
-	}
-}
-
 /*创建普通用户*/
 .admin-create-user-page{
 	.add-child-tab{
@@ -294,19 +284,51 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 .admin-booking-list{
 	.bookinglist{
 		.booking-tab{
-			.info{
-				background-color: #39A99D;
-				color: #fff;
-				height: 120px;
-				overflow-x: hidden;
-				overflow-y: auto;
-			}
-			.edit{
-				border-width: 0 1px 1px 1px;
-				border-style: solid;
-				border-color: #39A99D;
-				color: #39A99D;
-				display: block;
+			.tab{
+				.info{
+					background-color: #D45D5D;
+					color: #fff;
+					height: 140px;
+					overflow-x: hidden;
+					overflow-y: auto;
+					.status{
+						background-color: #efefef;
+						color: #D45D5D;
+						padding: 0 10px;
+						border-radius: 5px;
+					}
+				}
+				.edit{
+					border-width: 0 1px 1px 1px;
+					border-style: solid;
+					border-color: #D45D5D;
+					color: #D45D5D;
+					display: block;
+				}
+				&.cancel{
+					.info{
+						background-color: #666666;
+						.status{
+							color: #666666;
+						}
+					}
+					.edit{
+						border-color: #666666;
+						color: #666666;
+					}
+				}
+				&.in{
+					.info{
+						background-color: #39A99D;
+						.status{
+							color: #39A99D;
+						}
+					}
+					.edit{
+						border-color: #39A99D;
+						color: #39A99D;
+					}
+				}
 			}
 		}
 	}

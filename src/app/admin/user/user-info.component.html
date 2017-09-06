@@ -41,7 +41,7 @@
 					<tbody>
 						<tr *ngFor="let child of childs; let index=index;">
 							<td class="img-tab">
-								<img src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}">
+								<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
 							</td>
 							<td>{{child.age}}</td>
 							<td>{{child.childName}}</td>

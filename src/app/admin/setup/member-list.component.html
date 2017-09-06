@@ -1,0 +1,59 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-member-list">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="flex pure-form">
+				<div class="flex-1">
+					<button (click)="add()" class="pure-button pure-button-primary">新增会员</button>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="name">会员名：</label>
+					<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入会员名">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="status">状态：</label>
+					<select id="status" name="status" [(ngModel)]="searchInfo.status">
+						<option value=""></option>
+						<option value="1">可用</option>
+						<option value="0">停用</option>
+					</select>
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+			<div>
+				<table *ngIf="memberList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>会员名</th>
+							<th>服务折扣</th>
+							<th>检查折扣</th>
+							<th>药品折扣</th>
+							<th>其他折扣</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let member of memberList">
+							<td>{{member.name}}</td>
+							<td>{{member.service}}</td>
+							<td>{{member.check}}</td>
+							<td>{{member.prescript}}</td>
+							<td>{{member.other}}</td>
+							<td>{{member.status == '1' ? '可用' : '停用'}}</td>
+							<td>
+								<button (click)="update(member)" class="pure-button pure-button-primary">修改</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasData && memberList.length == 0" class="mt10">
+					<nodata title="未查询到会员信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

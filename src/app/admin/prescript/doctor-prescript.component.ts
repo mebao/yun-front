@@ -212,7 +212,6 @@ export class DoctorPrescriptComponent{
 					this.plist.push(p);
 				}
 			}
-			console.log(this.plist);
 		}else{
 			this.editType = 'create';
 
@@ -459,7 +458,6 @@ export class DoctorPrescriptComponent{
 			}
 		}else{
 			//退药逻辑，填写需要退多少量的药品，计算剩下的药品
-			console.log(this.plist);
 			if(this.plist.length > 0){
 				var backPlist = [];
 				var feeAll = 0;

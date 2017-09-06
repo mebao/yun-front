@@ -49,6 +49,8 @@ export class BookingInComponent{
 	doctorlist: any[];
 	doctorDutys: any[];
 	timelist: any[];
+	childlist: any[];
+	selectSearchTitle: string;
 	
 	constructor(public adminService: AdminService) {}
 
@@ -62,6 +64,25 @@ export class BookingInComponent{
 			text: '',
 			type: '',
 		};
+
+		this.selectSearchTitle = '请选择小孩';
+
+		//查询小孩列表
+		var searchchildUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+		this.adminService.searchchild(searchchildUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				for(var i =0; i < results.child.length; i++){
+					results.child[i].string = JSON.stringify(results.child[i]);
+					results.child[i].key = JSON.stringify(results.child[i]);
+					results.child[i].value = results.child[i].childName;
+				}
+				this.childlist = results.child;
+			}
+		});
 
 		this.modalTab = false;
 
@@ -178,10 +199,13 @@ export class BookingInComponent{
 				if(results.doctors.length > 0){
 					for(var i = 0; i < results.doctors.length; i++){
 						results.doctors[i].string = JSON.stringify(results.doctors[i]);
-						if(results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
-							//修改
-							this.bookingInfo.user_doctor = results.doctors[i].string;
-							this.doctorChange();
+						//判断是新增预约还是已经预约的订单
+						if(this.booking.refNo && this.booking.refNo != ''){
+							if(results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
+								//修改
+								this.bookingInfo.user_doctor = results.doctors[i].string;
+								this.doctorChange();
+							}
 						}
 					}
 				}
@@ -240,26 +264,53 @@ export class BookingInComponent{
 		this.bookingInfo.timeInfo = this.booking.time;
 	}
 
+	//切换小孩
+	onVoted(_value) {
+		this.bookingInfo.child = _value;
+		this.bookingInfo.child_name = JSON.parse(_value).childName;
+		//根据小孩信息查询家长信息
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&child_id=' + JSON.parse(_value).childId;
+		this.adminService.searchuser(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.users.length > 0){
+					this.bookingInfo.creator = JSON.stringify(results.users[0]);
+				}
+			}
+		});
+
+	}
+
 	//登记
-	bookingIn(f) {
-		if(this.booking.refNo && this.booking.refNo != ''){
-			if(f.value.service == ''){
-				this.toastTab('服务不可为空', 'error');
-				return;
-			}
-			if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
-				this.toastTab('预约医生不可为空', 'error');
-				return;
-			}
-			if(f.value.booking_date == ''){
-				this.toastTab('预约日期不可为空', 'error');
-				return;
-			}
-			if(f.value.time == ''){
-				this.toastTab('预约时间段不可为空', 'error');
-				return;
-			}
-			var updateParam = {
+	editIn(f) {
+		if(f.value.service == ''){
+			this.toastTab('科室不可为空', 'error');
+			return;
+		}
+		if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
+			this.toastTab('预约医生不可为空', 'error');
+			return;
+		}
+		if(f.value.booking_date == ''){
+			this.toastTab('预约日期不可为空', 'error');
+			return;
+		}
+		if(f.value.time == ''){
+			this.toastTab('预约时间段不可为空', 'error');
+			return;
+		}
+		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
+			this.toastTab('小孩不可为空', 'error');
+			return;
+		}
+		//判断是新预约还是登记已经预约信息
+		if(this.booking.refNo == ''){
+			//创建预约
+			var param = {
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
 				type: this.bookingInfo.type,
@@ -269,31 +320,67 @@ export class BookingInComponent{
 				user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
 				booking_date: JSON.parse(f.value.booking_date).dutyDate,
 				time: f.value.time,
+				creator_id: JSON.parse(this.bookingInfo.creator).id,
+				creator_name: JSON.parse(this.bookingInfo.creator).name,
+				mobile: JSON.parse(this.bookingInfo.creator).mobile,
+				child_name: JSON.parse(this.bookingInfo.child).childName,
+				child_id: JSON.parse(this.bookingInfo.child).childId,
 			}
-			this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
+			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
-					var params = {
-						username: this.adminService.getUser().username,
-						token: this.adminService.getUser().token,
-						status: 3,
-					}
-					this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
-						if(data.status == 'no'){
-							this.toastTab(data.errorMsg, 'error');
-						}else{
-							this.toastTab('登记成功', '');
-							this.getBooking();
-							//登记成功后，清空选中预约信息
-							this.initData();
-						}
-					});
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.booking.bookingId = results.bookingId;
+					//构造小孩数据，用以清空小孩组件
+					this.booking.refNo = 'clear';
+					this.booking.childName = JSON.parse(this.bookingInfo.child).childName;
+					this.bookingIn();
 				}
-			});
+			})
 		}else{
-			this.toastTab('请选择预约单', 'warning');
+			//修改预约并登记
+			this.updateBooking(f);
 		}
+	}
+
+	updateBooking(f) {
+		var updateParam = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			type: this.bookingInfo.type,
+			clinic_id: this.adminService.getUser().clinicId,
+			service_id: JSON.parse(f.value.service).serviceId,
+			user_doctor_id: JSON.parse(f.value.user_doctor).doctorId,
+			user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
+			booking_date: JSON.parse(f.value.booking_date).dutyDate,
+			time: f.value.time,
+		}
+		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.bookingIn();
+			}
+		});
+	}
+
+	bookingIn() {
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			status: 3,
+		}
+		this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('登记成功', '');
+				this.getBooking();
+				//登记成功后，清空选中预约信息
+				this.initData();
+			}
+		});
 	}
 
 	toastTab(text, type) {

@@ -30,6 +30,8 @@
 							<th>姓名</th>
 							<th>手机号码</th>
 							<th>性别</th>
+							<th>会员</th>
+							<th>余额</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -39,9 +41,13 @@
 							<td>{{user.name}}</td>
 							<td>{{user.mobile}}</td>
 							<td>{{user.gender == 'M' ? '男' : '女'}}</td>
+							<td>{{user.memberName}}</td>
+							<td>{{user.balance ? user.balance : 0}}</td>
 							<td>
 								<button (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
 								<button (click)="delete(user.id)" class="pure-button pure-button-primary">删除</button>
+								<button (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
+								<button (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
 							</td>
 						</tr>
 					</tbody>
@@ -53,6 +59,67 @@
 		</div>
 	</div>
 </div>
+<div class="modal" *ngIf="modalTab">
+	<div class="modal-mask" (click)="close()"></div>
+	<div class="container">
+		<div class="title">设置会员</div>
+		<div class="content pad10 pure-form">
+			<div class="pure-control-group flex">
+				<label for="text" class="w100p">用户：</label>
+				<div class="flex-1 p-group">{{selector.text}}</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="member" class="w100p">会员类型：</label>
+				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
+					<ng-container *ngFor="let member of memberList">
+						<option value="{{member.string}}">{{member.name}}</option>
+					</ng-container>
+				</select>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="close()" class="pure-button">取消</button>
+			<button (click)="confirmMember()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTabCharge">
+	<div class="modal-mask" (click)="closeCharge()"></div>
+	<div class="container">
+		<div class="title">充值</div>
+		<div class="content pad10 pure-form">
+			<div class="pure-control-group flex">
+				<label for="text" class="w100p">用户：</label>
+				<div class="flex-1 p-group">{{selector.text}}</div>
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="balance" class="w100p">余额：</label>
+				<div class="flex-1 p-group">{{selector.balance}}</div>
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="amount" class="w100p">支付金额：</label>
+				<input type="number" id="amount" name="amount" [(ngModel)]="selector.amount" class="flex-1" placeholder="请输入支付金额">
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="give_amount" class="w100p">赠送金额：</label>
+				<input type="number" id="give_amount" name="give_amount" [(ngModel)]="selector.give_amount" class="flex-1" placeholder="请输入赠送金额">
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="pay_way" class="w100p">支付方式：</label>
+				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="selector.pay_way">
+					<option value="ali">支付宝支付</option>
+					<option value="wechat">微信支付</option>
+					<option value="card">刷卡支付</option>
+					<option value="money">现金支付</option>
+				</select>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeCharge()" class="pure-button">取消</button>
+			<button (click)="confirmCharge()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
 <div class="modal" *ngIf="modalConfirmTab">
 	<div class="modal-mask" (click)="closeConfirm()"></div>
 	<div class="container">
@@ -61,7 +128,7 @@
 			{{selector.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="closeConfirm()" class="pure-button">取消</button>
 			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>

@@ -349,34 +349,6 @@ export class BookingListComponent implements OnInit{
 		this.modalTab = false;
 	}
 
-	closeConfirm() {
-		this.modalConfirmTab = false;
-	}
-
-	complete(booking) {
-		this.modalTab = false;
-		this.selectorBooking = booking;
-		this.selectorBooking.text = '确定完成' +　this.selectorBooking.creatorName　+　'(' +　this.selectorBooking.childName　+　')的预约';
-		this.modalConfirmTab = true;
-	}
-
-	confirm() {
-		this.modalConfirmTab = false;
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			status: '5',
-		}
-		this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				this.toastTab('操作成功', '');
-				this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=' + this.weekNum, 'week');
-			}
-		})
-	}
-
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

@@ -303,7 +303,7 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	getCheckData() {
-		var urlOptions = this.url + '&booking_id=' + this.id;
+		var urlOptions = this.url + '&booking_id=' + this.id + '&ischeck=1&today=1';
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

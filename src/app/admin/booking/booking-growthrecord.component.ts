@@ -172,8 +172,6 @@ export class BookingGrowthrecordComponent{
 				review_date: '',
 			}
 		}
-
-		console.log(this.info);
 	}
 
 	//redio切换

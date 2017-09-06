@@ -79,6 +79,16 @@ export class ChildListComponent{
 		this.router.navigate(['./admin/childInfo'], {queryParams: {id: child.childId}});
 	}
 
+	//小孩详情
+	childInfo(_id) {
+		window.open('./admin/childInfo?id=' + _id);
+	}
+
+	//预约
+	goBooking(child) {
+		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, childName: child.childName}});
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

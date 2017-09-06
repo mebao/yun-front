@@ -121,6 +121,16 @@ export class ClinicroomListComponent{
 								}
 							}
 						}
+						//构造预约服务列表
+						if(results.weekbooks[i].services.length > 0){
+							for(var j = 0; j < results.weekbooks[i].services.length; j++){
+								var serviceBooking = {
+									service: results.weekbooks[i].services[j],
+									booking: results.weekbooks[i],
+								}
+								results.weekbooks[i].services[j].string = JSON.stringify(serviceBooking);
+							}
+						}
 						results.weekbooks[i].use = use;
 						results.weekbooks[i].string = JSON.stringify(results.weekbooks[i]);
 					}
@@ -161,26 +171,27 @@ export class ClinicroomListComponent{
 		this.selectedBooking = booking;
 		this.conditionId = _id;
 		var bookingInfo = JSON.parse(booking);
-		if(bookingInfo.services[0].userDoctorId != doctorId){
+		if(bookingInfo.service.userDoctorId != doctorId){
 			//判断不匹配医生是否有该服务项目，若没有，不允许分配
 			//获取当前预约服务
-			// var service = booking.services[0].serviceId;
-			// var hasService = false;
-			// for(var i = 0; i < this.doctorlist.length; i++){
-			// 	if(doctorId == this.doctorlist[i].id && this.doctorlist[i].serviceList.length > 0){
-			// 		for(var j = 0; j < this.doctorlist[i].serviceList.length; j++){
-			// 			if(service == this.doctorlist[i].serviceList[j].serviceId){
-			// 				hasService = true;
-			// 			}
-			// 		}
-			// 	}
-			// }
-			// if(hasService){
+			var service = bookingInfo.service.serviceId;
+			var hasService = false;
+			for(var i = 0; i < this.doctorlist.length; i++){
+				if(doctorId == this.doctorlist[i].id && this.doctorlist[i].serviceList.length > 0){
+					for(var j = 0; j < this.doctorlist[i].serviceList.length; j++){
+						if(service == this.doctorlist[i].serviceList[j].serviceId){
+							hasService = true;
+						}
+					}
+				}
+			}
+			if(hasService){
 				this.confirmText = '该诊室医生与预约医生不匹配，是否继续分配？';
-			// }else{
-			// 	this.toastTab('该诊室医生与预约医生不匹配，并且该医生不存在' + booking.services[0].serviceName + '服务，不可分配。', 'error');
-			// 	return;
-			// }
+			}else{
+				this.toastTab('该诊室医生与预约医生不匹配，并且该医生不存在' + bookingInfo.service.serviceName + '服务，不可分配。', 'error');
+				this.getList();
+				return;
+			}
 		}else{
 			this.confirmText = '确认为该诊室分配该用户';
 		}
@@ -192,11 +203,12 @@ export class ClinicroomListComponent{
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
-			booking_id: JSON.parse(this.selectedBooking).bookingId,
-			user_id: JSON.parse(this.selectedBooking).creatorId,
-			user_name: JSON.parse(this.selectedBooking).creatorName,
-			child_id: JSON.parse(this.selectedBooking).childId,
-			child_name: JSON.parse(this.selectedBooking).childName,
+			booking_id: JSON.parse(this.selectedBooking).booking.bookingId,
+			user_id: JSON.parse(this.selectedBooking).booking.creatorId,
+			user_name: JSON.parse(this.selectedBooking).booking.creatorName,
+			child_id: JSON.parse(this.selectedBooking).booking.childId,
+			child_name: JSON.parse(this.selectedBooking).booking.childName,
+			service_id: JSON.parse(this.selectedBooking).service.bsId,
 		}
 		this.adminService.updatecondition(this.conditionId, params).then((data) => {
 			if(data.status == 'no'){
@@ -204,6 +216,19 @@ export class ClinicroomListComponent{
 			}else{
 				this.toastTab('诊室分配用户成功', '');
 				this.getList();
+				//修改预约单状态
+				var updateStatus = {
+					username: this.adminService.getUser().username,
+					token: this.adminService.getUser().token,
+					status: '4',
+				}
+				this.adminService.updatebookstatus(JSON.parse(this.selectedBooking).booking.bookingId, updateStatus).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						this.selectedBooking = '';
+					}
+				});
 			}
 		})
 	}
