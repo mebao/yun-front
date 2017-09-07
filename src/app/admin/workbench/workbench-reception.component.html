@@ -26,7 +26,7 @@
 						<div class="pure-u-2-24 img-tab pad10 text-center">
 							<img src="{{scheduling.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20">{{scheduling.realName}}</div>	
+						<div class="pure-u-1-24 info text-center pt20">{{scheduling.realName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling">
 							<div *ngFor="let config of day.dutyConfigList">
 								{{config}}
@@ -57,7 +57,7 @@
 						<div class="pure-u-2-24 img-tab pad10 text-center">
 							<img src="{{doctorBooking.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20">{{doctorBooking.doctorName}}</div>	
+						<div class="pure-u-1-24 info text-center pt20">{{doctorBooking.doctorName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of doctorBooking.bookingWeekList">
 							<span (click)="showBooking(day)" *ngIf="day.num != '0'">{{day.num}}</span>
 						</div>
@@ -72,19 +72,23 @@
 	<div class="container">
 		<div class="title">预约信息</div>
 		<div class="content pad10">
-			<div class="pure-g pt10 pb10">
-				<div class="pure-u-4-24">预约服务</div>
-				<div class="pure-u-4-24">预约时间</div>
-			</div>
-			<div class="list">
-				<div (click)="info(showBooking.bookingId)" class="pure-g item pt10 pb10" *ngFor="let showBooking of showBookinglist">
-					<div class="pure-u-4-24">{{showBooking.serviceName}}</div>
-					<div class="pure-u-4-24">
-						<span>{{showBooking.bookingDate}}</span>
-						<span>{{showBooking.time}}</span>
-					</div>
-				</div>
-			</div>
+			<table class="pure-table pure-table-horizontal w100">
+				<thead>
+					<tr>
+						<th>预约服务</th>
+						<th>预约时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr (click)="info(showBooking.bookingId)" *ngFor="let showBooking of showBookinglist">
+						<td>{{showBooking.serviceName}}</td>
+						<td>
+							<span>{{showBooking.bookingDate}}</span>
+							<span>{{showBooking.time}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button pure-button-primary">取消</button>

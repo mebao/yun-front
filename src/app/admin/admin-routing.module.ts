@@ -77,6 +77,9 @@ import { MemberComponent }                  from './setup/member.component';
 import { MemberListComponent }              from './setup/member-list.component';
 import { TransactionRecordListComponent }   from './user/transaction-record-list.component';
 import { BookingPaymentComponent }          from './booking/booking-payment.component';
+import { CrmRoleComponent }                 from './user/crm-role.component';
+import { CrmRoleListComponent }             from './user/crm-role-list.component';
+import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -131,7 +134,7 @@ const adminRoutes: Routes = [
 					{path: 'medicalSupplierList',     component: MedicalSupplierListComponent},
 					{path: 'medicalPurchase',         component: MedicalPurchaseComponent},
 					{path: 'medicalPurchaseList',     component: MedicalPurchaseListComponent},
-					{path: 'medicalHasList',          component: 
+					{path: 'medicalHasList',          component:
 					MedicalHasListComponent},
 					{path: 'medicalHas',              component: MedicalHasComponent},
 					{path: 'medicalLostList',         component: MedicalLostListComponent},
@@ -256,6 +259,18 @@ const adminRoutes: Routes = [
 						component: BookingPaymentComponent,
 					},
 					{
+						path: 'crmRole',
+						component: CrmRoleComponent,
+					},
+					{
+						path: 'crmRoleList',
+						component: CrmRoleListComponent,
+					},
+					{
+						path: 'roleAuthorityList',
+						component: RoleAuthorityListComponent,
+					},
+					{
 						path: '**',
 						component: PageNotFoundComponent
 					},
@@ -274,5 +289,5 @@ const adminRoutes: Routes = [
 	]
 })
 export class AdminRoutingModule{
-	
+
 }

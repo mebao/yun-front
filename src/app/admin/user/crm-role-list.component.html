@@ -1,0 +1,51 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-user-list">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="mt10">
+				<div class="flex pure-form">
+					<div class="flex-1">
+						<button (click)="add()" class="pure-button pure-button-primary">新增角色</button>
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="status">状态：</label>
+						<select id="status" name="status" [(ngModel)]="searchInfo.status">
+							<option></option>
+							<option value="1">可用</option>
+							<option value="0">停用</option>
+						</select>
+					</div>
+					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+				</div>
+				<table *ngIf="roleList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>角色</th>
+							<th>状态</th>
+							<th>权限管理</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let role of roleList; let index=index;">
+							<td>{{role.name}}</td>
+							<td>{{role.status == '1' ? '可用' : '停用'}}</td>
+							<td>
+								<button (click)="updateAuthority(role)" class="pure-button pure-button-primary">权限设置</button>
+							</td>
+							<td>
+								<button (click)="updateStatus(role)" class="pure-button pure-button-primary">修改状态</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasData && roleList.length == 0" class="mt10">
+					<nodata title="未查询到角色信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -86,8 +86,6 @@ export class BookingPaymentComponent{
 
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
-		console.log(this.bookingInfo);
-		
 		//获取费用详情
 		this.fee = {
 			canPay: '',
@@ -168,7 +166,6 @@ export class BookingPaymentComponent{
 	}
 
 	getFeeInfo(userMember, results) {
-		console.log(userMember);
 		this.fee = {
 			canPay: results.canPay,
 			feeInfo: {
@@ -242,7 +239,7 @@ export class BookingPaymentComponent{
 	close() {
 		this.modalTab = false;
 	}
-	
+
 	pay() {
 		this.payInfo.payWay = '';
 		this.modalTab = true;

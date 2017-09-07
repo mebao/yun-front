@@ -287,7 +287,7 @@ export class AdminService{
 	//图片上传
 	private uploadUrl = 'http://upload.qiniu.com/';
 	upload(params): Promise<Data>{
-		let myHeaders = new Headers(); 
+		let myHeaders = new Headers();
 		myHeaders.set('Content-Type', 'multipart/form-data');
 
 		let options = new RequestOptions({headers: myHeaders});
@@ -814,6 +814,33 @@ export class AdminService{
 	private feepayUrl = this.url + '/mebcrm/feepay/';
 	feepay(urlOptions, params): Promise<Data>{
 		return this.http.post(this.feepayUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看诊所角色
+	private clinicrolelistUrl = this.url + '/mebcrm/clinicrolelist';
+	clinicrolelist(urlOptions): Promise<Data>{
+		return this.http.get(this.clinicrolelistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//创建诊所角色
+	private clinicroleUrl = this.url + '/mebcrm/clinicrole';
+	clinicrole(urlOptions, params): Promise<Data>{
+		return this.http.post(this.clinicroleUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//查看权限列表
+	private authoritylistUrl = this.url + '/mebcrm/authoritylist';
+	authoritylist(urlOptions): Promise<Data>{
+		return this.http.get(this.authoritylistUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

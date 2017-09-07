@@ -96,6 +96,9 @@ import { MemberComponent }                 from './setup/member.component';
 import { MemberListComponent }             from './setup/member-list.component';
 import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
+import { CrmRoleComponent }                from './user/crm-role.component';
+import { CrmRoleListComponent }            from './user/crm-role-list.component';
+import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -187,6 +190,9 @@ import { AdminService }                    from './admin.service';
 		MemberListComponent,
 		TransactionRecordListComponent,
 		BookingPaymentComponent,
+		CrmRoleComponent,
+		CrmRoleListComponent,
+		RoleAuthorityListComponent,
 	],
 	providers: [
 		AdminService,
@@ -194,5 +200,5 @@ import { AdminService }                    from './admin.service';
 	]
 })
 export class AdminModule{
-	
+
 }
