@@ -53,6 +53,7 @@
 						<tr>
 							<th>用户名</th>
 							<th>金额</th>
+							<th>赠送金额</th>
 							<th>支付方式</th>
 							<th>支付类型</th>
 							<th>操作人</th>
@@ -63,6 +64,7 @@
 						<tr *ngFor="let record of recordList; let index=index;">
 							<td>{{record.userName}}</td>
 							<td>{{record.amount}}</td>
+							<td>{{record.giveAmount}}</td>
 							<td>{{record.wayText}}</td>
 							<td>{{record.typeText}}</td>
 							<td>{{record.adminName}}</td>

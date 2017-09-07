@@ -263,7 +263,7 @@ export class UserListComponent{
 			user_id: this.selector.id,
 			user_name: this.selector.text,
 			amount: this.selector.amount,
-			give_amount: this.selector.give_amount,
+			give_amount: this.selector.give_amount.toString(),
 			pay_way: this.selector.pay_way,
 			type: '2',
 		}
@@ -277,7 +277,7 @@ export class UserListComponent{
 			}
 		});
 	}
-	
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,
