@@ -2,11 +2,36 @@
 	<left-nav></left-nav>
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
-		<div class="content admin-user-list">
+		<div class="content admin-role-authority-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="pure-table">
-				难道这个不是
-				<span class=""></span>
+			<div class="first-list">
+				<div *ngFor="let authority of authorityList" class="mb20">
+					<div class="flex">
+						<div (click)="selectAll(authority.id, authority.isCheck)" class="first-item flex">
+							<div class="select" [ngClass]="{'active': authority.isCheck == 1}">
+								<div class="icon"></div>
+							</div>
+							<div>{{authority.name}}</div>
+						</div>
+						<div class="flex-1"></div>
+					</div>
+					<div class="second-list">
+						<div *ngFor="let info of authority.info" class="mt10">
+							<div class="flex">
+								<div (click)="select(authority.id, info.id, info.isCheck)" class="second-item flex">
+									<div class="select" [ngClass]="{'active': info.isCheck == 1}">
+										<div class="icon"></div>
+									</div>
+									<div>{{info.name}}</div>
+								</div>
+								<div class="flex-1"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<button (click)="save()" class="pure-button pure-button-primary">保存</button>
 			</div>
 		</div>
 	</div>

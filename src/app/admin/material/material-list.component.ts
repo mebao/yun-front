@@ -17,6 +17,11 @@ export class MaterialListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+	}
 	hasData: boolean;
 	url: string;
 	materialSupplies: any[];
@@ -40,6 +45,25 @@ export class MaterialListComponent{
 			text: '',
 			type: '',
 		}
+
+		// 权限
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 		this.info = {
 			name: '',

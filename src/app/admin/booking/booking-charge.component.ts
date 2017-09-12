@@ -13,6 +13,17 @@ export class BookingChargeComponent{
 		title: string,
 		back: boolean,
 	};
+	toast: {
+		show: number,
+		text: string,
+		type:  string,
+	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		doctorBooking: boolean,
+		payment: boolean,
+	}
 	url: string;
 	doctorlist: any[];
 	servicelist: [{}];
@@ -27,11 +38,6 @@ export class BookingChargeComponent{
 		bdate_big: string,
 	}
 	bookinglist: any[];
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	hasData: boolean;
 
 	constructor(
@@ -49,6 +55,26 @@ export class BookingChargeComponent{
 			text: '',
 			type: '',
 		};
+
+		//权限
+		this.moduleAuthority = {
+			see: false,
+			doctorBooking: false,
+			payment: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 
 		this.searchInfo = {
@@ -122,7 +148,7 @@ export class BookingChargeComponent{
 			}
 		})
 	}
-	
+
 	//查询
 	search() {
 		//列表

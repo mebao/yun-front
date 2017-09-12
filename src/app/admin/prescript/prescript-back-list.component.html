@@ -58,8 +58,8 @@
 								<div class="pure-u-2-24 item">{{info.unit}}</div>
 								<div class="pure-u-2-24 item">{{info.back_num}}</div>
 								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
-									<span *ngIf="infoFirst && (item.isBack == '2')">已退药</span>
-									<button *ngIf="infoFirst && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
+									<span *ngIf="moduleAuthority.editBack && infoFirst && (item.isBack == '2')">已退药</span>
+									<button *ngIf="moduleAuthority.editBack && infoFirst && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
 								</div>
 							</div>
 						</div>

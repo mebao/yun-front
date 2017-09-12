@@ -64,9 +64,27 @@
 								</div>
 							</div>
 							<div class="pure-u-8-24 pr10">
+								<div class="pure-control-group">
+									<label for="clinic_role">
+										<span>角色</span>
+										<span class="required">*</span>
+									</label>
+									<select id="clinic_role" name="clinic_role" [(ngModel)]="user.clinic_role" #clinic_role="ngModel" required>
+										<ng-container *ngFor="let clinicRole of clinicRoleList">
+											<option value="{{clinicRole.string}}">{{clinicRole.name}}</option>
+										</ng-container>
+									</select>
+									<div *ngIf="clinic_role.errors && (clinic_role.dity || clinic_role.touched)" class="alert alert-danger">
+										<div [hidden]="!clinic_role.errors.required">
+											角色不可为空
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="pure-u-8-24 pl5 pr5">
 								<div *ngIf="editType == 'create'" class="pure-control-group">
 									<label for="role">
-										<span>角色</span>
+										<span>类型</span>
 										<span class="required">*</span>
 									</label>
 									<select id="role" name="role" [(ngModel)]="user.role" #role="ngModel" (change)="roleChange($event.target.value)" required="">
@@ -76,12 +94,11 @@
 									</select>
 									<div *ngIf="role.errors && (role.dirty || role.touched)" class="alert alert-danger">
 									    <div [hidden]="!role.errors.required">
-									    	角色不可为空
+									    	类型不可为空
 									    </div>
 									</div>
 								</div>
 							</div>
-							<div class="pure-u-8-24"></div>
 							<div class="pure-u-8-24"></div>
 							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group" *ngIf="addDoctor">

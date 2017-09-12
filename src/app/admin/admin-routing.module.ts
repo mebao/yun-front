@@ -10,7 +10,7 @@ import { CreateUserComponent }              from './user/create-user.component';
 import { SchedulingConfigListComponent }    from './scheduling/scheduling-config-list.component';
 import { SchedulingConfigComponent }        from './scheduling/scheduling-config.component';
 import { SchedulingComponent }              from './scheduling/scheduling.component';
-import { BookingComponent }           from './booking/booking.component';
+import { BookingComponent }                 from './booking/booking.component';
 import { BookingListComponent }             from './booking/booking-list.component';
 import { ChildServiceComponent }            from './service/child-service.component';
 import { ChildServiceListComponent }        from './service/child-service-list.component';
@@ -91,22 +91,86 @@ const adminRoutes: Routes = [
 				path: '',
 				canActivateChild: [AuthGuard],
 				children: [
-					{path: 'home',                    component: HomeComponent},
-					{path: 'createUser',              component: CreateUserComponent},
-					{path: 'schedulingConfigList',    component: SchedulingConfigListComponent},
-					{path: 'schedulingConfig',        component: SchedulingConfigComponent},
-					{path: 'scheduling',              component: SchedulingComponent},
-					{path: 'booking',           component: BookingComponent},
-					{path: 'bookingList',             component: BookingListComponent},
-					{path: 'childService',            component: ChildServiceComponent},
-					{path: 'childServiceList',        component: ChildServiceListComponent},
-					{path: 'clinicService',           component: ClinicServiceComponent},
-					{path: 'clinicServiceList',       component: ClinicServiceListComponent},
-					{path: 'doctorService',           component: DoctorServiceComponent},
-					{path: 'doctorServiceList',       component: DoctorServiceListComponent},
-					{path: 'userList',                component: UserListComponent},
-					{path: 'userInfo',                component: UserInfoComponent},
-					{path: 'doctorList',              component: DoctorListComponent},
+					{
+						path: 'home',
+						canActivate: [AuthGuardRole],
+						component: HomeComponent
+					},
+					{
+						path: 'createUser',
+						canActivate: [AuthGuardRole],
+						component: CreateUserComponent
+					},
+					{
+						path: 'schedulingConfigList',
+						canActivate: [AuthGuardRole],
+						component: SchedulingConfigListComponent
+					},
+					{
+						path: 'schedulingConfig',
+						canActivate: [AuthGuardRole],
+						component: SchedulingConfigComponent
+					},
+					{
+						path: 'scheduling',
+						canActivate: [AuthGuardRole],
+						component: SchedulingComponent
+					},
+					{
+						path: 'booking',
+						canActivate: [AuthGuardRole],
+						component: BookingComponent
+					},
+					{
+						path: 'bookingList',
+						canActivate: [AuthGuardRole],
+						component: BookingListComponent
+					},
+					{
+						path: 'childService',
+						canActivate: [AuthGuardRole],
+						component: ChildServiceComponent
+					},
+					{
+						path: 'childServiceList',
+						canActivate: [AuthGuardRole],
+						component: ChildServiceListComponent
+					},
+					{
+						path: 'clinicService',
+						canActivate: [AuthGuardRole],
+						component: ClinicServiceComponent
+					},
+					{
+						path: 'clinicServiceList',
+						canActivate: [AuthGuardRole],
+						component: ClinicServiceListComponent
+					},
+					{
+						path: 'doctorService',
+						canActivate: [AuthGuardRole],
+						component: DoctorServiceComponent
+					},
+					{
+						path: 'doctorServiceList',
+						canActivate: [AuthGuardRole],
+						component: DoctorServiceListComponent
+					},
+					{
+						path: 'userList',
+						canActivate: [AuthGuardRole],
+						component: UserListComponent
+					},
+					{
+						path: 'userInfo',
+						canActivate: [AuthGuardRole],
+						component: UserInfoComponent
+					},
+					{
+						path: 'doctorList',
+						canActivate: [AuthGuardRole],
+						component: DoctorListComponent
+					},
 					{
 						path: 'crmUserList',
 						canActivate: [AuthGuardRole],
@@ -117,157 +181,284 @@ const adminRoutes: Routes = [
 						canActivate: [AuthGuardRole],
 						component: CrmUserComponent,
 					},
-					{path: 'workbenchReception',      component: WorkbenchReceptionComponent},
-					{path: 'doctorInfo',              component: DoctorInfoComponent},
-					{path: 'bookingIn',               component: BookingInComponent},
-					{path: 'bookingInfo',             component: BookingInfoComponent},
-					{path: 'bookingConfirm',          component: BookingConfirmComponent},
-					{path: 'upload',                  component: UploadComponent},
-					{path: 'bookingAddService',       component: BookingAddServiceComponent},
-					{path: 'bookingAddFee',           component: BookingAddFeeComponent},
-					{path: 'clinicroom',              component: ClinicroomComponent},
-					{path: 'clinicroomList',          component: ClinicroomListComponent},
-					{path: 'clinicroomRecords',       component: ClinicroomRecordsComponent},
-					{path: 'medical',                 component: MedicalComponent},
-					{path: 'medicalList',             component: MedicalListComponent},
-					{path: 'medicalSupplier',         component: MedicalSupplierComponent},
-					{path: 'medicalSupplierList',     component: MedicalSupplierListComponent},
-					{path: 'medicalPurchase',         component: MedicalPurchaseComponent},
-					{path: 'medicalPurchaseList',     component: MedicalPurchaseListComponent},
-					{path: 'medicalHasList',          component:
-					MedicalHasListComponent},
-					{path: 'medicalHas',              component: MedicalHasComponent},
-					{path: 'medicalLostList',         component: MedicalLostListComponent},
-					{path: 'medicalLost',             component: MedicalLostComponent},
-					{path: 'doctorPrescript',         component: DoctorPrescriptComponent},
-					{path: 'prescriptList',           component: PrescriptListComponent},
-					{path: 'noPermissions',           component: NoPermissionsComponent},
+					{
+						path: 'workbenchReception',
+						canActivate: [AuthGuardRole],
+						component: WorkbenchReceptionComponent
+					},
+					{
+						path: 'doctorInfo',
+						canActivate: [AuthGuardRole],
+						component: DoctorInfoComponent
+					},
+					{
+						path: 'bookingIn',
+						canActivate: [AuthGuardRole],
+						component: BookingInComponent
+					},
+					{
+						path: 'bookingInfo',
+						canActivate: [AuthGuardRole],
+						component: BookingInfoComponent
+					},
+					{
+						path: 'bookingConfirm',
+						canActivate: [AuthGuardRole],
+						component: BookingConfirmComponent
+					},
+					{
+						path: 'upload',
+						canActivate: [AuthGuardRole],
+						component: UploadComponent
+					},
+					{
+						path: 'bookingAddService',
+						canActivate: [AuthGuardRole],
+						component: BookingAddServiceComponent
+					},
+					{
+						path: 'bookingAddFee',
+						canActivate: [AuthGuardRole],
+						component: BookingAddFeeComponent
+					},
+					{
+						path: 'clinicroom',
+						canActivate: [AuthGuardRole],
+						component: ClinicroomComponent
+					},
+					{
+						path: 'clinicroomList',
+						canActivate: [AuthGuardRole],
+						component: ClinicroomListComponent
+					},
+					{
+						path: 'clinicroomRecords',
+						canActivate: [AuthGuardRole],
+						component: ClinicroomRecordsComponent
+					},
+					{
+						path: 'medical',
+						canActivate: [AuthGuardRole],
+						component: MedicalComponent
+					},
+					{
+						path: 'medicalList',
+						canActivate: [AuthGuardRole],
+						component: MedicalListComponent
+					},
+					{
+						path: 'medicalSupplier',
+						canActivate: [AuthGuardRole],
+						component: MedicalSupplierComponent
+					},
+					{
+						path: 'medicalSupplierList',
+						canActivate: [AuthGuardRole],
+						component: MedicalSupplierListComponent
+					},
+					{
+						path: 'medicalPurchase',
+						canActivate: [AuthGuardRole],
+						component: MedicalPurchaseComponent
+					},
+					{
+						path: 'medicalPurchaseList',
+						canActivate: [AuthGuardRole],
+						component: MedicalPurchaseListComponent
+					},
+					{
+						path: 'medicalHasList',
+						canActivate: [AuthGuardRole],
+						component:MedicalHasListComponent
+					},
+					{
+						path: 'medicalHas',
+						canActivate: [AuthGuardRole],
+						component: MedicalHasComponent
+					},
+					{
+						path: 'medicalLostList',
+						canActivate: [AuthGuardRole],
+						component: MedicalLostListComponent
+					},
+					{
+						path: 'medicalLost',
+						canActivate: [AuthGuardRole],
+						component: MedicalLostComponent
+					},
+					{
+						path: 'doctorPrescript',
+						canActivate: [AuthGuardRole],
+						component: DoctorPrescriptComponent
+					},
+					{
+						path: 'prescriptList',
+						canActivate: [AuthGuardRole],
+						component: PrescriptListComponent
+					},
+					{
+						path: 'noPermissions',
+						canActivate: [AuthGuardRole],
+						component: NoPermissionsComponent
+					},
 					{
 						path: 'bookingCharge',
+						canActivate: [AuthGuardRole],
 						component: BookingChargeComponent,
 					},
 					{
 						path: 'doctorBooking',
+						canActivate: [AuthGuardRole],
 						component: DoctorBookingComponent,
 					},
 					{
 						path: 'setupInspect',
+						canActivate: [AuthGuardRole],
 						component: SetupInspectComponent,
 					},
 					{
 						path: 'setupInspectList',
+						canActivate: [AuthGuardRole],
 						component: SetupInspectListComponent,
 					},
 					{
 						path: 'materialList',
+						canActivate: [AuthGuardRole],
 						component: MaterialListComponent,
 					},
 					{
 						path: 'material',
+						canActivate: [AuthGuardRole],
 						component: MaterialComponent,
 					},
 					{
 						path: 'materialPurchaseList',
+						canActivate: [AuthGuardRole],
 						component: MaterialPurchaseListComponent,
 					},
 					{
 						path: 'materialPurchase',
+						canActivate: [AuthGuardRole],
 						component: MaterialPurchaseComponent,
 					},
 					{
 						path: 'materialHasList',
+						canActivate: [AuthGuardRole],
 						component: MaterialHasListComponent,
 					},
 					{
 						path: 'materialHas',
+						canActivate: [AuthGuardRole],
 						component: MaterialHasComponent,
 					},
 					{
 						path: 'materialLostList',
+						canActivate: [AuthGuardRole],
 						component: MaterialLostListComponent,
 					},
 					{
 						path: 'materialLost',
+						canActivate: [AuthGuardRole],
 						component: MaterialLostComponent,
 					},
 					{
 						path: 'inspectResultsList',
+						canActivate: [AuthGuardRole],
 						component: InspectResultsListComponent,
 					},
 					{
 						path: 'inspectResults',
+						canActivate: [AuthGuardRole],
 						component: InspectResultsComponent,
 					},
 					{
 						path: 'bookingFollowups',
+						canActivate: [AuthGuardRole],
 						component: BookingFollowupsComponent,
 					},
 					{
 						path: 'bookingFollowupsList',
+						canActivate: [AuthGuardRole],
 						component: BookingFollowupsListComponent,
 					},
 					{
 						path: 'materialCheckList',
+						canActivate: [AuthGuardRole],
 						component: MaterialCheckListComponent,
 					},
 					{
 						path: 'materialCheck',
+						canActivate: [AuthGuardRole],
 						component: MaterialCheckComponent,
 					},
 					{
 						path: 'medicalCheckList',
+						canActivate: [AuthGuardRole],
 						component: MedicalCheckListComponent,
 					},
 					{
 						path: 'medicalCheck',
+						canActivate: [AuthGuardRole],
 						component: MedicalCheckComponent,
 					},
 					{
 						path: 'prescriptBackList',
+						canActivate: [AuthGuardRole],
 						component: PrescriptBackListComponent,
 					},
 					{
 						path: 'bookingGrowthrecord',
+						canActivate: [AuthGuardRole],
 						component: BookingGrowthrecordComponent,
 					},
 					{
 						path: 'bookingCasehistory',
+						canActivate: [AuthGuardRole],
 						component: BookingCasehistoryComponent,
 					},
 					{
 						path: 'childList',
+						canActivate: [AuthGuardRole],
 						component: ChildListComponent,
 					},
 					{
 						path: 'childInfo',
+						canActivate: [AuthGuardRole],
 						component: ChildInfoComponent,
 					},
 					{
 						path: 'member',
+						canActivate: [AuthGuardRole],
 						component: MemberComponent,
 					},
 					{
 						path: 'memberList',
+						canActivate: [AuthGuardRole],
 						component: MemberListComponent,
 					},
 					{
 						path: 'transactionRecordList',
+						canActivate: [AuthGuardRole],
 						component: TransactionRecordListComponent,
 					},
 					{
 						path: 'bookingPayment',
+						canActivate: [AuthGuardRole],
 						component: BookingPaymentComponent,
 					},
 					{
 						path: 'crmRole',
+						canActivate: [AuthGuardRole],
 						component: CrmRoleComponent,
 					},
 					{
 						path: 'crmRoleList',
+						canActivate: [AuthGuardRole],
 						component: CrmRoleListComponent,
 					},
 					{
 						path: 'roleAuthorityList',
+						canActivate: [AuthGuardRole],
 						component: RoleAuthorityListComponent,
 					},
 					{

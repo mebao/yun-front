@@ -14,6 +14,15 @@ export class LoginComponent{
 		text: string,
 		type:  string,
 	};
+	admininfo: {
+		clinicId: string,
+		clinicRoleId: string,
+		clinicRoleName: string,
+		role: string,
+		token: string,
+		uid: string,
+		username: string,
+	}
 
 	constructor(
 		public authService: AuthService,
@@ -27,6 +36,16 @@ export class LoginComponent{
 			text: '',
 			type: '',
 		};
+
+		this.admininfo = {
+			clinicId: '',
+			clinicRoleId: '',
+			clinicRoleName: '',
+			role: '',
+			token: '',
+			uid: '',
+			username: '',
+		}
 	}
 
 	login(username, password): void{
@@ -45,7 +64,22 @@ export class LoginComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.adminService.setCookie('user', JSON.stringify(results.admininfo), 1);
+				//用户信息存储在cookie中
+				this.admininfo = {
+					clinicId: results.admininfo.clinicId,
+					clinicRoleId: results.admininfo.clinicRoleId,
+					clinicRoleName: results.admininfo.clinicRoleName,
+					role: results.admininfo.role,
+					token: results.admininfo.token,
+					uid: results.admininfo.uid,
+					username: results.admininfo.username,
+				}
+				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 1);
+				//角色信息存储在sessionStorage中
+				sessionStorage.setItem('userClinicRoles', JSON.stringify(results.admininfo.clinicRoles));
+				//清空sessionStorage中角色权限信息
+				sessionStorage.removeItem('userClinicRolesInfos');
+
 				let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin/workbenchReception';
 
 				this.router.navigate([redirect]);

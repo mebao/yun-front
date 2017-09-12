@@ -17,6 +17,11 @@ export class SetupInspectListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+	}
 	projectlist: any[];
 	hasData: boolean;
 
@@ -35,6 +40,23 @@ export class SetupInspectListComponent{
 			show: 0,
 			text: '',
 			type: '',
+		}
+
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
 		}
 
 		this.projectlist = [];
@@ -63,7 +85,7 @@ export class SetupInspectListComponent{
 		sessionStorage.setItem('inspect', JSON.stringify(project));
 		this.router.navigate(['./admin/setupInspect'], {queryParams: {id: project.id}});
 	}
-	
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

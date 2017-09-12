@@ -24,7 +24,9 @@ export class CrmUserComponent implements OnInit{
 		mobile: string,
 		user_name: string,
 		real_name: string,
+		clinic_role: string,
 		role: string,
+		clinic_id: string,
 		gender: string,
 		academical_title: string,
 		clinical_title: string,
@@ -38,6 +40,8 @@ export class CrmUserComponent implements OnInit{
 	token: string;
 	id: string;
 	editType: string;
+	url: string;
+	clinicRoleList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -58,7 +62,9 @@ export class CrmUserComponent implements OnInit{
 			mobile: '',
 			user_name: '',
 			real_name: '',
+			clinic_role: '',
 			role: '',
+			clinic_id: '',
 			gender: '',
 			academical_title: '',
 			clinical_title: '',
@@ -69,12 +75,16 @@ export class CrmUserComponent implements OnInit{
 			this.id = params.id;
 		})
 
+		this.url = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+
+		this.clinicRoleList = [];
+
 		if(this.id && this.id != ''){
 			this.editType = 'update';
 			//获取用户信息
-			var urlOptions = '?username=' + this.adminService.getUser().username
-				 + '&token=' + this.adminService.getUser().token
-				 + '&clinic_id=' + this.adminService.getUser().clinicId;
+			var urlOptions = this.url;
 			this.adminService.adminlist(urlOptions).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
@@ -86,6 +96,8 @@ export class CrmUserComponent implements OnInit{
 								this.user.mobile = results.adminlist[i].mobile;
 								this.user.user_name = results.adminlist[i].username;
 								this.user.real_name = results.adminlist[i].realName;
+								this.user.clinic_role = results.adminlist[i].clinicRoleId;
+								this.user.role = results.adminlist[i].role;
 								this.user.gender = results.adminlist[i].doctorProfile.gender;
 								this.user.academical_title = results.adminlist[i].doctorProfile.atitle;
 								this.user.clinical_title = results.adminlist[i].doctorProfile.ctitle;
@@ -98,6 +110,8 @@ export class CrmUserComponent implements OnInit{
 									document.getElementById('imgEle').setAttribute('src', results.adminlist[i].avatarUrl);
 								}
 								document.getElementById('file').setAttribute('value', results.adminlist[i].avatarUrl);
+
+								this.getClinicRole();
 							}
 						}
 					}
@@ -105,6 +119,7 @@ export class CrmUserComponent implements OnInit{
 			})
 		}else{
 			this.editType = 'create';
+			this.getClinicRole();
 		}
 
 		this.topBar = {
@@ -122,32 +137,71 @@ export class CrmUserComponent implements OnInit{
 			}
 		})
 
-		this.adminService.clinicdata().then((data) => {
+		//从缓存中获取clinicdata
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.setData(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.setData(results);
+				}
+			})
+		}
+
+	}
+
+	setData(results) {
+		this.clinics = results.clinics;
+		//角色
+		var roles = [];
+		for(var i in results.roles){
+			roles.push({id: i, name: results.roles[i]});
+		}
+		this.roles = roles;
+		//学术职称
+		var academicTitle = [];
+		for(var i in results.academicTitle){
+			academicTitle.push({id: i, name: results.academicTitle[i]});
+		}
+		this.academicTitle = academicTitle;
+		//医生职称
+		var clinicalTitle = [];
+		for(var i in results.clinicalTitle){
+			clinicalTitle.push({id: i, name: results.clinicalTitle[i]});
+		}
+		this.clinicalTitle = clinicalTitle;
+	}
+
+	getClinicRole() {
+		//获取角色列表
+		var roleUrl = this.url + '&status=1';
+		this.adminService.clinicrolelist(roleUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
+				var updateClinicRole = false;
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.clinics = results.clinics;
-				//角色
-				var roles = [];
-				for(var i in results.roles){
-					roles.push({id: i, name: results.roles[i]});
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].string = JSON.stringify(results.list[i]);
+						//修改时，通过clinicRoleId获取默认角色
+						if(results.list[i].id == this.user.clinic_role){
+							this.user.clinic_role = results.list[i].string;
+							updateClinicRole = true;
+						}
+					}
 				}
-				this.roles = roles;
-				//学术职称
-				var academicTitle = [];
-				for(var i in results.academicTitle){
-					academicTitle.push({id: i, name: results.academicTitle[i]});
+				//若没有匹配的，则默认为空
+				if(!updateClinicRole){
+					this.user.clinic_role = '';
 				}
-				this.academicTitle = academicTitle;
-				//医生职称
-				var clinicalTitle = [];
-				for(var i in results.clinicalTitle){
-					clinicalTitle.push({id: i, name: results.clinicalTitle[i]});
-				}
-				this.clinicalTitle = clinicalTitle;
+				this.clinicRoleList = results.list;
 			}
-		})
+		});
 	}
 
 	selectedFile(_file) {
@@ -206,6 +260,10 @@ export class CrmUserComponent implements OnInit{
 			return;
 		}
 		if(f.value.role == ''){
+			this.toastTab('类型不可为空', 'error');
+			return;
+		}
+		if(f.value.clinic_role == ''){
 			this.toastTab('角色不可为空', 'error');
 			return;
 		}
@@ -234,6 +292,8 @@ export class CrmUserComponent implements OnInit{
 				real_name: f.value.real_name,
 				clinic_id: this.adminService.getUser().clinicId,
 				role: f.value.role,
+				clinic_role_id: JSON.parse(f.value.clinic_role).id,
+				clinic_role_name: JSON.parse(f.value.clinic_role).name,
 				gender: this.addDoctor ? f.value.gender : null,
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,
@@ -257,6 +317,8 @@ export class CrmUserComponent implements OnInit{
 				mobile: f.value.mobile,
 				user_name: f.value.user_name,
 				real_name: f.value.real_name,
+				clinic_role_id: JSON.parse(f.value.clinic_role).id,
+				clinic_role_name: JSON.parse(f.value.clinic_role).name,
 				gender: this.addDoctor ? f.value.gender : null,
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,

@@ -1,14 +1,20 @@
-import { Component, OnInit }             from '@angular/core';
-import { Router, ActivatedRoute }        from '@angular/router';
+import { Component, OnInit, HostBinding }             from '@angular/core';
+import { Router, ActivatedRoute }                     from '@angular/router';
 
-import { AdminService }                  from '../admin.service';
+// import { slideInDownAnimation }                       from '../../animations';
+import { AdminService }                               from '../admin.service';
 
 @Component({
 	selector: 'app-scheduling',
 	templateUrl: './workbench-reception.component.html',
 	styleUrls: ['./workbench-reception.component.scss'],
+	// animations: [slideInDownAnimation],
 })
 export class WorkbenchReceptionComponent{
+	// @HostBinding('@routeAnimation') routeAnimation = true;
+	// @HostBinding('style.display')   display = 'block';
+	// @HostBinding('style.position')  position = 'absolute';
+	// @HostBinding('style.width')     width = '100%';
 	topBar: {
 		title: string,
 		back: boolean,
@@ -52,7 +58,7 @@ export class WorkbenchReceptionComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		
+
 		var urlOptions = this.url + '&weekindex=' + this.weekNumConfig;
 		this.getList(urlOptions);
 

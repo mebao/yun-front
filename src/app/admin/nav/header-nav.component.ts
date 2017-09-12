@@ -9,10 +9,12 @@ import { AdminService }                         from '../admin.service';
 export class HeaderNavComponent{
 	@Input() title: string;
 	@Input() username: string;
+	clinicRole: string;
 
 	constructor(public adminService: AdminService) {}
 
 	ngOnInit(): void {
 		this.username = this.adminService.getUser().username;
+		this.clinicRole = this.adminService.getUser().clinicRoleName;
 	}
 }

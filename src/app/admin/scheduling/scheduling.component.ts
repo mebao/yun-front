@@ -1,7 +1,7 @@
-import { Component, OnInit }             from '@angular/core';
-import { NgForm }                        from '@angular/forms';
+import { Component, OnInit, HostBinding }             from '@angular/core';
+import { NgForm }                                     from '@angular/forms';
 
-import { AdminService }                  from '../admin.service';
+import { AdminService }                               from '../admin.service';
 
 @Component({
 	selector: 'app-scheduling',
@@ -13,6 +13,11 @@ export class SchedulingComponent{
 		title: string,
 		back: boolean,
 	};
+	toast: {
+		show: number,
+		text: string,
+		type:  string,
+	};
 	weektitle: any[];
 	schedulinglist: any[];
 	weekNum: number;
@@ -21,11 +26,6 @@ export class SchedulingComponent{
 	config: string;
 	modalTab: boolean;
 	info: string;
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	changeData: {
 		_id: string,
 		value: string,
@@ -403,7 +403,7 @@ export class SchedulingComponent{
 				]
 				//清空排班配置
 				this.dutylist = [];
-				//构造已存在排班配置 
+				//构造已存在排班配置
 				var hasScheduling = this.changeData.value.split(' / ');
 				if(hasScheduling.length > 0){
 					for(var i = 0; i < hasScheduling.length; i++){

@@ -24,7 +24,7 @@ import { SelectSearchComponent }           from '../common/form/select-search.co
 
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
-import { NoPermissionsComponent }                   from '../error/no-permissions.component';
+import { NoPermissionsComponent }          from '../error/no-permissions.component';
 
 import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';

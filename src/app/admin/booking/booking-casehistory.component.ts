@@ -117,14 +117,14 @@ export class BookingCasehistoryComponent{
 				limbs: casehistory.limbs,
 				nervous_system: casehistory.nervousSystem,
 				blood_routine_examination: casehistory.bloodRoutineExamination,
-				blood_routine_examination_other: casehistory.bloodRoutineExamination,
+				blood_routine_examination_other: casehistory.bloodRoutineExamination == '正常' || casehistory.bloodRoutineExamination == '贫血' || casehistory.bloodRoutineExamination == '白细胞高值' ? '' : casehistory.bloodRoutineExamination,
 				routine_urine: casehistory.routineUrine,
-				routine_urine_other: casehistory.routineUrine,
+				routine_urine_other: casehistory.routineUrine == '正常' ? '' : casehistory.routineUrine,
 				bone_density: casehistory.boneDensity,
 				BALP: casehistory.BALP,
-				BALP_other: casehistory.BALP,
+				BALP_other: casehistory.BALP == '正常' ? '' : casehistory.BALP,
 				trace_element: casehistory.traceElement,
-				trace_element_other: casehistory.traceElement,
+				trace_element_other: casehistory.traceElement == '正常' ? '' : casehistory.traceElement,
 				diagnosis: casehistory.diagnosis,
 				prescription: prescription,
 				advise: casehistory.advise,
@@ -262,4 +262,4 @@ export class BookingCasehistoryComponent{
 			}
 	    }, 2000);
 	}
-}	
+}

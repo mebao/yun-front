@@ -73,7 +73,7 @@
 								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
 									<span *ngIf="!infoFirst"></span>
 									<span *ngIf="infoFirst && item.apotId">-</span>
-									<button *ngIf="infoFirst && (!item.apotId)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
+									<button *ngIf="moduleAuthority.edit && infoFirst && (!item.apotId)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
 								</div>
 							</div>
 						</div>

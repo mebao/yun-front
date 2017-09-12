@@ -56,8 +56,8 @@
 							<td>{{followups.results}}</td>
 							<td>{{followups.status}}</td>
 							<td>
-								<button *ngIf="followups.statusCode == '1' || followups.statusCode == '2'" (click)="update(followups)" class="pure-button pure-button-primary">修改</button>
-								<button *ngIf="followups.statusCode == '1'" (click)="cancel(followups)" class="pure-button pure-button-primary">取消</button>
+								<button *ngIf="moduleAuthority.edit && (followups.statusCode == '1' || followups.statusCode == '2')" (click)="update(followups)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.edit && (followups.statusCode == '1')" (click)="cancel(followups)" class="pure-button pure-button-primary">取消</button>
 							</td>
 						</tr>
 					</tbody>

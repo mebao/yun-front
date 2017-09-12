@@ -13,7 +13,7 @@
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1">
-					<button (click)="goUrl('./admin/materialPurchase')" class="pure-button pure-button-primary">新增入库</button>
+					<button *ngIf="moduleAuthority.editPut" (click)="goUrl('./admin/materialPurchase')" class="pure-button pure-button-primary">新增入库</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="b_date">入库时间大于：</label>

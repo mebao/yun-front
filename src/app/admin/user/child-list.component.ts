@@ -17,6 +17,12 @@ export class ChildListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		info: boolean,
+		booking: boolean,
+	}
 	childList: any[];
 	hasData: boolean;
 	searchInfo: {
@@ -40,6 +46,24 @@ export class ChildListComponent{
 			type: '',
 		};
 
+		this.moduleAuthority = {
+			see: false,
+			info: false,
+			booking: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.childList = [];
 		this.hasData = false;
 		this.searchInfo = {
@@ -50,7 +74,7 @@ export class ChildListComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		
+
 		this.search();
 	}
 

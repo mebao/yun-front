@@ -12,6 +12,18 @@ export class BookingListComponent implements OnInit{
 		title: string,
 		back: boolean,
 	};
+	toast: {
+		show: number,
+		text: string,
+		type:  string,
+	};
+	//权限
+	moduleAuthority: {
+		see: boolean,
+		info: boolean,
+		add: boolean,
+		update: boolean,
+	}
 	selectedTab: number;
 	url: string;
 	clinics: [{}];
@@ -56,11 +68,6 @@ export class BookingListComponent implements OnInit{
 		userDoctorName: string,
 		text: string,
 	}
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	hasData: boolean;
 
 	constructor(
@@ -78,6 +85,27 @@ export class BookingListComponent implements OnInit{
 			text: '',
 			type: '',
 		};
+
+		//权限
+		this.moduleAuthority = {
+			see: false,
+			info: false,
+			add: false,
+			update: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 
 		this.searchInfo = {
@@ -275,7 +303,7 @@ export class BookingListComponent implements OnInit{
 		urlOptions += '&weekindex=' + this.weekNum;
 		this.getList(urlOptions, 'week');
 	}
-	
+
 	//查询
 	search() {
 		//日历
@@ -312,7 +340,10 @@ export class BookingListComponent implements OnInit{
 
 	//查看
 	info(_id){//可编辑日期
-		this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
+		//判断查看权限
+		if(this.moduleAuthority.info){
+			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
+		}
 	}
 
 	getUrlOptios() {
@@ -334,7 +365,7 @@ export class BookingListComponent implements OnInit{
 	}
 
 	create() {
-		this.router.navigate(['./admin/booking']);
+		this.router.navigate(['./admin/booking'], {queryParams: {type: 'create'}});
 	}
 
 	show(value, use) {

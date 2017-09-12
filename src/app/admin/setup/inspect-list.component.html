@@ -5,7 +5,7 @@
 		<div class="content admin-clinicroom">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="">
-				<button (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
+				<button *ngIf="moduleAuthority.edit" (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
 			</div>
 			<div>
 				<table *ngIf="projectlist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
@@ -23,7 +23,7 @@
 							<td>{{project.price}}</td>
 							<td>{{project.canUse == '1' ? '可用' : '停用'}}</td>
 							<td>
-								<button (click)="update(project)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.edit" (click)="update(project)" class="pure-button pure-button-primary">修改</button>
 							</td>
 						</tr>
 					</tbody>

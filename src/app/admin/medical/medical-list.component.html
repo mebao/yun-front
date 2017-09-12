@@ -13,7 +13,7 @@
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1">
-					<button (click)="goCreate()" class="pure-button pure-button-primary">新增药品</button>
+					<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增药品</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="name">药品名：</label>
@@ -48,7 +48,7 @@
 							<td>{{medicalSupplie.oneUnit}}</td>
 							<td>{{medicalSupplie.usage}}</td>
 							<td>
-								<button (click)="update(medicalSupplie.id)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.edit" (click)="update(medicalSupplie.id)" class="pure-button pure-button-primary">修改</button>
 							</td>
 						</tr>
 					</tbody>

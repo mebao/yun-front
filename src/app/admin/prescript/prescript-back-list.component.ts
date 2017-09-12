@@ -18,6 +18,11 @@ export class PrescriptBackListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		seeBack: boolean,
+		editBack: boolean,
+	}
 	hasData: boolean;
 	list: any[];
 	modalConfirmTab: boolean;
@@ -49,6 +54,24 @@ export class PrescriptBackListComponent{
 			text: '',
 			type: '',
 		}
+
+		this.moduleAuthority = {
+			seeBack: false,
+			editBack: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 
 		this.list = [];
@@ -135,7 +158,7 @@ export class PrescriptBackListComponent{
 			}
 		})
 	}
-	
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

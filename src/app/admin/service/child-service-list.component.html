@@ -4,7 +4,7 @@
 		<header-nav></header-nav>
 		<div class="content admin-child-service-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="button-tab">
+			<div *ngIf="moduleAuthority.edit" class="button-tab">
 				<button (click)="goCreate()" class="pure-button pure-button-primary">新增小孩服务</button>
 			</div>
 			<div *ngIf="childServiceList.length > 0" class="pure-g">
@@ -23,7 +23,7 @@
 							</div>
 						</div>
 					</div>
-					<a class="edit pad10 text-center" (click)="update(childService.serviceId)">
+					<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="update(childService.serviceId)">
 						修改
 					</a>
 				</div>

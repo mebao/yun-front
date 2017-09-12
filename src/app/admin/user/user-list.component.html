@@ -7,7 +7,7 @@
 			<div class="mt10">
 				<div class="flex pure-form">
 					<div class="flex-1">
-						<button (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
+						<button *ngIf="moduleAuthority.add" (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
 					</div>
 					<div class="pure-control-group mr10">
 						<label for="name">姓名：</label>
@@ -44,10 +44,10 @@
 							<td>{{user.memberName}}</td>
 							<td>{{user.balance ? user.balance : 0}}</td>
 							<td>
-								<button (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
-								<button (click)="delete(user.id)" class="pure-button pure-button-primary">删除</button>
-								<button (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
-								<button (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
+								<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
+								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button pure-button-primary">删除</button>
+								<button *ngIf="moduleAuthority.member" (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
+								<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
 							</td>
 						</tr>
 					</tbody>

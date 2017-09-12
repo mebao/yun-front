@@ -17,6 +17,11 @@ export class InspectResultsListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+	}
 	hasData: boolean;
 	userCheckList: any[];
 	checkProjestList: any[];
@@ -28,7 +33,7 @@ export class InspectResultsListComponent{
 		today: string,
 	}
 	url: string;
-	
+
 	constructor(
 		private adminService: AdminService,
 		private router: Router,
@@ -46,6 +51,23 @@ export class InspectResultsListComponent{
 			type: '',
 		}
 
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.info = {
 			check_name: '',
 			doctor_name: '',
@@ -61,7 +83,7 @@ export class InspectResultsListComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		
+
 		this.adminService.checkprojects(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -108,7 +130,7 @@ export class InspectResultsListComponent{
 	check(_id) {
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});
 	}
-	
+
 	//小孩详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);

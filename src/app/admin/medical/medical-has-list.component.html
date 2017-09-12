@@ -60,7 +60,7 @@
 							<td>{{item.price}}</td>
 							<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
 							<td>
-								<button (click)="update(item.id)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.editHas" (click)="update(item.id)" class="pure-button pure-button-primary">修改</button>
 							</td>
 						</tr>
 					</tbody>

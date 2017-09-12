@@ -9,6 +9,7 @@ import 'rxjs/add/operator/toPromise';
 export class AdminService{
 	private url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
+	// private url = 'http://wapapi.meb168.com';
 
 	constructor(
 		private http: Http,
@@ -846,6 +847,15 @@ export class AdminService{
 			.catch();
 	}
 
+	//设置权限
+	private setroleauthUrl = this.url + '/mebcrm/setroleauth/';
+	setroleauth(urlOptions, params): Promise<Data>{
+		return this.http.post(this.setroleauthUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
@@ -935,7 +945,7 @@ export class AdminService{
 	//删除cookie
 	delCookie(name) {
 		var exp = new Date();
-		exp.setTime(exp.getTime() - 1*24*60*60*1000);
+		exp.setTime(exp.getTime() - 2*24*60*60*1000);
 		var cval= this.getCookie(name);
 		if(cval!=null)
 		document.cookie = name + "=" + cval + ";expires=" + exp;

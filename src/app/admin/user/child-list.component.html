@@ -36,8 +36,8 @@
 							<td>{{child.age}}</td>
 							<td>{{child.birthday}}</td>
 							<td>
-								<button (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
-								<button (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
+								<button *ngIf="moduleAuthority.info" (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
+								<button *ngIf="moduleAuthority.booking" (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
 							</td>
 						</tr>
 					</tbody>

@@ -7,7 +7,7 @@
 			<div class="mt10">
 				<div class="flex pure-form">
 					<div class="flex-1">
-						<button (click)="add()" class="pure-button pure-button-primary">新增角色</button>
+						<button *ngIf="moduleAuthority.edit" (click)="add()" class="pure-button pure-button-primary">新增角色</button>
 					</div>
 					<div class="pure-control-group mr10">
 						<label for="status">状态：</label>
@@ -33,10 +33,10 @@
 							<td>{{role.name}}</td>
 							<td>{{role.status == '1' ? '可用' : '停用'}}</td>
 							<td>
-								<button (click)="updateAuthority(role)" class="pure-button pure-button-primary">权限设置</button>
+								<button *ngIf="moduleAuthority.authority" (click)="updateAuthority(role)" class="pure-button pure-button-primary">权限设置</button>
 							</td>
 							<td>
-								<button (click)="updateStatus(role)" class="pure-button pure-button-primary">修改状态</button>
+								<button *ngIf="moduleAuthority.edit" (click)="updateStatus(role)" class="pure-button pure-button-primary">修改状态</button>
 							</td>
 						</tr>
 					</tbody>

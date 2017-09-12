@@ -12,12 +12,19 @@ export class BookingInfoComponent{
 		title: string,
 		back: boolean,
 	};
-	id: string;
 	toast: {
 		show: number,
 		text: string,
 		type:  string,
 	};
+	//权限
+	moduleAuthority: {
+		see: boolean,
+		info: boolean,
+		add: boolean,
+		update: boolean,
+	}
+	id: string;
 	booking: {
 		age: string,
 		bookingDate: string,
@@ -56,6 +63,26 @@ export class BookingInfoComponent{
 			text: '',
 			type:  '',
 		};
+
+		//权限
+		this.moduleAuthority = {
+			see: false,
+			info: false,
+			add: false,
+			update: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
 
 		this.booking = {
 			age: '',
@@ -110,7 +137,7 @@ export class BookingInfoComponent{
 	}
 
 	updateBooking() {
-		this.router.navigate(['./admin/booking'], {queryParams: {id: this.id}});
+		this.router.navigate(['./admin/booking'], {queryParams: {id: this.id, type: 'update'}});
 	}
 
 	toastTab(text, type) {
@@ -127,5 +154,5 @@ export class BookingInfoComponent{
 			}
 	    }, 2000);
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import { Data } from './admin/data';
 export class AuthService {
 	private url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
+	// private url = 'http://wapapi.meb168.com';
 
   	isLoggedIn: boolean = true;
 

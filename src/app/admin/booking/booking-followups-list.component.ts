@@ -17,6 +17,11 @@ export class BookingFollowupsListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+	}
 	url: string;
 	followupsList: any[];
 	hasData: boolean;
@@ -47,6 +52,23 @@ export class BookingFollowupsListComponent{
 			text: '',
 			type:  '',
 		};
+
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
 
 		//随访列表
 		this.url = '?username=' + this.adminService.getUser().username
@@ -142,7 +164,7 @@ export class BookingFollowupsListComponent{
 			}
 		});
 	}
-	
+
 	//小孩详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);

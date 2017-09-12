@@ -18,6 +18,16 @@ export class ClinicroomListComponent{
 		text: string,
 		type: string,
 	}
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+		doctor: boolean,
+		booking: boolean,
+		bookingEnd: boolean,
+		doctorEnd: boolean,
+		records: boolean,
+	}
 	hasData: boolean;
 	conditions: any[];
 	doctorlist: any[];
@@ -42,6 +52,30 @@ export class ClinicroomListComponent{
 			text: '',
 			type: '',
 		}
+
+		// 权限
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+			doctor: false,
+			booking: false,
+			bookingEnd: false,
+			doctorEnd: false,
+			records: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 
 		this.conditions = [];
@@ -138,7 +172,7 @@ export class ClinicroomListComponent{
 				this.bookinglist = results.weekbooks;
 			}
 		})
-		
+
 	}
 
 	goCreate() {

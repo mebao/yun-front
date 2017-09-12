@@ -63,7 +63,7 @@
 								</div>
 							</div>
 						</div>
-						<a class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
+						<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
 							检查
 						</a>
 					</div>

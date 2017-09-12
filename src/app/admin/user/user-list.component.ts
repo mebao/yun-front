@@ -18,6 +18,15 @@ export class UserListComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		add: boolean,
+		info: boolean,
+		delete: boolean,
+		member: boolean,
+		recharge: boolean,
+	}
 	hasData: boolean;
 	users: any[];
 	role: string;
@@ -58,6 +67,29 @@ export class UserListComponent{
 			text: '',
 			type: '',
 		};
+
+		// 权限
+		this.moduleAuthority = {
+			see: false,
+			add: false,
+			info: false,
+			delete: false,
+			member: false,
+			recharge: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().clinicRoleId == '0'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
+
 		this.hasData = false;
 		this.modalConfirmTab = false;
 		this.selector = {
@@ -246,8 +278,16 @@ export class UserListComponent{
 			this.toastTab('支付金额不可为空', 'error');
 			return;
 		}
-		if(this.selector.give_amount == ''){
+		if(parseFloat(this.selector.amount) < 0){
+			this.toastTab('支付金额不可为负数', 'error');
+			return;
+		}
+		if(this.selector.give_amount.toString() == ''){
 			this.toastTab('赠送金额不可为空', 'error');
+			return;
+		}
+		if(parseFloat(this.selector.give_amount) < 0){
+			this.toastTab('赠送金额不可为负数', 'error');
 			return;
 		}
 		if(this.selector.pay_way == ''){
