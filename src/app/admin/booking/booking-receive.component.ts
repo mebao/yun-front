@@ -4,11 +4,11 @@ import { Router }                             from '@angular/router';
 import { AdminService }                       from '../admin.service';
 
 @Component({
-	selector: 'admin-booking-charge',
-	templateUrl: './booking-charge.component.html',
-	styleUrls: ['./booking-charge.component.scss'],
+	selector: 'admin-booking-receive',
+	templateUrl: './booking-receive.component.html',
+	styleUrls: ['./booking-receive.component.scss'],
 })
-export class BookingChargeComponent{
+export class BookingReceiveComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -21,7 +21,8 @@ export class BookingChargeComponent{
 	// 权限
 	moduleAuthority: {
 		see: boolean,
-		payment: boolean,
+		receive: boolean,
+		receiveAll: boolean,
 	}
 	url: string;
 	doctorlist: any[];
@@ -46,7 +47,7 @@ export class BookingChargeComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '收费列表',
+			title: '接诊列表',
 			back: false,
 		}
 		this.toast = {
@@ -58,7 +59,8 @@ export class BookingChargeComponent{
 		//权限
 		this.moduleAuthority = {
 			see: false,
-			payment: false,
+			receive: false,
+			receiveAll: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -151,6 +153,10 @@ export class BookingChargeComponent{
 	search() {
 		//列表
 		var urlOptionsList = this.getUrlOptios();
+		//接诊个人和接诊所有
+		if(this.moduleAuthority.receive && !this.moduleAuthority.receiveAll){
+			urlOptionsList += '&mybooking=1';
+		}
 		if(this.searchInfo.cdate_less && this.searchInfo.cdate_less != ''){
 			urlOptionsList += '&cdate_less=' + this.searchInfo.cdate_less;
 		}
@@ -166,9 +172,17 @@ export class BookingChargeComponent{
 		this.getList(urlOptionsList);
 	}
 
+	//查看
+	info(booking, service){
+		//可编辑日期
+		//重置详情选中模块
+		sessionStorage.setItem('doctorBookingTab', '3');
+		this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
+	}
+
 	getUrlOptios() {
 		var urlOptions = this.url;
-		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=4,5';
+		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=3,4';
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}

@@ -55,6 +55,11 @@ export class DoctorServiceListComponent{
 			 	this.toastTab(data.errorMsg, 'error');
 			 }else{
 			 	var results = JSON.parse(JSON.stringify(data.results));
+				if(results.servicelist.length > 0){
+					for(var i = 0; i < results.servicelist.length; i++){
+						results.servicelist[i].fee = this.adminService.toDecimal2(results.servicelist[i].fee);
+					}
+				}
 			 	this.doctorServiceList = results.servicelist;
 			 	this.hasData = true;
 			 }

@@ -6,6 +6,7 @@ import { AdminService }                      from '../admin.service';
 @Component({
 	selector: 'admin-member',
 	templateUrl: './member.component.html',
+	styleUrls: ['./member.component.scss'],
 })
 export class MemberComponent{
 	topBar: {

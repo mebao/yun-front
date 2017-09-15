@@ -66,7 +66,7 @@
 							</div>
 						</div>
 					</div>
-				</fieldset>	
+				</fieldset>
 				<div class="text-center">
 					<button (click)="editIn(f)" class="pure-button pure-button-primary">登记</button>
 				</div>
@@ -90,16 +90,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr (click)="show(booking)" *ngFor="let booking of bookinglist" class="cursor-p">
-						<td>{{booking.childName}}</td>
-						<td>{{booking.age}}</td>
-						<td>{{booking.services[0].userDoctorName}}</td>
-						<td>{{booking.services[0].serviceName}}</td>
-						<td>
-							<span>{{booking.bookingDate}}</span>
-							<span>{{booking.time}}</span>
-						</td>
-					</tr>
+					<ng-container *ngFor="let booking of bookinglist" class="cursor-p">
+						<tr (click)="show(booking)" *ngFor="let service of booking.services; let indexService=index;">
+							<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == '0'">{{booking.childName}}</td>
+							<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == '0'">{{booking.age}}</td>
+							<td>{{service.userDoctorName}}</td>
+							<td>{{service.serviceName}}</td>
+							<td>
+								<span>{{service.serviceDate}}</span>
+								<span>{{service.serviceTime}}</span>
+							</td>
+						</tr>
+					</ng-container>
 				</tbody>
 			</table>
 		</div>

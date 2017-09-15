@@ -61,22 +61,20 @@ export class CreateUserComponent{
 
 		this.role = this.adminService.getUser().role;
 
-		this.adminService.clinicdata().then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				for(var index in results.bloodType){
-					this.bloodTypeList.push({key: index, value: results.bloodType[index]});
+		//从缓存中获取clinicdata
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.setClinicData(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.setClinicData(results);
 				}
-				for(var index in results.horoscope){
-					this.horoscopeList.push({key: index, value: results.horoscope[index]});
-				}
-				for(var index in results.shengxiao){
-					this.shengxiaoList.push({key: index, value: results.shengxiao[index]});
-				}
-			}
-		})
+			});
+		}
 
 		//获取头像上传token
 		var tokenUrl  = '?type=childCircle';
@@ -87,6 +85,18 @@ export class CreateUserComponent{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
 		})
+	}
+
+	setClinicData(results) {
+		for(var index in results.bloodType){
+			this.bloodTypeList.push({key: index, value: results.bloodType[index]});
+		}
+		for(var index in results.horoscope){
+			this.horoscopeList.push({key: index, value: results.horoscope[index]});
+		}
+		for(var index in results.shengxiao){
+			this.shengxiaoList.push({key: index, value: results.shengxiao[index]});
+		}
 	}
 
 	selectedFile(_file, key) {

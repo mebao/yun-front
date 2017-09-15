@@ -82,15 +82,25 @@ export class MaterialComponent{
 		}
 
 		//计量单位
-		this.adminService.clinicdata().then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.drugUnits = results.drugUnits;
-				this.OneUnits = results.OneUnits;
-			}
-		});
+		//从缓存中获取clinicdata
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.setClinicData(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.setClinicData(results);
+				}
+			});
+		}
+	}
+
+	setClinicData(results) {
+		this.drugUnits = results.drugUnits;
+		this.OneUnits = results.OneUnits;
 	}
 
 	create(f) {
@@ -114,7 +124,7 @@ export class MaterialComponent{
 			this.toastTab('一般用法不可为空', 'error');
 			return;
 		}
-		
+
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,

@@ -65,7 +65,7 @@ export class CrmRoleComponent{
 			}
 		});
 	}
-	
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

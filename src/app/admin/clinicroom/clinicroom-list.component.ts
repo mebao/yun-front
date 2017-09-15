@@ -27,6 +27,7 @@ export class ClinicroomListComponent{
 		bookingEnd: boolean,
 		doctorEnd: boolean,
 		records: boolean,
+		personal: boolean,
 	}
 	hasData: boolean;
 	conditions: any[];
@@ -62,10 +63,11 @@ export class ClinicroomListComponent{
 			bookingEnd: false,
 			doctorEnd: false,
 			records: false,
+			personal: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -90,13 +92,18 @@ export class ClinicroomListComponent{
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		if(this.moduleAuthority.personal && !this.moduleAuthority.see){
+			urlOptions += '&myself=1';
+		}
 		this.adminService.clinicconditions(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.conditions.length > 0){
+					this.getDoctorAndBooking(results.doctorList, results.childList);
+				}
 				this.conditions = results.conditions;
-				this.getDoctorAndBooking(results.doctorList, results.childList);
 				this.hasData = true;
 			}
 		})
@@ -138,6 +145,7 @@ export class ClinicroomListComponent{
 		var searchbookingUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
  			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&statuslist=3,4'
  			 + '&bdate_big=' + todayDate + '&bdate_less=' + nextDate;
 		this.adminService.searchbooking(searchbookingUrl).then((data) => {
 			if(data.status == 'no'){
@@ -305,6 +313,12 @@ export class ClinicroomListComponent{
 
 	updateClinicroom(_id) {
 		this.router.navigate(['./admin/clinicroom'], {queryParams: {id: _id}});
+	}
+
+	// 接诊
+	bookingReceive(condition) {
+		sessionStorage.setItem('doctorBookingTab', '3');
+		this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: condition.bookingId, doctorId: condition.doctorId}});
 	}
 
 	toastTab(text, type) {

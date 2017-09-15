@@ -5,7 +5,8 @@ import { AdminService }                  from '../admin.service';
 
 @Component({
 	selector: 'app-doctor-info',
-	templateUrl: './doctor-info.component.html'
+	templateUrl: './doctor-info.component.html',
+	styleUrls: ['./doctor-info.component.scss'],
 })
 export class DoctorInfoComponent{
 	topBar: {
@@ -32,10 +33,14 @@ export class DoctorInfoComponent{
 	};
 	hasData: boolean;
 	hasDoctor: boolean;
-	
+	selectedTab: string;
+	url: string;
+	bookingList: any[];
+
 	constructor(
 		public adminService: AdminService,
 		private route: ActivatedRoute,
+		private router: Router,
 	) {}
 
 	ngOnInit(): void {
@@ -50,6 +55,8 @@ export class DoctorInfoComponent{
 			type: '',
 		};
 		this.hasData = false;
+		this.selectedTab = '1';
+		this.bookingList = [];
 
 		this.info = {
 			doctorId: '',
@@ -64,10 +71,10 @@ export class DoctorInfoComponent{
 		this.route.queryParams.subscribe((params) => {
 			this.doctor_id = params['id'];
 		});
-		var urlOptions = '?username=' + this.adminService.getUser().username
+		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&doctor_id=' + this.doctor_id;
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		var urlOptions = this.url + '&doctor_id=' + this.doctor_id;
 		this.adminService.doctordutys(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -114,6 +121,42 @@ export class DoctorInfoComponent{
 				this.hasData = true;
 			}
 		});
+
+		// 本周预约
+		var bookingUrl = this.url + '&doctorId=' + this.doctor_id + '&weekindex=0';
+		this.adminService.doctorbooking(bookingUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				var weekDayList = this.adminService.getWeekByNumber(0);
+				if(results.list.length > 0){
+					if(results.list[0].serviceList.length > 0){
+						for(var i = 0; i < weekDayList.length; i++){
+							var booking = {
+								week: this.adminService.getWeekTitle(i),
+								day: weekDayList[i],
+								booking: [],
+							}
+							for(var j = 0; j < results.list[0].serviceList.length; j++){
+								if(weekDayList[i] == results.list[0].serviceList[j].bookingDate){
+									booking.booking.push(results.list[0].serviceList[j]);
+								}
+							}
+							this.bookingList.push(booking);
+						}
+					}
+				}
+			}
+		});
+	}
+
+	changeSelected(_tab) {
+		this.selectedTab = _tab;
+	}
+
+	goInfo(_id) {
+		this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

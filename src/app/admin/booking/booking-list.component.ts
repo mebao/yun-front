@@ -26,7 +26,6 @@ export class BookingListComponent implements OnInit{
 	}
 	selectedTab: number;
 	url: string;
-	clinics: [{}];
 	doctorlist: any[];
 	servicelist: [{}];
 	searchInfo: {
@@ -95,7 +94,7 @@ export class BookingListComponent implements OnInit{
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -107,6 +106,9 @@ export class BookingListComponent implements OnInit{
 		}
 
 		this.hasData = false;
+		this.bookinglist = [];
+		this.showBookinglist = [];
+		this.weeklist = [];
 
 		this.searchInfo = {
 			doctor_id: '',
@@ -150,23 +152,13 @@ export class BookingListComponent implements OnInit{
 		this.selectedTab = 0;
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
-		//诊所列表
-		this.adminService.clinicdata().then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.clinics.length > 0){
-					//week列表
-					this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
-					//booking列表
-					this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
-					this.getDoctorList();
-					this.getServiceList();
-				}
-				this.clinics = results.clinics;
-			}
-		})
+
+		//week列表
+		this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
+		//booking列表
+		this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
+		this.getDoctorList();
+		this.getServiceList();
 	}
 
 	//医生列表
@@ -248,6 +240,7 @@ export class BookingListComponent implements OnInit{
 							//遍历返回结果，将预约信息添加进timeList
 							for(var k = 0; k < weekbooks.length; k++){
 								if(weekArray[i] == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
+									weekbooks[k].servicesLength = weekbooks[k].services.length;
 									week.timeList[j].value.push(weekbooks[k]);
 								}
 							}

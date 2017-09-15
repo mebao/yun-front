@@ -43,7 +43,7 @@ export class UserInfoComponent{
 		private route: ActivatedRoute,
 		private router: Router,
 	) {}
-	
+
 	ngOnInit() {
 		this.topBar = {
 			title: '用户详情',
@@ -90,22 +90,32 @@ export class UserInfoComponent{
 			}
 		})
 
-		this.adminService.clinicdata().then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				for(var index in results.bloodType){
-					this.bloodTypeList.push({key: index, value: results.bloodType[index]});
+		//从缓存中获取clinicdata
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.setClinicData(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.setClinicData(results);
 				}
-				for(var index in results.horoscope){
-					this.horoscopeList.push({key: index, value: results.horoscope[index]});
-				}
-				for(var index in results.shengxiao){
-					this.shengxiaoList.push({key: index, value: results.shengxiao[index]});
-				}
-			}
-		})
+			});
+		}
+	}
+
+	setClinicData(results) {
+		for(var index in results.bloodType){
+			this.bloodTypeList.push({key: index, value: results.bloodType[index]});
+		}
+		for(var index in results.horoscope){
+			this.horoscopeList.push({key: index, value: results.horoscope[index]});
+		}
+		for(var index in results.shengxiao){
+			this.shengxiaoList.push({key: index, value: results.shengxiao[index]});
+		}
 	}
 
 	getUserInfo() {
@@ -197,6 +207,10 @@ export class UserInfoComponent{
 			horoscope: childInfo.horoscope,
 			shengxiao: childInfo.shengxiao,
 			imageUrl: childInfo.imageUrl,
+			leg_length: childInfo.legLength,
+			head_circum: childInfo.headCircum,
+			waist_circum: childInfo.waistCircum,
+			breast_circum: childInfo.breastCircum,
 		}
 		this.childlist.push(child);
 	}
@@ -254,7 +268,7 @@ export class UserInfoComponent{
 					//判断头像(不必传)
 					//判断是否存在头像，并且没有修改
 					if(this.childlist[i].imageUrl && this.childlist[i].imageUrl != ''){
-						
+
 					}else{
 						if(document.getElementById('file_' + this.childlist[i].key).getAttribute('value') == ''){
 							child['remote_domain'] = '';
@@ -288,6 +302,22 @@ export class UserInfoComponent{
 					//判断昵称
 					if(f.value['nickname_' + this.childlist[i].key]){
 						child['nickname'] = f.value['nickname_' + this.childlist[i].key];
+					}
+					//判断腿长
+					if(f.value['leg_length_' + this.childlist[i].key]){
+						child['leg_length'] = f.value['leg_length_' + this.childlist[i].key];
+					}
+					//判断头围
+					if(f.value['head_circum_' + this.childlist[i].key]){
+						child['head_circum'] = f.value['head_circum_' + this.childlist[i].key];
+					}
+					//判断腰围
+					if(f.value['waist_circum_' + this.childlist[i].key]){
+						child['waist_circum'] = f.value['waist_circum_' + this.childlist[i].key];
+					}
+					//判断胸围
+					if(f.value['breast_circum_' + this.childlist[i].key]){
+						child['breast_circum'] = f.value['breast_circum_' + this.childlist[i].key];
 					}
 					childData.push(child);
 				}

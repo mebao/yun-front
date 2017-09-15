@@ -78,6 +78,7 @@ export class DoctorBookingComponent implements OnInit{
 		fees: any[],
 		status: string,
 		totalFee: string,
+		mobile: string,
 	};
 	canEdit: boolean;
 	selectedTab: string;
@@ -85,6 +86,7 @@ export class DoctorBookingComponent implements OnInit{
 	selector: {
 		id: string,
 		text: string,
+		type: string,
 	}
 	//随访
 	hasFollowupsData: boolean;
@@ -119,6 +121,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.selector = {
 			id: '',
 			text: '',
+			type: '',
 		}
 
 		this.booking = {
@@ -140,6 +143,7 @@ export class DoctorBookingComponent implements OnInit{
 			fees: [],
 			status: '',
 			totalFee: '',
+			mobile: '',
 		};
 		//判断sessionStorage中是否已经缓存
 		if(sessionStorage.getItem('doctorBookingTab')){
@@ -193,7 +197,8 @@ export class DoctorBookingComponent implements OnInit{
 		//随访
 		this.hasFollowupsData = false;
 		this.followupsList = [];
-		this.adminService.userfollowups(this.url).then((data) => {
+		var userfollowupsUrl = this.url + '&booking_id=' + this.id;
+		this.adminService.userfollowups(userfollowupsUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
@@ -322,6 +327,11 @@ export class DoctorBookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].infoLength = results.list[i].info.length;
+					}
+				}
 				this.prescriptList = results.list;
 				this.hasPrescriptData = true;
 			}
@@ -412,6 +422,16 @@ export class DoctorBookingComponent implements OnInit{
 		this.addCheckInfo.editType = 'create';
 	}
 
+	// 删除检查
+	deleteCheck(check) {
+		this.selector = {
+			id: check.id,
+			text: '确认删除该检查',
+			type: 'check',
+		}
+		this.modalConfirmTab = true;
+	}
+
 	removeCheck() {
 		//取消检查单操作
 		this.addCheckInfo = {
@@ -465,6 +485,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.selector = {
 			id: _id,
 			text: '确认删除该药方',
+			type: 'prescript',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -480,24 +501,47 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	confirm() {
-		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
-		this.adminService.deleteprescript(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				this.toastTab('药方删除成功', '');
-				this.modalConfirmTab = false;
-				this.getPrescriptData();
-			}
-		})
+		this.modalConfirmTab = false;
+		if(this.selector.type == 'prescript'){
+			// 删除药方
+			var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token;
+			this.adminService.deleteprescript(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					this.toastTab('药方删除成功', '');
+					this.getPrescriptData();
+				}
+			})
+		}else if(this.selector.type == 'check'){
+			// 删除检查
+			var deleteCheckUrl = this.selector.id + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token;
+			this.adminService.deleteusercheck(deleteCheckUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					this.toastTab('检查删除成功', '');
+					this.getCheckData();
+					//清空检查信息
+					this.addCheckInfo = {
+						booking_id: '',
+						check_id: '',
+						check_name: '',
+						check: '',
+						editType: '',
+					}
+				}
+			});
+		}
 	}
 
 	changeTab(_value) {
 		this.selectedTab = _value;
 		sessionStorage.setItem('doctorBookingTab', _value);
 	}
-	
+
 	//新增随访
 	addFollowups() {
 		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});

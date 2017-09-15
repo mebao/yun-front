@@ -38,10 +38,10 @@
 					<tbody>
 						<tr *ngFor="let member of memberList">
 							<td>{{member.name}}</td>
-							<td>{{member.service}}</td>
-							<td>{{member.check}}</td>
-							<td>{{member.prescript}}</td>
-							<td>{{member.other}}</td>
+							<td>{{member.service}}%</td>
+							<td>{{member.check}}%</td>
+							<td>{{member.prescript}}%</td>
+							<td>{{member.other}}%</td>
 							<td>{{member.status == '1' ? '可用' : '停用'}}</td>
 							<td>
 								<button *ngIf="moduleAuthority.edit" (click)="update(member)" class="pure-button pure-button-primary">修改</button>

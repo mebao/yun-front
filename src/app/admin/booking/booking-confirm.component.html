@@ -77,29 +77,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let showBooking of showBookinglist">
-						<td>{{showBooking.creatorName}}</td>
-						<td>{{showBooking.mobile}}</td>
-						<td>{{showBooking.childName}}</td>
-						<td>{{showBooking.age}}</td>
-						<td>{{showBooking.services[0].userDoctorName}}</td>
-						<td>{{showBooking.services[0].serviceName}}</td>
-						<td>
-							<span>{{showBooking.bookingDate}}</span>
-							<span>{{showBooking.time}}</span>
-						</td>
-						<td>
-							<div *ngIf="use">
-								<div>
-									<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">确认</button>
+					<ng-container *ngFor="let showBooking of showBookinglist">
+						<tr *ngFor="let service of showBooking.services; let indexService=index;">
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.creatorName}}</td>
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.mobile}}</td>
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
+							<td>{{service.userDoctorName}}</td>
+							<td>{{service.serviceName}}</td>
+							<td>
+								<span>{{service.serviceDate}}</span>
+								<span>{{service.serviceTime}}</span>
+							</td>
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
+								<div *ngIf="use">
+									<div>
+										<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">确认</button>
+									</div>
+									<div class="pt10">
+										<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button pure-button-primary">取消</button>
+									</div>
 								</div>
-								<div class="pt10">
-									<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button pure-button-primary">取消</button>
-								</div>
-							</div>
-							<div *ngIf="!use">-</div>
-						</td>
-					</tr>
+								<div *ngIf="!use">-</div>
+							</td>
+						</tr>
+					</ng-container>
 				</tbody>
 			</table>
 		</div>

@@ -29,6 +29,8 @@
 							<th>生日</th>
 							<th>血型</th>
 							<th>头围</th>
+							<th>腰围</th>
+							<th>胸围</th>
 							<th>身高</th>
 							<th>星座</th>
 							<th>腿长</th>
@@ -49,6 +51,8 @@
 							<td>{{child.birthday}}</td>
 							<td>{{child.bloodTypeText}}</td>
 							<td>{{child.headCircum}}</td>
+							<td>{{child.waistCircum}}</td>
+							<td>{{child.breastCircum}}</td>
 							<td>{{child.height}}</td>
 							<td>{{child.horoscopeText}}</td>
 							<td>{{child.legLength}}</td>
@@ -135,11 +139,27 @@
 											<label for="nickname_{{child.key}}">昵称</label>
 											<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" [(ngModel)]="child.nickname">
 										</div>
+										<div class="pure-control-group pure-u-8-24 pr10">
+											<label for="leg_length_{{child.key}}">腿长</label>
+											<input type="number" id="leg_length_{{child.key}}" name="leg_length_{{child.key}}" placeholder="请输入腿长" [(ngModel)]="child.leg_length">
+										</div>
+										<div class="pure-control-group pure-u-8-24 pl5 pr5">
+											<label for="head_circum_{{child.key}}">头围</label>
+											<input type="number" id="head_circum_{{child.key}}" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
+										</div>
+										<div class="pure-control-group pure-u-8-24 pl10">
+											<label for="waist_circum_{{child.key}}">腰围</label>
+											<input type="number" id="waist_circum_{{child.key}}" name="waist_circum_{{child.key}}" placeholder="请输入腰围" [(ngModel)]="child.waist_circum">
+										</div>
+										<div class="pure-control-group pure-u-8-24 pr10">
+											<label for="breast_circum_{{child.key}}">胸围</label>
+											<input type="number" id="breast_circum_{{child.key}}" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>	
+					</div>
 					<div *ngIf="childlist.length == 0" class="pt5">
 						<button (click)="addChild()" class="pure-button pure-button-primary">添加小孩</button>
 					</div>

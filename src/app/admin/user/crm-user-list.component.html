@@ -5,22 +5,36 @@
 		<div class="content admin-crm-user-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="mt10">
-				<div class="button-tab pure-form flex">
-					<button *ngIf="moduleAuthority.add" (click)="add()" class="pure-button pure-button-primary">新增后台用户</button>
-					<div class="flex-1 text-right">
-						<label for="role">筛选角色：</label>
-						<select id="role" name="role" [(ngModel)]="role" (change)="roleChange()">
+				<div class="pure-form flex">
+					<div class="flex-1">
+						<button *ngIf="moduleAuthority.add" (click)="add()" class="pure-button pure-button-primary">新增后台用户</button>
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="role">筛选类型：</label>
+						<select id="role" name="role" [(ngModel)]="searchInfo.role">
+							<option value=""></option>
 							<option value="2">医生</option>
 							<option value="3">护士</option>
 							<option value="9">管理员</option>
 						</select>
 					</div>
+					<div class="pure-control-group mr10">
+						<label for="clinic_role">筛选类型：</label>
+						<select id="clinic_role" name="clinic_role" [(ngModel)]="searchInfo.clinic_role">
+							<option value=""></option>
+							<ng-container *ngFor="let clinicRole of clinicRoleList">
+								<option [value]="clinicRole.id">{{clinicRole.name}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 				</div>
 				<table *ngIf="adminlist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>
 						<tr>
 							<th></th>
 							<th>姓名</th>
+							<th>类型</th>
 							<th>角色</th>
 							<th>操作</th>
 						</tr>
@@ -29,6 +43,7 @@
 						<tr *ngFor="let user of adminlist; let index=index;">
 							<td>{{index + 1}}</td>
 							<td>{{user.realName}}</td>
+							<td>{{user.roleText}}</td>
 							<td>{{user.clinicRoleName}}</td>
 							<td>
 								<button *ngIf="moduleAuthority.update" (click)="update(user.id)" class="pure-button pure-button-primary">修改</button>

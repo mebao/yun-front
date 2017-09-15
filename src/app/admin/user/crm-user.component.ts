@@ -140,21 +140,21 @@ export class CrmUserComponent implements OnInit{
 		//从缓存中获取clinicdata
 		var clinicdata = sessionStorage.getItem('clinicdata');
 		if(clinicdata && clinicdata != ''){
-			this.setData(JSON.parse(clinicdata));
+			this.setClinicData(JSON.parse(clinicdata));
 		}else{
 			this.adminService.clinicdata().then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
-					this.setData(results);
+					this.setClinicData(results);
 				}
 			})
 		}
 
 	}
 
-	setData(results) {
+	setClinicData(results) {
 		this.clinics = results.clinics;
 		//角色
 		var roles = [];

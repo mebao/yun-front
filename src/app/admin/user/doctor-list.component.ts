@@ -23,6 +23,7 @@ export class DoctorListComponent implements OnInit{
 		see: boolean,
 		service: boolean,
 		scheduling: boolean,
+		personal: boolean,
 	};
 	doctorlist: any[];
 	hasData: boolean;
@@ -48,10 +49,11 @@ export class DoctorListComponent implements OnInit{
 			see: false,
 			service: false,
 			scheduling: false,
+			personal: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -69,13 +71,17 @@ export class DoctorListComponent implements OnInit{
 		//查询医生信息
 		var adminServiceUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.doctorprofile(adminServiceUrl).then((data) => {
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&role=2';
+		if(this.moduleAuthority.personal && !this.moduleAuthority.see){
+			adminServiceUrl += '&myself=1';
+		}
+		this.adminService.adminlist(adminServiceUrl).then((data) => {
 			 if(data.status == 'no'){
 			 	this.toastTab(data.errorMsg, 'error');
 			 }else{
 			 	var results = JSON.parse(JSON.stringify(data.results));
-			 	this.doctorlist = results.doctorlist;
+				this.doctorlist = results.adminlist;
 			 	this.hasData = true;
 			 }
 		})

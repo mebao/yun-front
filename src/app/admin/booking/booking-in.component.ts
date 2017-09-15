@@ -51,7 +51,7 @@ export class BookingInComponent{
 	timelist: any[];
 	childlist: any[];
 	selectSearchTitle: string;
-	
+
 	constructor(public adminService: AdminService) {}
 
 	ngOnInit(): void {
@@ -136,6 +136,11 @@ export class BookingInComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.weekbooks.length > 0){
+					for(var i = 0; i < results.weekbooks.length; i++){
+						results.weekbooks[i].servicesLength = results.weekbooks[i].services.length;
+					}
+				}
 				this.bookinglist = results.weekbooks;
 			}
 		});

@@ -54,7 +54,7 @@ export class MedicalLostListComponent{
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -88,6 +88,11 @@ export class MedicalLostListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].infoLength = results.list[i].info.length;
+					}
+				}
 				this.list = results.list;
 				this.hasData = true;
 			}

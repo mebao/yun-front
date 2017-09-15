@@ -856,6 +856,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 删除检查
+	private deleteusercheckUrl = this.url + '/mebcrm/deleteusercheck/';
+	deleteusercheck(urlOptions): Promise<Data>{
+		return this.http.delete(this.deleteusercheckUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

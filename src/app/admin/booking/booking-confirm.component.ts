@@ -187,6 +187,7 @@ export class BookingConfirmComponent{
 						//遍历返回结果，将预约信息添加进timeList
 						for(var k = 0; k < weekbooks.length; k++){
 							if(weekArray[i] == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
+								weekbooks[k].servicesLength = weekbooks[k].services.length;
 								week.timeList[j].value.push(weekbooks[k]);
 							}
 						}

@@ -4,25 +4,34 @@
 		<header-nav></header-nav>
 		<div class="content admin-doctor-booking">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="flex">
-				<div class="doctor-tab mr10">
-					<div class="doctor-info pad10">
-						<div class="img-tab text-center">
-							<img src="{{doctorInfo.avatarUrl ? doctorInfo.avatarUrl : 'assets/images/img.png'}}">
-						</div>
-						<div class="info">{{doctorInfo.realName}}</div>
-						<div class="info">{{doctorInfo.mobile}}</div>
-						<div class="info">{{doctorInfo.doctorProfile.gender == 'F' ? '女' : '男'}}</div>
-						<div class="info">{{doctorInfo.doctorProfile.atitleText}}</div>
-						<div class="info">{{doctorInfo.doctorProfile.ctitleText}}</div>
-						<div class="info">{{doctorInfo.doctorProfile.description}}</div>
+			<div class="pure-g left-right-tab">
+				<div class="pure-u-1-5 left-tab pr20">
+					<div class="item">
+						<span>姓名：</span>
+						<span>{{booking.childName}}</span>
+					</div>
+					<div class="item">
+						<span>年龄：</span>
+						<span>{{booking.age}}</span>
+					</div>
+					<div class="item">
+						<span>手机号码：</span>
+						<span>{{booking.mobile}}</span>
+					</div>
+					<div class="item">
+						<span>家长：</span>
+						<span>{{booking.creatorName}}</span>
+					</div>
+					<div class="item">
+						<span>接诊医生：</span>
+						<span>{{doctorInfo.realName}}</span>
 					</div>
 				</div>
-				<div class="flex-1 booking-info pad10">
+				<div class="pure-u-4-5 right-tab booking-info pad10">
 					<div class="second-bar-tab flex mb10">
 						<div (click)="changeTab('3')" [ngClass]="{'active': selectedTab == '3'}" class="item">检查项目</div>
 						<div (click)="changeTab('4')" [ngClass]="{'active': selectedTab == '4'}" class="item">处方</div>
-						<div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div>
+						<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
 						<div (click)="changeTab('2')" [ngClass]="{'active': selectedTab == '2'}" class="item">费用列表</div>
 						<div (click)="changeTab('5')" [ngClass]="{'active': selectedTab == '5'}" class="item">随访</div>
 						<div (click)="changeTab('6')" [ngClass]="{'active': selectedTab == '6'}" class="item">成长记录</div>
@@ -32,14 +41,18 @@
 						<table *ngIf="checkDataList.length > 0" class="pure-table w100">
 							<thead>
 								<tr>
-									<th class="w10"></th>
-									<th class="w20">检查项目</th>
+									<th></th>
+									<th>检查项目</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let check of checkDataList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
 									<td>{{index + 1}}</td>
 									<td>{{check.checkName}}</td>
+									<td>
+										<button (click)="deleteCheck(check)" class="pure-button pure-button-primary">删除</button>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -81,51 +94,54 @@
 						</form>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '4'}" class="tab">
-						<div *ngIf="prescriptList.length > 0" class="list-tab mt10">
-							<div class="list-bar pure-g">
-								<div class="pure-u-3-24 item">药方名</div>
-								<div class="pure-u-2-24 item">就诊医生</div>
-								<div class="pure-u-2-24 item">用户名</div>
-								<div class="pure-u-2-24 item">小孩名</div>
-								<div class="pure-u-3-24 item">日期</div>
-								<div class="pure-u-3-24 item">备注</div>
-								<div class="pure-u-3-24 item">药品名</div>
-								<div class="pure-u-2-24 item">药品单位</div>
-								<div class="pure-u-2-24 item">药品数量</div>
-								<div class="pure-u-2-24 item">操作</div>
-							</div>
-							<div *ngFor="let item of prescriptList; let itemLast=last; let itemFirst=first;">
-								<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
-									<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
-										<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.name : ''}}</div>
-										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.doctorName : ''}}</div>
-										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.userName : ''}}</div>
-										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.childName : ''}}</div>
-										<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.date : ''}}</div>
-										<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.remark : ''}}</div>
-										<div class="pure-u-3-24 item">{{info.pname}}</div>
-										<div class="pure-u-2-24 item">{{info.unit}}</div>
-										<div class="pure-u-2-24 item">{{info.num}}</div>
-										<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
+						<table *ngIf="prescriptList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+							<thead>
+								<tr>
+									<th></th>
+									<th>药方名</th>
+									<th>就诊医生</th>
+									<th>用户名</th>
+									<th>小孩名</th>
+									<th>日期</th>
+									<th>备注</th>
+									<th>药品名</th>
+									<th>药品单位</th>
+									<th>药品数量</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<ng-container *ngFor="let item of prescriptList; let indexItem=index;">
+									<tr *ngFor="let info of item.info; let indexInfo=index;">
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{indexItem + 1}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.remark}}</td>
+										<td>{{info.pname}}</td>
+										<td>{{info.unit}}</td>
+										<td>{{info.num}}</td>
+										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 											<!-- 订单未完成，可操作 -->
 											<ng-container *ngIf="booking.status != '5'">
-												<span *ngIf="!infoFirst"></span>
-												<div *ngIf="item.apotId && (item.isBack != 0) && infoFirst">-</div>
-												<div *ngIf="infoFirst && (!item.apotId)">
+												<div *ngIf="item.apotId && (item.isBack != 0)">-</div>
+												<div *ngIf="!item.apotId">
 													<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
 												</div>
-												<div *ngIf="infoFirst && (!item.apotId)" class="mt10">
+												<div *ngIf="!item.apotId" class="mt10">
 													<button (click)="deletePrescript(item.id)" class="pure-button pure-button-primary">删除</button>
 												</div>
-												<div *ngIf="item.apotId && (item.isBack == 0) && infoFirst" class="mt10">
+												<div *ngIf="item.apotId && (item.isBack == 0)" class="mt10">
 													<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
 												</div>
 											</ng-container>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+										</td>
+									</tr>
+								</ng-container>
+							</tbody>
+						</table>
 						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10">
 							<nodata title="未查询到处方"></nodata>
 						</div>
@@ -138,7 +154,7 @@
 							</div>
 						</ng-container>
 					</div>
-					<div [ngClass]="{'hidden': selectedTab != '1'}" class="tab">
+					<!-- <div [ngClass]="{'hidden': selectedTab != '1'}" class="tab">
 						<table class="pure-table w100">
 							<thead>
 								<tr>
@@ -158,16 +174,16 @@
 									<td>{{service.serviceTime}}</td>
 								</tr>
 							</tbody>
-						</table>
+						</table> -->
 						<!-- 订单未完成，可操作 -->
-						<ng-container *ngIf="booking.status != '5'">
+						<!-- <ng-container *ngIf="booking.status != '5'">
 							<div *ngIf="canEdit" class="flex mt10">
 								<div class="flex-1">
 									<button (click)="addService()" class="pure-button pure-button-primary">追加服务</button>
 								</div>
 							</div>
 						</ng-container>
-					</div>
+					</div> -->
 					<div [ngClass]="{'hidden': selectedTab != '2'}" class="tab">
 						<table class="pure-table w100">
 							<thead>

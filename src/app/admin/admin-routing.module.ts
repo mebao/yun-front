@@ -80,6 +80,7 @@ import { BookingPaymentComponent }          from './booking/booking-payment.comp
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
+import { BookingReceiveComponent }          from './booking/booking-receive.component';
 
 const adminRoutes: Routes = [
 	{
@@ -460,6 +461,11 @@ const adminRoutes: Routes = [
 						path: 'roleAuthorityList',
 						canActivate: [AuthGuardRole],
 						component: RoleAuthorityListComponent,
+					},
+					{
+						path: 'bookingReceive',
+						canActivate: [AuthGuardRole],
+						component: BookingReceiveComponent,
 					},
 					{
 						path: '**',

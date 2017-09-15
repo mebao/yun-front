@@ -5,6 +5,7 @@
 		<div class="content admin-role-authority-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="first-list">
+				<div class="second-title">{{role}}</div>
 				<div *ngFor="let authority of authorityList" class="mb20">
 					<div class="flex">
 						<div (click)="selectAll(authority.id, authority.isCheck)" class="first-item flex">

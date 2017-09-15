@@ -20,7 +20,7 @@ export class AuthGuardRole implements CanActivate{
 	checkUserClinicRoles(url: string): boolean{
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			return true;
 		}
 		//判断sessionStorage中是否含有userClinicRoles信息，没有,需再次请求
@@ -163,54 +163,65 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
-						firstKey: 'bookingCharge',
+						firstKey: 'bookingReceive',
 						firstUrl: '',
 						second: [
 							{
-								url: '/admin/bookingCharge',
+								url: '/admin/bookingReceive',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
-							// 接诊
 							{
 								url: '/admin/doctorBooking',
-								authority: 'doctorBooking',
+								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 开方
 							{
 								url: '/admin/doctorPrescript',
-								authority: 'doctorBooking',
+								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 追加服务
 							{
 								url: '/admin/bookingAddService',
-								authority: 'doctorBooking',
+								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 随访
 							{
 								url: '/admin/bookingFollowups',
-								authority: 'doctorBooking',
+								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 成长记录
 							{
 								url: '/admin/bookingGrowthrecord',
-								authority: 'doctorBooking',
+								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 病例
 							{
 								url: '/admin/bookingCasehistory',
-								authority: 'doctorBooking',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
+						firstKey: 'bookingCharge',
+						firstUrl: '',
+						second: [
+							{
+								url: '/admin/bookingCharge',
+								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
@@ -251,6 +262,12 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							{
+								url: '/admin/clinicroomList',
+								authority: 'personal',
+								queryType: '',
+								queryParams: '',
+							},
 							// 编辑诊室
 							{
 								url: '/admin/clinicroom',
@@ -274,6 +291,12 @@ export class AuthGuardRole implements CanActivate{
 							{
 								url: '/admin/doctorList',
 								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/doctorList',
+								authority: 'personal',
 								queryType: '',
 								queryParams: '',
 							},

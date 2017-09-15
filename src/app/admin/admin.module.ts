@@ -99,6 +99,7 @@ import { BookingPaymentComponent }         from './booking/booking-payment.compo
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
+import { BookingReceiveComponent }         from './booking/booking-receive.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -193,6 +194,7 @@ import { AdminService }                    from './admin.service';
 		CrmRoleComponent,
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
+		BookingReceiveComponent,
 	],
 	providers: [
 		AdminService,

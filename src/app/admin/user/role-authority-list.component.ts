@@ -20,6 +20,7 @@ export class RoleAuthorityListComponent{
 	};
     id: string;
     authorityList: any[];
+    role: string;
 
     constructor(
         public adminService: AdminService,
@@ -41,6 +42,8 @@ export class RoleAuthorityListComponent{
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
         });
+
+		this.role = sessionStorage.getItem('role');
 
         this.authorityList = [];
         var urlOptions = '?username=' + this.adminService.getUser().username

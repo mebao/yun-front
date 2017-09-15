@@ -38,7 +38,7 @@ export class CrmRoleListComponent{
 	ngOnInit(): void {
 		this.topBar = {
 			title: '角色管理',
-			back: true,
+			back: false,
 		}
 		this.toast = {
 			show: 0,
@@ -53,7 +53,7 @@ export class CrmRoleListComponent{
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -121,6 +121,7 @@ export class CrmRoleListComponent{
 	}
 
 	updateAuthority(role) {
+		sessionStorage.setItem('role', role.name);
 		this.router.navigate(['./admin/roleAuthorityList'], {queryParams: {id: role.id}});
 	}
 

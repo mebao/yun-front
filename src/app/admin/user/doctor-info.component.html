@@ -5,39 +5,48 @@
 		<div class="content admin-doctor-info">
 			<top-bar [data]="topBar"></top-bar>
 			<div *ngIf="hasDoctor">
-				<div class="info-tab">
-					<div class="pure-g">
-						<div class="pure-u-12-24 left-tab pad10">
-							<div class="flex">
-								<div class="img-tab mr10">
-									<img src="{{info.avatarUrl}}">
-								</div>
-								<div class="flex-1">
-									<div>{{info.doctorName}}</div>
-									<div>{{info.cTitle}}</div>
-									<div>{{info.aTitle}}</div>
-									<div>{{info.description}}</div>
+				<div class="pure-g left-right-tab">
+					<div class="pure-u-1-5 left-tab pr20">
+						<div class="flex">
+							<div class="flex-1"></div>
+							<div class="img-tab-default">
+								<img src="{{info.avatarUrl}}">
+							</div>
+							<div class="flex-1"></div>
+						</div>
+						<div class="item">{{info.doctorName}}</div>
+						<div class="item">{{info.cTitle}}</div>
+						<div class="item">{{info.aTitle}}</div>
+						<div class="item text">{{info.description}}</div>
+					</div>
+					<div class="pure-u-4-5 right-tab">
+						<div class="second-bar-tab flex">
+							<div (click)="changeSelected('1')" class="item" [ngClass]="{'active': selectedTab == '1'}">本周预约</div>
+							<div (click)="changeSelected('2')" class="item" [ngClass]="{'active': selectedTab == '2'}">排班</div>
+						</div>
+						<div *ngIf="selectedTab == '1'" class="tab">
+							<div *ngFor="let booking of bookingList">
+								<div *ngIf="booking.booking.length > 0" class="section">
+									<div class="title">
+										{{booking.week}}
+										{{booking.day}}
+									</div>
+									<div class="list-item">
+										<div (click)="goInfo(service.bookingId)" class="item cursor-p" *ngFor="let service of booking.booking">
+											<span>{{service.time}}</span>
+											<span>{{service.serviceName}}</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="pure-u-12-24"></div>
-					</div>
-				</div>
-				<div class="pure-g list-tab mt10">
-					<div class="pure-u-2-5 pad10">
-						<div class="service-item" *ngFor="let service of servicelist">
-							<span>{{service.serviceName}}：</span>
-							<span>{{service.fee}}元</span>
-						</div>
-					</div>
-					<div class="pure-u-3-5 pad10">
-						<div *ngFor="let duty of dutylist">
-							<div class="flex duty-item">
-								<div class="date pr10">
+						<div *ngIf="selectedTab == '2'" class="tab">
+							<div *ngFor="let duty of dutylist" class="section">
+								<div class="title">
 									<span>{{duty.weekDay}}</span>
 									<span>{{duty.dutyDate}}</span>
 								</div>
-								<div class="flex-1">
+								<div class="list-item">
 									<div class="item" *ngFor="let item of duty.list">
 										<span>{{item.date}}</span>
 										<span>{{item.use}}</span>

@@ -33,30 +33,32 @@
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div class="">
-				<div *ngIf="list.length > 0" class="list-tab mt10">
-					<div class="list-bar pure-g">
-						<div class="pure-u-2-24 item"></div>
-						<div class="pure-u-5-24 item">药品</div>
-						<div class="pure-u-2-24 item">单位</div>
-						<div class="pure-u-2-24 item">类型</div>
-						<div class="pure-u-2-24 item">报损数量</div>
-						<div class="pure-u-7-24 item">报损原因</div>
-						<div class="pure-u-4-24 item">总费用</div>
-					</div>
-					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first; let itemIndex=index;">
-						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
-							<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? (itemIndex + 1) : ''}}</div>
-								<div class="pure-u-5-24 item">{{info.msName}}</div>
-								<div class="pure-u-2-24 item">{{info.unit}}</div>
-								<div class="pure-u-2-24 item">{{info.typeText}}</div>
-								<div class="pure-u-2-24 item">{{info.num}}</div>
-								<div class="pure-u-7-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.remark : ''}}</div>
-								<div class="pure-u-4-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.fee : ''}}</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th></th>
+							<th>药品</th>
+							<th>单位</th>
+							<th>类型</th>
+							<th>报损数量</th>
+							<th>报损原因</th>
+							<th>总费用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let item of list; let indexItem=index;">
+							<tr *ngFor="let info of item.info; let indexInfo=index;">
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{indexItem + 1}}</td>
+								<td>{{info.msName}}</td>
+								<td>{{info.unit}}</td>
+								<td>{{info.typeText}}</td>
+								<td>{{info.num}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.remark}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
 				<div *ngIf="hasData && list.length == 0" class="mt10">
 					<nodata title="未查询到报损信息"></nodata>
 				</div>

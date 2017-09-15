@@ -105,10 +105,13 @@ export class BookingAddServiceComponent{
 
 	//切换医生
 	doctorChange() {
+		var today = this.adminService.getDayByDate(new Date());
+		this.doctorDutys = [];
 		var doctor = JSON.parse(this.bookingInfo.user_doctor);
 		this.bookingInfo.fee = doctor.fee;
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
+				//追加服务，只能追加当天的服务
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
 			}
 		}

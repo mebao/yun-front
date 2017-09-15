@@ -1,4 +1,7 @@
 import { Component }                    from '@angular/core';
+import { Router }                       from '@angular/router';
+
+import { AdminService }                 from '../admin/admin.service';
 
 @Component({
 	selector: 'app-no-permissions',
@@ -6,5 +9,15 @@ import { Component }                    from '@angular/core';
 	styleUrls: ['./no-permissions.component.scss'],
 })
 export class NoPermissionsComponent{
+	constructor(
+		public adminService: AdminService,
+		private router: Router,
+	) {}
 
+	logout() {
+		this.adminService.delCookie('user');
+		sessionStorage.removeItem('userClinicRoles');
+		sessionStorage.removeItem('userClinicRolesInfos');
+		this.router.navigate(['./login']);
+	}
 }

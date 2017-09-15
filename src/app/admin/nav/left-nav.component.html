@@ -31,6 +31,12 @@
 			登记
 		</a>
 	  	<a
+			*ngIf="clinicRole.bookingReceive.use != ''"
+			routerLink="../bookingReceive"
+			routerLinkActive="active">
+				接诊
+		</a>
+	  	<a
 			*ngIf="clinicRole.bookingCharge.use != ''"
 			routerLink="../bookingCharge"
 			routerLinkActive="active">

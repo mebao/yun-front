@@ -16,8 +16,8 @@
 							<th>诊室类型</th>
 							<th>诊室编号</th>
 							<th>坐诊专家</th>
-							<th>就诊用户</th>
 							<th>就诊小孩</th>
+							<th>就诊用户</th>
 							<th>使用情况</th>
 							<th>分配专家</th>
 							<th>分配患者</th>
@@ -32,8 +32,10 @@
 							<td>{{condition.typeText}}</td>
 							<td>{{condition.roomNo}}</td>
 							<td>{{condition.doctorName}}</td>
+							<td>
+								<button *ngIf="condition.childId && condition.childId != ''" (click)="bookingReceive(condition)" class="pure-button pure-button-primary">{{condition.childName}}</button>
+							</td>
 							<td>{{condition.userName}}</td>
-							<td>{{condition.childName}}</td>
 							<td>{{condition.canUse == 1 ? '未使用' : '使用中...'}}</td>
 							<td>
 								<!-- 分配专家 -->
@@ -86,7 +88,7 @@
 					</tbody>
 				</table>
 				<div *ngIf="hasData && conditions.length == 0" class="mt10">
-					<nodata title="未查询到诊室信息"></nodata>
+					<nodata title="未查询到您的就诊信息，请联系前台分配患者"></nodata>
 				</div>
 			</div>
 		</div>

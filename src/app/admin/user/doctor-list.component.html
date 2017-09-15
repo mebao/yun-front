@@ -11,10 +11,10 @@
 							<th>头像</th>
 							<th>姓名</th>
 							<th>性别</th>
-							<th>地区</th>
 							<th>学术职称</th>
 							<th>医生职称</th>
 							<th>简介</th>
+							<th>科室</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -25,20 +25,22 @@
 									<img src="{{doctor.avatarUrl}}">
 								</div>
 							</td>
-							<td>{{doctor.name}}</td>
-							<td>{{doctor.gender}}</td>
-							<td>{{doctor.stateName}}{{doctor.cityName}}</td>
-							<td>{{doctor.academicalTitle}}</td>
-							<td>{{doctor.clinicalTitle}}</td>
+							<td>{{doctor.realName}}</td>
+							<td>{{doctor.doctorProfile.gender == 'F' ? '女' : '男'}}</td>
+							<td>{{doctor.doctorProfile.atitleText}}</td>
+							<td>{{doctor.doctorProfile.ctitleText}}</td>
 							<td class="w30">
-								<div class="description">{{doctor.description}}</div>
+								<div class="description">{{doctor.doctorProfile.description}}</div>
+							</td>
+							<td>
+								<div *ngFor="let service of doctor.serviceList">{{service.serviceName}}</div>
 							</td>
 							<td>
 								<div *ngIf="moduleAuthority.service">
-									<button (click)="showService(doctor.doctor_id)" class="pure-button pure-button-primary">查看服务</button>
+									<button (click)="showService(doctor.id)" class="pure-button pure-button-primary">查看服务</button>
 								</div>
 								<div *ngIf="moduleAuthority.scheduling" [ngClass]="{'pt10': moduleAuthority.service}">
-									<button (click)="showInfo(doctor.doctor_id)" class="pure-button pure-button-primary">服务排班</button>
+									<button (click)="showInfo(doctor.id)" class="pure-button pure-button-primary">服务排班</button>
 								</div>
 							</td>
 						</tr>

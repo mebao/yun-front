@@ -27,11 +27,16 @@ export class CrmUserListComponent{
 	}
 	hasData: boolean;
 	adminlist: any[];
-	role: string;
 	modalConfirmTab: boolean;
 	selector: {
 		id: string,
 		text: string,
+	}
+	url: string;
+	clinicRoleList: any[];
+	searchInfo: {
+		role: string,
+		clinic_role: string,
 	}
 
 	constructor(
@@ -42,13 +47,17 @@ export class CrmUserListComponent{
 	ngOnInit(): void {
 		this.topBar = {
 			title: '后台用户列表',
-			back: true,
+			back: false,
 		}
 		this.toast = {
 			show: 0,
 			text: '',
 			type: '',
 		};
+
+		this.url = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		// 权限
 		this.moduleAuthority = {
@@ -59,7 +68,7 @@ export class CrmUserListComponent{
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().clinicRoleId == '0'){
+		if(this.adminService.getUser().role == '0'){
 			for(var key in this.moduleAuthority){
 				this.moduleAuthority[key] = true;
 			}
@@ -73,21 +82,32 @@ export class CrmUserListComponent{
 		this.hasData = false;
 
 		this.adminlist = [];
-		this.role = '';
 		this.modalConfirmTab = false;
 		this.selector = {
 			id: '',
 			text: '',
 		}
+		this.searchInfo = {
+			role: '',
+			clinic_role: '',
+		}
 
-		this.getData();
+		this.search();
+
+		//获取角色列表
+		this.clinicRoleList = [];
+		var clinicroleUrl = this.url + '&status=1';
+		this.adminService.clinicrolelist(clinicroleUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.clinicRoleList = results.list;
+			}
+		});
 	}
 
-	getData() {
-		var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + (this.role == '' ? '' : ('&role=' + this.role));
+	getData(urlOptions) {
 		this.adminService.adminlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -103,8 +123,15 @@ export class CrmUserListComponent{
 		this.router.navigate(['./admin/crmUser'], {queryParams: {type: 'create'}});
 	}
 
-	roleChange() {
-		this.getData();
+	search() {
+		var urlOptions = this.url;
+		if(this.searchInfo.role != ''){
+			urlOptions += '&role=' + this.searchInfo.role;
+		}
+		if(this.searchInfo.clinic_role != ''){
+			urlOptions += '&clinic_role_id=' + this.searchInfo.clinic_role;
+		}
+		this.getData(urlOptions);
 	}
 
 	delete(_id) {
@@ -127,7 +154,7 @@ export class CrmUserListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				this.toastTab('删除成功', '');
-				this.getData();
+				this.search();
 			}
 		})
 	}

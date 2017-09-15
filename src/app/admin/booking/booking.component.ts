@@ -302,6 +302,8 @@ export class BookingComponent implements OnInit{
 		var list = [];
 		var todayTimeNum = Number(new Date().getHours() + '' + new Date().getMinutes());
 		if(date.timeList.length > 0){
+			//给时间排序
+			date.timeList.sort(function(a,b){return Number(a.replace(':', '')) - Number(b.replace(':', ''))});
 			for(var i = 0; i < date.timeList.length; i++){
 				var time = date.timeList[i];
 				var use = true;

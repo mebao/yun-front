@@ -2,7 +2,7 @@
 	<left-nav></left-nav>
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
-		<div class="content admin-clinicroom">
+		<div class="content admin-member">
 			<top-bar [data]="topBar"></top-bar>
 			<div>
 				<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
@@ -26,7 +26,12 @@
 									<label for="service">
 										<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同）</span>
 									</label>
-									<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入服务折扣" required="">
+									<div class="flex flex-tab">
+										<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入服务折扣" required="" class="flex-1">
+										<select disabled class="w40p">
+											<option>%</option>
+										</select>
+									</div>
 									<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
 										<div [hidden]="!service.errors.required">
 											服务折扣不可为空
@@ -39,7 +44,12 @@
 									<label for="check">
 										<span>检查折扣</span>
 									</label>
-									<input type="number" id="check" name="check" #check="ngModel" [(ngModel)]="memberInfo.check" placeholder="请输入检查折扣" required="">
+									<div class="flex flex-tab">
+										<input type="number" id="check" name="check" #check="ngModel" [(ngModel)]="memberInfo.check" placeholder="请输入检查折扣" required="" class="flex-1">
+										<select disabled class="w40p">
+											<option>%</option>
+										</select>
+									</div>
 									<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
 										<div [hidden]="!check.errors.required">
 											检查折扣不可为空
@@ -52,7 +62,12 @@
 									<label for="prescript">
 										<span>药品折扣</span>
 									</label>
-									<input type="number" id="prescript" name="prescript" #prescript="ngModel" [(ngModel)]="memberInfo.prescript" placeholder="请输入药品折扣" required="">
+									<div class="flex flex-tab">
+										<input type="number" id="prescript" name="prescript" #prescript="ngModel" [(ngModel)]="memberInfo.prescript" placeholder="请输入药品折扣" required="" class="flex-1">
+										<select disabled class="w40p">
+											<option>%</option>
+										</select>
+									</div>
 									<div *ngIf="prescript.errors && (prescript.dity || prescript.touched)" class="alert alert-danger">
 										<div [hidden]="!prescript.errors.required">
 											药品折扣不可为空
@@ -65,7 +80,12 @@
 									<label for="other">
 										<span>其他折扣</span>
 									</label>
-									<input type="number" id="other" name="other" #other="ngModel" [(ngModel)]="memberInfo.other" placeholder="请输入其他折扣" required="">
+									<div class="flex flex-tab">
+										<input type="number" id="other" name="other" #other="ngModel" [(ngModel)]="memberInfo.other" placeholder="请输入其他折扣" required="" class="flex-1">
+										<select disabled class="w40p">
+											<option>%</option>
+										</select>
+									</div>
 									<div *ngIf="other.errors && (other.dity || other.touched)" class="alert alert-danger">
 										<div [hidden]="!other.errors.required">
 											其他折扣不可为空
