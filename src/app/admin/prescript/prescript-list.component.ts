@@ -90,6 +90,11 @@ export class PrescriptListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].infoLength = results.list[i].info.length;
+					}
+				}
 				this.list = results.list;
 				this.hasData = true;
 			}

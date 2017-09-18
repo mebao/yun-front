@@ -45,40 +45,41 @@
 				<button (click)="search(f)" class="pure-button pure-button-primary">搜索</button>
 			</form>
 			<div class="">
-				<div *ngIf="list.length > 0" class="list-tab mt10">
-					<div class="list-bar pure-g">
-						<div class="pure-u-3-24 item">药方名</div>
-						<div class="pure-u-2-24 item">就诊医生</div>
-						<div class="pure-u-2-24 item">用户名</div>
-						<div class="pure-u-2-24 item">小孩名</div>
-						<div class="pure-u-3-24 item">日期</div>
-						<div class="pure-u-3-24 item">备注</div>
-						<div class="pure-u-3-24 item">药品名</div>
-						<div class="pure-u-2-24 item">药品单位</div>
-						<div class="pure-u-2-24 item">药品数量</div>
-						<div class="pure-u-2-24 item">操作</div>
-					</div>
-					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first;">
-						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
-							<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.name : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.doctorName : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.userName : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.childName : ''}}</div>
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.date : ''}}</div>
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.remark : ''}}</div>
-								<div class="pure-u-3-24 item">{{info.pname}}</div>
-								<div class="pure-u-2-24 item">{{info.unit}}</div>
-								<div class="pure-u-2-24 item">{{info.num}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
-									<span *ngIf="!infoFirst"></span>
-									<span *ngIf="infoFirst && item.apotId">-</span>
-									<button *ngIf="moduleAuthority.edit && infoFirst && (!item.apotId)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>药方名</th>
+							<th>就诊医生</th>
+							<th>用户名</th>
+							<th>小孩名</th>
+							<th>日期</th>
+							<th>备注</th>
+							<th>药品名</th>
+							<th>药品单位</th>
+							<th>药品数量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let item of list;">
+							<tr *ngFor="let info of item.info; let indexInfo=index;">
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.remark}}</td>
+								<td>{{info.pname}}</td>
+								<td>{{info.unit}}</td>
+								<td>{{info.num}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+									<span *ngIf="item.apotId">-</span>
+									<button *ngIf="moduleAuthority.edit && (!item.apotId)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
 				<div *ngIf="hasData && list.length == 0" class="mt10">
 					<nodata title="未查询到药方信息"></nodata>
 				</div>

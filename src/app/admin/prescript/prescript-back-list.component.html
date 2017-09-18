@@ -32,39 +32,41 @@
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div class="">
-				<div *ngIf="list.length > 0" class="list-tab mt10">
-					<div class="list-bar pure-g">
-						<div class="pure-u-3-24 item">药方名</div>
-						<div class="pure-u-2-24 item">就诊医生</div>
-						<div class="pure-u-2-24 item">用户名</div>
-						<div class="pure-u-2-24 item">小孩名</div>
-						<div class="pure-u-3-24 item">日期</div>
-						<div class="pure-u-3-24 item">备注</div>
-						<div class="pure-u-3-24 item">药品名</div>
-						<div class="pure-u-2-24 item">药品单位</div>
-						<div class="pure-u-2-24 item">退药数量</div>
-						<div class="pure-u-2-24 item">操作</div>
-					</div>
-					<div *ngFor="let item of list; let itemLast=last; let itemFirst=first;">
-						<div *ngFor="let info of item.info; let infoLast=last; let infoFirst=first;">
-							<div class="list-info pure-g" [ngClass]="{'last': itemLast && infoLast}">
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.name : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.doctorName : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.userName : ''}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.childName : ''}}</div>
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.date : ''}}</div>
-								<div class="pure-u-3-24 item" [ngClass]="{'noButtom': !infoLast}">{{infoFirst ? item.remark : ''}}</div>
-								<div class="pure-u-3-24 item">{{info.pname}}</div>
-								<div class="pure-u-2-24 item">{{info.unit}}</div>
-								<div class="pure-u-2-24 item">{{info.back_num}}</div>
-								<div class="pure-u-2-24 item" [ngClass]="{'noButtom': !infoLast}">
-									<span *ngIf="moduleAuthority.editBack && infoFirst && (item.isBack == '2')">已退药</span>
-									<button *ngIf="moduleAuthority.editBack && infoFirst && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>药方名</th>
+							<th>就诊医生</th>
+							<th>用户名</th>
+							<th>小孩名</th>
+							<th>日期</th>
+							<th>备注</th>
+							<th>药品名</th>
+							<th>药品单位</th>
+							<th>退药数量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let item of list;">
+							<tr *ngFor="let info of item.info; let indexInfo=index;">
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.remark}}</td>
+								<td>{{info.pname}}</td>
+								<td>{{info.unit}}</td>
+								<td>{{info.back_num}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+									<span *ngIf="moduleAuthority.editBack && (item.isBack == '2')">已退药</span>
+									<button *ngIf="moduleAuthority.editBack && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
 				<div *ngIf="hasData && list.length == 0" class="mt10">
 					<nodata title="未查询到退药信息"></nodata>
 				</div>
