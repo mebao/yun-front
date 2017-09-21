@@ -21,6 +21,7 @@ import { NodataComponent }                 from '../common/nodata/nodata.compone
 //common
 import { DropDownComponent }               from '../common/dropdown/dropdown.component';
 import { SelectSearchComponent }           from '../common/form/select-search.component';
+import { SelectDateComponent }             from '../common/form/select-date.component';
 
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
@@ -100,6 +101,7 @@ import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 import { BookingReceiveComponent }         from './booking/booking-receive.component';
+import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
 
 import { AdminService }                    from './admin.service';
 
@@ -195,6 +197,8 @@ import { AdminService }                    from './admin.service';
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
 		BookingReceiveComponent,
+		SelectDateComponent,
+		BookingHealthrecordComponent,
 	],
 	providers: [
 		AdminService,

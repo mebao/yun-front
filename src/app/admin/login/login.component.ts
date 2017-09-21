@@ -25,7 +25,7 @@ export class LoginComponent{
 	}
 	clinicRole: {
 		//前台工作台
-		workerPanel: {
+		workbenchReception: {
 			use: string,
 			authority: any[],
 			infos: any[],
@@ -188,7 +188,7 @@ export class LoginComponent{
 		}
 
 		this.clinicRole = {
-			workerPanel: {
+			workbenchReception: {
 				use: '',
 				authority: ['workerPanel'],
 				infos: [],

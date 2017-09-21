@@ -75,7 +75,6 @@ export class SchedulingComponent{
 			{key: '22:30', value: '22:30'},
 			{key: '23:00', value: '23:00'},
 			{key: '23:30', value: '23:30'},
-			{key: '00:00', value: '00:00'},
 		];
 		this.dutylist = [{id: 1, use: true}];
 	}
@@ -221,7 +220,6 @@ export class SchedulingComponent{
 			{key: 29, value: '22:30', use: true},
 			{key: 30, value: '23:00', use: true},
 			{key: 31, value: '23:30', use: true},
-			{key: 32, value: '00:00', use: true},
 		]
 		//构造时间段
 		var dutylist = [];

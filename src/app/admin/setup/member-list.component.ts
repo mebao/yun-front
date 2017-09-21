@@ -29,6 +29,7 @@ export class MemberListComponent{
 		name: string,
 		status: string,
 	}
+	serviceList: any[];
 
 	constructor(
 		private adminService: AdminService,
@@ -76,7 +77,17 @@ export class MemberListComponent{
 			status: '',
 		}
 
-		this.search();
+		// 获取诊所服务
+		this.serviceList = [];
+		this.adminService.clinicservices(this.url).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.serviceList = results.servicelist;
+				this.search();
+			}
+		});
 	}
 
 	search() {
@@ -96,6 +107,33 @@ export class MemberListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				// 通过诊所服务构造会员折扣
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						var serviceDiscountList = [];
+						// 便利诊所服务
+						if(this.serviceList.length > 0){
+							for(var j = 0; j < this.serviceList.length; j++){
+								var serviceDiscount = {
+									serviceId: this.serviceList[j].serviceId,
+									serviceName: this.serviceList[j].serviceName,
+									discount: '',
+								};
+								// 便利会员下所有服务折扣
+								if(results.list[i].services.length > 0){
+									for(var k = 0; k < results.list[i].services.length; k++){
+										// 通过serviceId,查找discount
+										if(results.list[i].services[k].serviceId == this.serviceList[j].serviceId){
+											serviceDiscount.discount = results.list[i].services[k].discount;
+										}
+									}
+								}
+								serviceDiscountList.push(serviceDiscount);
+							}
+						}
+						results.list[i].serviceDiscountList = serviceDiscountList;
+					}
+				}
 				this.memberList = results.list;
 				this.hasData = true;
 			}

@@ -57,6 +57,7 @@ export class BookingPaymentComponent{
 		member: boolean,
 		balance: string,
 		service: string,
+		services: any[],
 		check: string,
 		prescript: string,
 		other: string,
@@ -106,6 +107,7 @@ export class BookingPaymentComponent{
 			member: false,
 			balance: '0.00',
 			service: '1.00',
+			services: [],
 			check: '1.00',
 			prescript: '1.00',
 			other: '1.00',
@@ -147,6 +149,7 @@ export class BookingPaymentComponent{
 									var memberResults = JSON.parse(JSON.stringify(memberData.results));
 									if(memberResults.list.length > 0){
 										this.userMember.service = this.adminService.toDecimal2(Number(memberResults.list[0].service) / 100);
+										this.userMember.services = memberResults.list[0].services;
 										this.userMember.check = this.adminService.toDecimal2(Number(memberResults.list[0].check) / 100);
 										this.userMember.prescript = this.adminService.toDecimal2(Number(memberResults.list[0].prescript) / 100);
 										this.userMember.other = this.adminService.toDecimal2(Number(memberResults.list[0].other) / 100);
@@ -166,6 +169,21 @@ export class BookingPaymentComponent{
 	}
 
 	getFeeInfo(userMember, results) {
+		if(results.feeinfo['医生服务费用'].length > 0){
+			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
+				var serviceDiscount = '';
+				// 便利会员折扣
+				if(userMember.services.length > 0){
+					for(var j = 0; j < userMember.services.length; j++){
+						// 通过serviceId
+						if(results.feeinfo['医生服务费用'][i].serviceId == userMember.services[j].serviceId){
+							serviceDiscount = this.adminService.toDecimal2(Number(userMember.services[j].discount) / 100);
+						}
+					}
+				}
+				results.feeinfo['医生服务费用'][i].serviceDiscount = serviceDiscount;
+			}
+		}
 		this.fee = {
 			canPay: results.canPay,
 			feeInfo: {
@@ -185,7 +203,8 @@ export class BookingPaymentComponent{
 		var serviceFee = 0;
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
-				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(userMember.service);
+				// 如果具体服务折扣存在，则以具体服务折扣计算，否则以默认服务折扣计算
+				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userMember.service);
 			}
 		}
 		fee += parseFloat(this.adminService.toDecimal2(serviceFee));

@@ -2,16 +2,16 @@
 	<left-nav></left-nav>
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
-		<div class="content admin-clinicroom">
+		<div class="content admin-inspect-resutls">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="pure-g">
-				<div class="pure-u-1-5 booking-tab">
-					<div class="img-tab">
+			<div class="pure-g left-right-tab">
+				<div class="pure-u-1-5 left-tab pr20">
+					<div class="img-tab-default">
 						<img src="{{bookingInfo.imageUrl}}">
 					</div>
-					<div>{{bookingInfo.childName}}</div>
+					<div class="item">{{bookingInfo.childName}}</div>
 				</div>
-				<div class="pure-u-4-5">
+				<div class="pure-u-4-5 right-tab">
 					<div class="second-bar-tab flex">
 						<div class="item" (click)="changeTab(check.id)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
 					</div>

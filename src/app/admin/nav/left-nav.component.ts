@@ -12,7 +12,7 @@ export class LeftNavComponent{
 	userRole: string;
 	clinicRole: {
 		//前台工作台
-		workerPanel: {
+		workbenchReception: {
 			use: string,
 			authority: any[],
 			infos: any[],
@@ -160,7 +160,7 @@ export class LeftNavComponent{
 		this.userRole = this.adminService.getUser().role;
 
 		this.clinicRole = {
-			workerPanel: {
+			workbenchReception: {
 				use: '',
 				authority: ['workerPanel'],
 				infos: [],

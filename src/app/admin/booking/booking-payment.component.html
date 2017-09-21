@@ -26,20 +26,24 @@
 							<table class="pure-table pure-table-horizontal w100">
 								<thead>
 									<tr>
-										<th>科室</th>
+										<th>类型</th>
+										<th>服务</th>
+										<th>折扣</th>
 										<th>费用</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr *ngFor="let service of fee.feeInfo.serviceFeeList">
 										<td>{{service.projectName}}</td>
+										<td>{{service.serviceName}}</td>
+										<td>{{service.serviceDiscount}}</td>
 										<td>{{service.fee}}</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">折扣：{{userMember.service}}</td>
+										<td colspan="4" class="text-right">默认折扣（若具体服务折扣未设置，则以默认折扣收费）：{{userMember.service}}</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">费用：{{fee.feeInfo.serviceFee}}</td>
+										<td colspan="4" class="text-right">费用：{{fee.feeInfo.serviceFee}}</td>
 									</tr>
 								</tbody>
 							</table>

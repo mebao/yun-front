@@ -28,6 +28,9 @@
 						<tr>
 							<th>会员名</th>
 							<th>服务折扣</th>
+							<ng-container *ngFor="let service of serviceList">
+								<th>{{service.serviceName}}(服务)</th>
+							</ng-container>
 							<th>检查折扣</th>
 							<th>药品折扣</th>
 							<th>其他折扣</th>
@@ -39,6 +42,9 @@
 						<tr *ngFor="let member of memberList">
 							<td>{{member.name}}</td>
 							<td>{{member.service}}%</td>
+							<ng-container *ngFor="let serviceDiscount of member.serviceDiscountList">
+								<td>{{serviceDiscount.discount}}</td>
+							</ng-container>
 							<td>{{member.check}}%</td>
 							<td>{{member.prescript}}%</td>
 							<td>{{member.other}}%</td>

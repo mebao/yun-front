@@ -102,6 +102,18 @@ export class BookingConfirmComponent{
 			{key: '16:30'},
 			{key: '17:00'},
 			{key: '17:30'},
+			{key: '18:00'},
+			{key: '18:30'},
+			{key: '19:00'},
+			{key: '19:30'},
+			{key: '20:00'},
+			{key: '20:30'},
+			{key: '21:00'},
+			{key: '21:30'},
+			{key: '22:00'},
+			{key: '22:30'},
+			{key: '23:00'},
+			{key: '23:30'},
 		];
 
 		this.getDoctorList();
@@ -181,6 +193,18 @@ export class BookingConfirmComponent{
 							{key: '16:30', value: []},
 							{key: '17:00', value: []},
 							{key: '17:30', value: []},
+							{key: '18:00', value: []},
+							{key: '18:30', value: []},
+							{key: '19:00', value: []},
+							{key: '19:30', value: []},
+							{key: '20:00', value: []},
+							{key: '20:30', value: []},
+							{key: '21:00', value: []},
+							{key: '21:30', value: []},
+							{key: '22:00', value: []},
+							{key: '22:30', value: []},
+							{key: '23:00', value: []},
+							{key: '23:30', value: []},
 						]
 					}
 					for(var j = 0; j < week.timeList.length; j++){

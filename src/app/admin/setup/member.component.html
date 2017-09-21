@@ -21,7 +21,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-u-8-24"></div>
+							<div class="pure-u-8-24"></div>
+							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group">
 									<label for="service">
 										<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同）</span>
@@ -39,7 +41,22 @@
 									</div>
 								</div>
 							</div>
-							<div class="pure-u-8-24 pl10">
+							<ng-container *ngFor="let service of serviceList; let index=index;">
+								<div class="pure-u-8-24" [ngClass]="{'pl5 pr5': (index % 3 == 0), 'pl10': (index % 3 == 1), 'pr10': (index % 3 == 2)}">
+									<div class="pure-control-group">
+										<label for="service_{{service.serviceId}}">{{service.serviceName}}服务折扣</label>
+										<div class="flex flex-tab">
+											<input type="number" id="service_{{service.serviceId}}" name="service_{{service.serviceId}}" [(ngModel)]="service.discount" placeholder="请输入{{service.serviceName}}服务折扣" required="" class="flex-1">
+											<select disabled class="w40p">
+												<option>%</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</ng-container>
+						</div>
+						<div class="pure-g">
+							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group">
 									<label for="check">
 										<span>检查折扣</span>
@@ -57,7 +74,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="pure-u-8-24 pr10">
+							<div class="pure-u-8-24 pl5 pr5">
 								<div class="pure-control-group">
 									<label for="prescript">
 										<span>药品折扣</span>
@@ -75,7 +92,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-u-8-24 pl10">
 								<div class="pure-control-group">
 									<label for="other">
 										<span>其他折扣</span>
@@ -93,7 +110,7 @@
 									</div>
 								</div>
 							</div>
-							<div *ngIf="editType == 'update'" class="pure-u-8-24 pl10">
+							<div *ngIf="editType == 'update'" class="pure-u-8-24 pr10">
 								<div class="pure-control-group">
 									<label for="status">
 										<span>状态</span>

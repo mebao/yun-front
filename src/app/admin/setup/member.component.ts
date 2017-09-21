@@ -28,6 +28,7 @@ export class MemberComponent{
 	}
 	id: string;
 	editType: string;
+	serviceList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -51,6 +52,34 @@ export class MemberComponent{
 			this.id = params.id;
 		});
 
+		this.editType = '';
+		this.memberInfo = {
+			name: '',
+			service: '',
+			check: '',
+			prescript: '',
+			other: '',
+			status: '',
+		}
+
+		// 获取诊所服务
+		this.serviceList = [];
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.clinicservices(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.serviceList = results.servicelist;
+
+				this.reset();
+			}
+		});
+	}
+
+	reset() {
 		if(this.id && this.id != ''){
 			this.editType = 'update';
 			var member = JSON.parse(sessionStorage.getItem('memberInfo'));
@@ -61,6 +90,20 @@ export class MemberComponent{
 				prescript: member.prescript,
 				other: member.other,
 				status: member.status,
+			}
+
+			// 便利诊所服务
+			if(this.serviceList.length > 0){
+				for(var i = 0; i < this.serviceList.length; i++){
+					// 便利会员服务
+					if(member.serviceDiscountList.length > 0){
+						for(var j = 0; j < member.serviceDiscountList.length; j++){
+							if(this.serviceList[i].serviceId == member.serviceDiscountList[j].serviceId){
+								this.serviceList[i].discount = member.serviceDiscountList[j].discount;
+							}
+						}
+					}
+				}
 			}
 		}else{
 			this.editType = 'create';
@@ -87,6 +130,26 @@ export class MemberComponent{
 		if(Number(f.value.service) < 0 || Number(f.value.service) > 100){
 			this.toastTab('服务折扣应在0至100之间', 'error');
 			return;
+		}
+		var mslist = [];
+		if(this.serviceList.length > 0){
+			for(var i = 0; i < this.serviceList.length; i++){
+				var key = 'service_' + this.serviceList[i].serviceId;
+				if(!f.value[key] || f.value[key] == ''){
+					this.toastTab(this.serviceList[i].serviceName + '服务折扣不能为空', 'error');
+					return;
+				}
+				if(Number(f.value[key]) < 0 || Number(f.value[key]) > 100){
+					this.toastTab(this.serviceList[i].serviceName + '服务折扣应在0至100之间', 'error');
+					return;
+				}
+				var ms = {
+					service_id: this.serviceList[i].serviceId,
+					service_name: this.serviceList[i].serviceName,
+					discount: f.value[key],
+				}
+				mslist.push(ms);
+			}
 		}
 		if(f.value.check == ''){
 			this.toastTab('检查折扣不能为空', 'error');
@@ -123,6 +186,7 @@ export class MemberComponent{
 				check: f.value.check,
 				prescript: f.value.prescript,
 				other: f.value.other,
+				mslist: mslist,
 			}
 			this.adminService.addmember(params).then((data) => {
 				if(data.status == 'no'){
@@ -144,6 +208,7 @@ export class MemberComponent{
 				check: f.value.check,
 				prescript: f.value.prescript,
 				other: f.value.other,
+				mslist: mslist,
 				status: f.value.status,
 			}
 			this.adminService.updatemember(this.id, updateParams).then((data) => {

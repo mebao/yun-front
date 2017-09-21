@@ -10,7 +10,7 @@
 					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
 					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
 				</div>
-				<button (click)="copyPrec()" class="pure-button pure-button-primary">复制上周排版</button>
+				<button *ngIf="weekNum >= 0" (click)="copyPrec()" class="pure-button pure-button-primary">复制上周排版</button>
 			</div>
 			<div class="list-tab mt10">
 				<div class="pure-g title-tab">

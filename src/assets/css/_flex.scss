@@ -6,6 +6,9 @@
 	display: -ms-flex;
 	display: flex;
 }
+.flex-wrap{
+	flex-wrap: wrap;
+}
 .flex-1{
 	-webkit-box-flex: 1;
 	-moz-box-flex: 1;

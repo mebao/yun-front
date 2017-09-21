@@ -17,7 +17,7 @@
 						<div class="item">{{info.doctorName}}</div>
 						<div class="item">{{info.cTitle}}</div>
 						<div class="item">{{info.aTitle}}</div>
-						<div class="item text">{{info.description}}</div>
+						<div *ngIf="info.description != ''" class="item text">{{info.description}}</div>
 					</div>
 					<div class="pure-u-4-5 right-tab">
 						<div class="second-bar-tab flex">
@@ -25,19 +25,24 @@
 							<div (click)="changeSelected('2')" class="item" [ngClass]="{'active': selectedTab == '2'}">排班</div>
 						</div>
 						<div *ngIf="selectedTab == '1'" class="tab">
-							<div *ngFor="let booking of bookingList">
-								<div *ngIf="booking.booking.length > 0" class="section">
-									<div class="title">
-										{{booking.week}}
-										{{booking.day}}
-									</div>
-									<div class="list-item">
-										<div (click)="goInfo(service.bookingId)" class="item cursor-p" *ngFor="let service of booking.booking">
-											<span>{{service.time}}</span>
-											<span>{{service.serviceName}}</span>
+							<div *ngIf="bookingList.length > 0">
+								<div *ngFor="let booking of bookingList">
+									<div *ngIf="booking.booking.length > 0" class="section">
+										<div class="title">
+											{{booking.week}}
+											{{booking.day}}
+										</div>
+										<div class="list-item">
+											<div (click)="goInfo(service.bookingId)" class="item cursor-p" *ngFor="let service of booking.booking">
+												<span>{{service.time}}</span>
+												<span>{{service.serviceName}}</span>
+											</div>
 										</div>
 									</div>
 								</div>
+							</div>
+							<div *ngIf="hasData && bookingList.length == 0" class="mt10">
+								<nodata title="未查询到预约信息"></nodata>
 							</div>
 						</div>
 						<div *ngIf="selectedTab == '2'" class="tab">

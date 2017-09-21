@@ -856,6 +856,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 创建小孩儿保记录
+	private healthrecordUrl = this.url + '/mebcrm/healthrecord';
+	healthrecord(urlOptions, params): Promise<Data>{
+		return this.http.post(this.healthrecordUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查看小孩儿保记录
+	private searchhealthrecordUrl = this.url + '/mebcrm/searchhealthrecord';
+	searchhealthrecord(urlOptions): Promise<Data>{
+		return this.http.get(this.searchhealthrecordUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	// 删除检查
 	private deleteusercheckUrl = this.url + '/mebcrm/deleteusercheck/';
 	deleteusercheck(urlOptions): Promise<Data>{

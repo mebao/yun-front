@@ -97,6 +97,9 @@ export class DoctorBookingComponent implements OnInit{
 	//病例
 	casehistoryList: any[];
 	hasCasehistoryData: boolean;
+	// 儿保记录
+	healthrecordList: any[];
+	hasHealthrecordData: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -233,6 +236,20 @@ export class DoctorBookingComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.casehistoryList = results.list;
 				this.hasCasehistoryData = true;
+			}
+		});
+
+		// 儿保记录
+		this.healthrecordList = [];
+		this.hasHealthrecordData = false;
+		var healthrecordUrl = this.url + '&booking_id=' + this.id;
+		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.healthrecordList = results.list;
+				this.hasHealthrecordData = true;
 			}
 		});
 
@@ -595,6 +612,19 @@ export class DoctorBookingComponent implements OnInit{
 		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
 		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update'}});
+	}
+
+	// 新增儿保记录
+	addHealthrecord() {
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		this.router.navigate(['./admin/bookingHealthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+	}
+
+	// 修改儿保记录
+	updateHealthrecord(healthrecord) {
+		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		sessionStorage.setItem('healthrecord', JSON.stringify(healthrecord));
+		this.router.navigate(['./admin/bookingHealthrecord'], {queryParams: {id: this.id, doctor: this.doctorId, childId: this.booking.childId, type: 'update'}});
 	}
 
 	toastTab(text, type) {

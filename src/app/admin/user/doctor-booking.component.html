@@ -36,6 +36,7 @@
 						<div (click)="changeTab('5')" [ngClass]="{'active': selectedTab == '5'}" class="item">随访</div>
 						<div (click)="changeTab('6')" [ngClass]="{'active': selectedTab == '6'}" class="item">成长记录</div>
 						<div (click)="changeTab('7')" [ngClass]="{'active': selectedTab == '7'}" class="item">病例</div>
+						<div (click)="changeTab('8')" [ngClass]="{'active': selectedTab == '8'}" class="item">儿保记录</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '3'}" class="tab">
 						<table *ngIf="checkDataList.length > 0" class="pure-table w100">
@@ -357,6 +358,32 @@
 						</div>
 						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
 							<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病例</button>
+						</div>
+					</div>
+					<div [ngClass]="{'hidden': selectedTab != '8'}" class="tab">
+						<table *ngIf="healthrecordList.length > 0" class="pure-table w100">
+							<thead>
+								<tr>
+									<th></th>
+									<th>小孩</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let healthrecord of healthrecordList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{index + 1}}</td>
+									<td>{{healthrecord.childName}}</td>
+									<td>
+										<button (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt10">
+							<nodata title="未查询到儿保记录"></nodata>
+						</div>
+						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20">
+							<button (click)="addHealthrecord()" class="pure-button pure-button-primary">新增儿保记录</button>
 						</div>
 					</div>
 				</div>
