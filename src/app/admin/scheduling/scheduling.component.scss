@@ -24,6 +24,9 @@
 					&:last-child{
 						border-right: none;
 					}
+					&.name{
+						word-break: break-all;
+					}
 				}
 				.scheduling-tab{
 					.edit{

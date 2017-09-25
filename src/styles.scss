@@ -150,6 +150,15 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
+.search-tab{
+    label{
+        width: 50px;
+    }
+    select, input{
+        width: 140px;
+    }
+}
+
 .card-tab{
 	.info{
 		background-color: #39A99D;
@@ -236,16 +245,6 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	.space-line{
 		width: 50px;
 		padding: 8px 20px;
-	}
-}
-
-/*创建预约*/
-.admin-create-booking-page{
-	input, select{
-		width: 100%;
-	}
-	label{
-		padding: 5px 0;
 	}
 }
 

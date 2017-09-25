@@ -1,0 +1,24 @@
+.admin-create-booking{
+    .time-list{
+        .item{
+            display: inline-block;
+            border: 1px solid #efefef;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            &.disabled{
+                cursor: not-allowed;
+            }
+            &.active{
+                .radioTab{
+                    background-color: #173267;
+                }
+            }
+            .radioTab{
+                width: 20px;
+                height: 20px;
+                border: 2px solid #efefef;
+            }
+        }
+    }
+}

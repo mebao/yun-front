@@ -5,7 +5,8 @@ import { AdminService }                             from '../admin.service';
 
 @Component({
 	selector: 'app-create-booking',
-	templateUrl : './booking.component.html'
+	templateUrl : './booking.component.html',
+	styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit{
 	topBar: {
@@ -62,6 +63,12 @@ export class BookingComponent implements OnInit{
 		childId: string,
 		childName: string,
 	};
+	// 已选中一些预约信息
+	urlSelected: {
+		serviceId: string,
+		doctorId: string,
+		date: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -99,6 +106,12 @@ export class BookingComponent implements OnInit{
 			childId: '',
 			childName: '',
 		}
+		this.urlSelected = {
+			serviceId: '',
+			doctorId: '',
+			date: '',
+		}
+		this.timelist = [];
 
 		//修改
 		this.route.queryParams.subscribe((params) => {
@@ -106,6 +119,11 @@ export class BookingComponent implements OnInit{
 			this.listChild = {
 				childId: params.childId,
 				childName: sessionStorage.getItem('childList-childName'),
+			}
+			this.urlSelected = {
+				serviceId: params.serviceId,
+				doctorId: params.doctorId,
+				date: params.date,
 			}
 		});
 		if(this.id){
@@ -173,11 +191,20 @@ export class BookingComponent implements OnInit{
 				if(results.servicelist.length > 0){
 					for(var i = 0; i < results.servicelist.length; i++){
 						results.servicelist[i].string = JSON.stringify(results.servicelist[i]);
+						//修改
 						if(this.editType == 'update' && this.booking.services[0].serviceId == results.servicelist[i].serviceId){
-							//修改
 							this.bookingInfo.service = results.servicelist[i].string;
 							if(this.bookingInfo.type == 'ZJ'){
 								this.serviceChange(this.bookingInfo.service);
+							}
+						}
+						// 预约时，已选定服务
+						if(this.editType == 'create' && this.urlSelected.serviceId && this.urlSelected.serviceId != ''){
+							if(this.urlSelected.serviceId == results.servicelist[i].serviceId){
+								this.bookingInfo.service = results.servicelist[i].string;
+								if(this.bookingInfo.type == 'ZJ'){
+									this.serviceChange(this.bookingInfo.service);
+								}
 							}
 						}
 					}
@@ -268,10 +295,17 @@ export class BookingComponent implements OnInit{
 				if(results.doctors.length > 0){
 					for(var i = 0; i < results.doctors.length; i++){
 						results.doctors[i].string = JSON.stringify(results.doctors[i]);
+						//修改
 						if(this.editType == 'update' && results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
-							//修改
 							this.bookingInfo.user_doctor = results.doctors[i].string;
 							this.doctorChange();
+						}
+						// 预约时，已选定医生
+						if(this.editType == 'create' && this.urlSelected.doctorId && this.urlSelected.doctorId != ''){
+							if(results.doctors[i].doctorId == this.urlSelected.doctorId){
+								this.bookingInfo.user_doctor = results.doctors[i].string;
+								this.doctorChange();
+							}
 						}
 					}
 				}
@@ -286,10 +320,17 @@ export class BookingComponent implements OnInit{
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
+				//修改
 				if(this.editType == 'update' && doctor.doctorDutys[i].dutyDate == this.booking.bookingDate){
-					//修改
 					this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
 					this.dateChange();
+				}
+				// 预约时，已选定医生
+				if(this.editType == 'create' && this.urlSelected.date && this.urlSelected.date != ''){
+					if(doctor.doctorDutys[i].dutyDate == this.urlSelected.date){
+						this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
+						this.dateChange();
+					}
 				}
 			}
 		}
@@ -336,6 +377,12 @@ export class BookingComponent implements OnInit{
 		}
 	}
 
+	// 选择时间
+	selectTime(time) {
+		if(time.use){
+			this.bookingInfo.timeInfo = time.value;
+		}
+	}
 
 	//切换小孩
 	onVoted(_value) {
@@ -398,7 +445,7 @@ export class BookingComponent implements OnInit{
 			this.toastTab('预约日期不可为空', 'error');
 			return;
 		}
-		if(f.value.time == ''){
+		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
 			return;
 		}
@@ -431,7 +478,7 @@ export class BookingComponent implements OnInit{
 			user_doctor_id: f.value.type == 'PT' ? null : JSON.parse(f.value.user_doctor).doctorId,
 			user_doctor_name: f.value.type == 'PT' ? null : (this.editType == 'update' ? null : JSON.parse(f.value.user_doctor).doctorName),
 			booking_date: JSON.parse(f.value.booking_date).dutyDate,
-			time: f.value.time,
+			time: this.bookingInfo.timeInfo,
 			creator_id: JSON.parse(this.bookingInfo.creator).id,
 			creator_name: JSON.parse(this.bookingInfo.creator).name,
 			mobile: JSON.parse(this.bookingInfo.creator).mobile,

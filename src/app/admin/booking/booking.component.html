@@ -2,12 +2,12 @@
 	<left-nav></left-nav>
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
-		<div class="content admin-create-booking-page">
+		<div class="content admin-create-booking">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="pure-g">
 				<div class="pure-u-1-5"></div>
 				<div class="pure-u-3-5">
-					<form #f="ngForm" class="pure-form pure-form-stacked">
+					<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 						<fieldset>
 							<!-- <div class="pure-control-group">
 								<label for="type">预约类型</label>
@@ -90,17 +90,17 @@
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
 								<label for="time">预约时间段</label>
-								<select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel" required="">
+								<div *ngIf="timelist.length > 0" class="time-list">
 									<ng-container *ngFor="let time of timelist">
-										<option value="{{time.value}}" *ngIf="time.use">{{time.value}}</option>
-										<option value="{{time.value}}" *ngIf="!time.use" disabled="">{{time.value}}{{time.type}}</option>
+										<div (click)="selectTime(time)" class="item" [ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': !time.use}">
+											<div class="flex">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">{{time.value}}{{time.use ? '' : time.type}}</div>
+											</div>
+										</div>
 									</ng-container>
-								</select>
-								<div *ngIf="timeInfo.errors && (timeInfo.dity || timeInfo.touched)" class="alert alert-danger">
-									<div [hidden]="!timeInfo.errors.required">
-										预约时间段不可为空
-									</div>
 								</div>
+								<div *ngIf="timelist.length == 0">尚未选择预约日期或该预约日期下暂无可预约时间</div>
 							</div>
 							<div *ngIf="editType != 'update' && !listChild.childId" class="pure-control-group">
 								<label for="child">预约小孩</label>

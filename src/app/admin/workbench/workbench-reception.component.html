@@ -4,19 +4,38 @@
 		<header-nav></header-nav>
 		<div class="content admin-workbench-reception">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="second-title">医生排班信息</div>
-			<div class="flex">
+			<div class="second-title">排班信息</div>
+			<div class="flex pure-form search-tab">
 				<div class="flex-1">
 					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
 					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
 					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
 				</div>
+				<div class="pure-control-group mr10">
+					<label for="doctor">医生：</label>
+					<select id="doctor" name="doctor" [(ngModel)]="searchInfo.doctor">
+						<option value="">请选择医生</option>
+						<ng-container *ngFor="let doctor of doctorList">
+							<option [value]="doctor.string">{{doctor.realName}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="service">服务：</label>
+					<select id="service" name="service" [(ngModel)]="searchInfo.service">
+						<option value="">请选择服务</option>
+						<ng-container *ngFor="let service of serviceList">
+							<option [value]="service.string">{{service.serviceName}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div class="list-tab mt10">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
-					<div class="pure-u-1-24 title">医生</div>
-					<div class="pure-u-3-24 title" *ngFor="let title of weektitle">
+					<div class="pure-u-1-24 title">姓名</div>
+					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 						<span class="pr5">{{title.title}}</span>
 						<span>{{title.date}}</span>
 					</div>
@@ -26,8 +45,8 @@
 						<div class="pure-u-2-24 img-tab pad10 text-center">
 							<img src="{{scheduling.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20">{{scheduling.realName}}</div>
-						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling">
+						<div class="pure-u-1-24 info text-center pt20 name">{{scheduling.realName}}</div>
+						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 							<div *ngFor="let config of day.dutyConfigList">
 								{{config}}
 							</div>
@@ -36,18 +55,18 @@
 				</div>
 			</div>
 			<div class="second-title">医生预约信息</div>
-			<div class="flex">
+			<!-- <div class="flex">
 				<div class="flex-1">
 					<button (click)="precBooking()" class="pure-button pure-button-primary">上一周</button>
 					<button (click)="nowBooking()" class="pure-button pure-button-primary">本周</button>
 					<button (click)="nextBooking()" class="pure-button pure-button-primary">下一周</button>
 				</div>
-			</div>
-			<div class="list-tab mt10">
+			</div> -->
+			<div *ngIf="doctorBookingList.length > 0" class="list-tab mt10">
 				<div class="pure-g title-tab">
 					<div class="pure-u-2-24 title"></div>
 					<div class="pure-u-1-24 title">医生</div>
-					<div class="pure-u-3-24 title" *ngFor="let title of weekBookingTitle">
+					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 						<span class="pr5">{{title.title}}</span>
 						<span>{{title.date}}</span>
 					</div>
@@ -57,41 +76,96 @@
 						<div class="pure-u-2-24 img-tab pad10 text-center">
 							<img src="{{doctorBooking.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20">{{doctorBooking.doctorName}}</div>
-						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of doctorBooking.bookingWeekList">
-							<span (click)="showBooking(day)" *ngIf="day.num != '0'">{{day.num}}</span>
+						<div class="pure-u-1-24 info text-center pt20 name">{{doctorBooking.doctorName}}</div>
+						<div class="pure-u-3-24 info pad10 pt20 text-center flex" *ngFor="let day of doctorBooking.bookingWeekList; let index=index;" [ngClass]="{'active': index % 2 == 1}">
+							<div class="flex-1"></div>
+							<!-- 当天无预约时，只展示排班信息 -->
+							<div *ngIf="day.bookingList.length == 0" (click)="showBooking(day, doctorBooking, 'duty')" class="hoverTab edit mr10">排班</div>
+							<!-- 当天有预约，同事展示预约详情和排班信息 -->
+							<div (click)="showBooking(day, doctorBooking, 'all')" *ngIf="day.num != '0'" class="edit mr10">{{day.num}}</div>
+							<div (click)="goBooking(doctorBooking, day)" class="hoverTab edit">预约</div>
+							<div class="flex-1"></div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div *ngIf="hasDoctorBookingData && doctorBookingList.length == 0">
+				<nodata title="未查询到预约信息"></nodata>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提醒</div>
+		<div class="content pad10">
+			{{modalConfirm.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
 		</div>
 	</div>
 </div>
 <div class="modal" *ngIf="modalTab">
 	<div class="modal-mask" (click)="close()"></div>
 	<div class="container">
-		<div class="title">预约信息</div>
+		<div class="title">{{selected.doctor}}信息</div>
 		<div class="content pad10">
-			<table class="pure-table pure-table-horizontal w100">
-				<thead>
-					<tr>
-						<th>预约服务</th>
-						<th>预约时间</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr (click)="info(showBooking.bookingId)" *ngFor="let showBooking of showBookinglist">
-						<td>{{showBooking.serviceName}}</td>
-						<td>
-							<span>{{showBooking.bookingDate}}</span>
-							<span>{{showBooking.time}}</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div *ngIf="selected.type == 'all'" class="second-bar-tab flex">
+				<div (click)="changeSelected('1')" class="item" [ngClass]="{'active': selected.tab == '1'}">本周预约</div>
+				<div (click)="changeSelected('2')" class="item" [ngClass]="{'active': selected.tab == '2'}">排班</div>
+			</div>
+			<div class="mt10">
+				<div *ngIf="selected.tab == '1'">
+					<table class="pure-table pure-table-horizontal w100">
+						<thead>
+							<tr>
+								<th>预约服务</th>
+								<th>小孩姓名</th>
+								<th>家长姓名</th>
+								<th>手机号码</th>
+								<th>预约时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let showBooking of showBookinglist">
+								<td>{{showBooking.serviceName}}</td>
+								<td>{{showBooking.childName}}</td>
+								<td>{{showBooking.childName}}</td>
+								<td>{{showBooking.mobile}}</td>
+								<td>
+									<span>{{showBooking.bookingDate}}</span>
+									<span>{{showBooking.time}}</span>
+								</td>
+								<td>
+									<button (click)="info(showBooking.bookingId)" class="pure-button pure-button-primary">详情</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div *ngIf="selected.tab == '2'" class="left-right-tab">
+					<div class="right-tab">
+						<div *ngFor="let duty of doctorDutyList" class="section">
+							<div class="title">
+								<span>{{duty.weekDay}}</span>
+								<span>{{duty.dutyDate}}</span>
+							</div>
+							<div class="list-item">
+								<div class="item" *ngFor="let item of duty.list">
+									<span>{{item.date}}</span>
+									<span>{{item.use}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="close()" class="pure-button">关闭</button>
 		</div>
 	</div>
 </div>

@@ -3,16 +3,23 @@
 		border: 1px solid #efefef;
 		.title-tab{
 			.title{
+				text-align: center;
 				padding: 5px;
 				border-right: 1px solid #efefef;
 				&:last-child{
 					border-right: none;
+				}
+				&.active{
+					background-color: #e4e4e4;
 				}
 			}
 		}
 		.doctor-list{
 			.item{
 				border-top: 1px solid #efefef;
+				&:hover{
+					background-color: #e4e4e4;
+				}
 				.img-tab{
 					border-right: 1px solid #efefef;
 					img{
@@ -26,14 +33,48 @@
 					&:last-child{
 						border-right: none;
 					}
-					span{
-					    padding: 0 15px;
+					&.active{
+						background-color: #e4e4e4;
+					}
+					&.name{
+						word-break: break-all;
+					}
+					.hoverTab{
+						display: none;
+					}
+					&:hover{
+						.hoverTab{
+							display: inherit;
+						}
+					}
+					.edit{
+					    padding: 5px 15px;
 					    border-radius: 4px;
 					    background-color: #D9534F;
 					    color: #efefef;
 					    cursor: pointer;
 					}
 				}
+			}
+		}
+	}
+}
+
+.modal{
+	.right-tab{
+		overflow-x: hidden;
+		overflow-y: auto;
+		max-height: 300px;
+		.list-item{
+			padding: 5px 10px;
+			.item{
+				display: inline-block;
+				background-color: #39A99D;
+				padding: 5px 10px;
+				color: #fff;
+				border-radius: 4px;
+				margin-right: 10px;
+				margin-bottom: 10px;
 			}
 		}
 	}
