@@ -7,9 +7,9 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	// private url = 'http://192.168.31.200/jiabaokangle';
+	private url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
-	private url = 'http://wapapi.meb168.com';
+	// private url = 'http://wapapi.meb168.com';
 
 	constructor(
 		private http: Http,
@@ -892,7 +892,7 @@ export class AdminService{
 		//当天日期
 		var nowDate = new Date();
 		//当天为周几
-		var nowDay = nowDate.getDay();
+		var nowDay = (nowDate.getDay() == 0 ? 7 : nowDate.getDay());
 		//周当天日期
 		var weekNowDate = new Date(nowDate.getTime() + (value * 7 * 24 * 60 * 60 * 1000));
 		//周日期列表

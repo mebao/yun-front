@@ -46,7 +46,7 @@
 .container{
 	height: 100%;
 	.left-nav{
-		width: 130px;
+		width: 10em;
 		height: 100%;
 		background-color: #173267;
 		overflow-x: hidden;
@@ -75,14 +75,14 @@
 			border-bottom: 1px solid #D9DEE4;
 			.title{
 				line-height: 50px;
-				font-size: 18px;
+				font-size: 1.3em;
 				padding: 0 20px;
 				color: #173267;
 			}
 			.right-tab .item{
 				display: inline-block;
 				line-height: 50px;
-				font-size: 18px;
+				font-size: 1.3em;
 				padding: 0 20px;
 				color: #173267;
 			}
@@ -102,7 +102,6 @@
         .item{
             padding: 10px 0;
             border-bottom: 1px solid #d4d4d4;
-            font-size: 14px;
             text-align: justify;
             &.text{
                 text-indent: 28px;
@@ -132,7 +131,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	input[type="text"], input[type="number"], input[type="date"], input[type="tel"], select{
 		width: 100%;
 	}
-    select{
+    select, input{
         height: 2.5em;
     }
 	input[type="radio"]{
@@ -187,7 +186,6 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 
 .second-title{
 	color: #173267;
-	font-size: 14px;
 	padding: 10px 0;
 	border-bottom: 1px solid #efefef;
 	margin-bottom: 10px;
@@ -198,7 +196,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	.form-tab{
 		/*border: 1px solid #efefef;*/
 		.title{
-			font-size: 24px;
+			font-size: 1.5em;
 			color: #173267;
 			padding: 20px;
 		}
@@ -318,7 +316,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 				.info{
 					background-color: #D45D5D;
 					color: #fff;
-					height: 140px;
+					height: 180px;
 					overflow-x: hidden;
 					overflow-y: auto;
 					.status{
@@ -502,7 +500,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	.content{
 		margin-top: 100px;
 		.info{
-			font-size: 24px;
+			font-size: 1.5em;
 		}
 	}
 }
