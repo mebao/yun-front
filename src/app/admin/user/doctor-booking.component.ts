@@ -470,7 +470,7 @@ export class DoctorBookingComponent implements OnInit{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			booking_id: this.id,
-			check_id: JSON.parse(f.value.check).id,
+			check_id: JSON.parse(f.value.check).project_id,
 			check_name: JSON.parse(f.value.check).name,
 		}
 		this.adminService.usercheckproject(params).then((data) => {
