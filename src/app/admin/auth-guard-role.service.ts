@@ -68,7 +68,12 @@ export class AuthGuardRole implements CanActivate{
 					}
 					sessionStorage.setItem('userClinicRoles', JSON.stringify(resultsUserClinicRoles));
 				}
-				return this.checkRole(url);
+				if((url.indexOf('noPermissions') != -1) || (url.indexOf('admin/home') != -1)){
+					this.router.navigate(['.' + url]);
+					return false;
+				}else{
+					return this.checkRole(url);
+				}
 			});
 		}
 	}
@@ -76,7 +81,7 @@ export class AuthGuardRole implements CanActivate{
 	//筛选模块，病将二级权限存储到sessionStorage中
 	checkRole(url: string): boolean{
 		//根据url筛选权限
-		if(url.indexOf('noPermissions') != -1){
+		if((url.indexOf('noPermissions') != -1) || (url.indexOf('admin/home') != -1)){
 			return true;
 		}else{
 			//sessionStorage中userClinicRolesInfos是否为当前url，若是，则无需权限判断
@@ -85,7 +90,7 @@ export class AuthGuardRole implements CanActivate{
 			}else{
 				var authorityList = [
 					{
-						firstKey: 'workerPanel',
+						firstKey: 'workbenchReception',
 						firstUrl: 'workbenchReception',
 						second: [
 							{
@@ -209,6 +214,13 @@ export class AuthGuardRole implements CanActivate{
 							// 病例
 							{
 								url: '/admin/bookingCasehistory',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
+							// 儿保记录
+							{
+								url: '/admin/bookingHealthrecord',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
@@ -577,7 +589,13 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'info',
 								queryType: '',
 								queryParams: '',
-							}
+							},
+							{
+								url: '/admin/booking',
+								authority: 'booking',
+								queryType: 'type',
+								queryParams: 'createChildList',
+							},
 						]
 					},
 					{
@@ -684,6 +702,7 @@ export class AuthGuardRole implements CanActivate{
 					},
 				];
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+
 				var authority = {
 					firstKey: '',
 					url: '',
@@ -716,6 +735,7 @@ export class AuthGuardRole implements CanActivate{
 						}
 					}
 				}
+
 				//根据一级权限筛选路由
 				//没有该模块权限，重定向到无权限页面
 				if(authority.firstKey == ''){

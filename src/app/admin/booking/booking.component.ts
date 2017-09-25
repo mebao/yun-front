@@ -105,7 +105,7 @@ export class BookingComponent implements OnInit{
 			this.id = params['id'];
 			this.listChild = {
 				childId: params.childId,
-				childName: params.childName,
+				childName: sessionStorage.getItem('childList-childName'),
 			}
 		});
 		if(this.id){

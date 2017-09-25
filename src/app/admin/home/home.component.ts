@@ -2,8 +2,18 @@ import { Component }            from '@angular/core';
 
 @Component({
 	selector: 'app-home',
-	template: '<h1>Home</h1>'
+	templateUrl: './home.component.html'
 })
 export class HomeComponent{
-	
+	topBar: {
+		title: string,
+		back: boolean,
+	};
+
+	ngOnInit() {
+		this.topBar = {
+			title: '首页',
+			back: false,
+		}
+	}
 }

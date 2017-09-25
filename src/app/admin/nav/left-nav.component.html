@@ -1,6 +1,11 @@
 <div class="left-nav">
 	<nav>
 		<a
+			routerLink="../home"
+			routerLinkActive="active">
+				首页
+		</a>
+		<a
 			*ngIf="clinicRole.workbenchReception.use != ''"
 			routerLink="../workbenchReception"
 			routerLinkActive="active">

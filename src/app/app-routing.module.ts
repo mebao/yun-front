@@ -2,7 +2,7 @@ import { NgModule }                   from '@angular/core';
 import { RouterModule, Routes }       from '@angular/router';
 
 const routes: Routes = [
-	{path: '', redirectTo: '/admin/workbenchReception', pathMatch: 'full'},
+	{path: '', redirectTo: '/admin/home', pathMatch: 'full'},
 ]
 
 @NgModule({

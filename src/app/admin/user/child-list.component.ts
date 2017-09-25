@@ -110,7 +110,8 @@ export class ChildListComponent{
 
 	//预约
 	goBooking(child) {
-		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, childName: child.childName}});
+		sessionStorage.setItem('childList-childName', child.childName);
+		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, type: 'createChildList'}});
 	}
 
 	toastTab(text, type) {
