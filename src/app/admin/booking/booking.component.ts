@@ -224,7 +224,7 @@ export class BookingComponent implements OnInit{
 				for(var i =0; i < results.child.length; i++){
 					results.child[i].string = JSON.stringify(results.child[i]);
 					results.child[i].key = JSON.stringify(results.child[i]);
-					results.child[i].value = results.child[i].childName;
+					results.child[i].value = results.child[i].childName + '(' + results.child[i].mobile + ')';
 				}
 				this.childlist = results.child;
 			}
