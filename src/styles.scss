@@ -139,6 +139,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 	textarea{
 		width: 100%;
+    height:165px;
 	}
 	label{
 		padding: 5px 0;
@@ -264,7 +265,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		.info{
 			background-color: #39A99D;
 			color: #fff;
-			height: 110px;
+			height: 135px;
 			overflow-x: hidden;
 			overflow-y: auto;
 		}
@@ -549,4 +550,13 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	    left: 0;
 	    opacity: 0;
 	}
+}
+
+.pure-table{
+  .lenth-text{
+    max-width: 300px;
+    height:85px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }

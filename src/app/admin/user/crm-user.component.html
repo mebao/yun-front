@@ -156,7 +156,7 @@
 							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group" *ngIf="addDoctor">
 									<label for="description">医生简介</label>
-									<textarea id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
+									<textarea maxlength="500" id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
 								</div>
 							</div>
 						</div>

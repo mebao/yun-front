@@ -32,7 +32,6 @@
 				<div class="flex-1"></div>
 			</div>
 			<div class="flex pure-form mt10">
-				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="cdate_big">创建时间大于：</label>
 					<input type="date" id="cdate_big" name="cdate_big" [(ngModel)]="searchInfo.cdate_big">
@@ -49,6 +48,7 @@
 					<label for="bdate_less">预约时间小于：</label>
 					<input type="date" id="bdate_less" name="bdate_less" [(ngModel)]="searchInfo.bdate_less">
 				</div>
+				<div class="flex-1"></div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div class="bookinglist">

@@ -51,9 +51,9 @@
 							<td>{{followups.childName}}</td>
 							<td>{{followups.upUserName}}</td>
 							<td>{{followups.time}}</td>
-							<td>{{followups.account}}</td>
-							<td>{{followups.remarks}}</td>
-							<td>{{followups.results}}</td>
+							<td><div class="lenth-text">{{followups.account}}</div></td>
+							<td><div class="lenth-text">{{followups.remarks}}</div></td>
+							<td><div class="lenth-text">{{followups.results}}</div></td>
 							<td>{{followups.status}}</td>
 							<td>
 								<button *ngIf="moduleAuthority.edit && (followups.statusCode == '1' || followups.statusCode == '2')" (click)="update(followups)" class="pure-button pure-button-primary">修改</button>
