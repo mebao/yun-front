@@ -170,6 +170,7 @@ export class MedicalPurchaseComponent{
 						one_unit: '',
 						price: '',
 						can_discount: '',
+						is_prescribed: '',
 					}
 					var key = this.mslist[i].key;
 					num++;
@@ -206,6 +207,11 @@ export class MedicalPurchaseComponent{
 						return;
 					}
 					msParams.can_discount = f.value['can_discount_' + key];
+					if(f.value['is_prescribed_' + key] == ''){
+						this.toastTab('第' + num + '条药品处方药类型不可为空', 'error');
+						return;
+					}
+					msParams.is_prescribed = f.value['is_prescribed_' + key];
 					msParamsList.push(msParams);
 				}
 			}

@@ -42,6 +42,7 @@
 							<th>类型</th>
 							<th>入库数量</th>
 							<th>单价</th>
+							<th>处方类型</th>
 							<th>入库时间</th>
 							<th>费用</th>
 							<th>总费用</th>
@@ -57,6 +58,7 @@
 								<td>{{info.typeText}}</td>
 								<td>{{info.num}}</td>
 								<td>{{info.bid}}</td>
+								<td>{{info.isPrescribed == '0' ? '不是' : '是'}}</td>
 								<td>{{item.purshaseTime}}</td>
 								<td>{{info.fee}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>

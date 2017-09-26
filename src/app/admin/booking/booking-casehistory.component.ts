@@ -65,7 +65,7 @@ export class BookingCasehistoryComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '病例',
+			title: '病历',
 			back: true,
 		}
 		this.toast = {
@@ -228,7 +228,7 @@ export class BookingCasehistoryComponent{
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
-					this.toastTab('病例创建成功', '');
+					this.toastTab('病历创建成功', '');
 					setTimeout(() => {
 						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
@@ -239,7 +239,7 @@ export class BookingCasehistoryComponent{
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
-					this.toastTab('病例修改成功', '');
+					this.toastTab('病历修改成功', '');
 					setTimeout(() => {
 						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);

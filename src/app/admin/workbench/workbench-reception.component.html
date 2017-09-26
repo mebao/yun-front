@@ -148,7 +148,9 @@
 				</div>
 				<div *ngIf="selected.tab == '2'" class="left-right-tab">
 					<div class="right-tab">
-						<div *ngIf="doctorDutyList.length==0" class="mb10">请先排班</div>
+						<div *ngIf="doctorDutyList.length == 0">
+							<nodata title="未查询到排班信息，请先排班"></nodata>
+						</div>
 						<div *ngFor="let duty of doctorDutyList" class="section">
 							<div class="title">
 								<span>{{duty.weekDay}}</span>

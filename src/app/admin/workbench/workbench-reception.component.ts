@@ -298,6 +298,8 @@ export class WorkbenchReceptionComponent{
 						for(var i = 0; i < results.doctors[0].doctorDutys.length; i++){
 							var dutylist = [];
 							if(results.doctors[0].doctorDutys[i].timeList.length> 0){
+								//给时间排序
+								results.doctors[0].doctorDutys[i].timeList.sort(function(a,b){return Number(a.replace(':', '')) - Number(b.replace(':', ''))});
 								for(var j = 0; j < results.doctors[0].doctorDutys[i].timeList.length; j++){
 									var duty = {
 										date: results.doctors[0].doctorDutys[i].timeList[j],

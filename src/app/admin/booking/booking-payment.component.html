@@ -40,10 +40,28 @@
 										<td>{{service.fee}}</td>
 									</tr>
 									<tr>
-										<td colspan="4" class="text-right">默认折扣（若具体服务折扣未设置，则以默认折扣收费）：{{userMember.service}}</td>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">原价：</div>
+												<div class="w100p">{{fee.feeInfo.serviceOriginalFee}}</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="4" class="text-right">费用：{{fee.feeInfo.serviceFee}}</td>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">默认折扣（若具体服务折扣未设置，则以默认折扣收费）：</div>
+												<div class="w100p">{{userMember.service}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣后费用：</div>
+												<div class="w100p">{{fee.feeInfo.serviceFee}}</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -65,10 +83,28 @@
 										<td>{{check.fee}}</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">折扣：{{userMember.check}}</td>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">原价：</div>
+												<div class="w100p">{{fee.feeInfo.checkOriginalFee}}</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">费用：{{fee.feeInfo.checkFee}}</td>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣：</div>
+												<div class="w100p">{{userMember.check}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣后费用：</div>
+												<div class="w100p">{{fee.feeInfo.checkFee}}</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -96,10 +132,28 @@
 										</tr>
 									</ng-container>
 									<tr>
-										<td colspan="4" class="text-right">折扣：{{userMember.prescript}}</td>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">原价：</div>
+												<div class="w100p">{{fee.feeInfo.medicalOriginalFee}}</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="4" class="text-right">费用：{{fee.feeInfo.medicalFee}}</td>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣：</div>
+												<div class="w100p">{{userMember.prescript}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣后费用：</div>
+												<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -121,17 +175,44 @@
 										<td>{{other.fee}}</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">折扣：{{userMember.other}}</td>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">原价：</div>
+												<div class="w100p">{{fee.feeInfo.otherOriginalFee}}</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="2" class="text-right">费用：{{fee.feeInfo.otherFee}}</td>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣：</div>
+												<div class="w100p">{{userMember.other}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣后费用：</div>
+												<div class="w100p">{{fee.feeInfo.otherFee}}</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<div class="section">
-						<div class="title text-right">总费用：{{fee.fee}}</div>
+						<div class="title flex">
+							<div class="flex-1 text-right">原价：</div>
+							<div class="w100p">{{fee.originalCost}}</div>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title flex">
+							<div class="flex-1 text-right">折扣后费用：</div>
+							<div class="w100p">{{fee.fee}}</div>
+						</div>
 					</div>
 					<div class="mt10 text-right">
 						<button *ngIf="bookingInfo.status == '5'" class="pure-button">订单已完成</button>

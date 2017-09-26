@@ -44,6 +44,7 @@
 							<th class="th-width">一般用法</th>
 							<th>库存</th>
 							<th>进价</th>
+							<th>处方类型</th>
 							<th>售价</th>
 							<th>是否优惠</th>
 							<th>操作</th>
@@ -59,6 +60,7 @@
 							</td>
 							<td>{{item.stock}}</td>
 							<td>{{item.bid}}</td>
+							<td>{{item.isPrescribed == '0' ? '不是' : '是'}}</td>
 							<td>{{item.price}}</td>
 							<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
 							<td>

@@ -25,6 +25,7 @@ export class MedicalHasComponent{
 		usage: string,
 		stock: string,
 		bid: string,
+		isPrescribed: string,
 		price: string,
 		canDiscount: string,
 		unit: string,
@@ -55,6 +56,7 @@ export class MedicalHasComponent{
 			usage: '',
 			stock: '',
 			bid: '',
+			isPrescribed: '',
 			price: '',
 			canDiscount: '',
 			unit: '',
@@ -119,6 +121,7 @@ export class MedicalHasComponent{
 			usage: f.value.usage,
 			price: f.value.price,
 			can_discount: f.value.canDiscount,
+			is_prescribed: f.value.is_prescribed,
 		}
 
 		this.adminService.updatesupplies(this.info.id, params).then((data) => {
