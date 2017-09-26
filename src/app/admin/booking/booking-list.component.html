@@ -65,7 +65,7 @@
 				<div class="week-tab">
 					<div class="pure-g title-tab">
 						<div class="pure-u-3-24 title"></div>
-						<div class="pure-u-3-24 title" *ngFor="let title of weektitle">
+						<div class="pure-u-3-24 title text-center" *ngFor="let title of weektitle">
 							<span class="pr10">{{title.title}}</span>
 							<span>{{title.date}}</span>
 						</div>
@@ -181,7 +181,7 @@
 			</table>
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="close()" class="pure-button pure-button">关闭</button>
 		</div>
 	</div>
 </div>

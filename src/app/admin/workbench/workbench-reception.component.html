@@ -33,8 +33,8 @@
 			</div>
 			<div class="list-tab mt10">
 				<div class="pure-g title-tab">
-					<div class="pure-u-2-24 title"></div>
-					<div class="pure-u-1-24 title">姓名</div>
+					<div class="pure-u-1-24 title"></div>
+					<div class="pure-u-2-24 title">姓名</div>
 					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 						<span class="pr5">{{title.title}}</span>
 						<span>{{title.date}}</span>
@@ -42,10 +42,10 @@
 				</div>
 				<div class="doctor-list">
 					<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
-						<div class="pure-u-2-24 img-tab pad10 text-center">
+						<div class="pure-u-1-24 img-tab pad10 text-center">
 							<img src="{{scheduling.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20 name">{{scheduling.realName}}</div>
+						<div class="pure-u-2-24 info text-center pt20 name">{{scheduling.realName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 							<div *ngFor="let config of day.dutyConfigList">
 								{{config}}
@@ -64,8 +64,8 @@
 			</div> -->
 			<div *ngIf="doctorBookingList.length > 0" class="list-tab mt10">
 				<div class="pure-g title-tab">
-					<div class="pure-u-2-24 title"></div>
-					<div class="pure-u-1-24 title">医生</div>
+					<div class="pure-u-1-24 title"></div>
+					<div class="pure-u-2-24 title">医生</div>
 					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 						<span class="pr5">{{title.title}}</span>
 						<span>{{title.date}}</span>
@@ -73,10 +73,10 @@
 				</div>
 				<div class="doctor-list">
 					<div class="pure-g item" *ngFor="let doctorBooking of doctorBookingList">
-						<div class="pure-u-2-24 img-tab pad10 text-center">
+						<div class="pure-u-1-24 img-tab pad10 text-center">
 							<img src="{{doctorBooking.avatarUrl}}" />
 						</div>
-						<div class="pure-u-1-24 info text-center pt20 name">{{doctorBooking.doctorName}}</div>
+						<div class="pure-u-2-24 info text-center pt20 name">{{doctorBooking.doctorName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center flex" *ngFor="let day of doctorBooking.bookingWeekList; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 							<div class="flex-1"></div>
 							<!-- 当天无预约时，只展示排班信息 -->
@@ -99,7 +99,7 @@
 	<div class="modal-mask" (click)="closeConfirm()"></div>
 	<div class="container">
 		<div class="title">提醒</div>
-		<div class="content pad10">
+		<div class="content pad10 mt10 mb10">
 			{{modalConfirm.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
@@ -148,6 +148,7 @@
 				</div>
 				<div *ngIf="selected.tab == '2'" class="left-right-tab">
 					<div class="right-tab">
+						<div *ngIf="doctorDutyList.length==0" class="mb10">请先排班</div>
 						<div *ngFor="let duty of doctorDutyList" class="section">
 							<div class="title">
 								<span>{{duty.weekDay}}</span>
