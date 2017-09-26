@@ -28,10 +28,10 @@
 											<th class="w5">序号</th>
 											<th class="w10">项目</th>
 											<th class="w25">检查结果</th>
-											<th class="w15">备注</th>
+											<th class="w15">备注（最多100字）</th>
 											<th class="w5">代码</th>
 											<th class="w5">单位</th>
-											<th class="35">参考值</th>
+											<th class="w35">参考值</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -45,17 +45,19 @@
 												<input type="text" name="values_{{index}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'">
 											</td>
 											<td>
-												<input type="text" name="remark_{{index}}" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'">
+												<textarea name="remark_{{index}}" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
 											</td>
 											<td>{{result.code}}</td>
 											<td>{{result.unit}}</td>
-											<td>{{result.references}}</td>
+											<td>
+												<div class="length-text">{{result.references}}</div>
+											</td>
 										</tr>
 									</tbody>
 								</table>
-								<div class="pt20">
-									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary">修改</button>
-									<button (click)="save(f)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary">保存</button>
+								<div class="pt20 text-center">
+									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary button-max">修改</button>
+									<button (click)="save(f)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max">保存</button>
 								</div>
 							</form>
 						</div>

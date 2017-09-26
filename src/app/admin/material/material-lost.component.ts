@@ -88,7 +88,7 @@ export class MaterialLostComponent{
 			}
 		}
 	}
-	
+
 	create(f) {
 		var mslosts = [];
 		var num = 0;
@@ -107,8 +107,12 @@ export class MaterialLostComponent{
 						return;
 					}
 					lost.sinfo_id = JSON.parse(f.value['ms_' + this.lostlist[i].key]).id;
-					if(f.value['num_' + this.lostlist[i].key] == ''){
+					if(this.adminService.isFalse(f.value['num_' + this.lostlist[i].key])){
 						this.toastTab('第' + num + '条药单数量不可为空', 'error');
+						return;
+					}
+					if(Number(f.value['num_' + this.lostlist[i].key]) <= 0 || Number(f.value['num_' + this.lostlist[i].key]) % 1 != 0){
+						this.toastTab('第' + num + '条药单数量应为大于0的整数', 'error');
 						return;
 					}
 					lost.num = f.value['num_' + this.lostlist[i].key];
@@ -117,12 +121,12 @@ export class MaterialLostComponent{
 						return;
 					}
 					mslosts.push(lost);
-					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).bid) * Number(lost.num); 
+					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).bid) * Number(lost.num);
 				}
 			}
 		}
 		if(f.value.remark == ''){
-			this.toastTab('报损原因不可为空', '');
+			this.toastTab('报损原因不可为空', 'error');
 			return;
 		}
 

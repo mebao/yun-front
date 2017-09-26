@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	private url = 'http://localhost/mebnew';
+	private url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
 	// private url = 'http://wapapi.meb168.com';
 
@@ -995,4 +995,17 @@ export class AdminService{
         return null;
     }
 
+	// 非空
+	isFalse(_value) {
+		switch(_value){
+			case null:
+				return true;
+			case undefined:
+				return true;
+			case '':
+				return true;
+			default:
+				return false;
+		}
+	}
 }

@@ -36,7 +36,7 @@
 							<th>物资类型</th>
 							<th>单位</th>
 							<th>计量单位</th>
-							<th>一般用法</th>
+							<th class="th-width">一般用法</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -46,7 +46,9 @@
 							<td>{{materialSupplie.typeText}}</td>
 							<td>{{materialSupplie.unit}}</td>
 							<td>{{materialSupplie.oneUnit}}</td>
-							<td>{{materialSupplie.usage}}</td>
+							<td>
+								<div class="length-text">{{materialSupplie.usage}}</div>
+							</td>
 							<td>
 								<button *ngIf="moduleAuthority.edit" (click)="update(materialSupplie.id)" class="pure-button pure-button-primary">修改</button>
 							</td>

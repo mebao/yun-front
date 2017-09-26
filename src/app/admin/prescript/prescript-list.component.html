@@ -53,7 +53,7 @@
 							<th>用户名</th>
 							<th>小孩名</th>
 							<th>日期</th>
-							<th>备注</th>
+							<th class="th-width">备注</th>
 							<th>药品名</th>
 							<th>药品单位</th>
 							<th>药品数量</th>
@@ -68,7 +68,9 @@
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.remark}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+									<div class="length-text">{{item.remark}}</div>
+								</td>
 								<td>{{info.pname}}</td>
 								<td>{{info.unit}}</td>
 								<td>{{info.num}}</td>
@@ -95,7 +97,7 @@
 			{{select.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
 			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>

@@ -114,8 +114,12 @@ export class DoctorServiceComponent{
 			this.toastTab('服务不可为空', 'error');
 			return;
 		}
-		if(f.value.fee == ''){
+		if(this.adminService.isFalse(f.value.fee)){
 			this.toastTab('费用不可为空', 'error');
+			return;
+		}
+		if(Number(f.value.fee) <= 0){
+			this.toastTab('费用应大于0', 'error');
 			return;
 		}
 		var params = {

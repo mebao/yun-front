@@ -52,13 +52,13 @@
 							</div>
 							<div class="pure-control-group">
 								<label for="remark">
-									<span>备注</span>
+									<span>备注（最多200字）</span>
 								</label>
-								<textarea type="text" id="remark" name="remark" placeholder="请输入备注"></textarea>
+								<textarea type="text" id="remark" maxlength="200" name="remark" placeholder="请输入备注"></textarea>
 							</div>
 						</fieldset>
 						<div class="text-center">
-							<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary">{{editType == 'create' ? '创建' : '修改'}}</button>
+							<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '创建' : '修改'}}</button>
 						</div>
 					</form>
 				</div>

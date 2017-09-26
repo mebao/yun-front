@@ -182,13 +182,21 @@ export class MaterialPurchaseComponent{
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
-					if(f.value['num_' + key] == ''){
+					if(this.adminService.isFalse(f.value['num_' + key])){
 						this.toastTab('第' + num + '条物资入库数量不可为空', 'error');
 						return;
 					}
+					if(parseFloat(f.value['num_' + key]) <= 0 || Number(f.value['num_' + key]) % 1 != 0){
+						this.toastTab('第' + num + '条物资入库数量应为大于0的整数', 'error');
+						return;
+					}
 					msParams.num = f.value['num_' + key];
-					if(f.value['bid_' + key] == ''){
+					if(this.adminService.isFalse(f.value['bid_' + key])){
 						this.toastTab('第' + num + '条物资进价不可为空', 'error');
+						return;
+					}
+					if(parseFloat(f.value['bid_' + key]) <= 0){
+						this.toastTab('第' + num + '条物资进价应大于0', 'error');
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];

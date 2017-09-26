@@ -96,8 +96,12 @@ export class MaterialHasComponent{
 			this.toastTab('一般用法不可为空', 'error');
 			return;
 		}
-		if(f.value.price == ''){
+		if(this.adminService.isFalse(f.value.price)){
 			this.toastTab('售价不可为空', 'error');
+			return;
+		}
+		if(Number(f.value.price) <= 0){
+			this.toastTab('售价应大于0', 'error');
 			return;
 		}
 		if(f.value.canDiscount == ''){

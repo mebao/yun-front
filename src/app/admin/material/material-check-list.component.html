@@ -45,7 +45,7 @@
 							<th>实际库存</th>
 							<th>偏差值</th>
 							<th>检查时间</th>
-							<th>备注</th>
+							<th class="th-width">备注</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -56,7 +56,9 @@
 							<td>{{item.realityStock}}</td>
 							<td>{{item.deviation}}</td>
 							<td>{{item.checkTime}}</td>
-							<td>{{item.remark}}</td>
+							<td>
+								<div class="length-text">{{item.remark}}</div>
+							</td>
 							<td>
 								<button *ngIf="moduleAuthority.editCheck" (click)="update(item)" class="pure-button pure-button-primary">修改</button>
 							</td>

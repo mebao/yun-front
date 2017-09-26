@@ -132,6 +132,22 @@
 												<label for="nickname_{{child.key}}">昵称</label>
 												<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" ngModel>
 											</div>
+											<div class="pure-control-group pure-u-8-24 pr10">
+												<label for="leg_length_{{child.key}}">腿长</label>
+												<input type="number" id="leg_length_{{child.key}}" name="leg_length_{{child.key}}" placeholder="请输入腿长" [(ngModel)]="child.leg_length">
+											</div>
+											<div class="pure-control-group pure-u-8-24 pl5 pr5">
+												<label for="head_circum_{{child.key}}">头围</label>
+												<input type="number" id="head_circum_{{child.key}}" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
+											</div>
+											<div class="pure-control-group pure-u-8-24 pl10">
+												<label for="waist_circum_{{child.key}}">腰围</label>
+												<input type="number" id="waist_circum_{{child.key}}" name="waist_circum_{{child.key}}" placeholder="请输入腰围" [(ngModel)]="child.waist_circum">
+											</div>
+											<div class="pure-control-group pure-u-8-24 pr10">
+												<label for="breast_circum_{{child.key}}">胸围</label>
+												<input type="number" id="breast_circum_{{child.key}}" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
+											</div>
 										</div>
 									</div>
 								</div>
@@ -142,7 +158,7 @@
 						</div>
 					</fieldset>
 					<div class="text-center">
-						<button (click)="create(f)" class="pure-button pure-button-primary">创建</button>
+						<button (click)="create(f)" class="pure-button pure-button-primary button-max">创建</button>
 					</div>
 				</form>
 			</div>

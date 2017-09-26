@@ -39,7 +39,7 @@
 							<td>{{condition.canUse == 1 ? '未使用' : '使用中...'}}</td>
 							<td>
 								<!-- 分配专家 -->
-								<select *ngIf="!(!moduleAuthority.doctor || (condition.doctorName && condition.doctorId))" name="doctor_{{condition.id}}" ngModel (change)="doctorChange($event.target.value, condition.id)">
+								<select *ngIf="!(!moduleAuthority.doctor || (condition.doctorName && condition.doctorId))" name="doctor_{{condition.id}}" ngModel (change)="doctorChange($event.target.value, condition.id)" class="maxw100p">
 									<ng-container *ngFor="let doctor of doctorlist">
 										<option *ngIf="!doctor.use" disabled="" value="{{doctor.string}}">
 											<span class="mr10">{{doctor.realName}}</span>
@@ -53,7 +53,7 @@
 							</td>
 							<td>
 								<!-- 分配患者 -->
-								<select *ngIf="!(!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName))" name="booking_{{condition.id}}" ngModel (change)="bookingChange($event.target.value, condition.doctorId, condition.id)">
+								<select *ngIf="!(!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName))" name="booking_{{condition.id}}" ngModel (change)="bookingChange($event.target.value, condition.doctorId, condition.id)" class="maxw100p">
 									<ng-container *ngFor="let booking of bookinglist">
 										<ng-container *ngFor="let service of booking.services">
 											<!-- 该预约中该服务已诊断结束 -->

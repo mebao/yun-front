@@ -41,7 +41,7 @@
 							<th>物资</th>
 							<th>单位</th>
 							<th>物资类型</th>
-							<th>一般用法</th>
+							<th class="th-width">一般用法</th>
 							<th>库存</th>
 							<th>进价</th>
 							<th>售价</th>
@@ -54,7 +54,9 @@
 							<td>{{item.name}}</td>
 							<td>{{item.unit}}</td>
 							<td>{{item.typeText}}</td>
-							<td>{{item.usage}}</td>
+							<td>
+								<div class="length-text">{{item.usage}}</div>
+							</td>
 							<td>{{item.stock}}</td>
 							<td>{{item.bid}}</td>
 							<td>{{item.price}}</td>

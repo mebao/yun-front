@@ -274,7 +274,7 @@ export class UserListComponent{
 	}
 
 	confirmCharge() {
-		if(this.selector.amount == ''){
+		if(this.adminService.isFalse(this.selector.amount)){
 			this.toastTab('支付金额不可为空', 'error');
 			return;
 		}
@@ -282,7 +282,7 @@ export class UserListComponent{
 			this.toastTab('支付金额不可为负数', 'error');
 			return;
 		}
-		if(this.selector.give_amount.toString() == ''){
+		if(this.adminService.isFalse(this.selector.give_amount)){
 			this.toastTab('赠送金额不可为空', 'error');
 			return;
 		}

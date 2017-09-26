@@ -113,8 +113,12 @@ export class MaterialCheckComponent{
 	}
 
 	create(f) {
-		if(f.value.reality_stock == ''){
+		if(this.adminService.isFalse(f.value.reality_stock)){
 			this.toastTab('实际库存不可为空', 'error');
+			return;
+		}
+		if(Number(f.value.reality_stock) <= 0 || Number(f.value.reality_stock) % 1 != 0){
+			this.toastTab('实际库存应为大于0的整数', 'error');
 			return;
 		}
 		if(this.editType == 'create'){

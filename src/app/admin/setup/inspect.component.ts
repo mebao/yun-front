@@ -87,8 +87,12 @@ export class SetupInspectComponent{
 				this.toastTab('项目名不可为空', 'error');
 				return;
 			}
-			if(f.value.price == ''){
+			if(this.adminService.isFalse(f.value.price)){
 				this.toastTab('项目价格不可为空', 'error');
+				return;
+			}
+			if(parseFloat(f.value.price) <= 0){
+				this.toastTab('项目价格不可小于等于0', 'error');
 				return;
 			}
 			var params = {
@@ -110,8 +114,12 @@ export class SetupInspectComponent{
 				}
 			});
 		}else{
-			if(f.value.price == ''){
+			if(this.adminService.isFalse(f.value.price)){
 				this.toastTab('项目价格不可为空', 'error');
+				return;
+			}
+			if(parseFloat(f.value.price) <= 0){
+				this.toastTab('项目价格不可小于等于0', 'error');
 				return;
 			}
 			var updateParams = {

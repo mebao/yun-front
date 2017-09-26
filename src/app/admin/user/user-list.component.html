@@ -45,9 +45,9 @@
 							<td>{{user.balance ? user.balance : 0}}</td>
 							<td>
 								<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
-								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button pure-button-primary">删除</button>
 								<button *ngIf="moduleAuthority.member" (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
 								<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
+								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
 							</td>
 						</tr>
 					</tbody>
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button">取消</button>
+			<button (click)="close()" class="pure-button">关闭</button>
 			<button (click)="confirmMember()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>
@@ -115,7 +115,7 @@
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="closeCharge()" class="pure-button">取消</button>
+			<button (click)="closeCharge()" class="pure-button">关闭</button>
 			<button (click)="confirmCharge()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>
@@ -128,7 +128,7 @@
 			{{selector.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">取消</button>
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
 			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>

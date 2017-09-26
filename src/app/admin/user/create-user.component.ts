@@ -208,16 +208,56 @@ export class CreateUserComponent{
 						child['shengxiao'] = f.value['shengxiao_' + this.childlist[i].key];
 					}
 					//判断身高
-					if(f.value['height_' + this.childlist[i].key]){
+					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key]) && parseFloat(f.value['height_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩身高不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key])){
 						child['height'] = f.value['height_' + this.childlist[i].key];
 					}
 					//判断体重
-					if(f.value['weight_' + this.childlist[i].key]){
+					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key]) && parseFloat(f.value['weight_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩体重不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key])){
 						child['weight'] = f.value['weight_' + this.childlist[i].key];
 					}
 					//判断昵称
 					if(f.value['nickname_' + this.childlist[i].key]){
 						child['nickname'] = f.value['nickname_' + this.childlist[i].key];
+					}
+					//判断腿长
+					if(!this.adminService.isFalse(f.value['leg_length_' + this.childlist[i].key]) && parseFloat(f.value['leg_length_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩腿长不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['leg_length_' + this.childlist[i].key])){
+						child['leg_length'] = f.value['leg_length_' + this.childlist[i].key];
+					}
+					//判断头围
+					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key]) && parseFloat(f.value['head_circum_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩头围不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key])){
+						child['head_circum'] = f.value['head_circum_' + this.childlist[i].key];
+					}
+					//判断腰围
+					if(!this.adminService.isFalse(f.value['waist_circum_' + this.childlist[i].key]) && parseFloat(f.value['waist_circum_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩腰围不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['waist_circum_' + this.childlist[i].key])){
+						child['waist_circum'] = f.value['waist_circum_' + this.childlist[i].key];
+					}
+					//判断胸围
+					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key]) && parseFloat(f.value['breast_circum_' + this.childlist[i].key]) <= 0){
+						this.toastTab('小孩胸围不可小于等于0', 'error');
+						return;
+					}
+					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
+						child['breast_circum'] = f.value['breast_circum_' + this.childlist[i].key];
 					}
 					childData.push(child);
 				}

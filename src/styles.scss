@@ -163,6 +163,15 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
     select, input{
         width: 140px;
     }
+    &.max{
+        label{
+            width: 120px;
+            display: inline-block;
+        }
+        select, input{
+            width: 160px;
+        }
+    }
 }
 
 .card-tab{
@@ -558,10 +567,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 }
 
 .pure-table{
-  .lenth-text{
-    max-width: 300px;
-    max-height:85px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+    .th-width{
+        width: 15%;
+    }
+    .length-text{
+        max-height: 100px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }

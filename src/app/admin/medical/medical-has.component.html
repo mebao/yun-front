@@ -40,8 +40,8 @@
 						</div>
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
-								<label for="usage">一般用法</label>
-								<textarea id="usage" name="usage" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
+								<label for="usage">一般用法（最多500字）</label>
+								<textarea id="usage" name="usage" maxlength="500" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
 								<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">
 									<div [hidden]="!usage.errors.required">
 										一般用法不可为空
@@ -79,7 +79,7 @@
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="update(f)" class="pure-button pure-button-primary">修改</button>
+					<button (click)="update(f)" class="pure-button pure-button-primary button-max">修改</button>
 				</div>
 			</form>
 		</div>

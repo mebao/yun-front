@@ -55,12 +55,12 @@
 						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>物资用品</button>
 					</div>
 					<div class="pure-g">
-						<div class="pure-u-8-24">
+						<div class="pure-u-8-24 pr10">
 							<label for="remark">
-								<span>报损原因</span>
+								<span>报损原因（最长200字）</span>
 								<span class="required">*</span>
 							</label>
-							<textarea id="remark" name="remark" #remark="ngModel" [(ngModel)]="lostInfo.remark" placeholder="请输入备注说明" required=""></textarea>
+							<textarea id="remark" name="remark" maxlength="200" #remark="ngModel" [(ngModel)]="lostInfo.remark" placeholder="请输入备注说明" required=""></textarea>
 							<div *ngIf="remark.errors && (remark.dity || remark.touched)" class="alert alert-danger">
 								<div [hidden]="!remark.errors.required">
 									报损原因不可为空
@@ -70,7 +70,7 @@
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create(f)" class="pure-button pure-button-primary">添加</button>
+					<button (click)="create(f)" class="pure-button pure-button-primary button-max">添加</button>
 				</div>
 			</form>
 		</div>

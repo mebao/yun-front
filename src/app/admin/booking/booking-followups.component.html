@@ -35,7 +35,7 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="account">
-									<span>随访内容和原因</span>
+									<span>随访内容和原因（最长200字）</span>
 									<span class="required">*</span>
 								</label>
 								<textarea id="account" maxlength="200" name="account" #account="ngModel" [(ngModel)]="info.account" placeholder="请输入备注说明" required="" [disabled]="editType == 'update'"></textarea>
@@ -48,20 +48,20 @@
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
-								<label for="remarks">备注说明</label>
+								<label for="remarks">备注说明（最长200字）</label>
 								<textarea id="remarks" name="remarks" #remarks="ngModel" [(ngModel)]="info.remarks" placeholder="请输入备注说明"  maxlength="200" [disabled]="editType == 'update'"></textarea>
 							</div>
 						</div>
 						<div *ngIf="editType == 'update'" class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
-								<label for="results">随访结果</label>
+								<label for="results">随访结果（最长200字）</label>
 								<textarea id="results" name="results" #results="ngModel" [(ngModel)]="info.results" placeholder="请输入随访结果" maxlength="200"></textarea>
 							</div>
 						</div>
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create(f)" class="pure-button pure-button-primary">{{editType == 'create' ? '创建' : '修改'}}</button>
+					<button (click)="create(f)" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '创建' : '修改'}}</button>
 				</div>
 			</form>
 		</div>

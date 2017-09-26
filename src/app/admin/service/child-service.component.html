@@ -19,8 +19,8 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
-								<label for="description">服务说明</label>
-								<textarea id="description" [(ngModel)]="childService.description" name="description" #description="ngModel" placeholder="请输入服务说明" required=""></textarea>
+								<label for="description">服务说明（最多200字）</label>
+								<textarea id="description" maxlength="200" [(ngModel)]="childService.description" name="description" #description="ngModel" placeholder="请输入服务说明" required=""></textarea>
 								<div *ngIf="description.errors && (description.dity || description.touched)" class="alert alert-danger">
 									<div [hidden]="!description.errors.required">
 										服务说明不可为空
@@ -29,7 +29,7 @@
 							</div>
 						</fieldset>
 						<div class="text-center">
-							<button (click)="submit(f)" class="pure-button pure-button-primary">提交</button>
+							<button (click)="submit(f)" class="pure-button pure-button-primary button-max">提交</button>
 						</div>
 					</form>
 				</div>

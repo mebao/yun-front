@@ -8,7 +8,8 @@
 				<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 					<fieldset>
 						<div class="pure-g">
-							<div class="pure-u-8-24 pr10">
+							<div class="pure-u-1-5"></div>
+							<div class="pure-u-3-5">
 								<div class="pure-control-group">
 									<label for="name">
 										<span>会员名</span>
@@ -20,10 +21,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="pure-u-8-24"></div>
-							<div class="pure-u-8-24"></div>
-							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group">
 									<label for="service">
 										<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同）</span>
@@ -40,9 +37,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<ng-container *ngFor="let service of serviceList; let index=index;">
-								<div class="pure-u-8-24" [ngClass]="{'pl5 pr5': (index % 3 == 0), 'pl10': (index % 3 == 1), 'pr10': (index % 3 == 2)}">
+								<ng-container *ngFor="let service of serviceList; let index=index;">
 									<div class="pure-control-group">
 										<label for="service_{{service.serviceId}}">{{service.serviceName}}服务折扣</label>
 										<div class="flex flex-tab">
@@ -52,11 +47,7 @@
 											</select>
 										</div>
 									</div>
-								</div>
-							</ng-container>
-						</div>
-						<div class="pure-g">
-							<div class="pure-u-8-24 pr10">
+								</ng-container>
 								<div class="pure-control-group">
 									<label for="check">
 										<span>检查折扣</span>
@@ -73,8 +64,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="pure-u-8-24 pl5 pr5">
 								<div class="pure-control-group">
 									<label for="prescript">
 										<span>药品折扣</span>
@@ -91,8 +80,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="pure-u-8-24 pl10">
 								<div class="pure-control-group">
 									<label for="other">
 										<span>其他折扣</span>
@@ -109,9 +96,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div *ngIf="editType == 'update'" class="pure-u-8-24 pr10">
-								<div class="pure-control-group">
+								<div *ngIf="editType == 'update'" class="pure-control-group">
 									<label for="status">
 										<span>状态</span>
 									</label>
@@ -121,10 +106,11 @@
 									</select>
 								</div>
 							</div>
+							<div class="pure-u-1-5"></div>
 						</div>
 					</fieldset>
 					<div class="text-center">
-						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary">{{editType == 'create' ? '创建' : '修改'}}</button>
+						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '创建' : '修改'}}</button>
 					</div>
 				</form>
 			</div>

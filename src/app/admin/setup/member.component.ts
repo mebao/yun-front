@@ -123,24 +123,24 @@ export class MemberComponent{
 			this.toastTab('会员名不能为空', 'error');
 			return;
 		}
-		if(f.value.service == ''){
+		if(this.adminService.isFalse(f.value.service)){
 			this.toastTab('服务折扣不能为空', 'error');
 			return;
 		}
-		if(Number(f.value.service) < 0 || Number(f.value.service) > 100){
-			this.toastTab('服务折扣应在0至100之间', 'error');
+		if(Number(f.value.service) < 0 || Number(f.value.service) > 100 || (Number(f.value.service) % 1 != 0)){
+			this.toastTab('服务折扣应为大于0小于100的正整数', 'error');
 			return;
 		}
 		var mslist = [];
 		if(this.serviceList.length > 0){
 			for(var i = 0; i < this.serviceList.length; i++){
 				var key = 'service_' + this.serviceList[i].serviceId;
-				if(!f.value[key] || f.value[key] == ''){
+				if(this.adminService.isFalse(f.value[key])){
 					this.toastTab(this.serviceList[i].serviceName + '服务折扣不能为空', 'error');
 					return;
 				}
-				if(Number(f.value[key]) < 0 || Number(f.value[key]) > 100){
-					this.toastTab(this.serviceList[i].serviceName + '服务折扣应在0至100之间', 'error');
+				if(Number(f.value[key]) < 0 || Number(f.value[key]) > 100 || (Number(f.value[key]) % 1 != 0)){
+					this.toastTab(this.serviceList[i].serviceName + '服务折扣应为大于0小于100的正整数', 'error');
 					return;
 				}
 				var ms = {
@@ -151,28 +151,28 @@ export class MemberComponent{
 				mslist.push(ms);
 			}
 		}
-		if(f.value.check == ''){
+		if(this.adminService.isFalse(f.value.check)){
 			this.toastTab('检查折扣不能为空', 'error');
 			return;
 		}
-		if(Number(f.value.check) < 0 || Number(f.value.check) > 100){
-			this.toastTab('检查折扣应在0至100之间', 'error');
+		if(Number(f.value.check) < 0 || Number(f.value.check) > 100 || (Number(f.value.check) % 1 != 0)){
+			this.toastTab('检查折扣应为大于0小于100的正整数', 'error');
 			return;
 		}
-		if(f.value.prescript == ''){
+		if(this.adminService.isFalse(f.value.prescript)){
 			this.toastTab('药品折扣不能为空', 'error');
 			return;
 		}
-		if(Number(f.value.prescript) < 0 || Number(f.value.prescript) > 100){
-			this.toastTab('药品折扣应在0至100之间', 'error');
+		if(Number(f.value.prescript) < 0 || Number(f.value.prescript) > 100 || (Number(f.value.prescript) % 1 != 0)){
+			this.toastTab('药品折扣应为大于0小于100的正整数', 'error');
 			return;
 		}
-		if(f.value.other == ''){
+		if(this.adminService.isFalse(f.value.other)){
 			this.toastTab('其他折扣不能为空', 'error');
 			return;
 		}
-		if(Number(f.value.other) < 0 || Number(f.value.other) > 100){
-			this.toastTab('其他折扣应在0至100之间', 'error');
+		if(Number(f.value.other) < 0 || Number(f.value.other) > 100 || (Number(f.value.other) % 1 != 0)){
+			this.toastTab('其他折扣应为大于0小于100的正整数', 'error');
 			return;
 		}
 

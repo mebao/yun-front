@@ -155,14 +155,14 @@
 							</div>
 							<div class="pure-u-8-24 pr10">
 								<div class="pure-control-group" *ngIf="addDoctor">
-									<label for="description">医生简介</label>
+									<label for="description">医生简介（最多500字）</label>
 									<textarea maxlength="500" id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="text-center">
-						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary mt10">{{editType == 'create' ? '创建' : '修改'}}</button>
+						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10">{{editType == 'create' ? '创建' : '修改'}}</button>
 					</div>
 				</fieldset>
 			</form>

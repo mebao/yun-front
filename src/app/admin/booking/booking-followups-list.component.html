@@ -34,9 +34,9 @@
 							<th>小孩姓名</th>
 							<th>随访人员</th>
 							<th>随访时间</th>
-							<th>随访内容和原因</th>
-							<th>备注</th>
-							<th>结果</th>
+							<th class="th-width">随访内容和原因</th>
+							<th class="th-width">备注</th>
+							<th class="th-width">结果</th>
 							<th>状态</th>
 							<th>操作</th>
 						</tr>
@@ -51,9 +51,9 @@
 							<td>{{followups.childName}}</td>
 							<td>{{followups.upUserName}}</td>
 							<td>{{followups.time}}</td>
-							<td><div class="lenth-text">{{followups.account}}</div></td>
-							<td><div class="lenth-text">{{followups.remarks}}</div></td>
-							<td><div class="lenth-text">{{followups.results}}</div></td>
+							<td><div class="length-text">{{followups.account}}</div></td>
+							<td><div class="length-text">{{followups.remarks}}</div></td>
+							<td><div class="length-text">{{followups.results}}</div></td>
 							<td>{{followups.status}}</td>
 							<td>
 								<button *ngIf="moduleAuthority.edit && (followups.statusCode == '1' || followups.statusCode == '2')" (click)="update(followups)" class="pure-button pure-button-primary">修改</button>
