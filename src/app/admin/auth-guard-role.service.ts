@@ -206,6 +206,12 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 成长记录
 							{
+								url: '/admin/doctorBookingGrowthrecords',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
+							{
 								url: '/admin/bookingGrowthrecord',
 								authority: 'receive',
 								queryType: '',
@@ -213,12 +219,24 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 病例
 							{
+								url: '/admin/doctorBookingCasehistory',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
+							{
 								url: '/admin/bookingCasehistory',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
 							},
 							// 儿保记录
+							{
+								url: '/admin/doctorBookingHealthrecord',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
 							{
 								url: '/admin/bookingHealthrecord',
 								authority: 'receive',

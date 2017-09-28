@@ -241,7 +241,6 @@ export class WorkbenchReceptionComponent{
 				}
 				this.hasDoctorBookingData = true;
 				this.weekBookingTitle = weekBookingTitle;
-				console.log(doctorBookingList);
 				this.doctorBookingList = doctorBookingList;
 			}
 		})
