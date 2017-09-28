@@ -218,7 +218,7 @@ export class WorkbenchReceptionComponent{
 								use: false,
 							}
 							// 日期是否过期
-							if(todayTime - (24 * 60 * 60 * 1000) < (new Date(dayBooking.date).getTime())){
+							if(todayTime - (24 * 60 * 60 * 1000) < (new Date(this.adminService.dateFormatHasWord(dayBooking.date)).getTime())){
 								dayBooking.use = true;
 							}
 							if(results.list[i].serviceList.length > 0){

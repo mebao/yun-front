@@ -298,7 +298,7 @@ export class SchedulingComponent{
 					admin_name: this.changeData.adminName,
 					config_id: results.id,
 					config_name: dateStr,
-					duty_date: this.changeData.date,
+					duty_date: this.adminService.dateFormatHasWord(this.changeData.date),
 					interval: 30*60,
 				}
 				this.adminService.adminScheduling(createParams).then((data) => {

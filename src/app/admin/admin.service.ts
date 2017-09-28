@@ -946,6 +946,14 @@ export class AdminService{
 		return dateArray[0] + '年' + dateArray[1] + '月' + dateArray[2] + '日';
 	}
 
+	// 日期转换
+	dateFormatHasWord(date) {
+		date = date.replace('年', '-');
+		date = date.replace('月', '-');
+		date = date.replace('日', '');
+		return date;
+	}
+
     //获取周几
 	getWeekTitle(value) {
 		var title = '';
@@ -981,7 +989,8 @@ export class AdminService{
 		exp.setTime(exp.getTime() - 2*24*60*60*1000);
 		var cval= this.getCookie(name);
 		if(cval!=null)
-		document.cookie = name + "=" + cval + ";expires=" + exp;
+		document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=/";
+		document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=/admin";
 	}
 
 	//设置cookie
