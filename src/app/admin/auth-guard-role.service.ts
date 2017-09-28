@@ -98,7 +98,13 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'workerPanel',
 								queryType: '',
 								queryParams: '',
-							}
+							},
+							{
+								url: '/admin/booking',
+								authority: 'workerPanel',
+								queryType: 'type',
+								queryParams: 'createScheduling',
+							},
 						]
 					},
 					{

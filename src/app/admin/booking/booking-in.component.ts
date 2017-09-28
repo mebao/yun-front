@@ -176,6 +176,7 @@ export class BookingInComponent{
 	}
 
 	show(booking) {
+		booking.bookingDate = this.adminService.dateFormatHasWord(booking.bookingDate);
 		this.booking = booking;
 		this.modalTab = false;
 		//根据选择的预约，初始化页面

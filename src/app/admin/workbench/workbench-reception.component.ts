@@ -379,7 +379,7 @@ export class WorkbenchReceptionComponent{
 					}
 					this.modalConfirmTab = true;
 				}else{
-					this.router.navigate(['./admin/booking'], {queryParams: {type: 'create', serviceId: serviceId, doctorId: booking.doctorId, date: day.date}});
+					this.router.navigate(['./admin/booking'], {queryParams: {type: 'createScheduling', serviceId: serviceId, doctorId: booking.doctorId, date: this.adminService.dateFormatHasWord(day.date)}});
 				}
 			}else{
 				this.modalConfirm = {

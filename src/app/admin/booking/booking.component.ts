@@ -1,5 +1,6 @@
 import { Component, OnInit }                        from '@angular/core';
 import { ActivatedRoute, Params, Router }           from '@angular/router';
+import { Location }                                 from '@angular/common';
 
 import { AdminService }                             from '../admin.service';
 
@@ -74,6 +75,7 @@ export class BookingComponent implements OnInit{
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private location: Location,
 	) {}
 
 	ngOnInit(): void{
@@ -495,7 +497,7 @@ export class BookingComponent implements OnInit{
 				}else{
 					this.toastTab('修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/bookingList']);
+						this.location.back();
 					}, 2000);
 				}
 			})
@@ -506,7 +508,7 @@ export class BookingComponent implements OnInit{
 				}else{
 					this.toastTab('预约成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/bookingList']);
+						this.location.back();
 					}, 2000);
 				}
 			})
