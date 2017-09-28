@@ -4,13 +4,14 @@
 		<header-nav></header-nav>
 		<div class="content admin-booking-in">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="button-tab">
+			<div class="text-right">
 				<button (click)="todayBooking()" class="pure-button pure-button-primary">今日预约</button>
 			</div>
 			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 				<fieldset>
 					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
+						<div class="pure-u-1-5"></div>
+						<div class="pure-u-3-5">
 							<div class="pure-control-group">
 								<label for="service">预约科室</label>
 								<select id="service" name="service" (change)="serviceChange($event.target.value)" [(ngModel)]="bookingInfo.service" #service="ngModel">
@@ -19,8 +20,6 @@
 									</ng-container>
 								</select>
 							</div>
-						</div>
-						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="user_doctor">预约医生</label>
 								<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()">
@@ -29,8 +28,6 @@
 									</ng-container>
 								</select>
 							</div>
-						</div>
-						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
 								<label for="booking_date">预约日期</label>
 								<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()">
@@ -39,32 +36,47 @@
 									</ng-container>
 								</select>
 							</div>
-						</div>
-						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
-								<label for="time">预约时间段</label>
-								<select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
+								<label for="time">
+									<span>预约时间段（请先选择日期）：</span>
+									<span class="can">可预约颜色（蓝色）</span>
+									<span class="overdue">不可选颜色（灰色）</span>
+									<span class="already">已预约颜色（红色）</span>
+								</label>
+								<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
+									<ng-container *ngFor="let time of timelist; let index=index;">
+										<div class="w25" [ngClass]="{'text-center': index % 4 == 1 || index % 4 == 2, 'text-right': index % 4 == 3}">
+											<div
+												(click)="selectTime(time)"
+												class="item"
+												[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can', 'can': time.type == 'can', 'overdue': time.type == 'overdue', 'already': time.type == 'already'}">
+												<div class="flex">
+													<div class="radioTab mr10"></div>
+													<div class="flex-1">{{time.value}}</div>
+												</div>
+											</div>
+										</div>
+									</ng-container>
+								</div>
+								<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
 									<ng-container *ngFor="let time of timelist">
 										<option value="{{time.value}}" *ngIf="time.use">{{time.value}}</option>
 										<option value="{{time.value}}" *ngIf="!time.use" disabled="">{{time.value}}{{time.type}}</option>
 									</ng-container>
-								</select>
+								</select> -->
 							</div>
-						</div>
-						<div *ngIf="booking.refNo ==''" class="pure-u-8-24 pl5 pr5">
-							<div class="pure-control-group">
+							<div *ngIf="booking.refNo ==''" class="pure-control-group">
 								<label for="child">预约小孩</label>
 								<select-search [title]="selectSearchTitle" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
 							</div>
-						</div>
-						<div *ngIf="booking.refNo !=''" class="pure-u-8-24 pl5 pr5">
-							<div class="pure-control-group">
+							<div *ngIf="booking.refNo !=''" class="pure-control-group">
 								<label for="child">预约小孩</label>
 								<select id="child" name="child" disabled="">
 									<option value="">{{booking.childName}}</option>
 								</select>
 							</div>
 						</div>
+						<div class="pure-u-1-5"></div>
 					</div>
 				</fieldset>
 				<div class="text-center">

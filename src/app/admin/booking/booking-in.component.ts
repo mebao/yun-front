@@ -4,7 +4,8 @@ import { AdminService }                       from '../admin.service';
 
 @Component({
 	selector: 'app-booking-in',
-	templateUrl: './booking-in.component.html'
+	templateUrl: './booking-in.component.html',
+	styleUrls: ['./booking-in.component.scss'],
 })
 export class BookingInComponent{
 	topBar: {
@@ -94,6 +95,41 @@ export class BookingInComponent{
 	}
 
 	initData() {
+		this.timelist = [
+			{key: 0, type: 'overdue', value: '08:00'},
+			{key: 1, type: 'overdue', value: '08:30'},
+			{key: 2, type: 'overdue', value: '09:00'},
+			{key: 3, type: 'overdue', value: '09:30'},
+			{key: 4, type: 'overdue', value: '10:00'},
+			{key: 5, type: 'overdue', value: '10:30'},
+			{key: 6, type: 'overdue', value: '11:00'},
+			{key: 7, type: 'overdue', value: '11:30'},
+			{key: 8, type: 'overdue', value: '12:00'},
+			{key: 9, type: 'overdue', value: '12:30'},
+			{key: 10, type: 'overdue', value: '13:00'},
+			{key: 11, type: 'overdue', value: '13:30'},
+			{key: 12, type: 'overdue', value: '14:00'},
+			{key: 13, type: 'overdue', value: '14:30'},
+			{key: 14, type: 'overdue', value: '15:00'},
+			{key: 15, type: 'overdue', value: '15:30'},
+			{key: 16, type: 'overdue', value: '16:00'},
+			{key: 17, type: 'overdue', value: '16:30'},
+			{key: 18, type: 'overdue', value: '17:00'},
+			{key: 19, type: 'overdue', value: '17:30'},
+			{key: 20, type: 'overdue', value: '18:00'},
+			{key: 21, type: 'overdue', value: '18:30'},
+			{key: 22, type: 'overdue', value: '19:00'},
+			{key: 23, type: 'overdue', value: '19:30'},
+			{key: 24, type: 'overdue', value: '20:00'},
+			{key: 25, type: 'overdue', value: '20:30'},
+			{key: 26, type: 'overdue', value: '21:00'},
+			{key: 27, type: 'overdue', value: '21:30'},
+			{key: 28, type: 'overdue', value: '22:00'},
+			{key: 29, type: 'overdue', value: '22:30'},
+			{key: 30, type: 'overdue', value: '23:00'},
+			{key: 31, type: 'overdue', value: '23:30'},
+		];
+		
 		this.booking = {
 			age: '',
 			bookingDate: '',
@@ -239,37 +275,42 @@ export class BookingInComponent{
 	dateChange() {
 		var date = JSON.parse(this.bookingInfo.booking_date);
 		var list = [];
-		var todayTimeNum = Number(new Date().getHours() + '' + new Date().getMinutes());
-		if(date.timeList.length > 0){
-			//给时间排序
-			date.timeList.sort(function(a,b){return Number(a.replace(':', '')) - Number(b.replace(':', ''))});
-			for(var i = 0; i < date.timeList.length; i++){
-				var time = date.timeList[i];
-				var use = true;
-				var type = '';
-				//判断时间段是否已经被预约
-				if(date.selectedList.length > 0){
-					for(var j = 0; j < date.selectedList.length; j++){
-						if(date.selectedList[j] == time){
-							use = false;
-							type = '已预约';
-						}
+		var todayTimeNum = Number((new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours()) + '' + (new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()));
+		for(var i = 0; i < this.timelist.length; i++){
+			// 初始化
+			this.timelist[i].type = 'overdue';
+			// 查询可预约日期
+			if(date.timeList.length > 0){
+				for(var j = 0; j < date.timeList.length; j++){
+					if(this.timelist[i].value == date.timeList[j]){
+						this.timelist[i].type = 'can';
 					}
 				}
-				//如果是当天日期，判断时间是否已经过去
-				if(this.adminService.getDayByDate(new Date) == date.dutyDate){
-					var timeNum = Number(time.replace(':', ''));
-					if(timeNum < todayTimeNum){
-						use = false;
-						type = '已过期';
+			}
+			// 判断时间段是否已经被预约
+			if(date.selectedList.length > 0){
+				for(var j = 0; j < date.selectedList.length; j++){
+					if(this.timelist[i].value == date.selectedList[j]){
+						this.timelist[i].type = 'already';
 					}
 				}
-				var timeJson = {key: i, value: date.timeList[i], use: use, type: type};
-				list.push(timeJson);
+			}
+			//如果是当天日期，判断时间是否已经过去
+			if(this.adminService.getDayByDate(new Date) == date.dutyDate){
+				var timeNum = Number(this.timelist[i].value.replace(':', ''));
+				if(timeNum < todayTimeNum){
+					this.timelist[i].type = 'overdue';
+				}
 			}
 		}
-		this.timelist = list;
 		this.bookingInfo.timeInfo = this.booking.time;
+	}
+
+	// 选择时间
+	selectTime(time) {
+		if(time.type == 'can'){
+			this.bookingInfo.timeInfo = time.value;
+		}
 	}
 
 	//切换小孩
