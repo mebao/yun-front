@@ -39,24 +39,48 @@
 						<div (click)="goSection('doctorBookingHealthrecord')" class="item">儿保记录</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '3'}" class="tab">
-						<table *ngIf="checkDataList.length > 0" class="pure-table w100">
-							<thead>
-								<tr>
-									<th></th>
-									<th>检查项目</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let check of checkDataList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-									<td>{{index + 1}}</td>
-									<td>{{check.checkName}}</td>
-									<td>
+						<div class="checkDataList.length > 0">
+							<div class="second-bar-tab flex">
+								<div class="item" (click)="changeCheckTab(check.id)" *ngFor="let check of checkDataList" [ngClass]="{'active': selectedCheckTab == check.id}">{{check.checkName}}</div>
+							</div>
+							<div *ngFor="let check of checkDataList">
+								<div *ngIf="selectedCheckTab == check.id">
+									<div class="mt10 mb10 text-right">
 										<button (click)="deleteCheck(check)" class="pure-button button-error">删除</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+									</div>
+									<table class="pure-table pure-table-horizontal w100 table-tab">
+										<thead>
+											<tr>
+												<th class="w10">项目</th>
+												<th class="w20">检查结果</th>
+												<th class="w30">备注（最多100字）</th>
+												<th class="w5">代码</th>
+												<th class="w5">单位</th>
+												<th class="w5">性质</th>
+												<th class="w20">参考值</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let result of check.resultList">
+												<td>{{result.checkInfoName}}</td>
+												<td>{{result.values}}</td>
+												<td>
+													<div class="length-text">{{result.remark}}</div>
+												</td>
+												<td>{{result.code}}</td>
+												<td>{{result.unit}}</td>
+												<td class="text-center">
+													<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
+													<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
+												<td>
+													<div class="length-text">{{result.references}}</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
 							<nodata title="未查询到检查项目"></nodata>
 						</div>

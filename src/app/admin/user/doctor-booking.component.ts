@@ -52,6 +52,7 @@ export class DoctorBookingComponent implements OnInit{
 	checklist: any[];
 	hasCheckData: boolean;
 	checkDataList: any[];
+	selectedCheckTab: string;
 	toast: {
 		show: number,
 		text: string,
@@ -192,6 +193,7 @@ export class DoctorBookingComponent implements OnInit{
 		//获取检查信息
 		this.hasCheckData = false;
 		this.checkDataList = [];
+		this.selectedCheckTab = '';
 		this.getCheckData();
 
 		//获取开方信息
@@ -331,6 +333,10 @@ export class DoctorBookingComponent implements OnInit{
 		});
 	}
 
+	changeCheckTab(_value) {
+		this.selectedCheckTab = _value;
+	}
+
 	getCheckData() {
 		var urlOptions = this.url + '&booking_id=' + this.id + '&ischeck=1&today=1';
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
@@ -338,6 +344,9 @@ export class DoctorBookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					this.selectedCheckTab = results.list[0].id;
+				}
 				this.checkDataList = results.list;
 				this.hasCheckData = true;
 			}

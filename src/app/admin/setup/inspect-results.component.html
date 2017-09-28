@@ -15,49 +15,77 @@
 					<div class="second-bar-tab flex">
 						<div class="item" (click)="changeTab(check.id)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
 					</div>
-					<div *ngFor="let check of checkProjectList">
+					<div *ngFor="let check of checkProjectList; let indexCheck=index;">
 						<div *ngIf="selectTab == check.id">
 							<div class="pt10 pb10">开单医生：{{check.doctorName}}</div>
 							<form #f="ngForm" class="pure-form">
-								<input type="hidden" name="num" [(ngModel)]="check.resultListNum">
-								<input type="hidden" name="user_cid" [(ngModel)]="check.id">
-								<input type="hidden" name="editType" [(ngModel)]="check.editType">
-								<table class="pure-table pure-table-horizontal">
+								<table class="pure-table pure-table-horizontal w100 table-tab">
 									<thead>
 										<tr>
-											<th class="w5">序号</th>
 											<th class="w10">项目</th>
-											<th class="w25">检查结果</th>
-											<th class="w15">备注（最多100字）</th>
+											<th class="w20">
+												<span>检查结果</span>
+												<span class="required">*</span>
+											</th>
+											<th [ngClass]="{'w25': check.editType == 'create', 'w30': check.editType == 'update'}">备注（最多100字）</th>
 											<th class="w5">代码</th>
 											<th class="w5">单位</th>
-											<th class="w35">参考值</th>
+											<th class="w5">性质</th>
+											<th [ngClass]="{'w15': check.editType == 'create', 'w20': check.editType == 'update'}">参考值</th>
+											<!-- 创建时可操作 -->
+											<th *ngIf="check.editType == 'create'" class="w10">操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr *ngFor="let result of check.resultList; let index=index;">
-											<td>
-												{{index + 1}}
-												<input type="hidden" name="check_info_id_{{index}}" [(ngModel)]="result.checkInfoId">
-											</td>
-											<td>{{result.checkInfoName}}</td>
-											<td>
-												<input type="text" name="values_{{index}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'">
-											</td>
-											<td>
-												<textarea name="remark_{{index}}" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
-											</td>
-											<td>{{result.code}}</td>
-											<td>{{result.unit}}</td>
-											<td>
-												<div class="length-text">{{result.references}}</div>
-											</td>
-										</tr>
+										<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
+											<tr *ngIf="result.use">
+												<td>{{result.checkInfoName}}</td>
+												<td>
+													<input type="text" name="values_{{indexResult}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
+												</td>
+												<td>
+													<textarea name="remark_{{indexResult}}" maxlength="100" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'" class="w100"></textarea>
+												</td>
+												<td>{{result.code}}</td>
+												<td>{{result.unit}}</td>
+												<td class="text-center">
+													<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
+													<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
+												<td>
+													<div class="length-text">{{result.references}}</div>
+												</td>
+												<!-- 创建时可操作 -->
+												<td *ngIf="check.editType == 'create'">
+													<button (click)="removeItem(indexCheck, indexResult)" class="pure-button pure-button-primary">移除</button>
+												</td>
+											</tr>
+										</ng-container>
 									</tbody>
 								</table>
+								<div *ngIf="check.hasRemoveResult">
+									<div class="bg-title mt10 mb10">可选项</div>
+									<table class="pure-table pure-table-horizontal w100 table-tab">
+										<thead>
+											<tr>
+												<th class="w50">项目</th>
+												<th class="w50">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
+												<tr *ngIf="!result.use">
+													<td>{{result.checkInfoName}}</td>
+													<td>
+														<button (click)="addItem(indexCheck, indexResult)" class="pure-button pure-button-primary">添加</button>
+													</td>
+												</tr>
+											</ng-container>
+										</tbody>
+									</table>
+								</div>
 								<div class="pt20 text-center">
 									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary button-max">修改</button>
-									<button (click)="save(f)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max">保存</button>
+									<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max">保存</button>
 								</div>
 							</form>
 						</div>

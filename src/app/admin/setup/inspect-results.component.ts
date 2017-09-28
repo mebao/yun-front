@@ -19,6 +19,7 @@ export class InspectResultsComponent{
 	};
 	id: string;
 	checkProjectList: any[];
+	// 默认选择模块
 	selectTab: string;
 	bookingInfo: {
 		imageUrl: string,
@@ -79,7 +80,17 @@ export class InspectResultsComponent{
 					for(var i = 0; i < results.list.length; i++){
 						results.list[i].resultListNum = results.list[i].resultList.length;
 						if(results.list[i].resultList.length > 0){
-							if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
+							var hasValues = false;
+							// 创建时，用于判断是否存在移除项
+							results.list[i].hasRemoveResult = false;
+							for(var j = 0; j < results.list[i].resultList.length; j++){
+								// 新建时，可以通过移除、添加相关选项
+								results.list[i].resultList[j].use = true;
+								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
+									hasValues = true;
+								}
+							}
+							if(hasValues){
 								results.list[i].editType = 'update';
 							}else{
 								results.list[i].editType = 'create';
@@ -104,23 +115,76 @@ export class InspectResultsComponent{
 		this.buttonType = 'save';
 	}
 
-	save(f) {
-		if(f.value.num > 0){
+	changeResult(result, indexCheck, indexResult) {
+		// 是否为数字范围类型
+		if(result.isNum){
+			// 判断是否为空
+			if(!this.adminService.isFalse(result.values)){
+				if(parseFloat(result.values) < 0){
+					this.toastTab(result.checkInfoName + '检查结果应大于等于0', 'error');
+					return;
+				}
+				if(parseFloat(result.values) < parseFloat(result.low)){
+					this.checkProjectList[indexCheck].resultList[indexResult].compare = 'low';
+				}
+				if(parseFloat(result.values) > parseFloat(result.high)){
+					this.checkProjectList[indexCheck].resultList[indexResult].compare = 'high';
+				}
+				if(parseFloat(result.values) >= parseFloat(result.low) && parseFloat(result.values) <= parseFloat(result.high)){
+					this.checkProjectList[indexCheck].resultList[indexResult].compare = '';
+				}
+			}else{
+				this.checkProjectList[indexCheck].resultList[indexResult].compare = '';
+			}
+		}
+	}
+
+	// 创建时，可移除相关项
+	removeItem(indexCheck, indexResult) {
+		this.checkProjectList[indexCheck].hasRemoveResult = true;
+		this.checkProjectList[indexCheck].resultList[indexResult].use = false;
+	}
+
+	// 创建时，添加相关项
+	addItem(indexCheck, indexResult) {
+		this.checkProjectList[indexCheck].resultList[indexResult].use = true;
+		var hasRemoveResult = false;
+		for(var i = 0; i < this.checkProjectList[indexCheck].resultList.length; i++){
+			if(this.checkProjectList[indexCheck].resultList[i].use == false){
+				hasRemoveResult = true;
+			}
+		}
+		this.checkProjectList[indexCheck].hasRemoveResult = hasRemoveResult;
+	}
+
+	save(indexCheck) {
+		if(this.checkProjectList[indexCheck].resultListNum > 0){
 			var resultList = [];
-			for(var i = 0; i < f.value.num; i++){
+			for(var i = 0; i < this.checkProjectList[indexCheck].resultListNum; i++){
 				var result = {
-					user_cid: f.value.user_cid,
+					user_cid: this.checkProjectList[indexCheck].id,
 					check_info_id: '',
 					values: '',
 					remark: '',
+					compare: '',
 				}
-				if(!f.value['values_' + i] || f.value['values_' + i] == ''){
-					this.toastTab(i + 1 + '项检查结果不可为空 ', 'error');
-					return;
+				// 判断该项是否使用
+				if(this.checkProjectList[indexCheck].resultList[i].use){
+					// 非空判断
+					if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
+						this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+						return;
+					}
+					// 若是数字类型，则大于0
+					if(this.checkProjectList[indexCheck].resultList[i].isNum && this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
+						this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
+						return;
+					}
 				}
-				result.check_info_id = f.value['check_info_id_' + i];
-				result.values = f.value['values_' + i];
-				result.remark = f.value['remark_' + i];
+				result.check_info_id = this.checkProjectList[indexCheck].resultList[i].checkInfoId;
+				result.values = this.checkProjectList[indexCheck].resultList[i].values;
+				result.remark = this.checkProjectList[indexCheck].resultList[i].remark;
+				result.compare = this.checkProjectList[indexCheck].resultList[i].compare;
 				resultList.push(result);
 			}
 			var params = {
@@ -128,22 +192,22 @@ export class InspectResultsComponent{
 				token: this.adminService.getUser().token,
 				values: resultList,
 			}
-			if(f.value.editType == 'create'){
-				this.adminService.usercheckresult(f.value.user_cid, params).then((data) => {
+			if(this.checkProjectList[indexCheck].editType == 'create'){
+				this.adminService.usercheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
 					}else{
-						this.getData('');
+						this.getData(this.selectTab);
 						this.toastTab('检查结果添加成功', '');
 						this.buttonType = 'update';
 					}
 				});
 			}else{
-				this.adminService.updatecheckresult(f.value.user_cid, params).then((data) => {
+				this.adminService.updatecheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
 					}else{
-						this.getData('');
+						this.getData(this.selectTab);
 						this.toastTab('检查结果修改成功', '');
 						this.buttonType = 'update';
 					}
