@@ -41,7 +41,7 @@
 										<span>用户名(用作登陆)</span>
 										<span class="required">*</span>
 									</label>
-									<input id="user_name" type="text" name="user_name" [(ngModel)]="user.user_name" #user_name="ngModel" placeholder="请输入用户名" required="">
+									<input id="user_name" type="text" name="user_name" [(ngModel)]="user.user_name" #user_name="ngModel" placeholder="请输入用户名" required="" disabled>
 									<div *ngIf="user_name.errors && (user_name.dirty || user_name.touched)" class="alert alert-danger">
 									    <div [hidden]="!user_name.errors.required">
 									    	用户名不可为空
