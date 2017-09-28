@@ -58,8 +58,7 @@
 								<label for="one_unit">
 									<span>计量单位</span>
 								</label>
-								<select id="one_unit" name="one_unit" #one_unit="ngModel" [(ngModel)]="info.one_unit" required="">
-									<option></option>
+								<select id="one_unit" name="one_unit" #one_unit="ngModel" [(ngModel)]="info.oneUnit" required="">
 									<ng-container *ngFor="let unit of OneUnits">
 										<option value="{{unit}}">{{unit}}</option>
 									</ng-container>
