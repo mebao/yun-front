@@ -129,7 +129,7 @@ export class BookingInComponent{
 			{key: 30, type: 'overdue', value: '23:00'},
 			{key: 31, type: 'overdue', value: '23:30'},
 		];
-		
+
 		this.booking = {
 			age: '',
 			bookingDate: '',
@@ -348,7 +348,7 @@ export class BookingInComponent{
 			this.toastTab('预约日期不可为空', 'error');
 			return;
 		}
-		if(f.value.time == ''){
+		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
 			return;
 		}
@@ -368,7 +368,7 @@ export class BookingInComponent{
 				user_doctor_id: JSON.parse(f.value.user_doctor).doctorId,
 				user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
 				booking_date: JSON.parse(f.value.booking_date).dutyDate,
-				time: f.value.time,
+				time: this.bookingInfo.timeInfo,
 				creator_id: JSON.parse(this.bookingInfo.creator).id,
 				creator_name: JSON.parse(this.bookingInfo.creator).name,
 				mobile: JSON.parse(this.bookingInfo.creator).mobile,
@@ -403,7 +403,7 @@ export class BookingInComponent{
 			user_doctor_id: JSON.parse(f.value.user_doctor).doctorId,
 			user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
 			booking_date: JSON.parse(f.value.booking_date).dutyDate,
-			time: f.value.time,
+			time: this.bookingInfo.timeInfo,
 		}
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){
