@@ -887,26 +887,6 @@ export class AdminService{
 		return JSON.parse(this.getCookie('user'));
 	}
 
-	//获取周日期
-	getWeekByNumber(value) {
-		//当天日期
-		var nowDate = new Date();
-		//当天为周几
-		var nowDay = (nowDate.getDay() == 0 ? 7 : nowDate.getDay());
-		//周当天日期
-		var weekNowDate = new Date(nowDate.getTime() + (value * 7 * 24 * 60 * 60 * 1000));
-		//周日期列表
-		var weekArray = new Array();
-		//该周周一
-		var weekFirst = new Date(weekNowDate.getTime() - ((nowDay - 1) * 24 * 60 * 60 * 1000));
-		//周日起
-		for(var i = 0; i < 7; i++){
-			var weekDay = new Date(weekFirst.getTime() + i * 24 * 60 * 60 * 1000);
-			weekArray.push(this.getDayByDate(weekDay));
-		}
-		return weekArray;
-	}
-
 	//保留两位小数
 	toDecimal2(x) {
         var f = parseFloat(x);
@@ -932,6 +912,26 @@ export class AdminService{
         return s;
     }
 
+	//获取周日期
+	getWeekByNumber(value) {
+		//当天日期
+		var nowDate = new Date();
+		//当天为周几
+		var nowDay = (nowDate.getDay() == 0 ? 7 : nowDate.getDay());
+		//周当天日期
+		var weekNowDate = new Date(nowDate.getTime() + (value * 7 * 24 * 60 * 60 * 1000));
+		//周日期列表
+		var weekArray = new Array();
+		//该周周一
+		var weekFirst = new Date(weekNowDate.getTime() - ((nowDay - 1) * 24 * 60 * 60 * 1000));
+		//周日起
+		for(var i = 0; i < 7; i++){
+			var weekDay = new Date(weekFirst.getTime() + i * 24 * 60 * 60 * 1000);
+			weekArray.push(this.getDayByDate(weekDay));
+		}
+		return weekArray;
+	}
+
 	//根据date获取日期
 	getDayByDate(date) {
       	var d = date.getDate(),
@@ -939,6 +939,12 @@ export class AdminService{
       		y = date.getFullYear();
       	return y + '-' + ((m + 1) > 9 ? (m + 1) : ('0' + (m + 1))) + '-' + (d > 9 ? d : ('0' + d));
     }
+
+	// 日期格式转换
+	dateFormat(date) {
+		var dateArray = date.split('-');
+		return dateArray[0] + '年' + dateArray[1] + '月' + dateArray[2] + '日';
+	}
 
     //获取周几
 	getWeekTitle(value) {

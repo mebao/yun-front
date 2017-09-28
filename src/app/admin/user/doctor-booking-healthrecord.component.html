@@ -1,0 +1,371 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-doctor-booking">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="pure-g left-right-tab">
+				<div class="pure-u-1-5 left-tab pr20">
+					<div class="item">
+						<span>姓名：</span>
+						<span>{{booking.childName}}</span>
+					</div>
+					<div class="item">
+						<span>年龄：</span>
+						<span>{{booking.age}}</span>
+					</div>
+					<div class="item">
+						<span>手机号码：</span>
+						<span>{{booking.mobile}}</span>
+					</div>
+					<div class="item">
+						<span>家长：</span>
+						<span>{{booking.creatorName}}</span>
+					</div>
+					<div class="item">
+						<span>接诊医生：</span>
+						<span>{{doctorInfo.realName}}</span>
+					</div>
+				</div>
+				<div class="pure-u-4-5 right-tab booking-info pad10">
+					<div class="second-bar-tab flex mb10">
+						<div (click)="changeTab('3', 'doctorBooking')" class="item">检查项目</div>
+						<div (click)="changeTab('4', 'doctorBooking')" class="item">处方</div>
+						<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
+						<div (click)="changeTab('2', 'doctorBooking')" class="item">费用列表</div>
+						<div (click)="changeTab('5', 'doctorBooking')" class="item">随访</div>
+						<div (click)="changeTab('6', 'doctorBookingGrowthrecords')" class="item">成长记录</div>
+						<div (click)="changeTab('7', 'doctorBookingCasehistory')" class="item">病历</div>
+						<div class="item active">儿保记录</div>
+					</div>
+					<div class="tab">
+						<div *ngIf="healthrecordList.length > 0">
+							<div *ngFor="let healthrecord of healthrecordList; let index=index;">
+								<div class="text-right">
+									<button (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
+								</div>
+								<div class="section">
+									<div class="title">基本信息</div>
+									<div class="pure-g">
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">姓名：</label>
+											<div class="flex-1">{{booking.childName}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">年龄：</label>
+											<div class="flex-1">{{booking.age}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">检查日期：</label>
+											<div class="flex-1">{{healthrecord.checkDate}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">基础体检 （根据孩子年龄测量基础指标，了解体格发育是否正常）</div>
+									<div class="pure-g">
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">身高：</label>
+											<div class="flex-1">{{healthrecord.height}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">身高同年龄中等值：</label>
+											<div class="flex-1">{{healthrecord.mediumHeight}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">头围：</label>
+											<div class="flex-1">{{healthrecord.headCircum}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">体重：</label>
+											<div class="flex-1">{{healthrecord.weight}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">体重同年龄中等值：</label>
+											<div class="flex-1">{{healthrecord.mediumWeight}}</div>
+										</div>
+										<div class="pure-u-8-24 info flex">
+											<label class="w150p">胸围：</label>
+											<div class="flex-1">{{healthrecord.breastCircum}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">生命体征 (通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
+									<div class="pure-g">
+										<div class="pure-u-6-24 info flex">
+											<label class="w150p">体温：</label>
+											<div class="flex-1">{{healthrecord.bodyTemperature}}</div>
+										</div>
+										<div class="pure-u-6-24 info flex">
+											<label class="w150p">脉搏：</label>
+											<div class="flex-1">{{healthrecord.pulse}}</div>
+										</div>
+										<div class="pure-u-6-24 info flex">
+											<label class="w150p">呼吸：</label>
+											<div class="flex-1">{{healthrecord.breathe}}</div>
+										</div>
+										<div class="pure-u-6-24 info flex">
+											<label class="w150p">血压：</label>
+											<div class="flex-1">{{healthrecord.bloodPressure}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">体表检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">皮肤：</label>
+											<div class="flex-1">{{healthrecord.skin}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">口腔黏膜：</label>
+											<div class="flex-1">{{healthrecord.oralMucosa}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">毛发：</label>
+											<div class="flex-1">{{healthrecord.hair}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">浅表淋巴结：</label>
+											<div class="flex-1">{{healthrecord.lymphNode}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">心脏听诊：</label>
+											<div class="flex-1">{{healthrecord.heart}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">双肺听诊：</label>
+											<div class="flex-1">{{healthrecord.lung}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">双肾：</label>
+											<div class="flex-1">{{healthrecord.kidney}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">腹部：</label>
+											<div class="flex-1">{{healthrecord.abdomen}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">耳鼻喉检查 （有助于早期发现鼻部、咽喉异常及听力障碍的征兆，尽早干预)</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">耳：</label>
+											<div class="flex-1">{{healthrecord.ear}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">鼻：</label>
+											<div class="flex-1">{{healthrecord.nose}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">咽喉：</label>
+											<div class="flex-1">{{healthrecord.throat}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">扁桃体：</label>
+											<div class="flex-1">{{healthrecord.tonsil}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">双眼：</label>
+											<div class="flex-1">{{healthrecord.eyes}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">视力筛查：</label>
+											<div class="flex-1">{{healthrecord.vision}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">口腔检查 （发现口腔异常情况，如：有无诞生牙及畸形）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">牙龈：</label>
+											<div class="flex-1">{{healthrecord.gums}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">舌系带：</label>
+											<div class="flex-1">{{healthrecord.tongue_tie}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">牙窝沟：</label>
+											<div class="flex-1">{{healthrecord.teeth_pit}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">牙菌斑：</label>
+											<div class="flex-1">{{healthrecord.plaque}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">龋齿：</label>
+											<div class="flex-1">{{healthrecord.dental_caries}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">骨骼检查 （前期筛查孩子骨骼发育相关问题，尽早干预）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">四肢：</label>
+											<div class="flex-1">{{healthrecord.limb}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">肋骨：</label>
+											<div class="flex-1">{{healthrecord.ribs}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">头颅：</label>
+											<div class="flex-1">{{healthrecord.head}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">前囟：</label>
+											<div class="flex-1">{{healthrecord.bregmatic}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">髋关节：</label>
+											<div class="flex-1">{{healthrecord.hip_joint}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">斜颈：</label>
+											<div class="flex-1">{{healthrecord.torticollis}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">生殖器及肛门检查 （有助于早期发现男孩生殖系统异常，尽早干预）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">外生殖器：</label>
+											<div class="flex-1">{{healthrecord.genitalia}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">肛门：</label>
+											<div class="flex-1">{{healthrecord.anus}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">神经发育筛查 （有助于发现孩子神经发育上相关问题，尽早干预）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">神经发育：</label>
+											<div class="flex-1">{{healthrecord.neurodevelopment}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">辅助检查 （收费项目，由医生建议）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">血常规：</label>
+											<div class="flex-1">{{healthrecord.bloodRoutineExamination}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">尿常规：</label>
+											<div class="flex-1">{{healthrecord.routineUrine}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">大便常规：</label>
+											<div class="flex-1">{{healthrecord.stoolRoutineExamination}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">骨密度：</label>
+											<div class="flex-1">{{healthrecord.boneDensity}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">骨碱性磷酸酶：</label>
+											<div class="flex-1">{{healthrecord.BALP}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">微量元素：</label>
+											<div class="flex-1">{{healthrecord.traceElement}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">铅、镉、锰：</label>
+											<div class="flex-1">{{healthrecord.heavyMetal}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导，最多200字）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">喂养指导：</label>
+											<div class="flex-1">{{healthrecord.feeding}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">生活指导（宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等，最多200字）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">生活指导：</label>
+											<div class="flex-1">{{healthrecord.life}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">免疫接种指导（根据孩子接种史和家长意愿给予建议，最多200字）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">免疫接种指导：</label>
+											<div class="flex-1">{{healthrecord.immunization}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">疾病预防（常见病健康宣教，最多200字）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">疾病预防：</label>
+											<div class="flex-1">{{healthrecord.diseasePrevention}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">答疑解惑（针对家长所关注的孩子养育问题、成长问题进行解答，最多200字）</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">答疑解惑：</label>
+											<div class="flex-1">{{healthrecord.answeringQuestions}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="title">诊疗记录</div>
+									<div class="pure-g">
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">诊疗记录：</label>
+											<div class="flex-1">{{healthrecord.record}}</div>
+										</div>
+										<div class="pure-u-24-24 info flex">
+											<label class="w150p">复查日期：</label>
+											<div class="flex-1">{{healthrecord.reviewDate}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt10">
+							<nodata title="未查询到儿保记录"></nodata>
+						</div>
+						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20">
+							<button (click)="addHealthrecord()" class="pure-button pure-button-primary">新增儿保记录</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

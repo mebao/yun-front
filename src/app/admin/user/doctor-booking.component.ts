@@ -38,6 +38,7 @@ export class DoctorBookingComponent implements OnInit{
 		fee: string,
 		remarks: string,
 		feeId: string,
+		editProjectId: string,
 		editType: string,
 	};
 	//添加检查单
@@ -169,6 +170,7 @@ export class DoctorBookingComponent implements OnInit{
 			fee: '',
 			remarks: '',
 			feeId: '',
+			editProjectId: '',
 			editType: '',
 		}
 
@@ -298,6 +300,11 @@ export class DoctorBookingComponent implements OnInit{
 		})
 	}
 
+	// 成长记录
+	goSection(url) {
+		this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
+	}
+
 	getBookingData() {
 		//获取预约信息
 		var urlOptions = this.url + '&id=' + this.id;
@@ -319,7 +326,7 @@ export class DoctorBookingComponent implements OnInit{
 						total += Number(fees[i].fee);
 					}
 				}
-				this.booking.totalFee = total.toString();
+				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
 			}
 		});
 	}
@@ -377,6 +384,27 @@ export class DoctorBookingComponent implements OnInit{
 		this.addFeeInfo.editType = '';
 	}
 
+	// 单价或者数量变化
+	changeFee() {
+		var price = false;
+		if(!this.adminService.isFalse(this.addFeeInfo.price)){
+			if(Number(this.addFeeInfo.price) <= 0){
+				this.toastTab('单价费用应大于0', 'error');
+			}
+			price = true;
+		}
+		var number = false;
+		if(!this.adminService.isFalse(this.addFeeInfo.number)){
+			if(Number(this.addFeeInfo.number) <= 0 || Number(this.addFeeInfo.number) % 1 != 0){
+				this.toastTab('单价费用应为大于0的整数', 'error');
+			}
+			number = true;
+		}
+		if(price && number){
+			this.addFeeInfo.fee = (parseFloat(this.addFeeInfo.price) * Number(this.addFeeInfo.number)).toString();
+		}
+	}
+
 	//追加费用
 	addfee() {
 		this.addFeeInfo.editType = 'create';
@@ -390,16 +418,37 @@ export class DoctorBookingComponent implements OnInit{
 		this.addFeeInfo.fee = fee.fee;
 		this.addFeeInfo.remarks = fee.remark;
 		this.addFeeInfo.feeId = fee.feeId;
+		this.addFeeInfo.editProjectId = fee.projectId;
 		this.addFeeInfo.editType = 'update';
 	}
 
 	editFee(f) {
-		if(f.value.project_name == ''){
+		if(this.addFeeInfo.project_name == ''){
 			this.toastTab('消费项目名不可为空', 'error');
 			return;
 		}
-		if(f.value.fee == ''){
-			this.toastTab('费用不可为空', 'error');
+		if(this.adminService.isFalse(this.addFeeInfo.price)){
+			this.toastTab('消费项目单价不可为空', 'error');
+			return;
+		}
+		if(parseFloat(this.addFeeInfo.price) <= 0){
+			this.toastTab('消费项目单价应大于0', 'error');
+			return;
+		}
+		if(this.adminService.isFalse(this.addFeeInfo.number)){
+			this.toastTab('消费项目数量不可为空', 'error');
+			return;
+		}
+		if(Number(this.addFeeInfo.number) <= 0 || Number(this.addFeeInfo.number) % 1 != 0){
+			this.toastTab('消费项目单价应为大于0的整数', 'error');
+			return;
+		}
+		if(this.adminService.isFalse(this.addFeeInfo.fee)){
+			this.toastTab('消费项目单价不可为空', 'error');
+			return;
+		}
+		if(parseFloat(this.addFeeInfo.fee) <= 0){
+			this.toastTab('消费项目单价应大于0', 'error');
 			return;
 		}
 		var params = {
@@ -410,7 +459,7 @@ export class DoctorBookingComponent implements OnInit{
 			price: this.addFeeInfo.price,
 			number: this.addFeeInfo.number,
 			fee: this.addFeeInfo.fee,
-			remarks: f.value.remarks,
+			remarks: this.addFeeInfo.remarks,
 			id: this.addFeeInfo.feeId ? this.addFeeInfo.feeId : null,
 		}
 		this.adminService.addfee(params).then((data) => {

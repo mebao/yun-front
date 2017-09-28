@@ -70,6 +70,9 @@ import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.co
 import { PrescriptListComponent }          from './prescript/prescript-list.component';
 import { BookingChargeComponent }          from './booking/booking-charge.component';
 import { DoctorBookingComponent }          from './user/doctor-booking.component';
+import { DoctorBookingGrowthrecordsComponent } from './user/doctor-booking-growthrecords.component';
+import { DoctorBookingCasehistoryComponent } from './user/doctor-booking-casehistory.component';
+import { DoctorBookingHealthrecordComponent } from './user/doctor-booking-healthrecord.component';
 import { SetupInspectComponent }           from './setup/inspect.component';
 import { SetupInspectListComponent }       from './setup/inspect-list.component';
 import { MaterialListComponent }           from './material/material-list.component';
@@ -166,6 +169,9 @@ import { AdminService }                    from './admin.service';
 		PrescriptListComponent,
 		BookingChargeComponent,
 		DoctorBookingComponent,
+		DoctorBookingGrowthrecordsComponent,
+		DoctorBookingCasehistoryComponent,
+		DoctorBookingHealthrecordComponent,
 		SetupInspectComponent,
 		SetupInspectListComponent,
 		MaterialListComponent,

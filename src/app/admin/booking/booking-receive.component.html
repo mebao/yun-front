@@ -4,7 +4,7 @@
 		<header-nav></header-nav>
 		<div class="content admin-booking-receive">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form">
+			<div class="flex pure-form search-tab max">
 				<div class="pure-control-group mr10">
 					<label for="doctor_id">医生：</label>
 					<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
@@ -31,7 +31,7 @@
 				</div>
 				<div class="flex-1"></div>
 			</div>
-			<div class="flex pure-form mt10">
+			<div class="flex pure-form mt10 search-tab max">
 				<div class="pure-control-group mr10">
 					<label for="cdate_big">创建时间大于：</label>
 					<input type="date" id="cdate_big" name="cdate_big" [(ngModel)]="searchInfo.cdate_big">

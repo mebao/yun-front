@@ -58,6 +58,8 @@ export class BookingGrowthrecordComponent{
 	doctorId: string;
 	childId: string;
 	editType: string;
+	// 药方信息
+	prescription: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -83,12 +85,15 @@ export class BookingGrowthrecordComponent{
 			this.editType = params.type;
 		});
 
-		var prescription = '';
+		// 获取药方
+
+		this.prescription = '';
+
 		if(sessionStorage.getItem('prescript') != ''){
 			var prescript = JSON.parse(sessionStorage.getItem('prescript'));
 			if(prescript.info.length > 0){
 				for(var i = 0; i < prescript.info.length; i++){
-					prescription += prescript.info[i].pname + ': ' + prescript.info[i].frequency
+					this.prescription += prescript.info[i].pname + ': ' + prescript.info[i].frequency
 						 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
 						 + '，' + prescript.info[i].usage
 						 + '，需服用' + prescript.info[i].days + '天'
@@ -96,6 +101,11 @@ export class BookingGrowthrecordComponent{
 				}
 			}
 		}
+		// 药方获取最新信息
+		this.initData();
+	}
+
+	initData() {
 		if(this.editType == 'update'){
 			var growthrecord = JSON.parse(sessionStorage.getItem('growthrecord'));
 			this.info = {
@@ -121,7 +131,7 @@ export class BookingGrowthrecordComponent{
 				genital: growthrecord.genital,
 				nervous_system: growthrecord.nervous_system,
 				other: growthrecord.other,
-				prescription: prescription,
+				prescription: this.prescription,
 				blood_routine_examination: growthrecord.bloodRoutineExamination,
 				blood_routine_examination_other: growthrecord.bloodRoutineExamination == '正常' || growthrecord.bloodRoutineExamination == '贫血' || growthrecord.bloodRoutineExamination == '白细胞高值' ? '' : growthrecord.bloodRoutineExamination,
 				routine_urine: growthrecord.routineUrine,
@@ -158,7 +168,7 @@ export class BookingGrowthrecordComponent{
 				genital: '',
 				nervous_system: '',
 				other: '',
-				prescription: prescription,
+				prescription: this.prescription,
 				blood_routine_examination: '',
 				blood_routine_examination_other: '',
 				routine_urine: '',
@@ -176,26 +186,47 @@ export class BookingGrowthrecordComponent{
 
 	//redio切换
 	changeRedio(_value, _key) {
-		if(_key == 'blood_routine_examination_other'){
-			this.info.blood_routine_examination = '';
-			return;
-		}
-		if(_key == 'routine_urine_other'){
-			this.info.routine_urine = '';
-			return;
-		}
-		if(_key == 'BALP_other'){
-			this.info.BALP = '';
-			return;
-		}
-		if(_key == 'trace_element_other'){
-			this.info.trace_element = '';
-			return;
-		}
+        if(_key.indexOf('_other') != -1){
+            this.info[_key.slice(0, _key.indexOf('_other'))] = '';
+            return;
+        }
+        this.info[_key + '_other'] = '';
 		this.info[_key] = _value;
 	}
 
 	create(f) {
+		if(!this.adminService.isFalse(f.value.feeding_volume) && Number(f.value.feeding_volume) <= 0){
+			this.toastTab('奶量应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.blood_pressure) && Number(f.value.blood_pressure) <= 0){
+			this.toastTab('血压应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
+			this.toastTab('体重应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
+			this.toastTab('头围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
+			this.toastTab('胸围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.teeth) && (Number(f.value.teeth) <= 0 || Number(f.value.teeth) % 1 != 0)){
+			this.toastTab('牙齿应为大于0的整数', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.fontanelle) && Number(f.value.fontanelle) <= 0){
+			this.toastTab('卤门应大于0', 'error');
+			return;
+		}
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -238,7 +269,7 @@ export class BookingGrowthrecordComponent{
 				}else{
 					this.toastTab('成长记录创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/doctorBookingGrowthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
@@ -249,7 +280,7 @@ export class BookingGrowthrecordComponent{
 				}else{
 					this.toastTab('成长记录修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/doctorBookingGrowthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});

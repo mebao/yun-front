@@ -83,7 +83,7 @@
 							<div *ngIf="day.bookingList.length == 0" (click)="showBooking(day, doctorBooking, 'duty')" class="hoverTab edit mr10">排班</div>
 							<!-- 当天有预约，同事展示预约详情和排班信息 -->
 							<div (click)="showBooking(day, doctorBooking, 'all')" *ngIf="day.num != '0'" class="edit mr10">{{day.num}}</div>
-							<div (click)="goBooking(doctorBooking, day)" class="hoverTab edit">预约</div>
+							<div (click)="goBooking(doctorBooking, day)" class="hoverTab edit" [ngClass]="{'disabled': !day.use}">预约</div>
 							<div class="flex-1"></div>
 						</div>
 					</div>

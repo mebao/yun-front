@@ -1,14 +1,19 @@
 .admin-booking-growthrecord{
 	.radio{
-		width: 100px;
-		border: 1px solid #ccc;
+		width: 130px;
 		border-radius:  4px;
-		padding: 7px;
 		cursor: pointer;
 		&.active{
-			background-color: #173267;
-			color: #fff;
+			.radioTab{
+				background-color: #173267;
+			}
 		}
-
+		.radioTab{
+			margin-top: 2px;
+			width: 20px;
+			height: 20px;
+			border: 1px solid #484848;
+			border-radius: 50%;
+		}
 	}
 }

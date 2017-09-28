@@ -32,6 +32,20 @@
 	cursor: pointer;
 }
 
+.table-tab{
+    table-layout: fixed;
+    .required{
+        color: $color-error;
+        font-weight: bold;
+    }
+}
+
+.bg-title{
+    letter-spacing: normal;
+    padding: 10px;
+    background-color: #efefef;
+}
+
 .img-tab-default{
 	width: 70px;
 	height: 70px;

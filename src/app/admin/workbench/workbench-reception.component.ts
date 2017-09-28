@@ -156,12 +156,12 @@ export class WorkbenchReceptionComponent{
 						adminduty[i].weekScheduling = [];
 						for(var j = 0; j < weekArray.length; j++){
 							var title = {
-								date: weekArray[j],
+								date: this.adminService.dateFormat(weekArray[j]),
 								title: this.adminService.getWeekTitle(j)
 							}
 							var scheduling = {
 								dutyConfigList: [],
-								dutyDay: weekArray[j],
+								dutyDay: this.adminService.dateFormat(weekArray[j]),
 								dutyId: '',
 								dutyName: ''
 							}
@@ -194,6 +194,8 @@ export class WorkbenchReceptionComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var weekBookingTitle = [];
 				var doctorBookingList = [];
+				// 当天日期
+				var todayTime = new Date().getTime();
 				if(results.list.length > 0){
 					var weekArray = this.adminService.getWeekByNumber(this.weekNumBooking);
 					for(var i = 0; i < results.list.length; i++){
@@ -205,14 +207,19 @@ export class WorkbenchReceptionComponent{
 						}
 						for(var j = 0; j < weekArray.length; j++){
 							var title = {
-								date: weekArray[j],
+								date: this.adminService.dateFormat(weekArray[j]),
 								title: this.adminService.getWeekTitle(j)
 							}
 							var dayBooking = {
-								date: weekArray[j],
+								date: this.adminService.dateFormat(weekArray[j]),
 								bookingList: [],
 								num: '',
 								string: '',
+								use: false,
+							}
+							// 日期是否过期
+							if(todayTime - (24 * 60 * 60 * 1000) < (new Date(dayBooking.date).getTime())){
+								dayBooking.use = true;
 							}
 							if(results.list[i].serviceList.length > 0){
 								for(var k = 0; k < results.list[i].serviceList.length; k++){
@@ -234,6 +241,7 @@ export class WorkbenchReceptionComponent{
 				}
 				this.hasDoctorBookingData = true;
 				this.weekBookingTitle = weekBookingTitle;
+				console.log(doctorBookingList);
 				this.doctorBookingList = doctorBookingList;
 			}
 		})
@@ -333,50 +341,53 @@ export class WorkbenchReceptionComponent{
 	}
 
 	goBooking(booking, day) {
-		// 判断该医生，当天是否排班，若无排班，则不可跳转
-		var hasDuty = false;
-		if(this.schedulinglist.length > 0){
-			for(var i = 0; i < this.schedulinglist.length; i++){
-				// 该医生
-				if(this.schedulinglist[i].adminId == booking.doctorId){
-					for(var j = 0; j < this.schedulinglist[i].weekScheduling.length; j++){
-						// 该天
-						if(this.schedulinglist[i].weekScheduling[j].dutyDay == day.date){
-							// 是否有排班
-							if(this.schedulinglist[i].weekScheduling[j].dutyConfigList.length > 0){
-								hasDuty = true;
+		// 判断日期是否过期
+		if(day.use){
+			// 判断该医生，当天是否排班，若无排班，则不可跳转
+			var hasDuty = false;
+			if(this.schedulinglist.length > 0){
+				for(var i = 0; i < this.schedulinglist.length; i++){
+					// 该医生
+					if(this.schedulinglist[i].adminId == booking.doctorId){
+						for(var j = 0; j < this.schedulinglist[i].weekScheduling.length; j++){
+							// 该天
+							if(this.schedulinglist[i].weekScheduling[j].dutyDay == day.date){
+								// 是否有排班
+								if(this.schedulinglist[i].weekScheduling[j].dutyConfigList.length > 0){
+									hasDuty = true;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		if(hasDuty){
-			// 查找医生拥有的服务，并默认选择第一个
-			var serviceId = '';
-			if(this.doctorList.length > 0){
-				for(var i = 0; i < this.doctorList.length; i++){
-					if(booking.doctorId == this.doctorList[i].id){
-						// 服务列表
-						if(this.doctorList[i].serviceList.length > 0){
-							serviceId = this.doctorList[i].serviceList[0].serviceId;
+			if(hasDuty){
+				// 查找医生拥有的服务，并默认选择第一个
+				var serviceId = '';
+				if(this.doctorList.length > 0){
+					for(var i = 0; i < this.doctorList.length; i++){
+						if(booking.doctorId == this.doctorList[i].id){
+							// 服务列表
+							if(this.doctorList[i].serviceList.length > 0){
+								serviceId = this.doctorList[i].serviceList[0].serviceId;
+							}
 						}
 					}
 				}
-			}
-			if(serviceId == ''){
+				if(serviceId == ''){
+					this.modalConfirm = {
+						text: booking.doctorName + '医生尚未分配服务，不可预约',
+					}
+					this.modalConfirmTab = true;
+				}else{
+					this.router.navigate(['./admin/booking'], {queryParams: {type: 'create', serviceId: serviceId, doctorId: booking.doctorId, date: day.date}});
+				}
+			}else{
 				this.modalConfirm = {
-					text: booking.doctorName + '医生尚未分配服务，不可预约',
+					text: booking.doctorName + '医生' + day.date + '尚未排班，不可预约',
 				}
 				this.modalConfirmTab = true;
-			}else{
-				this.router.navigate(['./admin/booking'], {queryParams: {type: 'create', serviceId: serviceId, doctorId: booking.doctorId, date: day.date}});
 			}
-		}else{
-			this.modalConfirm = {
-				text: booking.doctorName + '医生' + day.date + '尚未排班，不可预约',
-			}
-			this.modalConfirmTab = true;
 		}
 	}
 

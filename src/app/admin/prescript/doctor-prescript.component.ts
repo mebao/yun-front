@@ -51,6 +51,10 @@ export class DoctorPrescriptComponent{
 		name: string,
 		remark: string,
 	}
+	modalConfirmTab: boolean;
+	selected: {
+		text: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -278,7 +282,12 @@ export class DoctorPrescriptComponent{
 				}
 				this.medicalSupplies = results.list;
 			}
-		})
+		});
+
+		this.modalConfirmTab = false;
+		this.selected = {
+			text: '',
+		}
 	}
 
 	showMs(_key) {
@@ -371,8 +380,12 @@ export class DoctorPrescriptComponent{
 						p.unit = JSON.parse(f.value['ms_' + this.plist[i].key]).unit;
 						p.one_unit = JSON.parse(f.value['ms_' + this.plist[i].key]).oneUnit;
 						p.price = JSON.parse(f.value['ms_' + this.plist[i].key]).price;
-						if(!(f.value['one_num_' + this.plist[i].key]) || f.value['one_num_' + this.plist[i].key] == ''){
+						if(this.adminService.isFalse(f.value['one_num_' + this.plist[i].key])){
 							this.toastTab('第' + num + '条单位剂量不可为空', 'error');
+							return;
+						}
+						if(parseFloat(f.value['one_num_' + this.plist[i].key]) <= 0){
+							this.toastTab('第' + num + '条单位剂量应大于0', 'error');
 							return;
 						}
 						p.one_num = f.value['one_num_' + this.plist[i].key];
@@ -386,27 +399,41 @@ export class DoctorPrescriptComponent{
 							return;
 						}
 						p.frequency = f.value['frequency_' + this.plist[i].key];
-						if(!(f.value['days_' + this.plist[i].key]) || f.value['days_' + this.plist[i].key] == ''){
+						if(this.adminService.isFalse(f.value['days_' + this.plist[i].key])){
 							this.toastTab('第' + num + '条天数不可为空', 'error');
 							return;
 						}
+						if(Number(f.value['days_' + this.plist[i].key]) <=0 || Number(f.value['days_' + this.plist[i].key]) % 1 != 0){
+							this.toastTab('第' + num + '条天数应为大于0的整数', 'error');
+							return;
+						}
 						p.days = f.value['days_' + this.plist[i].key];
-						if(!(f.value['num_' + this.plist[i].key]) || f.value['num_' + this.plist[i].key] == ''){
-							this.toastTab('第' + num + '条药单数量不可为空', 'error');
+						if(this.adminService.isFalse(f.value['num_' + this.plist[i].key])){
+							this.toastTab('第' + num + '条药单总量不可为空', 'error');
+							return;
+						}
+						if(Number(f.value['num_' + this.plist[i].key]) <= 0 || Number(f.value['num_' + this.plist[i].key]) % 1 != 0){
+							this.toastTab('第' + num + '条药单总量应为大于0的整数', 'error');
 							return;
 						}
 						p.num = f.value['num_' + this.plist[i].key];
 						if(Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) == 0){
-							this.toastTab(p.name + '尚未设置售价，请先设置售价，再开方', 'error');
+							this.selected = {
+								text: p.name + '尚未设置售价，请先设置售价，再开方',
+							}
+							this.modalConfirmTab = true;
 							return;
 						}
 						if(Number(p.num) > Number(JSON.parse(f.value['ms_' + this.plist[i].key]).stock)){
-							this.toastTab(p.name + '库存' + JSON.parse(f.value['ms_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量', 'error');
+							this.selected = {
+								text: p.name + '库存' + JSON.parse(f.value['ms_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
+							}
+							this.modalConfirmTab = true;
 							return;
 						}
 						p.remark = f.value['remark_' + this.plist[i].key] ? f.value['remark_' + this.plist[i].key] : '';
 						plist.push(p);
-						feeAll += Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) * Number(p.num); 
+						feeAll += Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) * Number(p.num);
 					}
 				}
 			}
@@ -511,7 +538,11 @@ export class DoctorPrescriptComponent{
 			}
 		}
 	}
-	
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

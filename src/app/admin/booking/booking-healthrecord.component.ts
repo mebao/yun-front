@@ -246,7 +246,7 @@ export class BookingHealthrecordComponent{
                 booking_id: doctorBooking.bookingId,
                 name: doctorBooking.childName,
                 age: doctorBooking.age,
-                check_date: '',
+                check_date: this.adminService.getDayByDate(new Date()),
                 height: '',
                 medium_height: '',
                 weight: '',
@@ -344,6 +344,7 @@ export class BookingHealthrecordComponent{
             this.info[_key.slice(0, _key.indexOf('_other'))] = '';
             return;
         }
+        this.info[_key + '_other'] = '';
 		this.info[_key] = _value;
 	}
 
@@ -352,6 +353,46 @@ export class BookingHealthrecordComponent{
             this.toastTab('检查日期不可为空', 'error');
             return;
         }
+		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.medium_height) && Number(f.value.medium_height) <= 0){
+			this.toastTab('身高同年龄中等值应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
+			this.toastTab('头围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
+			this.toastTab('体重应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.medium_weight) && Number(f.value.medium_weight) <= 0){
+			this.toastTab('体重同年龄中等值应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
+			this.toastTab('胸围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.body_temperature) && Number(f.value.body_temperature) <= 0){
+			this.toastTab('体温应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.pulse) && Number(f.value.pulse) <= 0){
+			this.toastTab('脉搏应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.breathe) && Number(f.value.breathe) <= 0){
+			this.toastTab('呼吸应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.blood_pressure) && Number(f.value.blood_pressure) <= 0){
+			this.toastTab('血压应大于0', 'error');
+			return;
+		}
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
@@ -428,7 +469,7 @@ export class BookingHealthrecordComponent{
                     this.toastTab('儿保记录修改成功', '');
                 }
                 setTimeout(() => {
-                    this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+                    this.router.navigate(['./admin/doctorBookingHealthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId}});
                 }, 2000);
             }
         });

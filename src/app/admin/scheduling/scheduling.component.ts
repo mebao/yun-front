@@ -129,13 +129,13 @@ export class SchedulingComponent{
 						adminduty[i].weekScheduling = [];
 						for(var j = 0; j < weekArray.length; j++){
 							var title = {
-								date: weekArray[j],
+								date: this.adminService.dateFormat(weekArray[j]),
 								title: this.adminService.getWeekTitle(j)
 							}
 							var scheduling = {
 								dutyConfig: '',
 								dutyConfigList: [],
-								dutyDay: weekArray[j],
+								dutyDay: this.adminService.dateFormat(weekArray[j]),
 								dutyId: '',
 								dutyName: '',
 								id: '',

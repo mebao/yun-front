@@ -50,6 +50,9 @@ import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.c
 import { PrescriptListComponent }           from './prescript/prescript-list.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
 import { DoctorBookingComponent }           from './user/doctor-booking.component';
+import { DoctorBookingGrowthrecordsComponent }       from './user/doctor-booking-growthrecords.component';
+import { DoctorBookingCasehistoryComponent } from './user/doctor-booking-casehistory.component';
+import { DoctorBookingHealthrecordComponent } from './user/doctor-booking-healthrecord.component';
 import { SetupInspectComponent }            from './setup/inspect.component';
 import { SetupInspectListComponent }        from './setup/inspect-list.component';
 import { MaterialListComponent }            from './material/material-list.component';
@@ -312,6 +315,21 @@ const adminRoutes: Routes = [
 						path: 'doctorBooking',
 						canActivate: [AuthGuardRole],
 						component: DoctorBookingComponent,
+					},
+					{
+						path: 'doctorBookingGrowthrecords',
+						canActivate: [AuthGuardRole],
+						component: DoctorBookingGrowthrecordsComponent,
+					},
+					{
+						path: 'doctorBookingCasehistory',
+						canActivate: [AuthGuardRole],
+						component: DoctorBookingCasehistoryComponent,
+					},
+					{
+						path: 'doctorBookingHealthrecord',
+						canActivate: [AuthGuardRole],
+						component: DoctorBookingHealthrecordComponent,
 					},
 					{
 						path: 'setupInspect',

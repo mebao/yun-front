@@ -45,6 +45,11 @@
 					&:hover{
 						.hoverTab{
 							display: inherit;
+							&.disabled{
+								cursor: not-allowed;
+								background-color: #fff;
+								color: #ababab;
+							}
 						}
 					}
 					.edit{

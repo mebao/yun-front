@@ -165,12 +165,12 @@ export class BookingConfirmComponent{
 				var weektitle = new Array();
 				for(var i = 0; i < 7; i++){
 					var title = {
-						date: weekArray[i],
+						date: this.adminService.dateFormat(weekArray[i]),
 						title: this.adminService.getWeekTitle(i)
 					}
 					weektitle.push(title);
 					var week = {
-						date: weekArray[i],
+						date: this.adminService.dateFormat(weekArray[i]),
 						use: true,
 						timeList: [
 							{key: '08:00', value: []},
@@ -210,7 +210,7 @@ export class BookingConfirmComponent{
 					for(var j = 0; j < week.timeList.length; j++){
 						//遍历返回结果，将预约信息添加进timeList
 						for(var k = 0; k < weekbooks.length; k++){
-							if(weekArray[i] == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
+							if(this.adminService.dateFormat(weekArray[i]) == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
 								weekbooks[k].servicesLength = weekbooks[k].services.length;
 								week.timeList[j].value.push(weekbooks[k]);
 							}

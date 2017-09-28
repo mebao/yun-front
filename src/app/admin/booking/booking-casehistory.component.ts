@@ -161,7 +161,7 @@ export class BookingCasehistoryComponent{
 				trace_element: '',
 				trace_element_other: '',
 				diagnosis: '',
-				prescription: '',
+				prescription: prescription,
 				advise: '',
 				time: '',
 			}
@@ -170,26 +170,47 @@ export class BookingCasehistoryComponent{
 
 	//redio切换
 	changeRedio(_value, _key) {
-		if(_key == 'blood_routine_examination_other'){
-			this.info.blood_routine_examination = '';
-			return;
-		}
-		if(_key == 'routine_urine_other'){
-			this.info.routine_urine = '';
-			return;
-		}
-		if(_key == 'BALP_other'){
-			this.info.BALP = '';
-			return;
-		}
-		if(_key == 'trace_element_other'){
-			this.info.trace_element = '';
-			return;
-		}
+        if(_key.indexOf('_other') != -1){
+            this.info[_key.slice(0, _key.indexOf('_other'))] = '';
+            return;
+        }
+        this.info[_key + '_other'] = '';
 		this.info[_key] = _value;
 	}
 
 	create(f) {
+		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
+			this.toastTab('体重应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
+			this.toastTab('头围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
+			this.toastTab('胸围应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.teeth) && Number(f.value.teeth) <= 0){
+			this.toastTab('牙齿应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.body_temperature) && Number(f.value.body_temperature) <= 0){
+			this.toastTab('体温应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.breathe) && Number(f.value.breathe) <= 0){
+			this.toastTab('呼吸应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.blood_pressure) && Number(f.value.blood_pressure) <= 0){
+			this.toastTab('血压应大于0', 'error');
+			return;
+		}
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -230,7 +251,7 @@ export class BookingCasehistoryComponent{
 				}else{
 					this.toastTab('病历创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/doctorBookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
@@ -241,7 +262,7 @@ export class BookingCasehistoryComponent{
 				}else{
 					this.toastTab('病历修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/doctorBookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
