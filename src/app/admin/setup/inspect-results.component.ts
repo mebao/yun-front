@@ -176,16 +176,16 @@ export class InspectResultsComponent{
 						return;
 					}
 					// 若是数字类型，则大于0
-					if(this.checkProjectList[indexCheck].resultList[i].isNum && this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
+					if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
 						this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
 						return;
 					}
+					result.check_info_id = this.checkProjectList[indexCheck].resultList[i].checkInfoId;
+					result.values = this.checkProjectList[indexCheck].resultList[i].values;
+					result.remark = this.checkProjectList[indexCheck].resultList[i].remark;
+					result.compare = this.checkProjectList[indexCheck].resultList[i].compare;
+					resultList.push(result);
 				}
-				result.check_info_id = this.checkProjectList[indexCheck].resultList[i].checkInfoId;
-				result.values = this.checkProjectList[indexCheck].resultList[i].values;
-				result.remark = this.checkProjectList[indexCheck].resultList[i].remark;
-				result.compare = this.checkProjectList[indexCheck].resultList[i].compare;
-				resultList.push(result);
 			}
 			var params = {
 				username: this.adminService.getUser().username,
