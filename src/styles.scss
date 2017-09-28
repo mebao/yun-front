@@ -154,6 +154,11 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
             padding:.5em .6em;
         }
     }
+    .select-list-page[_ngcontent-c2]{
+        .label[_ngcontent-c2]{
+            height:2.5em;
+        }
+    }
 	input[type="radio"]{
 		width: auto;
 	}
