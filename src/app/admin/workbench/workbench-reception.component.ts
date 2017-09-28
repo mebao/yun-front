@@ -350,7 +350,7 @@ export class WorkbenchReceptionComponent{
 					if(this.schedulinglist[i].adminId == booking.doctorId){
 						for(var j = 0; j < this.schedulinglist[i].weekScheduling.length; j++){
 							// 该天
-							if(this.schedulinglist[i].weekScheduling[j].dutyDay == day.date){
+							if(this.schedulinglist[i].weekScheduling[j].dutyDay == this.adminService.dateFormatHasWord(day.date)){
 								// 是否有排班
 								if(this.schedulinglist[i].weekScheduling[j].dutyConfigList.length > 0){
 									hasDuty = true;
