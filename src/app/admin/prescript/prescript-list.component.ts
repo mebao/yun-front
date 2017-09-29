@@ -22,6 +22,8 @@ export class PrescriptListComponent{
 	moduleAuthority: {
 		see: boolean,
 		edit: boolean,
+		seeBack: boolean,
+		seeSale: boolean,
 	}
 	hasData: boolean;
 	list: any[];
@@ -52,6 +54,8 @@ export class PrescriptListComponent{
 		this.moduleAuthority = {
 			see: false,
 			edit: false,
+			seeBack: false,
+			seeSale: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限

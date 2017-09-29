@@ -70,7 +70,7 @@ export class MedicalHasListComponent{
 		this.list = [];
 		this.info = {
 			name: '',
-			type: '1',
+			type: '2',
 			l_stock: '',
 			b_stock: '',
 		}

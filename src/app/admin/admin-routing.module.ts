@@ -495,10 +495,12 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'prescriptSale',
+						canActivate: [AuthGuardRole],
 						component: PrescriptSaleComponent,
 					},
 					{
 						path: 'prescriptSaleList',
+						canActivate: [AuthGuardRole],
 						component: PrescriptSaleListComponent,
 					},
 					{

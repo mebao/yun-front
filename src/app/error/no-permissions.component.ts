@@ -1,5 +1,6 @@
 import { Component }                    from '@angular/core';
 import { Router }                       from '@angular/router';
+import { Location }                     from '@angular/common';
 
 import { AdminService }                 from '../admin/admin.service';
 
@@ -12,7 +13,12 @@ export class NoPermissionsComponent{
 	constructor(
 		public adminService: AdminService,
 		private router: Router,
+		private location: Location,
 	) {}
+
+	back() {
+		this.location.back();
+	}
 
 	logout() {
 		this.adminService.delCookie('user');

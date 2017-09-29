@@ -5,9 +5,9 @@
 		<div class="content admin-prescript-back-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
+				<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
 				<div class="item active">退药</div>
-				<div class="item" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
+				<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
 			</div>
 			<div class="pure-form flex mt10">
 				<div class="flex-1"></div>

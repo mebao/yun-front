@@ -1,5 +1,5 @@
 import { Component, OnInit }                     from '@angular/core';
-import { Router }                from '@angular/router';
+import { Router }                                from '@angular/router';
 
 import { AdminService }                          from '../admin.service';
 
@@ -368,12 +368,16 @@ export class PrescriptSaleComponent{
 			idcard: this.sale.idcard,
 		}
 
+		this.modalTab = false;
+		
 		this.adminService.drugretail(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				this.toastTab('支付成功', '');
-				this.initData();
+				setTimeout(() => {
+					this.router.navigate(['./admin/prescriptSaleList']);
+				}, 2000);
 			}
 		});
 	}
