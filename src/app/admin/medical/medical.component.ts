@@ -22,7 +22,7 @@ export class MedicalComponent{
 		name: string,
 		type: string,
 		unit: string,
-		one_unit: string,
+		oneUnit: string,
 		usage: string,
 	};
 	editType: string;
@@ -51,9 +51,11 @@ export class MedicalComponent{
 			name: '',
 			type: '',
 			unit: '',
-			one_unit: '',
+			oneUnit: '',
 			usage: '',
 		}
+
+		this.OneUnits = [];
 
 		this.route.queryParams.subscribe((params) => {
 			this.info.id = params.id;
