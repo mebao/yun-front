@@ -1,0 +1,35 @@
+.admin-prescript-sale{
+	.info-tab{
+		.item{
+			label{
+			    width: 70px;
+			    margin-right: 10px;
+			    padding: 10px 0;
+			}
+			.info{
+			    padding: 10px 0;
+			}
+		}
+	}
+	.ms-tab{
+		.ms-bar{
+			background-color: #efefef;
+			padding: 10px;
+			cursor: pointer;
+			line-height: 1em;
+		}
+	}
+	.flex-tab{
+		input{
+			margin-top: 0;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		select{
+			margin-top: 0;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			border-width: 1px 1px 1px 0;
+		}
+	}
+}

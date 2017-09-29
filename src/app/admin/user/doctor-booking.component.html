@@ -296,7 +296,7 @@
 						</table>
 						<div class="flex mt10">
 							<div class="flex-1">
-								<div *ngIf="canEdit">
+								<div *ngIf="canEdit && booking.status != '5'">
 									<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" class="pure-button pure-button-primary">添加其它费用</button>
 								</div>
 							</div>

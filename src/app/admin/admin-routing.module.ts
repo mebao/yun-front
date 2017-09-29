@@ -85,6 +85,8 @@ import { CrmRoleListComponent }             from './user/crm-role-list.component
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 import { BookingReceiveComponent }          from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
+import { PrescriptSaleComponent }           from './prescript/prescript-sale.component';
+import { PrescriptSaleListComponent }       from './prescript/prescript-sale-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -490,6 +492,14 @@ const adminRoutes: Routes = [
 						path: 'bookingHealthrecord',
 						canActivate: [AuthGuardRole],
 						component: BookingHealthrecordComponent,
+					},
+					{
+						path: 'prescriptSale',
+						component: PrescriptSaleComponent,
+					},
+					{
+						path: 'prescriptSaleList',
+						component: PrescriptSaleListComponent,
 					},
 					{
 						path: '**',

@@ -182,7 +182,7 @@ export class BookingReceiveComponent{
 
 	getUrlOptios() {
 		var urlOptions = this.url;
-		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=3,4';
+		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=3,4,5';
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}

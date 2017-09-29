@@ -45,6 +45,18 @@
 					color: #39A99D;
 				}
 			}
+			&.complete{
+				.info{
+					background-color: #448CCB;
+					.status{
+						color: #448CCB;
+					}
+				}
+				.edit{
+					border-color: #448CCB;
+					color: #448CCB;
+				}
+			}
 		}
 	}
 }

@@ -55,7 +55,7 @@
 				<div class="pure-g">
 					<ng-container *ngFor="let booking of bookinglist">
 						<div class="pure-u-6-24 booking-tab pad10" *ngFor="let service of booking.services">
-							<div class="tab" [ngClass]="{'in': booking.status == '4'}">
+							<div class="tab" [ngClass]="{'in': booking.status == '4', 'complete': booking.status == '5'}">
 								<div class="info pad10">
 									<div class="flex">
 										<div class="flex-1"></div>

@@ -883,6 +883,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 药品零售
+	private drugretailUrl = this.url + '/mebcrm/drugretail';
+	drugretail(params): Promise<Data>{
+		return this.http.post(this.drugretailUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询药品零售记录
+	private searchdrugretailUrl = this.url + '/mebcrm/searchdrugretail';
+	searchdrugretail(urlOptions): Promise<Data>{
+		return this.http.get(this.searchdrugretailUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
