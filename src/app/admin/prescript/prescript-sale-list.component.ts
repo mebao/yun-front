@@ -110,7 +110,6 @@ export class PrescriptSaleListComponent{
 				}
 				this.list = results.list;
 				this.hasData = true;
-                console.log(this.list);
 			}
 		})
 	}

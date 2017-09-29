@@ -27,8 +27,10 @@ export class BookingHealthrecordComponent{
         check_date: string,
         height: string,
         medium_height: string,
+        compare_height: string,
         weight: string,
         medium_weight: string,
+        compare_weight: string,
         head_circum: string,
         breast_circum: string,
         body_temperature: string,
@@ -153,8 +155,10 @@ export class BookingHealthrecordComponent{
                 check_date: healthrecord.checkDate,
                 height: healthrecord.height,
                 medium_height: healthrecord.mediumHeight,
+                compare_height: healthrecord.compareHeight,
                 weight: healthrecord.weight,
                 medium_weight: healthrecord.mediumWeight,
+                compare_weight: healthrecord.compareWeight,
                 head_circum: healthrecord.headCircum,
                 breast_circum: healthrecord.breastCircum,
                 body_temperature: healthrecord.bodyTemperature,
@@ -249,8 +253,10 @@ export class BookingHealthrecordComponent{
                 check_date: this.adminService.getDayByDate(new Date()),
                 height: '',
                 medium_height: '',
+                compare_height: '',
                 weight: '',
                 medium_weight: '',
+                compare_weight: '',
                 head_circum: '',
                 breast_circum: '',
                 body_temperature: '',
@@ -338,6 +344,42 @@ export class BookingHealthrecordComponent{
         }
     }
 
+    // 身高对比
+    changeHeight() {
+        if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.medium_height)){
+            this.info.compare_height = '';
+            return;
+        }
+        if(parseFloat(this.info.height) <= 0){
+            this.toastTab('身高应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.medium_height) <= 0){
+            this.toastTab('身高同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.medium_height)) / parseFloat(this.info.medium_height) * 100);
+        this.info.compare_height = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
+    // 体重对比
+    changeWeight() {
+        if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.medium_weight)){
+            this.info.compare_weight = '';
+            return;
+        }
+        if(parseFloat(this.info.weight) <= 0){
+            this.toastTab('体重应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.medium_weight) <= 0){
+            this.toastTab('体重同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.medium_weight)) / parseFloat(this.info.medium_weight));
+        this.info.compare_weight = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * 100 * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
 	//redio切换
 	changeRedio(_value, _key) {
         if(_key.indexOf('_other') != -1){
@@ -402,8 +444,10 @@ export class BookingHealthrecordComponent{
             check_date: this.info.check_date,
             height: this.info.height == '' ? null : this.info.height,
             medium_height: this.info.medium_height == '' ? null : this.info.medium_height,
+            compare_height: this.info.compare_height,
             weight: this.info.weight == '' ? null : this.info.weight,
             medium_weight: this.info.medium_weight == '' ? null : this.info.medium_weight,
+            compare_weight: this.info.compare_weight,
             head_circum: this.info.head_circum == '' ? null : this.info.head_circum,
             breast_circum: this.info.breast_circum == '' ? null : this.info.breast_circum,
             body_temperature: this.info.body_temperature,

@@ -23,28 +23,52 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="weight">体重（Kg）：</label>
-								<input type="number" id="weight" name="weight" #weight="ngModel" [(ngModel)]="info.weight">
+								<input type="number" id="weight" name="weight" #weight="ngModel" [(ngModel)]="info.weight" (change)="changeWeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
-								<label for="head_circum">头围（3岁及以下）cm：</label>
-								<input type="number" id="head_circum" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum">
+								<label for="mid_weight">体重同年龄中等值（Kg）：</label>
+								<input type="number" id="mid_weight" name="mid_weight" #mid_weight="ngModel" [(ngModel)]="info.mid_weight" (change)="changeWeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
-								<label for="breast_circum">胸围（cm）：</label>
-								<input type="number" id="breast_circum" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum">
+								<label for="compare_weight">体重对比：</label>
+								<input type="text" id="compare_weight" name="compare_weight" #compare_weight="ngModel" [(ngModel)]="info.compare_weight" disabled>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="height">身高（cm）：</label>
-								<input type="number" id="height" name="height" #height="ngModel" [(ngModel)]="info.height">
+								<input type="number" id="height" name="height" #height="ngModel" [(ngModel)]="info.height" (change)="changeHeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="mid_height">身高同年龄中等值（cm）：</label>
+								<input type="number" id="mid_height" name="mid_height" #mid_height="ngModel" [(ngModel)]="info.mid_height" (change)="changeHeight()">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
+							<div class="pure-control-group">
+								<label for="compare_height">身高对比：</label>
+								<input type="text" id="compare_height" name="compare_height" #compare_height="ngModel" [(ngModel)]="info.compare_height" disabled>
+							</div>
+						</div>
+						<div class="pure-u-8-24 pr10">
+							<div class="pure-control-group">
+								<label for="head_circum">头围（3岁及以下）cm：</label>
+								<input type="number" id="head_circum" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="breast_circum">胸围（cm）：</label>
+								<input type="number" id="breast_circum" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum">
+							</div>
+						</div>
+						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
 								<label for="teeth">牙齿（枚）：</label>
 								<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth">

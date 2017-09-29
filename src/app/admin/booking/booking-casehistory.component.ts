@@ -22,7 +22,11 @@ export class BookingCasehistoryComponent{
 		name: string,
 		age: string,
 		weight: string,
+		mid_weight: string,
+		compare_weight: string,
 		height: string,
+		mid_height: string,
+		compare_height: string,
 		head_circum: string,
 		breast_circum: string,
 		teeth: string,
@@ -100,7 +104,11 @@ export class BookingCasehistoryComponent{
 				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
 				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
 				weight: casehistory.weight,
+				mid_weight: casehistory.midWeight,
+				compare_weight: casehistory.compareWeight,
 				height: casehistory.height,
+				mid_height: casehistory.midHeight,
+				compare_height: casehistory.compareHeight,
 				head_circum: casehistory.headCircum,
 				breast_circum: casehistory.breastCircum,
 				teeth: casehistory.teeth,
@@ -135,7 +143,11 @@ export class BookingCasehistoryComponent{
 				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
 				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
 				weight: '',
+				mid_weight: '',
+				compare_weight: '',
 				height: '',
+				mid_height: '',
+				compare_height: '',
 				head_circum: '',
 				breast_circum: '',
 				teeth: '',
@@ -168,6 +180,42 @@ export class BookingCasehistoryComponent{
 		}
 	}
 
+    // 身高对比
+    changeHeight() {
+        if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.mid_height)){
+            this.info.compare_height = '';
+            return;
+        }
+        if(parseFloat(this.info.height) <= 0){
+            this.toastTab('身高应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.mid_height) <= 0){
+            this.toastTab('身高同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.mid_height)) / parseFloat(this.info.mid_height) * 100);
+        this.info.compare_height = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
+    // 体重对比
+    changeWeight() {
+        if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.mid_weight)){
+            this.info.compare_weight = '';
+            return;
+        }
+        if(parseFloat(this.info.weight) <= 0){
+            this.toastTab('体重应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.mid_weight) <= 0){
+            this.toastTab('体重同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.mid_weight)) / parseFloat(this.info.mid_weight));
+        this.info.compare_weight = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * 100 * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
 	//redio切换
 	changeRedio(_value, _key) {
         if(_key.indexOf('_other') != -1){
@@ -183,16 +231,24 @@ export class BookingCasehistoryComponent{
 			this.toastTab('体重应大于0', 'error');
 			return;
 		}
+		if(!this.adminService.isFalse(f.value.mid_weight) && Number(f.value.mid_weight) <= 0){
+			this.toastTab('体重同年龄中等值应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.mid_height) && Number(f.value.mid_height) <= 0){
+			this.toastTab('身高同年龄中等值应大于0', 'error');
+			return;
+		}
 		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
 			this.toastTab('头围应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
 			this.toastTab('胸围应大于0', 'error');
-			return;
-		}
-		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
-			this.toastTab('身高应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.teeth) && Number(f.value.teeth) <= 0){
@@ -218,7 +274,11 @@ export class BookingCasehistoryComponent{
 			child_id: this.childId,
 			booking_id: this.id,
 			weight: f.value.weight == '' ? null : f.value.weight,
+			mid_weight: f.value.mid_weight,
+			compare_weight: this.info.compare_weight,
 			height: f.value.height == '' ? null : f.value.height,
+			mid_height: f.value.mid_height,
+			compare_height: this.info.compare_height,
 			head_circum: f.value.head_circum == '' ? null : f.value.head_circum,
 			breast_circum: f.value.breast_circum == '' ? null : f.value.breast_circum,
 			teeth: f.value.teeth,

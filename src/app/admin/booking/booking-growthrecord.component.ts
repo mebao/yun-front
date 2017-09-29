@@ -27,7 +27,11 @@ export class BookingGrowthrecordComponent{
 		allergy: string,
 		blood_pressure: string,
 		weight: string,
+		mid_weight: string,
+		compare_weight: string,
 		height: string,
+		mid_height: string,
+		compare_height: string,
 		head_circum: string,
 		breast_circum: string,
 		teeth: string,
@@ -117,7 +121,11 @@ export class BookingGrowthrecordComponent{
 				allergy: growthrecord.allergy,
 				blood_pressure: growthrecord.bloodPressure,
 				weight: growthrecord.weight,
+				mid_weight: growthrecord.midWeight,
+				compare_weight: growthrecord.compareWeight,
 				height: growthrecord.height,
+				mid_height: growthrecord.midHeight,
+				compare_height: growthrecord.compareHeight,
 				head_circum: growthrecord.headCircum,
 				breast_circum: growthrecord.breastCircum,
 				teeth: growthrecord.teeth,
@@ -154,7 +162,11 @@ export class BookingGrowthrecordComponent{
 				allergy: '',
 				blood_pressure: '',
 				weight: '',
+				mid_weight: '',
+				compare_weight: '',
 				height: '',
+				mid_height: '',
+				compare_height: '',
 				head_circum: '',
 				breast_circum: '',
 				teeth: '',
@@ -184,6 +196,42 @@ export class BookingGrowthrecordComponent{
 		}
 	}
 
+    // 身高对比
+    changeHeight() {
+        if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.mid_height)){
+            this.info.compare_height = '';
+            return;
+        }
+        if(parseFloat(this.info.height) <= 0){
+            this.toastTab('身高应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.mid_height) <= 0){
+            this.toastTab('身高同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.mid_height)) / parseFloat(this.info.mid_height) * 100);
+        this.info.compare_height = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
+    // 体重对比
+    changeWeight() {
+        if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.mid_weight)){
+            this.info.compare_weight = '';
+            return;
+        }
+        if(parseFloat(this.info.weight) <= 0){
+            this.toastTab('体重应大于0', 'error');
+            return;
+        }
+        if(parseFloat(this.info.mid_weight) <= 0){
+            this.toastTab('体重同年龄中等值应大于0', 'error');
+            return;
+        }
+        var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.mid_weight)) / parseFloat(this.info.mid_weight));
+        this.info.compare_weight = (parseFloat(compare) < 0 ? '低' : '高') + (this.adminService.toDecimal2(parseFloat(compare) * 100 * (parseFloat(compare) < 0 ? -1 : 1))) + '%';
+    }
+
 	//redio切换
 	changeRedio(_value, _key) {
         if(_key.indexOf('_other') != -1){
@@ -207,16 +255,24 @@ export class BookingGrowthrecordComponent{
 			this.toastTab('体重应大于0', 'error');
 			return;
 		}
+		if(!this.adminService.isFalse(f.value.mid_weight) && Number(f.value.height) <= 0){
+			this.toastTab('体重同年龄中等值应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(f.value.mid_height) && Number(f.value.mid_height) <= 0){
+			this.toastTab('身高同年龄中等值应大于0', 'error');
+			return;
+		}
 		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
 			this.toastTab('头围应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
 			this.toastTab('胸围应大于0', 'error');
-			return;
-		}
-		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
-			this.toastTab('身高应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.teeth) && (Number(f.value.teeth) <= 0 || Number(f.value.teeth) % 1 != 0)){
@@ -239,7 +295,11 @@ export class BookingGrowthrecordComponent{
 			allergy: f.value.allergy,
 			blood_pressure: f.value.blood_pressure,
 			weight: f.value.weight == '' ? null : f.value.weight,
+			mid_weight: this.info.mid_weight,
+			compare_weight: this.info.compare_weight,
 			height: f.value.height == '' ? null : f.value.height,
+			mid_height: this.info.mid_height,
+			compare_height: this.info.compare_height,
 			head_circum: f.value.head_circum == '' ? null : f.value.head_circum,
 			breast_circum: f.value.breast_circum == '' ? null : f.value.breast_circum,
 			teeth: f.value.teeth,
