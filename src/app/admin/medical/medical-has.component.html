@@ -57,7 +57,7 @@
 							</div>
 							<div class="pure-control-group">
 								<label for="price">售价</label>
-								<input type="number" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
+								<input type="number" step="0.01" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
 								<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
 									<div [hidden]="!price.errors.required">
 										售价不可为空

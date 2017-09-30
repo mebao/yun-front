@@ -48,7 +48,7 @@
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="feeding_volume">奶量（ml/天）：</label>
-								<input type="number" id="feeding_volume" name="feeding_volume" #feeding_volume="ngModel" [(ngModel)]="info.feeding_volume">
+								<input type="number" id="feeding_volume" step="0.01" name="feeding_volume" #feeding_volume="ngModel" [(ngModel)]="info.feeding_volume">
 							</div>
 						</div>
 						<div class="pure-u-8-24"></div>
@@ -71,13 +71,13 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="weight">体重（Kg）：</label>
-								<input type="number" id="weight" name="weight" #weight="ngModel" [(ngModel)]="info.weight" (change)="changeWeight()">
+								<input type="number" id="weight" step="0.01" name="weight" #weight="ngModel" [(ngModel)]="info.weight" (change)="changeWeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="mid_weight">体重同年龄中等值（Kg）：</label>
-								<input type="number" id="mid_weight" name="mid_weight" #mid_weight="ngModel" [(ngModel)]="info.mid_weight" (change)="changeWeight()">
+								<input type="number" id="mid_weight" step="0.01" name="mid_weight" #mid_weight="ngModel" [(ngModel)]="info.mid_weight" (change)="changeWeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
@@ -89,13 +89,13 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="height">身高（cm）：</label>
-								<input type="number" id="height" name="height" #height="ngModel" [(ngModel)]="info.height" (change)="changeHeight()">
+								<input type="number" id="height" step="0.01" name="height" #height="ngModel" [(ngModel)]="info.height" (change)="changeHeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="mid_height">身高同年龄中等值（cm）：</label>
-								<input type="number" id="mid_height" name="mid_height" #mid_height="ngModel" [(ngModel)]="info.mid_height" (change)="changeHeight()">
+								<input type="number" id="mid_height" step="0.01" name="mid_height" #mid_height="ngModel" [(ngModel)]="info.mid_height" (change)="changeHeight()">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
@@ -107,13 +107,13 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="head_circum">头围（3岁及以下）cm：</label>
-								<input type="number" id="head_circum" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum">
+								<input type="number" id="head_circum" step="0.01" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="breast_circum">胸围（cm）：</label>
-								<input type="number" id="breast_circum" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum">
+								<input type="number" id="breast_circum" step="0.01" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
@@ -125,7 +125,7 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="fontanelle">囟门（1岁至1岁半）cm：</label>
-								<input type="number" id="fontanelle" name="fontanelle" #fontanelle="ngModel" [(ngModel)]="info.fontanelle">
+								<input type="number" id="fontanelle" step="0.01" name="fontanelle" #fontanelle="ngModel" [(ngModel)]="info.fontanelle">
 							</div>
 						</div>
 						<div class="pure-u-24-24">

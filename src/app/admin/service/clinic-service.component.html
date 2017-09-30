@@ -37,7 +37,7 @@
 							</div>
 							<div class="pure-control-group">
 								<label for="fee">费用</label>
-								<input id="fee" type="number" name="fee" [(ngModel)]="serviceModel.fee" #fee="ngModel" placeholder="请输入费用" required="">
+								<input id="fee" type="number" step="0.01" name="fee" [(ngModel)]="serviceModel.fee" #fee="ngModel" placeholder="请输入费用" required="">
 								<div *ngIf="fee.errors && (fee.dity || fee.touched)" class="alert alert-danger">
 									<div [hidden]="!fee.errors.required">
 										费用不可为空
