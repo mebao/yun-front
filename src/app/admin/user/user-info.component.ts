@@ -128,8 +128,18 @@ export class UserInfoComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.userInfo = results.users[0];
-				this.childs = results.users[0].childs;
+				if(results.users.length > 0){
+					this.userInfo = results.users[0];
+					this.childs = results.users[0].childs;
+					// 更新小孩生日格式
+					if(results.users[0].childs.length > 0){
+						for(var i = 0; i < results.users[0].childs.length; i++){
+							results.users[0].childs[i].birthday = results.users[0].childs[i].birthday.slice(0, results.users[0].childs[i].birthday.indexOf(' '));
+							results.users[0].childs[i].birthdayString = results.users[0].childs[i].birthday;
+							results.users[0].childs[i].birthday = this.adminService.dateFormatHasWord(results.users[0].childs[i].birthday);
+						}
+					}
+				}
 			}
 		})
 	}

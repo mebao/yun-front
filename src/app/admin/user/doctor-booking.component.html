@@ -45,7 +45,7 @@
 							</div>
 							<div *ngFor="let check of checkDataList">
 								<div *ngIf="selectedCheckTab == check.id">
-									<div class="mt10 mb10 text-right">
+									<div *ngIf="booking.status != '5'" class="mt10 mb10 text-right">
 										<button (click)="deleteCheck(check)" class="pure-button button-error">删除</button>
 									</div>
 									<table class="pure-table pure-table-horizontal w100 table-tab">
