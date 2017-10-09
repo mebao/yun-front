@@ -340,7 +340,7 @@ export class LoginComponent{
 
 				//默认进入所有权限中，第一个一级页面
 				var firstUrl = '';
-				if(results.admininfo.role == '0'){
+				if(results.admininfo.role == '0' || results.admininfo.role == '9'){
 					firstUrl = '/admin/workbenchReception';
 				}else{
 					if(results.admininfo.clinicRoles.length == 0){

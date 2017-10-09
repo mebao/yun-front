@@ -20,7 +20,7 @@ export class AuthGuardRole implements CanActivate{
 	checkUserClinicRoles(url: string): boolean{
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().role == '0'){
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
 			return true;
 		}
 		//判断sessionStorage中是否含有userClinicRoles信息，没有,需再次请求
