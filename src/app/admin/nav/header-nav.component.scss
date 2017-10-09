@@ -1,0 +1,24 @@
+.header-nav{
+    background-color: #EDEDED;
+    height: 50px;
+    border-bottom: 1px solid #D9DEE4;
+    .title{
+        line-height: 50px;
+        font-size: 1.3em;
+        padding: 0 20px;
+        color: #173267;
+    }
+    .right-tab{
+        .item{
+            display: inline-block;
+            line-height: 50px;
+            font-size: 1.3em;
+            padding: 0 20px;
+            color: #173267;
+            border-left: 1px solid #afafaf;
+            &:first-child{
+                border-left: none;
+            }
+        }
+    }
+}

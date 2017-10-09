@@ -311,11 +311,4 @@ export class LeftNavComponent{
 			}
 		}
 	}
-
-	logout() {
-		this.adminService.delCookie('user');
-		sessionStorage.removeItem('userClinicRoles');
-		sessionStorage.removeItem('userClinicRolesInfos');
-		this.router.navigate(['./login']);
-	}
 }
