@@ -5,11 +5,14 @@ import { AdminService }                  from '../admin.service';
 
 @Component({
 	selector: 'left-nav',
-	templateUrl: './left-nav.component.html'
+	templateUrl: './left-nav.component.html',
+	styleUrls: ['./left-nav.component.scss'],
 })
 export class LeftNavComponent{
 	@Input() title: string;
 	userRole: string;
+	selectedTab: string;
+	showTab: boolean;
 	clinicRole: {
 		//前台工作台
 		workbenchReception: {
@@ -158,6 +161,9 @@ export class LeftNavComponent{
 
 	ngOnInit() {
 		this.userRole = this.adminService.getUser().role;
+
+		// this.selectedTab = sessionStorage.getItem('leftTab') ? sessionStorage.getItem('leftTab') : '';
+		// this.showTab = sessionStorage.getItem('leftShowTab') ? true : false;
 
 		this.clinicRole = {
 			workbenchReception: {
@@ -311,4 +317,11 @@ export class LeftNavComponent{
 			}
 		}
 	}
+
+	// changeTab(_value) {
+	// 	this.selectedTab = _value;
+	// 	this.showTab = !this.showTab;
+	// 	sessionStorage.setItem('leftTab', _value);
+	// 	sessionStorage.setItem('leftShowTab', String(this.showTab));
+	// }
 }
