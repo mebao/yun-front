@@ -3,7 +3,6 @@ import { Router }                              from '@angular/router';
 import { NgForm }                              from '@angular/forms';
 
 import { AdminService }                        from '../admin.service';
-import { LeftNavComponent }                    from '../nav/left-nav.component';
 
 @Component({
 	selector: 'app-scheduling-config',

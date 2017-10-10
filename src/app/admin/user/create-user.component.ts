@@ -2,7 +2,6 @@ import { Component, OnInit }             from '@angular/core';
 import { Router, ActivatedRoute }        from '@angular/router';
 
 import { AdminService }                  from '../admin.service';
-import { LeftNavComponent }              from '../nav/left-nav.component';
 
 @Component({
 	selector: 'app-create-user',
