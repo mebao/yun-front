@@ -27,6 +27,7 @@ export class ChildListComponent{
 	hasData: boolean;
 	searchInfo: {
 		name: string,
+		mobile: string,
 	}
 	url: string;
 
@@ -68,6 +69,7 @@ export class ChildListComponent{
 		this.hasData = false;
 		this.searchInfo = {
 			name: '',
+			mobile: '',
 		}
 
 		//获取宝宝列表
@@ -83,6 +85,9 @@ export class ChildListComponent{
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;
 		}
+		if(this.searchInfo.mobile != ''){
+			urlOptions += '&mobile=' + this.searchInfo.mobile;
+		}
 
 		this.getData(urlOptions);
 	}
@@ -93,6 +98,13 @@ export class ChildListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.child.length > 0){
+					for(var i = 0; i < results.child.length; i++){
+						if(!this.adminService.isFalse(results.child[i].birthday)){
+							results.child[i].birthday = this.adminService.dateFormat(results.child[i].birthday);
+						}
+					}
+				}
 				this.childList = results.child;
 				this.hasData = true;
 			}

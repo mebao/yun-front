@@ -10,8 +10,8 @@
 						<button *ngIf="moduleAuthority.add" (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
 					</div>
 					<div class="pure-control-group mr10">
-						<label for="name">姓名：</label>
-						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
+						<label for="name">家长姓名：</label>
+						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入家长姓名">
 					</div>
 					<div class="pure-control-group mr10">
 						<label for="mobile">手机号码：</label>
@@ -27,7 +27,7 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>姓名</th>
+							<th>家长姓名</th>
 							<th>手机号码</th>
 							<th>性别</th>
 							<th>会员</th>

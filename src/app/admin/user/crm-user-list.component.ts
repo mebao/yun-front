@@ -46,7 +46,7 @@ export class CrmUserListComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '后台用户列表',
+			title: '员工列表',
 			back: false,
 		}
 		this.toast = {

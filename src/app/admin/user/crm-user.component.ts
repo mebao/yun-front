@@ -121,7 +121,7 @@ export class CrmUserComponent implements OnInit{
 		}
 
 		this.topBar = {
-			title: this.editType == 'create' ? '创建后台用户' : '修改后台用户信息',
+			title: this.editType == 'create' ? '创建员工' : '修改员工信息',
 			back: true,
 		}
 

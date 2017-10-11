@@ -117,6 +117,10 @@ export class ChildInfoComponent{
 					}
 					if(results.users[0].childs.length > 0){
 						for(var i = 0; i < results.users[0].childs.length; i++){
+							// 小孩生日更改样式
+							if(!this.adminService.isFalse(results.users[0].childs[i].birthday)){
+								results.users[0].childs[i].birthday = results.users[0].childs[i].birthday.slice(0, results.users[0].childs[i].birthday.indexOf(' '));
+							}
 							if(this.childInfo.childId == results.users[0].childs[i].childId){
 								this.childInfo = results.users[0].childs[i];
 							}else{
