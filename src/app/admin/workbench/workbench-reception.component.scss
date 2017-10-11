@@ -10,7 +10,7 @@
 					border-right: none;
 				}
 				&.active{
-					background-color: #e4e4e4;
+					background-color: #efefef;
 				}
 			}
 		}
@@ -18,7 +18,7 @@
 			.item{
 				border-top: 1px solid #efefef;
 				&:hover{
-					background-color: #e4e4e4;
+					background-color: #efefef;
 				}
 				.img-tab{
 					border-right: 1px solid #efefef;
@@ -34,7 +34,7 @@
 						border-right: none;
 					}
 					&.active{
-						background-color: #e4e4e4;
+						background-color: #efefef;
 					}
 					&.name{
 						word-break: break-all;
@@ -43,6 +43,7 @@
 						display: none;
 					}
 					&:hover{
+						background-color: #dadada;
 						.hoverTab{
 							display: inherit;
 							&.disabled{

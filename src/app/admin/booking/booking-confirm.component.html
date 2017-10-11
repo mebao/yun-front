@@ -4,7 +4,7 @@
 		<header-nav></header-nav>
 		<div class="content admin-booking-confirm">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form">
+			<div class="flex pure-form search-tab max">
 				<div class="flex-1">
 					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
 					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
@@ -26,6 +26,10 @@
 						</ng-container>
 					</select>
 				</div>
+				<div class="w64p"></div>
+			</div>
+				<div class="flex pure-form search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="creator_name">用户名：</label>
 					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" placeholder="请输入用户名">
@@ -40,8 +44,8 @@
 				<div class="pure-g title-tab">
 					<div class="pure-u-3-24 title"></div>
 					<div class="pure-u-3-24 title text-center" *ngFor="let title of weektitle">
-						<span class="pr10">{{title.title}}</span>
-						<span>{{title.date}}</span>
+						<div>{{title.date}}</div>
+						<div>{{title.title}}</div>
 					</div>
 				</div>
 				<div class="pure-g content-tab">

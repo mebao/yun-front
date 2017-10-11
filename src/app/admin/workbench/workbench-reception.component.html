@@ -36,8 +36,8 @@
 					<div class="pure-u-1-24 title"></div>
 					<div class="pure-u-2-24 title">姓名</div>
 					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-						<span class="pr5">{{title.title}}</span>
-						<span>{{title.date}}</span>
+						<div>{{title.date}}</div>
+						<div>{{title.title}}</div>
 					</div>
 				</div>
 				<div class="doctor-list">
@@ -67,8 +67,8 @@
 					<div class="pure-u-1-24 title"></div>
 					<div class="pure-u-2-24 title">医生</div>
 					<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-						<span class="pr5">{{title.title}}</span>
-						<span>{{title.date}}</span>
+						<div>{{title.date}}</div>
+						<div>{{title.title}}</div>
 					</div>
 				</div>
 				<div class="doctor-list">

@@ -4,7 +4,7 @@
 		<header-nav></header-nav>
 		<div class="content admin-booking-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form search-tab">
+			<div class="flex pure-form search-tab max">
 				<div class="flex-1">
 					<button *ngIf="moduleAuthority.add" (click)="create()" class="pure-button pure-button-primary">新增预约</button>
 					<button (click)="checkTab(0)" class="pure-button pure-button-primary">日历</button>
@@ -26,17 +26,22 @@
 						</ng-container>
 					</select>
 				</div>
+				<div class="w64p"></div>
+			</div>
+			<div class="flex pure-form search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="creator_name">用户名：</label>
 					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" class="w100p" placeholder="请输入用户名">
 				</div>
-				<div class="pure-control-group" [ngClass]="{'mr10': selectedTab == 0}">
+				<div class="pure-control-group mr10">
 					<label for="mobile">手机号码：</label>
 					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" class="w100p" placeholder="请输入手机号码">
 				</div>
+				<div *ngIf="selectedTab == 1" class="w64p"></div>
 				<button *ngIf="selectedTab == 0" (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
-			<div *ngIf="selectedTab == 1" class="flex pure-form mt10">
+			<div *ngIf="selectedTab == 1" class="flex pure-form search-tab max">
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="cdate_big">创建时间大于：</label>
@@ -46,6 +51,10 @@
 					<label for="cdate_less">创建时间小于：</label>
 					<input type="date" id="cdate_less" name="cdate_less" [(ngModel)]="searchInfo.cdate_less">
 				</div>
+				<div class="w64p"></div>
+			</div>
+			<div *ngIf="selectedTab == 1" class="flex pure-form search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="bdate_big">预约时间大于：</label>
 					<input type="date" id="bdate_big" name="bdate_big" [(ngModel)]="searchInfo.bdate_big">
@@ -66,8 +75,8 @@
 					<div class="pure-g title-tab">
 						<div class="pure-u-3-24 title"></div>
 						<div class="pure-u-3-24 title text-center" *ngFor="let title of weektitle">
-							<span class="pr10">{{title.title}}</span>
-							<span>{{title.date}}</span>
+							<div>{{title.date}}</div>
+							<div>{{title.title}}</div>
 						</div>
 					</div>
 					<div class="pure-g content-tab">

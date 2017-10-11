@@ -4,41 +4,43 @@
 		<header-nav></header-nav>
 		<div class="content admin-inspect-results-list">
 			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form mt10">
+			<div class="flex pure-form search-tab max mt10">
 				<div class="flex-1"></div>
-				<div class="flex">
-					<div class="pure-control-group mr10">
-						<label for="check_name">检查项目名：</label>
-						<select id="check_name" name="check_name" [(ngModel)]="info.check_name">
-							<ng-container *ngFor="let project of checkProjestList">
-								<option value="{{project.name}}">{{project.name}}
-							</ng-container>
-						</select>
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="doctor_name">医生名：</label>
-						<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="info.doctor_name" placeholder="请输入医生名">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="child_name">小孩名：</label>
-						<input type="text" id="child_name" name="child_name" [(ngModel)]="info.child_name" placeholder="请输入小孩名">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="ischeck">是否检查：</label>
-						<select id="ischeck" name="ischeck" [(ngModel)]="info.ischeck">
-							<option value="">未检查</option>
-							<option value="1">所有</option>
-						</select>
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="today">时间：</label>
-						<select id="today" name="today" [(ngModel)]="info.today">
-							<option value="">今日</option>
-							<option value="1">所有</option>
-						</select>
-					</div>
-					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+				<div class="pure-control-group mr10">
+					<label for="check_name">检查项目名：</label>
+					<select id="check_name" name="check_name" [(ngModel)]="info.check_name">
+						<ng-container *ngFor="let project of checkProjestList">
+							<option value="{{project.name}}">{{project.name}}
+						</ng-container>
+					</select>
 				</div>
+				<div class="pure-control-group mr10">
+					<label for="doctor_name">医生名：</label>
+					<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="info.doctor_name" placeholder="请输入医生名">
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="child_name">小孩名：</label>
+					<input type="text" id="child_name" name="child_name" [(ngModel)]="info.child_name" placeholder="请输入小孩名">
+				</div>
+				<div class="w64p"></div>
+			</div>
+			<div class="flex pure-form search-tab max">
+				<div class="flex-1"></div>
+				<div class="pure-control-group mr10">
+					<label for="ischeck">是否检查：</label>
+					<select id="ischeck" name="ischeck" [(ngModel)]="info.ischeck">
+						<option value="">未检查</option>
+						<option value="1">所有</option>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="today">时间：</label>
+					<select id="today" name="today" [(ngModel)]="info.today">
+						<option value="">今日</option>
+						<option value="1">所有</option>
+					</select>
+				</div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>
 			<div>
 				<div *ngIf="userCheckList.length > 0" class="pure-g">

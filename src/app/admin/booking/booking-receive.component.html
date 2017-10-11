@@ -21,6 +21,9 @@
 						</ng-container>
 					</select>
 				</div>
+				<div class="flex-1"></div>
+			</div>
+			<div class="flex pure-form search-tab max">
 				<div class="pure-control-group mr10">
 					<label for="creator_name">用户名：</label>
 					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" class="w100p" placeholder="请输入用户名">
@@ -31,7 +34,7 @@
 				</div>
 				<div class="flex-1"></div>
 			</div>
-			<div class="flex pure-form mt10 search-tab max">
+			<div class="flex pure-form search-tab max">
 				<div class="pure-control-group mr10">
 					<label for="cdate_big">创建时间大于：</label>
 					<input type="date" id="cdate_big" name="cdate_big" [(ngModel)]="searchInfo.cdate_big">
@@ -40,6 +43,9 @@
 					<label for="cdate_less">创建时间小于：</label>
 					<input type="date" id="cdate_less" name="cdate_less" [(ngModel)]="searchInfo.cdate_less">
 				</div>
+				<div class="flex-1"></div>
+			</div>
+			<div class="flex pure-form search-tab max">
 				<div class="pure-control-group mr10">
 					<label for="bdate_big">预约时间大于：</label>
 					<input type="date" id="bdate_big" name="bdate_big" [(ngModel)]="searchInfo.bdate_big">
