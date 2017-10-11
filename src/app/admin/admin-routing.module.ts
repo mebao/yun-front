@@ -87,6 +87,8 @@ import { BookingReceiveComponent }          from './booking/booking-receive.comp
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
 import { PrescriptSaleComponent }           from './prescript/prescript-sale.component';
 import { PrescriptSaleListComponent }       from './prescript/prescript-sale-list.component';
+import { DoctorRecordTempletComponent }     from './doctor/doctor-record-templet.component';
+import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -502,6 +504,16 @@ const adminRoutes: Routes = [
 						path: 'prescriptSaleList',
 						canActivate: [AuthGuardRole],
 						component: PrescriptSaleListComponent,
+					},
+					{
+						path: 'doctorRecordTemplet',
+						canActivate: [AuthGuardRole],
+						component: DoctorRecordTempletComponent,
+					},
+					{
+						path: 'doctorRecordTempletList',
+						canActivate: [AuthGuardRole],
+						component: DoctorRecordTempletListComponent,
 					},
 					{
 						path: '**',

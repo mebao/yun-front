@@ -2,10 +2,11 @@ import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
 import { AdminService }                       from '../admin.service';
+import { DoctorService }                      from '../doctor/doctor.service';
 
 @Component({
 	selector: 'admin-doctor-booking-healthrecord',
-	templateUrl: './doctor-booking-healthrecord.component.html',
+	templateUrl: './doctor-booking-healthrecord.component.html'
 })
 export class DoctorBookingHealthrecordComponent implements OnInit{
 	topBar: {
@@ -58,9 +59,13 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	// 儿保记录
 	healthrecordList: any[];
 	hasHealthrecordData: boolean;
+	// 儿保记录模板
+	recordtempletList: any[];
+	selectedTemplet: string;
 
 	constructor(
 		private adminService: AdminService,
+		private doctorService: DoctorService,
 		private route: ActivatedRoute,
 		private router: Router,
 	) {}
@@ -115,6 +120,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		// 儿保记录
 		this.healthrecordList = [];
 		this.hasHealthrecordData = false;
+
 		var healthrecordUrl = this.url + '&booking_id=' + this.id;
 		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
 			if(data.status == 'no'){
@@ -123,6 +129,25 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.healthrecordList = results.list;
 				this.hasHealthrecordData = true;
+			}
+		});
+
+		// 儿保记录模板
+		this.recordtempletList = [];
+		this.selectedTemplet = '';
+		var searchrecordtempletUrl = this.url + '&doctor_id=' + this.doctorId
+			 + '&status=1';
+		this.doctorService.searchrecordtemplet(searchrecordtempletUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].string = JSON.stringify(results.list[i]);
+					}
+				}
+				this.recordtempletList = results.list;
 			}
 		});
 
@@ -187,6 +212,11 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 
 	// 新增儿保记录
 	addHealthrecord() {
+		if(this.selectedTemplet == ''){
+			this.toastTab('请先选择模板', 'error');
+			return;
+		}
+		sessionStorage.setItem('doctorBookingRecordTemplet', this.selectedTemplet);
 		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		this.router.navigate(['./admin/bookingHealthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
 	}

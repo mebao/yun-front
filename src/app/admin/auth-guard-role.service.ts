@@ -354,6 +354,18 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							{
+								url: '/admin/doctorRecordTempletList',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/doctorRecordTemplet',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{

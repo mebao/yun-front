@@ -106,8 +106,11 @@ import { BookingReceiveComponent }         from './booking/booking-receive.compo
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
 import { PrescriptSaleComponent }          from './prescript/prescript-sale.component';
 import { PrescriptSaleListComponent }      from './prescript/prescript-sale-list.component';
+import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
+import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 
 import { AdminService }                    from './admin.service';
+import { DoctorService }                   from './doctor/doctor.service';
 
 @NgModule({
 	imports: [
@@ -207,9 +210,12 @@ import { AdminService }                    from './admin.service';
 		BookingHealthrecordComponent,
 		PrescriptSaleComponent,
 		PrescriptSaleListComponent,
+		DoctorRecordTempletComponent,
+		DoctorRecordTempletListComponent,
 	],
 	providers: [
 		AdminService,
+		DoctorService,
 		AuthGuardRole,
 	]
 })

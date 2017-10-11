@@ -9,7 +9,7 @@ export class SelectSearchComponent{
 	@Input() title: string;
 	@Input() selectList: any[];
 	@Output() onVoted = new EventEmitter<string>();
-	selectedValue: string;
+	@Input() selectedValue = '';
 	show: boolean;
 	searchBoolean: boolean;
 
@@ -18,7 +18,6 @@ export class SelectSearchComponent{
 
 	ngOnInit() {
 		this.show = false;
-		this.selectedValue = '';
 		this.searchBoolean = true;
 	}
 
