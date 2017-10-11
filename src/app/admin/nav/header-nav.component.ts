@@ -12,6 +12,7 @@ export class HeaderNavComponent{
 	@Input() title: string;
 	@Input() username: string;
 	clinicRole: string;
+	clinicName: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -21,6 +22,7 @@ export class HeaderNavComponent{
 	ngOnInit(): void {
 		this.username = this.adminService.getUser().username;
 		this.clinicRole = this.adminService.getUser().clinicRoleName;
+		this.clinicName = this.adminService.getUser().clinicName;
 	}
 
 	logout() {

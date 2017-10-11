@@ -72,7 +72,7 @@ export class InspectResultsListComponent{
 			check_name: '',
 			doctor_name: '',
 			child_name: '',
-			ischeck: '',
+			ischeck: '0',
 			today: '',
 		}
 

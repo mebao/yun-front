@@ -63,7 +63,6 @@ export class InspectResultsComponent{
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&booking_id=' + this.id
-			 + '&ischeck=1'
 			 + '&today=1';
 
 		this.adminService.usercheckprojects(urlOptions).then((data) => {

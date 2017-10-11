@@ -16,6 +16,7 @@ export class LoginComponent{
 	};
 	admininfo: {
 		clinicId: string,
+		clinicName: string,
 		clinicRoleId: string,
 		clinicRoleName: string,
 		role: string,
@@ -179,6 +180,7 @@ export class LoginComponent{
 
 		this.admininfo = {
 			clinicId: '',
+			clinicName: '',
 			clinicRoleId: '',
 			clinicRoleName: '',
 			role: '',
@@ -325,6 +327,7 @@ export class LoginComponent{
 				//用户信息存储在cookie中
 				this.admininfo = {
 					clinicId: results.admininfo.clinicId,
+					clinicName: results.admininfo.clinicName,
 					clinicRoleId: results.admininfo.clinicRoleId,
 					clinicRoleName: results.admininfo.clinicRoleName,
 					role: results.admininfo.role,

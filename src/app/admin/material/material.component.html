@@ -12,7 +12,7 @@
 								<label for="name">
 									<span>物资名</span>
 								</label>
-								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入药品名" required="">
+								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入物资名" required="">
 								<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
 									<div [hidden]="!name.errors.required">
 										物资名不可为空
