@@ -62,7 +62,7 @@ export class PrescriptSaleComponent{
 	ngOnInit() {
 		this.topBar = {
 			title: '药方列表',
-			back: false,
+			back: true,
 		}
 		this.toast = {
 			show: 0,
@@ -369,7 +369,7 @@ export class PrescriptSaleComponent{
 		}
 
 		this.modalTab = false;
-		
+
 		this.adminService.drugretail(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

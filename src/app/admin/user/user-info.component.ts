@@ -131,7 +131,7 @@ export class UserInfoComponent{
 				if(results.users.length > 0){
 					this.userInfo = results.users[0];
 					this.childs = results.users[0].childs;
-					// 更新小孩生日格式
+					// 更新宝宝生日格式
 					if(results.users[0].childs.length > 0){
 						for(var i = 0; i < results.users[0].childs.length; i++){
 							results.users[0].childs[i].birthday = results.users[0].childs[i].birthday.slice(0, results.users[0].childs[i].birthday.indexOf(' '));
@@ -242,7 +242,7 @@ export class UserInfoComponent{
 	}
 
 	createChild(f) {
-		// 小孩信息
+		// 宝宝信息
 		var childData = [];
 		if(this.childlist.length > 0){
 			var childNum = 0;
@@ -258,21 +258,21 @@ export class UserInfoComponent{
 					if(f.value['name_' + this.childlist[i].key]){
 						child['name'] = f.value['name_' + this.childlist[i].key];
 					}else{
-						this.toastTab('小孩的姓名不可为空', 'error');
+						this.toastTab('宝宝的姓名不可为空', 'error');
 						return;
 					}
 					//判断性别
 					if(f.value['gender_' + this.childlist[i].key]){
 						child['gender'] = f.value['gender_' + this.childlist[i].key];
 					}else{
-						this.toastTab('小孩的性别不可为空', 'error');
+						this.toastTab('宝宝的性别不可为空', 'error');
 						return;
 					}
 					//判断出生日期
 					if(f.value['birth_date_' + this.childlist[i].key]){
 						child['birth_date'] = f.value['birth_date_' + this.childlist[i].key];
 					}else{
-						this.toastTab('小孩的出生日期不可为空', 'error');
+						this.toastTab('宝宝的出生日期不可为空', 'error');
 						return;
 					}
 					//判断头像(不必传)
@@ -303,7 +303,7 @@ export class UserInfoComponent{
 					}
 					//判断身高
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key]) && parseFloat(f.value['height_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩身高不可小于等于0', 'error');
+						this.toastTab('宝宝身高不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key])){
@@ -311,7 +311,7 @@ export class UserInfoComponent{
 					}
 					//判断体重
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key]) && parseFloat(f.value['weight_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩体重不可小于等于0', 'error');
+						this.toastTab('宝宝体重不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key])){
@@ -323,7 +323,7 @@ export class UserInfoComponent{
 					}
 					//判断腿长
 					if(!this.adminService.isFalse(f.value['leg_length_' + this.childlist[i].key]) && parseFloat(f.value['leg_length_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩腿长不可小于等于0', 'error');
+						this.toastTab('宝宝腿长不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['leg_length_' + this.childlist[i].key])){
@@ -331,7 +331,7 @@ export class UserInfoComponent{
 					}
 					//判断头围
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key]) && parseFloat(f.value['head_circum_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩头围不可小于等于0', 'error');
+						this.toastTab('宝宝头围不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key])){
@@ -339,7 +339,7 @@ export class UserInfoComponent{
 					}
 					//判断腰围
 					if(!this.adminService.isFalse(f.value['waist_circum_' + this.childlist[i].key]) && parseFloat(f.value['waist_circum_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩腰围不可小于等于0', 'error');
+						this.toastTab('宝宝腰围不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['waist_circum_' + this.childlist[i].key])){
@@ -347,7 +347,7 @@ export class UserInfoComponent{
 					}
 					//判断胸围
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key]) && parseFloat(f.value['breast_circum_' + this.childlist[i].key]) <= 0){
-						this.toastTab('小孩胸围不可小于等于0', 'error');
+						this.toastTab('宝宝胸围不可小于等于0', 'error');
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
@@ -358,18 +358,18 @@ export class UserInfoComponent{
 			}
 			for(var i = 0; i < childData.length; i++){
 				if(this.editType == 'create'){
-					//新增小孩
+					//新增宝宝
 					this.adminService.crmchild(childData[i]).then((data) => {
 						if(data.status == 'no'){
 							this.toastTab(data.errorMsg, 'error');
 						}else{
-							this.toastTab('小孩创建成功', '');
+							this.toastTab('宝宝创建成功', '');
 							this.getUserInfo();
 							this.childlist = [];
 						}
 					});
 				}else{
-					//修改小孩
+					//修改宝宝
 					this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
 						if(data.status == 'no'){
 							this.toastTab(data.errorMsg, 'error');
@@ -382,7 +382,7 @@ export class UserInfoComponent{
 				}
 			}
 		}else{
-			this.toastTab('请先录入小孩信息', 'error');
+			this.toastTab('请先录入宝宝信息', 'error');
 		}
 	}
 
@@ -393,7 +393,7 @@ export class UserInfoComponent{
 	delete(child) {
 		this.selector = {
 			id: child.childId,
-			text: '确认删除该小孩？',
+			text: '确认删除该宝宝？',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -417,7 +417,7 @@ export class UserInfoComponent{
 		});
 	}
 
-	//小孩详情
+	//宝宝详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);
 	}

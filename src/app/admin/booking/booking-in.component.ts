@@ -72,9 +72,9 @@ export class BookingInComponent{
 			type: '',
 		};
 
-		this.selectSearchTitle = '请选择小孩';
+		this.selectSearchTitle = '请选择宝宝';
 
-		//查询小孩列表
+		//查询宝宝列表
 		var searchchildUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 		this.adminService.searchchild(searchchildUrl).then((data) => {
@@ -354,11 +354,11 @@ export class BookingInComponent{
 		}
 	}
 
-	//切换小孩
+	//切换宝宝
 	onVoted(_value) {
 		this.bookingInfo.child = _value;
 		this.bookingInfo.child_name = JSON.parse(_value).childName;
-		//根据小孩信息查询家长信息
+		//根据宝宝信息查询家长信息
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&child_id=' + JSON.parse(_value).childId;
@@ -394,7 +394,7 @@ export class BookingInComponent{
 			return;
 		}
 		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
-			this.toastTab('小孩不可为空', 'error');
+			this.toastTab('宝宝不可为空', 'error');
 			return;
 		}
 		//判断是新预约还是登记已经预约信息
@@ -422,7 +422,7 @@ export class BookingInComponent{
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking.bookingId = results.bookingId;
-					//构造小孩数据，用以清空小孩组件
+					//构造宝宝数据，用以清空宝宝组件
 					this.booking.refNo = 'clear';
 					this.booking.childName = JSON.parse(this.bookingInfo.child).childName;
 					this.bookingIn();

@@ -66,7 +66,7 @@ export class LoginComponent{
 			authority: any[],
 			infos: any[],
 		},
-		//小孩服务列表
+		//宝宝服务列表
 		childServiceList: {
 			use: string,
 			authority: any[],

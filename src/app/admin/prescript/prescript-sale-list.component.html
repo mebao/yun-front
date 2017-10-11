@@ -14,16 +14,16 @@
                     <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescriptSale')" class="pure-button pure-button-primary">新增零售</button>
                 </div>
 				<div class="pure-control-group mr10">
-					<label for="mobile">买药人手机号码：</label>
-					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入买药人手机号码">
+					<label for="mobile">患者手机号码：</label>
+					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入患者手机号码">
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="day">日期：</label>
 					<input type="date" id="day" name="day" [(ngModel)]="searchInfo.day">
 				</div>
 				<div class="pure-control-group mr10">
-					<label for="admin_name">售药人：</label>
-					<input type="text" id="admin_name" name="admin_name" [(ngModel)]="searchInfo.admin_name" placeholder="请输入售药人">
+					<label for="admin_name">售药员工：</label>
+					<input type="text" id="admin_name" name="admin_name" [(ngModel)]="searchInfo.admin_name" placeholder="请输入售药员工">
 				</div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
             </div>

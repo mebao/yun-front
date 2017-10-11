@@ -33,7 +33,7 @@ export class ChildServiceComponent{
 
 	ngOnInit(): void{
 		this.topBar = {
-			title: '小孩服务',
+			title: '宝宝服务',
 			back: true,
 		}
 		this.toast = {

@@ -7,9 +7,9 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	// private url = 'http://192.168.31.200/jiabaokangle';
+	private url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
-	private url = 'http://wapapi.meb168.com';
+	// private url = 'http://wapapi.meb168.com';
 
 	constructor(
 		private http: Http,
@@ -150,7 +150,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//新增或修改小孩服务信息
+	//新增或修改宝宝服务信息
 	private clinicserviceUrl = this.url + '/mebcrm/clinicservice';
 	clinicservice(param): Promise<Data>{
 		return this.http.post(this.clinicserviceUrl, JSON.stringify(param))
@@ -159,7 +159,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询小孩服务列表
+	//查询宝宝服务列表
 	private servicelistUrl = this.url + '/mebcrm/servicelist';
 	servicelist(): Promise<Data>{
 		return this.http.get(this.servicelistUrl)
@@ -276,7 +276,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//创建小孩
+	//创建宝宝
 	private crmchildUrl = this.url + '/mebcrm/crmchild';
 	crmchild(params): Promise<Data>{
 		return this.http.post(this.crmchildUrl, JSON.stringify(params))
@@ -505,7 +505,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//删除用户,用户下面的小孩
+	//删除用户,用户下面的宝宝
 	private deleteuserUrl = this.url + '/mebcrm/deleteuser/';
 	deleteuser(urlOptions): Promise<Data>{
 		return this.http.delete(this.deleteuserUrl + urlOptions)
@@ -514,7 +514,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//修改小孩信息
+	//修改宝宝信息
 	private updatechildUrl = this.url + '/mebcrm/updatechild/';
 	updatechild(urlOptions, params): Promise<Data>{
 		return this.http.post(this.updatechildUrl + urlOptions, JSON.stringify(params))
@@ -523,7 +523,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询小孩
+	//查询宝宝
 	private searchchildUrl = this.url + '/mebcrm/searchchild';
 	searchchild(urlOptions): Promise<Data>{
 		return this.http.get(this.searchchildUrl + urlOptions)
@@ -532,7 +532,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//删除小孩
+	//删除宝宝
 	private deletechildUrl = this.url + '/mebcrm/deletechild/';
 	deletechild(urlOptions): Promise<Data>{
 		return this.http.delete(this.deletechildUrl + urlOptions)
@@ -703,7 +703,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询小孩成长记录
+	//查询宝宝成长记录
 	private childgrowthrecordsUrl = this.url + '/mebcrm/childgrowthrecords';
 	childgrowthrecords(urlOptions): Promise<Data>{
 		return this.http.get(this.childgrowthrecordsUrl + urlOptions)
@@ -712,7 +712,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//创建小孩成长记录
+	//创建宝宝成长记录
 	private childgrowthrecordUrl = this.url + '/mebcrm/childgrowthrecord';
 	childgrowthrecord(urlOptions, params): Promise<Data>{
 		return this.http.post(this.childgrowthrecordUrl + urlOptions, JSON.stringify(params))
@@ -721,7 +721,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询小孩病历
+	//查询宝宝病历
 	private searchcasehistoryUrl = this.url + '/mebcrm/searchcasehistory';
 	searchcasehistory(urlOptions): Promise<Data>{
 		return this.http.get(this.searchcasehistoryUrl + urlOptions)
@@ -730,7 +730,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//创建小孩病历
+	//创建宝宝病历
 	private casehistoryUrl = this.url + '/mebcrm/casehistory';
 	casehistory(urlOptions, params): Promise<Data>{
 		return this.http.post(this.casehistoryUrl + urlOptions, JSON.stringify(params))
@@ -856,7 +856,7 @@ export class AdminService{
 			.catch();
 	}
 
-	// 创建小孩儿保记录
+	// 创建宝宝儿保记录
 	private healthrecordUrl = this.url + '/mebcrm/healthrecord';
 	healthrecord(urlOptions, params): Promise<Data>{
 		return this.http.post(this.healthrecordUrl + urlOptions, JSON.stringify(params))
@@ -865,7 +865,7 @@ export class AdminService{
 			.catch();
 	}
 
-	// 查看小孩儿保记录
+	// 查看宝宝儿保记录
 	private searchhealthrecordUrl = this.url + '/mebcrm/searchhealthrecord';
 	searchhealthrecord(urlOptions): Promise<Data>{
 		return this.http.get(this.searchhealthrecordUrl + urlOptions)

@@ -5,7 +5,7 @@
 		<div class="content admin-child-service-list">
 			<top-bar [data]="topBar"></top-bar>
 			<div *ngIf="moduleAuthority.edit" class="button-tab">
-				<button (click)="goCreate()" class="pure-button pure-button-primary">新增小孩服务</button>
+				<button (click)="goCreate()" class="pure-button pure-button-primary">新增宝宝服务</button>
 			</div>
 			<div *ngIf="childServiceList.length > 0" class="pure-g">
 				<div class="pure-u-6-24 child-service-tab pad10" *ngFor="let childService of childServiceList">
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div *ngIf="hasData && childServiceList.length == 0" class="mt10">
-				<nodata title="未查询到小孩服务信息"></nodata>
+				<nodata title="未查询到宝宝服务信息"></nodata>
 			</div>
 		</div>
 	</div>

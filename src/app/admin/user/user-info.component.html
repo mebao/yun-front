@@ -93,7 +93,7 @@
 												<span>姓名</span>
 												<span class="required">*</span>
 											</label>
-											<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入小孩姓名" [(ngModel)]="child.name">
+											<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入宝宝姓名" [(ngModel)]="child.name">
 										</div>
 										<div class="pure-control-group pure-u-8-24 pl5 pr5">
 											<label for="gender_{{child.key}}">
@@ -170,7 +170,7 @@
 						</div>
 					</div>
 					<div *ngIf="childlist.length == 0" class="pt5">
-						<button (click)="addChild()" class="pure-button pure-button-primary">添加小孩</button>
+						<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
 					</div>
 					<div *ngIf="childlist.length > 0" class="mt10 text-center">
 						<button (click)="createChild(f)" class="pure-button pure-button-primary button-max">提交</button>

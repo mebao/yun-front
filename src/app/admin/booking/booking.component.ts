@@ -108,7 +108,7 @@ export class BookingComponent implements OnInit{
 			birth_date: '',
 		}
 
-		this.selectSearchTitle = '请选择小孩';
+		this.selectSearchTitle = '请选择宝宝';
 
 		this.listChild = {
 			childId: '',
@@ -180,7 +180,7 @@ export class BookingComponent implements OnInit{
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking = results.weekbooks[0];
-					//获取小孩和家长信息
+					//获取宝宝和家长信息
 					this.bookingInfo.creator = JSON.stringify({
 						id: this.booking.creatorId,
 						name: this.booking.creatorName,
@@ -260,7 +260,7 @@ export class BookingComponent implements OnInit{
 			}
 		})
 
-		//查询小孩列表
+		//查询宝宝列表
 		var searchchildUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 		this.adminService.searchchild(searchchildUrl).then((data) => {
@@ -452,10 +452,10 @@ export class BookingComponent implements OnInit{
 		}
 	}
 
-	//切换小孩
+	//切换宝宝
 	onVoted(_value) {
 		this.bookingInfo.child = _value;
-		//根据小孩信息查询家长信息
+		//根据宝宝信息查询家长信息
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&child_id=' + JSON.parse(_value).childId;
@@ -522,11 +522,11 @@ export class BookingComponent implements OnInit{
 			return;
 		}
 		if(this.bookingInfo.child == ''){
-			this.toastTab('小孩不可为空', 'error');
+			this.toastTab('宝宝不可为空', 'error');
 			return;
 		}
 		// if(this.childs.length == 0 && f.value.child_name == ''){
-		// 	this.toastTab('小孩姓名不可为空', 'error');
+		// 	this.toastTab('宝宝姓名不可为空', 'error');
 		// 	return;
 		// }
 		// if(this.childs.length == 0 && f.value.gender == ''){

@@ -89,7 +89,7 @@ export class DoctorServiceComponent{
 	}
 
 	getData() {
-		//获取小孩服务
+		//获取宝宝服务
 		this.adminService.servicelist().then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

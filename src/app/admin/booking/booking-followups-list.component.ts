@@ -165,7 +165,7 @@ export class BookingFollowupsListComponent{
 		});
 	}
 
-	//小孩详情
+	//宝宝详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);
 	}

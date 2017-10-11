@@ -70,7 +70,7 @@ export class ChildListComponent{
 			name: '',
 		}
 
-		//获取小孩列表
+		//获取宝宝列表
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -103,7 +103,7 @@ export class ChildListComponent{
 		this.router.navigate(['./admin/childInfo'], {queryParams: {id: child.childId}});
 	}
 
-	//小孩详情
+	//宝宝详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);
 	}

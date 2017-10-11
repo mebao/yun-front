@@ -131,7 +131,7 @@ export class InspectResultsListComponent{
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});
 	}
 
-	//小孩详情
+	//宝宝详情
 	childInfo(_id) {
 		window.open('./admin/childInfo?id=' + _id);
 	}

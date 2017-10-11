@@ -29,7 +29,7 @@ export class ChildServiceListComponent implements OnInit{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '小孩服务列表',
+			title: '宝宝服务列表',
 			back: false,
 		}
 		this.toast = {
