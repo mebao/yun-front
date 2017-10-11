@@ -71,7 +71,7 @@ export class BookingComponent implements OnInit{
 		date: string,
 	}
 	// 初始化字段，只有首次进入，方才有复制，
-	initData: {
+	initPage: {
 		doctor: boolean,
 		date: boolean,
 		time: boolean,
@@ -218,7 +218,7 @@ export class BookingComponent implements OnInit{
 			this.getData();
 		}
 
-		this.initData = {
+		this.initPage = {
 			doctor: true,
 			date: true,
 			time: true,
@@ -343,7 +343,7 @@ export class BookingComponent implements OnInit{
 					for(var i = 0; i < results.doctors.length; i++){
 						results.doctors[i].string = JSON.stringify(results.doctors[i]);
 						// 是否首次进入
-						if(this.initData.doctor){
+						if(this.initPage.doctor){
 							//修改
 							if(this.editType == 'update' && results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
 								this.bookingInfo.user_doctor = results.doctors[i].string;
@@ -359,12 +359,12 @@ export class BookingComponent implements OnInit{
 						}
 					}
 				}
-				if(!this.initData.doctor){
+				if(!this.initPage.doctor){
 					this.bookingInfo.user_doctor = '';
 					this.bookingInfo.booking_date = '';
 					this.bookingInfo.timeInfo = '';
 				}
-				this.initData.doctor = false;
+				this.initPage.doctor = false;
 				this.doctorlist = results.doctors;
 			}
 		})
@@ -377,7 +377,7 @@ export class BookingComponent implements OnInit{
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
 				// 是否首次进入
-				if(this.initData.date){
+				if(this.initPage.date){
 					//修改
 					if(this.editType == 'update' && this.adminService.dateFormatHasWord(doctor.doctorDutys[i].dutyDate) == this.adminService.dateFormatHasWord(this.booking.bookingDate)){
 						this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
@@ -393,11 +393,11 @@ export class BookingComponent implements OnInit{
 				}
 			}
 		}
-		if(!this.initData.date){
+		if(!this.initPage.date){
 			this.bookingInfo.booking_date = '';
 			this.bookingInfo.timeInfo = '';
 		}
-		this.initData.date = false;
+		this.initPage.date = false;
 		this.doctorDutys = doctor.doctorDutys;
 	}
 
@@ -434,7 +434,7 @@ export class BookingComponent implements OnInit{
 			}
 		}
 		// 是否首次进入
-		if(this.initData.time){
+		if(this.initPage.time){
 			if(this.editType == 'update'){
 				//修改
 				this.bookingInfo.timeInfo = this.booking.time;
@@ -442,7 +442,7 @@ export class BookingComponent implements OnInit{
 		}else{
 			this.bookingInfo.timeInfo = '';
 		}
-		this.initData.time = false;
+		this.initPage.time = false;
 	}
 
 	// 选择时间

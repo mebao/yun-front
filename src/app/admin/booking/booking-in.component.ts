@@ -52,6 +52,12 @@ export class BookingInComponent{
 	timelist: any[];
 	childlist: any[];
 	selectSearchTitle: string;
+	// 初始化字段，只有首次进入，方才有复制，
+	initPage: {
+		doctor: boolean,
+		date: boolean,
+		time: boolean,
+	}
 
 	constructor(public adminService: AdminService) {}
 
@@ -84,6 +90,11 @@ export class BookingInComponent{
 				this.childlist = results.child;
 			}
 		});
+		this.initPage = {
+			doctor: true,
+			date: true,
+			time: true,
+		}
 
 		this.modalTab = false;
 
@@ -212,6 +223,13 @@ export class BookingInComponent{
 	}
 
 	show(booking) {
+		// 重新选定
+		this.initPage = {
+			doctor: true,
+			date: true,
+			time: true,
+		}
+
 		booking.bookingDate = this.adminService.dateFormatHasWord(booking.bookingDate);
 		this.booking = booking;
 		this.modalTab = false;
@@ -241,16 +259,25 @@ export class BookingInComponent{
 				if(results.doctors.length > 0){
 					for(var i = 0; i < results.doctors.length; i++){
 						results.doctors[i].string = JSON.stringify(results.doctors[i]);
-						//判断是新增预约还是已经预约的订单
-						if(this.booking.refNo && this.booking.refNo != ''){
-							if(results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
-								//修改
-								this.bookingInfo.user_doctor = results.doctors[i].string;
-								this.doctorChange();
+						// 是否首次进入
+						if(this.initPage.doctor){
+							//判断是新增预约还是已经预约的订单
+							if(this.booking.refNo && this.booking.refNo != ''){
+								if(results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
+									//修改
+									this.bookingInfo.user_doctor = results.doctors[i].string;
+									this.doctorChange();
+								}
 							}
 						}
 					}
 				}
+				if(!this.initPage.doctor){
+					this.bookingInfo.user_doctor = '';
+					this.bookingInfo.booking_date = '';
+					this.bookingInfo.timeInfo = '';
+				}
+				this.initPage.doctor = false;
 				this.doctorlist = results.doctors;
 			}
 		})
@@ -262,12 +289,20 @@ export class BookingInComponent{
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
-				if(doctor.doctorDutys[i].dutyDate == this.booking.bookingDate){
-					this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
-					this.dateChange();
+				// 是否首次进入
+				if(this.initPage.date){
+					if(doctor.doctorDutys[i].dutyDate == this.booking.bookingDate){
+						this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
+						this.dateChange();
+					}
 				}
 			}
 		}
+		if(!this.initPage.date){
+			this.bookingInfo.booking_date = '';
+			this.bookingInfo.timeInfo = '';
+		}
+		this.initPage.date = false;
 		this.doctorDutys = doctor.doctorDutys;
 	}
 
@@ -303,7 +338,13 @@ export class BookingInComponent{
 				}
 			}
 		}
-		this.bookingInfo.timeInfo = this.booking.time;
+		// 是否首次进入
+		if(this.initPage.time){
+			this.bookingInfo.timeInfo = this.booking.time;
+		}else{
+			this.bookingInfo.timeInfo = '';
+		}
+		this.initPage.time = false;
 	}
 
 	// 选择时间
