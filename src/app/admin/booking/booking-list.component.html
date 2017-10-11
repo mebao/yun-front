@@ -161,11 +161,12 @@
 						<th>预约服务</th>
 						<th>预约时间</th>
 						<th>状态</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
 					<ng-container *ngFor="let showBooking of showBookinglist" class="cursor-p">
-						<tr (click)="info(showBooking.bookingId)" *ngFor="let service of showBooking.services; let indexService=index;">
+						<tr *ngFor="let service of showBooking.services; let indexService=index;">
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
 							<td>{{service.userDoctorName}}</td>
@@ -175,6 +176,9 @@
 								<span>{{service.serviceTime}}</span>
 							</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.statusText}}</td>
+							<td>
+								<button (click)="info(showBooking.bookingId)" class="pure-button pure-button-primary">详情</button>
+							</td>
 						</tr>
 					</ng-container>
 				</tbody>

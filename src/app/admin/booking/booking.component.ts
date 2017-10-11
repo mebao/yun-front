@@ -70,6 +70,12 @@ export class BookingComponent implements OnInit{
 		doctorId: string,
 		date: string,
 	}
+	// 初始化字段，只有首次进入，方才有复制，
+	initData: {
+		doctor: boolean,
+		date: boolean,
+		time: boolean,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -211,6 +217,12 @@ export class BookingComponent implements OnInit{
 			this.editType = 'create';
 			this.getData();
 		}
+
+		this.initData = {
+			doctor: true,
+			date: true,
+			time: true,
+		}
 	}
 
 	getData() {
@@ -330,20 +342,29 @@ export class BookingComponent implements OnInit{
 				if(results.doctors.length > 0){
 					for(var i = 0; i < results.doctors.length; i++){
 						results.doctors[i].string = JSON.stringify(results.doctors[i]);
-						//修改
-						if(this.editType == 'update' && results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
-							this.bookingInfo.user_doctor = results.doctors[i].string;
-							this.doctorChange();
-						}
-						// 预约时，已选定医生
-						if(this.editType == 'create' && this.urlSelected.doctorId && this.urlSelected.doctorId != ''){
-							if(results.doctors[i].doctorId == this.urlSelected.doctorId){
+						// 是否首次进入
+						if(this.initData.doctor){
+							//修改
+							if(this.editType == 'update' && results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
 								this.bookingInfo.user_doctor = results.doctors[i].string;
 								this.doctorChange();
+							}
+							// 预约时，已选定医生
+							if(this.editType == 'create' && this.urlSelected.doctorId && this.urlSelected.doctorId != ''){
+								if(results.doctors[i].doctorId == this.urlSelected.doctorId){
+									this.bookingInfo.user_doctor = results.doctors[i].string;
+									this.doctorChange();
+								}
 							}
 						}
 					}
 				}
+				if(!this.initData.doctor){
+					this.bookingInfo.user_doctor = '';
+					this.bookingInfo.booking_date = '';
+					this.bookingInfo.timeInfo = '';
+				}
+				this.initData.doctor = false;
 				this.doctorlist = results.doctors;
 			}
 		})
@@ -355,20 +376,28 @@ export class BookingComponent implements OnInit{
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
-				//修改
-				if(this.editType == 'update' && doctor.doctorDutys[i].dutyDate == this.booking.bookingDate){
-					this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
-					this.dateChange();
-				}
-				// 预约时，已选定医生
-				if(this.editType == 'create' && this.urlSelected.date && this.urlSelected.date != ''){
-					if(doctor.doctorDutys[i].dutyDate == this.urlSelected.date){
+				// 是否首次进入
+				if(this.initData.date){
+					//修改
+					if(this.editType == 'update' && this.adminService.dateFormatHasWord(doctor.doctorDutys[i].dutyDate) == this.adminService.dateFormatHasWord(this.booking.bookingDate)){
 						this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
 						this.dateChange();
+					}
+					// 预约时，已选定医生
+					if(this.editType == 'create' && this.urlSelected.date && this.urlSelected.date != ''){
+						if(doctor.doctorDutys[i].dutyDate == this.urlSelected.date){
+							this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
+							this.dateChange();
+						}
 					}
 				}
 			}
 		}
+		if(!this.initData.date){
+			this.bookingInfo.booking_date = '';
+			this.bookingInfo.timeInfo = '';
+		}
+		this.initData.date = false;
 		this.doctorDutys = doctor.doctorDutys;
 	}
 
@@ -404,10 +433,16 @@ export class BookingComponent implements OnInit{
 				}
 			}
 		}
-		if(this.editType == 'update'){
-			//修改
-			this.bookingInfo.timeInfo = this.booking.time;
+		// 是否首次进入
+		if(this.initData.time){
+			if(this.editType == 'update'){
+				//修改
+				this.bookingInfo.timeInfo = this.booking.time;
+			}
+		}else{
+			this.bookingInfo.timeInfo = '';
 		}
+		this.initData.time = false;
 	}
 
 	// 选择时间
