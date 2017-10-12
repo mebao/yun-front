@@ -8,7 +8,7 @@
 				<div class="pure-u-1-5 child-tab pr10">
 					<div class="text-center">
 						<div class="img-tab-default">
-							<img src="{{childInfo.imageUrl}}">
+							<img src="{{(!childInfo.imageUrl || childInfo.imageUrl == '') ? '../assets/images/img.png' : childInfo.imageUrl}}">
 						</div>
 					</div>
 					<div class="info">

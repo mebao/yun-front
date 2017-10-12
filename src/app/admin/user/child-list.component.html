@@ -33,7 +33,7 @@
 						<tr *ngFor="let child of childList; let index=index;">
 							<td>
 								<div class="img-tab-default">
-									<img (click)="childInfo(child.childId)" src="{{child.imageUrl}}" class="cursor-p">
+									<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
 								</div>
 							</td>
 							<td>{{child.childName}}</td>
