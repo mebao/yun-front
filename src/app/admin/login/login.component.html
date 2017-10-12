@@ -7,7 +7,7 @@
 				<div class="title text-center">嘉宝康乐</div>
 				<form class="pure-form">
 				    <fieldset class="pure-group">
-			            <input id="username" type="text" #username class="w100" placeholder="请输入用户名">
+			            <input id="username" maxlength="18" type="text" #username class="w100" placeholder="请输入用户名">
 			            <input id="password" type="password" #password class="w100" placeholder="请输入密码">
 				    </fieldset>
 					<button (click)="login(username.value, password.value)" class="pure-button pure-button-primary w100">登录</button>

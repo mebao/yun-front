@@ -314,6 +314,10 @@ export class LoginComponent{
 			this.toastTab('用户名不可为空', 'error');
 			return;
 		}
+		if(!username.match(/^\w+$/)){
+			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
+			return;
+		};
 		password = password.trim();
 		if(password == ''){
 			this.toastTab('密码不可为空','error');

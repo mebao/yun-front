@@ -22,7 +22,7 @@
 						<tr *ngFor="let doctor of doctorlist">
 							<td class="w80p">
 								<div class="img-tab">
-									<img src="{{doctor.avatarUrl}}">
+									<img src="{{(!doctor.avatarUrl || doctor.avatarUrl == '') ? '../assets/images/img.png' : doctor.avatarUrl}}">
 								</div>
 							</td>
 							<td>{{doctor.realName}}</td>

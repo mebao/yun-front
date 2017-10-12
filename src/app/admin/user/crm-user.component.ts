@@ -253,6 +253,10 @@ export class CrmUserComponent implements OnInit{
 			this.toastTab('用户名不可为空', 'error');
 			return;
 		}
+		if(!f.value.user_name.match(/^\w+$/)){
+			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
+			return;
+		};
 		if(f.value.real_name == ''){
 			this.toastTab('真实姓名不可为空', 'error');
 			return;
