@@ -399,18 +399,16 @@
 						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt10">
 							<nodata title="未查询到儿保记录"></nodata>
 						</div>
-						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20">
-							<form class="pure-form pure-form-stacked">
-								<div class="pure-control-group">
-									<label for="templet">模板</label>
-									<select id="templet" name="templet" [(ngModel)]="selectedTemplet">
-										<ng-container *ngFor="let templetObj of recordtempletList">
-											<option value="{{templetObj.string}}">{{templetObj.name}}</option>
-										</ng-container>
-									</select>
-								</div>
-								<button (click)="addHealthrecord()" class="pure-button pure-button-primary mt10">新增儿保记录</button>
-							</form>
+						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20 pure-form pure-form-stacked">
+							<div class="pure-control-group">
+								<label for="templet">模板</label>
+								<select id="templet" name="templet" [(ngModel)]="selectedTemplet">
+									<ng-container *ngFor="let templetObj of recordtempletList">
+										<option value="{{templetObj.string}}">{{templetObj.name}}</option>
+									</ng-container>
+								</select>
+							</div>
+							<button (click)="addHealthrecord()" class="pure-button pure-button-primary mt10">新增儿保记录</button>
 						</div>
 					</div>
 				</div>
