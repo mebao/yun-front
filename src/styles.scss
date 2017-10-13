@@ -537,11 +537,45 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	    border-radius: 50%;
     }
 	.upload{
+        cursor: pointer;
 	    position: absolute;
 	    top: 0;
 	    bottom: 0;
 	    left: 0;
 	    opacity: 0;
+        width: 100%;
+        height: 100%;
+	}
+}
+
+// button上传图片
+.upload-button-tab{
+    position: relative;
+	top: 0;
+	left: 0;
+	display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+    &.img{
+	    width: 90px;
+	    height: 90px;
+    }
+    img{
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+    }
+	.upload{
+        cursor: pointer;
+	    position: absolute;
+	    top: 0;
+	    bottom: 0;
+	    left: 0;
+	    opacity: 0;
+        width: 100%;
+        height: 100%;
 	}
 }
 

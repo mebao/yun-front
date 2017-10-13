@@ -63,18 +63,28 @@
 										<tbody>
 											<tr *ngFor="let result of check.resultList">
 												<td>{{result.checkInfoName}}</td>
-												<td>{{result.values}}</td>
-												<td>
-													<div class="length-text">{{result.remark}}</div>
-												</td>
-												<td>{{result.code}}</td>
-												<td>{{result.unit}}</td>
-												<td class="text-center">
-													<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
-													<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
-												<td>
-													<div class="length-text">{{result.references}}</div>
-												</td>
+												<!-- 检查结果为文字还是图片 -->
+												<ng-container *ngIf="result.isUpload == '0'">
+													<td>{{result.values}}</td>
+													<td>
+														<div class="length-text">{{result.remark}}</div>
+													</td>
+													<td>{{result.code}}</td>
+													<td>{{result.unit}}</td>
+													<td class="text-center">
+														<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
+														<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
+													<td>
+														<div class="length-text">{{result.references}}</div>
+													</td>
+												</ng-container>
+												<ng-container *ngIf="result.isUpload == '1'">
+													<td colspan="6">
+														<div *ngIf="result.values && result.values != ''" class="upload-button-tab img">
+															<img (click)="enlargeImg($event.target)" src="{{result.values}}" />
+														</div>
+													</td>
+												</ng-container>
 											</tr>
 										</tbody>
 									</table>
@@ -509,3 +519,4 @@
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<modal-img url="{{modalImg.url}}" showImg="{{modalImg.showImg}}" (onVoted)="closeImg()"></modal-img>

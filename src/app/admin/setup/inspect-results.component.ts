@@ -17,6 +17,11 @@ export class InspectResultsComponent{
 		text: string,
 		type:  string,
 	};
+	// modal-img
+	modalImg: {
+		url: string,
+		showImg: number,
+	}
 	id: string;
 	checkProjectList: any[];
 	// 默认选择模块
@@ -26,6 +31,8 @@ export class InspectResultsComponent{
 		childName: string,
 	};
 	buttonType: string;
+	// 上传图片token
+	token: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -43,6 +50,11 @@ export class InspectResultsComponent{
 			text: '',
 			type:  '',
 		};
+		// modal-img
+		this.modalImg = {
+			url: '',
+			showImg: 0,
+		}
 		this.checkProjectList = [];
 		this.selectTab = '';
 		this.bookingInfo = {
@@ -53,6 +65,18 @@ export class InspectResultsComponent{
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params.id;
+		});
+
+		// 获取上传图片权限
+		this.token = '';
+		//获取头像上传token
+		var tokenUrl  = '?type=static';
+		this.adminService.qiniutoken(tokenUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.token = JSON.parse(JSON.stringify(data)).uptoken;
+			}
 		});
 
 		this.getData('');
@@ -101,6 +125,45 @@ export class InspectResultsComponent{
 			}
 		});
 	}
+
+	selectedFile(_file, checkId) {
+		var fff = [];
+    	var fileJson = _file.target['files'];
+    	for(var index in fileJson){
+    		if(fileJson[index]['name'] && fileJson[index]['size']){
+	    		var file = fileJson[index];
+		        var formData = new FormData();
+		        formData.append('file', file);
+		        formData.append('name', file.name);
+		        formData.append('type', file.type);
+		        formData.append('lastModifiedDate', file.lastModifiedDate);
+		        formData.append('size', file.size);
+		        formData.append('token', this.token);// the qiniu upload accessKey.
+		        formData.append('key', (new Date()).getTime() + Math.floor(Math.random() * 100)+'.'+file.name.substr(file.name.lastIndexOf('.')+1));
+
+		        var reader = new FileReader();
+		        var imgEle = document.getElementById('imgEle_' + checkId);
+		        reader.readAsDataURL(file);
+		        reader.onload = function(f) {
+		        	imgEle.setAttribute('src', reader.result);
+		        }
+
+		        var xhr = new XMLHttpRequest();
+		        xhr.open('post', 'http://upload.qiniu.com/', false);
+		        xhr.onreadystatechange = function () {
+		            if (xhr.readyState == 4) {
+		                if (xhr.status == 200) {
+		                    var fileEle = document.getElementById('file_' + checkId);
+		                    fileEle.setAttribute('value', JSON.parse(xhr.responseText).key);
+		                } else {
+
+		                }
+		            }
+		        };
+		        xhr.send(formData);
+    		}
+    	}
+    }
 
 	changeTab(_value) {
 		this.selectTab = _value;
@@ -156,6 +219,18 @@ export class InspectResultsComponent{
 		this.checkProjectList[indexCheck].hasRemoveResult = hasRemoveResult;
 	}
 
+	// 放大图片
+	enlargeImg(ele) {
+		this.modalImg = {
+			url: ele.src,
+			showImg: this.modalImg.showImg == 0 ? 1 : 0,
+		}
+	}
+
+	closeImg() {
+		this.modalImg.showImg = 0;
+	}
+
 	save(indexCheck) {
 		if(this.checkProjectList[indexCheck].resultListNum > 0){
 			var resultList = [];
@@ -169,18 +244,35 @@ export class InspectResultsComponent{
 				}
 				// 判断该项是否使用
 				if(this.checkProjectList[indexCheck].resultList[i].use){
-					// 非空判断
-					if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
-						this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
-						return;
-					}
-					// 若是数字类型，则大于0
-					if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
-						this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
-						return;
+					// 图片判断
+					if(this.checkProjectList[indexCheck].resultList[i].isUpload == '1'){
+						var imgName = document.getElementById('file_' + this.checkProjectList[indexCheck].resultList[i].checkInfoId).getAttribute('value');
+						// 是否选择图片
+						if(imgName == ''){
+							// 存在图片未修改
+							if(!this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && this.checkProjectList[indexCheck].resultList[i].values != ''){
+								result.values = this.checkProjectList[indexCheck].resultList[i].values;
+							}else{
+								this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+								return;
+							}
+						}else{
+							result.values = 'http://static.meb168.com/' + imgName;
+						}
+					}else{
+						// 非空判断
+						if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
+							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+							return;
+						}
+						// 若是数字类型，则大于0
+						if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
+							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
+							return;
+						}
+						result.values = this.checkProjectList[indexCheck].resultList[i].values;
 					}
 					result.check_info_id = this.checkProjectList[indexCheck].resultList[i].checkInfoId;
-					result.values = this.checkProjectList[indexCheck].resultList[i].values;
 					result.remark = this.checkProjectList[indexCheck].resultList[i].remark;
 					result.compare = this.checkProjectList[indexCheck].resultList[i].compare;
 					resultList.push(result);

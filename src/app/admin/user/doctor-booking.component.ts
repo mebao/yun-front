@@ -13,6 +13,11 @@ export class DoctorBookingComponent implements OnInit{
 		title: string,
 		back: boolean,
 	};
+	// modal-img
+	modalImg: {
+		url: string,
+		showImg: number,
+	}
 	url: string;
 	id: string;
 	doctorId: string;
@@ -118,6 +123,11 @@ export class DoctorBookingComponent implements OnInit{
 			show: 0,
 			text: '',
 			type: '',
+		}
+		// modal-img
+		this.modalImg = {
+			url: '',
+			showImg: 0,
 		}
 
 		this.id = '';
@@ -333,8 +343,21 @@ export class DoctorBookingComponent implements OnInit{
 		});
 	}
 
+	// 检查
 	changeCheckTab(_value) {
 		this.selectedCheckTab = _value;
+	}
+
+	// 放大图片
+	enlargeImg(ele) {
+		this.modalImg = {
+			url: ele.src,
+			showImg: this.modalImg.showImg == 0 ? 1 : 0,
+		}
+	}
+
+	closeImg() {
+		this.modalImg.showImg = 0;
 	}
 
 	getCheckData() {

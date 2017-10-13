@@ -40,20 +40,37 @@
 										<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
 											<tr *ngIf="result.use">
 												<td>{{result.checkInfoName}}</td>
-												<td>
-													<input type="text" name="values_{{indexResult}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
-												</td>
-												<td>
-													<textarea name="remark_{{indexResult}}" maxlength="100" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'" class="w100"></textarea>
-												</td>
-												<td>{{result.code}}</td>
-												<td>{{result.unit}}</td>
-												<td class="text-center">
-													<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
-													<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
-												<td>
-													<div class="length-text">{{result.references}}</div>
-												</td>
+												<!-- 文本填写亦或图片上传 -->
+												<ng-container *ngIf="result.isUpload == '0'">
+													<td>
+														<input type="text" name="values_{{indexResult}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
+													</td>
+													<td>
+														<textarea name="remark_{{indexResult}}" maxlength="100" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'" class="w100"></textarea>
+													</td>
+													<td>{{result.code}}</td>
+													<td>{{result.unit}}</td>
+													<td class="text-center">
+														<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
+														<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
+													<td>
+														<div class="length-text">{{result.references}}</div>
+													</td>
+												</ng-container>
+												<ng-container *ngIf="result.isUpload == '1'">
+													<td>
+														<a *ngIf="buttonType != 'update'" class="upload-button-tab">
+															<button class="pure-button pure-button-primary">选择图片</button>
+															<input type="hidden" id="file_{{result.checkInfoId}}" name="file_{{result.checkInfoId}}" ngModel>
+															<input class="upload" type="file" (change)="selectedFile($event, result.checkInfoId)">
+														</a>
+													</td>
+													<td colspan="5">
+														<div class="upload-button-tab img">
+															<img (click)="enlargeImg($event.target)" id="imgEle_{{result.checkInfoId}}" src="{{result.values ? result.values : '../assets/images/result.png'}}">
+														</div>
+													</td>
+												</ng-container>
 												<!-- 创建时可操作 -->
 												<td *ngIf="check.editType == 'create'">
 													<button (click)="removeItem(indexCheck, indexResult)" class="pure-button pure-button-primary">移除</button>
@@ -96,3 +113,4 @@
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<modal-img url="{{modalImg.url}}" showImg="{{modalImg.showImg}}" (onVoted)="closeImg()"></modal-img>

@@ -15,6 +15,7 @@ import { TopBarComponent }                 from './nav/top-bar.component';
 
 //modal
 import { ModalToastComponent }             from '../common/modal/modal-toast.component';
+import { ModalImgComponent }               from '../common/modal/modal-img.component';
 import { NodataComponent }                 from '../common/nodata/nodata.component';
 
 //common
@@ -148,6 +149,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CrmUserComponent,
 		WorkbenchReceptionComponent,
 		ModalToastComponent,
+		ModalImgComponent,
 		NodataComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
