@@ -202,6 +202,7 @@ export class ClinicroomListComponent{
 		this.adminService.allotroomdoctor(_id, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.getList();
 			}else{
 				this.toastTab('诊室分配专家成功', '');
 				this.getList();
@@ -255,6 +256,7 @@ export class ClinicroomListComponent{
 		this.adminService.updatecondition(this.conditionId, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.getList();
 			}else{
 				this.toastTab('诊室分配用户成功', '');
 				this.getList();
@@ -278,6 +280,7 @@ export class ClinicroomListComponent{
 	closeConfirm() {
 		this.selectedBooking = '';
 		this.modalConfirmTab = false;
+		this.getList();
 	}
 
 	updateStatus(_id) {

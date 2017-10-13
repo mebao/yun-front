@@ -3,7 +3,7 @@ import { Component, Input, EventEmitter, Output }                       from '@a
 @Component({
     selector: 'modal-img',
     template: `
-        <div class="modal" *ngIf="showImg == '1'">
+        <div class="modal" *ngIf="showImg == 1">
             <div class="modal-mask" (click)="close()"></div>
             <div class="container">
                 <img src="{{url}}" class="w100" />

@@ -401,7 +401,7 @@
 						</div>
 						<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20 pure-form pure-form-stacked">
 							<div class="pure-control-group">
-								<label for="templet">模板</label>
+								<label for="templet">模板（模板若为空，请前往医生列表，添加儿保记录模板）</label>
 								<select id="templet" name="templet" [(ngModel)]="selectedTemplet">
 									<ng-container *ngFor="let templetObj of recordtempletList">
 										<option value="{{templetObj.string}}">{{templetObj.name}}</option>

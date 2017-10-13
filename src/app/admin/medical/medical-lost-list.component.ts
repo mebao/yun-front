@@ -71,7 +71,7 @@ export class MedicalLostListComponent{
 		this.info = {
 			b_date: '',
 			l_date: '',
-			type: '1',
+			type: '2',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username

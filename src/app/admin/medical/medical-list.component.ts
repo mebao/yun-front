@@ -66,7 +66,7 @@ export class MedicalListComponent{
 		this.hasData = false;
 		this.info = {
 			name: '',
-			type: '1',
+			type: '2',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
