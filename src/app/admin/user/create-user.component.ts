@@ -191,7 +191,7 @@ export class CreateUserComponent{
 						child['remote_domain'] = '';
 						child['remote_file_key'] = '';
 					}else{
-						child['remote_domain'] = 'http://og03472zu.bkt.clouddn.com';
+						child['remote_domain'] = 'http://bcircle.meb.meb168.com';
 						child['remote_file_key'] = document.getElementById('file_' + this.childlist[i].key).getAttribute('value');
 					}
 					//判断血型

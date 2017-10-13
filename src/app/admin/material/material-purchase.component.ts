@@ -170,6 +170,7 @@ export class MaterialPurchaseComponent{
 						one_unit: '',
 						price: '',
 						can_discount: '',
+						is_prescribed: '0',
 					}
 					var key = this.mslist[i].key;
 					num++;
@@ -216,7 +217,6 @@ export class MaterialPurchaseComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			supplier_id: JSON.parse(f.value.supplier).id,
 			supplier_name: JSON.parse(f.value.supplier).name,
-			is_prescribed: null,
 			fee: this.info.fee,
 			mslist: msParamsList,
 		}

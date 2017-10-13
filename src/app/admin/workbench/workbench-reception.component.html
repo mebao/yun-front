@@ -43,7 +43,7 @@
 				<div class="doctor-list">
 					<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
 						<div class="pure-u-1-24 img-tab pad10 text-center">
-							<img src="{{scheduling.avatarUrl}}" />
+							<img src="{{(!scheduling.avatarUrl || scheduling.avatarUrl == '') ? '../assets/images/img.png' : scheduling.avatarUrl}}" />
 						</div>
 						<div class="pure-u-2-24 info text-center pt20 name">{{scheduling.realName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;" [ngClass]="{'active': index % 2 == 1}">
@@ -74,7 +74,7 @@
 				<div class="doctor-list">
 					<div class="pure-g item" *ngFor="let doctorBooking of doctorBookingList">
 						<div class="pure-u-1-24 img-tab pad10 text-center">
-							<img src="{{doctorBooking.avatarUrl}}" />
+							<img src="{{(!doctorBooking.avatarUrl || doctorBooking.avatarUrl == '') ? '../assets/images/img.png' : doctorBooking.avatarUrl}}" />
 						</div>
 						<div class="pure-u-2-24 info text-center pt20 name">{{doctorBooking.doctorName}}</div>
 						<div class="pure-u-3-24 info pad10 pt20 text-center flex" *ngFor="let day of doctorBooking.bookingWeekList; let index=index;" [ngClass]="{'active': index % 2 == 1}">

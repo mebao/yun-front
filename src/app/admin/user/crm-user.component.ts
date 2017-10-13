@@ -126,7 +126,7 @@ export class CrmUserComponent implements OnInit{
 		}
 
 		//获取头像上传token
-		var tokenUrl  = '?type=childCircle';
+		var tokenUrl  = '?type=static';
 		this.adminService.qiniutoken(tokenUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -253,7 +253,7 @@ export class CrmUserComponent implements OnInit{
 			this.toastTab('用户名不可为空', 'error');
 			return;
 		}
-		if(!f.value.user_name.match(/^\w+$/)){
+		if(!this.user.user_name.match(/^\w+$/)){
 			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
 			return;
 		};
@@ -300,7 +300,7 @@ export class CrmUserComponent implements OnInit{
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,
 				description: this.addDoctor ? f.value.description : null,
-				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : ('http://static.jiabaokangle.com/' + imgUrl)) : null,
+				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : ('http://static.meb168.com/' + imgUrl)) : null,
 			}
 			this.adminService.create(param).then((data) => {
 				if(data.status == 'no'){
