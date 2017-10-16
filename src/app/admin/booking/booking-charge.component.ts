@@ -75,6 +75,7 @@ export class BookingChargeComponent{
 
 		this.hasData = false;
 
+		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
 			doctor_id: '',
 			service_id: '',
@@ -82,8 +83,8 @@ export class BookingChargeComponent{
 			creator_name: '',
 			cdate_less: '',
 			cdate_big: '',
-			bdate_less: '',
-			bdate_big: '',
+			bdate_less: todayDate,
+			bdate_big: todayDate,
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username

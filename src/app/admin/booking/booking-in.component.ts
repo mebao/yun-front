@@ -177,7 +177,7 @@ export class BookingInComponent{
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&status=2' + '&bdate_big=' + todayDate + '&bdate_less=' + nextDate;;
+			 + '&status=2' + '&bdate_big=' + todayDate + '&bdate_less=' + todayDate;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

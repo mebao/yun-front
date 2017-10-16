@@ -23,6 +23,7 @@ export class LoginComponent{
 		token: string,
 		uid: string,
 		username: string,
+		realname: string,
 	}
 	clinicRole: {
 		//前台工作台
@@ -187,6 +188,7 @@ export class LoginComponent{
 			token: '',
 			uid: '',
 			username: '',
+			realname: '',
 		}
 
 		this.clinicRole = {
@@ -338,6 +340,7 @@ export class LoginComponent{
 					token: results.admininfo.token,
 					uid: results.admininfo.uid,
 					username: results.admininfo.username,
+					realname: results.admininfo.realname,
 				}
 				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 1);
 				//角色信息存储在sessionStorage中

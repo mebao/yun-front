@@ -20,7 +20,7 @@ export class HeaderNavComponent{
 	) {}
 
 	ngOnInit(): void {
-		this.username = this.adminService.getUser().username;
+		this.username = this.adminService.getUser().realname;
 		this.clinicRole = this.adminService.getUser().clinicRoleName;
 		this.clinicName = this.adminService.getUser().clinicName;
 	}

@@ -43,7 +43,7 @@
 							<td>{{member.name}}</td>
 							<td>{{member.service}}%</td>
 							<ng-container *ngFor="let serviceDiscount of member.serviceDiscountList">
-								<td>{{serviceDiscount.discount}}</td>
+								<td>{{serviceDiscount.discount}}{{serviceDiscount.discount == '' ? '' : '%'}}</td>
 							</ng-container>
 							<td>{{member.check}}%</td>
 							<td>{{member.prescript}}%</td>
