@@ -63,6 +63,7 @@
 							<th>支付方式</th>
 							<th>支付类型</th>
 							<th>操作人</th>
+							<th class="th-width">备注</th>
 							<th>时间</th>
 						</tr>
 					</thead>
@@ -74,6 +75,9 @@
 							<td>{{record.wayText}}</td>
 							<td>{{record.typeText}}</td>
 							<td>{{record.adminName}}</td>
+							<td>
+								<div class="length-text">{{record.remark}}</div>
+							</td>
 							<td>{{record.time}}</td>
 						</tr>
 					</tbody>
