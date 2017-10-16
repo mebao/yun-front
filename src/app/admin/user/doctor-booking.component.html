@@ -249,7 +249,7 @@
 								<tr *ngFor="let fee of booking.fees; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.projectName}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.typeText}}</div>
 										<!-- 编辑 -->
 										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
 											<input type="text" name="project_name" #project_name="ngModel" [(ngModel)]="addFeeInfo.project_name" required="" [disabled]="addFeeInfo.editType == 'update'" placeholder="请输入消费项目名" class="w100">
