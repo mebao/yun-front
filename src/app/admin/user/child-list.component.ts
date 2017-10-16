@@ -22,6 +22,7 @@ export class ChildListComponent{
 		see: boolean,
 		info: boolean,
 		booking: boolean,
+		bookingHistory: boolean,
 	}
 	childList: any[];
 	hasData: boolean;
@@ -51,6 +52,7 @@ export class ChildListComponent{
 			see: false,
 			info: false,
 			booking: false,
+			bookingHistory: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -124,6 +126,11 @@ export class ChildListComponent{
 	goBooking(child) {
 		sessionStorage.setItem('childList-childName', child.childName);
 		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, type: 'createChildList'}});
+	}
+
+	// 预约记录
+	goBookingHistory(child) {
+		this.router.navigate(['./admin/bookingHistory'], {queryParams: {childId: child.childId}});
 	}
 
 	toastTab(text, type) {

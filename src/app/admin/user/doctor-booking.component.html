@@ -45,8 +45,11 @@
 							</div>
 							<div *ngFor="let check of checkDataList">
 								<div *ngIf="selectedCheckTab == check.id">
-									<div *ngIf="booking.status != '5'" class="mt10 mb10 text-right">
-										<button (click)="deleteCheck(check)" class="pure-button button-error">删除</button>
+									<!-- pageType 空为医生接诊， history为查看 -->
+									<div *ngIf="pageType != 'history'">
+										<div *ngIf="booking.status != '5'" class="mt10 mb10 text-right">
+											<button (click)="deleteCheck(check)" class="pure-button button-error">删除</button>
+										</div>
 									</div>
 									<table class="pure-table pure-table-horizontal w100 table-tab mt10">
 										<thead>
@@ -94,39 +97,42 @@
 						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
 							<nodata title="未查询到检查项目"></nodata>
 						</div>
-						<form #fCheck="ngForm" class="pure-form pure-form-stacked form-tab">
-							<fieldset>
-								<div *ngIf="addCheckInfo.editType != ''" class="pure-g">
-									<div class="pure-u-1-5 pr10">
-										<div class="pure-control-group">
-											<label for="check">检查项目</label>
-											<select id="check" name="check" #check="ngModel" [(ngModel)]="addCheckInfo.check" required="" [disabled]="editType == 'update'">
-												<ng-container *ngFor="let check of checklist">
-													<ng-container *ngIf="check.canUse == '1'">
-														<option value="{{check.string}}">{{check.name}}</option>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<form #fCheck="ngForm" class="pure-form pure-form-stacked form-tab">
+								<fieldset>
+									<div *ngIf="addCheckInfo.editType != ''" class="pure-g">
+										<div class="pure-u-1-5 pr10">
+											<div class="pure-control-group">
+												<label for="check">检查项目</label>
+												<select id="check" name="check" #check="ngModel" [(ngModel)]="addCheckInfo.check" required="" [disabled]="editType == 'update'">
+													<ng-container *ngFor="let check of checklist">
+														<ng-container *ngIf="check.canUse == '1'">
+															<option value="{{check.string}}">{{check.name}}</option>
+														</ng-container>
 													</ng-container>
-												</ng-container>
-											</select>
-											<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
-												<div [hidden]="!check.errors.required">
-													检查不可为空
+												</select>
+												<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
+													<div [hidden]="!check.errors.required">
+														检查不可为空
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</fieldset>
-							<!-- 订单未完成，可操作 -->
-							<ng-container *ngIf="booking.status != '5'">
-								<div class="mt10 flex">
-									<div *ngIf="canEdit" class="flex-1">
-										<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
-										<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
-										<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+								</fieldset>
+								<!-- 订单未完成，可操作 -->
+								<ng-container *ngIf="booking.status != '5'">
+									<div class="mt10 flex">
+										<div *ngIf="canEdit" class="flex-1">
+											<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
+											<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
+											<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+										</div>
 									</div>
-								</div>
-							</ng-container>
-						</form>
+								</ng-container>
+							</form>
+						</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '4'}" class="tab">
 						<table *ngIf="prescriptList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
@@ -161,19 +167,22 @@
 										<td>{{info.unit}}</td>
 										<td>{{info.num}}</td>
 										<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-											<!-- 订单未完成，可操作 -->
-											<ng-container *ngIf="booking.status != '5'">
-												<div *ngIf="item.apotId && (item.isBack != 0)">-</div>
-												<div *ngIf="!item.apotId">
-													<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
-												</div>
-												<div *ngIf="!item.apotId" class="mt10">
-													<button (click)="deletePrescript(item.id)" class="pure-button button-error">删除</button>
-												</div>
-												<div *ngIf="item.apotId && (item.isBack == 0)" class="mt10">
-													<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
-												</div>
-											</ng-container>
+											<!-- pageType 空为医生接诊， history为查看 -->
+											<div *ngIf="pageType != 'history'">
+												<!-- 订单未完成，可操作 -->
+												<ng-container *ngIf="booking.status != '5'">
+													<div *ngIf="item.apotId && (item.isBack != 0)">-</div>
+													<div *ngIf="!item.apotId">
+														<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
+													</div>
+													<div *ngIf="!item.apotId" class="mt10">
+														<button (click)="deletePrescript(item.id)" class="pure-button button-error">删除</button>
+													</div>
+													<div *ngIf="item.apotId && (item.isBack == 0)" class="mt10">
+														<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
+													</div>
+												</ng-container>
+											</div>
 										</td>
 									</tr>
 								</ng-container>
@@ -182,14 +191,17 @@
 						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10">
 							<nodata title="未查询到处方"></nodata>
 						</div>
-						<!-- 订单未完成，可操作 -->
-						<ng-container *ngIf="booking.status != '5'">
-							<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
-								<div *ngIf="canEdit" class="flex-1">
-									<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
+									<div *ngIf="canEdit" class="flex-1">
+										<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
+									</div>
 								</div>
-							</div>
-						</ng-container>
+							</ng-container>
+						</div>
 					</div>
 					<!-- <div [ngClass]="{'hidden': selectedTab != '1'}" class="tab">
 						<table class="pure-table w100">
@@ -288,99 +300,108 @@
 										</div>
 									</td>
 									<td>
-										<!-- 订单未完成，可操作 -->
-										<ng-container *ngIf="booking.status != '5'">
-											<!-- 展示 -->
-											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">
-												<button (click)="updateFee(fee)" class="pure-button pure-button-primary">修改</button>
-											</div>
-											<!-- 编辑 -->
-											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
-												<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" class="pure-button">取消</button>
-												<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary">保存</button>
-											</div>
-										</ng-container>
+										<!-- pageType 空为医生接诊， history为查看 -->
+										<div *ngIf="pageType != 'history'">
+											<!-- 订单未完成，可操作 -->
+											<ng-container *ngIf="booking.status != '5'">
+												<!-- 展示 -->
+												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">
+													<button (click)="updateFee(fee)" class="pure-button pure-button-primary">修改</button>
+												</div>
+												<!-- 编辑 -->
+												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+													<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" class="pure-button">取消</button>
+													<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary">保存</button>
+												</div>
+											</ng-container>
+										</div>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="flex mt10">
 							<div class="flex-1">
-								<div *ngIf="canEdit && booking.status != '5'">
-									<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" class="pure-button pure-button-primary">添加其它费用</button>
+								<!-- pageType 空为医生接诊， history为查看 -->
+								<div *ngIf="pageType != 'history'">
+									<div *ngIf="canEdit && booking.status != '5'">
+										<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" class="pure-button pure-button-primary">添加其它费用</button>
+									</div>
 								</div>
 							</div>
 							<div>
 								总费用：{{booking.totalFee}}元
 							</div>
 						</div>
-						<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-							<fieldset>
-								<div *ngIf="addFeeInfo.editType == 'create'" class="pure-g">
-									<div class="pure-u-2-5 pr10">
-										<div class="pure-control-group">
-											<label for="project_name">
-												<span>消费项目名</span>
-												<span class="required">*</span>
-											</label>
-											<input type="text" id="project_name" name="project_name" #project_name="ngModel" [(ngModel)]="addFeeInfo.project_name" required="" placeholder="请输入消费项目名">
-											<div *ngIf="project_name.errors && (project_name.dity || project_name.touched)" class="alert alert-danger">
-												<div [hidden]="!project_name.errors.required">
-													消费项目名不可为空
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+								<fieldset>
+									<div *ngIf="addFeeInfo.editType == 'create'" class="pure-g">
+										<div class="pure-u-2-5 pr10">
+											<div class="pure-control-group">
+												<label for="project_name">
+													<span>消费项目名</span>
+													<span class="required">*</span>
+												</label>
+												<input type="text" id="project_name" name="project_name" #project_name="ngModel" [(ngModel)]="addFeeInfo.project_name" required="" placeholder="请输入消费项目名">
+												<div *ngIf="project_name.errors && (project_name.dity || project_name.touched)" class="alert alert-danger">
+													<div [hidden]="!project_name.errors.required">
+														消费项目名不可为空
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="pure-u-1-5 pl5 pr5">
-										<div class="pure-control-group">
-											<label for="price">
-												<span>单价</span>
-												<span class="required">*</span>
-											</label>
-											<input type="number" id="price" step="0.01" name="price" #price="ngModel" [(ngModel)]="addFeeInfo.price" placeholder="请输入单价" (change)="changeFee()">
+										<div class="pure-u-1-5 pl5 pr5">
+											<div class="pure-control-group">
+												<label for="price">
+													<span>单价</span>
+													<span class="required">*</span>
+												</label>
+												<input type="number" id="price" step="0.01" name="price" #price="ngModel" [(ngModel)]="addFeeInfo.price" placeholder="请输入单价" (change)="changeFee()">
+											</div>
 										</div>
-									</div>
-									<div class="pure-u-1-5 pl5 pr5">
-										<div class="pure-control-group">
-											<label for="number">
-												<span>数量</span>
-												<span class="required">*</span>
-											</label>
-											<input type="number" id="number" name="number" #number="ngModel" [(ngModel)]="addFeeInfo.number" placeholder="请输入数量" (change)="changeFee()">
+										<div class="pure-u-1-5 pl5 pr5">
+											<div class="pure-control-group">
+												<label for="number">
+													<span>数量</span>
+													<span class="required">*</span>
+												</label>
+												<input type="number" id="number" name="number" #number="ngModel" [(ngModel)]="addFeeInfo.number" placeholder="请输入数量" (change)="changeFee()">
+											</div>
 										</div>
-									</div>
-									<div class="pure-u-1-5 pl10">
-										<div class="pure-control-group">
-											<label for="fee">
-												<span>费用</span>
-												<span class="required">*</span>
-											</label>
-											<input type="number" id="fee" step="0.01" name="fee" #fee="ngModel" [(ngModel)]="addFeeInfo.fee" placeholder="请输入费用" required="" [disabled]="editType == 'update'">
-											<div *ngIf="fee.errors && (fee.dity || fee.touched)" class="alert alert-danger">
-												<div [hidden]="!fee.errors.required">
-													费用不可为空
+										<div class="pure-u-1-5 pl10">
+											<div class="pure-control-group">
+												<label for="fee">
+													<span>费用</span>
+													<span class="required">*</span>
+												</label>
+												<input type="number" id="fee" step="0.01" name="fee" #fee="ngModel" [(ngModel)]="addFeeInfo.fee" placeholder="请输入费用" required="" [disabled]="editType == 'update'">
+												<div *ngIf="fee.errors && (fee.dity || fee.touched)" class="alert alert-danger">
+													<div [hidden]="!fee.errors.required">
+														费用不可为空
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="pure-u-2-5 pr10">
-										<div class="pure-control-group">
-											<label for="remarks">备注说明（最多200字）</label>
-											<textarea name="remarks" maxlength="200" #remarks="ngModel" [(ngModel)]="addFeeInfo.remarks" placeholder="请输入备注说明"></textarea>
+										<div class="pure-u-2-5 pr10">
+											<div class="pure-control-group">
+												<label for="remarks">备注说明（最多200字）</label>
+												<textarea name="remarks" maxlength="200" #remarks="ngModel" [(ngModel)]="addFeeInfo.remarks" placeholder="请输入备注说明"></textarea>
+											</div>
 										</div>
 									</div>
-								</div>
-							</fieldset>
-							<!-- 订单未完成，可操作 -->
-							<ng-container *ngIf="booking.status != '5'">
-								<div class="mt10">
-									<div *ngIf="canEdit">
-										<button *ngIf="addFeeInfo.editType == 'create'" (click)="removeFee()" class="pure-button">取消</button>
-										<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee(f)" class="pure-button pure-button-primary">创建</button>
+								</fieldset>
+								<!-- 订单未完成，可操作 -->
+								<ng-container *ngIf="booking.status != '5'">
+									<div class="mt10">
+										<div *ngIf="canEdit">
+											<button *ngIf="addFeeInfo.editType == 'create'" (click)="removeFee()" class="pure-button">取消</button>
+											<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee(f)" class="pure-button pure-button-primary">创建</button>
+										</div>
 									</div>
-								</div>
-							</ng-container>
-						</form>
+								</ng-container>
+							</form>
+						</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '5'}" class="tab">
 						<table *ngIf="followupsList.length > 0" class="pure-table w100 table-tab">
@@ -414,8 +435,11 @@
 						<div *ngIf="hasFollowupsData && followupsList.length == 0" class="mt10">
 							<nodata title="未查询到随访"></nodata>
 						</div>
-						<div class="mt20">
-							<button (click)="addFollowups()" class="pure-button pure-button-primary">新增随访</button>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div class="mt20">
+								<button (click)="addFollowups()" class="pure-button pure-button-primary">新增随访</button>
+							</div>
 						</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '6'}" class="tab">

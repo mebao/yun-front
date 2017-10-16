@@ -656,6 +656,40 @@ export class AuthGuardRole implements CanActivate{
 								queryType: 'type',
 								queryParams: 'createChildList',
 							},
+							{
+								url: '/admin/bookingHistory',
+								authority: 'bookingHistory',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/doctorBooking',
+								authority: 'bookingHistory',
+								queryType: 'pageType',
+								queryParams: 'history',
+							},
+							// 成长记录
+							{
+								url: '/admin/doctorBookingGrowthrecords',
+								authority: 'bookingHistory',
+								queryType: 'pageType',
+								queryParams: 'history',
+							},
+							// 病例
+							{
+								url: '/admin/doctorBookingCasehistory',
+								authority: 'bookingHistory',
+								queryType: 'pageType',
+								queryParams: 'history',
+							},
+
+							// 儿保记录
+							{
+								url: '/admin/doctorBookingHealthrecord',
+								authority: 'bookingHistory',
+								queryType: 'pageType',
+								queryParams: 'history',
+							},
 						]
 					},
 					{

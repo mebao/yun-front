@@ -62,6 +62,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	// 儿保记录模板
 	recordtempletList: any[];
 	selectedTemplet: string;
+	// pageType 空为医生接诊, history为查看
+	pageType: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -109,6 +111,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
 			this.doctorId = params['doctorId'];
+			this.pageType = params.pageType;
 		});
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -207,7 +210,12 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 
 	changeTab(_value, url) {
 		sessionStorage.setItem('doctorBookingTab', _value);
-		this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
+		// pageType 空为医生接诊， history为查看
+		if(this.pageType == 'history'){
+			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId, pageType: this.pageType}});
+		}else{
+			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
+		}
 	}
 
 	// 新增儿保记录

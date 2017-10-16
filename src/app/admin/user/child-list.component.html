@@ -44,6 +44,7 @@
 							<td>
 								<button *ngIf="moduleAuthority.info" (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
 								<button *ngIf="moduleAuthority.booking" (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
+								<button *ngIf="moduleAuthority.bookingHistory" (click)="goBookingHistory(child)" class="pure-button pure-button-primary">预约记录</button>
 							</td>
 						</tr>
 					</tbody>

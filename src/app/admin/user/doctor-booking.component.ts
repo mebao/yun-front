@@ -107,6 +107,8 @@ export class DoctorBookingComponent implements OnInit{
 	// 儿保记录
 	healthrecordList: any[];
 	hasHealthrecordData: boolean;
+	// pageType 空为医生接诊，history为查看
+	pageType: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -170,6 +172,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
 			this.doctorId = params['doctorId'];
+			this.pageType = params.pageType;
 		});
 
 		//添加费用
@@ -314,7 +317,12 @@ export class DoctorBookingComponent implements OnInit{
 
 	// 成长记录
 	goSection(url) {
-		this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
+		// pageType 空为医生， history为查看
+		if(this.pageType == 'history'){
+			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId, pageType: this.pageType}});
+		}else{
+			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
+		}
 	}
 
 	getBookingData() {

@@ -109,6 +109,7 @@ import { PrescriptSaleComponent }          from './prescript/prescript-sale.comp
 import { PrescriptSaleListComponent }      from './prescript/prescript-sale-list.component';
 import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
+import { BookingHistoryComponent }         from './booking/booking-history.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -214,6 +215,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		PrescriptSaleListComponent,
 		DoctorRecordTempletComponent,
 		DoctorRecordTempletListComponent,
+		BookingHistoryComponent,
 	],
 	providers: [
 		AdminService,

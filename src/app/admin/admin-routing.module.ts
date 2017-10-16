@@ -89,6 +89,7 @@ import { PrescriptSaleComponent }           from './prescript/prescript-sale.com
 import { PrescriptSaleListComponent }       from './prescript/prescript-sale-list.component';
 import { DoctorRecordTempletComponent }     from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
+import { BookingHistoryComponent }          from './booking/booking-history.component';
 
 const adminRoutes: Routes = [
 	{
@@ -514,6 +515,11 @@ const adminRoutes: Routes = [
 						path: 'doctorRecordTempletList',
 						canActivate: [AuthGuardRole],
 						component: DoctorRecordTempletListComponent,
+					},
+					{
+						path: 'bookingHistory',
+						canActivate: [AuthGuardRole],
+						component: BookingHistoryComponent,
 					},
 					{
 						path: '**',

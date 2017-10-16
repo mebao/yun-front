@@ -53,7 +53,10 @@
 											<div class="flex-1">{{booking.age}}</div>
 										</div>
 										<div class="pure-u-8-24 info flex">
-											<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+											<!-- pageType 空为医生接站， history为查看 -->
+											<div *ngIf="pageType != 'history'">
+												<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+											</div>
 										</div>
 										<div class="pure-u-8-24 info flex">
 											<label class="w150p">体重：</label>
@@ -193,8 +196,11 @@
 						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt10">
 							<nodata title="未查询到病历"></nodata>
 						</div>
-						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
-							<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病历</button>
+						<!-- pageType 空为医生接站， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
+								<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病历</button>
+							</div>
 						</div>
 					</div>
 				</div>
