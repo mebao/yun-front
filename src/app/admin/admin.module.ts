@@ -1,6 +1,7 @@
 import { NgModule }                        from '@angular/core';
 import { CommonModule }                    from '@angular/common';
 import { FormsModule }                     from '@angular/forms';
+import { QRCodeModule }                    from '../common/qrcode.module';
 
 import { AdminComponent }                  from './admin.component';
 
@@ -110,6 +111,9 @@ import { PrescriptSaleListComponent }      from './prescript/prescript-sale-list
 import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
+import { AuthorizeGivefeeComponent }       from './authorize/authorize-givefee.component';
+import { GivefeeListComponent }            from './user/givefee-list.component';
+import { AuthorizeSuccessComponent }       from './authorize/authorize-success.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -119,6 +123,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CommonModule,
 		AdminRoutingModule,
 		FormsModule,
+		QRCodeModule,
 	],
 	declarations: [
 		AdminComponent,
@@ -216,6 +221,9 @@ import { DoctorService }                   from './doctor/doctor.service';
 		DoctorRecordTempletComponent,
 		DoctorRecordTempletListComponent,
 		BookingHistoryComponent,
+		AuthorizeGivefeeComponent,
+		GivefeeListComponent,
+		AuthorizeSuccessComponent,
 	],
 	providers: [
 		AdminService,

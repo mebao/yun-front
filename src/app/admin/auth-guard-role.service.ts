@@ -794,6 +794,36 @@ export class AuthGuardRole implements CanActivate{
 							}
 						]
 					},
+					{
+						firstKey: 'givefeeList',
+						firstUrl: '',
+						second: [
+							{
+								url: '/admin/givefeeList',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
+					{
+						firstKey: 'authority',
+						firstUrl: '',
+						second: [
+							{
+								url: '/admin/authorizeGivefee',
+								authority: 'givefee',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/authorizeSuccess',
+								authority: 'givefee',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
 				];
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
 
@@ -818,7 +848,7 @@ export class AuthGuardRole implements CanActivate{
 							if(authorityList[i].second[j].queryParams != ''){
 								//若需要通过参数判断，url: 'admin/booking?type="create"'
 								var urlBoolean = false;
-								var queryParams = this.getUrlParams(url);
+								var queryParams = this.adminService.getUrlParams(url);
 								urlBoolean = (urlString == authorityList[i].second[j].url) && (queryParams[authorityList[i].second[j].queryType] == authorityList[i].second[j].queryParams);
 								if(urlBoolean){
 									authority = this.getAuthority(url, userClinicRoles, authorityList, i, j, authority);
@@ -844,26 +874,12 @@ export class AuthGuardRole implements CanActivate{
 					}else{
 						//构造带参数路由重定向
 						var redirectUrl = authority.url.substring(0, authority.url.indexOf('?'));
-						this.router.navigate(['.' + redirectUrl], {queryParams: this.getUrlParams(authority.url)});
+						this.router.navigate(['.' + redirectUrl], {queryParams: this.adminService.getUrlParams(authority.url)});
 					}
 					return true;
 				}
 			}
 		}
-	}
-
-	//获取参数json
-	getUrlParams(url) {
-		var urlQuery = url.substring(url.indexOf('?') + 1).split('&');
-		var queryString = '{';
-		for(var i = 0; i < urlQuery.length; i++){
-			queryString += '"' + urlQuery[i].split('=')[0] + '":' + '"' + urlQuery[i].split('=')[1] + '",';
-		}
-		if(queryString.length > 1){
-			queryString = queryString.slice(0, queryString.length -1);
-		}
-		queryString += '}';
-		return JSON.parse(queryString);
 	}
 
 	//获取是否具有权限

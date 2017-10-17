@@ -135,6 +135,18 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
+.group-tab{
+    @extend .flex;
+    padding: 10px;
+    border-bottom: 1px solid #efefef;
+    .left{
+        width: 110px;
+    }
+    .middle{
+        @extend .flex-1;
+    }
+}
+
 .search-tab{
     label{
         width: 50px;

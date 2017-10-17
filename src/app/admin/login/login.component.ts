@@ -164,6 +164,12 @@ export class LoginComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 接诊金额记录
+		givefeeList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 	}
 
 	constructor(
@@ -307,6 +313,11 @@ export class LoginComponent{
 				authority: ['see'],
 				infos: [],
 			},
+			givefeeList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
 		}
 	}
 
@@ -374,10 +385,13 @@ export class LoginComponent{
 						}
 					}
 				}
-
 				let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : firstUrl;
+				if(redirect.indexOf('?') != -1){
+					this.router.navigate([redirect.slice(0, redirect.indexOf('?'))], {queryParams: this.adminService.getUrlParams(redirect)});
+				}else{
+					this.router.navigate([redirect]);
+				}
 
-				this.router.navigate([redirect]);
 			}
 		})
 	}

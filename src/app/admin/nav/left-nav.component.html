@@ -143,5 +143,11 @@
 			routerLinkActive="active">
 				交易记录
 		</a>
+	  	<a
+			*ngIf="clinicRole.givefeeList.use != ''"
+			routerLink="../givefeeList"
+			routerLinkActive="active">
+				减免金额记录
+		</a>
 	</nav>
 </div>

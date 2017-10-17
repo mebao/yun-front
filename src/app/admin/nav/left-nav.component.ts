@@ -152,6 +152,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 减免金额记录
+		givefeeList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 	}
 
 	constructor(
@@ -277,6 +283,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			transactionRecordList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			givefeeList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

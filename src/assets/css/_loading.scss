@@ -24,6 +24,10 @@
 	background-color: #fff;
 	overflow-x: hidden;
 	overflow-y: auto;
+	&.mobile{
+		width: 80%;
+		margin-left: -40%;
+	}
 }
 .modal.small .container{
 	width: 400px;
@@ -42,6 +46,10 @@
 	max-height: 600px;
 	margin-left: -350px;
 	background-color: #fff;
+	&.mobile{
+		width: 80%;
+		margin-left: -40%;
+	}
 }
 .modal-toast .container .content{
 	background-color: #1CB841;

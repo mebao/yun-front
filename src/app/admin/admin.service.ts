@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	private url = 'http://192.168.31.200/jiabaokangle';
+	public url = 'http://192.168.31.200/jiabaokangle';
 	// private url = 'http://wapapi.jiabaokangle.com';
 	// private url = 'http://wapapi.meb168.com';
 
@@ -901,6 +901,42 @@ export class AdminService{
 			.catch();
 	}
 
+	//查看减免授权记录
+	private searchwaiverauthnotesUrl = this.url + '/mebcrm/searchwaiverauthnotes';
+	searchwaiverauthnotes(urlOptions): Promise<Data>{
+		return this.http.get(this.searchwaiverauthnotesUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 创建(发起)授权
+	private waiverauthUrl = this.url + '/mebcrm/waiverauth';
+	waiverauth(params): Promise<Data>{
+		return this.http.post(this.waiverauthUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查看减免授权
+	private searchwaiverauthUrl = this.url + '/mebcrm/searchwaiverauth/';
+	searchwaiverauth(urlOptions): Promise<Data>{
+		return this.http.get(this.searchwaiverauthUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 管理授权减免金额
+	private waiverauthnoteUrl = this.url + '/mebcrm/waiverauthnote';
+	waiverauthnote(params): Promise<Data>{
+		return this.http.post(this.waiverauthnoteUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
@@ -1040,5 +1076,19 @@ export class AdminService{
 			default:
 				return false;
 		}
+	}
+
+	//获取参数json
+	getUrlParams(url) {
+		var urlQuery = url.substring(url.indexOf('?') + 1).split('&');
+		var queryString = '{';
+		for(var i = 0; i < urlQuery.length; i++){
+			queryString += '"' + urlQuery[i].split('=')[0] + '":' + '"' + urlQuery[i].split('=')[1] + '",';
+		}
+		if(queryString.length > 1){
+			queryString = queryString.slice(0, queryString.length -1);
+		}
+		queryString += '}';
+		return JSON.parse(queryString);
 	}
 }
