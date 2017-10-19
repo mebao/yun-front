@@ -45,31 +45,37 @@
 			</div>
 			<div>
 				<div *ngIf="userCheckList.length > 0" class="pure-g">
-					<div class="pure-u-6-24 card-tab pad10" *ngFor="let userCheck of userCheckList">
-						<div class="info pad10 flex">
-							<div class="img-tab-default mr10">
-								<img (click)="childInfo(userCheck.childId)" src="{{userCheck.imageUrl == '' ? '../assets/images/img.png' : userCheck.imageUrl}}" class="cursor-p">
-							</div>
-							<div class="flex-1">
-								<div>{{userCheck.childName}}</div>
-								<div class="flex pt10">
-									<div class="w90p">检验：</div>
-									<div class="flex-1">
-										{{userCheck.checkName}}
+					<ng-container *ngFor="let userCheck of userCheckList">
+						<div class="pure-u-6-24 card-tab pad10" [ngClass]="{'red': userCheck.checkDoctorId == null}">
+							<div class="info pad10 flex">
+								<div class="img-tab-default mr10">
+									<img (click)="childInfo(userCheck.childId)" src="{{userCheck.imageUrl == '' ? '../assets/images/img.png' : userCheck.imageUrl}}" class="cursor-p">
+								</div>
+								<div class="flex-1">
+									<div class="flex">
+										<div class="flex-1"></div>
+										<div class="icon">{{userCheck.checkDoctorId == null ? '未检查' : '已检查'}}</div>
+									</div>
+									<div>{{userCheck.childName}}</div>
+									<div class="flex pt10">
+										<div class="w90p">检验：</div>
+										<div class="flex-1">
+											{{userCheck.checkName}}
+										</div>
+									</div>
+									<div class="flex pt10">
+										<div class="w90p">开单医生：</div>
+										<div class="flex-1">
+											{{userCheck.doctorName}}
+										</div>
 									</div>
 								</div>
-								<div class="flex pt10">
-									<div class="w90p">开单医生：</div>
-									<div class="flex-1">
-										{{userCheck.doctorName}}
-									</div>
-								</div>
 							</div>
+							<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
+								检查
+							</a>
 						</div>
-						<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
-							检查
-						</a>
-					</div>
+					</ng-container>
 				</div>
 				<div *ngIf="hasData && userCheckList.length == 0" class="mt10">
 					<nodata title="未查询到项目"></nodata>

@@ -22,16 +22,15 @@
 								<table class="pure-table pure-table-horizontal w100 table-tab">
 									<thead>
 										<tr>
-											<th class="w10">项目</th>
+											<th class="w20">项目</th>
+											<th class="w10">代码</th>
 											<th class="w20">
 												<span>检查结果</span>
 												<span class="required">*</span>
 											</th>
-											<th [ngClass]="{'w25': check.editType == 'create', 'w30': check.editType == 'update'}">备注（最多100字）</th>
-											<th class="w5">代码</th>
-											<th class="w5">单位</th>
-											<th class="w5">性质</th>
-											<th [ngClass]="{'w15': check.editType == 'create', 'w20': check.editType == 'update'}">参考值</th>
+											<th [ngClass]="{'w20': check.editType == 'create', 'w30': check.editType == 'update'}">参考值</th>
+											<th class="w10">单位</th>
+											<th class="w10">性质</th>
 											<!-- 创建时可操作 -->
 											<th *ngIf="check.editType == 'create'" class="w10">操作</th>
 										</tr>
@@ -42,19 +41,17 @@
 												<td>{{result.checkInfoName}}</td>
 												<!-- 文本填写亦或图片上传 -->
 												<ng-container *ngIf="result.isUpload == '0'">
+													<td>{{result.code}}</td>
 													<td>
 														<input type="text" name="values_{{indexResult}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
 													</td>
 													<td>
-														<textarea name="remark_{{indexResult}}" maxlength="100" rows="5" [(ngModel)]="result.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'" class="w100"></textarea>
+														<div class="length-text">{{result.references}}</div>
 													</td>
-													<td>{{result.code}}</td>
 													<td>{{result.unit}}</td>
 													<td class="text-center">
 														<i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
-														<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i></td>
-													<td>
-														<div class="length-text">{{result.references}}</div>
+														<i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i>
 													</td>
 												</ng-container>
 												<ng-container *ngIf="result.isUpload == '1'">
@@ -65,7 +62,7 @@
 															<input class="upload" type="file" (change)="selectedFile($event, result.checkInfoId)">
 														</a>
 													</td>
-													<td colspan="5">
+													<td colspan="4">
 														<div class="upload-button-tab img">
 															<img (click)="enlargeImg($event.target)" id="imgEle_{{result.checkInfoId}}" src="{{result.values ? result.values : '../assets/images/result.png'}}">
 														</div>
@@ -99,6 +96,15 @@
 											</ng-container>
 										</tbody>
 									</table>
+								</div>
+								<div class="pure-form pure-form-stacked form-tab">
+									<div class="flex">
+										<div class="pure-control-group flex-1">
+											<label for="remark">备注（最多100字）</label>
+											<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="check.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
+										</div>
+										<div class="flex-1"></div>
+									</div>
 								</div>
 								<div class="pt20 text-center">
 									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary button-max">修改</button>

@@ -124,7 +124,10 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 	textarea{
 		width: 100%;
-        height:165px;
+        height: 165px;
+        &.min{
+            height: 130px;
+        }
 	}
 	label{
 		padding: 5px 0;
@@ -169,9 +172,15 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	.info{
 		background-color: #39A99D;
 		color: #fff;
-		height: 110px;
+		height: 130px;
 		overflow-x: hidden;
 		overflow-y: auto;
+        .icon{
+            background-color: #efefef;
+            color: #39A99D;
+            padding: 0 10px;
+            border-radius: 5px;
+        }
 	}
 	.edit{
 		border-width: 0 1px 1px 1px;
@@ -180,6 +189,18 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		color: #39A99D;
 		display: block;
 	}
+    &.red{
+        .info{
+            background-color: #D45D5D;
+            .icon{
+	            color: #D45D5D;
+            }
+        }
+        .edit{
+    		border-color: #D45D5D;
+    		color: #D45D5D;
+        }
+    }
 }
 
 .second-bar-tab{

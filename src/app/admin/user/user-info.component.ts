@@ -37,6 +37,8 @@ export class UserInfoComponent{
 		id: string,
 		text: string,
 	}
+	// 用户详情展示，遍历
+	infoList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -77,6 +79,7 @@ export class UserInfoComponent{
 		this.horoscopeList = [];
 		this.shengxiaoList = [];
 		this.childlist = [];
+		this.infoList = [1, 2, 3, 4];
 
 		this.getUserInfo();
 

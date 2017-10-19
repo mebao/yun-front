@@ -40,7 +40,43 @@
 						<div (click)="goSection('doctorBookingHealthrecord')" class="item">儿保记录</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '3'}" class="tab">
-						<div class="checkDataList.length > 0">
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<form #fCheck="ngForm" class="pure-form pure-form-stacked form-tab">
+								<fieldset class="pad0">
+									<div *ngIf="addCheckInfo.editType != ''" class="pure-g">
+										<div class="pure-u-1-5 pr10">
+											<div class="pure-control-group">
+												<label for="check">检查项目</label>
+												<select id="check" name="check" #check="ngModel" [(ngModel)]="addCheckInfo.check" required="" [disabled]="editType == 'update'">
+													<ng-container *ngFor="let check of checklist">
+														<ng-container *ngIf="check.canUse == '1'">
+															<option value="{{check.string}}">{{check.name}}</option>
+														</ng-container>
+													</ng-container>
+												</select>
+												<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
+													<div [hidden]="!check.errors.required">
+														检查不可为空
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+								<!-- 订单未完成，可操作 -->
+								<ng-container *ngIf="booking.status != '5'">
+									<div class="mt10 flex">
+										<div *ngIf="canEdit" class="flex-1">
+											<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
+											<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
+											<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+										</div>
+									</div>
+								</ng-container>
+							</form>
+						</div>
+						<div *ngIf="checkDataList.length > 0" class="mt10">
 							<div class="second-bar-tab flex">
 								<div class="item" (click)="changeCheckTab(check.id)" *ngFor="let check of checkDataList" [ngClass]="{'active': selectedCheckTab == check.id}">{{check.checkName}}</div>
 							</div>
@@ -97,42 +133,6 @@
 						</div>
 						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
 							<nodata title="未查询到检查项目"></nodata>
-						</div>
-						<!-- pageType 空为医生接诊， history为查看 -->
-						<div *ngIf="pageType != 'history'">
-							<form #fCheck="ngForm" class="pure-form pure-form-stacked form-tab">
-								<fieldset>
-									<div *ngIf="addCheckInfo.editType != ''" class="pure-g">
-										<div class="pure-u-1-5 pr10">
-											<div class="pure-control-group">
-												<label for="check">检查项目</label>
-												<select id="check" name="check" #check="ngModel" [(ngModel)]="addCheckInfo.check" required="" [disabled]="editType == 'update'">
-													<ng-container *ngFor="let check of checklist">
-														<ng-container *ngIf="check.canUse == '1'">
-															<option value="{{check.string}}">{{check.name}}</option>
-														</ng-container>
-													</ng-container>
-												</select>
-												<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
-													<div [hidden]="!check.errors.required">
-														检查不可为空
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</fieldset>
-								<!-- 订单未完成，可操作 -->
-								<ng-container *ngIf="booking.status != '5'">
-									<div class="mt10 flex">
-										<div *ngIf="canEdit" class="flex-1">
-											<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
-											<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
-											<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
-										</div>
-									</div>
-								</ng-container>
-							</form>
 						</div>
 					</div>
 					<div [ngClass]="{'hidden': selectedTab != '6'}" class="tab">

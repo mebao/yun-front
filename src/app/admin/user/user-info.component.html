@@ -23,43 +23,48 @@
 					<thead>
 						<tr>
 							<th>头像</th>
-							<th>年龄</th>
 							<th>姓名</th>
+							<th>昵称</th>
 							<th>性别</th>
 							<th>生日</th>
+							<th>年龄</th>
 							<th>血型</th>
-							<th>头围（cm）</th>
-							<th>胸围（cm）</th>
-							<th>身高（cm）</th>
 							<th>星座</th>
-							<th>小名</th>
 							<th>生肖</th>
-							<th>体重（斤）</th>
+							<th>其它详情</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let child of childs; let index=index;">
-							<td class="img-tab">
-								<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
-							</td>
-							<td>{{child.age}}</td>
-							<td>{{child.childName}}</td>
-							<td>{{child.gender}}</td>
-							<td>{{child.birthdayString}}</td>
-							<td>{{child.bloodTypeText}}</td>
-							<td>{{child.headCircum}}</td>
-							<td>{{child.breastCircum}}</td>
-							<td>{{child.height}}</td>
-							<td>{{child.horoscopeText}}</td>
-							<td>{{child.nickName}}</td>
-							<td>{{child.shengxiaoText}}</td>
-							<td>{{child.weight}}</td>
-							<td>
-								<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
-								<button (click)="delete(child)" class="pure-button button-error">删除</button>
-							</td>
-						</tr>
+						<ng-container *ngFor="let child of childs;">
+							<tr *ngFor="let item of infoList; let indexItem=index;">
+								<td rowspan="4" *ngIf="indexItem == 0" class="img-tab">
+									<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
+								</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.childName}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.nickName}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.gender}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.birthdayString}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.age}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.bloodTypeText}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.horoscopeText}}</td>
+								<td rowspan="4" *ngIf="indexItem == 0">{{child.shengxiaoText}}</td>
+								<td>
+									<!-- 0，身高 -->
+									<ng-container *ngIf="indexItem == 0">身高（cm）：{{child.height}}</ng-container>
+									<!-- 1，体重 -->
+									<ng-container *ngIf="indexItem == 1">体重（斤）：{{child.weight}}</ng-container>
+									<!-- 2，头围 -->
+									<ng-container *ngIf="indexItem == 2">头围（cm）：{{child.headCircum}}</ng-container>
+									<!-- 3，胸围 -->
+									<ng-container *ngIf="indexItem == 3">胸围（cm）：{{child.breastCircum}}</ng-container>
+								</td>
+								<td rowspan="4" *ngIf="indexItem == 0">
+									<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
+									<button (click)="delete(child)" class="pure-button button-error">删除</button>
+								</td>
+							</tr>
+						</ng-container>
 					</tbody>
 				</table>
 				<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab">

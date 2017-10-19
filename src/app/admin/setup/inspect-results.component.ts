@@ -282,6 +282,7 @@ export class InspectResultsComponent{
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
 				values: resultList,
+				remark: this.checkProjectList[indexCheck].remark,
 			}
 			if(this.checkProjectList[indexCheck].editType == 'create'){
 				this.adminService.usercheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {

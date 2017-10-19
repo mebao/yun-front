@@ -36,10 +36,28 @@
 			登记
 		</a>
 	  	<a
+			*ngIf="clinicRole.clinicroomList.use != ''"
+			routerLink="../clinicroomList"
+			routerLinkActive="active">
+				诊室管理
+		</a>
+	  	<a
 			*ngIf="clinicRole.bookingReceive.use != ''"
 			routerLink="../bookingReceive"
 			routerLinkActive="active">
 				接诊
+		</a>
+	  	<a
+			*ngIf="clinicRole.inspectResultsList.use != ''"
+			routerLink="../inspectResultsList"
+			routerLinkActive="active">
+				实验室检查
+		</a>
+	  	<a
+			*ngIf="clinicRole.prescriptList.use != ''"
+			routerLink="../prescriptList"
+			routerLinkActive="active">
+				发药
 		</a>
 	  	<a
 			*ngIf="clinicRole.bookingCharge.use != ''"
@@ -48,22 +66,28 @@
 				收费
 		</a>
 	  	<a
+			*ngIf="clinicRole.bookingFollowupsList.use != ''"
+			routerLink="../bookingFollowupsList"
+			routerLinkActive="active">
+				随访管理
+		</a>
+	  	<a
 			*ngIf="clinicRole.childServiceList.use != ''"
 			[routerLink]="['../childServiceList']"
 			routerLinkActive="active">
-				宝宝服务列表
+				服务项目
 		</a>
 	  	<a
-			*ngIf="clinicRole.clinicroomList.use != ''"
-			routerLink="../clinicroomList"
+			*ngIf="clinicRole.setupInspectList.use != ''"
+			routerLink="../setupInspectList"
 			routerLinkActive="active">
-				诊室列表
+				检查项目
 		</a>
 	  	<a
-			*ngIf="clinicRole.doctorList.use != ''"
-			routerLink="../doctorList"
+			*ngIf="clinicRole.assistList.use != ''"
+			routerLink="../assistList"
 			routerLinkActive="active">
-				医生列表
+				辅助项目
 		</a>
 	  	<a
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
@@ -84,40 +108,10 @@
 				药房
 		</a>
 	  	<a
-			*ngIf="clinicRole.prescriptList.use != ''"
-			routerLink="../prescriptList"
+			*ngIf="clinicRole.memberList.use != ''"
+			routerLink="../memberList"
 			routerLinkActive="active">
-				药方
-		</a>
-	  	<a
-			*ngIf="clinicRole.assistList.use != ''"
-			routerLink="../assistList"
-			routerLinkActive="active">
-				辅助项目
-		</a>
-	  	<a
-			*ngIf="clinicRole.setupInspectList.use != ''"
-			routerLink="../setupInspectList"
-			routerLinkActive="active">
-				检查项目
-		</a>
-	  	<a
-			*ngIf="clinicRole.inspectResultsList.use != ''"
-			routerLink="../inspectResultsList"
-			routerLinkActive="active">
-				实验室检查
-		</a>
-	  	<a
-			*ngIf="clinicRole.bookingFollowupsList.use != ''"
-			routerLink="../bookingFollowupsList"
-			routerLinkActive="active">
-				随访管理
-		</a>
-	  	<a
-			*ngIf="clinicRole.childList.use != ''"
-			routerLink="../childList"
-			routerLinkActive="active">
-				病人库
+				会员管理
 		</a>
 	  	<a
 			*ngIf="clinicRole.userList.use != ''"
@@ -126,10 +120,10 @@
 				用户管理
 		</a>
 	  	<a
-			*ngIf="clinicRole.memberList.use != ''"
-			routerLink="../memberList"
+			*ngIf="clinicRole.childList.use != ''"
+			routerLink="../childList"
 			routerLinkActive="active">
-				会员管理
+				病人库
 		</a>
 	  	<a
 			*ngIf="clinicRole.crmRoleList.use != ''"
@@ -142,6 +136,12 @@
 			routerLink="../crmUserList"
 			routerLinkActive="active">
 				员工管理
+		</a>
+	  	<a
+			*ngIf="clinicRole.doctorList.use != ''"
+			routerLink="../doctorList"
+			routerLinkActive="active">
+				医生列表
 		</a>
 	  	<a
 			*ngIf="clinicRole.transactionRecordList.use != ''"
