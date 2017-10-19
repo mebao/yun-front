@@ -114,6 +114,8 @@ import { BookingHistoryComponent }         from './booking/booking-history.compo
 import { AuthorizeGivefeeComponent }       from './authorize/authorize-givefee.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
 import { AuthorizeSuccessComponent }       from './authorize/authorize-success.component';
+import { AssistListComponent }             from './setup/assist-list.component';
+import { AssistComponent }                 from './setup/assist.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -224,6 +226,8 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AuthorizeGivefeeComponent,
 		GivefeeListComponent,
 		AuthorizeSuccessComponent,
+		AssistListComponent,
+		AssistComponent,
 	],
 	providers: [
 		AdminService,

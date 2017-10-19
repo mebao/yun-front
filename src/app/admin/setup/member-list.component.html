@@ -28,9 +28,9 @@
 						<tr>
 							<th>会员名</th>
 							<th>服务折扣</th>
-							<ng-container *ngFor="let service of serviceList">
-								<th>{{service.serviceName}}(服务)</th>
-							</ng-container>
+							<th>服务折扣详情</th>
+							<th>辅助项目折扣</th>
+							<th>辅助项目折扣详情</th>
 							<th>检查折扣</th>
 							<th>药品折扣</th>
 							<th>其他折扣</th>
@@ -39,20 +39,30 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let member of memberList">
-							<td>{{member.name}}</td>
-							<td>{{member.service}}%</td>
-							<ng-container *ngFor="let serviceDiscount of member.serviceDiscountList">
-								<td>{{serviceDiscount.discount}}{{serviceDiscount.discount == '' ? '' : '%'}}</td>
-							</ng-container>
-							<td>{{member.check}}%</td>
-							<td>{{member.prescript}}%</td>
-							<td>{{member.other}}%</td>
-							<td>{{member.status == '1' ? '可用' : '停用'}}</td>
-							<td>
-								<button *ngIf="moduleAuthority.edit" (click)="update(member)" class="pure-button pure-button-primary">修改</button>
-							</td>
-						</tr>
+						<ng-container *ngFor="let member of memberList">
+							<tr *ngFor="let info of member.infoList; let indexInfo=index;">
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.name}}</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.service}}{{member.service && member.service != '' ? '%' : ''}}</td>
+								<td>
+									<ng-container *ngIf="info.serviceId != ''">
+										{{info.serviceName}}：{{info.serviceDiscount}}{{info.serviceDiscount == '' ? '' : '%'}}
+									</ng-container>
+								</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.assist}}{{member.assist && member.assist != '' ? '%' : ''}}</td>
+								<td>
+									<ng-container *ngIf="info.assistId != ''">
+										{{info.assistName}}：{{info.assistDiscount}}{{info.assistDiscount == '' ? '' : '%'}}
+									</ng-container>
+								</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.check}}%</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.prescript}}%</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.other}}%</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.status == '1' ? '可用' : '停用'}}</td>
+								<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">
+									<button *ngIf="moduleAuthority.edit" (click)="update(member)" class="pure-button pure-button-primary">修改</button>
+								</td>
+							</tr>
+						</ng-container>
 					</tbody>
 				</table>
 				<div *ngIf="hasData && memberList.length == 0" class="mt10">

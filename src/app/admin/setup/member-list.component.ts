@@ -110,28 +110,51 @@ export class MemberListComponent{
 				// 通过诊所服务构造会员折扣
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						var serviceDiscountList = [];
-						// 便利诊所服务
-						if(this.serviceList.length > 0){
-							for(var j = 0; j < this.serviceList.length; j++){
-								var serviceDiscount = {
-									serviceId: this.serviceList[j].serviceId,
-									serviceName: this.serviceList[j].serviceName,
-									discount: '',
-								};
-								// 便利会员下所有服务折扣
-								if(results.list[i].services.length > 0){
-									for(var k = 0; k < results.list[i].services.length; k++){
-										// 通过serviceId,查找discount
-										if(results.list[i].services[k].serviceId == this.serviceList[j].serviceId){
-											serviceDiscount.discount = results.list[i].services[k].discount;
-										}
-									}
-								}
-								serviceDiscountList.push(serviceDiscount);
+				// 		var serviceDiscountList = [];
+				// 		// 便利诊所服务
+				// 		if(this.serviceList.length > 0){
+				// 			for(var j = 0; j < this.serviceList.length; j++){
+				// 				var serviceDiscount = {
+				// 					serviceId: this.serviceList[j].serviceId,
+				// 					serviceName: this.serviceList[j].serviceName,
+				// 					discount: '',
+				// 				};
+				// 				// 便利会员下所有服务折扣
+				// 				if(results.list[i].services.length > 0){
+				// 					for(var k = 0; k < results.list[i].services.length; k++){
+				// 						// 通过serviceId,查找discount
+				// 						if(results.list[i].services[k].serviceId == this.serviceList[j].serviceId){
+				// 							serviceDiscount.discount = results.list[i].services[k].discount;
+				// 						}
+				// 					}
+				// 				}
+				// 				serviceDiscountList.push(serviceDiscount);
+				// 			}
+				// 		}
+				// 		results.list[i].serviceDiscountList = serviceDiscountList;
+						results.list[i].infoList = [];
+						var maxNum = results.list[i].services.length > results.list[i].assists.length ? results.list[i].services.length : results.list[i].assists.length;
+						for(var j = 0; j < maxNum; j++){
+							var info = {
+								serviceId: '',
+								serviceName: '',
+								serviceDiscount: '',
+								assistId: '',
+								assistName: '',
+								assistDiscount: '',
 							}
+							if(j < results.list[i].services.length){
+								info.serviceId = results.list[i].services[j].serviceId;
+								info.serviceName = results.list[i].services[j].serviceName;
+								info.serviceDiscount = results.list[i].services[j].discount;
+							}
+							if(j < results.list[i].assists.length){
+								info.assistId = results.list[i].assists[j].assistId;
+								info.assistName = results.list[i].assists[j].assistName;
+								info.assistDiscount = results.list[i].assists[j].discount;
+							}
+							results.list[i].infoList.push(info);
 						}
-						results.list[i].serviceDiscountList = serviceDiscountList;
 					}
 				}
 				this.memberList = results.list;

@@ -54,7 +54,6 @@ export class AuthorizeGivefeeComponent{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.list = results;
             }
-            console.log(this.list);
         });
     }
 

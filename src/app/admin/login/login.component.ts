@@ -110,6 +110,12 @@ export class LoginComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 辅助项目
+		assistList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//检查项目
 		setupInspectList: {
 			use: string,
@@ -264,6 +270,11 @@ export class LoginComponent{
 				infos: [],
 			},
 			prescriptList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			assistList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

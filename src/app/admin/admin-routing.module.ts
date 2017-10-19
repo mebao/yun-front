@@ -93,6 +93,8 @@ import { BookingHistoryComponent }          from './booking/booking-history.comp
 import { AuthorizeGivefeeComponent }        from './authorize/authorize-givefee.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
 import { AuthorizeSuccessComponent }        from './authorize/authorize-success.component';
+import { AssistListComponent }              from './setup/assist-list.component';
+import { AssistComponent }                  from './setup/assist.component';
 
 const adminRoutes: Routes = [
 	{
@@ -538,6 +540,16 @@ const adminRoutes: Routes = [
 						path: 'authorizeSuccess',
 						canActivate: [AuthGuardRole],
 						component: AuthorizeSuccessComponent,
+					},
+					{
+						path: 'assistList',
+						canActivate: [AuthGuardRole],
+						component: AssistListComponent,
+					},
+					{
+						path: 'assist',
+						canActivate: [AuthGuardRole],
+						component: AssistComponent,
 					},
 					{
 						path: '**',

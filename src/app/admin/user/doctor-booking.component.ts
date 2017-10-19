@@ -98,17 +98,22 @@ export class DoctorBookingComponent implements OnInit{
 	//随访
 	hasFollowupsData: boolean;
 	followupsList: any[];
-	//成长记录
-	growthrecordList: any[];
-	hasGrowthrecordData: boolean;
-	//病例
-	casehistoryList: any[];
-	hasCasehistoryData: boolean;
-	// 儿保记录
-	healthrecordList: any[];
-	hasHealthrecordData: boolean;
 	// pageType 空为医生接诊，history为查看
 	pageType: string;
+	// 辅助项目
+	assistProjects: any[];
+	assistList: any[];
+	hasAssistData: boolean;
+	addAssistInfo: {
+		editType: string,
+		editProjectId: string,
+		project: string,
+		price: string,
+		number: string,
+		fee: string,
+		remarks: string,
+	}
+
 
 	constructor(
 		private adminService: AdminService,
@@ -228,47 +233,34 @@ export class DoctorBookingComponent implements OnInit{
 			}
 		});
 
-		//成长记录
-		this.hasGrowthrecordData = false;
-		this.growthrecordList = [];
-		var growthrecordUrl = this.url + '&booking_id=' + this.id;
-		this.adminService.childgrowthrecords(growthrecordUrl).then((data) => {
+		// 辅助项目
+		this.assistProjects = [];
+		this.adminService.searchassist(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.growthrecordList = results.list;
-				this.hasGrowthrecordData = true;
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].string = JSON.stringify(results.list[i]);
+					}
+				}
+				this.assistProjects = results.list;
 			}
 		});
-
-		//病例
-		this.casehistoryList = [];
-		this.hasCasehistoryData = false;
-		var casehistoryUrl = this.url + '&booking_id=' + this.id;
-		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.casehistoryList = results.list;
-				this.hasCasehistoryData = true;
-			}
-		});
-
-		// 儿保记录
-		this.healthrecordList = [];
-		this.hasHealthrecordData = false;
-		var healthrecordUrl = this.url + '&booking_id=' + this.id;
-		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.healthrecordList = results.list;
-				this.hasHealthrecordData = true;
-			}
-		});
+		// 预约辅助项目
+		this.hasAssistData = false;
+		this.assistList = [];
+		this.addAssistInfo = {
+			editType: '',
+			editProjectId: '',
+			project: '',
+			price: '',
+			number: '',
+			fee: '',
+			remarks: '',
+		}
+		this.getBookingAssistData();
 
 		this.doctorInfo = {
 			avatarUrl: '',
@@ -578,6 +570,119 @@ export class DoctorBookingComponent implements OnInit{
 				}
 			}
 		})
+	}
+
+	// 辅助项目
+	getBookingAssistData() {
+		var assistUrl = this.url + '&booking_id=' + this.id;
+		this.adminService.bookingassist(assistUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.assistList = results.list;
+				this.hasAssistData = true;
+			}
+		});
+	}
+	addAssist() {
+		this.addAssistInfo.editType = 'add';
+		this.addAssistInfo.editProjectId = '';
+		this.addAssistInfo.project = '';
+		this.addAssistInfo.price = '';
+		this.addAssistInfo.number = '';
+		this.addAssistInfo.fee = '';
+		this.addAssistInfo.remarks = '';
+	}
+
+	removeAssist() {
+		this.addAssistInfo.editType = '';
+		this.addAssistInfo.editProjectId = '';
+		this.addAssistInfo.project = '';
+		this.addAssistInfo.price = '';
+		this.addAssistInfo.number = '';
+		this.addAssistInfo.fee = '';
+		this.addAssistInfo.remarks = '';
+	}
+
+	changeAssist() {
+		if(!this.adminService.isFalse(this.addAssistInfo.project)){
+			this.addAssistInfo.price = JSON.parse(this.addAssistInfo.project).price;
+			this.changeAssistNumber();
+		}
+	}
+
+	changeAssistNumber() {
+		if(!this.adminService.isFalse(this.addAssistInfo.number) && (Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0)){
+			this.toastTab('数量应为大于0的整数', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(this.addAssistInfo.price)){
+			this.addAssistInfo.fee = this.adminService.toDecimal2(Number(this.addAssistInfo.number) * parseFloat(this.addAssistInfo.price));
+		}
+	}
+
+	updateAddAssist(assist) {
+		this.addAssistInfo.editType = 'update';
+		this.addAssistInfo.editProjectId = assist.id;
+		this.addAssistInfo.project = assist.name;
+		this.addAssistInfo.price = assist.price;
+		this.addAssistInfo.number = assist.number;
+		this.addAssistInfo.fee = assist.fee;
+		this.addAssistInfo.remarks = assist.remarks;
+	}
+
+	editAssist() {
+		if(this.addAssistInfo.editType == 'add'){
+			if(this.adminService.isFalse(this.addAssistInfo.project)){
+				this.toastTab('辅助项目不可为空', 'error');
+				return;
+			}
+		}else{
+			if(this.assistProjects.length > 0){
+				for(var i = 0; i < this.assistProjects.length; i++){
+					if(this.assistProjects[i].name == this.addAssistInfo.project){
+						this.addAssistInfo.project = this.assistProjects[i].string;
+					}
+				}
+			}
+		}
+		if(this.adminService.isFalse(this.addAssistInfo.number)){
+			this.toastTab('数量不可为空', 'error');
+			return;
+		}
+		if(Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0){
+			this.toastTab('数量应为大于0的整数', 'error');
+			return;
+		}
+
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			booking_id: this.id,
+			project_id: JSON.parse(this.addAssistInfo.project).id,
+			project_name: JSON.parse(this.addAssistInfo.project).name,
+			price: this.addAssistInfo.price,
+			number: this.addAssistInfo.number,
+			fee: this.addAssistInfo.fee,
+			remarks: this.addAssistInfo.remarks,
+			id: this.addAssistInfo.editType == 'update' ? this.addAssistInfo.editProjectId : null,
+		}
+
+		this.adminService.addassist(params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				if(this.addAssistInfo.editType == 'update'){
+					this.toastTab('辅助项目修改成功', '');
+				}else{
+					this.toastTab('辅助项目添加成功', '');
+				}
+				this.removeAssist();
+				this.getBookingAssistData();
+				this.getBookingData();
+			}
+		});
 	}
 
 	//修改药方

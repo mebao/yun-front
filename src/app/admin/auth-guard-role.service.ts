@@ -581,6 +581,24 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'assistList',
+						firstUrl: '',
+						second: [
+							{
+								url: '/admin/assistList',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/assist',
+								authority: 'edit',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
 						firstKey: 'setupInspectList',
 						firstUrl: '',
 						second: [

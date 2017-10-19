@@ -68,6 +68,55 @@
 						</div>
 					</div>
 					<div class="section">
+						<div class="title">辅助项目费用</div>
+						<div class="pad10">
+							<table class="pure-table pure-table-horizontal w100">
+								<thead>
+									<tr>
+										<th>辅助项目</th>
+										<th>单价</th>
+										<th>数量</th>
+										<th>折扣</th>
+										<th>费用</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let assist of fee.feeInfo.assistFeeList">
+										<td>{{assist.projectName}}</td>
+										<td>{{assist.price}}</td>
+										<td>{{assist.number}}</td>
+										<td>{{assist.assistDiscount}}</td>
+										<td>{{assist.fee}}</td>
+									</tr>
+									<tr>
+										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">原价：</div>
+												<div class="w100p">{{fee.feeInfo.assistOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">默认折扣（若具体服务折扣未设置，则以默认折扣收费）：</div>
+												<div class="w100p">{{userMember.assist}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">折扣后费用：</div>
+												<div class="w100p">{{fee.feeInfo.assistFee}}</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="section">
 						<div class="title">检查项目费用</div>
 						<div class="pad10">
 							<table class="pure-table pure-table-horizontal w100">

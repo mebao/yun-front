@@ -937,6 +937,42 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查看诊所辅助项目
+	private searchassistUrl = this.url + '/mebcrm/searchassist';
+	searchassist(urlOptions): Promise<Data>{
+		return this.http.get(this.searchassistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 增加或修改辅助项目
+	private clinicassistUrl = this.url + '/mebcrm/clinicassist';
+	clinicassist(params): Promise<Data>{
+		return this.http.post(this.clinicassistUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询患者的辅助项目
+	private bookingassistUrl = this.url + '/mebcrm/bookingassist';
+	bookingassist(urlOptions): Promise<Data>{
+		return this.http.get(this.bookingassistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 预约追加辅助项目
+	private addassistUrl = this.url + '/mebcrm/addassist';
+	addassist(params): Promise<Data>{
+		return this.http.post(this.addassistUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

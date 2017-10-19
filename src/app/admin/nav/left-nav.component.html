@@ -90,6 +90,12 @@
 				药方
 		</a>
 	  	<a
+			*ngIf="clinicRole.assistList.use != ''"
+			routerLink="../assistList"
+			routerLinkActive="active">
+				辅助项目
+		</a>
+	  	<a
 			*ngIf="clinicRole.setupInspectList.use != ''"
 			routerLink="../setupInspectList"
 			routerLinkActive="active">

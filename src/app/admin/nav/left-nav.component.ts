@@ -98,6 +98,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 辅助项目
+		assistList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//检查项目
 		setupInspectList: {
 			use: string,
@@ -154,6 +160,12 @@ export class LeftNavComponent{
 		},
 		// 减免金额记录
 		givefeeList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
+		// 授权
+		authority: {
 			use: string,
 			authority: any[],
 			infos: any[],
@@ -242,6 +254,11 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
+			assistList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
 			setupInspectList: {
 				use: '',
 				authority: ['see'],
@@ -288,6 +305,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			givefeeList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			authority: {
 				use: '',
 				authority: ['see'],
 				infos: [],

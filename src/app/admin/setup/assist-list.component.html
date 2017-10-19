@@ -1,0 +1,54 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-clinicroom">
+			<top-bar [data]="topBar"></top-bar>
+			<div class="flex pure-form max">
+                <div class="flex-1">
+				    <button *ngIf="moduleAuthority.edit" (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
+                </div>
+                <div class="pure-control-group mr10">
+                    <label for="name">辅助项目名：</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入辅助项目名">
+                </div>
+                <div class="pure-control-group mr10">
+                    <label for="type">辅助项目类型：</label>
+                    <select id="type" name="type" [(ngModel)]="searchInfo.type">
+						<option value="">请选择类型</option>
+                        <ng-container *ngFor="let item of typeList">
+                            <option value="{{item.key}}">{{item.value}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+			<div>
+				<table *ngIf="assistList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th>辅助项目名</th>
+							<th>辅助项目类型</th>
+							<th>辅助项目价格</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let assist of assistList">
+							<td>{{assist.name}}</td>
+							<td>{{assist.typeText}}</td>
+							<td>{{assist.price}}</td>
+							<td>
+								<button *ngIf="moduleAuthority.edit" (click)="update(assist)" class="pure-button pure-button-primary">修改</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasData && assistList.length == 0" class="mt10">
+					<nodata title="未查询到辅助项目"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
