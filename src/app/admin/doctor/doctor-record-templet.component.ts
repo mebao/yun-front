@@ -78,12 +78,6 @@ export class DoctorRecordTempletComponent{
                 }
             }
         }else{
-            this.rkList.push({
-                key: 1,
-                use: true,
-                value: '',
-                selectedValue: '',
-            });
             this.doctorName = '';
             // 查询医生姓名
             var adminlistUrl = url + '&clinic_id=' + this.adminService.getUser().clinicId
@@ -112,9 +106,27 @@ export class DoctorRecordTempletComponent{
                     }
                 }
                 this.recordtempletKeys = results.list;
+                // 新增
+                if(this.editType == 'create'){
+                    this.showAll();
+                }
                 this.hasData = true;
             }
         });
+    }
+
+    // 新增首次，展示所有模板内容
+    showAll() {
+        if(this.recordtempletKeys.length > 0){
+            for(var i = 0; i < this.recordtempletKeys.length; i++){
+                this.rkList.push({
+                    key: i + 1,
+                    use: true,
+                    value: this.recordtempletKeys[i].key,
+                    selectedValue: this.recordtempletKeys[i].value,
+                });
+            }
+        }
     }
 
     addRk() {

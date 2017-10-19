@@ -26,7 +26,7 @@
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="personal_history">个人史（最多200字）：</label>
-								<textarea id="personal_history" maxlength="200" name="personal_history" #personal_history="ngModel" [(ngModel)]="info.personal_history" placeholder="主要记录孕产、喂养、生长发育、行为情绪、疾病防治等有临床意义者，以及家长需要说明的问题。（例行体检，无特殊者无需记录）。"></textarea>
+								<textarea id="personal_history" maxlength="200" name="personal_history" #personal_history="ngModel" [(ngModel)]="info.personal_history" class="min" placeholder="主要记录孕产、喂养、生长发育、行为情绪、疾病防治等有临床意义者，以及家长需要说明的问题。（例行体检，无特殊者无需记录）。"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pr10">
@@ -55,7 +55,7 @@
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="allergy">过敏史（食物、药物及其他，最多200字）：</label>
-								<textarea id="allergy" name="allergy" maxlength="200" #allergy="ngModel" [(ngModel)]="info.allergy"></textarea>
+								<textarea id="allergy" name="allergy" maxlength="200" #allergy="ngModel" [(ngModel)]="info.allergy" class="min"></textarea>
 							</div>
 						</div>
 					</div>
@@ -131,55 +131,55 @@
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="mental_state">精神状态（最多200字）：</label>
-								<textarea id="mental_state" maxlength="200" name="mental_state" #mental_state="ngModel" [(ngModel)]="info.mental_state"></textarea>
+								<textarea id="mental_state" maxlength="200" name="mental_state" #mental_state="ngModel" [(ngModel)]="info.mental_state" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="heart_lung">心肺（最多200字）：</label>
-								<textarea id="heart_lung" maxlength="200" name="heart_lung" #heart_lung="ngModel" [(ngModel)]="info.heart_lung"></textarea>
+								<textarea id="heart_lung" maxlength="200" name="heart_lung" #heart_lung="ngModel" [(ngModel)]="info.heart_lung" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="liver">肝脏（最多200字）：</label>
-								<textarea id="liver" maxlength="200" name="liver" #liver="ngModel" [(ngModel)]="info.liver"></textarea>
+								<textarea id="liver" maxlength="200" name="liver" #liver="ngModel" [(ngModel)]="info.liver" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="spleen">脾脏（最多200字）：</label>
-								<textarea id="spleen" maxlength="200" name="spleen" #spleen="ngModel" [(ngModel)]="info.spleen"></textarea>
+								<textarea id="spleen" maxlength="200" name="spleen" #spleen="ngModel" [(ngModel)]="info.spleen" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="torticollis_screening">斜颈筛查（最多200字）：</label>
-								<textarea id="torticollis_screening" maxlength="200" name="torticollis_screening" #torticollis_screening="ngModel" [(ngModel)]="info.torticollis_screening"></textarea>
+								<textarea id="torticollis_screening" maxlength="200" name="torticollis_screening" #torticollis_screening="ngModel" [(ngModel)]="info.torticollis_screening" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="hip_screening">先髋筛查（最多200字）：</label>
-								<textarea id="hip_screening" maxlength="200" name="hip_screening" #hip_screening="ngModel" [(ngModel)]="info.hip_screening"></textarea>
+								<textarea id="hip_screening" maxlength="200" name="hip_screening" #hip_screening="ngModel" [(ngModel)]="info.hip_screening" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
 								<label for="genital">生殖器（最多200字）：</label>
-								<textarea id="genital" maxlength="200" name="genital" #genital="ngModel" [(ngModel)]="info.genital"></textarea>
+								<textarea id="genital" maxlength="200" name="genital" #genital="ngModel" [(ngModel)]="info.genital" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="nervous_system">神经系统（最多200字）：</label>
-								<textarea id="nervous_system" maxlength="200" name="nervous_system" #nervous_system="ngModel" [(ngModel)]="info.nervous_system"></textarea>
+								<textarea id="nervous_system" maxlength="200" name="nervous_system" #nervous_system="ngModel" [(ngModel)]="info.nervous_system" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="other">其他（最多200字）：</label>
-								<textarea id="other" maxlength="200" name="other" #other="ngModel" [(ngModel)]="info.other"></textarea>
+								<textarea id="other" maxlength="200" name="other" #other="ngModel" [(ngModel)]="info.other" class="min"></textarea>
 							</div>
 						</div>
 					</div>
@@ -202,7 +202,7 @@
 										<div class="flex-1">白细胞高值</div>
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'blood_routine_examination_other')">
-										<textarea maxlength="50" name="blood_routine_examination_other" #blood_routine_examination_other="ngModel" [(ngModel)]="info.blood_routine_examination_other" placeholder="其他" class="mt0 mb0"></textarea>
+										<textarea maxlength="50" name="blood_routine_examination_other" #blood_routine_examination_other="ngModel" [(ngModel)]="info.blood_routine_examination_other" placeholder="其他" class="mt0 mb0 min"></textarea>
 									</div>
 								</div>
 							</div>
@@ -216,7 +216,7 @@
 										<div class="flex-1">正常</div>
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'routine_urine_other')">
-										<textarea maxlength="50" name="routine_urine_other" #routine_urine_other="ngModel" [(ngModel)]="info.routine_urine_other" placeholder="其他" class="mt0 mb0"></textarea>
+										<textarea maxlength="50" name="routine_urine_other" #routine_urine_other="ngModel" [(ngModel)]="info.routine_urine_other" placeholder="其他" class="mt0 mb0 min"></textarea>
 									</div>
 								</div>
 							</div>
@@ -246,7 +246,7 @@
 										<div class="flex-1">正常</div>
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'BALP_other')">
-										<textarea maxlength="50" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0"></textarea>
+										<textarea maxlength="50" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0 min"></textarea>
 									</div>
 								</div>
 							</div>
@@ -260,7 +260,7 @@
 										<div class="flex-1">正常</div>
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'trace_element_other')">
-										<textarea maxlength="50" name="trace_element_other" #trace_element_other="ngModel" [(ngModel)]="info.trace_element_other" placeholder="其他" class="mt0 mb0"></textarea>
+										<textarea maxlength="50" name="trace_element_other" #trace_element_other="ngModel" [(ngModel)]="info.trace_element_other" placeholder="其他" class="mt0 mb0 min"></textarea>
 									</div>
 								</div>
 							</div>
@@ -271,7 +271,7 @@
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="prescription">处方：</label>
-								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" disabled=""></textarea>
+								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" disabled="" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-8-24 pr10">
