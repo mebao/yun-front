@@ -33,7 +33,7 @@
 			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 				<fieldset>
 					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
+						<div class="pure-u-7-24 pr10">
 							<label for="name">药方名</label>
 							<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" #name="ngModel" placeholder="请输入药方名" [disabled]="secondType != ''">
 						</div>
@@ -56,7 +56,7 @@
 								</div>
 							</div>
 							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-8-24 pr10">
+								<div class="pure-u-7-24 pr10">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
 											<span>药品名</span>
@@ -67,6 +67,19 @@
 												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
 													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
 												</ng-container>
+											</ng-container>
+										</select>
+									</div>
+								</div>
+								<div class="pure-u-3-24 pr10">
+									<div class="pure-control-group">
+										<label for="batch_{{ms.key}}">
+											<span>批次</span>
+											<span class="required">*</span>
+										</label>
+										<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType != ''">
+											<ng-container *ngFor="let batch of ms.batchList">
+												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
 											</ng-container>
 										</select>
 									</div>
@@ -85,7 +98,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="pure-u-4-24 pr10">
+								<div class="pure-u-3-24 pr10">
 									<div class="pure-control-group">
 										<label for="frequency_{{ms.key}}">
 											<span>用法</span>
@@ -98,7 +111,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="pure-u-4-24 pr10">
+								<div class="pure-u-3-24 pr10">
 									<div class="pure-control-group">
 										<label for="usage_{{ms.key}}">
 											<span>用药频次</span>
@@ -134,7 +147,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="pure-u-8-24 pr10">
+								<div class="pure-u-7-24 pr10">
 									<div class="pure-control-group">
 										<label for="remark_{{ms.key}}">
 											<span>说明（最多200字）</span>
@@ -149,7 +162,7 @@
 						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
 					</div>
 					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
+						<div class="pure-u-7-24 pr10">
 							<label for="remark">{{secondType == '' ? '备注' : '退药说明'}}（最多100字）</label>
 							<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="prescriptInfo.remark" placeholder="请输入"></textarea>
 						</div>

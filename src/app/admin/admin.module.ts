@@ -116,6 +116,7 @@ import { GivefeeListComponent }            from './user/givefee-list.component';
 import { AuthorizeSuccessComponent }       from './authorize/authorize-success.component';
 import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
+import { MedicalPurchaseInfoComponent }    from './medical/medical-purchase-info.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -228,6 +229,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AuthorizeSuccessComponent,
 		AssistListComponent,
 		AssistComponent,
+		MedicalPurchaseInfoComponent,
 	],
 	providers: [
 		AdminService,

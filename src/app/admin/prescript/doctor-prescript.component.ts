@@ -203,6 +203,7 @@ export class DoctorPrescriptComponent{
 				name: sessionPrescript.name,
 				remark: sessionPrescript.remark,
 			}
+			console.log(sessionPrescript);
 			if(sessionPrescript.info.length > 0){
 				for(var i = 0; i < sessionPrescript.info.length; i++){
 					var p = {
@@ -210,6 +211,7 @@ export class DoctorPrescriptComponent{
 						show: true,
 						use: true,
 						ms: sessionPrescript.info[i],
+						batchList: [],
 						bak: JSON.stringify(sessionPrescript.info[i]),
 						string: '',
 					}
@@ -224,6 +226,7 @@ export class DoctorPrescriptComponent{
 				show: true,
 				use: true,
 				ms: {
+					batch: '',
 					days: '',
 					frequency: '',
 					num: '',
@@ -237,6 +240,7 @@ export class DoctorPrescriptComponent{
 					unit: '',
 					usage: '',
 				},
+				batchList: [],
 				string: '',
 			});
 		}
@@ -269,12 +273,30 @@ export class DoctorPrescriptComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						if(results.list[i].others.length > 0){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
+								//修改时，需要获取药品、批次数据
+								if(this.editType == 'update'){
+									for(var k = 0; k < this.plist.length; k++){
+										if(results.list[i].others[j].id == this.plist[k].ms.sinfoId){
+											this.plist[k].batchList = results.list[i].others;
+											this.plist[k].ms.batch = results.list[i].others[j].string;
+										}
+									}
+								}
+							}
+						}
 						results.list[i].string = JSON.stringify(results.list[i]);
-						//修改时，需要获取数据
+						//修改时，需要获取药品、批次数据
 						if(this.editType == 'update'){
-							for(var j = 0; j < this.plist.length; j++){
-								if(results.list[i].id == this.plist[j].ms.sinfoId){
-									this.plist[j].string = results.list[i].string;
+							if(results.list[i].others.length > 0){
+								for(var j = 0; j < results.list[i].others.length; j++){
+									for(var k = 0; k < this.plist.length; k++){
+										if(results.list[i].others[j].id == this.plist[k].ms.sinfoId){
+											this.plist[k].string = results.list[i].string;
+										}
+									}
 								}
 							}
 						}
@@ -306,6 +328,7 @@ export class DoctorPrescriptComponent{
 			show: true,
 			use: true,
 			ms: {
+				batch: '',
 				days: '',
 				frequency: '',
 				num: '',
@@ -319,6 +342,7 @@ export class DoctorPrescriptComponent{
 				unit: '',
 				usage: '',
 			},
+			batchList: [],
 			string: '',
 		});
 	}
@@ -334,17 +358,23 @@ export class DoctorPrescriptComponent{
 	}
 
 	msChange(key, _value) {
+		console.log(key);
+		console.log(_value);
+		console.log(_value);
 		for(var i = 0; i < this.plist.length; i++){
 			if(this.plist[i].key == key){
 				this.plist[i].ms = JSON.parse(_value);
+				this.plist[i].ms.batch = '';
 				this.plist[i].ms.oneNum = '';
 				this.plist[i].ms.usage = '';
 				this.plist[i].ms.frequency = '';
 				this.plist[i].ms.days = '';
 				this.plist[i].ms.num = '';
 				this.plist[i].ms.remark = '';
+				this.plist[i].batchList = JSON.parse(_value).others;
 			}
 		}
+		console.log(this.plist);
 	}
 
 	create(f) {
@@ -375,11 +405,14 @@ export class DoctorPrescriptComponent{
 							this.toastTab('第' + num + '条药品名不可为空', 'error');
 							return;
 						}
-						p.sinfo_id = JSON.parse(f.value['ms_' + this.plist[i].key]).id;
+						if(this.adminService.isFalse(f.value['batch_' + this.plist[i].key])){
+							this.toastTab('第' + num + '条批次不可为空', 'error');
+							return;
+						}
+						p.sinfo_id = JSON.parse(f.value['batch_' + this.plist[i].key]).id;
 						p.name = JSON.parse(f.value['ms_' + this.plist[i].key]).name;
 						p.unit = JSON.parse(f.value['ms_' + this.plist[i].key]).unit;
 						p.one_unit = JSON.parse(f.value['ms_' + this.plist[i].key]).oneUnit;
-						p.price = JSON.parse(f.value['ms_' + this.plist[i].key]).price;
 						if(this.adminService.isFalse(f.value['one_num_' + this.plist[i].key])){
 							this.toastTab('第' + num + '条单位剂量不可为空', 'error');
 							return;
@@ -417,23 +450,24 @@ export class DoctorPrescriptComponent{
 							return;
 						}
 						p.num = f.value['num_' + this.plist[i].key];
-						if(Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) == 0){
+						if(Number(JSON.parse(f.value['batch_' + this.plist[i].key]).price) == 0){
 							this.selected = {
-								text: p.name + '尚未设置售价，请先设置售价，再开方',
+								text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，尚未设置售价，请先设置售价，再开方',
 							}
 							this.modalConfirmTab = true;
 							return;
 						}
-						if(Number(p.num) > Number(JSON.parse(f.value['ms_' + this.plist[i].key]).stock)){
+						p.price = JSON.parse(f.value['batch_' + this.plist[i].key]).price;
+						if(Number(p.num) > Number(JSON.parse(f.value['batch_' + this.plist[i].key]).stock)){
 							this.selected = {
-								text: p.name + '库存' + JSON.parse(f.value['ms_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
+								text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，库存' + JSON.parse(f.value['batch_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
 							}
 							this.modalConfirmTab = true;
 							return;
 						}
 						p.remark = f.value['remark_' + this.plist[i].key] ? f.value['remark_' + this.plist[i].key] : '';
 						plist.push(p);
-						feeAll += Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) * Number(p.num);
+						feeAll += Number(JSON.parse(f.value['batch_' + this.plist[i].key]).price) * Number(p.num);
 					}
 				}
 			}

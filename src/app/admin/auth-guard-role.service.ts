@@ -423,7 +423,7 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
-							// 编辑入库
+							// 新增入库
 							{
 								url: '/admin/materialPurchase',
 								authority: 'editPut',
@@ -499,10 +499,17 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
-							// 编辑入库
+							// 新增入库
 							{
 								url: '/admin/medicalPurchase',
-								authority: 'editPut',
+								authority: 'addPut',
+								queryType: '',
+								queryParams: '',
+							},
+							// 入库详情
+							{
+								url: '/admin/medicalPurchaseInfo',
+								authority: 'infoPut',
 								queryType: '',
 								queryParams: '',
 							},

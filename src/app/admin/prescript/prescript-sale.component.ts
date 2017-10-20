@@ -20,6 +20,8 @@ export class PrescriptSaleComponent{
 	};
 	url: string;
 	plist: any[];
+	// 药品批次
+	batchList: any[];
 	medicalSupplies: any[];
 	modalConfirmTab: boolean;
 	selected: {
@@ -71,6 +73,8 @@ export class PrescriptSaleComponent{
 		}
 
 		this.userList = [];
+		this.plist = [];
+		this.batchList = [];
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
@@ -104,6 +108,11 @@ export class PrescriptSaleComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						if(results.list[i].others.length > 0){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
+							}
+						}
 						results.list[i].string = JSON.stringify(results.list[i]);
 					}
 				}
@@ -132,6 +141,7 @@ export class PrescriptSaleComponent{
 				unit: '',
 				usage: '',
 			},
+			batchList: [],
 			string: '',
 		}];
 		this.modalTab = false;
@@ -223,6 +233,7 @@ export class PrescriptSaleComponent{
 				unit: '',
 				usage: '',
 			},
+			batchList: [],
 			string: '',
 		});
 	}
@@ -247,6 +258,7 @@ export class PrescriptSaleComponent{
 				this.plist[i].ms.days = '';
 				this.plist[i].ms.num = '';
 				this.plist[i].ms.remark = '';
+				this.plist[i].batchList = JSON.parse(_value).others;
 			}
 		}
 	}
@@ -272,15 +284,20 @@ export class PrescriptSaleComponent{
 						fee: '',
 						canDiscount: '',
 						discountFee: '',
+						batch: '',
 					};
 					if(f.value['ms_' + this.plist[i].key] == ''){
 						this.toastTab('第' + num + '条药品名不可为空', 'error');
 						return;
 					}
-					p.sinfo_id = JSON.parse(f.value['ms_' + this.plist[i].key]).id;
+					if(f.value['batch_' + this.plist[i].key] == ''){
+						this.toastTab('第' + num + '条批次不可为空', 'error');
+						return;
+					}
+					p.sinfo_id = JSON.parse(f.value['batch_' + this.plist[i].key]).id;
+					p.batch = JSON.parse(f.value['batch_' + this.plist[i].key]).batch;
 					p.name = JSON.parse(f.value['ms_' + this.plist[i].key]).name;
 					p.unit = JSON.parse(f.value['ms_' + this.plist[i].key]).unit;
-					p.price = JSON.parse(f.value['ms_' + this.plist[i].key]).price;
 					if(this.adminService.isFalse(f.value['num_' + this.plist[i].key])){
 						this.toastTab('第' + num + '条药单总量不可为空', 'error');
 						return;
@@ -290,9 +307,9 @@ export class PrescriptSaleComponent{
 						return;
 					}
 					p.num = f.value['num_' + this.plist[i].key];
-					if(Number(JSON.parse(f.value['ms_' + this.plist[i].key]).price) == 0){
+					if(Number(JSON.parse(f.value['batch_' + this.plist[i].key]).price) == 0){
 						this.selected = {
-							text: p.name + '尚未设置售价，请先设置售价，再开方',
+							text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，尚未设置售价，请先设置售价，再开方',
 							plist: [],
 							feeAll: '',
 							saleFee: '',
@@ -300,9 +317,10 @@ export class PrescriptSaleComponent{
 						this.modalConfirmTab = true;
 						return;
 					}
-					if(Number(p.num) > Number(JSON.parse(f.value['ms_' + this.plist[i].key]).stock)){
+					p.price = JSON.parse(f.value['batch_' + this.plist[i].key]).price;
+					if(Number(p.num) > Number(JSON.parse(f.value['batch_' + this.plist[i].key]).stock)){
 						this.selected = {
-							text: p.name + '库存' + JSON.parse(f.value['ms_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
+							text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，库存' + JSON.parse(f.value['batch_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
 							plist: [],
 							feeAll: '',
 							saleFee: '',
@@ -312,7 +330,7 @@ export class PrescriptSaleComponent{
 					}
 					// 费用
 					p.fee = this.adminService.toDecimal2(Number(p.num) * parseFloat(p.price));
-					p.canDiscount = JSON.parse(f.value['ms_' + this.plist[i].key]).canDiscount;
+					p.canDiscount = JSON.parse(f.value['batch_' + this.plist[i].key]).canDiscount;
 					// 折扣价
 					if(p.canDiscount == '1' && this.sale.member.id != ''){
 						p.discountFee = this.adminService.toDecimal2(parseFloat(p.fee) * parseFloat(this.sale.member.prescript));
@@ -326,13 +344,17 @@ export class PrescriptSaleComponent{
 			}
 		}
 		// 是否是诊所用户
+		console.log(this.sale.user);
 		if(this.sale.user.id != ''){
 			if(parseFloat(this.sale.user.balance) < saleFee){
 				this.sale.balanceUse = '余额不足';
+			}else{
+				this.sale.balanceUse = '';
 			}
 		}else{
 			this.sale.balanceUse = '不是诊所用户';
 		}
+		console.log(plist);
 		this.selected = {
 			text: '',
 			plist: plist,

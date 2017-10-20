@@ -95,6 +95,7 @@ import { GivefeeListComponent }             from './user/givefee-list.component'
 import { AuthorizeSuccessComponent }        from './authorize/authorize-success.component';
 import { AssistListComponent }              from './setup/assist-list.component';
 import { AssistComponent }                  from './setup/assist.component';
+import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-info.component';
 
 const adminRoutes: Routes = [
 	{
@@ -550,6 +551,11 @@ const adminRoutes: Routes = [
 						path: 'assist',
 						canActivate: [AuthGuardRole],
 						component: AssistComponent,
+					},
+					{
+						path: 'medicalPurchaseInfo',
+						canActivate: [AuthGuardRole],
+						component:MedicalPurchaseInfoComponent,
 					},
 					{
 						path: '**',

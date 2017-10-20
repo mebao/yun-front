@@ -40,11 +40,13 @@
 							<th>就诊医生</th>
 							<th>用户名</th>
 							<th>宝宝名</th>
-							<th>日期</th>
-							<th class="th-width">备注</th>
 							<th>药品名</th>
+							<th>批次</th>
 							<th>药品单位</th>
 							<th>退药数量</th>
+							<th class="th-width">备注</th>
+							<th>日期</th>
+							<th>退药人</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -55,13 +57,15 @@
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+								<td>{{info.pname}}</td>
+								<td>{{info.batch}}</td>
+								<td>{{info.unit}}</td>
+								<td>{{info.back_num}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 									<div class="length-text">{{item.remark}}</div>
 								</td>
-								<td>{{info.pname}}</td>
-								<td>{{info.unit}}</td>
-								<td>{{info.back_num}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 									<span *ngIf="moduleAuthority.editBack && (item.isBack == '2')">已退药</span>
 									<button *ngIf="moduleAuthority.editBack && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
