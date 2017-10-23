@@ -67,7 +67,7 @@ export class MaterialListComponent{
 		this.hasData = false;
 		this.info = {
 			name: '',
-			type: '3',
+			type: '3,4',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username

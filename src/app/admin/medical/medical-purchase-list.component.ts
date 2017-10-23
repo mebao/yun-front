@@ -73,7 +73,7 @@ export class MedicalPurchaseListComponent{
 		this.info = {
 			b_date: '',
 			l_date: '',
-			type: '2',
+			type: '1,2',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username

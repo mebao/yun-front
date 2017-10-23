@@ -71,7 +71,7 @@ export class MedicalCheckListComponent{
 
 		this.info = {
 			name: '',
-			type: '2',
+			type: '1,2',
 			b_time: '',
 			l_time: '',
 		}

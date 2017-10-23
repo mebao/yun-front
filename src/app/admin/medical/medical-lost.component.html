@@ -32,9 +32,7 @@
 										</label>
 										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel (change)="msChange($event.target.value)">
 											<ng-container *ngFor="let medicalSupplie of list">
-												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
-												</ng-container>
+												<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
 											</ng-container>
 										</select>
 									</div>

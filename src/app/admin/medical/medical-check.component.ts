@@ -50,8 +50,8 @@ export class MedicalCheckComponent{
 		//获取物资列表
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&type=1,2';
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params.id;
@@ -88,22 +88,20 @@ export class MedicalCheckComponent{
 					for(var i = 0; i < results.list.length; i++){
 						if(results.list[i].others.length > 0){
 							for(var j = 0; j < results.list[i].others.length; j++){
-								if(results.list[i].type == '1' || results.list[i].type == '2'){
-									var check = {
-										key: this.checkList.length + 1,
-										show: true,
-										use: true,
-										sinfo_id: results.list[i].others[j].id,
-										name: results.list[i].name,
-										batch: results.list[i].others[j].batch,
-										stock: results.list[i].others[j].stock,
-										unit: results.list[i].unit,
-										type: results.list[i].type,
-										reality_stock: '',
-										remark: '',
-									}
-									this.checkList.push(check);
+								var check = {
+									key: this.checkList.length + 1,
+									show: true,
+									use: true,
+									sinfo_id: results.list[i].others[j].id,
+									name: results.list[i].name,
+									batch: results.list[i].others[j].batch,
+									stock: results.list[i].others[j].stock,
+									unit: results.list[i].unit,
+									type: results.list[i].type,
+									reality_stock: '',
+									remark: '',
 								}
+								this.checkList.push(check);
 							}
 						}
 						//修改，获取物资信息

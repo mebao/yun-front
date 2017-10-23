@@ -71,7 +71,7 @@ export class MaterialCheckListComponent{
 
 		this.info = {
 			name: '',
-			type: '3',
+			type: '3,4',
 			b_time: '',
 			l_time: '',
 		}

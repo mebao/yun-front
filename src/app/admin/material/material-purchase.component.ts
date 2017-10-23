@@ -74,7 +74,8 @@ export class MaterialPurchaseComponent{
 
 		//获取医疗用品
 		var materialsupplieslistUrl = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&type=3,4';
 		this.adminService.medicalsupplieslist(materialsupplieslistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

@@ -28,7 +28,10 @@ export class MaterialHasComponent{
 		price: string,
 		canDiscount: string,
 		unit: string,
+		one_unit: string,
 	}
+	drugUnits: any[];
+	OneUnits: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -58,6 +61,7 @@ export class MaterialHasComponent{
 			price: '',
 			canDiscount: '',
 			unit: '',
+			one_unit: '',
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -86,17 +90,44 @@ export class MaterialHasComponent{
 								price: results.list[i].others[0].price,
 								canDiscount: results.list[i].others[0].canDiscount,
 								unit: results.list[i].unit,
+								one_unit: results.list[i].oneUnit,
 							};
 						}
 					}
 				}
 			}
-		})
+		});
+		this.drugUnits = [];
+		this.OneUnits = [];
+		//计量单位
+		//从缓存中获取clinicdata
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.setClinicData(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.setClinicData(results);
+				}
+			});
+		}
+	}
+
+	setClinicData(results) {
+		this.drugUnits = results.drugUnits;
+		this.OneUnits = results.OneUnits;
 	}
 
 	update(f) {
 		if(f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
+			return;
+		}
+		if(f.value.one_unit == ''){
+			this.toastTab('计量单位不可为空', 'error');
 			return;
 		}
 		if(f.value.type == ''){
@@ -126,6 +157,7 @@ export class MaterialHasComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			id: this.info.id,
 			unit: f.value.unit,
+			one_unit: f.value.one_unit,
 			type: f.value.type,
 			usage: f.value.usage,
 			price: f.value.price,

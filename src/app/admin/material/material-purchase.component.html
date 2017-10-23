@@ -66,9 +66,7 @@
 										</label>
 										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
 											<ng-container *ngFor="let materialSupplie of materialSupplies">
-												<ng-container *ngIf="materialSupplie.type == 3 || materialSupplie.type == 4">
-													<option value="{{materialSupplie.string}}">{{materialSupplie.name}}({{materialSupplie.unit}})</option>
-												</ng-container>
+												<option value="{{materialSupplie.string}}">{{materialSupplie.name}}({{materialSupplie.unit}})</option>
 											</ng-container>
 										</select>
 									</div>

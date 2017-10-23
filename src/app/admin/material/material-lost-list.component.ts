@@ -71,7 +71,7 @@ export class MaterialLostListComponent{
 		this.info = {
 			b_date: '',
 			l_date: '',
-			type: '3',
+			type: '3,4',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username

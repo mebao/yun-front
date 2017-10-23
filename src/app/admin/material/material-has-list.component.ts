@@ -70,7 +70,7 @@ export class MaterialHasListComponent{
 		this.list = [];
 		this.info = {
 			name: '',
-			type: '3',
+			type: '3,4',
 			l_stock: '',
 			b_stock: '',
 		}

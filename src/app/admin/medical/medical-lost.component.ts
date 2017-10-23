@@ -56,7 +56,8 @@ export class MedicalLostComponent{
 
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&type=1,2';
 		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
