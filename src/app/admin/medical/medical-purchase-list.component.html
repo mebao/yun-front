@@ -13,7 +13,7 @@
 			</div>
 			<div class="flex pure-form mt10">
 				<div class="flex-1">
-					<button *ngIf="moduleAuthority.editPut" (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
+					<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="b_date">入库时间大于：</label>
@@ -37,33 +37,22 @@
 					<thead>
 						<tr>
 							<th>供应商</th>
-							<th>药品</th>
-							<th>单位</th>
-							<th>类型</th>
-							<th>入库数量</th>
-							<th>单价</th>
-							<th>处方类型</th>
+							<th>发货时间</th>
 							<th>入库时间</th>
-							<th>费用</th>
-							<th>总费用</th>
+							<th>制单人</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
-						<ng-container *ngFor="let item of list">
-							<tr *ngFor="let info of item.info; let indexInfo=index;">
-
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.supplierName}}</td>
-								<td>{{info.msName}}</td>
-								<td>{{info.unit}}</td>
-								<td>{{info.typeText}}</td>
-								<td>{{info.num}}</td>
-								<td>{{info.bid}}</td>
-								<td>{{info.isPrescribed == '0' ? '不是' : '是'}}</td>
-								<td>{{item.purshaseTime}}</td>
-								<td>{{info.fee}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>
-							</tr>
-						</ng-container>
+						<tr *ngFor="let item of list">
+							<td>{{item.supplierName}}</td>
+							<td>{{item.aboutTime}}</td>
+							<td>{{item.purshaseTime}}</td>
+							<td>{{item.adminName}}</td>
+							<td>
+								<button *ngIf="moduleAuthority.infoPut" (click)="showInfo(item.id)" class="pure-button pure-button-primary">详情</button>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 				<div *ngIf="hasData && list.length == 0" class="mt10">

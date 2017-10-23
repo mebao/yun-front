@@ -430,6 +430,13 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							// 入库详情
+							{
+								url: '/admin/materialPurchaseInfo',
+								authority: 'infoPut',
+								queryType: '',
+								queryParams: '',
+							},
 							// 库存管理
 							{
 								url: '/admin/materialHasList',

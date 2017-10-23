@@ -19,7 +19,12 @@ export class MedicalLostComponent{
 		type:  string,
 	};
 	lostlist: any[];
+	// 药品列表
 	list: any[];
+	// 药品单位
+	msUnit: string;
+	// 药品下批次列表
+	batchList: any[];
 	lostInfo: {
 		remark: string,
 	}
@@ -43,6 +48,8 @@ export class MedicalLostComponent{
 		this.lostlist = [];
 		this.lostlist.push({key: 1, show: true, use: true});
 		this.list = [];
+		this.msUnit = '';
+		this.batchList = [];
 		this.lostInfo = {
 			remark: '',
 		}
@@ -57,6 +64,11 @@ export class MedicalLostComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						if(results.list[i].others.length > 0){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
+							}
+						}
 						results.list[i].string = JSON.stringify(results.list[i]);
 					}
 				}
@@ -89,6 +101,11 @@ export class MedicalLostComponent{
 		}
 	}
 
+	msChange(_value) {
+		this.msUnit = JSON.parse(_value).unit;
+		this.batchList = JSON.parse(_value).others;
+	}
+
 	create(f) {
 		var mslosts = [];
 		var num = 0;
@@ -103,10 +120,14 @@ export class MedicalLostComponent{
 						num: '',
 					};
 					if(f.value['ms_' + this.lostlist[i].key] == ''){
-						this.toastTab('第' + num + '条药单不可为空', 'error');
+						this.toastTab('第' + num + '条药品不可为空', 'error');
 						return;
 					}
-					lost.sinfo_id = JSON.parse(f.value['ms_' + this.lostlist[i].key]).id;
+					if(f.value['batch_' + this.lostlist[i].key] == ''){
+						this.toastTab('第' + num + '条批次不可为空', 'error');
+						return;
+					}
+					lost.sinfo_id = JSON.parse(f.value['batch_' + this.lostlist[i].key]).id;
 					if(this.adminService.isFalse(f.value['num_' + this.lostlist[i].key])){
 						this.toastTab('第' + num + '条药单数量不可为空', 'error');
 						return;
@@ -116,12 +137,16 @@ export class MedicalLostComponent{
 						return;
 					}
 					lost.num = f.value['num_' + this.lostlist[i].key];
-					if(lost.num > JSON.parse(f.value['ms_' + this.lostlist[i].key]).stock){
-						this.toastTab(JSON.parse(f.value['ms_' + this.lostlist[i].key]).name + '库存' + JSON.parse(f.value['ms_' + this.lostlist[i].key]).stock + JSON.parse(f.value['ms_' + this.lostlist[i].key]).unit + '，所选药品数量超过库存现有量', 'error');
+					if(Number(lost.num) > Number(JSON.parse(f.value['batch_' + this.lostlist[i].key]).stock)){
+						this.toastTab(
+							JSON.parse(f.value['ms_' + this.lostlist[i].key]).name
+							 + JSON.parse(f.value['batch_' + this.lostlist[i].key]).batch + '批次，库存'
+							 + JSON.parse(f.value['batch_' + this.lostlist[i].key]).stock
+							 + JSON.parse(f.value['ms_' + this.lostlist[i].key]).unit + '，报损数量超过库存现有量', 'error');
 						return;
 					}
 					mslosts.push(lost);
-					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).bid) * Number(lost.num);
+					feeAll += Number(JSON.parse(f.value['batch_' + this.lostlist[i].key]).bid) * Number(lost.num);
 				}
 			}
 		}

@@ -2,55 +2,79 @@
 	<left-nav></left-nav>
 	<div class="right-content flex-1">
 		<header-nav></header-nav>
-		<div class="content admin-medical-has">
+		<div class="content admin-medical-check">
 			<top-bar [data]="topBar"></top-bar>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+			<form class="pure-form pure-form-stacked form-tab">
 				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="type">
-									<span>药品类型</span>
-									<span class="required">*</span>
-								</label>
-								<select id="type" name="type" [(ngModel)]="info.type" (change)="search()" [disabled]="editType == 'update'">
-									<option value="1">中药</option>
-									<option value="2">西药</option>
-								</select>
-							</div>
-						</div>
-						<div class="pure-u-8-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="medical">
-									<span>药品</span>
-									<span class="required">*</span>
-								</label>
-								<select id="medical" name="medical" [(ngModel)]="info.medical" #medical="ngModel" required="" [disabled]="editType == 'update'">
-									<ng-container *ngFor="let medical of medicalList">
-										<option value="{{medical.string}}">{{medical.name}}</option>
+					<div *ngFor="let ms of checkList" class="ms-tab mt5">
+						<div *ngIf="ms.use">
+							<div (click)="showMs(ms.key)" class="ms-bar flex">
+								<div class="flex-1 pt5">
+									<ng-container *ngIf="ms.show">
+										<span>隐藏</span>
+										<i class="icon-chevron-right"></i>
 									</ng-container>
-								</select>
-								<div *ngIf="medical.errors && (medical.dity || medical.touched)" class="alert alert-danger">
-									<div [hidden]="!medical.errors.required">
-										药品不可为空
+									<ng-container *ngIf="!ms.show">
+										<span>展开</span>
+										<i class="icon-chevron-down"></i>
+									</ng-container>
+								</div>
+								<div>
+									<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
+								</div>
+							</div>
+							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
+								<div class="pure-u-8-24 pr10">
+									<div class="pure-control-group">
+										<label for="name">
+											<span>药品</span>
+										</label>
+										<input type="text" name="name" value="{{ms.name}}" disabled>
+									</div>
+								</div>
+								<div class="pure-u-4-24 pl5 pr5">
+									<div class="pure-control-group">
+										<label for="batch">
+											<span>批次</span>
+										</label>
+										<input type="text" name="batch" value="{{ms.batch}}" disabled>
+									</div>
+								</div>
+								<div class="pure-u-4-24 pl5 pr5">
+									<div class="pure-control-group">
+										<label for="stock">
+											<span>账面库存</span>
+										</label>
+										<input type="text" name="stock" value="{{ms.stock}}" disabled>
+									</div>
+								</div>
+								<div class="pure-u-4-24 pl5 pr5">
+									<div class="pure-control-group">
+										<label for="reality_stock">
+											<span>实际库存</span>
+											<span class="required">*</span>
+										</label>
+										<input type="number" id="reality_stock" name="reality_stock" [(ngModel)]="ms.reality_stock" placeholder="请输入实际库存" required="">
+									</div>
+								</div>
+								<div class="pure-u-4-24 pl10">
+									<div class="pure-control-group">
+										<label for="unit">
+											<span>单位</span>
+										</label>
+										<input type="text" name="unit" value="{{ms.unit}}" disabled>
+									</div>
+								</div>
+								<div class="pure-u-8-24 pr10">
+									<div class="pure-control-group">
+										<label for="remark">备注（最多200字）</label>
+										<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="ms.remark" placeholder="请输入备注" class="min"></textarea>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="pure-u-8-24 pl10">
-							<div class="pure-control-group">
-								<label for="reality_stock">
-									<span>实际库存</span>
-									<span class="required">*</span>
-								</label>
-								<input type="number" id="reality_stock" name="reality_stock" #reality_stock="ngModel" [(ngModel)]="info.reality_stock" placeholder="请输入实际库存" required="">
-								<div *ngIf="reality_stock.errors && (reality_stock.dity || reality_stock.touched)" class="alert alert-danger">
-									<div [hidden]="!reality_stock.errors.required">
-										实际库存不可为空
-									</div>
-								</div>
-							</div>
-						</div>
+					</div>
+					<div class="">
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="check_time">
@@ -59,18 +83,10 @@
 								<input type="date" id="check_time" name="check_time" #check_time="ngModel" [(ngModel)]="info.check_time" [disabled]="editType == 'update'">
 							</div>
 						</div>
-						<div class="pure-u-8-24"></div>
-						<div class="pure-u-8-24"></div>
-						<div class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="remark">备注（最多200字）</label>
-								<textarea id="remark" name="remark" maxlength="200" #remark="ngModel" [(ngModel)]="info.remark" placeholder="请输入备注"></textarea>
-							</div>
-						</div>
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create(f)" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '添加' : '修改'}}</button>
+					<button (click)="create()" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '添加' : '修改'}}</button>
 				</div>
 			</form>
 		</div>

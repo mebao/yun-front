@@ -20,6 +20,7 @@ export class MaterialPurchaseComponent{
 	};
 	info: {
 		supplier: string,
+		about_time: string,
 		fee: string,
 	};
 	list: any[];
@@ -45,6 +46,7 @@ export class MaterialPurchaseComponent{
 
 		this.info = {
 			supplier: '',
+			about_time: '',
 			fee: '',
 		}
 
@@ -154,6 +156,10 @@ export class MaterialPurchaseComponent{
 			this.toastTab('供应商不可为空', 'error');
 			return;
 		}
+		if(this.adminService.isFalse(f.value.about_time)){
+			this.toastTab('发货时间不可为空', 'error');
+			return;
+		}
 		var msParamsList = [];
 		var num = 0;
 		if(this.mslist.length > 0){
@@ -217,6 +223,7 @@ export class MaterialPurchaseComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			supplier_id: JSON.parse(f.value.supplier).id,
 			supplier_name: JSON.parse(f.value.supplier).name,
+			about_time: f.value.about_time,
 			fee: this.info.fee,
 			mslist: msParamsList,
 		}

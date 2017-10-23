@@ -21,7 +21,8 @@ export class MedicalPurchaseListComponent{
 	// 权限
 	moduleAuthority:  {
 		seePut: boolean,
-		editPut: boolean,
+		addPut: boolean,
+		infoPut: boolean,
 	}
 	hasData: boolean;
 	list: any[];
@@ -50,7 +51,8 @@ export class MedicalPurchaseListComponent{
 
 		this.moduleAuthority = {
 			seePut: false,
-			editPut: false,
+			addPut: false,
+			infoPut: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -89,6 +91,7 @@ export class MedicalPurchaseListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						results.list[i].aboutTime = !this.adminService.isFalse(results.list[i].aboutTime) ? this.adminService.dateFormat(results.list[i].aboutTime) : '';
 						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
@@ -118,6 +121,11 @@ export class MedicalPurchaseListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/medicalPurchase'], {queryParams: {id: _id}});
+	}
+
+	// 详情
+	showInfo(_id) {
+		this.router.navigate(['./admin/medicalPurchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {

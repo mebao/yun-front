@@ -203,7 +203,6 @@ export class DoctorPrescriptComponent{
 				name: sessionPrescript.name,
 				remark: sessionPrescript.remark,
 			}
-			console.log(sessionPrescript);
 			if(sessionPrescript.info.length > 0){
 				for(var i = 0; i < sessionPrescript.info.length; i++){
 					var p = {
@@ -358,9 +357,6 @@ export class DoctorPrescriptComponent{
 	}
 
 	msChange(key, _value) {
-		console.log(key);
-		console.log(_value);
-		console.log(_value);
 		for(var i = 0; i < this.plist.length; i++){
 			if(this.plist[i].key == key){
 				this.plist[i].ms = JSON.parse(_value);
@@ -374,7 +370,6 @@ export class DoctorPrescriptComponent{
 				this.plist[i].batchList = JSON.parse(_value).others;
 			}
 		}
-		console.log(this.plist);
 	}
 
 	create(f) {

@@ -11,7 +11,7 @@
 				<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
 				<div class="item active">盘点管理</div>
 			</div>
-			<div class="flex pure-form mt10">
+			<div class="flex pure-form mt10 search-tab max">
 				<div class="flex-1">
 					<button *ngIf="moduleAuthority.editCheck" (click)="add()" class="pure-button pure-button-primary">新增盘点</button>
 				</div>
@@ -26,6 +26,10 @@
 						<option value="4">其他</option>
 					</select>
 				</div>
+				<div class="w64p"></div>
+			</div>
+			<div class="flex pure-form mt10 search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="b_time">检查时间大于：</label>
 					<input type="date" id="b_time" name="b_time" [(ngModel)]="info.b_time">
@@ -41,12 +45,12 @@
 					<thead>
 						<tr>
 							<th>物资</th>
-							<th>理论库存</th>
+							<th>账面库存</th>
 							<th>实际库存</th>
 							<th>偏差值</th>
 							<th>检查时间</th>
 							<th class="th-width">备注</th>
-							<th>操作</th>
+							<th>盘点人</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -59,9 +63,7 @@
 							<td>
 								<div class="length-text">{{item.remark}}</div>
 							</td>
-							<td>
-								<button *ngIf="moduleAuthority.editCheck" (click)="update(item)" class="pure-button pure-button-primary">修改</button>
-							</td>
+							<td>{{item.checkerName}}</td>
 						</tr>
 					</tbody>
 				</table>

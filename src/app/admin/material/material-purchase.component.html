@@ -6,8 +6,8 @@
 			<top-bar [data]="topBar"></top-bar>
 			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
+					<div class="pure-g pure-tab">
+						<div class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="supplier">
 									<span>供应商</span>
@@ -21,6 +21,20 @@
 								<div *ngIf="supplier.errors && (supplier.dity || supplier.touched)" class="alert alert-danger">
 									<div [hidden]="!supplier.errors.required">
 										供应商不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24">
+							<div class="pure-control-group">
+								<label for="about_time">
+									<span>发货时间</span>
+									<span class="required">*</span>
+								</label>
+								<input type="date" id="about_time" name="about_time" #about_time="ngModel" [(ngModel)]="info.about_time">
+								<div *ngIf="about_time.errors && (about_time.dity || about_time.touched)" class="alert alert-danger">
+									<div [hidden]="!about_time.errors.required">
+										发货时间不可为空
 									</div>
 								</div>
 							</div>

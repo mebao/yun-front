@@ -96,6 +96,7 @@ import { AuthorizeSuccessComponent }        from './authorize/authorize-success.
 import { AssistListComponent }              from './setup/assist-list.component';
 import { AssistComponent }                  from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-info.component';
+import { MaterialPurchaseInfoComponent }    from './material/material-purchase-info.component';
 
 const adminRoutes: Routes = [
 	{
@@ -555,7 +556,12 @@ const adminRoutes: Routes = [
 					{
 						path: 'medicalPurchaseInfo',
 						canActivate: [AuthGuardRole],
-						component:MedicalPurchaseInfoComponent,
+						component: MedicalPurchaseInfoComponent,
+					},
+					{
+						path: 'materialPurchaseInfo',
+						canActivate: [AuthGuardRole],
+						component: MaterialPurchaseInfoComponent,
 					},
 					{
 						path: '**',

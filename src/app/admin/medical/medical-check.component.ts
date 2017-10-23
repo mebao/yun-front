@@ -6,6 +6,7 @@ import { AdminService }                      from '../admin.service';
 @Component({
 	selector: 'admin-medical-check',
 	templateUrl: './medical-check.component.html',
+	styleUrls: ['./medical-check.component.scss'],
 })
 export class MedicalCheckComponent{
 	topBar: {
@@ -19,16 +20,13 @@ export class MedicalCheckComponent{
 	};
 	url: string;
 	info: {
-		type: string,
-		medical: string,
-		reality_stock: string,
 		check_time: string,
-		remark: string,
 	}
-	medicalList: any[];
 	id: string;
 	editType: string;
 	medicalCheck: string;
+
+	checkList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -47,6 +45,8 @@ export class MedicalCheckComponent{
 			type: '',
 		}
 
+		this.checkList = [];
+
 		//获取物资列表
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -59,34 +59,23 @@ export class MedicalCheckComponent{
 
 		this.medicalCheck = '';
 		if(this.id && this.id != ''){
-			this.editType = 'update';
-			this.medicalCheck = sessionStorage.getItem('medicalCheck');
-			this.info = {
-				type: '',
-				medical: '',
-				reality_stock: JSON.parse(this.medicalCheck).realityStock,
-				check_time: JSON.parse(this.medicalCheck).checkTime.slice(0, JSON.parse(this.medicalCheck).checkTime.indexOf(' ')),
-				remark: JSON.parse(this.medicalCheck).remark,
-			}
+			// this.editType = 'update';
+			// this.medicalCheck = sessionStorage.getItem('medicalCheck');
+			// this.info = {
+			// 	type: '',
+			// 	medical: '',
+			// 	reality_stock: JSON.parse(this.medicalCheck).realityStock,
+			// 	check_time: JSON.parse(this.medicalCheck).checkTime.slice(0, JSON.parse(this.medicalCheck).checkTime.indexOf(' ')),
+			// 	remark: JSON.parse(this.medicalCheck).remark,
+			// }
 		}else{
 			this.editType = 'create';
 			this.info = {
-				type: '1',
-				medical: '',
-				reality_stock: '',
 				check_time: '',
-				remark: '',
 			}
 		}
 
-		this.medicalList = [];
-		this.search();
-	}
-
-	search() {
-		var urlOptions = this.url + '&type=' + this.info.type;
-
-		this.getData(urlOptions);
+		this.getData(this.url);
 	}
 
 	getData(urlOptions) {
@@ -97,49 +86,90 @@ export class MedicalCheckComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].string = JSON.stringify(results.list[i]);
-						//修改，获取物资信息
-						if(this.editType == 'update'){
-							if(results.list[i].id == JSON.parse(this.medicalCheck).sinfoId){
-								this.info.type = results.list[i].type;
-								this.info.medical = results.list[i].string;
+						if(results.list[i].others.length > 0){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								if(results.list[i].type == '1' || results.list[i].type == '2'){
+									var check = {
+										key: this.checkList.length + 1,
+										show: true,
+										use: true,
+										sinfo_id: results.list[i].others[j].id,
+										name: results.list[i].name,
+										batch: results.list[i].others[j].batch,
+										stock: results.list[i].others[j].stock,
+										unit: results.list[i].unit,
+										type: results.list[i].type,
+										reality_stock: '',
+										remark: '',
+									}
+									this.checkList.push(check);
+								}
 							}
 						}
+						//修改，获取物资信息
+						// if(this.editType == 'update'){
+						// 	if(results.list[i].id == JSON.parse(this.medicalCheck).sinfoId){
+						// 		this.info.type = results.list[i].type;
+						// 		this.info.medical = results.list[i].string;
+						// 	}
+						// }
 					}
 				}
-				this.medicalList = results.list;
 			}
 		});
 	}
 
-	create(f) {
-		if(this.adminService.isFalse(f.value.reality_stock)){
-			this.toastTab('实际库存不可为空', 'error');
-			return;
+	showMs(_key) {
+		if(this.checkList.length > 0){
+			for(var i = 0; i < this.checkList.length; i++){
+				if(this.checkList[i].key == _key){
+					this.checkList[i].show = !this.checkList[i].show;
+				}
+			}
 		}
-		if(Number(f.value.reality_stock) <= 0 || Number(f.value.reality_stock) % 1 != 0){
-			this.toastTab('实际库存应为大于0的整数', 'error');
-			return;
+	}
+
+	deleteMs(_key) {
+		if(this.checkList.length > 0){
+			for(var i = 0; i < this.checkList.length; i++){
+				if(this.checkList[i].key == _key){
+					this.checkList[i].use = false;
+				}
+			}
+		}
+	}
+
+	create() {
+		var clist = [];
+		if(this.checkList.length > 0){
+			for(var i = 0; i < this.checkList.length; i++){
+				if(this.checkList[i].use){
+					var c = {
+						sinfo_id: this.checkList[i].sinfo_id,
+						name: this.checkList[i].name,
+						type: this.checkList[i].type,
+						reality_stock: this.checkList[i].reality_stock,
+						remark: this.checkList[i].remark,
+					}
+					if(this.adminService.isFalse(this.checkList[i].reality_stock)){
+						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存不可为空', 'error');
+						return;
+					}
+					if(Number(this.checkList[i].reality_stock) <= 0 || Number(this.checkList[i].reality_stock) % 1 != 0){
+						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存应为大于0的整数', 'error');
+						return;
+					}
+					clist.push(c);
+				}
+			}
 		}
 		if(this.editType == 'create'){
-			if(f.value.type == ''){
-				this.toastTab('药品类型不可为空', 'error');
-				return;
-			}
-			if(f.value.medical == ''){
-				this.toastTab('药品不可为空', 'error');
-				return;
-			}
 			var params = {
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
 				clinic_id: this.adminService.getUser().clinicId,
-				sinfo_id: JSON.parse(f.value.medical).id,
-				name: JSON.parse(f.value.medical).name,
-				type: f.value.type,
-				reality_stock: f.value.reality_stock,
-				remark: f.value.remark,
-				check_time: f.value.check_time,
+				clist: clist,
+				check_time: this.info.check_time,
 			}
 
 			this.adminService.clinicstock(params).then((data) => {
@@ -153,29 +183,29 @@ export class MedicalCheckComponent{
 				}
 			});
 		}else{
-			var updateParams = {
-				username: this.adminService.getUser().username,
-				token: this.adminService.getUser().token,
-				clinic_id: this.adminService.getUser().clinicId,
-				sinfo_id: JSON.parse(this.info.medical).id,
-				name: JSON.parse(this.info.medical).name,
-				type: this.info.type,
-				reality_stock: f.value.reality_stock,
-				remark: f.value.remark,
-				check_time: this.info.check_time,
-				id: JSON.parse(this.medicalCheck).id,
-			}
-
-			this.adminService.clinicstock(updateParams).then((data) => {
-				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
-				}else{
-					this.toastTab('盘点修改成功', '');
-					setTimeout(() => {
-						this.router.navigate(['./admin/medicalCheckList']);
-					}, 2000);
-				}
-			});
+			// var updateParams = {
+			// 	username: this.adminService.getUser().username,
+			// 	token: this.adminService.getUser().token,
+			// 	clinic_id: this.adminService.getUser().clinicId,
+			// 	sinfo_id: JSON.parse(this.info.medical).id,
+			// 	name: JSON.parse(this.info.medical).name,
+			// 	type: this.info.type,
+			// 	reality_stock: f.value.reality_stock,
+			// 	remark: f.value.remark,
+			// 	check_time: this.info.check_time,
+			// 	id: JSON.parse(this.medicalCheck).id,
+			// }
+			//
+			// this.adminService.clinicstock(updateParams).then((data) => {
+			// 	if(data.status == 'no'){
+			// 		this.toastTab(data.errorMsg, 'error');
+			// 	}else{
+			// 		this.toastTab('盘点修改成功', '');
+			// 		setTimeout(() => {
+			// 			this.router.navigate(['./admin/medicalCheckList']);
+			// 		}, 2000);
+			// 	}
+			// });
 		}
 	}
 

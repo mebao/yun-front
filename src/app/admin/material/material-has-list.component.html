@@ -11,7 +11,7 @@
 				<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
 				<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
 			</div>
-			<div class="flex pure-form mt10">
+			<div class="flex pure-form mt10 search-tab max">
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="name">物资名:</label>
@@ -24,6 +24,10 @@
 						<option value="4">其他</option>
 					</select>
 				</div>
+				<div class="w64p"></div>
+			</div>
+			<div class="flex pure-form mt10 search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="b_stock">库存数量大于：</label>
 					<input type="number" id="b_stock" name="b_stock" [(ngModel)]="info.b_stock" placeholder="请输入数量">
@@ -41,11 +45,9 @@
 							<th>物资</th>
 							<th>单位</th>
 							<th>物资类型</th>
-							<th class="th-width">一般用法</th>
-							<th>库存</th>
-							<th>进价</th>
-							<th>售价</th>
 							<th>是否优惠</th>
+							<th>库存</th>
+							<th>售价</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -54,15 +56,11 @@
 							<td>{{item.name}}</td>
 							<td>{{item.unit}}</td>
 							<td>{{item.typeText}}</td>
-							<td>
-								<div class="length-text">{{item.usage}}</div>
-							</td>
-							<td>{{item.stock}}</td>
-							<td>{{item.bid}}</td>
-							<td>{{item.price}}</td>
 							<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
+							<td>{{item.others[0].stock}}</td>
+							<td>{{item.others[0].price}}</td>
 							<td>
-								<button *ngIf="moduleAuthority.editHas" (click)="update(item.id)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.editHas" (click)="update(item.others[0].id)" class="pure-button pure-button-primary">修改</button>
 							</td>
 						</tr>
 					</tbody>

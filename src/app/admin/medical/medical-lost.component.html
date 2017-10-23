@@ -23,14 +23,14 @@
 									<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
 								</div>
 							</div>
-							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-8-24 pr10">
+							<div [ngClass]="{'hide': !ms.show}" class="pure-g pure-tab">
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
 											<span>药品</span>
 											<span class="required">*</span>
 										</label>
-										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
+										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel (change)="msChange($event.target.value)">
 											<ng-container *ngFor="let medicalSupplie of list">
 												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
 													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}({{medicalSupplie.unit}})</option>
@@ -39,7 +39,20 @@
 										</select>
 									</div>
 								</div>
-								<div class="pure-u-8-24 pl5 pr5">
+								<div class="pure-u-8-24">
+									<div class="pure-control-group">
+										<label for="batch_{{ms.key}}">
+											<span>批次</span>
+											<span class="required">*</span>
+										</label>
+										<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" ngModel>
+											<ng-container *ngFor="let batch of batchList">
+												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{msUnit}}）</option>
+											</ng-container>
+										</select>
+									</div>
+								</div>
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
 										<label for="num_{{ms.key}}">
 											<span>报损数量</span>
@@ -54,7 +67,7 @@
 					<div class="mt10">
 						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 					</div>
-					<div class="pure-g">
+					<div class="pure-g pure-tab">
 						<div class="pure-u-8-24">
 							<label for="remark">
 								<span>报损原因（最多200字）</span>

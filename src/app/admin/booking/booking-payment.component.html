@@ -166,6 +166,7 @@
 								<thead>
 									<tr>
 										<th>药品</th>
+										<th>批次</th>
 										<th>单价</th>
 										<th>总量</th>
 										<th>是否优惠</th>
@@ -175,13 +176,14 @@
 									<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList">
 										<tr *ngFor="let info of medical.info">
 											<td>{{info.pname}}</td>
+											<td>{{info.batch}}</td>
 											<td>{{info.price}}</td>
 											<td>{{info.num}}</td>
 											<td>{{info.canDiscount == '0' ? '不可优惠' : '可以优惠'}}</td>
 										</tr>
 									</ng-container>
 									<tr>
-										<td colspan="4">
+										<td colspan="5">
 											<div class="flex">
 												<div class="flex-1 text-right">原价：</div>
 												<div class="w100p">{{fee.feeInfo.medicalOriginalFee}}</div>
@@ -189,7 +191,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="4">
+										<td colspan="5">
 											<div class="flex">
 												<div class="flex-1 text-right">折扣：</div>
 												<div class="w100p">{{userMember.prescript}}</div>
@@ -197,7 +199,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="4">
+										<td colspan="5">
 											<div class="flex">
 												<div class="flex-1 text-right">折扣后费用：</div>
 												<div class="w100p">{{fee.feeInfo.medicalFee}}</div>

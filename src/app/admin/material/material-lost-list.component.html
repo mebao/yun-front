@@ -36,19 +36,18 @@
 				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>
 						<tr>
-							<th></th>
 							<th>物资</th>
 							<th>单位</th>
 							<th>类型</th>
 							<th>报损数量</th>
 							<th class="th-width">报损原因</th>
 							<th>总费用</th>
+							<th>报损人</th>
 						</tr>
 					</thead>
 					<tbody>
 						<ng-container *ngFor="let item of list; let itemIndex=index;">
 							<tr *ngFor="let info of item.info; let indexInfo=index;">
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{itemIndex + 1}}</td>
 								<td>{{info.msName}}</td>
 								<td>{{info.unit}}</td>
 								<td>{{info.typeText}}</td>
@@ -57,6 +56,7 @@
 									<div class="length-text">{{item.remark}}</div>
 								</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
 							</tr>
 						</ng-container>
 					</tbody>

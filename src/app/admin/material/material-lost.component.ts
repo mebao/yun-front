@@ -106,7 +106,7 @@ export class MaterialLostComponent{
 						this.toastTab('第' + num + '条药单不可为空', 'error');
 						return;
 					}
-					lost.sinfo_id = JSON.parse(f.value['ms_' + this.lostlist[i].key]).id;
+					lost.sinfo_id = JSON.parse(f.value['ms_' + this.lostlist[i].key]).others[0].id;
 					if(this.adminService.isFalse(f.value['num_' + this.lostlist[i].key])){
 						this.toastTab('第' + num + '条药单数量不可为空', 'error');
 						return;
@@ -121,7 +121,7 @@ export class MaterialLostComponent{
 						return;
 					}
 					mslosts.push(lost);
-					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).bid) * Number(lost.num);
+					feeAll += Number(JSON.parse(f.value['ms_' + this.lostlist[i].key]).others[0].bid) * Number(lost.num);
 				}
 			}
 		}

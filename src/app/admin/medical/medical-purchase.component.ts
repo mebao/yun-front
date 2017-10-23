@@ -20,6 +20,7 @@ export class MedicalPurchaseComponent{
 	};
 	info: {
 		supplier: string,
+		about_time: string,
 		fee: string,
 	};
 	list: any[];
@@ -45,6 +46,7 @@ export class MedicalPurchaseComponent{
 
 		this.info = {
 			supplier: '',
+			about_time: '',
 			fee: '',
 		}
 
@@ -154,6 +156,10 @@ export class MedicalPurchaseComponent{
 			this.toastTab('供应商不可为空', 'error');
 			return;
 		}
+		if(this.adminService.isFalse(f.value.about_time)){
+			this.toastTab('发货时间不可为空', 'error');
+			return;
+		}
 		var msParamsList = [];
 		var num = 0;
 		if(this.mslist.length > 0){
@@ -171,6 +177,9 @@ export class MedicalPurchaseComponent{
 						price: '',
 						can_discount: '',
 						is_prescribed: '',
+						otc: '',
+						code: '',
+						batch: '',
 					}
 					var key = this.mslist[i].key;
 					num++;
@@ -212,6 +221,21 @@ export class MedicalPurchaseComponent{
 						return;
 					}
 					msParams.is_prescribed = f.value['is_prescribed_' + key];
+					if(f.value['otc_' + key] == ''){
+						this.toastTab('第' + num + '条药品国药准字不可为空', 'error');
+						return;
+					}
+					msParams.otc = f.value['otc_' + key];
+					if(f.value['code_' + key] == ''){
+						this.toastTab('第' + num + '条药品条形码不可为空', 'error');
+						return;
+					}
+					msParams.code = f.value['code_' + key];
+					if(f.value['batch_' + key] == ''){
+						this.toastTab('第' + num + '条药品批次不可为空', 'error');
+						return;
+					}
+					msParams.batch = f.value['batch_' + key];
 					msParamsList.push(msParams);
 				}
 			}
@@ -224,6 +248,7 @@ export class MedicalPurchaseComponent{
 			supplier_name: JSON.parse(f.value.supplier).name,
 			fee: this.info.fee,
 			mslist: msParamsList,
+			about_time: f.value.about_time,
 		}
 
 		this.adminService.purchaserecord(params).then((data) => {

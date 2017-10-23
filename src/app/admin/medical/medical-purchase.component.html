@@ -4,10 +4,10 @@
 		<header-nav></header-nav>
 		<div class="content admin-medical-purchase">
 			<top-bar [data]="topBar"></top-bar>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+			<form #f="ngForm" class="pure-form pure-form-stacked form-tab pure-tab">
 				<fieldset>
 					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
+						<div class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="supplier">
 									<span>供应商</span>
@@ -21,6 +21,20 @@
 								<div *ngIf="supplier.errors && (supplier.dity || supplier.touched)" class="alert alert-danger">
 									<div [hidden]="!supplier.errors.required">
 										供应商不可为空
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-8-24">
+							<div class="pure-control-group">
+								<label for="about_time">
+									<span>发货时间</span>
+									<span class="required">*</span>
+								</label>
+								<input type="date" id="about_time" name="about_time" #about_time="ngModel" [(ngModel)]="info.about_time" required>
+								<div *ngIf="about_time.errors && (about_time.dity || about_time.touched)" class="alert alert-danger">
+									<div [hidden]="!about_time.errors.required">
+										发货时间不可为空
 									</div>
 								</div>
 							</div>
@@ -44,7 +58,7 @@
 								</div>
 							</div>
 							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-8-24 pr10">
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
 										<label for="ms_{{ms.key}}">
 											<span>药品</span>
@@ -59,25 +73,34 @@
 										</select>
 									</div>
 								</div>
-								<div class="pure-u-8-24 pl5 pr5">
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
-										<label for="num_{{ms.key}}">
-											<span>入库数量</span>
+										<label for="otc_{{ms.key}}">
+											<span>国药准字</span>
 											<span class="required">*</span>
 										</label>
-										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" ngModel placeholder="请输入入库数量" (change)="feeChange(f)">
+										<input type="text" id="otc_{{ms.key}}" name="otc_{{ms.key}}" ngModel placeholder="请输入国药准字">
 									</div>
 								</div>
-								<div class="pure-u-8-24 pl10">
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
-										<label for="bid_{{ms.key}}">
-											<span>进价</span>
+										<label for="code_{{ms.key}}">
+											<span>条形码</span>
 											<span class="required">*</span>
 										</label>
-										<input type="number" id="bid_{{ms.key}}" step="0.01" name="bid_{{ms.key}}" ngModel (change)="feeChange(f)">
+										<input type="text" id="code_{{ms.key}}" name="code_{{ms.key}}" ngModel placeholder="请输入条形码">
 									</div>
 								</div>
-								<div class="pure-u-8-24 pr10">
+								<div class="pure-u-8-24">
+									<div class="pure-control-group">
+										<label for="batch_{{ms.key}}">
+											<span>批次</span>
+											<span class="required">*</span>
+										</label>
+										<input type="text" id="batch_{{ms.key}}" name="batch_{{ms.key}}" ngModel placeholder="请输入批次">
+									</div>
+								</div>
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
 										<label for="can_discount_{{ms.key}}">
 											<span>能否优惠</span>
@@ -89,16 +112,34 @@
 										</select>
 									</div>
 								</div>
-								<div class="pure-u-8-24 pl5 pr5">
+								<div class="pure-u-8-24">
 									<div class="pure-control-group">
 										<label for="is_prescribed_{{ms.key}}">
-											<span>处方类型</span>
+											<span>是否处方药</span>
 											<span class="required">*</span>
 										</label>
 										<select id="is_prescribed_{{ms.key}}" name="is_prescribed_{{ms.key}}" ngModel>
-											<option value="0">不是</option>
-											<option value='1'>是</option>
+											<option value="0">非处方</option>
+											<option value='1'>处方</option>
 										</select>
+									</div>
+								</div>
+								<div class="pure-u-8-24">
+									<div class="pure-control-group">
+										<label for="bid_{{ms.key}}">
+											<span>进价</span>
+											<span class="required">*</span>
+										</label>
+										<input type="number" id="bid_{{ms.key}}" step="0.01" name="bid_{{ms.key}}" ngModel (change)="feeChange(f)">
+									</div>
+								</div>
+								<div class="pure-u-8-24">
+									<div class="pure-control-group">
+										<label for="num_{{ms.key}}">
+											<span>入库数量</span>
+											<span class="required">*</span>
+										</label>
+										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" ngModel placeholder="请输入入库数量" (change)="feeChange(f)">
 									</div>
 								</div>
 							</div>

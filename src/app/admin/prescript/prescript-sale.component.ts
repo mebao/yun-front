@@ -344,7 +344,6 @@ export class PrescriptSaleComponent{
 			}
 		}
 		// 是否是诊所用户
-		console.log(this.sale.user);
 		if(this.sale.user.id != ''){
 			if(parseFloat(this.sale.user.balance) < saleFee){
 				this.sale.balanceUse = '余额不足';
@@ -354,7 +353,6 @@ export class PrescriptSaleComponent{
 		}else{
 			this.sale.balanceUse = '不是诊所用户';
 		}
-		console.log(plist);
 		this.selected = {
 			text: '',
 			plist: plist,

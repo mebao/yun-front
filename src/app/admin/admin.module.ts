@@ -117,6 +117,7 @@ import { AuthorizeSuccessComponent }       from './authorize/authorize-success.c
 import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }    from './medical/medical-purchase-info.component';
+import { MaterialPurchaseInfoComponent }   from './material/material-purchase-info.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -230,6 +231,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AssistListComponent,
 		AssistComponent,
 		MedicalPurchaseInfoComponent,
+		MaterialPurchaseInfoComponent,
 	],
 	providers: [
 		AdminService,

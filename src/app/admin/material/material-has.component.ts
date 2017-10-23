@@ -74,8 +74,19 @@ export class MaterialHasComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						if(results.list[i].id == this.info.id){
-							this.info = results.list[i];
+						if(results.list[i].others[0].id == this.info.id){
+							this.info = {
+								id: results.list[i].others[0].id,
+								name: results.list[i].name,
+								type: results.list[i].type,
+								typeText: results.list[i].typeText,
+								usage: results.list[i].usage,
+								stock: results.list[i].others[0].stock,
+								bid: results.list[i].others[0].bid,
+								price: results.list[i].others[0].price,
+								canDiscount: results.list[i].others[0].canDiscount,
+								unit: results.list[i].unit,
+							};
 						}
 					}
 				}

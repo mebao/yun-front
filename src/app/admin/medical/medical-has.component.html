@@ -15,7 +15,11 @@
 							</div>
 							<div class="pure-control-group">
 								<label for="unit">单位</label>
-								<input type="text" id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" placeholder="请输入单位" required="">
+								<select id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" required>
+									<ng-container *ngFor="let unit of drugUnits">
+										<option value="{{unit}}">{{unit}}</option>
+									</ng-container>
+								</select>
 								<div *ngIf="unit.errors && (unit.dity || unit.touched)" class="alert alert-danger">
 									<div [hidden]="!unit.errors.required">
 										单位不可为空
@@ -23,14 +27,54 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
+								<label for="one_unit">计量单位</label>
+								<select id="one_unit" name="one_unit" #one_unit="ngModel" [(ngModel)]="info.one_unit" required="">
+									<ng-container *ngFor="let unit of OneUnits">
+										<option value="{{unit}}">{{unit}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="one_unit.errors && (one_unit.dity || one_unit.touched)" class="alert alert-danger">
+									<div [hidden]="!one_unit.errors.required">
+										计量单位不可为空
+									</div>
+								</div>
+							</div>
+							<div class="pure-control-group">
 								<label for="type">类型</label>
-								<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="">
+								<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="" disabled>
 									<option value="1">中药</option>
 									<option value="2">西药</option>
 								</select>
 								<div *ngIf="type.errors && (type.dity || type.touched)" class="alert alert-danger">
 									<div [hidden]="type.error.required">
 										类型不可为空
+									</div>
+								</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="otc">国药准字</label>
+								<input type="text" id="otc" name="otc" #otc="ngModel" [(ngModel)]="info.otc" placeholder="请输入国药准字" required="">
+								<div *ngIf="otc.errors && (otc.dity || otc.touched)" class="alert alert-danger">
+									<div [hidden]="!otc.errors.required">
+										国药准字不可为空
+									</div>
+								</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="code">条形码</label>
+								<input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="info.code" placeholder="请输入条形码" required="">
+								<div *ngIf="code.errors && (code.dity || code.touched)" class="alert alert-danger">
+									<div [hidden]="!code.errors.required">
+										条形码不可为空
+									</div>
+								</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="batch">批次</label>
+								<input type="text" id="batch" name="batch" #batch="ngModel" [(ngModel)]="info.batch" placeholder="请输入批次" required="" disabled>
+								<div *ngIf="batch.errors && (batch.dity || batch.touched)" class="alert alert-danger">
+									<div [hidden]="!batch.errors.required">
+										批次不可为空
 									</div>
 								</div>
 							</div>
@@ -44,22 +88,13 @@
 								</div>
 							</div>
 							<div class="pure-control-group">
-								<label for="is_prescribed">处方类型</label>
+								<label for="is_prescribed">是否处方药</label>
 								<select id="is_prescribed" name="is_prescribed" #is_prescribed="ngModel" [(ngModel)]="info.isPrescribed" required="">
-									<option value="0">不是</option>
-									<option value="1">是</option>
+									<option value="0">非处方</option>
+									<option value="1">处方</option>
 								</select>
 								<div *ngIf="is_prescribed.errors && (is_prescribed.dity || is_prescribed.touched)" class="alert alert-danger">
 									<div [hidden]="!is_prescribed.errors.required">
-										售价不可为空
-									</div>
-								</div>
-							</div>
-							<div class="pure-control-group">
-								<label for="price">售价</label>
-								<input type="number" step="0.01" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
-								<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
-									<div [hidden]="!price.errors.required">
 										售价不可为空
 									</div>
 								</div>
@@ -73,6 +108,15 @@
 								<div *ngIf="canDiscount.errors && (canDiscount.dity || canDiscount.touched)" class="alert alert-danger">
 									<div [hidden]="!canDiscount.errors.required">
 										是否优惠不可为空
+									</div>
+								</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="price">售价</label>
+								<input type="number" step="0.01" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
+								<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
+									<div [hidden]="!price.errors.required">
+										售价不可为空
 									</div>
 								</div>
 							</div>
