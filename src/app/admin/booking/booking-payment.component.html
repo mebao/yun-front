@@ -287,22 +287,22 @@
 		<div class="content pad10 pure-form form-tab">
 			<div class="pure-control-group flex">
 				<label for="user" class="w120p">用户：</label>
-				<div class="flex-1 p-group">{{this.bookingInfo.creatorName}}</div>
+				<label class="flex-1">{{bookingInfo.creatorName}}</label>
 			</div>
 			<div *ngIf="userMember.member" class="pure-control-group flex">
 				<label for="member" class="w120p">余额：</label>
-				<div class="flex-1 p-group">{{this.userMember.balance}}</div>
+				<label class="flex-1">{{userMember.balance}}</label>
 			</div>
 			<div class="pure-control-group flex">
 				<label for="fee" class="w120p">消费金额：</label>
-				<div class="flex-1 p-group">{{this.fee.fee}}</div>
+				<label class="flex-1">{{fee.fee}}</label>
 			</div>
 			<div class="pure-control-group flex">
 				<label for="pay_way" class="w120p">
 					<span>支付方式</span>
 					<span class="required">*</span>：
 				</label>
-				<select id="pay_way" name="pay_way" [(ngModel)]="payInfo.payWay">
+				<select id="pay_way" name="pay_way" [(ngModel)]="payInfo.payWay" class="flex-1">
 					<option value="ali">支付宝支付</option>
 					<option value="wechat">微信支付</option>
 					<option value="card">刷卡支付</option>
@@ -312,11 +312,11 @@
 			</div>
 			<div class="pure-control-group flex mt10">
 				<label for="give_amount" class="w120p">减免金额：</label>
-				<input type="number" id="give_amount" name="give_amount" step="0.01" [(ngModel)]="payInfo.give_amount" placeholder="请输入减免金额">
+				<input type="number" id="give_amount" name="give_amount" step="0.01" [(ngModel)]="payInfo.give_amount" placeholder="请输入减免金额" class="flex-1">
 			</div>
 			<div class="pure-control-group flex mt10">
-				<label for="remark" class="w120p">备注（最多200字）：</label>
-				<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="payInfo.remark" placeholder="请输入备注"></textarea>
+				<label for="remark" class="w120p">减免金额原因（最多200字）：</label>
+				<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="payInfo.remark" placeholder="请输入减免金额原因" class="flex-1"></textarea>
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
