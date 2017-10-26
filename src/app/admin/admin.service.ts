@@ -973,6 +973,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 病历主诉模板
+	private cprtemplateUrl = this.url + '/mebcrm/cprtemplate';
+	cprtemplate(urlOptions): Promise<Data>{
+		return this.http.get(this.cprtemplateUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

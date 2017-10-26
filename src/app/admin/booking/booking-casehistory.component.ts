@@ -31,9 +31,13 @@ export class BookingCasehistoryComponent{
 		breast_circum: string,
 		teeth: string,
 		topic_comment: string,
+		check_result: string,
 		present_illness: string,
 		previous_history: string,
 		allergy: string,
+		family_history: string,
+		breed_history: string,
+		growth_history: string,
 		body_temperature: string,
 		breathe: string,
 		blood_pressure: string,
@@ -55,11 +59,17 @@ export class BookingCasehistoryComponent{
 		prescription: string,
 		advise: string,
 		time: string,
+		checkList: any[],
 	};
 	id: string;
 	doctorId: string;
 	childId: string;
 	editType: string;
+	// 主诉模板
+	cprtemplateList: any[];
+	cprtemplate: string;
+	// 体格检查详情
+	showExamination: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -113,9 +123,13 @@ export class BookingCasehistoryComponent{
 				breast_circum: casehistory.breastCircum,
 				teeth: casehistory.teeth,
 				topic_comment: casehistory.topicComment,
+				check_result: casehistory.checkResult,
 				present_illness: casehistory.presentIllness,
 				previous_history: casehistory.previousHistory,
 				allergy: casehistory.allergy,
+				family_history: casehistory.familyHistory,
+				breed_history: casehistory.breedHistory,
+				growth_history: casehistory.growthHistory,
 				body_temperature: casehistory.bodyTemperature,
 				breathe: casehistory.breathe,
 				blood_pressure: casehistory.bloodPressure,
@@ -137,6 +151,7 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: casehistory.advise,
 				time: casehistory.time,
+				checkList: casehistory.checkList,
 			}
 		}else{
 			this.info = {
@@ -152,9 +167,13 @@ export class BookingCasehistoryComponent{
 				breast_circum: '',
 				teeth: '',
 				topic_comment: '',
+				check_result: '',
 				present_illness: '',
 				previous_history: '',
 				allergy: '',
+				family_history: '',
+				breed_history: '',
+				growth_history: '',
 				body_temperature: '',
 				breathe: '',
 				blood_pressure: '',
@@ -176,8 +195,31 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: '',
 				time: '',
+				checkList: [],
 			}
 		}
+
+		// 主诉模板
+		this.cprtemplateList = [];
+		this.cprtemplate = '';
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.cprtemplate(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.template.length > 0){
+					for(var i = 0; i < results.template.length; i++){
+						results.template[i].string = JSON.stringify(results.template[i]);
+					}
+				}
+				this.cprtemplateList = results.template;
+			}
+		});
+
+		this.showExamination = false;
 	}
 
     // 身高对比
@@ -224,6 +266,16 @@ export class BookingCasehistoryComponent{
         }
         this.info[_key + '_other'] = '';
 		this.info[_key] = _value;
+	}
+
+	// 主诉模板切换
+	changeCprtemplate() {
+		this.info.topic_comment = JSON.parse(this.cprtemplate).action;
+		this.info.check_result = JSON.parse(this.cprtemplate).peValue;
+	}
+
+	changeExamination() {
+		this.showExamination = !this.showExamination;
 	}
 
 	create(f) {
@@ -283,9 +335,13 @@ export class BookingCasehistoryComponent{
 			breast_circum: f.value.breast_circum == '' ? null : f.value.breast_circum,
 			teeth: f.value.teeth,
 			topic_comment: f.value.topic_comment,
+			check_result: f.value.check_result,
 			present_illness: f.value.present_illness,
 			previous_history: f.value.previous_history,
 			allergy: f.value.allergy,
+			family_history: f.value.family_history,
+			breed_history: f.value.breed_history,
+			growth_history: f.value.growth_history,
 			body_temperature: f.value.body_temperature == '' ? null : f.value.body_temperature,
 			breathe: f.value.breathe,
 			blood_pressure: f.value.blood_pressure,

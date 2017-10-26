@@ -77,8 +77,22 @@
 						<div class="pure-u-8-24"></div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
-								<label for="topic_comment">主诉（最多200字）：</label>
+								<div class="flex">
+									<label for="topic_comment">主诉（最多200字）：</label>
+									<select name="cprtemplateList" [(ngModel)]="cprtemplate" (change)="changeCprtemplate()" class="w210p">
+										<option value="">请选择主诉模板</option>
+										<ng-container *ngFor="let cprtemplate of cprtemplateList">
+											<option value="{{cprtemplate.string}}">{{cprtemplate.action}}</option>
+										</ng-container>
+									</select>
+								</div>
 								<textarea id="topic_comment" maxlength="200" name="topic_comment" #topic_comment="ngModel" [(ngModel)]="info.topic_comment" class="min"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="check_result">检查结果：</label>
+								<textarea id="check_result" maxlength="200" name="check_result" #check_result="ngModel" [(ngModel)]="info.check_result" class="min"></textarea>
 							</div>
 						</div>
 						<div class="pure-u-24-24">
@@ -93,15 +107,43 @@
 								<textarea id="previous_history" maxlength="200" name="previous_history" #previous_history="ngModel" [(ngModel)]="info.previous_history" class="min"></textarea>
 							</div>
 						</div>
-					</div>
-					<div class="bg-title mt10">体格检查</div>
-					<div class="pure-g">
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="allergy">过敏史（食物、药物及其他，最多200字）：</label>
 								<textarea id="allergy" maxlength="200" name="allergy" #allergy="ngModel" [(ngModel)]="info.allergy" class="min"></textarea>
 							</div>
 						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="family_history">家族史：</label>
+								<textarea id="family_history" maxlength="200" name="family_history" #family_history="ngModel" [(ngModel)]="info.family_history" class="min"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="breed_history">孕育史：</label>
+								<textarea id="breed_history" maxlength="200" name="breed_history" #breed_history="ngModel" [(ngModel)]="info.breed_history" class="min"></textarea>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div class="pure-control-group">
+								<label for="growth_history">生长发育史：</label>
+								<textarea id="growth_history" maxlength="200" name="growth_history" #growth_history="ngModel" [(ngModel)]="info.growth_history" class="min"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="bg-title mt10 flex cursor-p" (click)="changeExamination()">
+						<span class="flex-1">体格检查详情</span>
+						<span *ngIf="!showExamination">
+							隐藏
+							<i class="icon-chevron-down"></i>
+						</span>
+						<span *ngIf="showExamination">
+							展开
+							<i class="icon-chevron-right"></i>
+						</span>
+					</div>
+					<div *ngIf="showExamination" class="pure-g">
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="body_temperature">体温（T、°C）：</label>
@@ -151,88 +193,18 @@
 							</div>
 						</div>
 					</div>
-					<div class="bg-title mt10">检测项目</div>
+					<ng-container *ngIf="info.checkList.length > 0">
+						<div class="bg-title mt10">检测项目</div>
+						<div class="pure-g">
+							<div *ngFor="let check of info.checkList" class="pure-u-24-24">
+								<div class="pure-control-group">
+									<label for="diagnosis">{{check.checkName}}</label>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+					<div class="bg-title mt10">诊疗记录</div>
 					<div class="pure-g">
-						<div class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="blood_routine_examination">血常规（最多50字）：</label>
-								<div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('正常', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '正常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">正常</div>
-									</div>
-									<div class="radio mr10 flex" (click)="changeRedio('贫血', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '贫血'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">贫血</div>
-									</div>
-									<div class="radio mr10 flex" (click)="changeRedio('白细胞高值', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '白细胞高值'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">白细胞高值</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'blood_routine_examination_other')">
-										<textarea maxlength="50" name="blood_routine_examination_other" #blood_routine_examination_other="ngModel" [(ngModel)]="info.blood_routine_examination_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="routine_urine">尿常规（最多50字）：</label>
-								<div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('正常', 'routine_urine')" [ngClass]="{'active': info.routine_urine == '正常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">正常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'routine_urine_other')">
-										<textarea maxlength="50" name="routine_urine_other" #routine_urine_other="ngModel" [(ngModel)]="info.routine_urine_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="bone_density">骨密度：</label>
-								<div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('正常', 'bone_density')" [ngClass]="{'active': info.bone_density == '正常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">正常</div>
-									</div>
-									<div class="radio mr10 flex" (click)="changeRedio('钙缺乏', 'bone_density')" [ngClass]="{'active': info.bone_density == '钙缺乏'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">钙缺乏</div>
-									</div>
-									<div class="flex-1"></div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="BALP">骨碱性磷酸酶（锌元素缺乏会影响准确性，最多50字）：</label>
-								<div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('正常', 'BALP')" [ngClass]="{'active': info.BALP == '正常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">正常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'BALP_other')">
-										<textarea maxlength="50" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="trace_element">微量元素（最多50字）：</label>
-								<div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('正常', 'trace_element')" [ngClass]="{'active': info.trace_element == '正常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">正常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'trace_element_other')">
-										<textarea maxlength="50" name="trace_element_other" #trace_element_other="ngModel" [(ngModel)]="info.trace_element_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="diagnosis">诊断（最多200字）：</label>
