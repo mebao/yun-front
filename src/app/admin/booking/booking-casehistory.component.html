@@ -195,10 +195,10 @@
 					</div>
 					<ng-container *ngIf="info.checkList.length > 0">
 						<div class="bg-title mt10">检测项目</div>
-						<div class="pure-g">
-							<div *ngFor="let check of info.checkList" class="pure-u-24-24">
+						<div class="flex flex-wrap">
+							<div *ngFor="let check of info.checkList" class="mr20">
 								<div class="pure-control-group">
-									<label for="diagnosis">{{check.checkName}}</label>
+									<label>{{check.checkName}}</label>
 								</div>
 							</div>
 						</div>

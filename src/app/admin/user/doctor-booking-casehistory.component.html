@@ -131,8 +131,18 @@
 									</div>
 								</div>
 								<div class="section">
-									<div class="title">体格检查</div>
-									<div class="pure-g">
+									<div class="title flex cursor-p" (click)="changeExamination()">
+										<span class="flex-1">体格检查</span>
+										<span *ngIf="!showExamination">
+											隐藏
+											<i class="icon-chevron-down"></i>
+										</span>
+										<span *ngIf="showExamination">
+											展开
+											<i class="icon-chevron-right"></i>
+										</span>
+									</div>
+									<div *ngIf="showExamination" class="pure-g">
 										<div class="pure-u-8-24 info flex">
 											<label class="w150p">体温：</label>
 											<div class="flex-1">{{casehistory.bodyTemperature}}</div>
@@ -169,33 +179,11 @@
 								</div>
 								<div *ngIf="casehistory.checkList.length > 0" class="section">
 									<div class="title">检测项目</div>
-									<div class="pure-g">
-										<div *ngFor="let check of casehistory.checkList" class="pure-u-24-24 info">
-											<label class="w150p">{{check.checkName}}</label>
+									<div class="flex flex-wrap">
+										<div *ngFor="let check of casehistory.checkList" class="mr20 info">
+											<label>{{check.checkName}}</label>
 										</div>
 									</div>
-									<!-- <div class="pure-g">
-										<div class="pure-u-24-24 info flex">
-											<label class="w150p">血常规：</label>
-											<div class="flex-1">{{casehistory.bloodRoutineExamination}}</div>
-										</div>
-										<div class="pure-u-24-24 info flex">
-											<label class="w150p">尿常规：</label>
-											<div class="flex-1">{{casehistory.routineUrine}}</div>
-										</div>
-										<div class="pure-u-24-24 info flex">
-											<label class="w150p">骨密度：</label>
-											<div class="flex-1">{{casehistory.boneDensity}}</div>
-										</div>
-										<div class="pure-u-24-24 info flex">
-											<label class="w150p">骨碱性磷酸酶：</label>
-											<div class="flex-1">{{casehistory.BALP}}</div>
-										</div>
-										<div class="pure-u-24-24 info flex">
-											<label class="w150p">微量元素：</label>
-											<div class="flex-1">{{casehistory.traceElement}}</div>
-										</div>
-									</div> -->
 								</div>
 								<div class="section">
 									<div class="title">诊疗记录</div>

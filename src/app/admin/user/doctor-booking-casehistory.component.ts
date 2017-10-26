@@ -63,6 +63,8 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	prescription: string;
 	// pageType 空为医生接诊， history为查看
 	pageType: string;
+	// 体格检查
+	showExamination: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -146,6 +148,8 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 			}
 		};
 
+		this.showExamination = false;
+
 		//获取医生信息
 		var urlDoctor = this.url + '&id=' + this.doctorId;
 		this.adminService.adminlist(urlDoctor).then((data) => {
@@ -227,6 +231,11 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		}else{
 			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
 		}
+	}
+
+	// 体格检查
+	changeExamination() {
+		this.showExamination = !this.showExamination;
 	}
 
 	//新增病例
