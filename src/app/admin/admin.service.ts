@@ -1050,8 +1050,12 @@ export class AdminService{
 
 	// 日期格式转换
 	dateFormat(date) {
-		var dateArray = date.split('-');
-		return dateArray[0] + '年' + dateArray[1] + '月' + dateArray[2] + '日';
+		if(!this.isFalse(date)){
+			var dateArray = date.split('-');
+			return dateArray[0] + '年' + dateArray[1] + '月' + dateArray[2] + '日';
+		}else{
+			return '';
+		}
 	}
 
 	// 日期转换
