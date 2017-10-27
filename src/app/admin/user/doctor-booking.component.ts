@@ -685,6 +685,16 @@ export class DoctorBookingComponent implements OnInit{
 		});
 	}
 
+	//删除辅助检查
+	deleteAssist(_id) {
+		this.selector = {
+			id: _id,
+			text: '确认删除该辅助检查',
+			type: 'assist',
+		}
+		this.modalConfirmTab = true;
+	}
+
 	//修改药方
 	updatePrescript(info) {
 		sessionStorage.setItem('prescript', JSON.stringify(info));
@@ -743,6 +753,22 @@ export class DoctorBookingComponent implements OnInit{
 						check: '',
 						editType: '',
 					}
+				}
+			});
+		}else if(this.selector.type == 'assist'){
+			// 删除辅助检查
+			var deleteAssistUrl = this.selector.id + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token
+				 + '&booking_id=' + this.id;
+			this.adminService.deleteassist(deleteAssistUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					this.toastTab('辅助检查删除成功', '');
+					this.getBookingAssistData();
+					//清空辅助检查信息
+					this.removeAssist();
+					this.getBookingData();
 				}
 			});
 		}

@@ -101,7 +101,33 @@ export class InspectResultsListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.userCheckList = results.list;
+				var newList = [];
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						// 判断该bookingId是否已经存在
+						if(newList.length > 0){
+							var hasBoolean = false;
+							for(var j = 0; j < newList.length; j++){
+								if(results.list[i].bookingId == newList[j].bookingId){
+									hasBoolean = true;
+									newList[j].infoList.push(results.list[i]);
+								}
+							}
+							if(!hasBoolean){
+								newList.push({
+									bookingId: results.list[i].bookingId,
+									infoList: [results.list[i]],
+								});
+							}
+						}else{
+							newList.push({
+								bookingId: results.list[i].bookingId,
+								infoList: [results.list[i]],
+							});
+						}
+					}
+				}
+				this.userCheckList = newList;
 				this.hasData = true;
 			}
 		});

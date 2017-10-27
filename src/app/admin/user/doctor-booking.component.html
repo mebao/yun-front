@@ -192,6 +192,7 @@
 											<ng-container *ngIf="booking.status != '5'">
 												<ng-container *ngIf="canEdit">
 													<button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" class="pure-button pure-button-primary">修改</button>
+														<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" class="pure-button button-error">删除</button>
 													<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" class="pure-button">取消</button>
 													<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary">保存</button>
 												</ng-container>

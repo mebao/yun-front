@@ -982,6 +982,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 删除预约的辅助项目
+	private deleteassistUrl = this.url + '/mebcrm/deleteassist/';
+	deleteassist(urlOptions): Promise<Data>{
+		return this.http.delete(this.deleteassistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

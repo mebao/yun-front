@@ -13,7 +13,7 @@
 									<label for="name">
 										<span>角色名</span>
 									</label>
-									<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="roleInfo.name" placeholder="请输入会员名" required="">
+									<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="roleInfo.name" placeholder="请输入角色名" required="">
 									<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
 										<div [hidden]="!name.errors.required">
 											角色名不可为空

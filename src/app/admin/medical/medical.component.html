@@ -75,7 +75,7 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="usage">
-									<span>一般用法（做多500字）</span>
+									<span>一般用法（最多500字）</span>
 								</label>
 								<textarea id="usage" name="usage" maxlength="500" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
 								<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">

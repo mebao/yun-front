@@ -175,11 +175,19 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		height: 130px;
 		overflow-x: hidden;
 		overflow-y: auto;
+        &.max{
+            height: 180px;
+        }
         .icon{
             background-color: #efefef;
             color: #39A99D;
             padding: 0 10px;
             border-radius: 5px;
+        }
+        .red{
+            .icon{
+	            color: #D45D5D;
+            }
         }
 	}
 	.edit{

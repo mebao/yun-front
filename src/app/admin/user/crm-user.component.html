@@ -6,163 +6,147 @@
 			<top-bar [data]="topBar"></top-bar>
 			<form #f="ngForm" class="pure-form pure-form-stacked form-tab pure-tab">
 				<fieldset>
-					<div class="flex">
-						<div class="w90p mr10 mt10">
-							<a class="upload-tab">
-								<img id="imgEle" src="../assets/images/img.png">
-								<input type="hidden" id="file" name="file" ngModel>
-								<input class="upload" type="file" (change)="selectedFile($event)">
-							</a>
+					<div class="pure-g">
+						<div class="pure-u-1-5">
+							<div class="flex">
+								<div class="w90p mr10 mt10">
+									<a class="upload-tab">
+										<img id="imgEle" src="../assets/images/img.png">
+										<input type="hidden" id="file" name="file" ngModel>
+										<input class="upload" type="file" (change)="selectedFile($event)">
+									</a>
+								</div>
+								<div class="flex-1"></div>
+							</div>
 						</div>
-						<div class="flex-1">
-							<div class="pure-g">
-								<div class="pure-u-8-24">
-									<div class="pure-control-group">
-										<label for="mobile">
-											<span>手机号码(默认为账号密码)</span>
-											<span class="required">*</span>
-										</label>
-										<input type="text" id="mobile" class="form-control" required minlength="11" maxlength="11" name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel"  placeholder="请输入电话号码">
-										<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
-										    <div [hidden]="!mobile.errors.required">
-										    	手机号码不可为空
-										    </div>
-										    <div [hidden]="!mobile.errors.minlength">
-										    	手机号码至少11位
-										    </div>
-										    <div [hidden]="!mobile.errors.maxlength">
-										    	手机号码最多11位
-										    </div>
-										</div>
-									</div>
+						<div class="pure-u-3-5">
+							<div class="pure-control-group">
+								<label for="mobile">
+									<span>手机号码(默认为账号密码)</span>
+									<span class="required">*</span>
+								</label>
+								<input type="text" id="mobile" class="form-control" required minlength="11" maxlength="11" name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel"  placeholder="请输入电话号码">
+								<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
+								    <div [hidden]="!mobile.errors.required">
+								    	手机号码不可为空
+								    </div>
+								    <div [hidden]="!mobile.errors.minlength">
+								    	手机号码至少11位
+								    </div>
+								    <div [hidden]="!mobile.errors.maxlength">
+								    	手机号码最多11位
+								    </div>
 								</div>
-								<div class="pure-u-8-24">
-									<div class="pure-control-group">
-										<label for="user_name">
-											<span>用户名(用作登陆,只能由字母、数字和下划线组成,最多18位)</span>
-											<span class="required">*</span>
-										</label>
-										<input id="user_name" type="text" maxlength="18" name="user_name" [(ngModel)]="user.user_name" #user_name="ngModel" placeholder="请输入用户名" required="" [disabled]="editType == 'update'">
-										<div *ngIf="user_name.errors && (user_name.dirty || user_name.touched)" class="alert alert-danger">
-										    <div [hidden]="!user_name.errors.required">
-										    	用户名不可为空
-										    </div>
-										</div>
-									</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="user_name">
+									<span>用户名(用作登陆,只能由字母、数字和下划线组成,最多18位)</span>
+									<span class="required">*</span>
+								</label>
+								<input id="user_name" type="text" maxlength="18" name="user_name" [(ngModel)]="user.user_name" #user_name="ngModel" placeholder="请输入用户名" required="" [disabled]="editType == 'update'">
+								<div *ngIf="user_name.errors && (user_name.dirty || user_name.touched)" class="alert alert-danger">
+								    <div [hidden]="!user_name.errors.required">
+								    	用户名不可为空
+								    </div>
 								</div>
-								<div class="pure-u-8-24">
-									<div class="pure-control-group">
-										<label for="real_name">
-											<span>真实姓名</span>
-											<span class="required">*</span>
-										</label>
-										<input id="real_name" type="text" name="real_name" [(ngModel)]="user.real_name" #real_name="ngModel" placeholder="请输入真实姓名" required="">
-										<div *ngIf="real_name.errors && (real_name.dirty || real_name.touched)" class="alert alert-danger">
-										    <div [hidden]="!real_name.errors.required">
-										    	真实姓名不可为空
-										    </div>
-										</div>
-									</div>
+							</div>
+							<div class="pure-control-group">
+								<label for="real_name">
+									<span>真实姓名</span>
+									<span class="required">*</span>
+								</label>
+								<input id="real_name" type="text" name="real_name" [(ngModel)]="user.real_name" #real_name="ngModel" placeholder="请输入真实姓名" required="">
+								<div *ngIf="real_name.errors && (real_name.dirty || real_name.touched)" class="alert alert-danger">
+								    <div [hidden]="!real_name.errors.required">
+								    	真实姓名不可为空
+								    </div>
 								</div>
-								<div *ngIf="editType == 'create'" class="pure-u-8-24">
-									<div class="pure-control-group">
-										<label for="role">
-											<span>类型</span>
-											<span class="required">*</span>
-										</label>
-										<select id="role" name="role" [(ngModel)]="user.role" #role="ngModel" (change)="roleChange($event.target.value)" required="">
-											<ng-container *ngFor="let role of roles">
-												<option value="{{role.id}}">{{role.name}}</option>
-											</ng-container>
-										</select>
-										<div *ngIf="role.errors && (role.dirty || role.touched)" class="alert alert-danger">
-										    <div [hidden]="!role.errors.required">
-										    	类型不可为空
-										    </div>
-										</div>
-									</div>
+							</div>
+							<div *ngIf="editType == 'create'" class="pure-control-group">
+								<label for="role">
+									<span>类型</span>
+									<span class="required">*</span>
+								</label>
+								<select id="role" name="role" [(ngModel)]="user.role" #role="ngModel" (change)="roleChange($event.target.value)" required="">
+									<ng-container *ngFor="let role of roles">
+										<option value="{{role.id}}">{{role.name}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="role.errors && (role.dirty || role.touched)" class="alert alert-danger">
+								    <div [hidden]="!role.errors.required">
+								    	类型不可为空
+								    </div>
 								</div>
-								<div class="pure-u-8-24">
-									<div *ngIf="user.role != '9'" class="pure-control-group">
-										<label for="clinic_role">
-											<span>角色</span>
-											<span class="required">*</span>
-										</label>
-										<select id="clinic_role" name="clinic_role" [(ngModel)]="user.clinic_role" #clinic_role="ngModel" required>
-											<ng-container *ngFor="let clinicRole of clinicRoleList">
-												<option value="{{clinicRole.string}}">{{clinicRole.name}}</option>
-											</ng-container>
-										</select>
-										<div *ngIf="clinic_role.errors && (clinic_role.dity || clinic_role.touched)" class="alert alert-danger">
-											<div [hidden]="!clinic_role.errors.required">
-												角色不可为空
-											</div>
-										</div>
+							</div>
+							<div *ngIf="user.role != '9'" class="pure-control-group">
+								<label for="clinic_role">
+									<span>角色</span>
+									<span class="required">*</span>
+								</label>
+								<select id="clinic_role" name="clinic_role" [(ngModel)]="user.clinic_role" #clinic_role="ngModel" required>
+									<ng-container *ngFor="let clinicRole of clinicRoleList">
+										<option value="{{clinicRole.string}}">{{clinicRole.name}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="clinic_role.errors && (clinic_role.dity || clinic_role.touched)" class="alert alert-danger">
+									<div [hidden]="!clinic_role.errors.required">
+										角色不可为空
 									</div>
 								</div>
 							</div>
-							<div class="pure-g">
-								<div class="pure-u-8-24">
-									<div class="pure-control-group" *ngIf="addDoctor">
-										<label for="gender">
-											<span>性别</span>
-											<span class="required">*</span>
-										</label>
-										<select id="gender" name="gender" [(ngModel)]="user.gender" #gender="ngModel" required="">
-											<option value="M">男</option>
-											<option value="F">女</option>
-										</select>
-										<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
-										    <div [hidden]="!gender.errors.required">
-										    	性别不可为空
-										    </div>
-										</div>
-									</div>
-								</div>
-								<div class="pure-u-8-24">
-									<div class="pure-control-group" *ngIf="addDoctor">
-										<label for="academical_title">
-											<span>学术职称</span>
-											<span class="required">*</span>
-										</label>
-										<select id="academical_title" name="academical_title" [(ngModel)]="user.academical_title" #academical_title="ngModel" required="">
-											<ng-container *ngFor="let academic of academicTitle">
-												<option value="{{academic.id}}">{{academic.name}}</option>
-											</ng-container>
-										</select>
-										<div *ngIf="academical_title.errors && (academical_title.dirty || academical_title.touched)" class="alert alert-danger">
-										    <div [hidden]="!academical_title.errors.required">
-										    	学术职称不可为空
-										    </div>
-										</div>
-									</div>
-								</div>
-								<div class="pure-u-8-24">
-									<div class="pure-control-group" *ngIf="addDoctor">
-										<label for="clinical_title">
-											<span>医生职称</span>
-											<span class="required">*</span>
-										</label>
-										<select id="clinical_title" name="clinical_title" [(ngModel)]="user.clinical_title" #clinical_title="ngModel" required="">
-											<ng-container *ngFor="let clinical of clinicalTitle">
-												<option value="{{clinical.id}}">{{clinical.name}}</option>
-											</ng-container>
-										</select>
-										<div *ngIf="clinical_title.errors && (clinical_title.dirty || clinical_title.touched)" class="alert alert-danger">
-										    <div [hidden]="!clinical_title.errors.required">
-										    	医生职称不可为空
-										    </div>
-										</div>
-									</div>
-								</div>
-								<div class="pure-u-8-24">
-									<div class="pure-control-group" *ngIf="addDoctor">
-										<label for="description">医生简介（最多500字）</label>
-										<textarea maxlength="500" id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
-									</div>
+							<div class="pure-control-group" *ngIf="addDoctor">
+								<label for="gender">
+									<span>性别</span>
+									<span class="required">*</span>
+								</label>
+								<select id="gender" name="gender" [(ngModel)]="user.gender" #gender="ngModel" required="">
+									<option value="M">男</option>
+									<option value="F">女</option>
+								</select>
+								<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
+								    <div [hidden]="!gender.errors.required">
+								    	性别不可为空
+								    </div>
 								</div>
 							</div>
+							<div class="pure-control-group" *ngIf="addDoctor">
+								<label for="academical_title">
+									<span>学术职称</span>
+									<span class="required">*</span>
+								</label>
+								<select id="academical_title" name="academical_title" [(ngModel)]="user.academical_title" #academical_title="ngModel" required="">
+									<ng-container *ngFor="let academic of academicTitle">
+										<option value="{{academic.id}}">{{academic.name}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="academical_title.errors && (academical_title.dirty || academical_title.touched)" class="alert alert-danger">
+								    <div [hidden]="!academical_title.errors.required">
+								    	学术职称不可为空
+								    </div>
+								</div>
+							</div>
+							<div class="pure-control-group" *ngIf="addDoctor">
+								<label for="clinical_title">
+									<span>医生职称</span>
+									<span class="required">*</span>
+								</label>
+								<select id="clinical_title" name="clinical_title" [(ngModel)]="user.clinical_title" #clinical_title="ngModel" required="">
+									<ng-container *ngFor="let clinical of clinicalTitle">
+										<option value="{{clinical.id}}">{{clinical.name}}</option>
+									</ng-container>
+								</select>
+								<div *ngIf="clinical_title.errors && (clinical_title.dirty || clinical_title.touched)" class="alert alert-danger">
+								    <div [hidden]="!clinical_title.errors.required">
+								    	医生职称不可为空
+								    </div>
+								</div>
+							</div>
+							<div class="pure-control-group" *ngIf="addDoctor">
+								<label for="description">医生简介（最多500字）</label>
+								<textarea maxlength="500" id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
+							</div>
 						</div>
+						<div class="pure-u-1-5"></div>
 					</div>
 					<div class="text-center">
 						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10">{{editType == 'create' ? '创建' : '修改'}}</button>
