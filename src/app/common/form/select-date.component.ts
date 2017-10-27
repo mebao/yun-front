@@ -7,6 +7,8 @@ import { Component, EventEmitter, Input, Output }                        from '@
 })
 export class SelectDateComponent{
     @Input() title: string;
+    @Input() type: string;
+	@Output() onVoted = new EventEmitter<string>();
     showDateTab: boolean;
     dayList: any[];
     dayInfo: {
@@ -22,6 +24,7 @@ export class SelectDateComponent{
         month: string,
         year: string,
         date: string,
+        dateText: string,
     }
 
     ngOnInit() {
@@ -40,19 +43,22 @@ export class SelectDateComponent{
             month: '',
             year: '',
             date: '',
+            dateText: '',
         }
 
-        this.getYear();
-        this.getMonth();
         if(this.selectInfo.date != ''){
             this.getDate(this.selectInfo.date);
         }else{
             this.getDate(new Date());
         }
+
+        this.getYear();
+        this.getMonth();
     }
 
     getYear() {
-        for(var i = 1949; i < 2050; i++){
+        this.yearList = [];
+        for(var i = Number(this.dayInfo.year) - 4; i < Number(this.dayInfo.year) + 5; i++){
             var year = {
                 key: i,
             }
@@ -67,7 +73,6 @@ export class SelectDateComponent{
             }
             this.monthList.push(month);
         }
-        console.log(this.monthList);
     }
 
     getDate(date){
@@ -82,29 +87,24 @@ export class SelectDateComponent{
             year: nowYear.toString(),
             date: nowYear + '-' + (nowMonth < 10 ? (nowMonth + 1) : nowMonth) + '-' + (nowDay < 10 ? (nowDay + 1) : nowDay),
         }
+        // 重置年份
+        this.getYear();
         this.selectInfo.month = nowMonth.toString();
         this.selectInfo.year = nowYear.toString();
-        console.log(nowYear);
-        console.log(nowMonth);
         // 获取当月第一天
         var nowFirstDay = new Date(nowYear + '-' + nowMonth + '-01');
-        console.log(nowFirstDay);
         // 获取当月第一天，在该周第几天
         var firstDay = (nowFirstDay.getDay() == 0 ? 7 : nowFirstDay.getDay());
         // 获取当月第一天，该周周一日期
         var weekFirst = new Date(nowFirstDay.getTime() - (firstDay - 1) * 24 * 60 * 60 * 1000);
-        console.log(weekFirst);
         // 获取当月最后一天
         var nowLastDay = new Date((nowMonth + 1 > 12 ? (nowYear + 1) : nowYear) + '-' + ((nowMonth + 1) > 12 ? 1 : (nowMonth + 1)) + '-' + '01');
-        console.log(nowLastDay);
         // 获取当月最后一天，在该周第几天
         var lastDay = (nowLastDay.getDay() == 0 ? 7 : nowLastDay.getDay());
         // 获取当月最后一天，该周周日日期
         var weekLast = new Date(nowLastDay.getTime() + (7 - lastDay) * 24 * 60 * 60 * 1000);
-        console.log(weekLast);
         // 需要展示的天数
         var days = (weekLast.getTime() - weekFirst.getTime()) / (24 * 60 * 60 * 1000);
-        console.log(days);
         var dayList = [];
         for(var i = 0; i < days; i++){
             var dayDate = new Date(weekFirst.getTime() + (i * 24 * 60 * 60 * 1000));
@@ -119,7 +119,6 @@ export class SelectDateComponent{
             dayList.push(dayItem);
         }
         this.dayList = dayList;
-        console.log(this.dayList);
     }
 
     changeTab(_value) {
@@ -134,13 +133,14 @@ export class SelectDateComponent{
     selectMonth(_value) {
         this.selectInfo.month = _value;
         this.showTab = 'day';
-        console.log(this.selectInfo);
         this.getDate(this.selectInfo.year + '-' + this.selectInfo.month + '-01');
     }
 
     goDate(type, goType) {
         if(type == 'year'){
-            this.selectInfo.year = (goType == 'plus' ? (Number(this.selectInfo.year) + 1) : (Number(this.selectInfo.year) - 1)).toString();
+            // 展示年是，前后年跨度为9
+            var yearStep = (this.showTab == 'year' ? 9 : 1);
+            this.selectInfo.year = (goType == 'plus' ? (Number(this.selectInfo.year) + yearStep) : (Number(this.selectInfo.year) - yearStep)).toString();
         }else{
             if(goType == 'plus'){
                 this.selectInfo.year = (this.selectInfo.month == '12' ? (Number(this.selectInfo.year) + 1).toString() : this.selectInfo.year);
@@ -154,10 +154,17 @@ export class SelectDateComponent{
     }
 
     selectDay(_value) {
-        console.log(_value);
+		var v = _value.split('-');
+		v = v[0] + '年' + v[1] + '月' + v[2] + '日';
         this.selectInfo.date = _value;
+        this.selectInfo.dateText = v;
         this.showTab = 'day';
         this.showDateTab = false;
+        var returnData = {
+            value: _value,
+            type: this.type,
+        }
+		this.onVoted.emit(JSON.stringify(returnData));
     }
 
     changeDateTab() {

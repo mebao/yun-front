@@ -166,6 +166,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
             width: 170px;
         }
     }
+    .select-date{
+        margin-left: 6px;
+        .title{
+            width: 170px;
+        }
+    }
 }
 
 .card-tab{

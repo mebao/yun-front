@@ -9,7 +9,7 @@
 				<div class="item active">退药</div>
 				<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
 			</div>
-			<div class="pure-form flex mt10">
+			<div class="pure-form flex mt10 search-tab max">
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="is_back">状态：</label>
@@ -20,15 +20,19 @@
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="doctor_name">医生名：</label>
-					<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" class="w100p" placeholder="请输入医生名">
+					<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" placeholder="请输入医生名">
 				</div>
+				<div class="w64p"></div>
+			</div>
+			<div class="pure-form flex mt10 search-tab max">
+				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="user_name">用户名：</label>
-					<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" class="w100p" placeholder="请输入用户名">
+					<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="child_name">宝宝名：</label>
-					<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" class="w100p" placeholder="请输入宝宝名">
+					<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝名">
 				</div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>

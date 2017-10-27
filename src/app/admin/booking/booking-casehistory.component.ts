@@ -59,6 +59,7 @@ export class BookingCasehistoryComponent{
 		prescription: string,
 		advise: string,
 		time: string,
+		timeText: string,
 		checkList: any[],
 	};
 	id: string;
@@ -151,6 +152,7 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: casehistory.advise,
 				time: casehistory.time,
+				timeText: this.adminService.dateFormat(casehistory.time) == '' ? '请输入日期' : this.adminService.dateFormat(casehistory.time),
 				checkList: casehistory.checkList,
 			}
 		}else{
@@ -195,6 +197,7 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: '',
 				time: '',
+				timeText: '请选择日期',
 				checkList: [],
 			}
 		}
@@ -278,6 +281,12 @@ export class BookingCasehistoryComponent{
 		this.showExamination = !this.showExamination;
 	}
 
+	// 日期
+	changeDate(_value) {
+		this.info.time = JSON.parse(_value).value;
+		console.log(this.info);
+	}
+
 	create(f) {
 		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
 			this.toastTab('体重应大于0', 'error');
@@ -357,7 +366,7 @@ export class BookingCasehistoryComponent{
 			trace_element: this.info.trace_element == '' ? this.info.trace_element_other : this.info.trace_element,
 			diagnosis: f.value.diagnosis,
 			advise: f.value.advise,
-			time: f.value.time == '' ? null : f.value.time,
+			time: this.info.time == '' ? null : this.info.time,
 		}
 
 		if(this.editType == 'create'){

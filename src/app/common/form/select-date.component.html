@@ -1,29 +1,37 @@
 <div class="select-date">
-    <div (click)="changeDateTab()">{{this.selectInfo.date == '' ? title : this.selectInfo.date}}</div>
+    <div (click)="changeDateTab()" class="title">{{this.selectInfo.dateText == '' ? title : this.selectInfo.dateText}}</div>
     <div *ngIf="showDateTab" class="modal-date">
         <div (click)="changeDateTab()" class="modal-mask"></div>
         <div class="container">
             <div class="tab-bar flex">
                 <div class="w50 flex">
-                    <div (click)="goDate('year', 'reduce')" class="item w20p">上</div>
+                    <div (click)="goDate('year', 'reduce')" class="item w20p">
+                        <i class="icon-angle-left"></i>
+                    </div>
                     <div (click)="changeTab('year')" class="item flex-1">{{dayInfo.year}}年</div>
-                    <div (click)="goDate('year', 'plus')" class="item w20p">下</div>
+                    <div (click)="goDate('year', 'plus')" class="item w20p">
+                        <i class="icon-angle-right"></i>
+                    </div>
                 </div>
                 <div class="w50 flex">
-                    <div (click)="goDate('month', 'reduce')" class="item w20p">上</div>
+                    <div (click)="goDate('month', 'reduce')" class="item w20p">
+                        <i class="icon-angle-left"></i>
+                    </div>
                     <div (click)="changeTab('month')" class="item flex-1">{{dayInfo.month}}月</div>
-                    <div (click)="goDate('month', 'plus')" class="item w20p">下</div>
+                    <div (click)="goDate('month', 'plus')" class="item w20p">
+                        <i class="icon-angle-right"></i>
+                    </div>
                 </div>
             </div>
             <ng-container *ngIf="showTab == 'year'">
-                <div class="tab-year">
+                <div class="tab-year-month flex flex-wrap">
                     <ng-container *ngFor="let year of yearList">
-                        <div (click)="selectYear(year.key)" class="item" [ngClass]="{'active': year.key == selectInfo.year}">{{year.key}}</div>
+                        <div (click)="selectYear(year.key)" class="item w33" [ngClass]="{'active': year.key == selectInfo.year}">{{year.key}}</div>
                     </ng-container>
                 </div>
             </ng-container>
             <ng-container *ngIf="showTab == 'month'">
-                <div class="tab-month flex flex-wrap">
+                <div class="tab-year-month flex flex-wrap">
                     <ng-container *ngFor="let month of monthList">
                         <div (click)="selectMonth(month.key)" class="item w33" [ngClass]="{'active': month.key == selectInfo.month}">{{month.key}}月</div>
                     </ng-container>

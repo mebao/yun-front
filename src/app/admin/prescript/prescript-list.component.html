@@ -9,41 +9,51 @@
 				<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
 				<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
 			</div>
-			<form #f="ngForm" class="pure-form flex mt10">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="isout">出药：</label>
-					<select id="isout" name="isout" ngModel>
-						<option value=""></option>
-						<option value="">未出药</option>
-						<option value="1">全部</option>
-					</select>
+			<form #f="ngForm" class="pure-form mt10 search-tab max">
+				<div class="flex">
+					<div class="flex-1"></div>
+					<div class="pure-control-group mr10">
+						<label for="isout">出药：</label>
+						<select id="isout" name="isout" ngModel>
+							<option value=""></option>
+							<option value="">未出药</option>
+							<option value="1">全部</option>
+						</select>
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="today">时间：</label>
+						<select id="today" name="today" ngModel>
+							<option value=""></option>
+							<option value="">今天</option>
+							<option value="1">全部</option>
+						</select>
+					</div>
+					<div class="w64p"></div>
 				</div>
-				<div class="pure-control-group mr10">
-					<label for="today">时间：</label>
-					<select id="today" name="today" ngModel>
-						<option value=""></option>
-						<option value="">今天</option>
-						<option value="1">全部</option>
-					</select>
+				<div class="flex">
+					<div class="flex-1"></div>
+					<div class="pure-control-group mr10">
+						<label for="name">药方名：</label>
+						<input type="text" id="name" name="name" ngModel placeholder="请输入药方名">
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="doctor_name">医生名：</label>
+						<input type="text" id="doctor_name" name="doctor_name" ngModel placeholder="请输入医生名">
+					</div>
+					<div class="w64p"></div>
 				</div>
-				<div class="pure-control-group mr10">
-					<label for="name">药方名：</label>
-					<input type="text" id="name" name="name" ngModel class="w100p" placeholder="请输入药方名">
+				<div class="flex">
+					<div class="flex-1"></div>
+					<div class="pure-control-group mr10">
+						<label for="user_name">用户名：</label>
+						<input type="text" id="user_name" name="user_name" ngModel placeholder="请输入用户名">
+					</div>
+					<div class="pure-control-group mr10">
+						<label for="child_name">宝宝名：</label>
+						<input type="text" id="child_name" name="child_name" ngModel placeholder="请输入宝宝名">
+					</div>
+					<button (click)="search(f)" class="pure-button pure-button-primary">搜索</button>
 				</div>
-				<div class="pure-control-group mr10">
-					<label for="doctor_name">医生名：</label>
-					<input type="text" id="doctor_name" name="doctor_name" ngModel class="w100p" placeholder="请输入医生名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="user_name">用户名：</label>
-					<input type="text" id="user_name" name="user_name" ngModel class="w100p" placeholder="请输入用户名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="child_name">宝宝名：</label>
-					<input type="text" id="child_name" name="child_name" ngModel class="w100p" placeholder="请输入宝宝名">
-				</div>
-				<button (click)="search(f)" class="pure-button pure-button-primary">搜索</button>
 			</form>
 			<div class="">
 				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">

@@ -32,11 +32,11 @@
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10">
 					<label for="creator_name">用户名：</label>
-					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" class="w100p" placeholder="请输入用户名">
+					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" placeholder="请输入用户名">
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="mobile">手机号码：</label>
-					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" class="w100p" placeholder="请输入手机号码">
+					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" placeholder="请输入手机号码">
 				</div>
 				<div *ngIf="selectedTab == 1" class="w64p"></div>
 				<button *ngIf="selectedTab == 0" (click)="search()" class="pure-button pure-button-primary">搜索</button>

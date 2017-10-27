@@ -1,4 +1,13 @@
 .select-date{
+    .title{
+        padding: .4em .6em;
+        margin: .25em 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 2.5em;
+        box-shadow: inset 0 1px 3px #ddd;
+        cursor: pointer;
+    }
     .modal-date{
         position: absolute;
         top: 0;
@@ -51,7 +60,7 @@
                     }
                 }
             }
-            .tab-month{
+            .tab-year-month{
                 .item{
                     padding: 10px;
                     text-align: center;

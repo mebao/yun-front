@@ -226,7 +226,7 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="time">就诊日期：</label>
-								<input type="date" id="time" name="time" #time="ngModel" [(ngModel)]="info.time">
+								<select-date title="{{info.timeText}}" type="time" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
 					</div>
