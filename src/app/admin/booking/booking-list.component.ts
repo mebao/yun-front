@@ -27,7 +27,7 @@ export class BookingListComponent implements OnInit{
 	selectedTab: number;
 	url: string;
 	doctorlist: any[];
-	servicelist: [{}];
+	servicelist: any[];
 	searchInfo: {
 		doctor_id: string;
 		service_id: string;
@@ -167,11 +167,8 @@ export class BookingListComponent implements OnInit{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 
-		//week列表
-		this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
-		//booking列表
-		this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
 		this.getDoctorList();
+		this.servicelist = [];
 		this.getServiceList();
 
 		// 获取家长信息
@@ -216,8 +213,19 @@ export class BookingListComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.servicelist.length > 0){
+					for(var i = 0; i < results.servicelist.length; i++){
+						results.servicelist[i].color = this.adminService.colorList()[i % 10];
+						results.servicelist[i].infoList = [];
+					}
+				}
 				this.servicelist = results.servicelist;
-				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
+
+				// 根据服务获取服务颜色
+				//week列表
+				this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
+				//booking列表
+				this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
 			}
 		})
 	}
@@ -281,13 +289,26 @@ export class BookingListComponent implements OnInit{
 							]
 						}
 						for(var j = 0; j < week.timeList.length; j++){
+							// 服务列表
+							var serviceListData = JSON.parse(JSON.stringify(this.servicelist));
+
 							//遍历返回结果，将预约信息添加进timeList
 							for(var k = 0; k < weekbooks.length; k++){
 								if(this.adminService.dateFormat(weekArray[i]) == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
-									weekbooks[k].servicesLength = weekbooks[k].services.length;
-									week.timeList[j].value.push(weekbooks[k]);
+									// weekbooks[k].servicesLength = weekbooks[k].services.length;
+									// week.timeList[j].value.push(weekbooks[k]);
+									// 添加服务列表
+									if(serviceListData.length > 0){
+										for(var m = 0; m < serviceListData.length; m++){
+											if(serviceListData[m].serviceId == weekbooks[k].services[0].serviceId){
+												serviceListData[m].infoList.push(weekbooks[k]);
+											}
+										}
+									}
 								}
 							}
+
+							week.timeList[j].value = serviceListData;
 						}
 						//日期若未过去，则不可修改，只可查看
 						if((new Date(weekArray[i]).getTime() + 24*60*60*1000) < todayTime){

@@ -21,6 +21,7 @@
 				<div class="pure-control-group mr10">
 					<label for="service_id">科室：</label>
 					<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
+						<option value="">请选择科室</option>
 						<ng-container *ngFor="let service of servicelist">
 							<option value="{{service.serviceId}}">{{service.serviceName}}</option>
 						</ng-container>
@@ -67,6 +68,12 @@
 					<button (click)="now()" class="pure-button">本周</button>
 					<button (click)="next()" class="pure-button pure-button-primary next">下一周</button>
 				</div>
+				<div class="color-tab service-tab">
+					<span>科室颜色：</span>
+					<ng-container *ngFor="let serviceItem of servicelist">
+						<span class="item icon" [ngClass]="{'color1': serviceItem.color == 'color1', 'color2': serviceItem.color == 'color2', 'color3': serviceItem.color == 'color3', 'color4': serviceItem.color == 'color4', 'color5': serviceItem.color == 'color5', 'color6': serviceItem.color == 'color6', 'color7': serviceItem.color == 'color7', 'color8': serviceItem.color == 'color8', 'color9': serviceItem.color == 'color9', 'color10': serviceItem.color == 'color10'}">{{serviceItem.serviceName}}</span>
+					</ng-container>
+				</div>
 				<div class="week-tab">
 					<div class="pure-g title-tab">
 						<div class="pure-u-3-24 title"></div>
@@ -75,13 +82,19 @@
 							<div>{{title.title}}</div>
 						</div>
 					</div>
-					<div class="pure-g content-tab">
+					<div class="pure-g content-tab color-tab">
 						<div class="pure-u-3-24 time-tab">
 							<div class="time" *ngFor="let time of timelist">{{time.key}}</div>
 						</div>
 						<div class="pure-u-3-24 info-tab" *ngFor="let week of weeklist">
 							<div class="info text-center" *ngFor="let time of week.timeList">
-								<span (click)="show(time.value, week.use)" *ngIf="time.value.length > 0" class="num">{{time.value.length}}人</span>
+								<ng-container *ngFor="let serviceItem of time.value">
+									<span
+									(click)="show(serviceItem.infoList, week.use)"
+									*ngIf="serviceItem.infoList.length > 0"
+									class="num"
+									[ngClass]="{'color1': serviceItem.color == 'color1', 'color2': serviceItem.color == 'color2', 'color3': serviceItem.color == 'color3', 'color4': serviceItem.color == 'color4', 'color5': serviceItem.color == 'color5', 'color6': serviceItem.color == 'color6', 'color7': serviceItem.color == 'color7', 'color8': serviceItem.color == 'color8', 'color9': serviceItem.color == 'color9', 'color10': serviceItem.color == 'color10'}">{{serviceItem.infoList.length}}</span>
+								</ng-container>
 							</div>
 						</div>
 					</div>
