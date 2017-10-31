@@ -6,9 +6,9 @@
 			<top-bar [data]="topBar"></top-bar>
 			<div class="flex pure-form search-tab max">
 				<div class="flex-1">
-					<button *ngIf="moduleAuthority.add" (click)="create()" class="pure-button pure-button-primary">新增预约</button>
-					<button (click)="checkTab(0)" class="pure-button pure-button-primary">日历</button>
-					<button (click)="checkTab(1)" class="pure-button pure-button-primary">列表</button>
+					<button *ngIf="moduleAuthority.add" (click)="create()" class="pure-button pure-button-primary create">新增预约</button>
+					<button (click)="checkTab(0)" class="pure-button pure-button-primary date">日历</button>
+					<button (click)="checkTab(1)" class="pure-button pure-button-primary list">列表</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="doctor_id">医生：</label>
@@ -28,15 +28,11 @@
 				</div>
 				<div class="w64p"></div>
 			</div>
-			<div class="flex pure-form search-tab max">
+			<div class="flex pure-form search-tab mt5">
 				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="creator_name">用户名：</label>
-					<input type="text" id="creator_name" name="creator_name" [(ngModel)]="searchInfo.creator_name" placeholder="请输入用户名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="mobile">手机号码：</label>
-					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" placeholder="请输入手机号码">
+				<div class="pure-control-group mr10 flex">
+					<label for="creator_name">家长姓名或手机号码：</label>
+					<select-search [title]="'请选择家长姓名或手机号码'" [selectList]="userList" (onVoted)="selectUser($event)"></select-search>
 				</div>
 				<div *ngIf="selectedTab == 1" class="w64p"></div>
 				<button *ngIf="selectedTab == 0" (click)="search()" class="pure-button pure-button-primary">搜索</button>
@@ -67,9 +63,9 @@
 			</div>
 			<div class="weeklist" *ngIf="selectedTab == 0">
 				<div class="pb10 mt10">
-					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+					<button (click)="prec()" class="pure-button pure-button-primary prec">上一周</button>
+					<button (click)="now()" class="pure-button">本周</button>
+					<button (click)="next()" class="pure-button pure-button-primary next">下一周</button>
 				</div>
 				<div class="week-tab">
 					<div class="pure-g title-tab">

@@ -68,6 +68,8 @@ export class BookingListComponent implements OnInit{
 		text: string,
 	}
 	hasData: boolean;
+	// 家长
+	userList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -171,6 +173,24 @@ export class BookingListComponent implements OnInit{
 		this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
 		this.getDoctorList();
 		this.getServiceList();
+
+		// 获取家长信息
+		this.userList = [];
+		this.adminService.searchuser(this.url).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.users.length > 0){
+					for(var i = 0; i < results.users.length; i++){
+						results.users[i].string = JSON.stringify(results.users[i]);
+						results.users[i].key = JSON.stringify(results.users[i]);
+						results.users[i].value = results.users[i].name + '(' + results.users[i].mobile + ')';
+					}
+				}
+				this.userList = results.users;
+			}
+		});
 	}
 
 	//医生列表
@@ -197,7 +217,7 @@ export class BookingListComponent implements OnInit{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.servicelist = results.servicelist;
-				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择服务'});
+				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
 		})
 	}
@@ -319,6 +339,10 @@ export class BookingListComponent implements OnInit{
 		var urlOptions = this.getUrlOptios();
 		urlOptions += '&weekindex=' + this.weekNum;
 		this.getList(urlOptions, 'week');
+	}
+
+	selectUser(_value) {
+		this.searchInfo.mobile = JSON.parse(_value).mobile;
 	}
 
 	//查询
