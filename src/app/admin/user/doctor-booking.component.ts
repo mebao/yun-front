@@ -100,7 +100,7 @@ export class DoctorBookingComponent implements OnInit{
 	followupsList: any[];
 	// pageType 空为医生接诊，history为查看
 	pageType: string;
-	// 辅助项目
+	// 辅助治疗
 	assistProjects: any[];
 	assistList: any[];
 	hasAssistData: boolean;
@@ -233,7 +233,7 @@ export class DoctorBookingComponent implements OnInit{
 			}
 		});
 
-		// 辅助项目
+		// 辅助治疗
 		this.assistProjects = [];
 		this.adminService.searchassist(this.url).then((data) => {
 			if(data.status == 'no'){
@@ -248,7 +248,7 @@ export class DoctorBookingComponent implements OnInit{
 				this.assistProjects = results.list;
 			}
 		});
-		// 预约辅助项目
+		// 预约辅助治疗
 		this.hasAssistData = false;
 		this.assistList = [];
 		this.addAssistInfo = {
@@ -572,7 +572,7 @@ export class DoctorBookingComponent implements OnInit{
 		})
 	}
 
-	// 辅助项目
+	// 辅助治疗
 	getBookingAssistData() {
 		var assistUrl = this.url + '&booking_id=' + this.id;
 		this.adminService.bookingassist(assistUrl).then((data) => {
@@ -635,7 +635,7 @@ export class DoctorBookingComponent implements OnInit{
 	editAssist() {
 		if(this.addAssistInfo.editType == 'add'){
 			if(this.adminService.isFalse(this.addAssistInfo.project)){
-				this.toastTab('辅助项目不可为空', 'error');
+				this.toastTab('辅助治疗不可为空', 'error');
 				return;
 			}
 		}else{
@@ -674,9 +674,9 @@ export class DoctorBookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				if(this.addAssistInfo.editType == 'update'){
-					this.toastTab('辅助项目修改成功', '');
+					this.toastTab('辅助治疗修改成功', '');
 				}else{
-					this.toastTab('辅助项目添加成功', '');
+					this.toastTab('辅助治疗添加成功', '');
 				}
 				this.removeAssist();
 				this.getBookingAssistData();
@@ -685,11 +685,11 @@ export class DoctorBookingComponent implements OnInit{
 		});
 	}
 
-	//删除辅助检查
+	//删除辅助治疗
 	deleteAssist(_id) {
 		this.selector = {
 			id: _id,
-			text: '确认删除该辅助检查',
+			text: '确认删除该辅助治疗',
 			type: 'assist',
 		}
 		this.modalConfirmTab = true;
@@ -756,7 +756,7 @@ export class DoctorBookingComponent implements OnInit{
 				}
 			});
 		}else if(this.selector.type == 'assist'){
-			// 删除辅助检查
+			// 删除辅助治疗
 			var deleteAssistUrl = this.selector.id + '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
 				 + '&booking_id=' + this.id;
@@ -764,9 +764,9 @@ export class DoctorBookingComponent implements OnInit{
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
-					this.toastTab('辅助检查删除成功', '');
+					this.toastTab('辅助治疗删除成功', '');
 					this.getBookingAssistData();
-					//清空辅助检查信息
+					//清空辅助治疗信息
 					this.removeAssist();
 					this.getBookingData();
 				}

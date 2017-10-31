@@ -6,11 +6,11 @@
 			<top-bar [data]="topBar"></top-bar>
 			<div class="info-tab">
 				<div class="item flex">
-					<label>预约人</label>
+					<label>家长姓名</label>
 					<div class="info">{{bookingInfo.creatorName}}</div>
 				</div>
 				<div class="item flex">
-					<label>姓名</label>
+					<label>宝宝姓名</label>
 					<div class="info">{{bookingInfo.childName}}</div>
 				</div>
 				<div class="item flex">
@@ -91,7 +91,7 @@
 											<span class="required">*</span>
 										</label>
 										<div class="flex flex-tab">
-											<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" #one_num_{{ms.key}}="ngModel" placeholder="请输入单次剂量" [disabled]="secondType != ''">
+											<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" #one_num_{{ms.key}}="ngModel" [disabled]="secondType != ''">
 											<select disabled="">
 												<option>{{ms.ms.oneUnit}}</option>
 											</select>

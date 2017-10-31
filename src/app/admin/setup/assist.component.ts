@@ -35,7 +35,7 @@ export class AssistComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '辅助项目',
+			title: '辅助治疗',
 			back: true,
 		}
 		this.toast = {
@@ -108,19 +108,19 @@ export class AssistComponent{
 
     create() {
         if(this.adminService.isFalse(this.info.name)){
-            this.toastTab('辅助项目名不可为空', 'error');
+            this.toastTab('辅助治疗名不可为空', 'error');
             return;
         }
         if(this.adminService.isFalse(this.info.type)){
-            this.toastTab('辅助项目类型不可为空', 'error');
+            this.toastTab('辅助治疗类型不可为空', 'error');
             return;
         }
         if(this.adminService.isFalse(this.info.price)){
-            this.toastTab('辅助项目价格不可为空', 'error');
+            this.toastTab('辅助治疗价格不可为空', 'error');
             return;
         }
         if(parseFloat(this.info.price) < 0){
-            this.toastTab('辅助项目价格应大于0', 'error');
+            this.toastTab('辅助治疗价格应大于0', 'error');
             return;
         }
 
@@ -138,7 +138,7 @@ export class AssistComponent{
             if(data.status == 'no'){
                 this.toastTab(data.errorMsg, 'error');
             }else{
-                this.toastTab(this.editType == 'update' ? '辅助项目修改成功' : '辅助项目创建成功', '');
+                this.toastTab(this.editType == 'update' ? '辅助治疗修改成功' : '辅助治疗创建成功', '');
                 setTimeout(() => {
                     this.router.navigate(['./admin/assistList']);
                 }, 2000);

@@ -44,18 +44,23 @@ export class BookingPaymentComponent{
 		feeInfo: {
 			serviceFeeList: any[],
 			serviceOriginalFee: string,
+			serviceDiscount: string,
 			serviceFee: string,
 			assistFeeList: any[],
 			assistOriginalFee: string,
+			assistDiscount: string,
 			assistFee: string,
 			checkFeeList: any[],
 			checkOriginalFee: string,
+			checkDiscount: string,
 			checkFee: string,
 			medicalFeeList: any[],
 			medicalOriginalFee: string,
+			medicalDiscount: string,
 			medicalFee: string,
 			otherFeeList: any[],
 			otherOriginalFee: string,
+			otherDiscount: string,
 			otherFee: string,
 		},
 		fee: string,
@@ -107,18 +112,23 @@ export class BookingPaymentComponent{
 			feeInfo: {
 				serviceFeeList: [],
 				serviceOriginalFee: '',
+				serviceDiscount: '',
 				serviceFee: '',
 				assistFeeList: [],
 				assistOriginalFee: '',
+				assistDiscount: '',
 				assistFee: '',
 				checkFeeList: [],
 				checkOriginalFee: '',
+				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: [],
 				medicalOriginalFee: '',
+				medicalDiscount: '',
 				medicalFee: '',
 				otherFeeList: [],
 				otherOriginalFee: '',
+				otherDiscount: '',
 				otherFee: '',
 			},
 			fee: '',
@@ -234,18 +244,23 @@ export class BookingPaymentComponent{
 			feeInfo: {
 				serviceFeeList: results.feeinfo['医生服务费用'],
 				serviceOriginalFee: '',
+				serviceDiscount: '',
 				serviceFee: '',
 				assistFeeList: results.feeinfo['辅助项目费用'],
 				assistOriginalFee: '',
+				assistDiscount: '',
 				assistFee: '',
 				checkFeeList: results.feeinfo['检查项目费用'],
 				checkOriginalFee: '',
+				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: results.feeinfo['药方药品费用'],
 				medicalOriginalFee: '',
+				medicalDiscount: '',
 				medicalFee: '',
 				otherFeeList: results.feeinfo['其他费用'],
 				otherOriginalFee: '',
+				otherDiscount: '',
 				otherFee: '',
 			},
 			fee: '',
@@ -271,6 +286,7 @@ export class BookingPaymentComponent{
 		originalCost += parseFloat(this.adminService.toDecimal2(originalServiceFee));
 		this.fee.feeInfo.serviceFee = this.adminService.toDecimal2(serviceFee);
 		this.fee.feeInfo.serviceOriginalFee = this.adminService.toDecimal2(originalServiceFee);
+		this.fee.feeInfo.serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceOriginalFee) - parseFloat(this.fee.feeInfo.serviceFee));
 		// 辅助项目
 		var assistFee = 0;
 		var originalAssistFee = 0;
@@ -285,6 +301,7 @@ export class BookingPaymentComponent{
 		originalCost += parseFloat(this.adminService.toDecimal2(originalAssistFee));
 		this.fee.feeInfo.assistFee = this.adminService.toDecimal2(assistFee);
 		this.fee.feeInfo.assistOriginalFee = this.adminService.toDecimal2(originalAssistFee);
+		this.fee.feeInfo.assistDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.assistOriginalFee) - parseFloat(this.fee.feeInfo.assistFee));
 		//检查
 		var checkFee = 0;
 		var originalCheckFee = 0;
@@ -298,6 +315,7 @@ export class BookingPaymentComponent{
 		originalCost += parseFloat(this.adminService.toDecimal2(originalCheckFee));
 		this.fee.feeInfo.checkFee = this.adminService.toDecimal2(checkFee);
 		this.fee.feeInfo.checkOriginalFee = this.adminService.toDecimal2(originalCheckFee);
+		this.fee.feeInfo.checkDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.checkOriginalFee) - parseFloat(this.fee.feeInfo.checkFee));
 		//药品
 		var medicalFee = 0;
 		var originalMedicalFee = 0;
@@ -322,6 +340,7 @@ export class BookingPaymentComponent{
 		originalCost += parseFloat(this.adminService.toDecimal2(originalMedicalFee));
 		this.fee.feeInfo.medicalFee = this.adminService.toDecimal2(medicalFee);
 		this.fee.feeInfo.medicalOriginalFee = this.adminService.toDecimal2(originalMedicalFee);
+		this.fee.feeInfo.medicalDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalOriginalFee) - parseFloat(this.fee.feeInfo.medicalFee));
 		//其他
 		var otherFee = 0;
 		var originalOtherFee = 0;
@@ -335,6 +354,7 @@ export class BookingPaymentComponent{
 		originalCost += parseFloat(this.adminService.toDecimal2(originalOtherFee));
 		this.fee.feeInfo.otherFee = this.adminService.toDecimal2(otherFee);
 		this.fee.feeInfo.otherOriginalFee = this.adminService.toDecimal2(originalOtherFee);
+		this.fee.feeInfo.otherDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherOriginalFee) - parseFloat(this.fee.feeInfo.otherFee));
 
 		//判断余额是否足够支付
 		if(fee <= parseFloat(this.userMember.balance)){

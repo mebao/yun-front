@@ -54,7 +54,6 @@
 								<div class="flex-1">
 									<div>{{userCheck.infoList[0].childName}}</div>
 									<div *ngFor="let info of userCheck.infoList" class="flex pt10" [ngClass]="{'red': info.checkDoctorId == null}">
-										<div class="w90p">检查：</div>
 										<div class="flex-1">
 											{{info.checkName}}
 										</div>

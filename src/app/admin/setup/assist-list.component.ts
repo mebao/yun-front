@@ -39,7 +39,7 @@ export class AssistListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '辅助项目列表',
+			title: '辅助治疗列表',
 			back: false,
 		}
 		this.toast = {

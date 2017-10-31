@@ -49,7 +49,7 @@
 						</div>
 						<div *ngIf="baseInfo.medium_height != null" class="pure-u-8-24">
 							<div class="pure-control-group">
-								<label for="medium_height">身高同年龄中等值（cm）：</label>
+								<label for="medium_height">中等值（cm）：</label>
 								<input type="number" id="medium_height" name="medium_height" step="0.01" [(ngModel)]="info.medium_height" (change)="changeHeight()">
 							</div>
 						</div>
@@ -67,7 +67,7 @@
 						</div>
 						<div *ngIf="baseInfo.medium_weight != null" class="pure-u-8-24">
 							<div class="pure-control-group">
-								<label for="medium_weight">体重同年龄中等值（kg）：</label>
+								<label for="medium_weight">中等值（kg）：</label>
 								<input type="number" id="medium_weight" name="medium_weight" step="0.01" [(ngModel)]="info.medium_weight" (change)="changeWeight()">
 							</div>
 						</div>
@@ -567,7 +567,7 @@
 					</div>
 					<div
 						*ngIf="info.blood_routine_examination != null || info.routine_urine != null || info.stool_routine_examination != null || info.bone_density != null || info.BALP != null || info.trace_element != null || info.heavy_metal != null"
-						class="bg-title mt10">辅助检查 （收费项目，由医生建议）</div>
+						class="bg-title mt10">辅助治疗 （收费项目，由医生建议）</div>
 					<div class="pure-g">
 						<div *ngIf="info.blood_routine_examination != null" class="pure-u-24-24">
 							<div class="pure-control-group">

@@ -399,7 +399,7 @@ export class BookingHealthrecordComponent{
             return;
         }
         if(parseFloat(this.info.medium_height) <= 0){
-            this.toastTab('身高同年龄中等值应大于0', 'error');
+            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.medium_height)) / parseFloat(this.info.medium_height) * 100);
@@ -417,7 +417,7 @@ export class BookingHealthrecordComponent{
             return;
         }
         if(parseFloat(this.info.medium_weight) <= 0){
-            this.toastTab('体重同年龄中等值应大于0', 'error');
+            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.medium_weight)) / parseFloat(this.info.medium_weight));
@@ -444,7 +444,7 @@ export class BookingHealthrecordComponent{
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.medium_height) && Number(f.value.medium_height) <= 0){
-			this.toastTab('身高同年龄中等值应大于0', 'error');
+			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
@@ -456,7 +456,7 @@ export class BookingHealthrecordComponent{
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.medium_weight) && Number(f.value.medium_weight) <= 0){
-			this.toastTab('体重同年龄中等值应大于0', 'error');
+			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){

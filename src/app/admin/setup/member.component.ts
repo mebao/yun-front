@@ -81,7 +81,7 @@ export class MemberComponent{
 			}
 		});
 
-		// 获取辅助项目
+		// 获取辅助治疗
 		this.assistList = [];
 		this.adminService.searchassist(urlOptions).then((data) => {
 			if(data.status == 'no'){
@@ -139,7 +139,7 @@ export class MemberComponent{
 	resetAssist() {
 		if(this.id && this.id != ''){
 			var member = JSON.parse(sessionStorage.getItem('memberInfo'));
-			// 遍历诊所辅助项目
+			// 遍历诊所辅助治疗
 			if(this.assistList.length > 0){
 				for(var i = 0; i < this.assistList.length; i++){
 					// 遍历会员服务
@@ -189,7 +189,7 @@ export class MemberComponent{
 			}
 		}
 		if(this.adminService.isFalse(f.value.assist)){
-			this.toastTab('辅助项目折扣不能为空', 'error');
+			this.toastTab('辅助治疗折扣不能为空', 'error');
 			return;
 		}
 		var aslist = [];

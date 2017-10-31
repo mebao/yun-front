@@ -61,7 +61,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 	canEdit: boolean;
 	// 药方
 	prescriptList: any[];
-	prescription: string;
+	prescription: any[];
 	// pageType 空为医生接诊， history为查看
 	pageType: string;
 
@@ -163,7 +163,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 
 		// 获取药方
 		this.prescriptList = [];
-		this.prescription = '';
+		this.prescription = [];
 		this.getPrescriptData();
 	}
 
@@ -181,11 +181,13 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 					var prescript = results.list[0];
 					if(prescript.info.length > 0){
 						for(var i = 0; i < prescript.info.length; i++){
-							this.prescription += prescript.info[i].pname + ': ' + prescript.info[i].frequency
-								 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
-								 + '，' + prescript.info[i].usage
-								 + '，需服用' + prescript.info[i].days + '天'
-								 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。';
+							this.prescription.push({
+								value: prescript.info[i].pname + ': ' + prescript.info[i].frequency
+									 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
+									 + '，' + prescript.info[i].usage
+									 + '，需服用' + prescript.info[i].days + '天'
+									 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。'
+							});
 						}
 					}
 				}

@@ -29,8 +29,8 @@
 				</div>
 				<div class="pure-u-4-5 right-tab booking-info pad10">
 					<div class="second-bar-tab flex mb10">
-						<div (click)="changeTab('3', 'doctorBooking')" class="item">检查项目</div>
-						<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助检查</div>
+						<div (click)="changeTab('3', 'doctorBooking')" class="item">实验室检查</div>
+						<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助治疗</div>
 						<div (click)="changeTab('4', 'doctorBooking')" class="item">处方</div>
 						<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
 						<div (click)="changeTab('2', 'doctorBooking')" class="item">费用列表</div>
@@ -39,92 +39,83 @@
 						<div class="item active">病历</div>
 						<div (click)="changeTab('8', 'doctorBookingHealthrecord')" class="item">儿保记录</div>
 					</div>
-					<div class="tab">
+					<div class="tab pure-tab">
 						<div *ngIf="casehistoryList.length > 0">
 							<div *ngFor="let casehistory of casehistoryList; let index=index;">
+								<!-- pageType 空为医生接站， history为查看 -->
+								<div *ngIf="pageType != 'history'">
+									<div class="text-right">
+										<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+									</div>
+								</div>
 								<div class="section">
 									<div class="title">基本信息</div>
 									<div class="pure-g">
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">姓名：</label>
-											<div class="flex-1">{{booking.childName}}</div>
-										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">年龄：</label>
-											<div class="flex-1">{{booking.age}}</div>
-										</div>
-										<div class="pure-u-8-24 info flex">
-											<!-- pageType 空为医生接站， history为查看 -->
-											<div *ngIf="pageType != 'history'">
-												<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
-											</div>
-										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体重：</label>
 											<div class="flex-1">{{casehistory.weight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">体重同年龄中等值：</label>
+										<div class="pure-u-8-24 bt info flex">
+											<label class="w150p">中等值：</label>
 											<div class="flex-1">{{casehistory.midWeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体重对比：</label>
 											<div class="flex-1">{{casehistory.compareWeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">身高：</label>
 											<div class="flex-1">{{casehistory.height}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">身高同年龄中等值：</label>
+										<div class="pure-u-8-24 bt info flex">
+											<label class="w150p">中等值：</label>
 											<div class="flex-1">{{casehistory.midHeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">身高对比：</label>
 											<div class="flex-1">{{casehistory.compareHeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">头围：</label>
 											<div class="flex-1">{{casehistory.headCircum}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">胸围：</label>
 											<div class="flex-1">{{casehistory.breastCircum}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">牙齿：</label>
 											<div class="flex-1">{{casehistory.teeth}}</div>
 										</div>
-										<div class="pure-u-8-24"></div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">主诉：</label>
 											<div class="flex-1">{{casehistory.topicComment}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">检查结果：</label>
 											<div class="flex-1">{{casehistory.checkResult}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">现病史：</label>
 											<div class="flex-1">{{casehistory.presentIllness}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">既往史：</label>
 											<div class="flex-1">{{casehistory.previousHistory}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">过敏史：</label>
 											<div class="flex-1">{{casehistory.allergy}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">家族史：</label>
 											<div class="flex-1">{{casehistory.familyHistory}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">孕育史：</label>
 											<div class="flex-1">{{casehistory.breedHistory}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">生长发育史：</label>
 											<div class="flex-1">{{casehistory.growthHistory}}</div>
 										</div>
@@ -143,35 +134,35 @@
 										</span>
 									</div>
 									<div *ngIf="showExamination" class="pure-g">
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体温：</label>
 											<div class="flex-1">{{casehistory.bodyTemperature}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">呼吸：</label>
 											<div class="flex-1">{{casehistory.breathe}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">血压：</label>
 											<div class="flex-1">{{casehistory.bloodPressure}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">面、颈部：</label>
 											<div class="flex-1">{{casehistory.faceNeck}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">心肺：</label>
 											<div class="flex-1">{{casehistory.heartLung}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">腹部：</label>
 											<div class="flex-1">{{casehistory.abdomen}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">四肢：</label>
 											<div class="flex-1">{{casehistory.limbs}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">神经系统：</label>
 											<div class="flex-1">{{casehistory.nervousSystem}}</div>
 										</div>
@@ -188,19 +179,23 @@
 								<div class="section">
 									<div class="title">诊疗记录</div>
 									<div class="pure-g">
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">诊断：</label>
 											<div class="flex-1">{{casehistory.diagnosis}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">处方：</label>
-											<div class="flex-1">{{prescription}}</div>
+											<div class="flex-1">
+												<ng-container *ngFor="let item of prescription">
+													<div>{{item.value}}</div>
+												</ng-container>
+											</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">建议：</label>
 											<div class="flex-1">{{casehistory.advise}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">就诊日期：</label>
 											<div class="flex-1">{{casehistory.time}}</div>
 										</div>

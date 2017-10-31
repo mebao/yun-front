@@ -9,11 +9,11 @@
 				    <button *ngIf="moduleAuthority.edit" (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
                 </div>
                 <div class="pure-control-group mr10">
-                    <label for="name">辅助项目名：</label>
-                    <input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入辅助项目名">
+                    <label for="name">辅助治疗名：</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入辅助治疗名">
                 </div>
                 <div class="pure-control-group mr10">
-                    <label for="type">辅助项目类型：</label>
+                    <label for="type">辅助治疗类型：</label>
                     <select id="type" name="type" [(ngModel)]="searchInfo.type">
 						<option value="">请选择类型</option>
                         <ng-container *ngFor="let item of typeList">
@@ -27,9 +27,9 @@
 				<table *ngIf="assistList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 					<thead>
 						<tr>
-							<th>辅助项目名</th>
-							<th>辅助项目类型</th>
-							<th>辅助项目价格</th>
+							<th>辅助治疗名</th>
+							<th>辅助治疗类型</th>
+							<th>辅助治疗价格</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -45,7 +45,7 @@
 					</tbody>
 				</table>
 				<div *ngIf="hasData && assistList.length == 0" class="mt10">
-					<nodata title="未查询到辅助项目"></nodata>
+					<nodata title="未查询到辅助治疗"></nodata>
 				</div>
 			</div>
 		</div>

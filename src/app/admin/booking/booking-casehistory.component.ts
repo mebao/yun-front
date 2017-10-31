@@ -101,11 +101,11 @@ export class BookingCasehistoryComponent{
 			var prescript = JSON.parse(sessionStorage.getItem('prescript'));
 			if(prescript.info.length > 0){
 				for(var i = 0; i < prescript.info.length; i++){
-					prescription += prescript.info[i].pname + ': ' + prescript.info[i].frequency
+					prescription += prescript.info[i].pname + prescript.info[i].batch + '批次: ' + prescript.info[i].frequency
 						 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
 						 + '，' + prescript.info[i].usage
 						 + '，需服用' + prescript.info[i].days + '天'
-						 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。';
+						 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。\n';
 				}
 			}
 		}
@@ -236,7 +236,7 @@ export class BookingCasehistoryComponent{
             return;
         }
         if(parseFloat(this.info.mid_height) <= 0){
-            this.toastTab('身高同年龄中等值应大于0', 'error');
+            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.mid_height)) / parseFloat(this.info.mid_height) * 100);
@@ -254,7 +254,7 @@ export class BookingCasehistoryComponent{
             return;
         }
         if(parseFloat(this.info.mid_weight) <= 0){
-            this.toastTab('体重同年龄中等值应大于0', 'error');
+            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.mid_weight)) / parseFloat(this.info.mid_weight));
@@ -284,7 +284,6 @@ export class BookingCasehistoryComponent{
 	// 日期
 	changeDate(_value) {
 		this.info.time = JSON.parse(_value).value;
-		console.log(this.info);
 	}
 
 	create(f) {
@@ -293,7 +292,7 @@ export class BookingCasehistoryComponent{
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.mid_weight) && Number(f.value.mid_weight) <= 0){
-			this.toastTab('体重同年龄中等值应大于0', 'error');
+			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
@@ -301,7 +300,7 @@ export class BookingCasehistoryComponent{
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.mid_height) && Number(f.value.mid_height) <= 0){
-			this.toastTab('身高同年龄中等值应大于0', 'error');
+			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
 		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){

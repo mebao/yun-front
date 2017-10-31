@@ -29,8 +29,8 @@
 				</div>
 				<div class="pure-u-4-5 right-tab booking-info pad10">
 					<div class="second-bar-tab flex mb10">
-						<div (click)="changeTab('3', 'doctorBooking')" class="item">检查项目</div>
-						<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助检查</div>
+						<div (click)="changeTab('3', 'doctorBooking')" class="item">实验室检查</div>
+						<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助治疗</div>
 						<div (click)="changeTab('4', 'doctorBooking')" class="item">处方</div>
 						<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
 						<div (click)="changeTab('2', 'doctorBooking')" class="item">费用列表</div>
@@ -39,45 +39,32 @@
 						<div (click)="changeTab('7', 'doctorBookingCasehistory')" class="item">病历</div>
 						<div (click)="changeTab('8', 'doctorBookingHealthrecord')" class="item">儿保记录</div>
 					</div>
-					<div class="tab">
+					<div class="tab pure-tab">
 						<div *ngIf="growthrecordList.length > 0">
 							<div *ngFor="let growthrecord of growthrecordList; let index=index;">
-								<div class="section">
-									<div class="title">基本信息</div>
-									<div class="pure-g">
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">姓名：</label>
-											<div class="flex-1">{{booking.childName}}</div>
-										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">年龄：</label>
-											<div class="flex-1">{{booking.age}}</div>
-										</div>
-										<div class="pure-u-8-24 info flex">
-											<!-- pageType 空为医生接诊， history为查看 -->
-											<div *ngIf="pageType != 'history'">
-												<button (click)="updateGrowthrecord(growthrecord)" class="pure-button pure-button-primary">修改</button>
-											</div>
-										</div>
+								<!-- pageType 空为医生接诊， history为查看 -->
+								<div *ngIf="pageType != 'history'">
+									<div class="text-right">
+										<button (click)="updateGrowthrecord(growthrecord)" class="pure-button pure-button-primary">修改</button>
 									</div>
 								</div>
 								<div class="section">
 									<div class="title">个人史</div>
 									<div class="pure-g">
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">个人史：</label>
 											<div class="flex-1">{{growthrecord.personalHistory}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">喂养方式：</label>
 											<div class="flex-1">{{growthrecord.feedingWay}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">奶量：</label>
 											<div class="flex-1">{{growthrecord.feedingVolume}}</div>
 										</div>
-										<div class="pure-u-8-24"></div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-8-24 bt"></div>
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">过敏史：</label>
 											<div class="flex-1">{{growthrecord.allergy}}</div>
 										</div>
@@ -86,83 +73,83 @@
 								<div class="section">
 									<div class="title">查体</div>
 									<div class="pure-g">
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">血压：</label>
 											<div class="flex-1">{{growthrecord.bloodPressure}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体重：</label>
 											<div class="flex-1">{{growthrecord.weight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">体重同年龄中等值：</label>
+										<div class="pure-u-8-24 bt info flex">
+											<label class="w150p">中等值：</label>
 											<div class="flex-1">{{growthrecord.midWeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体重对比：</label>
 											<div class="flex-1">{{growthrecord.compareWeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">身高：</label>
 											<div class="flex-1">{{growthrecord.height}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
-											<label class="w150p">身高同年龄中等值：</label>
+										<div class="pure-u-8-24 bt info flex">
+											<label class="w150p">中等值：</label>
 											<div class="flex-1">{{growthrecord.midHeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">身高对比：</label>
 											<div class="flex-1">{{growthrecord.compareHeight}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">头围：</label>
 											<div class="flex-1">{{growthrecord.headCircum}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">胸围：</label>
 											<div class="flex-1">{{growthrecord.breastCircum}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">牙齿：</label>
 											<div class="flex-1">{{growthrecord.teeth}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">囟门：</label>
 											<div class="flex-1">{{growthrecord.fontanelle}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">精神状态：</label>
 											<div class="flex-1">{{growthrecord.mentalState}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">心肺：</label>
 											<div class="flex-1">{{growthrecord.heartLung}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">肝脏：</label>
 											<div class="flex-1">{{growthrecord.liver}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">脾脏：</label>
 											<div class="flex-1">{{growthrecord.spleen}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">斜颈筛查：</label>
 											<div class="flex-1">{{growthrecord.torticollisScreening}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">先髋筛查：</label>
 											<div class="flex-1">{{growthrecord.hipScreening}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">生殖器：</label>
 											<div class="flex-1">{{growthrecord.genital}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">神经系统：</label>
 											<div class="flex-1">{{growthrecord.nervous_system}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">其他：</label>
 											<div class="flex-1">{{growthrecord.other}}</div>
 										</div>
@@ -171,23 +158,23 @@
 								<div class="section">
 									<div class="title">查体</div>
 									<div class="pure-g">
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">血常规：</label>
 											<div class="flex-1">{{growthrecord.bloodRoutineExamination}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">尿常规：</label>
 											<div class="flex-1">{{growthrecord.routineUrine}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">骨密度：</label>
 											<div class="flex-1">{{growthrecord.boneDensity}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">骨碱性磷酸酶：</label>
 											<div class="flex-1">{{growthrecord.BALP}}</div>
 										</div>
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">微量元素：</label>
 											<div class="flex-1">{{growthrecord.traceElement}}</div>
 										</div>
@@ -196,15 +183,19 @@
 								<div class="section">
 									<div class="title">诊疗记录</div>
 									<div class="pure-g">
-										<div class="pure-u-24-24 info flex">
+										<div class="pure-u-24-24 bt info flex">
 											<label class="w150p">处方：</label>
-											<div class="flex-1">{{prescription}}</div>
+											<div class="flex-1">
+												<ng-container *ngFor="let item of prescription">
+													<div>{{item.value}}</div>
+												</ng-container>
+											</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">检查日期：</label>
 											<div class="flex-1">{{growthrecord.checkDate}}</div>
 										</div>
-										<div class="pure-u-8-24 info flex">
+										<div class="pure-u-16-24 bt info flex">
 											<label class="w150p">复查日期：</label>
 											<div class="flex-1">{{growthrecord.reviewDate}}</div>
 										</div>

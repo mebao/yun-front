@@ -50,25 +50,25 @@
 								</ng-container>
 								<div class="pure-control-group">
 									<label for="assist">
-										<span>辅助检查</span>
+										<span>辅助治疗</span>
 									</label>
 									<div class="flex flex-tab">
-										<input type="number" id="assist" name="assist" #assist="ngModel" [(ngModel)]="memberInfo.assist" placeholder="请输入辅助项目折扣" required="" class="flex-1">
+										<input type="number" id="assist" name="assist" #assist="ngModel" [(ngModel)]="memberInfo.assist" placeholder="请输入辅助治疗折扣" required="" class="flex-1">
 										<select disabled class="w40p">
 											<option>%</option>
 										</select>
 									</div>
 									<div *ngIf="assist.errors && (assist.dity || assist.touched)" class="alert alert-danger">
 										<div [hidden]="!assist.errors.required">
-											辅助检查折扣不可为空
+											辅助治疗折扣不可为空
 										</div>
 									</div>
 								</div>
 								<ng-container *ngFor="let assist of assistList; let index=index;">
 									<div class="pure-control-group">
-										<label for="assist_{{assist.id}}">{{assist.name}}辅助检查折扣</label>
+										<label for="assist_{{assist.id}}">{{assist.name}}辅助治疗折扣</label>
 										<div class="flex flex-tab">
-											<input type="number" id="assist_{{assist.id}}" name="assist_{{assist.id}}" [(ngModel)]="assist.discount" placeholder="请输入{{assist.name}}辅助检查折扣" required="" class="flex-1">
+											<input type="number" id="assist_{{assist.id}}" name="assist_{{assist.id}}" [(ngModel)]="assist.discount" placeholder="请输入{{assist.name}}辅助治疗折扣" required="" class="flex-1">
 											<select disabled class="w40p">
 												<option>%</option>
 											</select>
