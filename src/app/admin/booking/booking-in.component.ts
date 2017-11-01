@@ -33,6 +33,7 @@ export class BookingInComponent{
 		type: string,
 		userDoctorId: string,
 		userDoctorName: string,
+		remark: string,
 	};
 	bookingInfo: {
 		type: string,
@@ -45,6 +46,7 @@ export class BookingInComponent{
 		child_name: string,
 		gender: string,
 		birth_date: string,
+		remark: string,
 	};
 	servicelist: any[];
 	doctorlist: any[];
@@ -155,6 +157,7 @@ export class BookingInComponent{
 			type: '',
 			userDoctorId: '',
 			userDoctorName: '',
+			remark: '',
 		};
 
 		this.bookingInfo = {
@@ -168,6 +171,7 @@ export class BookingInComponent{
 			child_name: '',
 			gender: '',
 			birth_date: '',
+			remark: '',
 		}
 	}
 
@@ -232,6 +236,7 @@ export class BookingInComponent{
 
 		booking.bookingDate = this.adminService.dateFormatHasWord(booking.bookingDate);
 		this.booking = booking;
+		this.bookingInfo.remark = this.booking.remark;
 		this.modalTab = false;
 		//根据选择的预约，初始化页面
 		if(this.servicelist.length > 0){
@@ -415,6 +420,7 @@ export class BookingInComponent{
 				mobile: JSON.parse(this.bookingInfo.creator).mobile,
 				child_name: JSON.parse(this.bookingInfo.child).childName,
 				child_id: JSON.parse(this.bookingInfo.child).childId,
+				remark: this.bookingInfo.remark,
 			}
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
@@ -445,6 +451,7 @@ export class BookingInComponent{
 			user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
 			booking_date: JSON.parse(f.value.booking_date).dutyDate,
 			time: this.bookingInfo.timeInfo,
+			remark: this.bookingInfo.remark,
 		}
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){

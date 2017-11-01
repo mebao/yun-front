@@ -75,6 +75,10 @@
 									<option value="">{{booking.childName}}</option>
 								</select>
 							</div>
+							<div class="pure-control-group">
+								<label for="remark">备注（最多200字）</label>
+								<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="bookingInfo.remark"></textarea>
+							</div>
 						</div>
 						<div class="pure-u-1-5"></div>
 					</div>

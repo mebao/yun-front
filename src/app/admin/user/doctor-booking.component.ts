@@ -86,6 +86,7 @@ export class DoctorBookingComponent implements OnInit{
 		status: string,
 		totalFee: string,
 		mobile: string,
+		remark: string,
 	};
 	canEdit: boolean;
 	selectedTab: string;
@@ -166,6 +167,7 @@ export class DoctorBookingComponent implements OnInit{
 			status: '',
 			totalFee: '',
 			mobile: '',
+			remark: '',
 		};
 		//判断sessionStorage中是否已经缓存
 		if(sessionStorage.getItem('doctorBookingTab')){

@@ -71,7 +71,8 @@
 				<div class="color-tab service-tab">
 					<span>科室颜色：</span>
 					<ng-container *ngFor="let serviceItem of servicelist">
-						<span class="item icon" [ngClass]="{'color1': serviceItem.color == 'color1', 'color2': serviceItem.color == 'color2', 'color3': serviceItem.color == 'color3', 'color4': serviceItem.color == 'color4', 'color5': serviceItem.color == 'color5', 'color6': serviceItem.color == 'color6', 'color7': serviceItem.color == 'color7', 'color8': serviceItem.color == 'color8', 'color9': serviceItem.color == 'color9', 'color10': serviceItem.color == 'color10'}">{{serviceItem.serviceName}}</span>
+						<span>{{serviceItem.serviceName}}</span>
+						<span class="icon" [ngClass]="{'color1': serviceItem.color == 'color1', 'color2': serviceItem.color == 'color2', 'color3': serviceItem.color == 'color3', 'color4': serviceItem.color == 'color4', 'color5': serviceItem.color == 'color5', 'color6': serviceItem.color == 'color6', 'color7': serviceItem.color == 'color7', 'color8': serviceItem.color == 'color8', 'color9': serviceItem.color == 'color9', 'color10': serviceItem.color == 'color10'}"></span>
 					</ng-container>
 				</div>
 				<div class="week-tab">
@@ -173,11 +174,12 @@
 			<table class="pure-table pure-table-horizontal w100">
 				<thead>
 					<tr>
-						<th>姓名</th>
+						<th>宝宝姓名</th>
 						<th>年龄</th>
-						<th>预约医生</th>
-						<th>预约服务</th>
-						<th>预约时间</th>
+						<th>医生</th>
+						<th>科室</th>
+						<th>时间</th>
+						<th class="th-width">备注</th>
 						<th>状态</th>
 						<th>操作</th>
 					</tr>
@@ -193,9 +195,12 @@
 								<span>{{service.serviceDate}}</span>
 								<span>{{service.serviceTime}}</span>
 							</td>
+							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
+								<div class="length-text">{{showBooking.remark}}</div>
+							</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.statusText}}</td>
 							<td>
-								<button (click)="info(showBooking.bookingId)" class="pure-button pure-button-primary">详情</button>
+								<button *ngIf="this.moduleAuthority.info" (click)="info(showBooking)" class="pure-button pure-button-primary">详情</button>
 							</td>
 						</tr>
 					</ng-container>
@@ -204,6 +209,97 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button pure-button">关闭</button>
+		</div>
+	</div>
+</div><div class="modal" *ngIf="modalTabInfo">
+	<div class="modal-mask" (click)="closeInfo()"></div>
+	<div class="container">
+		<div class="title">预约详情</div>
+		<div class="content pad10 admin-booking-info">
+			<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2') && use">
+				<button (click)="updateBooking()" class="pure-button pure-button-primary">修改</button>
+			</div>
+			<div class="tab">
+				<div class="item flex">
+					<label>预约人</label>
+					<div class="info">{{booking.creatorName}}</div>
+				</div>
+				<div class="item flex">
+					<label>姓名</label>
+					<div class="info">{{booking.childName}}</div>
+				</div>
+				<div class="item flex">
+					<label>年龄</label>
+					<div class="info">{{booking.age}}</div>
+				</div>
+				<!-- <div class="item flex">
+					<label>预约类型</label>
+					<div class="info">{{booking.type == 'PT' ? '普通号' : '专家号'}}</div>
+				</div> -->
+				<div class="item flex">
+					<label>预约日期</label>
+					<div class="info">{{booking.bookingDate}}</div>
+				</div>
+				<div class="item flex">
+					<label>预约时间</label>
+					<div class="info">{{booking.time}}</div>
+				</div>
+				<div class="item flex">
+					<label>备注</label>
+					<div class="info">{{booking.remark}}</div>
+				</div>
+				<div class="item flex">
+					<label>总费用</label>
+					<div class="info">{{booking.totalFee}}</div>
+				</div>
+				<div class="item flex">
+					<label>追加服务</label>
+					<div class="info flex-1">
+						<table class="pure-table w100">
+							<thead>
+								<tr>
+									<th>预约科室</th>
+									<th>预约医生</th>
+									<th>预约日期</th>
+									<th>预约时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let service of booking.services; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{service.serviceName}}</td>
+									<td>{{service.userDoctorName}}</td>
+									<td>{{service.serviceDate}}</td>
+									<td>{{service.serviceTime}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="item flex">
+					<label>追加费用</label>
+					<div class="info flex-1">
+						<table class="pure-table w100">
+							<thead>
+								<tr>
+									<th>消费项目</th>
+									<th>费用</th>
+									<th>备注说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let fee of booking.fees; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+									<td>{{fee.projectName}}</td>
+									<td>{{fee.fee}}</td>
+									<td>{{fee.remark}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeInfo()" class="pure-button pure-button">关闭</button>
 		</div>
 	</div>
 </div>

@@ -23,6 +23,10 @@
 						<span>{{booking.creatorName}}</span>
 					</div>
 					<div class="item">
+						<span>备注：</span>
+						<span>{{booking.remark}}</span>
+					</div>
+					<div class="item">
 						<span>接诊医生：</span>
 						<span>{{doctorInfo.realName}}</span>
 					</div>
@@ -399,41 +403,41 @@
 								<tr *ngFor="let fee of booking.fees; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.typeText}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.typeText}}</div>
 										<!-- 编辑 -->
-										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 											<input type="text" name="project_name" #project_name="ngModel" [(ngModel)]="addFeeInfo.project_name" required="" [disabled]="addFeeInfo.editType == 'update'" placeholder="请输入消费项目名" class="w100">
 										</div>
 									</td>
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.price}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.price}}</div>
 										<!-- 编辑 -->
-										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 											<input type="number" step="0.01" name="price" #price="ngModel" [(ngModel)]="addFeeInfo.price" placeholder="请输入单价" (change)="changeFee()" [disabled]="addFeeInfo.editType == 'update'" class="w100">
 										</div>
 									</td>
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.number}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.number}}</div>
 										<!-- 编辑 -->
-										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 											<input type="number" name="number" #number="ngModel" [(ngModel)]="addFeeInfo.number" placeholder="请输入数量" (change)="changeFee()" class="w100">
 										</div>
 									</td>
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">{{fee.fee}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.fee}}</div>
 										<!-- 编辑 -->
-										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 											<input type="number" step="0.01" name="fee" #fee="ngModel" [(ngModel)]="addFeeInfo.fee" placeholder="请输入费用" required="" [disabled]="addFeeInfo.editType == 'update'" class="w100">
 										</div>
 									</td>
 									<td>
 										<!-- 展示 -->
-										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId" class="length-text">{{fee.remark}}</div>
+										<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="length-text">{{fee.remark}}</div>
 										<!-- 编辑 -->
-										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+										<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 											<textarea name="remarks" maxlength="200" rows="3" #remarks="ngModel" [(ngModel)]="addFeeInfo.remarks" placeholder="请输入备注说明" class="w100"></textarea>
 										</div>
 									</td>
@@ -443,11 +447,11 @@
 											<!-- 订单未完成，可操作 -->
 											<ng-container *ngIf="booking.status != '5'">
 												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.editProjectId != fee.projectId">
+												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">
 													<button (click)="updateFee(fee)" class="pure-button pure-button-primary">修改</button>
 												</div>
 												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.editProjectId == fee.projectId">
+												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 													<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" class="pure-button">取消</button>
 													<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary">保存</button>
 												</div>

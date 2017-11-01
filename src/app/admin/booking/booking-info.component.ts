@@ -44,6 +44,7 @@ export class BookingInfoComponent{
 		fees: any[],
 		status: string,
 		totalFee: string,
+		remark: string,
 	};
 	canEdit: boolean;
 
@@ -103,6 +104,7 @@ export class BookingInfoComponent{
 			fees: [],
 			status: '',
 			totalFee: '',
+			remark: '',
 		};
 
 		this.route.queryParams.subscribe((params) => {

@@ -26,6 +26,7 @@ export class BookingComponent implements OnInit{
 		child_name: string,
 		gender: string,
 		birth_date: string,
+		remark: string,
 	};
 	booking: {
 		age: string;
@@ -42,6 +43,7 @@ export class BookingComponent implements OnInit{
 		userDoctorId: string;
 		userDoctorName: string;
 		mobile: string;
+		remark: string,
 	};
 	users: [{}];
 	servicelist: [{}];
@@ -106,6 +108,7 @@ export class BookingComponent implements OnInit{
 			child_name: '',
 			gender: '',
 			birth_date: '',
+			remark: '',
 		}
 
 		this.selectSearchTitle = '请选择宝宝';
@@ -191,6 +194,7 @@ export class BookingComponent implements OnInit{
 						childId: this.booking.childId,
 					});
 					this.bookingInfo.child_name = this.booking.childName;
+					this.bookingInfo.remark = this.booking.remark;
 
 					this.getData();
 					//类型普通
@@ -555,6 +559,7 @@ export class BookingComponent implements OnInit{
 			// age: this.editType == 'update' ? JSON.parse(this.bookingInfo.child).age : (this.childs.length == 0 ? null : JSON.parse(f.value.child).age),
 			// gender: this.childs.length == 0 ? f.value.gender : null,
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
+			remark: this.bookingInfo.remark,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {

@@ -22,7 +22,10 @@
 								</div>
 							</div> -->
 							<div class="pure-control-group">
-								<label for="service">预约科室</label>
+								<label for="service">
+									<span>预约科室</span>
+									<span class="required">*</span>
+								</label>
 								<select id="service" name="service" (change)="serviceChange($event.target.value)" [(ngModel)]="bookingInfo.service" #service="ngModel" required="">
 									<ng-container *ngFor="let service of servicelist">
 										<option value="{{service.string}}">{{service.serviceName}}</option>
@@ -35,7 +38,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'PT'">
-								<label for="booking_date">预约日期</label>
+								<label for="booking_date">
+									<span>预约日期</span>
+									<span class="required">*</span>
+								</label>
 								<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()" required="">
 									<ng-container *ngFor="let date of doctorDutys">
 										<option *ngIf="date.use" value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
@@ -49,7 +55,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'PT'">
-								<label for="time">预约时间段</label>
+								<label for="time">
+									<span>预约时间段</span>
+									<span class="required">*</span>
+								</label>
 								<select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel" required="">
 									<ng-container *ngFor="let time of timelist">
 										<option value="{{time.value}}" *ngIf="time.use">{{time.value}}</option>
@@ -63,7 +72,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-								<label for="user_doctor">预约医生</label>
+								<label for="user_doctor">
+									<span>预约医生</span>
+									<span class="required">*</span>
+								</label>
 								<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()" required="">
 									<ng-container *ngFor="let doctor of doctorlist">
 										<option value="{{doctor.string}}">{{doctor.doctorName}}</option>
@@ -76,7 +88,10 @@
 								</div>
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-								<label for="booking_date">预约日期</label>
+								<label for="booking_date">
+									<span>预约日期</span>
+									<span class="required">*</span>
+								</label>
 								<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()" required="">
 									<ng-container *ngFor="let date of doctorDutys">
 										<option value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
@@ -90,8 +105,9 @@
 							</div>
 							<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
 								<label for="time">
-									<span>预约时间段（请先选择日期）：</span>
-									<span class="can">可预约颜色（蓝色）</span>
+									<span>预约时间段（请先选择日期）</span>
+									<span class="required">*</span>
+									<span class="can">：可预约颜色（蓝色）</span>
 									<span class="overdue">不可选颜色（灰色）</span>
 									<span class="already">已预约颜色（红色）</span>
 								</label>
@@ -112,14 +128,24 @@
 								</div>
 							</div>
 							<div *ngIf="editType != 'update' && !listChild.childId" class="pure-control-group">
-								<label for="child">预约宝宝</label>
+								<label for="child">
+									<span>预约宝宝</span>
+									<span class="required">*</span>
+								</label>
 								<select-search [title]="selectSearchTitle" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
 							</div>
 							<div *ngIf="editType == 'update' || listChild.childId" class="pure-control-group">
-								<label for="child">预约宝宝</label>
+								<label for="child">
+									<span>预约宝宝</span>
+									<span class="required">*</span>
+								</label>
 								<select id="child" name="child" disabled="">
 									<option value="">{{bookingInfo.child_name}}</option>
 								</select>
+							</div>
+							<div class="pure-control-group">
+								<label for="remark">备注（最多200字）</label>
+								<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="bookingInfo.remark"></textarea>
 							</div>
 						</fieldset>
 						<div class="text-center">

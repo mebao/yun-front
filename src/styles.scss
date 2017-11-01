@@ -138,6 +138,8 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
+.pure-table td, .pure-table th{padding: .5em;}
+
 .group-tab{
     @extend .flex;
     padding: 10px;
@@ -395,12 +397,16 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
         }
     }
     .service-tab{
-        padding: 20px 0;
+        padding: 10px 0;
         span{
-            padding: 10px;
+            padding-left: 20px;
             margin-bottom: 10px;
+            &:first-child{
+                padding-left: 0;
+            }
             &.icon{
                 color: #fff;
+                width: 10px;
             }
         }
     }

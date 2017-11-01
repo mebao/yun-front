@@ -53,6 +53,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		status: string,
 		totalFee: string,
 		mobile: string,
+		remark: string,
 	};
 	canEdit: boolean;
 	//病例
@@ -106,6 +107,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 			status: '',
 			totalFee: '',
 			mobile: '',
+			remark: '',
 		};
 
 		this.route.queryParams.subscribe((params) => {

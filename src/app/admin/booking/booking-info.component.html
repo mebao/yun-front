@@ -33,6 +33,10 @@
 					<div class="info">{{booking.time}}</div>
 				</div>
 				<div class="item flex">
+					<label>备注</label>
+					<div class="info">{{booking.remark}}</div>
+				</div>
+				<div class="item flex">
 					<label>总费用</label>
 					<div class="info">{{booking.totalFee}}</div>
 				</div>
@@ -42,16 +46,14 @@
 						<table class="pure-table w100">
 							<thead>
 								<tr>
-									<th class="w10"></th>
-									<th class="w20">预约服务</th>
-									<th class="w30">预约医生</th>
-									<th class="w30">预约日期</th>
-									<th class="w10">预约时间</th>
+									<th>预约服务</th>
+									<th>预约医生</th>
+									<th>预约日期</th>
+									<th>预约时间</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let service of booking.services; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-									<td>{{index + 1}}</td>
 									<td>{{service.serviceName}}</td>
 									<td>{{service.userDoctorName}}</td>
 									<td>{{service.serviceDate}}</td>
@@ -67,15 +69,13 @@
 						<table class="pure-table w100">
 							<thead>
 								<tr>
-									<th class="w10"></th>
-									<th class="w20">消费项目</th>
-									<th class="w30">费用</th>
-									<th class="w40">备注说明</th>
+									<th>消费项目</th>
+									<th>费用</th>
+									<th>备注说明</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let fee of booking.fees; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-									<td>{{index + 1}}</td>
 									<td>{{fee.projectName}}</td>
 									<td>{{fee.fee}}</td>
 									<td>{{fee.remark}}</td>

@@ -54,6 +54,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		status: string,
 		totalFee: string,
 		mobile: string,
+		remark: string,
 	};
 	canEdit: boolean;
 	// 儿保记录
@@ -106,6 +107,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			status: '',
 			totalFee: '',
 			mobile: '',
+			remark: '',
 		};
 
 		this.route.queryParams.subscribe((params) => {

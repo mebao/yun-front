@@ -47,7 +47,7 @@ export class BookingListComponent implements OnInit{
 	use: boolean;
 	modalTab: boolean;
 	modalConfirmTab: boolean;
-	selectorBooking: {
+	booking: {
 		age: string,
 		bookingDate: string,
 		bookingId: string,
@@ -55,21 +55,24 @@ export class BookingListComponent implements OnInit{
 		childName: string,
 		creatorId: string,
 		creatorName: string,
-		mobile: string,
 		refNo: string,
 		serviceId: string,
 		serviceName: string,
-		status: string,
-		statusText: string,
 		time: string,
 		type: string,
 		userDoctorId: string,
 		userDoctorName: string,
-		text: string,
-	}
+		services: any[],
+		fees: any[],
+		status: string,
+		totalFee: string,
+		remark: string,
+	};
 	hasData: boolean;
 	// 家长
 	userList: any[];
+	// 详情
+	modalTabInfo: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -124,6 +127,28 @@ export class BookingListComponent implements OnInit{
 		}
 
 		this.use = true;
+		this.modalTabInfo = false;
+		this.booking = {
+			age: '',
+			bookingDate: '',
+			bookingId: '',
+			childId: '',
+			childName: '',
+			creatorId: '',
+			creatorName: '',
+			refNo: '',
+			serviceId: '',
+			serviceName: '',
+			time: '',
+			type: '',
+			userDoctorId: '',
+			userDoctorName: '',
+			services: [],
+			fees: [],
+			status: '',
+			totalFee: '',
+			remark: '',
+		};
 
 		this.weekNum = 0;
 		this.modalTab = false;
@@ -401,11 +426,20 @@ export class BookingListComponent implements OnInit{
 	}
 
 	//查看
-	info(_id){//可编辑日期
-		//判断查看权限
-		if(this.moduleAuthority.info){
-			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
-		}
+	info(_booking){
+		// this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
+		this.booking = _booking;
+		this.modalTab = false;
+		this.modalTabInfo = true;
+	}
+
+	closeInfo() {
+		this.modalTabInfo = false;
+		this.modalTab = true;
+	}
+
+	updateBooking() {
+		this.router.navigate(['./admin/booking'], {queryParams: {id: this.booking.bookingId, type: 'update'}});
 	}
 
 	getUrlOptios() {

@@ -53,6 +53,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 		status: string,
 		totalFee: string,
 		mobile: string,
+		remark: string,
 	};
 	//成长记录
 	growthrecordList: any[];
@@ -106,6 +107,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 			status: '',
 			totalFee: '',
 			mobile: '',
+			remark: '',
 		};
 
 		this.route.queryParams.subscribe((params) => {
