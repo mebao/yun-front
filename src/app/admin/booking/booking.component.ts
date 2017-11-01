@@ -19,6 +19,8 @@ export class BookingComponent implements OnInit{
 		type: string,
 		service: string,
 		booking_date: string,
+		// 日期
+		bookingDate: string,
 		timeInfo: string,
 		user_doctor: string,
 		creator: string,
@@ -101,6 +103,7 @@ export class BookingComponent implements OnInit{
 			type: 'ZJ',
 			service: '',
 			booking_date: '',
+			bookingDate: '',
 			timeInfo: '',
 			user_doctor: '',
 			creator: '',
@@ -110,6 +113,24 @@ export class BookingComponent implements OnInit{
 			birth_date: '',
 			remark: '',
 		}
+
+		this.booking = {
+			age: '',
+			bookingDate: '',
+			bookingId: '',
+			childId: '',
+			childName: '',
+			creatorId: '',
+			creatorName: '',
+			refNo: '',
+			services: [],
+			time: '',
+			type: '',
+			userDoctorId: '',
+			userDoctorName: '',
+			mobile: '',
+			remark: '',
+		};
 
 		this.selectSearchTitle = '请选择宝宝';
 
@@ -183,6 +204,7 @@ export class BookingComponent implements OnInit{
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking = results.weekbooks[0];
+					this.booking.bookingDate = this.adminService.dateFormatHasWord(this.booking.bookingDate);
 					//获取宝宝和家长信息
 					this.bookingInfo.creator = JSON.stringify({
 						id: this.booking.creatorId,
@@ -383,7 +405,7 @@ export class BookingComponent implements OnInit{
 				// 是否首次进入
 				if(this.initPage.date){
 					//修改
-					if(this.editType == 'update' && this.adminService.dateFormatHasWord(doctor.doctorDutys[i].dutyDate) == this.adminService.dateFormatHasWord(this.booking.bookingDate)){
+					if(this.editType == 'update' && this.adminService.dateFormatHasWord(doctor.doctorDutys[i].dutyDate) == this.booking.bookingDate){
 						this.bookingInfo.booking_date = doctor.doctorDutys[i].string;
 						this.dateChange();
 					}
@@ -408,6 +430,7 @@ export class BookingComponent implements OnInit{
 	//切换时间
 	dateChange() {
 		var date = JSON.parse(this.bookingInfo.booking_date);
+		this.bookingInfo.bookingDate = date.dutyDate;
 		var list = [];
 		var todayTimeNum = Number((new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours()) + '' + (new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()));
 		for(var i = 0; i < this.timelist.length; i++){
@@ -450,8 +473,8 @@ export class BookingComponent implements OnInit{
 	}
 
 	// 选择时间
-	selectTime(time) {
-		if(time.type == 'can'){
+	selectTime(time, selectedTime) {
+		if(time.type == 'can' || selectedTime){
 			this.bookingInfo.timeInfo = time.value;
 		}
 	}

@@ -39,6 +39,8 @@ export class BookingInComponent{
 		type: string,
 		service: string,
 		booking_date: string,
+		// 日期
+		bookingDate: string,
 		timeInfo: string,
 		user_doctor: string,
 		creator: string,
@@ -164,6 +166,7 @@ export class BookingInComponent{
 			type: 'ZJ',
 			service: '',
 			booking_date: '',
+			bookingDate: '',
 			timeInfo: '',
 			user_doctor: '',
 			creator: '',
@@ -314,6 +317,7 @@ export class BookingInComponent{
 	//切换时间
 	dateChange() {
 		var date = JSON.parse(this.bookingInfo.booking_date);
+		this.bookingInfo.bookingDate = date.dutyDate;
 		var list = [];
 		var todayTimeNum = Number((new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours()) + '' + (new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()));
 		for(var i = 0; i < this.timelist.length; i++){
@@ -353,8 +357,8 @@ export class BookingInComponent{
 	}
 
 	// 选择时间
-	selectTime(time) {
-		if(time.type == 'can'){
+	selectTime(time, selectedTime) {
+		if(time.type == 'can' || selectedTime){
 			this.bookingInfo.timeInfo = time.value;
 		}
 	}

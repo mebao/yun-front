@@ -8,6 +8,9 @@
     .already{
         color: #ff5674;
     }
+    .selected{
+        color: #39A99D;
+    }
     .time-list{
         justify-content: space-between;
         .item{
@@ -15,38 +18,49 @@
             padding: 5px 10px;
             margin-bottom: 10px;
             cursor: pointer;
+            .radioTab{
+                margin-top: 3px;
+                width: 15px;
+                height: 15px;
+            }
             &.can{
                 color: #0078e7;
-                border: 1px solid #0078e7;
+                border: 3px solid #0078e7;
                 .radioTab{
                     border: 1px solid #0078e7;
                 }
             }
             &.overdue{
                 color: #cccccc;
-                border: 1px solid #cccccc;
+                border: 3px solid #cccccc;
                 .radioTab{
                     border: 1px solid #cccccc;
                 }
             }
             &.already{
                 color: #ff5674;
-                border: 1px solid #ff5674;
+                border: 3px solid #ff5674;
                 .radioTab{
-                    border: 1px solid #ff5674;
+                    margin-top: -3px;
+                    font-size: 17px;
                 }
             }
             &.disabled{
                 cursor: not-allowed;
             }
             &.active{
+                color: #39A99D;
+                border: 3px solid #39A99D;
                 .radioTab{
-                    background-color: #173267;
+                    border: 1px solid #39A99D;
+                    background-color: #39A99D;
                 }
             }
-            .radioTab{
-                width: 20px;
-                height: 20px;
+            &.active.already{
+                .radioTab{
+                    margin-top: 3px;
+                    font-size: inherit;
+                }
             }
         }
     }

@@ -110,16 +110,21 @@
 									<span class="can">：可预约颜色（蓝色）</span>
 									<span class="overdue">不可选颜色（灰色）</span>
 									<span class="already">已预约颜色（红色）</span>
+									<span class="selected">已选中颜色（绿色）</span>
 								</label>
 								<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
 									<ng-container *ngFor="let time of timelist; let index=index;">
 										<div class="w25" [ngClass]="{'text-center': index % 4 == 1 || index % 4 == 2, 'text-right': index % 4 == 3}">
 											<div
-												(click)="selectTime(time)"
+												(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
 												class="item"
-												[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can', 'can': time.type == 'can', 'overdue': time.type == 'overdue', 'already': time.type == 'already'}">
+												[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can' && !(bookingInfo.bookingDate1 == booking.bookingDate2 && time.value == booking.time), 'can': time.type == 'can' || (bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'overdue': time.type == 'overdue' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'already': time.type == 'already' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)}">
 												<div class="flex">
-													<div class="radioTab mr10"></div>
+													<div class="radioTab mr10">
+														<ng-container *ngIf="time.type == 'already' && time.value != bookingInfo.timeInfo && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)">
+															x
+														</ng-container>
+													</div>
 													<div class="flex-1">{{time.value}}</div>
 												</div>
 											</div>

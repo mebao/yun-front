@@ -126,6 +126,7 @@
 								<th>家长姓名</th>
 								<th>手机号码</th>
 								<th>预约时间</th>
+								<th class="th-width">备注</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -138,6 +139,9 @@
 								<td>
 									<span>{{showBooking.bookingDate}}</span>
 									<span>{{showBooking.time}}</span>
+								</td>
+								<td>
+									<div class="length-text">{{showBooking.remark}}</div>
 								</td>
 								<td>
 									<button (click)="info(showBooking.bookingId)" class="pure-button pure-button-primary">详情</button>
