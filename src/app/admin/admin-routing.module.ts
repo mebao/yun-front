@@ -80,6 +80,7 @@ import { MemberComponent }                  from './setup/member.component';
 import { MemberListComponent }              from './setup/member-list.component';
 import { TransactionRecordListComponent }   from './user/transaction-record-list.component';
 import { BookingPaymentComponent }          from './booking/booking-payment.component';
+import { PaymentPrintComponent }          from './booking/payment-print.component';
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
@@ -477,6 +478,10 @@ const adminRoutes: Routes = [
 						path: 'bookingPayment',
 						canActivate: [AuthGuardRole],
 						component: BookingPaymentComponent,
+					},
+					{
+						path: 'paymentPrint',
+						component: PaymentPrintComponent,
 					},
 					{
 						path: 'crmRole',

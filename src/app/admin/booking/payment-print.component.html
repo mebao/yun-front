@@ -1,0 +1,105 @@
+<div class="admin-payment-print">
+	<div class="container">
+		<div class="flex">
+			<div class="flex-1"></div>
+			<div class="flex-1 text-center title"><div class="">嘉宝康乐智慧儿科</div><div class="">收费清单</div></div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="flex">
+			<div class="flex-1 flex"><div class="flex-0">姓名</div><div class="flex-1 fill">{{bookingInfo.childName}}</div></div>
+			<div class="flex-1 flex"><div class="flex-0">年龄</div><div class="flex-1 fill">{{bookingInfo.age}}</div></div>
+			<div class="flex-1 flex"><div class="flex-0">家长</div><div class="flex-1 fill">{{bookingInfo.creatorName}}</div></div>
+		</div>
+		<div class="flex mt20">
+			<div class="flex-1 flex"><div class="flex-0">收费日期</div><div class="flex-1 fill">{{this.tran.info.time}}</div></div>
+			<div class="flex-1"></div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="flex totle">
+			<div class="flex-1">项目</div>
+			<div class="flex-1">金额（元）</div>
+			<div class="flex-1">项目</div>
+			<div class="flex-1">金额（元）</div>
+		</div>
+		<div class="flex">
+			<div class="flex-1">医生服务费用</div>
+			<div class="flex-1">{{fee.feeInfo.serviceOriginalFee}}</div>
+			<div class="flex-1">辅助治疗费用</div>
+			<div class="flex-1">{{fee.feeInfo.assistOriginalFee}}</div>
+		</div>
+		<div class="flex mt10">
+			<div class="flex-1">检查项目费用</div>
+			<div class="flex-1">{{fee.feeInfo.checkOriginalFee}}</div>
+			<div class="flex-1">药方药品费用</div>
+			<div class="flex-1">{{fee.feeInfo.medicalOriginalFee}}</div>
+		</div>
+		<div class="flex mt10">
+			<div class="flex-1">其他费用</div>
+			<div class="flex-1">{{fee.feeInfo.otherOriginalFee}}</div>
+			<div class="flex-1"></div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="mb20 mt40">费用明细</div>
+		<div class="flex detail">
+			<div class="flex-1">项目</div>
+			<div class="flex-1">单价（元）</div>
+			<div class="flex-1">数量</div>
+			<div class="flex-1">费用合计</div>
+			<div class="flex-1">折扣金额</div>
+			<div class="flex-1">应收费用</div>
+		</div>
+		<div class="detail-item">
+			<div class="flex" *ngFor="let service of fee.feeInfo.serviceFeeList">
+				<div class="flex-1">{{service.projectName}}-{{service.serviceName}}</div>
+				<div class="flex-1">{{service.fee}}</div>
+				<div class="flex-1">{{service.number}}</div>
+				<div class="flex-1">{{service.originalServiceFee}}</div>
+				<div class="flex-1">{{service.serviceDiscount}}</div>
+				<div class="flex-1">{{service.serviceFee}}</div>
+			</div>
+			<div class="flex" *ngFor="let assist of fee.feeInfo.assistFeeList">
+				<div class="flex-1">{{assist.projectName}}</div>
+				<div class="flex-1">{{assist.price}}</div>
+				<div class="flex-1">{{assist.number}}</div>
+				<div class="flex-1">{{assist.originalAssistFee}}</div>
+				<div class="flex-1">{{assist.assistDiscount}}</div>
+				<div class="flex-1">{{assist.assistFee}}</div>
+			</div>
+			<div class="flex" *ngFor="let check of fee.feeInfo.checkFeeList">
+				<div class="flex-1">{{check.projectName}}</div>
+				<div class="flex-1">{{check.price}}</div>
+				<div class="flex-1">{{check.number}}</div>
+				<div class="flex-1">{{check.originalCheckFee}}</div>
+				<div class="flex-1">{{check.checkDiscount}}</div>
+				<div class="flex-1">{{check.checkFee}}</div>
+			</div>
+			<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList">
+				<div class="flex" *ngFor="let info of medical.info">
+					<div class="flex-1">{{info.pname}}</div>
+					<div class="flex-1">{{info.price}}</div>
+					<div class="flex-1">{{info.num}}</div>
+					<div class="flex-1">{{info.originalMedicalFee}}</div>
+					<div class="flex-1">{{info.medicalDiscount}}</div>
+					<div class="flex-1">{{info.medicalFee}}</div>
+				</div>
+			</ng-container>
+			<div class="flex" *ngFor="let other of fee.feeInfo.otherFeeList">
+				<div class="flex-1">{{other.projectName}}</div>
+				<div class="flex-1">{{other.price}}</div>
+				<div class="flex-1">{{other.number}}</div>
+				<div class="flex-1">{{other.originalOtherFee}}</div>
+				<div class="flex-1">{{other.otherDiscount}}</div>
+				<div class="flex-1">{{other.otherFee}}</div>
+			</div>
+		</div>
+		<div class="flex money">
+			<div class="flex-1">费用合计 {{fee.originalCost}}元</div>
+			<div class="flex-1">应收费用 {{fee.fee}}元</div>
+			<div class="flex-1">{{tran.info.wayText}}支付 {{tran.info.amount}}元</div>
+		</div>
+		<div class="flex">
+			<div class="flex-1"></div>
+			<div class="flex-0 flex mr20"><div class="flex-1">收款人 {{tran.info.adminName}}</div></div>
+		</div>
+	</div>
+</div>

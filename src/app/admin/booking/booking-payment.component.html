@@ -20,6 +20,10 @@
 					<div class="second-bar-tab flex">
 						<div class="item active">费用详情</div>
 					</div>
+					<div class="flex" *ngIf="bookingInfo.status == '5'">
+						<div class="flex-1"></div>
+						<div class="flex-0"><button (click)="print()" target="_blank" class="print-btn pure-button mt10">打印</button></div>
+					</div>
 					<div class="section">
 						<div class="title">医生服务费用</div>
 						<div class="pad10">
