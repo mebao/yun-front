@@ -435,7 +435,9 @@ export class BookingListComponent implements OnInit{
 
 	closeInfo() {
 		this.modalTabInfo = false;
-		this.modalTab = true;
+		if(this.selectedTab == 0){
+			this.modalTab = true;
+		}
 	}
 
 	updateBooking() {
