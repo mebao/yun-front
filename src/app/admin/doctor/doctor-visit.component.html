@@ -1,0 +1,61 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-doctor-visit">
+			<top-bar [data]="topBar"></top-bar>
+			<div>
+				<table *ngIf="visitList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<th class="w70p"></th>
+							<th>坐诊医生</th>
+                            <th>就诊宝宝</th>
+							<th>就诊状态</th>
+							<th>就诊时长</th>
+							<th>待接诊列表</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let visit of visitList; let index=index;">
+                            <td>
+                                <div class="img-tab-default">
+									<img src="{{(!visit.imageUrl || visit.imageUrl == '') ? '../assets/images/img.png' : visit.imageUrl}}">
+								</div>
+                            </td>
+							<td>{{visit.doctorName}}</td>
+							<td>{{visit.visitChild}}</td>
+							<td>
+								<button *ngIf="!visit.visitChild" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '')" class="pure-button pure-button-primary">开始接诊</button>
+								<button *ngIf="visit.visitChild" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '')" class="pure-button pure-button-primary">结束接诊</button>
+							</td>
+							<td>{{visit.visitTime}}</td>
+							<td>
+								<div *ngIf="visit.visitChild">
+									结束就诊后，可就诊下一位。
+								</div>
+								<div class="radio-tab" [ngClass]="{'disabled': visit.visitChild}">
+									<ng-container *ngFor="let child of visit.doctorChilds">
+										<div class="flex">
+											<div class="flex item pt10 pb5" (click)="changeVisit(child.serviceId, index, visit.visitChild)" [ngClass]="{'active': visit.selected == child.serviceId}">
+												<div class="icon"></div>
+												<div class="info pl10">
+													{{child.time}}-{{child.childName}}
+												</div>
+											</div>
+											<div class="flex-1"></div>
+										</div>
+									</ng-container>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasData && visitList.length == 0" class="mt10">
+					<nodata title="未查询到就诊信息"></nodata>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -268,6 +268,13 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							// 收费打印
+							{
+								url: '/admin/paymentPrint',
+								authority: 'payment',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{
@@ -288,33 +295,51 @@ export class AuthGuardRole implements CanActivate{
 							}
 						]
 					},
+					// {
+					// 	firstKey: 'clinicroomList',
+					// 	firstUrl: '',
+					// 	second: [
+					// 		{
+					// 			url: '/admin/clinicroomList',
+					// 			authority: 'see',
+					// 			queryType: '',
+					// 			queryParams: '',
+					// 		},
+					// 		{
+					// 			url: '/admin/clinicroomList',
+					// 			authority: 'personal',
+					// 			queryType: '',
+					// 			queryParams: '',
+					// 		},
+					// 		// 编辑诊室
+					// 		{
+					// 			url: '/admin/clinicroom',
+					// 			authority: 'edit',
+					// 			queryType: '',
+					// 			queryParams: '',
+					// 		},
+					// 		// 诊室使用记录
+					// 		{
+					// 			url: '/admin/clinicroomRecords',
+					// 			authority: 'records',
+					// 			queryType: '',
+					// 			queryParams: '',
+					// 		},
+					// 	]
+					// },
 					{
-						firstKey: 'clinicroomList',
+						firstKey: 'doctorVisit',
 						firstUrl: '',
 						second: [
 							{
-								url: '/admin/clinicroomList',
+								url: '/admin/doctorVisit',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/clinicroomList',
+								url: '/admin/doctorVisit',
 								authority: 'personal',
-								queryType: '',
-								queryParams: '',
-							},
-							// 编辑诊室
-							{
-								url: '/admin/clinicroom',
-								authority: 'edit',
-								queryType: '',
-								queryParams: '',
-							},
-							// 诊室使用记录
-							{
-								url: '/admin/clinicroomRecords',
-								authority: 'records',
 								queryType: '',
 								queryParams: '',
 							},

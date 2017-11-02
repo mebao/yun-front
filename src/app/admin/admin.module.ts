@@ -119,6 +119,7 @@ import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }    from './medical/medical-purchase-info.component';
 import { MaterialPurchaseInfoComponent }   from './material/material-purchase-info.component';
+import { DoctorVisitComponent }            from './doctor/doctor-visit.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -234,6 +235,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AssistComponent,
 		MedicalPurchaseInfoComponent,
 		MaterialPurchaseInfoComponent,
+		DoctorVisitComponent,
 	],
 	providers: [
 		AdminService,

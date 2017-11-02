@@ -98,6 +98,7 @@ import { AssistListComponent }              from './setup/assist-list.component'
 import { AssistComponent }                  from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-info.component';
 import { MaterialPurchaseInfoComponent }    from './material/material-purchase-info.component';
+import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
 
 const adminRoutes: Routes = [
 	{
@@ -481,6 +482,7 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'paymentPrint',
+						canActivate: [AuthGuardRole],
 						component: PaymentPrintComponent,
 					},
 					{
@@ -567,6 +569,11 @@ const adminRoutes: Routes = [
 						path: 'materialPurchaseInfo',
 						canActivate: [AuthGuardRole],
 						component: MaterialPurchaseInfoComponent,
+					},
+					{
+						path: 'doctorVisit',
+						canActivate: [AuthGuardRole],
+						component: DoctorVisitComponent,
 					},
 					{
 						path: '**',

@@ -63,7 +63,7 @@ export class LeftNavComponent{
 			infos: any[],
 		},
 		//诊室列表
-		clinicroomList: {
+		doctorVisit: {
 			use: string,
 			authority: any[],
 			infos: any[],
@@ -224,7 +224,7 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
-			clinicroomList: {
+			doctorVisit: {
 				use: '',
 				authority: ['see', 'personal'],
 				infos: [],

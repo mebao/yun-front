@@ -59,4 +59,22 @@ export class DoctorService{
 			.then(response => response.json() as Data)
 			.catch();
 	}
+
+	// 当日值班医生及其登记患者
+	private doctorworkUrl = this.url + '/mebcrm/doctorwork';
+	doctorwork(urlOptions): Promise<Data>{
+		return this.http.get(this.doctorworkUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 开始或结束就诊
+	private updateserviceUrl = this.url + '/mebcrm/updateservice/';
+	updateservice(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updateserviceUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
 }
