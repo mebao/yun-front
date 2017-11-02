@@ -20,12 +20,17 @@
 		}
 	}
 	.flex-tab{
+		select-search{
+			width: 50%;
+		}
 		input{
+			width: 50%;
 			margin-top: 0;
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 		}
 		select{
+			width: 50%;
 			margin-top: 0;
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;

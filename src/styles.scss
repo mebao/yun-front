@@ -138,6 +138,27 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
+.radio-tab{
+    .item{
+        cursor: pointer;
+        .icon{
+            border: 1px solid #cccccc;
+            border-radius: 50%;
+            width: 20px;
+        }
+        &.active{
+            .icon{
+                background-color: #173267;
+            }
+        }
+    }
+    &.disabled{
+        .item{
+            cursor: no-drop;
+        }
+    }
+}
+
 .pure-table td, .pure-table th{padding: .5em;}
 
 .group-tab{

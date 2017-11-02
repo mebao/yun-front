@@ -55,6 +55,7 @@ export class DoctorPrescriptComponent{
 	selected: {
 		text: string,
 	}
+	numberList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -181,6 +182,11 @@ export class DoctorPrescriptComponent{
 			'水煎服',
 			'副药',
 		];
+
+		this.numberList = [];
+		for(var i = 1; i < 21; i++){
+			this.numberList.push({key: i, value: i});
+		}
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params.id;
@@ -372,6 +378,10 @@ export class DoctorPrescriptComponent{
 		}
 	}
 
+	changeNumber(_value, index, key) {
+		this.plist[index - 1].ms[key] = _value;
+	}
+
 	create(f) {
 		//新增或修改
 		if(this.secondType == ''){
@@ -408,15 +418,15 @@ export class DoctorPrescriptComponent{
 						p.name = JSON.parse(f.value['ms_' + this.plist[i].key]).name;
 						p.unit = JSON.parse(f.value['ms_' + this.plist[i].key]).unit;
 						p.one_unit = JSON.parse(f.value['ms_' + this.plist[i].key]).oneUnit;
-						if(this.adminService.isFalse(f.value['one_num_' + this.plist[i].key])){
+						if(this.adminService.isFalse(this.plist[i].ms.oneNum)){
 							this.toastTab('第' + num + '条单位剂量不可为空', 'error');
 							return;
 						}
-						if(parseFloat(f.value['one_num_' + this.plist[i].key]) <= 0){
+						if(parseFloat(this.plist[i].ms.oneNum) <= 0){
 							this.toastTab('第' + num + '条单位剂量应大于0', 'error');
 							return;
 						}
-						p.one_num = f.value['one_num_' + this.plist[i].key];
+						p.one_num = this.plist[i].ms.oneNum;
 						if(!(f.value['usage_' + this.plist[i].key]) || f.value['usage_' + this.plist[i].key] == ''){
 							this.toastTab('第' + num + '条用法不可为空', 'error');
 							return;
@@ -427,24 +437,24 @@ export class DoctorPrescriptComponent{
 							return;
 						}
 						p.frequency = f.value['frequency_' + this.plist[i].key];
-						if(this.adminService.isFalse(f.value['days_' + this.plist[i].key])){
+						if(this.adminService.isFalse(this.plist[i].ms.days)){
 							this.toastTab('第' + num + '条天数不可为空', 'error');
 							return;
 						}
-						if(Number(f.value['days_' + this.plist[i].key]) <=0 || Number(f.value['days_' + this.plist[i].key]) % 1 != 0){
+						if(Number(this.plist[i].ms.days) <=0 || Number(this.plist[i].ms.days) % 1 != 0){
 							this.toastTab('第' + num + '条天数应为大于0的整数', 'error');
 							return;
 						}
-						p.days = f.value['days_' + this.plist[i].key];
-						if(this.adminService.isFalse(f.value['num_' + this.plist[i].key])){
+						p.days = this.plist[i].ms.days;
+						if(this.adminService.isFalse(this.plist[i].ms.num)){
 							this.toastTab('第' + num + '条药单总量不可为空', 'error');
 							return;
 						}
-						if(Number(f.value['num_' + this.plist[i].key]) <= 0 || Number(f.value['num_' + this.plist[i].key]) % 1 != 0){
+						if(Number(this.plist[i].ms.num) <= 0 || Number(this.plist[i].ms.num) % 1 != 0){
 							this.toastTab('第' + num + '条药单总量应为大于0的整数', 'error');
 							return;
 						}
-						p.num = f.value['num_' + this.plist[i].key];
+						p.num = this.plist[i].ms.num;
 						if(Number(JSON.parse(f.value['batch_' + this.plist[i].key]).price) == 0){
 							this.selected = {
 								text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，尚未设置售价，请先设置售价，再开方',

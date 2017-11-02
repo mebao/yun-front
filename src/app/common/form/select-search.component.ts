@@ -10,6 +10,7 @@ export class SelectSearchComponent{
 	@Input() selectList: any[];
 	@Output() onVoted = new EventEmitter<string>();
 	@Input() selectedValue = '';
+	@Input() addInput = false;
 	show: boolean;
 	searchBoolean: boolean;
 
@@ -39,6 +40,12 @@ export class SelectSearchComponent{
 					searchArr.push(selectList[i]);
 				}
 			}
+		}
+		if(this.addInput && searchArr.length == 0){
+			searchArr.push({
+				key: _value,
+				value: _value
+			});
 		}
 		this.selectList = searchArr;
 	}
