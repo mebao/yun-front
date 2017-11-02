@@ -220,7 +220,7 @@ export class PaymentPrintComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.tran.id = results.weekbooks[0].tranId;
-					this.adminService.searchtran(this.url + '&id=' + this.tran.id + '&clinic_id=' + this.adminService.getUser().clinicId).then((data) => {console.log(222);
+					this.adminService.searchtran(this.url + '&id=' + this.tran.id + '&clinic_id=' + this.adminService.getUser().clinicId).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
 					}else{
@@ -301,7 +301,7 @@ export class PaymentPrintComponent{
 		//服务
 		var serviceFee = 0;
 		var originalServiceFee = 0;
-		if(this.fee.feeInfo.serviceFeeList.length > 0){console.log(this.fee.feeInfo.serviceFeeList);
+		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
 				// 如果具体服务折扣存在，则以具体服务折扣计算，否则以默认服务折扣计算
 				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userMember.service);

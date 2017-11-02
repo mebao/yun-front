@@ -549,7 +549,7 @@
 						<table *ngIf="followupsList.length > 0" class="pure-table w100 table-tab">
 							<thead>
 								<tr>
-									<th class="w10">随访人员</th>
+									<!-- <th class="w10">随访人员</th> -->
 									<th class="w10">随访时间</th>
 									<th class="w25">随访内容和原因</th>
 									<th class="w20">备注</th>
@@ -559,7 +559,7 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let followups of followupsList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-									<td>{{followups.upUserName}}</td>
+									<!-- <td>{{followups.upUserName}}</td> -->
 									<td>{{followups.time}}</td>
 									<td>
 										<div class="length-text">{{followups.account}}</div>

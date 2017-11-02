@@ -109,10 +109,10 @@ export class BookingFollowupsComponent{
 
 	create(f) {
 		if(this.editType == 'create'){
-			if(this.selectUser == ''){
-				this.toastTab('随访人员不可为空', 'error');
-				return;
-			}
+			// if(this.selectUser == ''){
+			// 	this.toastTab('随访人员不可为空', 'error');
+			// 	return;
+			// }
 			if(f.value.time == ''){
 				this.toastTab('随访日期不可为空', 'error');
 				return;
@@ -126,8 +126,8 @@ export class BookingFollowupsComponent{
 				token: this.adminService.getUser().token,
 				clinic_id: this.adminService.getUser().clinicId,
 				booking_id: this.bookingId,
-				up_user_id: JSON.parse(this.selectUser).id,
-				up_user_name: JSON.parse(this.selectUser).realName,
+				// up_user_id: JSON.parse(this.selectUser).id,
+				// up_user_name: JSON.parse(this.selectUser).realName,
 				time: f.value.time,
 				account: f.value.account,
 				remarks: f.value.remarks,
