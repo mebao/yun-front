@@ -19,6 +19,7 @@ export class DoctorRecordTempletListComponent{
 		text: string,
 		type: string,
 	};
+	loadingShow: boolean;
     id: string;
     hasData: boolean;
     recordtempletList: any[];
@@ -41,6 +42,7 @@ export class DoctorRecordTempletListComponent{
 			title: '儿保记录模板列表',
 			back: true,
 		}
+		this.loadingShow = true;
 
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
@@ -59,11 +61,13 @@ export class DoctorRecordTempletListComponent{
              + '&doctor_id=' + this.id;
         this.doctorService.searchrecordtemplet(url).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.recordtempletList = results.list;
                 this.hasData = true;
+		        this.loadingShow = false;
             }
         });
     }

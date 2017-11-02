@@ -18,6 +18,7 @@ export class BookingHistoryComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
     url: string;
     bookingList: any[];
     hasData: boolean;
@@ -59,6 +60,8 @@ export class BookingHistoryComponent{
             bdate_big: '',
             bdate_less: '',
         }
+
+		this.loadingShow = true;
 
         // 根据childId获取booking列表
         this.url = '?username=' + this.adminService.getUser().username
@@ -114,11 +117,13 @@ export class BookingHistoryComponent{
     getData(urlOptions) {
         this.adminService.searchbooking(urlOptions).then((data) => {
             if(data.status == 'no'){
+                this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.bookingList = results.weekbooks;
                 this.hasData = true;
+	            this.loadingShow = false;
             }
         });
     }

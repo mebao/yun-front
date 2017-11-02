@@ -24,6 +24,7 @@ export class MaterialPurchaseListComponent{
 		editPut: boolean,
 		infoPut: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	url: string;
@@ -68,6 +69,8 @@ export class MaterialPurchaseListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.list = [];
@@ -87,6 +90,7 @@ export class MaterialPurchaseListComponent{
 	getData(urlOptions) {
 		this.adminService.purchaserecords(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -98,6 +102,7 @@ export class MaterialPurchaseListComponent{
 				}
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

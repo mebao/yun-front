@@ -18,6 +18,7 @@ export class BookingPaymentComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	bookingInfo: {
 		age: string,
 		allFee: string,
@@ -105,6 +106,8 @@ export class BookingPaymentComponent{
 
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
+		this.loadingShow = true;
+
 		//获取费用详情
 		this.fee = {
 			remark: '',
@@ -163,6 +166,7 @@ export class BookingPaymentComponent{
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.bookingfee(this.id + this.url).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -363,6 +367,8 @@ export class BookingPaymentComponent{
 
 		this.fee.fee = this.adminService.toDecimal2(fee);
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
+		
+		this.loadingShow = false;
 	}
 
 	close() {

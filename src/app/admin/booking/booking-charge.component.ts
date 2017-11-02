@@ -23,6 +23,7 @@ export class BookingChargeComponent{
 		see: boolean,
 		payment: boolean,
 	}
+	loadingShow: boolean;
 	url: string;
 	doctorlist: any[];
 	servicelist: [{}];
@@ -87,6 +88,8 @@ export class BookingChargeComponent{
 			bdate_big: todayDate,
 		}
 
+		this.loadingShow = true;
+
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 
@@ -128,6 +131,7 @@ export class BookingChargeComponent{
 	getList(urlOptions) {
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -144,6 +148,7 @@ export class BookingChargeComponent{
 				}
 				this.bookinglist = results.weekbooks;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

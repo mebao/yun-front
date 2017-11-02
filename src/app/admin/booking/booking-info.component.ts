@@ -24,6 +24,7 @@ export class BookingInfoComponent{
 		add: boolean,
 		update: boolean,
 	}
+	loadingShow: boolean;
 	id: string;
 	booking: {
 		age: string,
@@ -111,12 +112,15 @@ export class BookingInfoComponent{
 			this.id = params['id'];
 		})
 
+		this.loadingShow = true;
+
 		var urlOptions = '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
 				 + '&clinic_id=' + this.adminService.getUser().clinicId
 				 + '&id=' + this.id;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -134,6 +138,7 @@ export class BookingInfoComponent{
 					}
 				}
 				this.booking.totalFee = total.toString();
+				this.loadingShow = false;
 			}
 		})
 	}

@@ -15,20 +15,21 @@ export class WorkbenchReceptionComponent{
 	// @HostBinding('style.display')   display = 'block';
 	// @HostBinding('style.position')  position = 'absolute';
 	// @HostBinding('style.width')     width = '100%';
-	topBar: {
-		title: string,
-		back: boolean,
-	};
-	weektitle: any[];
-	schedulinglist: any[];
-	weekNumConfig: number;
-	weekNumBooking: number;
-	url: string;
 	toast: {
 		show: number,
 		text: string,
 		type:  string,
 	};
+	topBar: {
+		title: string,
+		back: boolean,
+	};
+	loadingShow: boolean;
+	weektitle: any[];
+	schedulinglist: any[];
+	weekNumConfig: number;
+	weekNumBooking: number;
+	url: string;
 	hasDoctorBookingData: boolean;
 	doctorBookingList: any[];
 	weekBookingTitle: any[];
@@ -66,6 +67,8 @@ export class WorkbenchReceptionComponent{
 			text: '',
 			type: '',
 		};
+		this.loadingShow = true;
+
 		this.hasDoctorBookingData = false;
 		this.doctorBookingList = [];
 		this.modalTab = false;
@@ -86,6 +89,7 @@ export class WorkbenchReceptionComponent{
 	 	var adminlistUrl = this.url + '&role=2';
 	 	this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -95,6 +99,7 @@ export class WorkbenchReceptionComponent{
 					}
 				}
 				this.doctorList = results.adminlist;
+				this.loadingShow = false;
 			}
 		});
 

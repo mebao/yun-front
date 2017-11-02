@@ -13,7 +13,7 @@
 			</div>
 			<div class="flex pure-form mt10 search-tab max">
 				<div class="flex-1">
-					<button *ngIf="moduleAuthority.editCheck" (click)="add()" class="pure-button pure-button-primary">新增盘点</button>
+					<button *ngIf="moduleAuthority.addCheck" (click)="add()" class="pure-button pure-button-primary">新增盘点</button>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="name">药品名:</label>
@@ -69,7 +69,7 @@
 							<td>{{item.checkTime}}</td>
 							<td>{{item.checkerName}}</td>
 							<!-- <td>
-								<button *ngIf="moduleAuthority.editCheck" (click)="update(item)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="moduleAuthority.addCheck" (click)="update(item)" class="pure-button pure-button-primary">修改</button>
 							</td> -->
 						</tr>
 					</tbody>
@@ -82,3 +82,4 @@
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<loading [show]="loadingShow"></loading>

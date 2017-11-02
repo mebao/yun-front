@@ -20,8 +20,9 @@ export class MedicalCheckListComponent{
 	// 权限
 	moduleAuthority: {
 		seeCheck: boolean,
-		editCheck: boolean,
+		addCheck: boolean,
 	}
+	loadingShow: boolean;
 	url: string;
 	stockList: any[];
 	hasData: boolean;
@@ -50,7 +51,7 @@ export class MedicalCheckListComponent{
 
 		this.moduleAuthority = {
 			seeCheck: false,
-			editCheck: false,
+			addCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -64,6 +65,8 @@ export class MedicalCheckListComponent{
 				this.moduleAuthority[authority.infos[i].keyName] = true;
 			}
 		}
+
+		this.loadingShow = true;
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -109,6 +112,7 @@ export class MedicalCheckListComponent{
 	getData(urlOptions) {
 		this.adminService.searchstock(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -119,6 +123,7 @@ export class MedicalCheckListComponent{
 				}
 				this.stockList = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

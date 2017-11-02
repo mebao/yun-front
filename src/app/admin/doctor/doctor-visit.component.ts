@@ -23,6 +23,7 @@ export class DoctorVisitComponent{
 		see: boolean,
 		personal: boolean,
 	}
+	loadingShow: boolean;
     url: string;
     visitList: any[];
     hasData: boolean;
@@ -62,6 +63,8 @@ export class DoctorVisitComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
         this.url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
              + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -78,6 +81,7 @@ export class DoctorVisitComponent{
         }
         this.doctorService.doctorwork(url).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -90,6 +94,7 @@ export class DoctorVisitComponent{
                 this.timeGo = setInterval(() => {
                     this.visitList = this.setData(results.doctors);
                 }, 1000);
+		        this.loadingShow = false;
             }
         });
     }

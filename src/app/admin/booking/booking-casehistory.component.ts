@@ -18,6 +18,7 @@ export class BookingCasehistoryComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	info: {
 		name: string,
 		age: string,
@@ -202,6 +203,8 @@ export class BookingCasehistoryComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		// 主诉模板
 		this.cprtemplateList = [];
 		this.cprtemplate = '';
@@ -210,6 +213,7 @@ export class BookingCasehistoryComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.cprtemplate(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -219,6 +223,7 @@ export class BookingCasehistoryComponent{
 					}
 				}
 				this.cprtemplateList = results.template;
+				this.loadingShow = false;
 			}
 		});
 

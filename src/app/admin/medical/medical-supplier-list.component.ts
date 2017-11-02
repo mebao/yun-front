@@ -22,6 +22,7 @@ export class MedicalSupplierListComponent{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	url: string;
 	list: any[];
@@ -64,6 +65,8 @@ export class MedicalSupplierListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 		this.info = {
 			name: '',
@@ -81,11 +84,13 @@ export class MedicalSupplierListComponent{
 	getData(urlOptions) {
 		this.adminService.supplierlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

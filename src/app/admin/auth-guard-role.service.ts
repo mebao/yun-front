@@ -500,7 +500,7 @@ export class AuthGuardRole implements CanActivate{
 							// 编辑盘点
 							{
 								url: '/admin/materialCheck',
-								authority: 'editCheck',
+								authority: 'addCheck',
 								queryType: '',
 								queryParams: '',
 							},
@@ -583,7 +583,7 @@ export class AuthGuardRole implements CanActivate{
 							// 编辑盘点
 							{
 								url: '/admin/medicalCheck',
-								authority: 'editCheck',
+								authority: 'addCheck',
 								queryType: '',
 								queryParams: '',
 							},

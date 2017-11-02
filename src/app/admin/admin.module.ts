@@ -18,6 +18,7 @@ import { TopBarComponent }                 from './nav/top-bar.component';
 import { ModalToastComponent }             from '../common/modal/modal-toast.component';
 import { ModalImgComponent }               from '../common/modal/modal-img.component';
 import { NodataComponent }                 from '../common/nodata/nodata.component';
+import { LoadingComponent }                from '../common/modal/loading.component';
 
 //common
 import { DropDownComponent }               from '../common/dropdown/dropdown.component';
@@ -33,7 +34,7 @@ import { CreateUserComponent }             from './user/create-user.component';
 import { SchedulingConfigListComponent }   from './scheduling/scheduling-config-list.component';
 import { SchedulingConfigComponent }       from './scheduling/scheduling-config.component';
 import { SchedulingComponent }             from './scheduling/scheduling.component';
-import { BookingComponent }          from './booking/booking.component';
+import { BookingComponent }                from './booking/booking.component';
 import { BookingListComponent }            from './booking/booking-list.component';
 import { ChildServiceComponent }           from './service/child-service.component';
 import { ChildServiceListComponent }       from './service/child-service-list.component';
@@ -101,7 +102,7 @@ import { MemberComponent }                 from './setup/member.component';
 import { MemberListComponent }             from './setup/member-list.component';
 import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
-import { PaymentPrintComponent }         from './booking/payment-print.component';
+import { PaymentPrintComponent }           from './booking/payment-print.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
@@ -163,6 +164,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		ModalToastComponent,
 		ModalImgComponent,
 		NodataComponent,
+		LoadingComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,

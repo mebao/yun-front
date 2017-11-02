@@ -22,6 +22,7 @@ export class BookingFollowupsListComponent{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	url: string;
 	followupsList: any[];
 	hasData: boolean;
@@ -90,6 +91,8 @@ export class BookingFollowupsListComponent{
 			text: '',
 		}
 
+		this.loadingShow = true;
+
 		this.search();
 	}
 
@@ -119,11 +122,13 @@ export class BookingFollowupsListComponent{
 	getData(urlOptions) {
 		this.adminService.userfollowups(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.followupsList = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

@@ -18,6 +18,7 @@ export class MedicalCheckComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	url: string;
 	info: {
 		check_time: string,
@@ -46,6 +47,8 @@ export class MedicalCheckComponent{
 		}
 
 		this.checkList = [];
+
+		this.loadingShow = true;
 
 		//获取物资列表
 		this.url = '?username=' + this.adminService.getUser().username
@@ -81,6 +84,7 @@ export class MedicalCheckComponent{
 	getData(urlOptions) {
 		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -113,6 +117,7 @@ export class MedicalCheckComponent{
 						// }
 					}
 				}
+				this.loadingShow = false;
 			}
 		});
 	}

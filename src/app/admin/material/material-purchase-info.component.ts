@@ -18,6 +18,7 @@ export class MaterialPurchaseInfoComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
     params: {
         id: string;
         type: string;
@@ -47,6 +48,8 @@ export class MaterialPurchaseInfoComponent{
             }
         });
 
+		this.loadingShow = true;
+
         // 获取入库 详情
         this.infoList = [];
         var urlOptions = '?username=' + this.adminService.getUser().username
@@ -56,6 +59,7 @@ export class MaterialPurchaseInfoComponent{
              + '&id=' + this.params.id;
         this.adminService.purchaserecords(urlOptions).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -65,6 +69,7 @@ export class MaterialPurchaseInfoComponent{
                     }
                 }
                 this.infoList = results.list;
+		        this.loadingShow = false;
             }
         });
     }

@@ -11,6 +11,7 @@ export class BookingConfirmComponent{
 		title: string,
 		back: boolean,
 	};
+	loadingShow: boolean;
 	url: string;
 	weekNum: number;
 	weektitle: any[];
@@ -116,6 +117,8 @@ export class BookingConfirmComponent{
 			{key: '23:30'},
 		];
 
+		this.loadingShow = true;
+
 		this.getDoctorList();
 		this.getServiceList();
 		this.getBooking();
@@ -154,6 +157,7 @@ export class BookingConfirmComponent{
 		var urlOptions = this.getUrlOptios() + '&weekindex=' + this.weekNum;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var todayTime = new Date().getTime();
@@ -226,6 +230,7 @@ export class BookingConfirmComponent{
 				}
 				this.weektitle = weektitle;
 				this.weeklist = weeklist;
+				this.loadingShow = false;
 			}
 		})
 	}

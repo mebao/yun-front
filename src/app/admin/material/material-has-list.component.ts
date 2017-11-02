@@ -22,6 +22,7 @@ export class MaterialHasListComponent{
 		seeHas: boolean,
 		editHas: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	url: string;
@@ -65,6 +66,8 @@ export class MaterialHasListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.list = [];
@@ -85,11 +88,13 @@ export class MaterialHasListComponent{
 	getData(urlOptions) {
 		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

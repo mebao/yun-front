@@ -18,6 +18,7 @@ export class MedicalPurchaseInfoComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
     params: {
         id: string;
         type: string;
@@ -40,6 +41,8 @@ export class MedicalPurchaseInfoComponent{
 			type: '',
 		}
 
+		this.loadingShow = true;
+
         this.route.queryParams.subscribe((params) => {
             this.params = {
                 id: params.id,
@@ -56,6 +59,7 @@ export class MedicalPurchaseInfoComponent{
              + '&id=' + this.params.id;
         this.adminService.purchaserecords(urlOptions).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -65,6 +69,7 @@ export class MedicalPurchaseInfoComponent{
                     }
                 }
                 this.infoList = results.list;
+		        this.loadingShow = false;
             }
         });
     }

@@ -19,6 +19,7 @@ export class DoctorRecordTempletComponent{
 		text: string,
 		type: string,
 	};
+	loadingShow: boolean;
     hasData: boolean;
     recordtempletKeys: any[];
     rkList: any[];
@@ -45,6 +46,7 @@ export class DoctorRecordTempletComponent{
 			title: '儿保记录模板',
 			back: true,
 		}
+		this.loadingShow = true;
 
         this.hasData = false;
         this.recordtempletKeys = [];
@@ -96,6 +98,7 @@ export class DoctorRecordTempletComponent{
 
         this.doctorService.searchrecordkeys(url).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -111,6 +114,7 @@ export class DoctorRecordTempletComponent{
                     this.showAll();
                 }
                 this.hasData = true;
+		        this.loadingShow = false;
             }
         });
     }

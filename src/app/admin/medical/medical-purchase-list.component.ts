@@ -24,6 +24,7 @@ export class MedicalPurchaseListComponent{
 		addPut: boolean,
 		infoPut: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	url: string;
@@ -67,6 +68,8 @@ export class MedicalPurchaseListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.list = [];
@@ -86,6 +89,7 @@ export class MedicalPurchaseListComponent{
 	getData(urlOptions) {
 		this.adminService.purchaserecords(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -97,6 +101,7 @@ export class MedicalPurchaseListComponent{
 				}
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

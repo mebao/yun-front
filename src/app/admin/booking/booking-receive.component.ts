@@ -24,6 +24,7 @@ export class BookingReceiveComponent{
 		receive: boolean,
 		receiveAll: boolean,
 	}
+	loadingShow: boolean;
 	url: string;
 	doctorlist: any[];
 	servicelist: [{}];
@@ -76,6 +77,7 @@ export class BookingReceiveComponent{
 		}
 
 		this.hasData = false;
+		this.loadingShow = true;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
@@ -130,6 +132,7 @@ export class BookingReceiveComponent{
 	getList(urlOptions) {
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -146,6 +149,7 @@ export class BookingReceiveComponent{
 				}
 				this.bookinglist = results.weekbooks;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

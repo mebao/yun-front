@@ -18,6 +18,7 @@ export class MaterialCheckComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	url: string;
 	info: {
 		check_time: string,
@@ -63,12 +64,15 @@ export class MaterialCheckComponent{
 			check_time: '',
 		}
 
+		this.loadingShow = true;
+
 		this.getData(this.url);
 	}
 
 	getData(urlOptions) {
 		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -94,6 +98,7 @@ export class MaterialCheckComponent{
 						}
 					}
 				}
+				this.loadingShow = false;
 			}
 		});
 	}

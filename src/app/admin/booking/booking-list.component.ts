@@ -24,6 +24,7 @@ export class BookingListComponent implements OnInit{
 		add: boolean,
 		update: boolean,
 	}
+	loadingShow: boolean;
 	selectedTab: number;
 	url: string;
 	doctorlist: any[];
@@ -109,6 +110,8 @@ export class BookingListComponent implements OnInit{
 				this.moduleAuthority[authority.infos[i].keyName] = true;
 			}
 		}
+
+		this.loadingShow = true;
 
 		this.hasData = false;
 		this.bookinglist = [];
@@ -259,6 +262,7 @@ export class BookingListComponent implements OnInit{
 	getList(urlOptions, type) {
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var todayTime = new Date().getTime();
@@ -359,6 +363,7 @@ export class BookingListComponent implements OnInit{
 					this.bookinglist = results.weekbooks;
 				}
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}
