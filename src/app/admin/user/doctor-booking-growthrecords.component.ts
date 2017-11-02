@@ -17,6 +17,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	url: string;
 	id: string;
 	doctorId: string;
@@ -83,6 +84,8 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 			type: '',
 		}
 
+		this.loadingShow = true;
+
 		this.id = '';
 		this.doctorId = '';
 		this.canEdit = true;
@@ -128,11 +131,13 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 		var growthrecordUrl = this.url + '&booking_id=' + this.id;
 		this.adminService.childgrowthrecords(growthrecordUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.growthrecordList = results.list;
 				this.hasGrowthrecordData = true;
+				this.loadingShow = false;
 			}
 		});
 

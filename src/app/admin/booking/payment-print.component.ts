@@ -19,7 +19,12 @@ export class PaymentPrintComponent{
 		type:  string,
 	};
 	tran: {
-		info: string,
+		info: {
+			time: string,
+			wayText: string,
+			amount: string,
+			adminName: string,
+		},
 		id: string,
 	};
 	bookingInfo: {
@@ -98,7 +103,12 @@ export class PaymentPrintComponent{
 
 	ngOnInit(): void {
 		this.tran = {
-			info:'',
+			info: {
+				time: '',
+				wayText: '',
+				amount: '',
+				adminName: '',
+			},
 			id:''
 		}
 		this.topBar = {

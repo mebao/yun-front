@@ -25,6 +25,7 @@ export class CrmUserListComponent{
 		update: boolean,
 		delete: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	adminlist: any[];
 	modalConfirmTab: boolean;
@@ -79,6 +80,8 @@ export class CrmUserListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.adminlist = [];
@@ -110,11 +113,13 @@ export class CrmUserListComponent{
 	getData(urlOptions) {
 		this.adminService.adminlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.adminlist = results.adminlist;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

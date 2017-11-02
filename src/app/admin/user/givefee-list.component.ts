@@ -17,6 +17,7 @@ export class GivefeeListComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
     givefeeList: any[];
     hasData: boolean;
 
@@ -35,6 +36,8 @@ export class GivefeeListComponent{
 			type: '',
 		};
 
+		this.loadingShow = true;
+
         this.givefeeList = [];
         this.hasData = false;
 
@@ -43,11 +46,13 @@ export class GivefeeListComponent{
              + '&clinic_id=' + this.adminService.getUser().clinicId;
         this.adminService.searchwaiverauthnotes(url).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.givefeeList = results.list;
                 this.hasData = true;
+		        this.loadingShow = false;
             }
         });
     }

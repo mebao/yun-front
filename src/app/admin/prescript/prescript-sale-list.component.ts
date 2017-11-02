@@ -24,6 +24,7 @@ export class PrescriptSaleListComponent{
 		seeSale: boolean,
 		editSale: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	url: string;
@@ -68,6 +69,8 @@ export class PrescriptSaleListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
         this.hasData = false;
         this.list = [];
         this.searchInfo = {
@@ -100,6 +103,7 @@ export class PrescriptSaleListComponent{
 	getData(urlOptions) {
 		this.adminService.searchdrugretail(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -110,6 +114,7 @@ export class PrescriptSaleListComponent{
 				}
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

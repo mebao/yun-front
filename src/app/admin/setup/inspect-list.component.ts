@@ -22,6 +22,7 @@ export class SetupInspectListComponent{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	projectlist: any[];
 	hasData: boolean;
 
@@ -59,6 +60,8 @@ export class SetupInspectListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.projectlist = [];
 		this.hasData = false;
 
@@ -68,11 +71,13 @@ export class SetupInspectListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.checkprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.projectlist = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

@@ -18,6 +18,7 @@ export class ChildInfoComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	userInfo: {
 		id: string,
 		name: string,
@@ -65,6 +66,8 @@ export class ChildInfoComponent{
 			type: '',
 		};
 
+		this.loadingShow = true;
+
 		this.userInfo = {
 			id: '',
 			name: '',
@@ -105,6 +108,7 @@ export class ChildInfoComponent{
 		var urlOptions = this.url + '&childs=1&child_id=' + this.childInfo.childId;
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -129,6 +133,7 @@ export class ChildInfoComponent{
 						}
 					}
 				}
+				this.loadingShow = false;
 			}
 		});
 	}

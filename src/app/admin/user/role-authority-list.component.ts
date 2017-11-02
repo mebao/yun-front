@@ -18,6 +18,7 @@ export class RoleAuthorityListComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
     id: string;
     authorityList: any[];
     role: string;
@@ -39,6 +40,8 @@ export class RoleAuthorityListComponent{
 			type: '',
 		};
 
+		this.loadingShow = true;
+
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
         });
@@ -51,6 +54,7 @@ export class RoleAuthorityListComponent{
             + '&role_id=' + this.id;
         this.adminService.authoritylist(urlOptions).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -69,6 +73,7 @@ export class RoleAuthorityListComponent{
                     }
                 }
                 this.authorityList = results.list;
+		        this.loadingShow = false;
             }
         });
     }

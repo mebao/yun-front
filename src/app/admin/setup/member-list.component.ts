@@ -22,6 +22,7 @@ export class MemberListComponent{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	url: string;
 	memberList: any[];
 	hasData: boolean;
@@ -65,6 +66,8 @@ export class MemberListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -104,6 +107,7 @@ export class MemberListComponent{
 	getData(urlOptions) {
 		this.adminService.memberlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -159,6 +163,7 @@ export class MemberListComponent{
 				}
 				this.memberList = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

@@ -23,6 +23,7 @@ export class CrmRoleListComponent{
 		edit: boolean,
 		authority: boolean,
 	}
+	loadingShow: boolean;
 	roleList: any[];
 	hasData: boolean;
 	url: string;
@@ -63,6 +64,8 @@ export class CrmRoleListComponent{
 				this.moduleAuthority[authority.infos[i].keyName] = true;
 			}
 		}
+
+		this.loadingShow = true;
 
 		this.roleList = [];
 		this.hasData = false;
@@ -107,11 +110,13 @@ export class CrmRoleListComponent{
 	getData(urlOptions) {
 		this.adminService.clinicrolelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.roleList = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

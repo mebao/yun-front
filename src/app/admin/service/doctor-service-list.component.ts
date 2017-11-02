@@ -12,6 +12,7 @@ export class DoctorServiceListComponent{
 		title: string,
 		back: boolean,
 	};
+	loadingShow: boolean;
 	doctor_id: string;
 	doctorServiceList: any[];
 	toast: {
@@ -37,6 +38,8 @@ export class DoctorServiceListComponent{
 			text: '',
 			type: '',
 		};
+
+		this.loadingShow = true;
 		this.hasData = false;
 
 		this.doctorServiceList = [];
@@ -52,6 +55,7 @@ export class DoctorServiceListComponent{
 			 + '&doctor_id=' + this.doctor_id;
 		this.adminService.doctorservice(adminServiceUrl).then((data) => {
 			 if(data.status == 'no'){
+				this.loadingShow = false;
 			 	this.toastTab(data.errorMsg, 'error');
 			 }else{
 			 	var results = JSON.parse(JSON.stringify(data.results));
@@ -62,6 +66,7 @@ export class DoctorServiceListComponent{
 				}
 			 	this.doctorServiceList = results.servicelist;
 			 	this.hasData = true;
+				this.loadingShow = false;
 			 }
 		})
 	}

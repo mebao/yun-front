@@ -17,6 +17,7 @@ export class InspectResultsComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	// modal-img
 	modalImg: {
 		url: string,
@@ -67,6 +68,8 @@ export class InspectResultsComponent{
 			this.id = params.id;
 		});
 
+		this.loadingShow = true;
+
 		// 获取上传图片权限
 		this.token = '';
 		//获取头像上传token
@@ -91,6 +94,7 @@ export class InspectResultsComponent{
 
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -122,6 +126,7 @@ export class InspectResultsComponent{
 					}
 				}
 				this.checkProjectList = results.list;
+				this.loadingShow = false;
 			}
 		});
 	}

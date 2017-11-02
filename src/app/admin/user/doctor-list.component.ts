@@ -25,6 +25,7 @@ export class DoctorListComponent implements OnInit{
 		scheduling: boolean,
 		personal: boolean,
 	};
+	loadingShow: boolean;
 	doctorlist: any[];
 	hasData: boolean;
 
@@ -64,6 +65,8 @@ export class DoctorListComponent implements OnInit{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.doctorlist = [];
@@ -78,11 +81,13 @@ export class DoctorListComponent implements OnInit{
 		}
 		this.adminService.adminlist(adminServiceUrl).then((data) => {
 			 if(data.status == 'no'){
+				 this.loadingShow = false;
 			 	this.toastTab(data.errorMsg, 'error');
 			 }else{
 			 	var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 			 	this.hasData = true;
+				this.loadingShow = false;
 			 }
 		})
 	}

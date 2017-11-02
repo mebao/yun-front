@@ -18,6 +18,7 @@ export class DoctorBookingComponent implements OnInit{
 		url: string,
 		showImg: number,
 	}
+	loadingShow: boolean;
 	url: string;
 	id: string;
 	doctorId: string;
@@ -132,6 +133,9 @@ export class DoctorBookingComponent implements OnInit{
 			text: '',
 			type: '',
 		}
+
+		this.loadingShow = true;
+
 		// modal-img
 		this.modalImg = {
 			url: '',
@@ -366,6 +370,7 @@ export class DoctorBookingComponent implements OnInit{
 		var urlOptions = this.url + '&booking_id=' + this.id + '&today=1';
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -374,6 +379,7 @@ export class DoctorBookingComponent implements OnInit{
 				}
 				this.checkDataList = results.list;
 				this.hasCheckData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

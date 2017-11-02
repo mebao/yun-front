@@ -12,6 +12,7 @@ export class ClinicServiceListComponent implements OnInit{
 		title: string,
 		back: boolean,
 	};
+	loadingShow: boolean;
 	clinicServiceList: any[];
 	toast: {
 		show: number,
@@ -35,6 +36,8 @@ export class ClinicServiceListComponent implements OnInit{
 			text: '',
 			type: '',
 		};
+
+		this.loadingShow = true;
 		this.hasData = false;
 
 		this.clinicServiceList = [];
@@ -44,11 +47,13 @@ export class ClinicServiceListComponent implements OnInit{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.clinicservices(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.clinicServiceList = results.servicelist;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

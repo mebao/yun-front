@@ -27,6 +27,7 @@ export class UserListComponent{
 		member: boolean,
 		recharge: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	users: any[];
 	role: string;
@@ -90,6 +91,8 @@ export class UserListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 		this.modalConfirmTab = false;
 		this.selector = {
@@ -144,11 +147,13 @@ export class UserListComponent{
 	getData(urlOptions) {
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.users = results.users;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

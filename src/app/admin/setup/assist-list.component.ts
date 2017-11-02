@@ -23,6 +23,7 @@ export class AssistListComponent{
         see: boolean,
         edit: boolean,
     }
+	loadingShow: boolean;
     assistList: any[];
     hasData: boolean;
     url: string;
@@ -64,6 +65,8 @@ export class AssistListComponent{
 				this.moduleAuthority[authority.infos[i].keyName] = true;
 			}
 		}
+
+		this.loadingShow = true;
 
         this.assistList = [];
         this.hasData = false;
@@ -119,11 +122,13 @@ export class AssistListComponent{
     getData(urlOpltions) {
         this.adminService.searchassist(urlOpltions).then((data) => {
             if(data.status == 'no'){
+		        this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.assistList = results.list;
                 this.hasData = true;
+		        this.loadingShow = false;
             }
         });
     }

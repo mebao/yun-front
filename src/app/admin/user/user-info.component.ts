@@ -18,6 +18,7 @@ export class UserInfoComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	id: string;
 	userInfo: {
 		id: string,
@@ -56,6 +57,8 @@ export class UserInfoComponent{
 			text: '',
 			type: '',
 		};
+
+		this.loadingShow = true;
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
@@ -128,6 +131,7 @@ export class UserInfoComponent{
 			 + '&childs=1';
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -143,6 +147,7 @@ export class UserInfoComponent{
 						}
 					}
 				}
+				this.loadingShow = false;
 			}
 		})
 	}

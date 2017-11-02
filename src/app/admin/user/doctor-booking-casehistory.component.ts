@@ -17,6 +17,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	url: string;
 	id: string;
 	doctorId: string;
@@ -84,6 +85,8 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 			type: '',
 		}
 
+		this.loadingShow = true;
+
 		this.id = '';
 		this.doctorId = '';
 
@@ -128,11 +131,13 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		var casehistoryUrl = this.url + '&booking_id=' + this.id;
 		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.casehistoryList = results.list;
 				this.hasCasehistoryData = true;
+				this.loadingShow = false;
 			}
 		});
 

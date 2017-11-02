@@ -22,6 +22,7 @@ export class InspectResultsListComponent{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	userCheckList: any[];
 	checkProjestList: any[];
@@ -68,6 +69,8 @@ export class InspectResultsListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.info = {
 			check_name: '',
 			doctor_name: '',
@@ -86,10 +89,12 @@ export class InspectResultsListComponent{
 
 		this.adminService.checkprojects(this.url).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.checkProjestList = results.list;
+				this.loadingShow = false;
 			}
 		});
 		this.search();

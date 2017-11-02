@@ -25,6 +25,7 @@ export class PrescriptBackListComponent{
 		editBack: boolean,
 		seeSale: boolean,
 	}
+	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	modalConfirmTab: boolean;
@@ -76,6 +77,8 @@ export class PrescriptBackListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.list = [];
@@ -104,6 +107,7 @@ export class PrescriptBackListComponent{
 	getData(urlOptions) {
 		this.adminService.searchbackdrug(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -114,6 +118,7 @@ export class PrescriptBackListComponent{
 				}
 				this.list = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

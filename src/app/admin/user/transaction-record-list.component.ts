@@ -16,6 +16,7 @@ export class TransactionRecordListComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	hasData: boolean;
 	recordList: any[];
 	url: string;
@@ -43,6 +44,9 @@ export class TransactionRecordListComponent{
 			text: '',
 			type: '',
 		};
+
+		this.loadingShow = true;
+
 		this.hasData = false;
 		this.recordList = [];
 
@@ -92,11 +96,13 @@ export class TransactionRecordListComponent{
 	getData(urlOptions) {
 		this.adminService.searchtran(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.recordList = results.list;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

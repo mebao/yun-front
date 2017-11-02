@@ -24,6 +24,7 @@ export class ChildListComponent{
 		booking: boolean,
 		bookingHistory: boolean,
 	}
+	loadingShow: boolean;
 	childList: any[];
 	hasData: boolean;
 	searchInfo: {
@@ -67,6 +68,8 @@ export class ChildListComponent{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.childList = [];
 		this.hasData = false;
 		this.searchInfo = {
@@ -97,6 +100,7 @@ export class ChildListComponent{
 	getData(urlOptions) {
 		this.adminService.searchchild(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -109,6 +113,7 @@ export class ChildListComponent{
 				}
 				this.childList = results.child;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}

@@ -13,6 +13,7 @@ export class DoctorInfoComponent{
 		title: string,
 		back: boolean,
 	};
+	loadingShow: boolean;
 	doctor_id: string;
 	info: {
 		doctorId: string;
@@ -48,6 +49,9 @@ export class DoctorInfoComponent{
 			title: '医生服务及排班信息',
 			back: true,
 		}
+
+		this.loadingShow = true;
+
 		this.stopCondition = false;
 		this.toast = {
 			show: 0,
@@ -77,6 +81,7 @@ export class DoctorInfoComponent{
 		var urlOptions = this.url + '&doctor_id=' + this.doctor_id;
 		this.adminService.doctordutys(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -120,6 +125,7 @@ export class DoctorInfoComponent{
 					this.hasDoctor = false;
 				}
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 

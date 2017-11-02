@@ -22,6 +22,7 @@ export class ChildServiceListComponent implements OnInit{
 		see: boolean,
 		edit: boolean,
 	}
+	loadingShow: boolean;
 	childServiceList: any[];
 	hasData: boolean;
 
@@ -56,17 +57,21 @@ export class ChildServiceListComponent implements OnInit{
 			}
 		}
 
+		this.loadingShow = true;
+
 		this.hasData = false;
 
 		this.childServiceList = [];
 
 		this.adminService.servicelist().then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.childServiceList = results.servicelist;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		})
 	}

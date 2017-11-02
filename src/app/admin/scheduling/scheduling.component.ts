@@ -18,6 +18,7 @@ export class SchedulingComponent{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	weektitle: any[];
 	schedulinglist: any[];
 	weekNum: number;
@@ -90,6 +91,8 @@ export class SchedulingComponent{
 			type: '',
 		};
 
+		this.loadingShow = true;
+
 		this.changeData = {
 			_id: '',
 			value: '',
@@ -117,6 +120,7 @@ export class SchedulingComponent{
 	getList(urlOptions) {
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var adminduty = JSON.parse(JSON.stringify(data.results)).adminduty;
@@ -164,6 +168,7 @@ export class SchedulingComponent{
 				}
 				this.weektitle = weektitle;
 				this.schedulinglist = adminduty;
+				this.loadingShow = false;
 			}
 		})
 	}

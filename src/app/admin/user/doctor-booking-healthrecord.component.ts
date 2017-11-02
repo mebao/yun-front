@@ -18,6 +18,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		text: string,
 		type:  string,
 	};
+	loadingShow: boolean;
 	url: string;
 	id: string;
 	doctorId: string;
@@ -84,6 +85,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			type: '',
 		}
 
+		this.loadingShow = true;
+
 		this.id = '';
 		this.doctorId = '';
 
@@ -129,11 +132,13 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		var healthrecordUrl = this.url + '&booking_id=' + this.id;
 		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.healthrecordList = results.list;
 				this.hasHealthrecordData = true;
+				this.loadingShow = false;
 			}
 		});
 
