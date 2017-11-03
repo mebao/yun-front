@@ -1,7 +1,15 @@
+<div class="select-mask" *ngIf="show" (click)="close()"></div>
 <div class="select-list-page">
-	<div (click)="changeShow();" [ngClass]="{'active': show}" class="label">{{selectedValue == '' ? title : selectedValue}}</div>
+	<div [ngClass]="{'active': show}" class="flex label">
+		<div (click)="changeShow();" class="item">{{selectedValue == '' ? title : selectedValue}}</div>
+		<div (click)="clear()" *ngIf="showClear && selectedValue != ''" class="item clear">
+			<div></div>
+		</div>
+	</div>
 	<div *ngIf="show" class="select-tab">
-		<input type="text" (keyup)="changeSearch($event.target.value)">
+		<div class="flex">
+			<input type="text" (keyup)="changeSearch($event.target.value)" class="flex-1">
+		</div>
 		<div class="select-list">
 			<div class="option" *ngFor="let option of selectList" (click)="selected(option)">{{option.value}}</div>
 		</div>

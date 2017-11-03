@@ -11,6 +11,7 @@ export class SelectSearchComponent{
 	@Output() onVoted = new EventEmitter<string>();
 	@Input() selectedValue = '';
 	@Input() addInput = false;
+	@Input() showClear = false;
 	show: boolean;
 	searchBoolean: boolean;
 
@@ -53,6 +54,16 @@ export class SelectSearchComponent{
 	selected(_value) {
 		this.selectedValue = _value.value;
 		this.onVoted.emit(_value.key);
+		this.show = false;
+	}
+
+	clear() {
+		this.selectedValue = '';
+		this.onVoted.emit('');
+		this.show = false;
+	}
+
+	close() {
 		this.show = false;
 	}
 }

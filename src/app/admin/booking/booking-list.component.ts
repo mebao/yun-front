@@ -393,7 +393,11 @@ export class BookingListComponent implements OnInit{
 	}
 
 	selectUser(_value) {
-		this.searchInfo.mobile = JSON.parse(_value).mobile;
+		if(_value != ''){
+			this.searchInfo.mobile = JSON.parse(_value).mobile;
+		}else{
+			this.searchInfo.mobile = '';
+		}
 	}
 
 	//查询

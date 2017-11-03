@@ -33,7 +33,7 @@
 				<div class="flex-1"></div>
 				<div class="pure-control-group mr10 flex">
 					<label for="creator_name">家长姓名或手机号码：</label>
-					<select-search [title]="'请选择家长姓名或手机号码'" [selectList]="userList" (onVoted)="selectUser($event)"></select-search>
+					<select-search [title]="'请选择家长姓名或手机号码'" [selectList]="userList" [showClear]="true" (onVoted)="selectUser($event)"></select-search>
 				</div>
 				<div *ngIf="selectedTab == 1" class="w64p"></div>
 				<button *ngIf="selectedTab == 0" (click)="search()" class="pure-button pure-button-primary">搜索</button>
