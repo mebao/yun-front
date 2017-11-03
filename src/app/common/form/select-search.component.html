@@ -1,7 +1,7 @@
 <div class="select-mask" *ngIf="show" (click)="close()"></div>
 <div class="select-list-page">
 	<div [ngClass]="{'active': show}" class="flex label">
-		<div (click)="changeShow();" class="item">{{selectedValue == '' ? title : selectedValue}}</div>
+		<div (click)="changeShow();" class="item flex-1">{{selectedValue == '' ? title : selectedValue}}</div>
 		<div (click)="clear()" *ngIf="showClear && selectedValue != ''" class="item clear">
 			<div></div>
 		</div>
