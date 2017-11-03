@@ -390,16 +390,16 @@ export class BookingHealthrecordComponent{
 
     // 身高对比
     changeHeight() {
-        if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.medium_height)){
-            this.info.compare_height = '';
-            return;
-        }
-        if(parseFloat(this.info.height) <= 0){
+        if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) <= 0){
             this.toastTab('身高应大于0', 'error');
             return;
         }
-        if(parseFloat(this.info.medium_height) <= 0){
+        if(!this.adminService.isFalse(this.info.medium_height) && parseFloat(this.info.medium_height) <= 0){
             this.toastTab('中等值应大于0', 'error');
+            return;
+        }
+        if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.medium_height)){
+            this.info.compare_height = '';
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.medium_height)) / parseFloat(this.info.medium_height) * 100);
@@ -408,16 +408,16 @@ export class BookingHealthrecordComponent{
 
     // 体重对比
     changeWeight() {
-        if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.medium_weight)){
-            this.info.compare_weight = '';
-            return;
-        }
-        if(parseFloat(this.info.weight) <= 0){
+        if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) <= 0){
             this.toastTab('体重应大于0', 'error');
             return;
         }
-        if(parseFloat(this.info.medium_weight) <= 0){
+        if(!this.adminService.isFalse(this.info.medium_weight) && parseFloat(this.info.medium_weight) <= 0){
             this.toastTab('中等值应大于0', 'error');
+            return;
+        }
+        if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.medium_weight)){
+            this.info.compare_weight = '';
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.medium_weight)) / parseFloat(this.info.medium_weight));
@@ -434,49 +434,43 @@ export class BookingHealthrecordComponent{
 		this.info[_key] = _value;
 	}
 
+	validateNumber(type, info) {
+		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) <= 0){
+			this.toastTab(info + '应大于0', 'error');
+			return false;
+		}
+		return true;
+	}
+
     create(f) {
-        if(this.info.check_date == ''){
-            this.toastTab('检查日期不可为空', 'error');
-            return;
-        }
-		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
-			this.toastTab('身高应大于0', 'error');
+		if(!this.validateNumber('height', '身高')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.medium_height) && Number(f.value.medium_height) <= 0){
-			this.toastTab('中等值应大于0', 'error');
+		if(!this.validateNumber('medium_height', '身高中等值')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
-			this.toastTab('头围应大于0', 'error');
+		if(!this.validateNumber('weight', '体重')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
-			this.toastTab('体重应大于0', 'error');
+		if(!this.validateNumber('medium_weight', '体重中等值')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.medium_weight) && Number(f.value.medium_weight) <= 0){
-			this.toastTab('中等值应大于0', 'error');
+		if(!this.validateNumber('head_circum', '头围')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
-			this.toastTab('胸围应大于0', 'error');
+		if(!this.validateNumber('breast_circum', '胸围')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.body_temperature) && Number(f.value.body_temperature) <= 0){
-			this.toastTab('体温应大于0', 'error');
+		if(!this.validateNumber('body_temperature', '体温')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.pulse) && Number(f.value.pulse) <= 0){
-			this.toastTab('脉搏应大于0', 'error');
+		if(!this.validateNumber('pulse', '脉搏')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.breathe) && Number(f.value.breathe) <= 0){
-			this.toastTab('呼吸应大于0', 'error');
+		if(!this.validateNumber('breathe', '呼吸')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.blood_pressure) && Number(f.value.blood_pressure) <= 0){
-			this.toastTab('血压应大于0', 'error');
+		if(!this.validateNumber('blood_pressure', '血压')){
 			return;
 		}
         var params = {
@@ -485,7 +479,7 @@ export class BookingHealthrecordComponent{
             clinic_id: this.adminService.getUser().clinicId,
             child_id: this.info.child_id,
             booking_id: this.info.booking_id,
-            check_date: this.info.check_date,
+            check_date: this.adminService.getDayByDate(new Date()),
             height: this.info.height == '' ? '0' : this.info.height,
             medium_height: this.info.medium_height == '' ? '0' : this.info.medium_height,
             compare_height: this.info.compare_height,

@@ -232,16 +232,16 @@ export class BookingCasehistoryComponent{
 
     // 身高对比
     changeHeight() {
+		if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) <= 0){
+			this.toastTab('身高应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(this.info.mid_height) && parseFloat(this.info.mid_height) <= 0){
+			this.toastTab('中等值应大于0', 'error');
+			return;
+		}
         if(this.adminService.isFalse(this.info.height) || this.adminService.isFalse(this.info.mid_height)){
             this.info.compare_height = '';
-            return;
-        }
-        if(parseFloat(this.info.height) <= 0){
-            this.toastTab('身高应大于0', 'error');
-            return;
-        }
-        if(parseFloat(this.info.mid_height) <= 0){
-            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.height) - parseFloat(this.info.mid_height)) / parseFloat(this.info.mid_height) * 100);
@@ -250,16 +250,16 @@ export class BookingCasehistoryComponent{
 
     // 体重对比
     changeWeight() {
+		if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) <= 0){
+			this.toastTab('体重应大于0', 'error');
+			return;
+		}
+		if(!this.adminService.isFalse(this.info.mid_weight) && parseFloat(this.info.mid_weight) <= 0){
+			this.toastTab('中等值应大于0', 'error');
+			return;
+		}
         if(this.adminService.isFalse(this.info.weight) || this.adminService.isFalse(this.info.mid_weight)){
             this.info.compare_weight = '';
-            return;
-        }
-        if(parseFloat(this.info.weight) <= 0){
-            this.toastTab('体重应大于0', 'error');
-            return;
-        }
-        if(parseFloat(this.info.mid_weight) <= 0){
-            this.toastTab('中等值应大于0', 'error');
             return;
         }
         var compare = this.adminService.toDecimal2((parseFloat(this.info.weight) - parseFloat(this.info.mid_weight)) / parseFloat(this.info.mid_weight));
@@ -291,45 +291,43 @@ export class BookingCasehistoryComponent{
 		this.info.time = JSON.parse(_value).value;
 	}
 
+	validateNumber(type, info) {
+		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) <= 0){
+			this.toastTab(info + '应大于0', 'error');
+			return false;
+		}
+		return true;
+	}
+
 	create(f) {
-		if(!this.adminService.isFalse(f.value.weight) && Number(f.value.weight) <= 0){
-			this.toastTab('体重应大于0', 'error');
+		if(!this.validateNumber('weight', '体重')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.mid_weight) && Number(f.value.mid_weight) <= 0){
-			this.toastTab('中等值应大于0', 'error');
+		if(!this.validateNumber('mid_weight', '体重中等值')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.height) && Number(f.value.height) <= 0){
-			this.toastTab('身高应大于0', 'error');
+		if(!this.validateNumber('height', '身高')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.mid_height) && Number(f.value.mid_height) <= 0){
-			this.toastTab('中等值应大于0', 'error');
+		if(!this.validateNumber('mid_height', '身高中等值')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.head_circum) && Number(f.value.head_circum) <= 0){
-			this.toastTab('头围应大于0', 'error');
+		if(!this.validateNumber('head_circum', '头围')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.breast_circum) && Number(f.value.breast_circum) <= 0){
-			this.toastTab('胸围应大于0', 'error');
+		if(!this.validateNumber('breast_circum', '胸围')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.teeth) && Number(f.value.teeth) <= 0){
-			this.toastTab('牙齿应大于0', 'error');
+		if(!this.validateNumber('teeth', '出牙数')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.body_temperature) && Number(f.value.body_temperature) <= 0){
-			this.toastTab('体温应大于0', 'error');
+		if(!this.validateNumber('body_temperature', '体温')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.breathe) && Number(f.value.breathe) <= 0){
-			this.toastTab('呼吸应大于0', 'error');
+		if(!this.validateNumber('breathe', '呼吸')){
 			return;
 		}
-		if(!this.adminService.isFalse(f.value.blood_pressure) && Number(f.value.blood_pressure) <= 0){
-			this.toastTab('血压应大于0', 'error');
+		if(!this.validateNumber('blood_pressure', '血压')){
 			return;
 		}
 		var params = {

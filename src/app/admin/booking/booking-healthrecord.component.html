@@ -19,20 +19,6 @@
 								<input type="text" id="age" name="age" #age="ngModel" [(ngModel)]="info.age" disabled="">
 							</div>
 						</div>
-						<div class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="check_date">
-									<span>检查日期：</span>
-									<span class="required">*</span>
-								</label>
-								<input type="date" id="check_date" name="check_date" #check_date="ngModel" [(ngModel)]="info.check_date" required="">
-								<div *ngIf="check_date.errors && (check_date.dity || check_date.touched)" class="alert alert-danger">
-									<div [hidden]="!check_date.errors.required">
-										检查日期不可为空
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div
 						*ngIf="info.height != null || info.medium_height != null || info.weight != null || info.medium_weight != null || info.head_circum != null || info.breast_circum != null"
@@ -80,13 +66,13 @@
 						<div *ngIf="baseInfo.head_circum != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="head_circum">头围（cm）：</label>
-								<input type="number" id="head_circum" name="head_circum" step="0.01" [(ngModel)]="info.head_circum">
+								<input type="number" id="head_circum" name="head_circum" step="0.01" [(ngModel)]="info.head_circum" (change)="validateNumber('head_circum', '头围')">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.breast_circum != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="breast_circum">胸围（cm）：</label>
-								<input type="number" id="breast_circum" name="breast_circum" step="0.01" [(ngModel)]="info.breast_circum">
+								<input type="number" id="breast_circum" name="breast_circum" step="0.01" [(ngModel)]="info.breast_circum" (change)="validateNumber('breast_circum', '胸围')">
 							</div>
 						</div>
 					</div>
@@ -97,25 +83,25 @@
 						<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="body_temperature">体温（°C）：</label>
-								<input type="number" id="body_temperature" name="body_temperature" step="0.01" [(ngModel)]="info.body_temperature">
+								<input type="number" id="body_temperature" name="body_temperature" step="0.01" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.pulse != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="pulse">脉搏（次/分钟）：</label>
-								<input type="number" id="pulse" name="pulse" [(ngModel)]="info.pulse">
+								<input type="number" id="pulse" name="pulse" [(ngModel)]="info.pulse" (change)="validateNumber('pulse', '脉搏')">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.breathe != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="breathe">呼吸（次/分钟）：</label>
-								<input type="number" id="breathe" name="breathe" [(ngModel)]="info.breathe">
+								<input type="number" id="breathe" name="breathe" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.blood_pressure != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="blood_pressure">血压（/ mmHg）：</label>
-								<input type="number" id="blood_pressure" name="blood_pressure" [(ngModel)]="info.blood_pressure">
+								<input type="number" id="blood_pressure" name="blood_pressure" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')">
 							</div>
 						</div>
 					</div>

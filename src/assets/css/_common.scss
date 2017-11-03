@@ -19,11 +19,13 @@ body{
     left: 0;
     right: 0;
     bottom: 0;
-	overflow: hidden;
+	// overflow: hidden;
 	letter-spacing: 1px;
 	-webkit-overflow-scrolling: touch;
 	overflow-scrolling: touch;
 }
+// 360极速浏览器body下面会多出一部分空白
+body #trans-tooltip, body #tip-arrow-bottom, body #tip-arrow-top{display: none;}
 a{
 	-webkit-user-select:none;
 	-moz-user-select:none;

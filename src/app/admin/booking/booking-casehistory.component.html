@@ -59,19 +59,19 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="head_circum">头围（3岁及以下）cm：</label>
-								<input type="number" id="head_circum" step="0.01" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum">
+								<input type="number" id="head_circum" step="0.01" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum" (change)="validateNumber('head_circum', '头围')">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="breast_circum">胸围（cm）：</label>
-								<input type="number" id="breast_circum" step="0.01" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum">
+								<input type="number" id="breast_circum" step="0.01" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum" (change)="validateNumber('breast_circum', '胸围')">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
-								<label for="teeth">牙齿（枚）：</label>
-								<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth">
+								<label for="teeth">出牙数（颗）：</label>
+								<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth" (change)="validateNumber('teeth', '出牙数')">
 							</div>
 						</div>
 						<div class="pure-u-8-24"></div>
@@ -147,19 +147,19 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="body_temperature">体温（T、°C）：</label>
-								<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature">
+								<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="breathe">呼吸（P、次/分）：</label>
-								<input type="number" id="breathe" name="breathe" #breathe="ngModel" [(ngModel)]="info.breathe">
+								<input type="number" id="breathe" name="breathe" #breathe="ngModel" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')">
 							</div>
 						</div>
 						<div class="pure-u-8-24 pl10">
 							<div class="pure-control-group">
 								<label for="blood_pressure">血压（BP、mmHg）：</label>
-								<input type="number" id="blood_pressure" name="blood_pressure" #blood_pressure="ngModel" [(ngModel)]="info.blood_pressure">
+								<input type="number" id="blood_pressure" name="blood_pressure" #blood_pressure="ngModel" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')">
 							</div>
 						</div>
 						<div class="pure-u-24-24">
