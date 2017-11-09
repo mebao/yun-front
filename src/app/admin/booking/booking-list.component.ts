@@ -37,7 +37,9 @@ export class BookingListComponent implements OnInit{
 		cdate_less: string,
 		cdate_big: string,
 		bdate_less: string,
+		bdate_less_text: string,
 		bdate_big: string,
+		bdate_big_text: string,
 	}
 	bookinglist: any[];
 	weeklist: any[];
@@ -118,6 +120,7 @@ export class BookingListComponent implements OnInit{
 		this.showBookinglist = [];
 		this.weeklist = [];
 
+		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
 			doctor_id: '',
 			service_id: '',
@@ -125,8 +128,10 @@ export class BookingListComponent implements OnInit{
 			creator_name: '',
 			cdate_less: '',
 			cdate_big: '',
-			bdate_less: '',
-			bdate_big: '',
+			bdate_less: todayDate,
+			bdate_less_text: this.adminService.dateFormat(todayDate),
+			bdate_big: todayDate,
+			bdate_big_text: this.adminService.dateFormat(todayDate),
 		}
 
 		this.use = true;
@@ -218,6 +223,11 @@ export class BookingListComponent implements OnInit{
 		});
 	}
 
+	// 选择日期
+	changeDate(_value, key) {
+		this.searchInfo[key] = JSON.parse(_value).value;
+	}
+
 	//医生列表
 	getDoctorList(){
 		var adminlistUrl = this.url + '&clinic_id='
@@ -250,10 +260,11 @@ export class BookingListComponent implements OnInit{
 				this.servicelist = results.servicelist;
 
 				// 根据服务获取服务颜色
-				//week列表
-				this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
-				//booking列表
-				this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
+				// //week列表
+				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
+				// //booking列表
+				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
+				this.search();
 			}
 		})
 	}

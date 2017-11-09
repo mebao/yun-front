@@ -35,7 +35,9 @@ export class BookingChargeComponent{
 		cdate_less: string,
 		cdate_big: string,
 		bdate_less: string,
+		bdate_less_text: string,
 		bdate_big: string,
+		bdate_big_text: string,
 	}
 	bookinglist: any[];
 	hasData: boolean;
@@ -85,7 +87,9 @@ export class BookingChargeComponent{
 			cdate_less: '',
 			cdate_big: '',
 			bdate_less: todayDate,
+			bdate_less_text: this.adminService.dateFormat(todayDate),
 			bdate_big: todayDate,
+			bdate_big_text: this.adminService.dateFormat(todayDate),
 		}
 
 		this.loadingShow = true;
@@ -188,6 +192,11 @@ export class BookingChargeComponent{
 			urlOptions += '&creator_name=' + this.searchInfo.creator_name;
 		}
 		return urlOptions;
+	}
+
+	// 选择日期
+	changeDate(_value, key) {
+		this.searchInfo[key] = JSON.parse(_value).value;
 	}
 
 	//付款

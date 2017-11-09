@@ -128,6 +128,11 @@ export class BookingHistoryComponent{
         });
     }
 
+    // 选择时间
+    changeDate(_value, key) {
+        this.searchInfo[key] = JSON.parse(_value).value;
+    }
+
     // 就诊记录
     doctorBookingHistory(booking) {
 		//重置详情选中模块
