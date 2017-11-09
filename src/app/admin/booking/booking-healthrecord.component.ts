@@ -255,7 +255,7 @@ export class BookingHealthrecordComponent{
                 disease_prevention: healthrecord.diseasePrevention,
                 answering_questions: healthrecord.answeringQuestions,
                 record: healthrecord.record,
-                review_date: healthrecord.reviewDate,
+                review_date: healthrecord.reviewDate ? this.adminService.dateFormatHasWord(healthrecord.reviewDate) : healthrecord.reviewDate,
                 review_date_text: healthrecord.reviewDate,
             }
             this.baseInfo = {

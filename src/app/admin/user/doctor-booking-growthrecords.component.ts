@@ -135,6 +135,12 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].checkDate = results.list[i].checkDate ? this.adminService.dateFormat(results.list[i].checkDate) : results.list[i].checkDate;
+						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
+					}
+				}
 				this.growthrecordList = results.list;
 				this.hasGrowthrecordData = true;
 				this.loadingShow = false;

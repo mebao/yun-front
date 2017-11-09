@@ -11,17 +11,17 @@
 				<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
 				<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
 			</div>
-			<div class="flex pure-form mt10">
+			<div class="flex pure-form search-tab mt10">
 				<div class="flex-1">
 					<button *ngIf="moduleAuthority.editPut" (click)="goUrl('./admin/materialPurchase')" class="pure-button pure-button-primary">新增入库</button>
 				</div>
-				<div class="pure-control-group mr10">
+				<div class="pure-control-group mr10 flex">
 					<label for="b_date">入库时间大于：</label>
-					<input type="date" id="b_date" name="b_date" [(ngModel)]="info.b_date">
+					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
 				</div>
-				<div class="pure-control-group mr10">
+				<div class="pure-control-group mr10 flex">
 					<label for="l_date">入库时间小于：</label>
-					<input type="date" id="l_date" name="l_date" [(ngModel)]="info.l_date">
+					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_date')"></select-date>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="type">类型：</label>

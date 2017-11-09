@@ -31,13 +31,13 @@
 			</div>
 			<div class="flex pure-form mt10 search-tab max">
 				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
+				<div class="pure-control-group mr10 flex">
 					<label for="b_time">检查时间大于：</label>
-					<input type="date" id="b_time" name="b_time" [(ngModel)]="info.b_time">
+					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
 				</div>
-				<div class="pure-control-group mr10">
+				<div class="pure-control-group mr10 flex">
 					<label for="l_time">检查时间小于：</label>
-					<input type="date" id="l_time" name="l_time" [(ngModel)]="info.l_time">
+					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
 				</div>
 				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 			</div>

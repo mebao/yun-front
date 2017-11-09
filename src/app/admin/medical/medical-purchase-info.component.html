@@ -41,6 +41,8 @@
 					<thead>
 						<tr>
 							<th>药品名</th>
+							<th>商品名</th>
+							<th>规格</th>
 							<th>药品类型</th>
 							<th>国药准字</th>
 							<th>条形码</th>
@@ -56,6 +58,8 @@
 					<tbody>
 						<tr *ngFor="let item of info.info">
 							<td>{{item.msName}}</td>
+							<td>{{item.tradeName}}</td>
+							<td>{{item.format}}</td>
 							<td>{{item.typeText}}</td>
 							<td>{{item.otc}}</td>
 							<td>{{item.code}}</td>

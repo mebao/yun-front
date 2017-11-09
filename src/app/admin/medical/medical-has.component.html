@@ -14,6 +14,14 @@
 								<input type="text" id="name" name="name" [(ngModel)]="info.name" disabled="">
 							</div>
 							<div class="pure-control-group">
+								<label for="trade_name">商品名</label>
+								<input type="text" id="trade_name" name="trade_name" [(ngModel)]="info.trade_name">
+							</div>
+							<div class="pure-control-group">
+								<label for="format">规格</label>
+								<input type="text" id="format" name="format" [(ngModel)]="info.format">
+							</div>
+							<div class="pure-control-group">
 								<label for="unit">单位</label>
 								<select id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" required>
 									<ng-container *ngFor="let unit of drugUnits">

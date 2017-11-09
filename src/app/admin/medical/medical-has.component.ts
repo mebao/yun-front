@@ -20,6 +20,8 @@ export class MedicalHasComponent{
 	info: {
 		id: string,
 		name: string,
+		trade_name: string,
+		format: string,
 		type: string,
 		typeText: string,
 		usage: string,
@@ -57,6 +59,8 @@ export class MedicalHasComponent{
 		this.info = {
 			id: '',
 			name: '',
+			trade_name: '',
+			format: '',
 			type: '',
 			typeText: '',
 			usage: '',
@@ -90,6 +94,8 @@ export class MedicalHasComponent{
 						this.info = {
 							id: results.list[0].others[0].id,
 							name: results.list[0].name,
+							trade_name: results.list[0].others[0].tradeName,
+							format: results.list[0].others[0].format,
 							type: results.list[0].type,
 							typeText: results.list[0].typeText,
 							usage: results.list[0].usage,
@@ -106,6 +112,8 @@ export class MedicalHasComponent{
 						};
 					}
 				}
+
+				console.log(this.info);
 			}
 		});
 
@@ -135,6 +143,14 @@ export class MedicalHasComponent{
 	}
 
 	update(f) {
+		if(f.value.trade_name == ''){
+			this.toastTab('商品名不可为空', 'error');
+			return;
+		}
+		if(f.value.format == ''){
+			this.toastTab('规格不可为空', 'error');
+			return;
+		}
 		if(f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
 			return;
@@ -181,6 +197,8 @@ export class MedicalHasComponent{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			id: this.info.id,
+			trade_name: this.info.trade_name,
+			format: this.info.format,
 			unit: f.value.unit,
 			one_unit: f.value.one_unit,
 			type: this.info.type,

@@ -10,13 +10,13 @@
 						<label for="user_name">用户：</label>
 						<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
 					</div>
-					<div class="pure-control-group mr10">
+					<div class="pure-control-group mr10 flex">
 						<label for="b_time">大于此时间：</label>
-						<input type="date" id="b_time" name="b_time" [(ngModel)]="searchInfo.b_time">
+						<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
 					</div>
-					<div class="pure-control-group mr10">
+					<div class="pure-control-group mr10 flex">
 						<label for="l_time">小于此时间：</label>
-						<input type="date" id="l_time" name="l_time" [(ngModel)]="searchInfo.l_time">
+						<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
 					</div>
 					<div class="flex-1"></div>
 				</div>

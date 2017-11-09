@@ -120,6 +120,11 @@ export class MedicalPurchaseListComponent{
 		this.getData(urlOptions);
 	}
 
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
+	}
+
 	goUrl(_url) {
 		this.router.navigate([_url]);
 	}

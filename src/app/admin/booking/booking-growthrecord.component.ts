@@ -56,7 +56,9 @@ export class BookingGrowthrecordComponent{
 		trace_element: string,
 		trace_element_other: string,
 		check_date: string,
+		check_date_text: string,
 		review_date: string,
+		review_date_text: string,
 	};
 	id: string;
 	doctorId: string;
@@ -149,8 +151,10 @@ export class BookingGrowthrecordComponent{
 				BALP_other: growthrecord.BALP == '正常' ? '' : growthrecord.BALP,
 				trace_element: growthrecord.traceElement,
 				trace_element_other: growthrecord.traceElement == '正常' ? '' : growthrecord.traceElement,
-				check_date: growthrecord.checkDate,
-				review_date: growthrecord.reviewDate,
+				check_date: growthrecord.checkDate ? this.adminService.dateFormatHasWord(growthrecord.checkDate) : growthrecord.checkDate,
+				check_date_text: growthrecord.checkDate,
+				review_date: growthrecord.reviewDate ? this.adminService.dateFormatHasWord(growthrecord.reviewDate) : growthrecord.reviewDate,
+				review_date_text: growthrecord.reviewDate,
 			}
 		}else{
 			this.info = {
@@ -191,7 +195,9 @@ export class BookingGrowthrecordComponent{
 				trace_element: '',
 				trace_element_other: '',
 				check_date: '',
+				check_date_text: '请选择检查日期',
 				review_date: '',
+				review_date_text: '请选择复查日期',
 			}
 		}
 	}
@@ -248,6 +254,11 @@ export class BookingGrowthrecordComponent{
 			return false;
 		}
 		return true;
+	}
+
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
 	}
 
 	create(f) {
@@ -316,8 +327,8 @@ export class BookingGrowthrecordComponent{
 			bone_density: this.info.bone_density,
 			BALP: this.info.BALP == '' ? this.info.BALP_other : this.info.BALP,
 			trace_element: this.info.trace_element == '' ? this.info.trace_element_other : this.info.trace_element,
-			check_date: f.value.check_date == '' ? null : f.value.check_date,
-			review_date: f.value.review_date == '' ? null : f.value.review_date,
+			check_date: this.info.check_date == '' ? null : this.info.check_date,
+			review_date: this.info.review_date == '' ? null : this.info.review_date,
 		}
 
 		if(this.editType == 'create'){

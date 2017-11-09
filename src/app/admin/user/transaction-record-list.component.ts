@@ -107,6 +107,11 @@ export class TransactionRecordListComponent{
 		});
 	}
 
+	// 选择时间
+	changeDate(_value, key) {
+		this.searchInfo[key] = JSON.parse(_value).value;
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

@@ -151,12 +151,17 @@ export class MedicalPurchaseComponent{
 		this.info.fee = String(feeAll);
 	}
 
+	// 选择日期
+	changeDate(_value) {
+		this.info.about_time = JSON.parse(_value).value;
+	}
+
 	create(f) {
 		if(f.value.supplier == ''){
 			this.toastTab('供应商不可为空', 'error');
 			return;
 		}
-		if(this.adminService.isFalse(f.value.about_time)){
+		if(this.adminService.isFalse(this.info.about_time)){
 			this.toastTab('发货时间不可为空', 'error');
 			return;
 		}
@@ -168,6 +173,8 @@ export class MedicalPurchaseComponent{
 				if(this.mslist[i].use){
 					var msParams = {
 						ms_name: '',
+						trade_name: '',
+						format: '',
 						unit: '',
 						num: '',
 						bid: '',
@@ -188,6 +195,16 @@ export class MedicalPurchaseComponent{
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
+					if(f.value['trade_name_' + key] == ''){
+						this.toastTab('第' + num + '条商品名不可为空', 'error');
+						return;
+					}
+					msParams.trade_name = f.value['trade_name_' + key];
+					if(f.value['format_' + key] == ''){
+						this.toastTab('第' + num + '条规格不可为空', 'error');
+						return;
+					}
+					msParams.format = f.value['format_' + key];
 					msParams.unit = JSON.parse(f.value['ms_' + key]).unit;
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
@@ -248,7 +265,7 @@ export class MedicalPurchaseComponent{
 			supplier_name: JSON.parse(f.value.supplier).name,
 			fee: this.info.fee,
 			mslist: msParamsList,
-			about_time: f.value.about_time,
+			about_time: this.info.about_time,
 		}
 
 		this.adminService.purchaserecord(params).then((data) => {

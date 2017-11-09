@@ -111,6 +111,11 @@ export class MaterialCheckListComponent{
 		this.getData(urlOptions);
 	}
 
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
+	}
+
 	getData(urlOptions) {
 		this.adminService.searchstock(urlOptions).then((data) => {
 			if(data.status == 'no'){
