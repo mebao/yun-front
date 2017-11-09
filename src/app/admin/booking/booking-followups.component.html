@@ -22,12 +22,7 @@
 									<span>随访日期</span>
 									<span class="required">*</span>
 								</label>
-								<input type="date" id="time" name="time" [(ngModel)]="info.time" #time="ngModel" required="" [disabled]="editType == 'update'">
-								<div *ngIf="time.errors && (time.dity || time.touched)" class="alert alert-danger">
-									<div [hidden]="!time.errors.required">
-										随访日期不可为空
-									</div>
-								</div>
+								<select-date title="{{info.timeText}}" [disabled]="editType == 'update'" (onVoted)="changeDate($event)"></select-date>
 							</div>
 							<div class="pure-control-group">
 								<label for="account">

@@ -25,6 +25,7 @@ export class BookingFollowupsComponent{
 	info: {
 		up_user: string,
 		time: string,
+		timeText: string,
 		account: string,
 		remarks: string,
 		results: string,
@@ -62,6 +63,7 @@ export class BookingFollowupsComponent{
 			this.info = {
 				up_user: '',
 				time: '',
+				timeText: '请选择随访日期',
 				account: '',
 				remarks: '',
 				results: '',
@@ -71,6 +73,7 @@ export class BookingFollowupsComponent{
 			this.info = {
 				up_user: followups.upUserName,
 				time: followups.time,
+				timeText: this.adminService.dateFormat(followups.time),
 				account: followups.account,
 				remarks: followups.remarks,
 				results: followups.results,
@@ -107,13 +110,18 @@ export class BookingFollowupsComponent{
 		this.selectUser = _value;
 	}
 
+	// 选择日期
+	changeDate(_value){
+		this.info.time = JSON.parse(_value).value;
+	}
+
 	create(f) {
 		if(this.editType == 'create'){
 			// if(this.selectUser == ''){
 			// 	this.toastTab('随访人员不可为空', 'error');
 			// 	return;
 			// }
-			if(f.value.time == ''){
+			if(this.info.time == ''){
 				this.toastTab('随访日期不可为空', 'error');
 				return;
 			}
@@ -128,7 +136,7 @@ export class BookingFollowupsComponent{
 				booking_id: this.bookingId,
 				// up_user_id: JSON.parse(this.selectUser).id,
 				// up_user_name: JSON.parse(this.selectUser).realName,
-				time: f.value.time,
+				time: this.info.time,
 				account: f.value.account,
 				remarks: f.value.remarks,
 				child_id: this.childId,
