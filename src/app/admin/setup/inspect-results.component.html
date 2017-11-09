@@ -108,7 +108,7 @@
 								</div>
 								<div class="pt20 text-center">
 									<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary button-max">修改</button>
-									<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max">保存</button>
+									<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
 								</div>
 							</form>
 						</div>

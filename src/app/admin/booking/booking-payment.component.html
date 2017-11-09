@@ -329,7 +329,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">取消</button>
-			<button (click)="confirmPay()" class="pure-button pure-button-primary">确认支付</button>
+			<button (click)="confirmPay()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认支付</button>
 		</div>
 	</div>
 </div>

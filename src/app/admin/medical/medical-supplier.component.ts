@@ -25,6 +25,8 @@ export class MedicalSupplierComponent{
 		mobile: string,
 	};
 	editType: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -77,27 +79,35 @@ export class MedicalSupplierComponent{
 		}else{
 			this.editType = 'create';
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(f.value.name == ''){
 			this.toastTab('供应商名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.company == ''){
 			this.toastTab('供应商公司不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.contacts == ''){
 			this.toastTab('联系人不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.mobile == ''){
 			this.toastTab('联系人电话不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.mobile.length != 11){
 			this.toastTab('联系人电话应为11位', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -115,6 +125,7 @@ export class MedicalSupplierComponent{
 			this.adminService.supplier(params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('医疗用品供应商创建成功', '');
 					setTimeout(() => {
@@ -136,6 +147,7 @@ export class MedicalSupplierComponent{
 			this.adminService.updatesupplier(this.info.id, updateParams).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('医疗用品供应商修改成功', '');
 					setTimeout(() => {
@@ -145,7 +157,7 @@ export class MedicalSupplierComponent{
 			})
 		}
 	}
-	
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

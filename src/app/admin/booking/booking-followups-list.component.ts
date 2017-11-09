@@ -37,6 +37,8 @@ export class BookingFollowupsListComponent{
 		value: string,
 		text: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -94,6 +96,8 @@ export class BookingFollowupsListComponent{
 		this.loadingShow = true;
 
 		this.search();
+
+		this.btnCanEdit = false;
 	}
 
 	searchStatus(_value) {
@@ -151,8 +155,9 @@ export class BookingFollowupsListComponent{
 	}
 
 	confirm() {
-		var followups = JSON.parse(this.selector.value);
+		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
+		var followups = JSON.parse(this.selector.value);
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -163,9 +168,11 @@ export class BookingFollowupsListComponent{
 		this.adminService.followupresult(followups.id, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('该随访取消成功', '');
 				this.search();
+				this.btnCanEdit = false;
 			}
 		});
 	}

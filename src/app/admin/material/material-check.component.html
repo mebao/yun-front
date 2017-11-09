@@ -68,7 +68,7 @@
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create()" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '添加' : '修改'}}</button>
+					<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '添加' : '修改'}}</button>
 				</div>
 			</form>
 		</div>

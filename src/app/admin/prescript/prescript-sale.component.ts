@@ -55,6 +55,8 @@ export class PrescriptSaleComponent{
 	userList: any[];
 	// 支付
 	modalTab: boolean;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -120,6 +122,7 @@ export class PrescriptSaleComponent{
 			}
 		});
 
+		this.btnCanEdit = false;
 	}
 
 	initData() {
@@ -369,8 +372,10 @@ export class PrescriptSaleComponent{
 	}
 
 	confirm() {
+		this.btnCanEdit = true;
 		if(this.sale.pay_way == ''){
 			this.toastTab('支付方式不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -393,6 +398,7 @@ export class PrescriptSaleComponent{
 		this.adminService.drugretail(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('支付成功', '');
 				setTimeout(() => {

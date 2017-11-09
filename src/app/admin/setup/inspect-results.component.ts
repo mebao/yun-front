@@ -34,6 +34,8 @@ export class InspectResultsComponent{
 	buttonType: string;
 	// 上传图片token
 	token: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -83,6 +85,8 @@ export class InspectResultsComponent{
 		});
 
 		this.getData('');
+
+		this.btnCanEdit = false;
 	}
 
 	getData(_selectTab) {
@@ -237,6 +241,7 @@ export class InspectResultsComponent{
 	}
 
 	save(indexCheck) {
+		this.btnCanEdit = true;
 		if(this.checkProjectList[indexCheck].resultListNum > 0){
 			var resultList = [];
 			for(var i = 0; i < this.checkProjectList[indexCheck].resultListNum; i++){
@@ -259,6 +264,7 @@ export class InspectResultsComponent{
 								result.values = this.checkProjectList[indexCheck].resultList[i].values;
 							}else{
 								this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+								this.btnCanEdit = false;
 								return;
 							}
 						}else{
@@ -268,11 +274,13 @@ export class InspectResultsComponent{
 						// 非空判断
 						if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
 							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						// 若是数字类型，则大于0
 						if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
 							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						result.values = this.checkProjectList[indexCheck].resultList[i].values;
@@ -293,10 +301,12 @@ export class InspectResultsComponent{
 				this.adminService.usercheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
 					}else{
 						this.getData(this.selectTab);
 						this.toastTab('检查结果添加成功', '');
 						this.buttonType = 'update';
+						this.btnCanEdit = false;
 					}
 				});
 			}else{
@@ -307,6 +317,7 @@ export class InspectResultsComponent{
 						this.getData(this.selectTab);
 						this.toastTab('检查结果修改成功', '');
 						this.buttonType = 'update';
+						this.btnCanEdit = false;
 					}
 				});
 			}

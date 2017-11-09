@@ -26,6 +26,8 @@ export class MaterialPurchaseComponent{
 	list: any[];
 	materialSupplies: any[];
 	mslist: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -89,6 +91,8 @@ export class MaterialPurchaseComponent{
 				this.materialSupplies = results.medicalSupplies;
 			}
 		})
+
+		this.btnCanEdit = false;
 	}
 
 	showMs(_key) {
@@ -158,12 +162,15 @@ export class MaterialPurchaseComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(f.value.supplier == ''){
 			this.toastTab('供应商不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.info.about_time)){
 			this.toastTab('发货时间不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var msParamsList = [];
@@ -188,6 +195,7 @@ export class MaterialPurchaseComponent{
 					num++;
 					if(f.value['ms_' + key] == ''){
 						this.toastTab('第' + num + '条物资不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
@@ -197,25 +205,30 @@ export class MaterialPurchaseComponent{
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
 					if(this.adminService.isFalse(f.value['num_' + key])){
 						this.toastTab('第' + num + '条物资入库数量不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(parseFloat(f.value['num_' + key]) <= 0 || Number(f.value['num_' + key]) % 1 != 0){
 						this.toastTab('第' + num + '条物资入库数量应为大于0的整数', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.num = f.value['num_' + key];
 					if(this.adminService.isFalse(f.value['bid_' + key])){
 						this.toastTab('第' + num + '条物资进价不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(parseFloat(f.value['bid_' + key]) <= 0){
 						this.toastTab('第' + num + '条物资进价应大于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];
 					msParams.price = '';
 					if(f.value['can_discount_' + key] == ''){
 						this.toastTab('第' + num + '条物资优惠类型不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.can_discount = f.value['can_discount_' + key];
@@ -237,6 +250,7 @@ export class MaterialPurchaseComponent{
 		this.adminService.purchaserecord(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('物资入库创建成功', '');
 				setTimeout(() => {

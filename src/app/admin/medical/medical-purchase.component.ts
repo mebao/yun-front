@@ -26,6 +26,8 @@ export class MedicalPurchaseComponent{
 	list: any[];
 	medicalSupplies: any[];
 	mslist: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -87,7 +89,9 @@ export class MedicalPurchaseComponent{
 				}
 				this.medicalSupplies = results.medicalSupplies;
 			}
-		})
+		});
+
+		this.btnCanEdit = false;
 	}
 
 	showMs(_key) {
@@ -157,12 +161,15 @@ export class MedicalPurchaseComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(f.value.supplier == ''){
 			this.toastTab('供应商不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.info.about_time)){
 			this.toastTab('发货时间不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var msParamsList = [];
@@ -192,16 +199,19 @@ export class MedicalPurchaseComponent{
 					num++;
 					if(f.value['ms_' + key] == ''){
 						this.toastTab('第' + num + '条药品不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
 					if(f.value['trade_name_' + key] == ''){
 						this.toastTab('第' + num + '条商品名不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.trade_name = f.value['trade_name_' + key];
 					if(f.value['format_' + key] == ''){
 						this.toastTab('第' + num + '条规格不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.format = f.value['format_' + key];
@@ -211,45 +221,54 @@ export class MedicalPurchaseComponent{
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
 					if(this.adminService.isFalse(f.value['num_' + key])){
 						this.toastTab('第' + num + '条药品入库数量不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(Number(f.value['num_' + key]) <= 0 || Number(f.value['num_' + key]) % 1 != 0){
 						this.toastTab('第' + num + '条药品入库数量应为大于0的整数', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.num = f.value['num_' + key];
 					if(this.adminService.isFalse(f.value['bid_' + key])){
 						this.toastTab('第' + num + '条药品进价不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(Number(f.value['bid_' + key]) <= 0){
 						this.toastTab('第' + num + '条药品进价应大于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];
 					msParams.price = '';
 					if(f.value['can_discount_' + key] == ''){
 						this.toastTab('第' + num + '条药品优惠类型不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.can_discount = f.value['can_discount_' + key];
 					if(f.value['is_prescribed_' + key] == ''){
 						this.toastTab('第' + num + '条药品处方药类型不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.is_prescribed = f.value['is_prescribed_' + key];
 					if(f.value['otc_' + key] == ''){
 						this.toastTab('第' + num + '条药品国药准字不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.otc = f.value['otc_' + key];
 					if(f.value['code_' + key] == ''){
 						this.toastTab('第' + num + '条药品条形码不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.code = f.value['code_' + key];
 					if(f.value['batch_' + key] == ''){
 						this.toastTab('第' + num + '条药品批次不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					msParams.batch = f.value['batch_' + key];
@@ -271,6 +290,7 @@ export class MedicalPurchaseComponent{
 		this.adminService.purchaserecord(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('药品入库创建成功', '');
 				setTimeout(() => {

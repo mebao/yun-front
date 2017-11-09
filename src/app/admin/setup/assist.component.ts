@@ -26,6 +26,8 @@ export class AssistComponent{
     }
     id: string;
     editType: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
     constructor(
         public adminService: AdminService,
@@ -94,6 +96,8 @@ export class AssistComponent{
         }else{
             this.editType = 'create';
         }
+
+        this.btnCanEdit = false;
     }
 
     setClinicData(data) {
@@ -107,20 +111,25 @@ export class AssistComponent{
     }
 
     create() {
+        this.btnCanEdit = true;
         if(this.adminService.isFalse(this.info.name)){
             this.toastTab('辅助治疗名不可为空', 'error');
+            this.btnCanEdit = false;
             return;
         }
         if(this.adminService.isFalse(this.info.type)){
             this.toastTab('辅助治疗类型不可为空', 'error');
+            this.btnCanEdit = false;
             return;
         }
         if(this.adminService.isFalse(this.info.price)){
             this.toastTab('辅助治疗价格不可为空', 'error');
+            this.btnCanEdit = false;
             return;
         }
         if(parseFloat(this.info.price) < 0){
             this.toastTab('辅助治疗价格应大于0', 'error');
+            this.btnCanEdit = false;
             return;
         }
 
@@ -137,6 +146,7 @@ export class AssistComponent{
         this.adminService.clinicassist(params).then((data) => {
             if(data.status == 'no'){
                 this.toastTab(data.errorMsg, 'error');
+                this.btnCanEdit = false;
             }else{
                 this.toastTab(this.editType == 'update' ? '辅助治疗修改成功' : '辅助治疗创建成功', '');
                 setTimeout(() => {

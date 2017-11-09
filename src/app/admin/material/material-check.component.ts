@@ -28,6 +28,8 @@ export class MaterialCheckComponent{
 	materialCheck: string;
 
 	checkList: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -67,6 +69,8 @@ export class MaterialCheckComponent{
 		this.loadingShow = true;
 
 		this.getData(this.url);
+
+		this.btnCanEdit = false;
 	}
 
 	getData(urlOptions) {
@@ -124,6 +128,7 @@ export class MaterialCheckComponent{
 	}
 
 	create() {
+		this.btnCanEdit = true;
 		var clist = [];
 		if(this.checkList.length > 0){
 			for(var i = 0; i < this.checkList.length; i++){
@@ -137,10 +142,12 @@ export class MaterialCheckComponent{
 					}
 					if(this.adminService.isFalse(this.checkList[i].reality_stock)){
 						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(Number(this.checkList[i].reality_stock) <= 0 || Number(this.checkList[i].reality_stock) % 1 != 0){
 						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存应为大于0的整数', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					clist.push(c);
@@ -158,6 +165,7 @@ export class MaterialCheckComponent{
 		this.adminService.clinicstock(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('盘点添加成功', '');
 				setTimeout(() => {

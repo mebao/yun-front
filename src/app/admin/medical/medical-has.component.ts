@@ -38,6 +38,8 @@ export class MedicalHasComponent{
 	}
 	drugUnits: any[];
 	OneUnits: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -135,6 +137,8 @@ export class MedicalHasComponent{
 				}
 			});
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -143,52 +147,65 @@ export class MedicalHasComponent{
 	}
 
 	update(f) {
+		this.btnCanEdit = true;
 		if(f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.format == ''){
 			this.toastTab('规格不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.one_unit)){
 			this.toastTab('计量单位不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.type == ''){
 			this.toastTab('类型不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.otc)){
 			this.toastTab('国药准字不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.code)){
 			this.toastTab('条形码不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.is_prescribed)){
 			this.toastTab('是否处方药不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.canDiscount == ''){
 			this.toastTab('是否优惠不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.price)){
 			this.toastTab('售价不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(f.value.price) <= 0){
 			this.toastTab('售价应大于0', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -213,6 +230,7 @@ export class MedicalHasComponent{
 		this.adminService.updatesupplies(this.info.id, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('药品库存信息修改成功', '');
 				setTimeout(() => {

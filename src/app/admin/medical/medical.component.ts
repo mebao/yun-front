@@ -28,6 +28,8 @@ export class MedicalComponent{
 	editType: string;
 	drugUnits: any[];
 	OneUnits: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -98,6 +100,8 @@ export class MedicalComponent{
 				}
 			});
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -106,24 +110,30 @@ export class MedicalComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(f.value.name == ''){
 			this.toastTab('药品名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.type == ''){
 			this.toastTab('药品类型不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.one_unit == ''){
 			this.toastTab('剂量单位不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -145,6 +155,7 @@ export class MedicalComponent{
 		this.adminService.medicalsupplies(urlOptions, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				if(this.editType == 'update'){
 					this.toastTab('药品修改成功', '');

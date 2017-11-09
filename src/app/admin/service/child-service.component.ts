@@ -24,6 +24,8 @@ export class ChildServiceComponent{
 		text: string,
 		type:  string,
 	};
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -61,15 +63,20 @@ export class ChildServiceComponent{
 		}else{
 			this.type = 'create';
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	submit(f) {
+		this.btnCanEdit = true;
 		if(f.value.service_name == ''){
 			this.toastTab('服务名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.description == ''){
 			this.toastTab('服务说明不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var param = {
@@ -82,6 +89,7 @@ export class ChildServiceComponent{
 		this.adminService.clinicservice(param).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				if(this.type == 'update'){
 					this.toastTab('修改成功', '');

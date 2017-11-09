@@ -28,6 +28,8 @@ export class MedicalLostComponent{
 	lostInfo: {
 		remark: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -75,7 +77,9 @@ export class MedicalLostComponent{
 				}
 				this.list = results.list;
 			}
-		})
+		});
+
+		this.btnCanEdit = false;
 	}
 
 	showMs(_key) {
@@ -108,6 +112,7 @@ export class MedicalLostComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		var mslosts = [];
 		var num = 0;
 		var feeAll = 0;
@@ -122,19 +127,23 @@ export class MedicalLostComponent{
 					};
 					if(f.value['ms_' + this.lostlist[i].key] == ''){
 						this.toastTab('第' + num + '条药品不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(f.value['batch_' + this.lostlist[i].key] == ''){
 						this.toastTab('第' + num + '条批次不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					lost.sinfo_id = JSON.parse(f.value['batch_' + this.lostlist[i].key]).id;
 					if(this.adminService.isFalse(f.value['num_' + this.lostlist[i].key])){
 						this.toastTab('第' + num + '条药单数量不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(Number(f.value['num_' + this.lostlist[i].key]) <= 0 || Number(f.value['num_' + this.lostlist[i].key]) % 1 != 0){
 						this.toastTab('第' + num + '条药单数量应为大于0的整数', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					lost.num = f.value['num_' + this.lostlist[i].key];
@@ -144,6 +153,7 @@ export class MedicalLostComponent{
 							 + JSON.parse(f.value['batch_' + this.lostlist[i].key]).batch + '批次，库存'
 							 + JSON.parse(f.value['batch_' + this.lostlist[i].key]).stock
 							 + JSON.parse(f.value['ms_' + this.lostlist[i].key]).unit + '，报损数量超过库存现有量', 'error');
+ 						this.btnCanEdit = false;
 						return;
 					}
 					mslosts.push(lost);
@@ -153,6 +163,7 @@ export class MedicalLostComponent{
 		}
 		if(f.value.remark == ''){
 			this.toastTab('报损原因不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -168,6 +179,7 @@ export class MedicalLostComponent{
 		this.adminService.medicalsupplieslost(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('报损成功', '');
 				setTimeout(() => {

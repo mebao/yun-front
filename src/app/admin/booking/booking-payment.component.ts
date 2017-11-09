@@ -86,6 +86,8 @@ export class BookingPaymentComponent{
 		give_amount: string,
 		remark: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -209,6 +211,8 @@ export class BookingPaymentComponent{
 				});
 			}
 		});
+
+		this.btnCanEdit = false;
 	}
 
 	getFeeInfo(userMember, results) {
@@ -367,7 +371,7 @@ export class BookingPaymentComponent{
 
 		this.fee.fee = this.adminService.toDecimal2(fee);
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
-		
+
 		this.loadingShow = false;
 	}
 
@@ -388,16 +392,20 @@ export class BookingPaymentComponent{
 	}
 
 	confirmPay() {
+		this.btnCanEdit = true;
 		if(this.payInfo.payWay == ''){
 			this.toastTab('请选择支付方式', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount) && Number(this.payInfo.give_amount) <= 0){
 			this.toastTab('减免金额应大于0', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount) && this.adminService.isFalse(this.payInfo.remark)){
 			this.toastTab('减免金额存在时，备注不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var amountFee = '';
@@ -405,6 +413,7 @@ export class BookingPaymentComponent{
 			amountFee = this.adminService.toDecimal2(Number(this.fee.fee) - Number(this.payInfo.give_amount));
 			if(Number(amountFee) < 0){
 				this.toastTab('减免金额不可大于应付金额', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 		}else{
@@ -427,6 +436,7 @@ export class BookingPaymentComponent{
 		this.adminService.feepay(this.id, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('支付完成', '');
 				setTimeout(() => {

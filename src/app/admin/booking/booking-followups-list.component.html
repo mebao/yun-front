@@ -78,7 +78,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>

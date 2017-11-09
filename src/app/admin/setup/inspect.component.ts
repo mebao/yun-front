@@ -27,6 +27,8 @@ export class SetupInspectComponent{
 	projectlist: any[];
 	editType: string;
 	id: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -79,20 +81,26 @@ export class SetupInspectComponent{
 				}
 			});
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(this.editType == 'create'){
 			if(f.value.project_id == ''){
 				this.toastTab('项目名不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(this.adminService.isFalse(f.value.price)){
 				this.toastTab('项目价格不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(parseFloat(f.value.price) <= 0){
 				this.toastTab('项目价格不可小于等于0', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			var params = {
@@ -106,6 +114,7 @@ export class SetupInspectComponent{
 			this.adminService.cliniccheckproject(params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('检查项目创建成功', '');
 					setTimeout(() => {
@@ -116,10 +125,12 @@ export class SetupInspectComponent{
 		}else{
 			if(this.adminService.isFalse(f.value.price)){
 				this.toastTab('项目价格不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(parseFloat(f.value.price) <= 0){
 				this.toastTab('项目价格不可小于等于0', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			var updateParams = {
@@ -131,6 +142,7 @@ export class SetupInspectComponent{
 			this.adminService.updateclinicproject(this.id, updateParams).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('检查项目修改成功', '');
 					setTimeout(() => {
