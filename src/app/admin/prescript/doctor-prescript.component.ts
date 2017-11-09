@@ -56,6 +56,8 @@ export class DoctorPrescriptComponent{
 		text: string,
 	}
 	numberList: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -315,6 +317,8 @@ export class DoctorPrescriptComponent{
 		this.selected = {
 			text: '',
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	showMs(_key) {
@@ -383,6 +387,7 @@ export class DoctorPrescriptComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		//新增或修改
 		if(this.secondType == ''){
 			var plist = [];
@@ -408,10 +413,12 @@ export class DoctorPrescriptComponent{
 						};
 						if(f.value['ms_' + this.plist[i].key] == ''){
 							this.toastTab('第' + num + '条药品名不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						if(this.adminService.isFalse(f.value['batch_' + this.plist[i].key])){
 							this.toastTab('第' + num + '条批次不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.sinfo_id = JSON.parse(f.value['batch_' + this.plist[i].key]).id;
@@ -420,38 +427,46 @@ export class DoctorPrescriptComponent{
 						p.one_unit = JSON.parse(f.value['ms_' + this.plist[i].key]).oneUnit;
 						if(this.adminService.isFalse(this.plist[i].ms.oneNum)){
 							this.toastTab('第' + num + '条单位剂量不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						if(parseFloat(this.plist[i].ms.oneNum) <= 0){
 							this.toastTab('第' + num + '条单位剂量应大于0', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.one_num = this.plist[i].ms.oneNum;
 						if(!(f.value['usage_' + this.plist[i].key]) || f.value['usage_' + this.plist[i].key] == ''){
 							this.toastTab('第' + num + '条用法不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.usage = f.value['usage_' + this.plist[i].key];
 						if(!(f.value['frequency_' + this.plist[i].key]) || f.value['frequency_' + this.plist[i].key] == ''){
 							this.toastTab('第' + num + '条用药频次不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.frequency = f.value['frequency_' + this.plist[i].key];
 						if(this.adminService.isFalse(this.plist[i].ms.days)){
 							this.toastTab('第' + num + '条天数不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						if(Number(this.plist[i].ms.days) <=0 || Number(this.plist[i].ms.days) % 1 != 0){
 							this.toastTab('第' + num + '条天数应为大于0的整数', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.days = this.plist[i].ms.days;
 						if(this.adminService.isFalse(this.plist[i].ms.num)){
 							this.toastTab('第' + num + '条药单总量不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						if(Number(this.plist[i].ms.num) <= 0 || Number(this.plist[i].ms.num) % 1 != 0){
 							this.toastTab('第' + num + '条药单总量应为大于0的整数', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						p.num = this.plist[i].ms.num;
@@ -460,6 +475,7 @@ export class DoctorPrescriptComponent{
 								text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，尚未设置售价，请先设置售价，再开方',
 							}
 							this.modalConfirmTab = true;
+							this.btnCanEdit = false;
 							return;
 						}
 						p.price = JSON.parse(f.value['batch_' + this.plist[i].key]).price;
@@ -468,6 +484,7 @@ export class DoctorPrescriptComponent{
 								text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，库存' + JSON.parse(f.value['batch_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
 							}
 							this.modalConfirmTab = true;
+							this.btnCanEdit = false;
 							return;
 						}
 						p.remark = f.value['remark_' + this.plist[i].key] ? f.value['remark_' + this.plist[i].key] : '';
@@ -495,6 +512,7 @@ export class DoctorPrescriptComponent{
 				this.adminService.doctorprescript(params).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
 					}else{
 						this.toastTab('开方成功', '');
 						setTimeout(() => {
@@ -514,6 +532,7 @@ export class DoctorPrescriptComponent{
 				this.adminService.updateprescript(this.prescriptId, updateParams).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
 					}else{
 						this.toastTab('药方修改成功', '');
 						setTimeout(() => {
@@ -538,10 +557,12 @@ export class DoctorPrescriptComponent{
 						//判断是否填写
 						if(this.plist[i].ms.num == ''){
 							this.toastTab(this.plist[i].ms.pname + '退药数量不可为空', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						if(Number(this.plist[i].ms.num) > JSON.parse(this.plist[i].bak).num){
 							this.toastTab(this.plist[i].ms.pname + '退药数量大于开药数量', 'error');
+							this.btnCanEdit = false;
 							return;
 						}
 						backP.num = (Number(JSON.parse(this.plist[i].bak).num) - Number(this.plist[i].ms.num)).toString();
@@ -553,6 +574,7 @@ export class DoctorPrescriptComponent{
 				}
 				if(f.value.remark == ''){
 					this.toastTab('退药说明不可为空', 'error');
+					this.btnCanEdit = false;
 					return;
 				}
 				var backParams = {
@@ -567,6 +589,7 @@ export class DoctorPrescriptComponent{
 				this.adminService.doctorback(this.prescriptId, backParams).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
 					}else{
 						this.toastTab('退药成功', '');
 						setTimeout(() => {

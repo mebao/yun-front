@@ -66,6 +66,8 @@ export class BookingGrowthrecordComponent{
 	editType: string;
 	// 药方信息
 	prescription: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -109,6 +111,8 @@ export class BookingGrowthrecordComponent{
 		}
 		// 药方获取最新信息
 		this.initData();
+
+		this.btnCanEdit = false;
 	}
 
 	initData() {
@@ -195,9 +199,9 @@ export class BookingGrowthrecordComponent{
 				trace_element: '',
 				trace_element_other: '',
 				check_date: '',
-				check_date_text: '请选择检查日期',
+				check_date_text: '',
 				review_date: '',
-				review_date_text: '请选择复查日期',
+				review_date_text: '',
 			}
 		}
 	}
@@ -262,34 +266,45 @@ export class BookingGrowthrecordComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(!this.validateNumber('feeding_volume', '奶量')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('blood_pressure', '血压')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('weight', '体重')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('mid_weight', '体重中等值')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('height', '身高')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('mid_height', '身高中等值')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('head_circum', '头围')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('breast_circum', '胸围')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('teeth', '出牙数')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('fontanelle', '卤门')){
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -335,6 +350,7 @@ export class BookingGrowthrecordComponent{
 			this.adminService.childgrowthrecord('', params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('成长记录创建成功', '');
 					setTimeout(() => {
@@ -346,6 +362,7 @@ export class BookingGrowthrecordComponent{
 			this.adminService.childgrowthrecord('/' + JSON.parse(sessionStorage.getItem('growthrecord')).id, params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('成长记录修改成功', '');
 					setTimeout(() => {

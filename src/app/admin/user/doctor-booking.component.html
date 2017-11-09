@@ -74,7 +74,7 @@
 										<div *ngIf="canEdit" class="flex-1">
 											<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" class="pure-button pure-button-primary">添加检查</button>
 											<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" class="pure-button">取消</button>
-											<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
+											<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck(fCheck)" class="pure-button pure-button-primary" [disabled]="btnCanEdit">{{addCheckInfo.editType == 'create' ? '创建' : '修改'}}</button>
 										</div>
 									</div>
 								</ng-container>
@@ -199,7 +199,7 @@
 													<button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" class="pure-button pure-button-primary">修改</button>
 														<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" class="pure-button button-error">删除</button>
 													<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" class="pure-button">取消</button>
-													<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary">保存</button>
+													<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">保存</button>
 												</ng-container>
 											</ng-container>
 										</div>
@@ -269,7 +269,7 @@
 										<div *ngIf="canEdit" class="flex-1">
 											<button *ngIf="addAssistInfo.editType == ''" (click)="addAssist()" class="pure-button pure-button-primary">添加辅助治疗</button>
 											<button *ngIf="addAssistInfo.editType == 'add'" (click)="removeAssist()" class="pure-button">取消</button>
-											<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssist()" class="pure-button pure-button-primary">{{addAssistInfo.editType == 'create' ? '创建' : '保存'}}</button>
+											<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssist()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">{{addAssistInfo.editType == 'create' ? '创建' : '保存'}}</button>
 										</div>
 									</div>
 								</ng-container>
@@ -447,7 +447,7 @@
 												<!-- 编辑 -->
 												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 													<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" class="pure-button">取消</button>
-													<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary">保存</button>
+													<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" class="pure-button pure-button-primary" [disabled]="btnCanEdit">保存</button>
 												</div>
 											</ng-container>
 										</div>
@@ -532,7 +532,7 @@
 									<div class="mt10">
 										<div *ngIf="canEdit">
 											<button *ngIf="addFeeInfo.editType == 'create'" (click)="removeFee()" class="pure-button">取消</button>
-											<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee(f)" class="pure-button pure-button-primary">创建</button>
+											<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee(f)" class="pure-button pure-button-primary" [disabled]="btnCanEdit">创建</button>
 										</div>
 									</div>
 								</ng-container>

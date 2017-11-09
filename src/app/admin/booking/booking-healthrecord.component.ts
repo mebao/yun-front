@@ -132,6 +132,8 @@ export class BookingHealthrecordComponent{
     id: string;
     doctorId: string;
     editType: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -367,7 +369,7 @@ export class BookingHealthrecordComponent{
                 answering_questions: null,
                 record: null,
                 review_date: '',
-                review_date_text: '请选择复查日期',
+                review_date_text: '',
             }
             this.baseInfo = {
                 height: null,
@@ -389,6 +391,8 @@ export class BookingHealthrecordComponent{
                 }
             }
         }
+
+        this.btnCanEdit = false;
     }
 
     // 身高对比
@@ -451,34 +455,45 @@ export class BookingHealthrecordComponent{
     }
 
     create(f) {
+        this.btnCanEdit = true;
 		if(!this.validateNumber('height', '身高')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('medium_height', '身高中等值')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('weight', '体重')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('medium_weight', '体重中等值')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('head_circum', '头围')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('breast_circum', '胸围')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('body_temperature', '体温')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('pulse', '脉搏')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('breathe', '呼吸')){
+            this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('blood_pressure', '血压')){
+            this.btnCanEdit = false;
 			return;
 		}
         var params = {
@@ -552,6 +567,7 @@ export class BookingHealthrecordComponent{
         this.adminService.healthrecord(urlOptions, params).then((data) => {
             if(data.status == 'no'){
                 this.toastTab(data.errorMsg, 'error');
+                this.btnCanEdit = false;
             }else{
                 if(this.editType == 'create'){
                     this.toastTab('儿保记录创建成功', '');

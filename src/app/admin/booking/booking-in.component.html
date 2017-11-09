@@ -89,7 +89,7 @@
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="editIn(f)" class="pure-button pure-button-primary">登记</button>
+					<button (click)="editIn(f)" class="pure-button pure-button-primary" [disabled]="canEdit">登记</button>
 				</div>
 			</form>
 		</div>
@@ -100,7 +100,7 @@
 	<div class="container">
 		<div class="title">今日预约</div>
 		<div class="content pad10">
-			<table class="pure-table pure-table-horizontal w100">
+			<table *ngIf="bookinglist.length > 0" class="pure-table pure-table-horizontal w100">
 				<thead>
 					<tr>
 						<th>姓名</th>
@@ -129,6 +129,7 @@
 					</ng-container>
 				</tbody>
 			</table>
+			<p *ngIf="bookinglist.length == 0">暂无预约</p>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">关闭</button>

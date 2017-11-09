@@ -28,6 +28,8 @@ export class DoctorVisitComponent{
     visitList: any[];
     hasData: boolean;
     timeGo: any;
+	// 不可连续点击
+	canEdit: boolean;
 
     constructor(
         public doctorService: DoctorService,
@@ -72,6 +74,8 @@ export class DoctorVisitComponent{
         this.visitList = [];
         this.hasData = false;
         this.getData();
+
+        this.canEdit = false;
     }
 
     getData() {
@@ -123,6 +127,7 @@ export class DoctorVisitComponent{
     }
 
     receive(visit, type) {
+        this.canEdit = true;
         var date = new Date();
         var dateString = this.adminService.getDayByDate(date) + ' '  + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
         if(type == 'begin'){
@@ -134,9 +139,11 @@ export class DoctorVisitComponent{
             this.doctorService.updateservice(visit.selected, params).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
+                    this.canEdit = false;
                 }else{
                     this.toastTab('开始就诊', '');
                     this.getData();
+                    this.canEdit = false;
                 }
             });
         }else{
@@ -148,9 +155,11 @@ export class DoctorVisitComponent{
             this.doctorService.updateservice(visit.selected, paramsEnd).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
+                    this.canEdit = false;
                 }else{
                     this.toastTab('结束就诊', '');
                     this.getData();
+                    this.canEdit = false;
                 }
             });
         }

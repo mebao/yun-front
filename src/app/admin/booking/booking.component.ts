@@ -80,6 +80,8 @@ export class BookingComponent implements OnInit{
 		date: boolean,
 		time: boolean,
 	}
+	// 不可连续点击
+	canEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -249,6 +251,8 @@ export class BookingComponent implements OnInit{
 			date: true,
 			time: true,
 		}
+
+		this.canEdit = false;
 	}
 
 	getData() {
@@ -524,32 +528,39 @@ export class BookingComponent implements OnInit{
 	// }
 
 	create(f): void{
+		this.canEdit = true;
 		// if(f.value.type == ''){
 		// 	this.toastTab('预约类型不可为空', 'error');
 		// 	return;
 		// }
 		if(f.value.service == ''){
 			this.toastTab('服务不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
 			this.toastTab('预约医生不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(f.value.booking_date == ''){
 			this.toastTab('预约日期不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.creator == ''){
 			this.toastTab('预约用户不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.child == ''){
 			this.toastTab('宝宝不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		// if(this.childs.length == 0 && f.value.child_name == ''){
@@ -588,6 +599,7 @@ export class BookingComponent implements OnInit{
 			this.adminService.updatebooking(this.id, param).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.canEdit = false;
 				}else{
 					this.toastTab('修改成功', '');
 					setTimeout(() => {
@@ -599,6 +611,7 @@ export class BookingComponent implements OnInit{
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.canEdit = false;
 				}else{
 					this.toastTab('预约成功', '');
 					setTimeout(() => {

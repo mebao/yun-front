@@ -62,6 +62,8 @@ export class BookingInComponent{
 		date: boolean,
 		time: boolean,
 	}
+	// 不可连续点击
+	canEdit: boolean;
 
 	constructor(public adminService: AdminService) {}
 
@@ -107,6 +109,8 @@ export class BookingInComponent{
 		this.getBooking();
 
 		this.getData();
+
+		this.canEdit = false;
 	}
 
 	initData() {
@@ -386,24 +390,30 @@ export class BookingInComponent{
 
 	//登记
 	editIn(f) {
+		this.canEdit = true;
 		if(f.value.service == ''){
 			this.toastTab('科室不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
 			this.toastTab('预约医生不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(f.value.booking_date == ''){
 			this.toastTab('预约日期不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
 			this.toastTab('宝宝不可为空', 'error');
+			this.canEdit = false;
 			return;
 		}
 		//判断是新预约还是登记已经预约信息
@@ -429,6 +439,7 @@ export class BookingInComponent{
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.canEdit = false;
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking.bookingId = results.bookingId;
@@ -460,6 +471,7 @@ export class BookingInComponent{
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.canEdit = false;
 			}else{
 				this.bookingIn();
 			}
@@ -475,11 +487,13 @@ export class BookingInComponent{
 		this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.canEdit = false;
 			}else{
 				this.toastTab('登记成功', '');
 				this.getBooking();
 				//登记成功后，清空选中预约信息
 				this.initData();
+				this.canEdit = false;
 			}
 		});
 	}

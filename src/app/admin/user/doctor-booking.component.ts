@@ -114,8 +114,9 @@ export class DoctorBookingComponent implements OnInit{
 		number: string,
 		fee: string,
 		remarks: string,
-	}
-
+	};
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -310,7 +311,9 @@ export class DoctorBookingComponent implements OnInit{
 				}
 				this.checklist = results.list;
 			}
-		})
+		});
+
+		this.btnCanEdit = false;
 	}
 
 	// 成长记录
@@ -463,32 +466,40 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	editFee(f) {
+		this.btnCanEdit = true;
 		if(this.addFeeInfo.project_name == ''){
 			this.toastTab('消费项目名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.addFeeInfo.price)){
 			this.toastTab('消费项目单价不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.addFeeInfo.price) <= 0){
 			this.toastTab('消费项目单价应大于0', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.addFeeInfo.number)){
 			this.toastTab('消费项目数量不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(this.addFeeInfo.number) <= 0 || Number(this.addFeeInfo.number) % 1 != 0){
 			this.toastTab('消费项目单价应为大于0的整数', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.addFeeInfo.fee)){
 			this.toastTab('消费项目单价不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.addFeeInfo.fee) <= 0){
 			this.toastTab('消费项目单价应大于0', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -505,6 +516,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.adminService.addfee(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.getBookingData();
 				//清空费用信息
@@ -520,6 +532,7 @@ export class DoctorBookingComponent implements OnInit{
 				}else{
 					this.toastTab('费用修改成功', '');
 				}
+				this.btnCanEdit = false;
 			}
 		})
 	}
@@ -550,8 +563,10 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	editCheck(f) {
+		this.btnCanEdit = true;
 		if(f.value.check == ''){
 			this.toastTab('检查不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -565,6 +580,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.adminService.usercheckproject(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('检查创建成功', '');
 				this.getCheckData();
@@ -576,6 +592,7 @@ export class DoctorBookingComponent implements OnInit{
 					check: '',
 					editType: '',
 				}
+				this.btnCanEdit = false;
 			}
 		})
 	}
@@ -641,9 +658,11 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	editAssist() {
+		this.btnCanEdit = true;
 		if(this.addAssistInfo.editType == 'add'){
 			if(this.adminService.isFalse(this.addAssistInfo.project)){
 				this.toastTab('辅助治疗不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 		}else{
@@ -657,10 +676,12 @@ export class DoctorBookingComponent implements OnInit{
 		}
 		if(this.adminService.isFalse(this.addAssistInfo.number)){
 			this.toastTab('数量不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0){
 			this.toastTab('数量应为大于0的整数', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -680,6 +701,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.adminService.addassist(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				if(this.addAssistInfo.editType == 'update'){
 					this.toastTab('辅助治疗修改成功', '');
@@ -689,6 +711,7 @@ export class DoctorBookingComponent implements OnInit{
 				this.removeAssist();
 				this.getBookingAssistData();
 				this.getBookingData();
+				this.btnCanEdit = false;
 			}
 		});
 	}

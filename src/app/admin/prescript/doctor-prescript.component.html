@@ -179,7 +179,7 @@
 					</div>
 				</fieldset>
 				<div class="text-center">
-					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">{{this.secondType == '' ? (this.editType == 'create' ? '创建' : '修改') : '退药'}}</button>
+					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' ? (this.editType == 'create' ? '创建' : '修改') : '退药'}}</button>
 				</div>
 			</form>
 		</div>

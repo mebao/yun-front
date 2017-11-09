@@ -72,6 +72,8 @@ export class BookingCasehistoryComponent{
 	cprtemplate: string;
 	// 体格检查详情
 	showExamination: boolean;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -228,6 +230,8 @@ export class BookingCasehistoryComponent{
 		});
 
 		this.showExamination = false;
+
+		this.btnCanEdit = false;
 	}
 
     // 身高对比
@@ -300,34 +304,45 @@ export class BookingCasehistoryComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(!this.validateNumber('weight', '体重')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('mid_weight', '体重中等值')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('height', '身高')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('mid_height', '身高中等值')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('head_circum', '头围')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('breast_circum', '胸围')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('teeth', '出牙数')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('body_temperature', '体温')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('breathe', '呼吸')){
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.validateNumber('blood_pressure', '血压')){
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -375,6 +390,7 @@ export class BookingCasehistoryComponent{
 			this.adminService.casehistory('', params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('病历创建成功', '');
 					setTimeout(() => {
@@ -386,6 +402,7 @@ export class BookingCasehistoryComponent{
 			this.adminService.casehistory('/' + JSON.parse(sessionStorage.getItem('casehistory')).id, params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('病历修改成功', '');
 					setTimeout(() => {

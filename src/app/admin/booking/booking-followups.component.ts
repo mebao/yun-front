@@ -33,6 +33,8 @@ export class BookingFollowupsComponent{
 	adminList: any[];
 	selectSearchTitle: string;
 	selectUser: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -104,6 +106,8 @@ export class BookingFollowupsComponent{
 				this.adminList = results.adminlist;
 			}
 		});
+
+		this.btnCanEdit = false;
 	}
 
 	onVoted(_value) {
@@ -116,6 +120,7 @@ export class BookingFollowupsComponent{
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(this.editType == 'create'){
 			// if(this.selectUser == ''){
 			// 	this.toastTab('随访人员不可为空', 'error');
@@ -123,10 +128,12 @@ export class BookingFollowupsComponent{
 			// }
 			if(this.info.time == ''){
 				this.toastTab('随访日期不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(f.value.account == ''){
 				this.toastTab('随访内容和原因不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			var params = {
@@ -144,6 +151,7 @@ export class BookingFollowupsComponent{
 			this.adminService.userfollowup(params).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('随访创建成功', '');
 					setTimeout(() => {
@@ -154,6 +162,7 @@ export class BookingFollowupsComponent{
 		}else{
 			if(f.value.results == ''){
 				this.toastTab('随访结果不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			var updateParams = {
@@ -165,6 +174,7 @@ export class BookingFollowupsComponent{
 			this.adminService.followupresult(this.followupsId, updateParams).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('随访修改成功', '');
 					setTimeout(() => {
