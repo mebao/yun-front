@@ -152,12 +152,17 @@ export class MaterialPurchaseComponent{
 		this.info.fee = String(feeAll);
 	}
 
+	// 选择时间
+	changeDate(_value) {
+		this.info.about_time = JSON.parse(_value).value;
+	}
+
 	create(f) {
 		if(f.value.supplier == ''){
 			this.toastTab('供应商不可为空', 'error');
 			return;
 		}
-		if(this.adminService.isFalse(f.value.about_time)){
+		if(this.adminService.isFalse(this.info.about_time)){
 			this.toastTab('发货时间不可为空', 'error');
 			return;
 		}
@@ -224,7 +229,7 @@ export class MaterialPurchaseComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			supplier_id: JSON.parse(f.value.supplier).id,
 			supplier_name: JSON.parse(f.value.supplier).name,
-			about_time: f.value.about_time,
+			about_time: this.info.about_time,
 			fee: this.info.fee,
 			mslist: msParamsList,
 		}

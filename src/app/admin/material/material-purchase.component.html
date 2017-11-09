@@ -31,12 +31,7 @@
 									<span>发货时间</span>
 									<span class="required">*</span>
 								</label>
-								<input type="date" id="about_time" name="about_time" #about_time="ngModel" [(ngModel)]="info.about_time">
-								<div *ngIf="about_time.errors && (about_time.dity || about_time.touched)" class="alert alert-danger">
-									<div [hidden]="!about_time.errors.required">
-										发货时间不可为空
-									</div>
-								</div>
+								<select-date title="请选择发货时间" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
 					</div>

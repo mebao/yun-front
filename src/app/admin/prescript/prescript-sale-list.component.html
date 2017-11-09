@@ -17,9 +17,9 @@
 					<label for="mobile">患者手机号码：</label>
 					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入患者手机号码">
 				</div>
-				<div class="pure-control-group mr10">
+				<div class="pure-control-group mr10 flex">
 					<label for="day">日期：</label>
-					<input type="date" id="day" name="day" [(ngModel)]="searchInfo.day">
+					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 				</div>
 				<div class="pure-control-group mr10">
 					<label for="admin_name">售药员工：</label>
@@ -52,9 +52,9 @@
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
 								<td>{{info.pname}}</td>
 								<td>{{info.num}}{{info.unit}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 									<div class="length-text">{{item.remark}}</div>
 								</td>

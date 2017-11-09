@@ -109,6 +109,9 @@ export class PrescriptSaleListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						results.list[i].date = results.list[i].date.replace('-', '年');
+						results.list[i].date = results.list[i].date.replace('-', '月');
+						results.list[i].date = results.list[i].date.replace(' ', '日 ');
 						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
@@ -117,6 +120,11 @@ export class PrescriptSaleListComponent{
 				this.loadingShow = false;
 			}
 		})
+	}
+
+	// 选择日期
+	changeDate(_value) {
+		this.searchInfo.day = JSON.parse(_value).value;
 	}
 
 	goUrl(_url) {
