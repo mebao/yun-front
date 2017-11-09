@@ -1,5 +1,10 @@
 <div class="select-date">
-    <div (click)="changeDateTab()" class="title">{{this.selectInfo.dateText == '' ? title : this.selectInfo.dateText}}</div>
+    <div class="title flex" [ngClass]="{'disabled': disabled}">
+        <div (click)="changeDateTab()" class="item flex-1">{{dateText == '' ? title : dateText}}</div>
+		<div (click)="clear()" *ngIf="showClear && dateText != ''" class="item clear">
+			<div></div>
+		</div>
+    </div>
     <div *ngIf="showDateTab" class="modal-date">
         <div (click)="changeDateTab()" class="modal-mask"></div>
         <div class="container">
@@ -49,7 +54,7 @@
                 </div>
                 <div class="tab-date flex flex-wrap">
                     <ng-container *ngFor="let day of dayList">
-                        <div (click)="selectDay(day.date)" class="w14 item" [ngClass]="{'notNowMonth': day.month != day.nowMonth, 'active': day.date == selectInfo.date}">
+                        <div (click)="selectDay(day.date)" class="w14 item" [ngClass]="{'notNowMonth': day.month != day.nowMonth, 'active': day.date == selectInfo.date, 'today': day.date == today}">
                             {{day.day}}
                         </div>
                     </ng-container>

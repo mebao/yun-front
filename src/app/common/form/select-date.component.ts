@@ -9,6 +9,8 @@ export class SelectDateComponent{
     @Input() title: string;
     @Input() type: string;
 	@Output() onVoted = new EventEmitter<string>();
+    @Input() disabled = false;
+    @Input() showClear = false;
     showDateTab: boolean;
     dayList: any[];
     dayInfo: {
@@ -24,8 +26,10 @@ export class SelectDateComponent{
         month: string,
         year: string,
         date: string,
-        dateText: string,
     }
+    // 已选择，在进入修改时，应显示清除
+    @Input() dateText = '';
+    today: string;
 
     ngOnInit() {
         this.showDateTab = false;
@@ -43,7 +47,6 @@ export class SelectDateComponent{
             month: '',
             year: '',
             date: '',
-            dateText: '',
         }
 
         if(this.selectInfo.date != ''){
@@ -51,6 +54,9 @@ export class SelectDateComponent{
         }else{
             this.getDate(new Date());
         }
+
+        // 用于标识今天
+        this.today = this.getDateString(new Date());
 
         this.getYear();
         this.getMonth();
@@ -113,7 +119,7 @@ export class SelectDateComponent{
                 month: dayDate.getMonth() + 1,
                 year: dayDate.getFullYear(),
                 nowMonth: nowMonth,
-                date: dayDate.getFullYear() + '-' + (dayDate.getMonth() + 1 < 10 ? ('0' + (dayDate.getMonth() + 1)) : dayDate.getMonth() + 1) + '-' + (dayDate.getDate() < 10 ? ('0' + dayDate.getDate()) : dayDate.getDate()),
+                date: this.getDateString(dayDate),
                 canUse: '',
             }
             dayList.push(dayItem);
@@ -157,7 +163,7 @@ export class SelectDateComponent{
 		var v = _value.split('-');
 		v = v[0] + '年' + v[1] + '月' + v[2] + '日';
         this.selectInfo.date = _value;
-        this.selectInfo.dateText = v;
+        this.dateText = v;
         this.showTab = 'day';
         this.showDateTab = false;
         var returnData = {
@@ -167,10 +173,29 @@ export class SelectDateComponent{
 		this.onVoted.emit(JSON.stringify(returnData));
     }
 
-    changeDateTab() {
-        if(this.showDateTab){
-            this.showTab = 'day';
+    // 清空
+    clear() {
+        this.selectInfo.date = '';
+        this.dateText = '';
+        this.showTab = 'day';
+        var returnData = {
+            value: '',
+            type: this.type,
         }
-        this.showDateTab = !this.showDateTab;
+        this.onVoted.emit(JSON.stringify(returnData));
+    }
+
+    changeDateTab() {
+        if(!this.disabled){
+            if(this.showDateTab){
+                this.showTab = 'day';
+            }
+            this.showDateTab = !this.showDateTab;
+        }
+    }
+
+    // 根据日期获取2017-02-01
+    getDateString(date) {
+        return date.getFullYear() + '-' + (date.getMonth() + 1 < 10 ? ('0' + (date.getMonth() + 1)) : date.getMonth() + 1) + '-' + (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate());
     }
 }

@@ -136,6 +136,11 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
+					}
+				}
 				this.healthrecordList = results.list;
 				this.hasHealthrecordData = true;
 				this.loadingShow = false;

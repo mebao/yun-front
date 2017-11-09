@@ -114,6 +114,7 @@ export class BookingHealthrecordComponent{
         answering_questions: string,
         record: string,
         review_date: string,
+        review_date_text: string,
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
     baseInfo: {
@@ -255,6 +256,7 @@ export class BookingHealthrecordComponent{
                 answering_questions: healthrecord.answeringQuestions,
                 record: healthrecord.record,
                 review_date: healthrecord.reviewDate,
+                review_date_text: healthrecord.reviewDate,
             }
             this.baseInfo = {
                 height: healthrecord.height,
@@ -365,6 +367,7 @@ export class BookingHealthrecordComponent{
                 answering_questions: null,
                 record: null,
                 review_date: '',
+                review_date_text: '请选择复查日期',
             }
             this.baseInfo = {
                 height: null,
@@ -441,6 +444,11 @@ export class BookingHealthrecordComponent{
 		}
 		return true;
 	}
+
+    // 选择日期
+    changeDate(_value) {
+        this.info.review_date = JSON.parse(_value).value;
+    }
 
     create(f) {
 		if(!this.validateNumber('height', '身高')){

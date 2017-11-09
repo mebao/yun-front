@@ -732,7 +732,7 @@
 						<div class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="review_date">复查日期：</label>
-								<input type="date" id="review_date" name="review_date" [(ngModel)]="info.review_date">
+								<select-date title="请选择复查日期" dateText="{{info.review_date_text}}" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
 					</div>
