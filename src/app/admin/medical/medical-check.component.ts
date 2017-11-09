@@ -172,7 +172,7 @@ export class MedicalCheckComponent{
 				token: this.adminService.getUser().token,
 				clinic_id: this.adminService.getUser().clinicId,
 				clist: clist,
-				check_time: this.info.check_time,
+				// check_time: this.info.check_time,
 			}
 
 			this.adminService.clinicstock(params).then((data) => {

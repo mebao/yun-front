@@ -74,16 +74,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="">
-						<div class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="check_time">
-									<span>检查时间</span>
-								</label>
-								<input type="date" id="check_time" name="check_time" #check_time="ngModel" [(ngModel)]="info.check_time" [disabled]="editType == 'update'">
-							</div>
-						</div>
-					</div>
 				</fieldset>
 				<div class="text-center">
 					<button (click)="create()" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '添加' : '修改'}}</button>
