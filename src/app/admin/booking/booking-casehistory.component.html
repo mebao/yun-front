@@ -226,7 +226,7 @@
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
 								<label for="time">就诊日期：</label>
-								<select-date title="{{info.timeText}}" type="time" (onVoted)="changeDate($event)"></select-date>
+								<select-date title="请选择就诊日期" dateText="{{info.timeText}}" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
 					</div>

@@ -153,7 +153,7 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: casehistory.advise,
 				time: casehistory.time,
-				timeText: this.adminService.dateFormat(casehistory.time) == '' ? '请输入日期' : this.adminService.dateFormat(casehistory.time),
+				timeText: casehistory.time,
 				checkList: casehistory.checkList,
 			}
 		}else{
@@ -198,7 +198,7 @@ export class BookingCasehistoryComponent{
 				prescription: prescription,
 				advise: '',
 				time: '',
-				timeText: '请选择日期',
+				timeText: '',
 				checkList: [],
 			}
 		}
