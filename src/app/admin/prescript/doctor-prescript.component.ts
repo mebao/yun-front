@@ -369,13 +369,17 @@ export class DoctorPrescriptComponent{
 	msChange(key, _value) {
 		for(var i = 0; i < this.plist.length; i++){
 			if(this.plist[i].key == key){
+				// 兼容select-search
+				var oneNum = this.plist[i].ms.oneNum;
+				var days = this.plist[i].ms.days;
+				var num = this.plist[i].ms.num;
 				this.plist[i].ms = JSON.parse(_value);
 				this.plist[i].ms.batch = '';
-				this.plist[i].ms.oneNum = '';
+				this.plist[i].ms.oneNum = oneNum;
 				this.plist[i].ms.usage = '';
 				this.plist[i].ms.frequency = '';
-				this.plist[i].ms.days = '';
-				this.plist[i].ms.num = '';
+				this.plist[i].ms.days = days;
+				this.plist[i].ms.num = num;
 				this.plist[i].ms.remark = '';
 				this.plist[i].batchList = JSON.parse(_value).others;
 			}

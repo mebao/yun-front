@@ -213,7 +213,9 @@
 						</div>
 						<div class="pure-u-24-24">
 							<div class="pure-control-group">
-								<label for="prescription">处方：</label>
+								<label for="prescription">
+									处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>
+								</label>
 								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" class="min" disabled=""></textarea>
 							</div>
 						</div>

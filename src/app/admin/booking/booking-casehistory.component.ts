@@ -65,6 +65,7 @@ export class BookingCasehistoryComponent{
 	};
 	id: string;
 	doctorId: string;
+	status: string;
 	childId: string;
 	editType: string;
 	// 主诉模板
@@ -74,6 +75,9 @@ export class BookingCasehistoryComponent{
 	showExamination: boolean;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	// 是否可以修改药方
+	canUpdatePrescript: boolean;
+	url: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -95,9 +99,12 @@ export class BookingCasehistoryComponent{
 		this.route.queryParams.subscribe((params) => {
 			this.id = params.id;
 			this.doctorId = params.doctorId;
+			this.status = params.status;
 			this.childId = params.childId;
 			this.editType = params.type;
 		});
+
+		this.canUpdatePrescript = false;
 
 		var prescription = '';
 		if(sessionStorage.getItem('prescript') != ''){
@@ -111,7 +118,16 @@ export class BookingCasehistoryComponent{
 						 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。\n';
 				}
 			}
+
+			if(this.status != '5' && !prescript.apotId){
+				this.canUpdatePrescript = true;
+			}
 		}
+
+		this.url = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+
 		if(this.editType == 'update'){
 			var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
 			this.info = {
@@ -203,6 +219,9 @@ export class BookingCasehistoryComponent{
 				timeText: '',
 				checkList: [],
 			}
+
+			// 新增时，因为没有检查项目，所以需要请求
+			this.getBookingCheckList();
 		}
 
 		this.loadingShow = true;
@@ -210,10 +229,7 @@ export class BookingCasehistoryComponent{
 		// 主诉模板
 		this.cprtemplateList = [];
 		this.cprtemplate = '';
-		var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.cprtemplate(urlOptions).then((data) => {
+		this.adminService.cprtemplate(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
@@ -232,6 +248,18 @@ export class BookingCasehistoryComponent{
 		this.showExamination = false;
 
 		this.btnCanEdit = false;
+	}
+
+	getBookingCheckList(){
+		var urlOptions = this.url + '&booking_id=' + this.id + '&today=1';
+		this.adminService.usercheckprojects(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.info.checkList = results.list;
+			}
+		});
 	}
 
     // 身高对比
@@ -301,6 +329,14 @@ export class BookingCasehistoryComponent{
 			return false;
 		}
 		return true;
+	}
+
+	// 去修改药方
+	updatePrescript() {
+		if(sessionStorage.getItem('prescript') != ''){
+			var prescript = JSON.parse(sessionStorage.getItem('prescript'));
+			this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: prescript.id}});
+		}
 	}
 
 	create(f) {

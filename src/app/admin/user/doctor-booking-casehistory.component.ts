@@ -261,7 +261,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 			sessionStorage.setItem('prescript', '');
 		}
 		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create', status: this.booking.status}});
 	}
 
 	//修改病例
@@ -274,7 +274,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		}
 		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
-		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update'}});
+		this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update', status: this.booking.status}});
 	}
 
 	toastTab(text, type) {

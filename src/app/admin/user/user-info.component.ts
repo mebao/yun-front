@@ -212,6 +212,7 @@ export class UserInfoComponent{
 		if(this.childlist.length > 0){
 			for(var i = 0; i < this.childlist.length; i++){
 				this.childlist[i].show = false;
+				this.childlist[i].use = false;
 			}
 		}
 		var child = {
