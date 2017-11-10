@@ -149,7 +149,7 @@
 						<div class="pure-u-1-5"></div>
 					</div>
 					<div class="text-center">
-						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10">{{editType == 'create' ? '创建' : '修改'}}</button>
+						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10" [disabled]="btnCanEdit">{{editType == 'create' ? '创建' : '修改'}}</button>
 					</div>
 				</fieldset>
 			</form>

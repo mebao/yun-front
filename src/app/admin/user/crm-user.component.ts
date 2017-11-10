@@ -40,6 +40,8 @@ export class CrmUserComponent implements OnInit{
 	editType: string;
 	url: string;
 	clinicRoleList: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -150,6 +152,7 @@ export class CrmUserComponent implements OnInit{
 			})
 		}
 
+		this.btnCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -241,45 +244,56 @@ export class CrmUserComponent implements OnInit{
     }
 
 	create(f): void {
+		this.btnCanEdit = true;
 		if(f.value.mobile == ''){
 			this.toastTab('手机号码不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.mobile.length != 11){
 			this.toastTab('手机号码输入不正确', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.user_name == ''){
 			this.toastTab('用户名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.user.user_name.match(/^\w+$/)){
 			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
+			this.btnCanEdit = false;
 			return;
 		};
 		if(f.value.real_name == ''){
 			this.toastTab('真实姓名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.role == ''){
 			this.toastTab('类型不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.clinic_role == ''){
 			this.toastTab('角色不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.addDoctor){
 			if(f.value.gender == ''){
 				this.toastTab('性别不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(f.value.academical_title == ''){
 				this.toastTab('学术职称不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 			if(f.value.clinical_title == ''){
 				this.toastTab('医生职称不可为空', 'error');
+				this.btnCanEdit = false;
 				return;
 			}
 		}
@@ -305,6 +319,7 @@ export class CrmUserComponent implements OnInit{
 			this.adminService.create(param).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('创建成功', '');
 					setTimeout(() => {
@@ -330,6 +345,7 @@ export class CrmUserComponent implements OnInit{
 			this.adminService.adminupdate(this.id, updateParam).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
 				}else{
 					this.toastTab('修改成功', '');
 					setTimeout(() => {

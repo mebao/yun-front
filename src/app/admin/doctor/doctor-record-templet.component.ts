@@ -27,6 +27,8 @@ export class DoctorRecordTempletComponent{
     id: string;
     doctorName: string;
     editType: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
     constructor(
         public adminService: AdminService,
@@ -117,6 +119,8 @@ export class DoctorRecordTempletComponent{
 		        this.loadingShow = false;
             }
         });
+
+        this.btnCanEdit = false;
     }
 
     // 新增首次，展示所有模板内容
@@ -159,6 +163,7 @@ export class DoctorRecordTempletComponent{
     }
 
     add() {
+        this.btnCanEdit = true;
         if(this.name == ''){
             this.toastTab('模板名不可为空', 'error');
             return;
@@ -169,11 +174,13 @@ export class DoctorRecordTempletComponent{
             if(this.rkList[i].use){
                 if(this.rkList[i].value == ''){
                     this.toastTab('第' + rkNum + '条模板内容不可为空', 'error');
+                    this.btnCanEdit = false;
                     return;
                 }else{
                     // 判断是否重复
                     if(rk.indexOf(JSON.parse(this.rkList[i].value).id) != -1){
                         this.toastTab('模板内容--' + JSON.parse(this.rkList[i].value).name + '--重复', 'error');
+                        this.btnCanEdit = false;
                         return;
                     }
                     rk.push(JSON.parse(this.rkList[i].value).id);
@@ -196,6 +203,7 @@ export class DoctorRecordTempletComponent{
             this.doctorService.recordtemplet(params).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
+                    this.btnCanEdit = false;
                 }else{
                     this.toastTab('模板创建成功', '');
                     setTimeout(() => {
@@ -213,6 +221,7 @@ export class DoctorRecordTempletComponent{
             this.doctorService.updaterecordtemplet(JSON.parse(sessionStorage.getItem('recordtemplet')).id, updateParams).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
+                    this.btnCanEdit = false;
                 }else{
                     this.toastTab('模板修改成功', '');
                     setTimeout(() => {

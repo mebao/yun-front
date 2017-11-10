@@ -24,7 +24,7 @@
 						</div>
 					</fieldset>
 					<div class="text-center">
-						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">创建</button>
+						<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">创建</button>
 					</div>
 				</form>
 			</div>

@@ -39,6 +39,8 @@ export class CrmUserListComponent{
 		role: string,
 		clinic_role: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -108,6 +110,8 @@ export class CrmUserListComponent{
 				this.clinicRoleList = results.list;
 			}
 		});
+
+		this.btnCanEdit = false;
 	}
 
 	getData(urlOptions) {
@@ -150,6 +154,7 @@ export class CrmUserListComponent{
 	}
 
 	confirm() {
+		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
 		var urlOptions = this.selector.id
 			 + '?username=' + this.adminService.getUser().username
@@ -157,9 +162,11 @@ export class CrmUserListComponent{
 		this.adminService.deleteadmin(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('删除成功', '');
 				this.search();
+				this.btnCanEdit = false;
 			}
 		})
 	}

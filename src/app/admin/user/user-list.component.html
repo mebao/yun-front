@@ -79,7 +79,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">关闭</button>
-			<button (click)="confirmMember()" class="pure-button pure-button-primary">确认</button>
+			<button (click)="confirmMember()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>
@@ -116,7 +116,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeCharge()" class="pure-button">关闭</button>
-			<button (click)="confirmCharge()" class="pure-button pure-button-primary">确认</button>
+			<button (click)="confirmCharge()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>
@@ -129,7 +129,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>

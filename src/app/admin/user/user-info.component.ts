@@ -40,6 +40,8 @@ export class UserInfoComponent{
 	}
 	// 用户详情展示，遍历
 	infoList: any[];
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -110,6 +112,8 @@ export class UserInfoComponent{
 				}
 			});
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -250,6 +254,7 @@ export class UserInfoComponent{
 	}
 
 	createChild(f) {
+		this.btnCanEdit = true;
 		// 宝宝信息
 		var childData = [];
 		if(this.childlist.length > 0){
@@ -267,6 +272,7 @@ export class UserInfoComponent{
 						child['name'] = f.value['name_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的姓名不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断性别
@@ -274,6 +280,7 @@ export class UserInfoComponent{
 						child['gender'] = f.value['gender_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的性别不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断出生日期
@@ -281,6 +288,7 @@ export class UserInfoComponent{
 						child['birth_date'] = f.value['birth_date_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的出生日期不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断头像(不必传)
@@ -311,6 +319,7 @@ export class UserInfoComponent{
 					//判断身高
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key]) && parseFloat(f.value['height_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝身高不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key])){
@@ -319,6 +328,7 @@ export class UserInfoComponent{
 					//判断体重
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key]) && parseFloat(f.value['weight_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝体重不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key])){
@@ -331,6 +341,7 @@ export class UserInfoComponent{
 					//判断头围
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key]) && parseFloat(f.value['head_circum_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝头围不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key])){
@@ -339,6 +350,7 @@ export class UserInfoComponent{
 					//判断胸围
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key]) && parseFloat(f.value['breast_circum_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝胸围不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
@@ -353,10 +365,12 @@ export class UserInfoComponent{
 					this.adminService.crmchild(childData[i]).then((data) => {
 						if(data.status == 'no'){
 							this.toastTab(data.errorMsg, 'error');
+							this.btnCanEdit = false;
 						}else{
 							this.toastTab('宝宝创建成功', '');
 							this.getUserInfo();
 							this.childlist = [];
+							this.btnCanEdit = false;
 						}
 					});
 				}else{
@@ -364,10 +378,12 @@ export class UserInfoComponent{
 					this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
 						if(data.status == 'no'){
 							this.toastTab(data.errorMsg, 'error');
+							this.btnCanEdit = false;
 						}else{
 							this.toastTab('修改成功', '');
 							this.getUserInfo();
 							this.childlist = [];
+							this.btnCanEdit = false;
 						}
 					});
 				}
@@ -390,6 +406,7 @@ export class UserInfoComponent{
 	}
 
 	confirm() {
+		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
 		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
@@ -400,10 +417,12 @@ export class UserInfoComponent{
 		this.adminService.deletechild(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('删除成功', '');
 				this.getUserInfo();
 				this.childlist = [];
+				this.btnCanEdit = false;
 			}
 		});
 	}

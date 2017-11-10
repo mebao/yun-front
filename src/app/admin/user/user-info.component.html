@@ -166,7 +166,7 @@
 						<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
 					</div>
 					<div *ngIf="childlist.length > 0" class="mt10 text-center">
-						<button (click)="createChild(f)" class="pure-button pure-button-primary button-max">提交</button>
+						<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">提交</button>
 					</div>
 				</form>
 			</div>

@@ -29,6 +29,8 @@ export class CreateUserComponent{
 	shengxiaoList: any[];
 	fileList: any[];
 	token: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -83,7 +85,9 @@ export class CreateUserComponent{
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
-		})
+		});
+
+		this.btnCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -138,20 +142,25 @@ export class CreateUserComponent{
     }
 
 	create(f): void {
+		this.btnCanEdit = true;
 		if(f.value.name == ''){
 			this.toastTab('姓名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.mobile == ''){
 			this.toastTab('手机号码不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.mobile.length != 11){
 			this.toastTab('手机号码不正确', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.gender == ''){
 			this.toastTab('性别不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		//宝宝信息
@@ -170,6 +179,7 @@ export class CreateUserComponent{
 						child['name'] = f.value['name_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的姓名不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断性别
@@ -177,6 +187,7 @@ export class CreateUserComponent{
 						child['gender'] = f.value['gender_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的性别不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断出生日期
@@ -184,6 +195,7 @@ export class CreateUserComponent{
 						child['birth_date'] = f.value['birth_date_' + this.childlist[i].key];
 					}else{
 						this.toastTab('宝宝的出生日期不可为空', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					//判断头像(不必传)
@@ -209,6 +221,7 @@ export class CreateUserComponent{
 					//判断身高
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key]) && parseFloat(f.value['height_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝身高不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key])){
@@ -217,6 +230,7 @@ export class CreateUserComponent{
 					//判断体重
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key]) && parseFloat(f.value['weight_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝体重不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key])){
@@ -229,6 +243,7 @@ export class CreateUserComponent{
 					//判断头围
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key]) && parseFloat(f.value['head_circum_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝头围不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key])){
@@ -237,6 +252,7 @@ export class CreateUserComponent{
 					//判断胸围
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key]) && parseFloat(f.value['breast_circum_' + this.childlist[i].key]) <= 0){
 						this.toastTab('宝宝胸围不可小于等于0', 'error');
+						this.btnCanEdit = false;
 						return;
 					}
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
@@ -256,6 +272,7 @@ export class CreateUserComponent{
 		this.adminService.createUser(param).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(childData.length > 0){
@@ -264,6 +281,7 @@ export class CreateUserComponent{
 						this.adminService.crmchild(childData[i]).then((data) => {
 							if(data.status == 'no'){
 								this.toastTab(data.errorMsg, 'error');
+								this.btnCanEdit = false;
 							}else{
 								this.toastTab('用户创建成功', '');
 								setTimeout(() =>　{

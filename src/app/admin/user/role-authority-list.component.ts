@@ -22,6 +22,8 @@ export class RoleAuthorityListComponent{
     id: string;
     authorityList: any[];
     role: string;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
     constructor(
         public adminService: AdminService,
@@ -76,6 +78,8 @@ export class RoleAuthorityListComponent{
 		        this.loadingShow = false;
             }
         });
+
+        this.btnCanEdit = false;
     }
 
     //选择一级权限
@@ -110,6 +114,7 @@ export class RoleAuthorityListComponent{
     }
 
     save() {
+        this.btnCanEdit = true;
         var select = '';
         for(var i = 0; i < this.authorityList.length; i++){
             for(var j = 0; j < this.authorityList[i].info.length; j++){
@@ -123,6 +128,7 @@ export class RoleAuthorityListComponent{
             select = select.substring(0, select.length - 1);
         }else{
             this.toastTab('权限不可为空', 'error');
+            this.btnCanEdit = false;
             return;
         }
 
@@ -135,6 +141,7 @@ export class RoleAuthorityListComponent{
         this.adminService.setroleauth(this.id, params).then((data) => {
             if(data.status == 'no'){
                 this.toastTab(data.errorMsg, 'error');
+                this.btnCanEdit = false;
             }else{
                 this.toastTab('权限保存成功', '');
                 setTimeout(() => {

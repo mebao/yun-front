@@ -20,6 +20,8 @@ export class CrmRoleComponent{
 	roleInfo: {
 		name: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -40,11 +42,15 @@ export class CrmRoleComponent{
 		this.roleInfo = {
 			name: '',
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	create(f) {
+		this.btnCanEdit = true;
 		if(f.value.name == ''){
 			this.toastTab('角色名不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -57,6 +63,7 @@ export class CrmRoleComponent{
 		this.adminService.clinicrole('', params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('角色创建成功', '');
 				setTimeout(() => {

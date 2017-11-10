@@ -52,6 +52,8 @@ export class UserListComponent{
 	memberList: any[];
 	//充值
 	modalTabCharge: boolean;
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -142,6 +144,8 @@ export class UserListComponent{
 				this.memberList = results.list;
 			}
 		});
+
+		this.btnCanEdit = false;
 	}
 
 	getData(urlOptions) {
@@ -200,15 +204,18 @@ export class UserListComponent{
 	}
 
 	confirm() {
+		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
 		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.deleteuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.search();
 				this.toastTab('删除成功', '');
+				this.btnCanEdit = false;
 			}
 		});
 	}
@@ -239,8 +246,10 @@ export class UserListComponent{
 	}
 
 	confirmMember() {
+		this.btnCanEdit = true;
 		if(this.selector.member == ''){
 			this.toastTab('会员类型不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		this.modalTab = false;
@@ -253,9 +262,11 @@ export class UserListComponent{
 		this.adminService.setmember(this.selector.id, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('会员设置成功', '');
 				this.search();
+				this.btnCanEdit = false;
 			}
 		});
 	}
@@ -279,24 +290,30 @@ export class UserListComponent{
 	}
 
 	confirmCharge() {
+		this.btnCanEdit = true;
 		if(this.adminService.isFalse(this.selector.amount)){
 			this.toastTab('支付金额不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.selector.amount) < 0){
 			this.toastTab('支付金额不可为负数', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.selector.give_amount)){
 			this.toastTab('赠送金额不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.selector.give_amount) < 0){
 			this.toastTab('赠送金额不可为负数', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.selector.pay_way == ''){
 			this.toastTab('支付方式不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 
@@ -316,9 +333,11 @@ export class UserListComponent{
 		this.adminService.userrecharge(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				this.toastTab('充值成功', '');
 				this.search();
+				this.btnCanEdit = false;
 			}
 		});
 	}

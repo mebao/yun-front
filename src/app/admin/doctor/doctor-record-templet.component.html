@@ -28,7 +28,7 @@
 								<button (click)="addRk()" class="pure-button pure-button-primary">添加模板内容</button>
 							</div>
 							<div class="text-center mt10">
-								<button (click)="add()" class="pure-button pure-button-primary button-max">{{editType == 'create' ? '新增' : '保存'}}</button>
+								<button (click)="add()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '新增' : '保存'}}</button>
 							</div>
 						</fieldset>
 					</form>

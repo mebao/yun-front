@@ -30,6 +30,8 @@ export class DoctorServiceComponent{
 		doctor_id: string,
 		fee: string,
 	}
+	// 不可连续点击
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -86,6 +88,8 @@ export class DoctorServiceComponent{
 			this.type = 'create';
 			this.getData();
 		}
+
+		this.btnCanEdit = false;
 	}
 
 	getData() {
@@ -110,16 +114,20 @@ export class DoctorServiceComponent{
 	}
 
 	submit(f) {
+		this.btnCanEdit = true;
 		if(f.value.service == ''){
 			this.toastTab('服务不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.fee)){
 			this.toastTab('费用不可为空', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(f.value.fee) <= 0){
 			this.toastTab('费用应大于0', 'error');
+			this.btnCanEdit = false;
 			return;
 		}
 		var params = {
@@ -136,6 +144,7 @@ export class DoctorServiceComponent{
 		this.adminService.doctorservicejoin(params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
 			}else{
 				if(this.type == 'update'){
 					this.toastTab('修改成功', '');
