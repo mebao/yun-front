@@ -66,8 +66,6 @@ export class MaterialCheckListComponent{
 			}
 		}
 
-		console.log(this.moduleAuthority);
-
 		this.loadingShow = true;
 
 		this.url = '?username=' + this.adminService.getUser().username

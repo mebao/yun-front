@@ -159,6 +159,14 @@
 								</div>
 								<div class="pure-u-7-24 pr10">
 									<div class="pure-control-group">
+										<label for="ms_usage_{{ms.key}}">
+											<span>一般用法</span>
+										</label>
+										<textarea id="ms_usage_{{ms.key}}" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" disabled></textarea>
+									</div>
+								</div>
+								<div class="pure-u-6-24 pl5 pr5">
+									<div class="pure-control-group">
 										<label for="remark_{{ms.key}}">
 											<span>说明（最多200字）</span>
 										</label>

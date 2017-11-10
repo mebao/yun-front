@@ -114,8 +114,6 @@ export class MedicalHasComponent{
 						};
 					}
 				}
-
-				console.log(this.info);
 			}
 		});
 

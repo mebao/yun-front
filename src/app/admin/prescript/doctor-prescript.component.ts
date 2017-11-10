@@ -246,6 +246,7 @@ export class DoctorPrescriptComponent{
 					sinfoId: '',
 					unit: '',
 					usage: '',
+					ms_usage: '',
 				},
 				batchList: [],
 				string: '',
@@ -289,6 +290,7 @@ export class DoctorPrescriptComponent{
 										if(results.list[i].others[j].id == this.plist[k].ms.sinfoId){
 											this.plist[k].batchList = results.list[i].others;
 											this.plist[k].ms.batch = results.list[i].others[j].string;
+											this.plist[k].ms.ms_usage = results.list[i].usage;
 										}
 									}
 								}
@@ -350,6 +352,7 @@ export class DoctorPrescriptComponent{
 				sinfoId: '',
 				unit: '',
 				usage: '',
+				ms_usage: '',
 			},
 			batchList: [],
 			string: '',
@@ -381,6 +384,7 @@ export class DoctorPrescriptComponent{
 				this.plist[i].ms.days = days;
 				this.plist[i].ms.num = num;
 				this.plist[i].ms.remark = '';
+				this.plist[i].ms.ms_usage = JSON.parse(_value).usage;
 				this.plist[i].batchList = JSON.parse(_value).others;
 			}
 		}
