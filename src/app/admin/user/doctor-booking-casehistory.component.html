@@ -56,6 +56,12 @@
 									<div class="title">基本信息</div>
 									<div class="pure-g">
 										<div class="pure-u-8-24 bt info flex">
+											<label class="w150p">体温：</label>
+											<div class="flex-1">{{casehistory.bodyTemperature}}</div>
+										</div>
+										<div class="pure-u-8-24"></div>
+										<div class="pure-u-8-24"></div>
+										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">体重：</label>
 											<div class="flex-1">{{casehistory.weight}}</div>
 										</div>
@@ -138,10 +144,6 @@
 										</span>
 									</div>
 									<div *ngIf="showExamination" class="pure-g">
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">体温：</label>
-											<div class="flex-1">{{casehistory.bodyTemperature}}</div>
-										</div>
 										<div class="pure-u-8-24 bt info flex">
 											<label class="w150p">呼吸：</label>
 											<div class="flex-1">{{casehistory.breathe}}</div>
