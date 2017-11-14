@@ -136,4 +136,23 @@
 		</div>
 	</div>
 </div>
+<div class="modal" *ngIf="modalTabBooking">
+	<div class="modal-mask" (click)="closeBooking()"></div>
+	<div class="container">
+		<div class="title">待确认</div>
+		<div class="content pad10">
+			<div class="pure-form">
+				<label>{{this.bookingInfo.service_name}}：{{this.bookingInfo.service_fee}}</label>
+			</div>
+			<div class="pure-form">
+				<label for="booking_fee">预约金（预约金应小于服务费）</label>
+				<input type="number" id="booking_fee" name="booking_fee" step="0.01" [(ngModel)]="bookingInfo.booking_fee" placeholder="请输入预约金">
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="close()" class="pure-button">关闭</button>
+			<button (click)="confirmBooking()" class="pure-button pure-button-primary">创建预约</button>
+		</div>
+	</div>
+</div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

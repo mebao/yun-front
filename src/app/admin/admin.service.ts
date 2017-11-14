@@ -24,6 +24,10 @@ export class AdminService{
 		});
 	}
 
+	getUrl() {
+		return this.url;
+	}
+
 	//创建用户
 	private createUrl = this.url + '/mebcrm/admincreate';
 	create(param): Promise<Data>{
@@ -986,6 +990,15 @@ export class AdminService{
 	private deleteassistUrl = this.url + '/mebcrm/deleteassist/';
 	deleteassist(urlOptions): Promise<Data>{
 		return this.http.delete(this.deleteassistUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 会员支付预约金
+	private memberbookingUrl = this.url + '/mebcrm/memberbooking/';
+	memberbooking(urlOptions): Promise<Data>{
+		return this.http.get(this.memberbookingUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

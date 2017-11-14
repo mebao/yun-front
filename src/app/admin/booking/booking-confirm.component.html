@@ -96,10 +96,10 @@
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
 								<div *ngIf="use">
 									<div>
-										<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">确认</button>
+										<button (click)="selectorBookingCli(showBooking, 'confirm')" class="pure-button pure-button-primary">支付</button>
 									</div>
 									<div class="pt10">
-										<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button pure-button-primary">取消</button>
+										<button (click)="selectorBookingCli(showBooking ,'cancel')" class="pure-button">取消</button>
 									</div>
 								</div>
 								<div *ngIf="!use">-</div>
@@ -114,7 +114,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal" *ngIf="modalConfirmTab">
 	<div class="modal-mask" (click)="closeConfirm()"></div>
 	<div class="container">

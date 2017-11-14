@@ -1,4 +1,5 @@
 import { Component, OnInit }                from '@angular/core';
+import { Router }                           from '@angular/router';
 
 import { AdminService }                     from '../admin.service';
 
@@ -55,7 +56,10 @@ export class BookingConfirmComponent{
 	doctorlist: any[];
 	servicelist: any[];
 
-	constructor(public adminService: AdminService) {}
+	constructor(
+		public adminService: AdminService,
+		private router: Router,
+	) {}
 
 	ngOnInit(): void {
 		this.topBar = {
@@ -293,25 +297,29 @@ export class BookingConfirmComponent{
 	}
 
 	selectorBookingCli(booking, type) {
-		this.modalTab = false;
-		this.selectorBooking = booking;
-		this.selectorBooking.editType = type;
-		this.selectorBooking.text = (type == 'confirm' ? '确认' : '删除') + this.selectorBooking.creatorName + '(' + this.selectorBooking.childName + ')的预约';
-		this.modalConfirmTab = true;
+		if(type == 'confirm'){
+			this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: booking.bookingId, type: 'bookingConfirm'}});
+		}else{
+			this.modalTab = false;
+			this.selectorBooking = booking;
+			this.selectorBooking.editType = type;
+			this.selectorBooking.text = (type == 'confirm' ? '确认' : '删除') + this.selectorBooking.creatorName + '(' + this.selectorBooking.childName + ')的预约';
+			this.modalConfirmTab = true;
+		}
 	}
 
 	confirm() {
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
-			status: this.selectorBooking.editType == 'confirm' ? '2' : '6',
+			status: '0',
 		}
 		this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				this.modalConfirmTab = false;
-				this.toastTab((this.selectorBooking.editType == 'confirm' ? '确认' : '删除') + '成功', '');
+				this.toastTab('删除成功', '');
 				this.getBooking();
 			}
 		})

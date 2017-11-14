@@ -63,9 +63,14 @@ export class BookingPaymentComponent{
 			otherOriginalFee: string,
 			otherDiscount: string,
 			otherFee: string,
+			bookingFee: string,
 		},
-		fee: string,
+		// 费用合计
 		originalCost: string,
+		// 应收费用
+		fee: string,
+		// 实收费用
+		realFee: string,
 	};
 	//获取用户会员信息
 	userMember: {
@@ -135,9 +140,11 @@ export class BookingPaymentComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
+				bookingFee: '',
 			},
-			fee: '',
 			originalCost: '',
+			fee: '',
+			realFee: '',
 		}
 
 		this.userMember = {
@@ -270,9 +277,11 @@ export class BookingPaymentComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
+				bookingFee: results.feeinfo['预约金'].fee,
 			},
-			fee: '',
 			originalCost: '',
+			fee: '',
+			realFee: '',
 		}
 
 
@@ -369,8 +378,11 @@ export class BookingPaymentComponent{
 			this.payInfo.memberBalance = true;
 		}
 
-		this.fee.fee = this.adminService.toDecimal2(fee);
+		// 实收费用为应收费用-已收预约费用
+
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
+		this.fee.fee = this.adminService.toDecimal2(fee);
+		this.fee.realFee = this.adminService.toDecimal2(fee - parseFloat(this.fee.feeInfo.bookingFee));
 
 		this.loadingShow = false;
 	}
@@ -410,14 +422,14 @@ export class BookingPaymentComponent{
 		}
 		var amountFee = '';
 		if(!this.adminService.isFalse(this.payInfo.give_amount)){
-			amountFee = this.adminService.toDecimal2(Number(this.fee.fee) - Number(this.payInfo.give_amount));
+			amountFee = this.adminService.toDecimal2(Number(this.fee.realFee) - Number(this.payInfo.give_amount));
 			if(Number(amountFee) < 0){
 				this.toastTab('减免金额不可大于应付金额', 'error');
 				this.btnCanEdit = false;
 				return;
 			}
 		}else{
-			amountFee = this.fee.fee;
+			amountFee = this.fee.realFee;
 		}
 
 		this.modalTab = false;

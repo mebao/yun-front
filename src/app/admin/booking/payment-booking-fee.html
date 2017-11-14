@@ -1,0 +1,92 @@
+<div class="container flex">
+	<left-nav></left-nav>
+	<div class="right-content flex-1">
+		<header-nav></header-nav>
+		<div class="content admin-payment-booking-fee">
+			<top-bar [data]="topBar"></top-bar>
+            <div class="tab">
+				<div class="item flex">
+					<label>家长姓名</label>
+					<div class="info">{{booking.creatorName}}</div>
+				</div>
+				<div class="item flex">
+					<label>宝宝姓名</label>
+					<div class="info">{{booking.childName}}</div>
+				</div>
+				<div class="item flex">
+					<label>年龄</label>
+					<div class="info">{{booking.age}}</div>
+				</div>
+				<div class="item flex">
+					<label>预约日期</label>
+					<div class="info">{{booking.bookingDate}}</div>
+				</div>
+				<div class="item flex">
+					<label>预约时间</label>
+					<div class="info">{{booking.time}}</div>
+				</div>
+                <div class="item flex">
+                    <label>预约科室</label>
+					<div *ngIf="booking.services.length > 0" class="info">{{booking.services[0].serviceName}}</div>
+                </div>
+				<div class="item flex">
+					<label>预约医生</label>
+					<div *ngIf="booking.services.length > 0" class="info">{{booking.services[0].userDoctorName}}</div>
+				</div>
+				<div class="item flex">
+					<label>备注</label>
+					<div class="info">{{booking.remark}}</div>
+				</div>
+				<div class="item flex">
+					<label>预约金</label>
+				    <div class="info">{{booking.bookingFee}}</div>
+				</div>
+				<div class="item flex">
+					<label>余额</label>
+				    <div class="info">{{paymentInfo.balance}}</div>
+				</div>
+				<div *ngIf="booking.status != '1' && booking.status != '0'">
+					<button class="pure-button">已支付预约金</button>
+				</div>
+				<div *ngIf="booking.status == '1'">
+					<button *ngIf="showTab == '0'" (click)="payment()" class="pure-button pure-button-primary">支付预约金</button>
+					<div *ngIf="showTab == '1'">
+						<div class="pure-form">
+							<div class="pure-group-control">
+								<label for="type">支付方式</label>
+								<select name="type" [(ngModel)]="paymentInfo.type">
+									<option value="0" [disabled]="!paymentInfo.canBalance">余额支付{{paymentInfo.canBalance ? '' : '（余额不足）'}}</option>
+									<option value="1">线上支付</option>
+								</select>
+							</div>
+						</div>
+						<div class="pure-form mt10">
+							<button (click)="cancel()" class="pure-button">取消</button>
+							<button (click)="comfirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">支付</button>
+						</div>
+					</div>
+				</div>
+            </div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask"></div>
+	<div class="container">
+		<div class="title">待确认</div>
+		<div class="content pad10">
+			{{paymentInfo.result}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<div class="modal" *ngIf="paymentInfo.qrcode">
+	<div class="modal-mask"></div>
+	<div class="container text-center">
+		<qr-code [value]="paymentInfo.qrcodeUrl" [size]="200"></qr-code>
+		<p class="pb10">{{paymentInfo.qrcodeUrl}}</p>
+	</div>
+</div>

@@ -273,6 +273,18 @@
 							<div class="w100p">{{fee.fee}}</div>
 						</div>
 					</div>
+					<div class="section">
+						<div class="title flex">
+							<div class="flex-1 text-right">已付预约费用：</div>
+							<div class="w100p">{{fee.feeInfo.bookingFee}}</div>
+						</div>
+					</div>
+					<div class="section">
+						<div class="title flex">
+							<div class="flex-1 text-right">实收费用：</div>
+							<div class="w100p">{{fee.realFee}}</div>
+						</div>
+					</div>
 					<div *ngIf="bookingInfo.status == '5'" class="section">
 						<div class="title">
 							备注：{{fee.remark}}
@@ -303,7 +315,7 @@
 			</div>
 			<div class="pure-control-group flex">
 				<label for="fee" class="w120p">消费金额：</label>
-				<label class="flex-1">{{fee.fee}}</label>
+				<label class="flex-1">{{fee.realFee}}</label>
 			</div>
 			<div class="pure-control-group flex">
 				<label for="pay_way" class="w120p">

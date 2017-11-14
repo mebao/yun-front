@@ -18,6 +18,8 @@ export class BookingComponent implements OnInit{
 	bookingInfo: {
 		type: string,
 		service: string,
+		service_name: string,
+		service_fee: string,
 		booking_date: string,
 		// 日期
 		bookingDate: string,
@@ -29,6 +31,7 @@ export class BookingComponent implements OnInit{
 		gender: string,
 		birth_date: string,
 		remark: string,
+		booking_fee: string,
 	};
 	booking: {
 		age: string;
@@ -82,6 +85,7 @@ export class BookingComponent implements OnInit{
 	}
 	// 不可连续点击
 	canEdit: boolean;
+	modalTab: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -104,6 +108,8 @@ export class BookingComponent implements OnInit{
 		this.bookingInfo = {
 			type: 'ZJ',
 			service: '',
+			service_name: '',
+			service_fee: '',
 			booking_date: '',
 			bookingDate: '',
 			timeInfo: '',
@@ -114,6 +120,7 @@ export class BookingComponent implements OnInit{
 			gender: '',
 			birth_date: '',
 			remark: '',
+			booking_fee: '',
 		}
 
 		this.booking = {
@@ -253,6 +260,7 @@ export class BookingComponent implements OnInit{
 		}
 
 		this.canEdit = false;
+		this.modalTab = false;
 	}
 
 	getData() {
@@ -359,6 +367,8 @@ export class BookingComponent implements OnInit{
 
 	//切换服务
 	serviceChange(service) {
+		this.bookingInfo.service_name = JSON.parse(service).serviceName;
+		this.bookingInfo.service_fee = JSON.parse(service).fee;
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
@@ -527,23 +537,27 @@ export class BookingComponent implements OnInit{
 	// 	this.childs = creator.childs;
 	// }
 
-	create(f): void{
+	close() {
+		this.modalTab = false;
+	}
+
+	create(): void{
 		this.canEdit = true;
 		// if(f.value.type == ''){
 		// 	this.toastTab('预约类型不可为空', 'error');
 		// 	return;
 		// }
-		if(f.value.service == ''){
+		if(this.bookingInfo.service == ''){
 			this.toastTab('服务不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
-		if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
+		if(this.bookingInfo.type == 'ZJ' && this.bookingInfo.user_doctor == ''){
 			this.toastTab('预约医生不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
-		if(f.value.booking_date == ''){
+		if(this.bookingInfo.booking_date == ''){
 			this.toastTab('预约日期不可为空', 'error');
 			this.canEdit = false;
 			return;
@@ -575,15 +589,36 @@ export class BookingComponent implements OnInit{
 		// 	this.toastTab('出生年月不可为空', 'error');
 		// 	return;
 		// }
+		if(this.editType == 'create'){
+			this.modalTab = true;
+		}else{
+			this.confirmBooking();
+		}
+	}
+
+	confirmBooking() {
+		this.canEdit = true;
+		if(this.editType == 'create'){
+			if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
+				this.toastTab('预约金不可为空', 'error');
+				this.canEdit = false;
+				return;
+			}
+			if(parseFloat(this.bookingInfo.booking_fee) < 0.01 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
+				this.toastTab('预约金应大于等于0.01，小于服务费', 'error');
+				return;
+			}
+		}
+		this.modalTab = false;
 		var param = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			type: this.bookingInfo.type,
 			clinic_id: this.adminService.getUser().clinicId,
-			service_id: JSON.parse(f.value.service).serviceId,
-			user_doctor_id: f.value.type == 'PT' ? null : JSON.parse(f.value.user_doctor).doctorId,
-			user_doctor_name: f.value.type == 'PT' ? null : (this.editType == 'update' ? null : JSON.parse(f.value.user_doctor).doctorName),
-			booking_date: JSON.parse(f.value.booking_date).dutyDate,
+			service_id: JSON.parse(this.bookingInfo.service).serviceId,
+			user_doctor_id: this.bookingInfo.type == 'PT' ? null : JSON.parse(this.bookingInfo.user_doctor).doctorId,
+			user_doctor_name: this.bookingInfo.type == 'PT' ? null : (this.editType == 'update' ? null : JSON.parse(this.bookingInfo.user_doctor).doctorName),
+			booking_date: JSON.parse(this.bookingInfo.booking_date).dutyDate,
 			time: this.bookingInfo.timeInfo,
 			creator_id: JSON.parse(this.bookingInfo.creator).id,
 			creator_name: JSON.parse(this.bookingInfo.creator).name,
@@ -594,6 +629,7 @@ export class BookingComponent implements OnInit{
 			// gender: this.childs.length == 0 ? f.value.gender : null,
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
 			remark: this.bookingInfo.remark,
+			booking_fee: this.editType == 'update' ? null : this.bookingInfo.booking_fee,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
@@ -613,9 +649,11 @@ export class BookingComponent implements OnInit{
 					this.toastTab(data.errorMsg, 'error');
 					this.canEdit = false;
 				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
 					this.toastTab('预约成功', '');
 					setTimeout(() => {
-						this.location.back();
+						// this.location.back();
+						this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: results.bookingId, type: 'booking'}});
 					}, 2000);
 				}
 			})
@@ -641,10 +679,4 @@ export class BookingComponent implements OnInit{
 	    }, 2000);
 	}
 
-}
-
-interface Time{
-	key: string;
-	value: string;
-	use: boolean;
 }

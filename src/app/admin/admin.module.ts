@@ -121,6 +121,7 @@ import { AssistComponent }                 from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }    from './medical/medical-purchase-info.component';
 import { MaterialPurchaseInfoComponent }   from './material/material-purchase-info.component';
 import { DoctorVisitComponent }            from './doctor/doctor-visit.component';
+import { PaymentBookingFee }               from './booking/payment-booking-fee';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -238,6 +239,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		MedicalPurchaseInfoComponent,
 		MaterialPurchaseInfoComponent,
 		DoctorVisitComponent,
+		PaymentBookingFee
 	],
 	providers: [
 		AdminService,
