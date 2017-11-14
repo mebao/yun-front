@@ -251,8 +251,12 @@ export class PaymentBookingFee{
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
             }else{
-                this.paymentInfo.result += '，登记成功';
-                this.modalConfirmTab = true;
+                if(this.paymentInfo.type == '0'){
+                    this.toastTab('支付成功，已登记', 'error');
+                }else{
+                    this.paymentInfo.result += '，登记成功';
+                    this.modalConfirmTab = true;
+                }
             }
         });
     }

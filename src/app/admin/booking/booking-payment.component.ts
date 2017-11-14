@@ -431,6 +431,11 @@ export class BookingPaymentComponent{
 		}else{
 			amountFee = this.fee.realFee;
 		}
+		if(parseFloat(amountFee) < 0){
+			this.toastTab('订单错误，不可支付', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 
 		this.modalTab = false;
 		var params = {

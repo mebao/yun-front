@@ -135,6 +135,13 @@ export class AuthGuardRole implements CanActivate{
 								queryType: 'type',
 								queryParams: 'create',
 							},
+							// 支付预约金
+							{
+								url: '/admin/paymentBookingFee',
+								authority: 'add',
+								queryType: '',
+								queryParams: '',
+							},
 							{
 								url: '/admin/bookingInfo',
 								authority: 'info',
@@ -158,7 +165,14 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
-							}
+							},
+							// 支付预约金
+							{
+								url: '/admin/paymentBookingFee',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{
@@ -170,7 +184,14 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'bookingIn',
 								queryType: '',
 								queryParams: '',
-							}
+							},
+							// 支付预约金
+							{
+								url: '/admin/paymentBookingFee',
+								authority: 'bookingIn',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{

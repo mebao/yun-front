@@ -99,6 +99,7 @@ import { AssistComponent }                  from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-info.component';
 import { MaterialPurchaseInfoComponent }    from './material/material-purchase-info.component';
 import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
+import { PaymentBookingFee }                from './booking/payment-booking-fee';
 
 const adminRoutes: Routes = [
 	{
@@ -574,6 +575,11 @@ const adminRoutes: Routes = [
 						path: 'doctorVisit',
 						canActivate: [AuthGuardRole],
 						component: DoctorVisitComponent,
+					},
+					{
+						path: 'paymentBookingFee',
+						canActivate: [AuthGuardRole],
+						component: PaymentBookingFee,
 					},
 					{
 						path: '**',

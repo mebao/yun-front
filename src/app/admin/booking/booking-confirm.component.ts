@@ -63,7 +63,7 @@ export class BookingConfirmComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '预约确认',
+			title: '预约金支付',
 			back: false,
 		}
 		this.url = '?username=' + this.adminService.getUser().username
