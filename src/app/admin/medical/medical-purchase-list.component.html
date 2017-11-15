@@ -1,73 +1,68 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-medical-purchase-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
-				<div class="item active">入库管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
-			</div>
-			<div class="flex pure-form search-tab mt10">
-				<div class="flex-1">
-					<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
-				</div>
-				<div class="pure-control-group mr10 flex">
-					<label for="b_date">入库时间大于：</label>
-					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
-				</div>
-				<div class="pure-control-group mr10 flex">
-					<label for="l_date">入库时间小于：</label>
-					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_date')"></select-date>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="type">类型：</label>
-					<select id="type" name="type" [(ngModel)]="info.type">
-						<option value="1,2">全部</option>
-						<option value="1">中药</option>
-						<option value="2">西药</option>
-					</select>
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-			</div>
-			<div class="">
-				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>供应商</th>
-							<th>发货时间</th>
-							<th>药品名</th>
-							<th>类型</th>
-							<th>入库数量</th>
-							<th>入库时间</th>
-							<th>制单人</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<ng-container *ngFor="let item of list">
-							<tr *ngFor="let info of item.info; let indexInfo=index;">
-								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.supplierName}}</td>
-								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.aboutTime}}</td>
-								<td>{{info.msName}}</td>
-								<td>{{info.typeText}}</td>
-								<td>{{info.num}}</td>
-								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.purshaseTime}}</td>
-								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.adminName}}</td>
-								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">
-									<button *ngIf="moduleAuthority.infoPut" (click)="showInfo(item.id)" class="pure-button pure-button-primary">详情</button>
-								</td>
-							</tr>
-						</ng-container>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到入库信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-medical-purchase-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="second-bar-tab flex">
+		<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
+		<div class="item active">入库管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
+	</div>
+	<div class="flex pure-form search-tab mt10">
+		<div class="flex-1">
+			<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
+		</div>
+		<div class="pure-control-group mr10 flex">
+			<label for="b_date">入库时间大于：</label>
+			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
+		</div>
+		<div class="pure-control-group mr10 flex">
+			<label for="l_date">入库时间小于：</label>
+			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_date')"></select-date>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="type">类型：</label>
+			<select id="type" name="type" [(ngModel)]="info.type">
+				<option value="1,2">全部</option>
+				<option value="1">中药</option>
+				<option value="2">西药</option>
+			</select>
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div class="">
+		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>供应商</th>
+					<th>发货时间</th>
+					<th>药品名</th>
+					<th>类型</th>
+					<th>入库数量</th>
+					<th>入库时间</th>
+					<th>制单人</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ng-container *ngFor="let item of list">
+					<tr *ngFor="let info of item.info; let indexInfo=index;">
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.supplierName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.aboutTime}}</td>
+						<td>{{info.msName}}</td>
+						<td>{{info.typeText}}</td>
+						<td>{{info.num}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.purshaseTime}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.adminName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">
+							<button *ngIf="moduleAuthority.infoPut" (click)="showInfo(item.id)" class="pure-button pure-button-primary">详情</button>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && list.length == 0" class="mt10">
+			<nodata title="未查询到入库信息"></nodata>
 		</div>
 	</div>
 </div>

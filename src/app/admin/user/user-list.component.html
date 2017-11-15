@@ -1,61 +1,56 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-user-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="mt10">
-				<div class="flex pure-form">
-					<div class="flex-1">
-						<button *ngIf="moduleAuthority.add" (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="name">家长姓名：</label>
-						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入家长姓名">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="mobile">手机号码：</label>
-						<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="child_name">宝宝姓名：</label>
-						<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝姓名">
-					</div>
-					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-				</div>
-				<table *ngIf="users.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th></th>
-							<th>家长姓名</th>
-							<th>手机号码</th>
-							<th>性别</th>
-							<th>会员</th>
-							<th>余额</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let user of users; let index=index;">
-							<td>{{index + 1}}</td>
-							<td>{{user.name}}</td>
-							<td>{{user.mobile}}</td>
-							<td>{{user.gender == 'M' ? '男' : '女'}}</td>
-							<td>{{user.memberName}}</td>
-							<td>{{user.balance ? user.balance : 0}}</td>
-							<td>
-								<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
-								<button *ngIf="moduleAuthority.member" (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
-								<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
-								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && users.length == 0" class="mt10">
-					<nodata title="未查询到客户信息"></nodata>
-				</div>
+<header-nav></header-nav>
+<div class="content admin-user-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<div class="flex pure-form">
+			<div class="flex-1">
+				<button *ngIf="moduleAuthority.add" (click)="goUrl('./admin/createUser')" class="pure-button pure-button-primary">新增用户</button>
 			</div>
+			<div class="pure-control-group mr10">
+				<label for="name">家长姓名：</label>
+				<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入家长姓名">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="mobile">手机号码：</label>
+				<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="child_name">宝宝姓名：</label>
+				<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝姓名">
+			</div>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+		</div>
+		<table *ngIf="users.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th></th>
+					<th>家长姓名</th>
+					<th>手机号码</th>
+					<th>性别</th>
+					<th>会员</th>
+					<th>余额</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let user of users; let index=index;">
+					<td>{{index + 1}}</td>
+					<td>{{user.name}}</td>
+					<td>{{user.mobile}}</td>
+					<td>{{user.gender == 'M' ? '男' : '女'}}</td>
+					<td>{{user.memberName}}</td>
+					<td>{{user.balance ? user.balance : 0}}</td>
+					<td>
+						<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
+						<button *ngIf="moduleAuthority.member" (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
+						<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
+						<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && users.length == 0" class="mt10">
+			<nodata title="未查询到客户信息"></nodata>
 		</div>
 	</div>
 </div>

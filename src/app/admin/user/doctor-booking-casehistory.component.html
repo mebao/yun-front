@@ -1,223 +1,218 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-doctor-booking">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="pure-g left-right-tab">
-				<div class="pure-u-1-5 left-tab pr20">
-					<div class="item">
-						<span>姓名：</span>
-						<span>{{booking.childName}}</span>
-					</div>
-					<div class="item">
-						<span>年龄：</span>
-						<span>{{booking.age}}</span>
-					</div>
-					<div class="item">
-						<span>手机号码：</span>
-						<span>{{booking.mobile}}</span>
-					</div>
-					<div class="item">
-						<span>家长：</span>
-						<span>{{booking.creatorName}}</span>
-					</div>
-					<div class="item">
-						<span>备注：</span>
-						<span>{{booking.remark}}</span>
-					</div>
-					<div class="item">
-						<span>接诊医生：</span>
-						<span>{{doctorInfo.realName}}</span>
-					</div>
-				</div>
-				<div class="pure-u-4-5 right-tab booking-info pad10">
-					<div class="second-bar-tab flex mb10">
-						<div (click)="changeTab('3', 'doctorBooking')" class="item">实验室检查</div>
-						<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助治疗</div>
-						<div (click)="changeTab('4', 'doctorBooking')" class="item">处方</div>
-						<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
-						<div (click)="changeTab('2', 'doctorBooking')" class="item">费用列表</div>
-						<div (click)="changeTab('5', 'doctorBooking')" class="item">随访</div>
-						<div (click)="changeTab('6', 'doctorBookingGrowthrecords')" class="item">成长记录</div>
-						<div class="item active">病历</div>
-						<div (click)="changeTab('8', 'doctorBookingHealthrecord')" class="item">儿保记录</div>
-					</div>
-					<div class="tab pure-tab">
-						<div *ngIf="casehistoryList.length > 0">
-							<div *ngFor="let casehistory of casehistoryList; let index=index;">
-								<!-- pageType 空为医生接站， history为查看 -->
-								<div *ngIf="pageType != 'history'">
-									<div class="text-right">
-										<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
-									</div>
-								</div>
-								<div class="section">
-									<div class="title">基本信息</div>
-									<div class="pure-g">
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">体温：</label>
-											<div class="flex-1">{{casehistory.bodyTemperature}}</div>
-										</div>
-										<div class="pure-u-8-24"></div>
-										<div class="pure-u-8-24"></div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">体重：</label>
-											<div class="flex-1">{{casehistory.weight}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">中等值：</label>
-											<div class="flex-1">{{casehistory.midWeight}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">体重对比：</label>
-											<div class="flex-1">{{casehistory.compareWeight}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">身高：</label>
-											<div class="flex-1">{{casehistory.height}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">中等值：</label>
-											<div class="flex-1">{{casehistory.midHeight}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">身高对比：</label>
-											<div class="flex-1">{{casehistory.compareHeight}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">头围：</label>
-											<div class="flex-1">{{casehistory.headCircum}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">胸围：</label>
-											<div class="flex-1">{{casehistory.breastCircum}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">出牙数：</label>
-											<div class="flex-1">{{casehistory.teeth}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">主诉：</label>
-											<div class="flex-1">{{casehistory.topicComment}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">检查结果：</label>
-											<div class="flex-1">{{casehistory.checkResult}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">现病史：</label>
-											<div class="flex-1">{{casehistory.presentIllness}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">既往史：</label>
-											<div class="flex-1">{{casehistory.previousHistory}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">过敏史：</label>
-											<div class="flex-1">{{casehistory.allergy}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">家族史：</label>
-											<div class="flex-1">{{casehistory.familyHistory}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">孕育史：</label>
-											<div class="flex-1">{{casehistory.breedHistory}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">生长发育史：</label>
-											<div class="flex-1">{{casehistory.growthHistory}}</div>
-										</div>
-									</div>
-								</div>
-								<div class="section">
-									<div class="title flex cursor-p" (click)="changeExamination()">
-										<span class="flex-1">体格检查</span>
-										<span *ngIf="!showExamination">
-											隐藏
-											<i class="icon-chevron-down"></i>
-										</span>
-										<span *ngIf="showExamination">
-											展开
-											<i class="icon-chevron-right"></i>
-										</span>
-									</div>
-									<div *ngIf="showExamination" class="pure-g">
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">呼吸：</label>
-											<div class="flex-1">{{casehistory.breathe}}</div>
-										</div>
-										<div class="pure-u-8-24 bt info flex">
-											<label class="w150p">血压：</label>
-											<div class="flex-1">{{casehistory.bloodPressure}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">面、颈部：</label>
-											<div class="flex-1">{{casehistory.faceNeck}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">心肺：</label>
-											<div class="flex-1">{{casehistory.heartLung}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">腹部：</label>
-											<div class="flex-1">{{casehistory.abdomen}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">四肢：</label>
-											<div class="flex-1">{{casehistory.limbs}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">神经系统：</label>
-											<div class="flex-1">{{casehistory.nervousSystem}}</div>
-										</div>
-									</div>
-								</div>
-								<div *ngIf="casehistory.checkList.length > 0" class="section">
-									<div class="title">检测项目</div>
-									<div class="flex flex-wrap">
-										<div *ngFor="let check of casehistory.checkList" class="mr20 info">
-											<label>{{check.checkName}}</label>
-										</div>
-									</div>
-								</div>
-								<div class="section">
-									<div class="title">诊疗记录</div>
-									<div class="pure-g">
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">诊断：</label>
-											<div class="flex-1">{{casehistory.diagnosis}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">处方：</label>
-											<div class="flex-1">
-												<ng-container *ngFor="let item of prescription">
-													<div>{{item.value}}</div>
-												</ng-container>
-											</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">建议：</label>
-											<div class="flex-1">{{casehistory.advise}}</div>
-										</div>
-										<div class="pure-u-24-24 bt info flex">
-											<label class="w150p">就诊日期：</label>
-											<div class="flex-1">{{casehistory.time}}</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt10">
-							<nodata title="未查询到病历"></nodata>
-						</div>
+<header-nav></header-nav>
+<div class="content admin-doctor-booking">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="pure-g left-right-tab">
+		<div class="pure-u-1-5 left-tab pr20">
+			<div class="item">
+				<span>姓名：</span>
+				<span>{{booking.childName}}</span>
+			</div>
+			<div class="item">
+				<span>年龄：</span>
+				<span>{{booking.age}}</span>
+			</div>
+			<div class="item">
+				<span>手机号码：</span>
+				<span>{{booking.mobile}}</span>
+			</div>
+			<div class="item">
+				<span>家长：</span>
+				<span>{{booking.creatorName}}</span>
+			</div>
+			<div class="item">
+				<span>备注：</span>
+				<span>{{booking.remark}}</span>
+			</div>
+			<div class="item">
+				<span>接诊医生：</span>
+				<span>{{doctorInfo.realName}}</span>
+			</div>
+		</div>
+		<div class="pure-u-4-5 right-tab booking-info pad10">
+			<div class="second-bar-tab flex mb10">
+				<div (click)="changeTab('3', 'doctorBooking')" class="item">实验室检查</div>
+				<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助治疗</div>
+				<div (click)="changeTab('4', 'doctorBooking')" class="item">处方</div>
+				<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">服务列表</div> -->
+				<div (click)="changeTab('2', 'doctorBooking')" class="item">费用列表</div>
+				<div (click)="changeTab('5', 'doctorBooking')" class="item">随访</div>
+				<div (click)="changeTab('6', 'doctorBookingGrowthrecords')" class="item">成长记录</div>
+				<div class="item active">病历</div>
+				<div (click)="changeTab('8', 'doctorBookingHealthrecord')" class="item">儿保记录</div>
+			</div>
+			<div class="tab pure-tab">
+				<div *ngIf="casehistoryList.length > 0">
+					<div *ngFor="let casehistory of casehistoryList; let index=index;">
 						<!-- pageType 空为医生接站， history为查看 -->
 						<div *ngIf="pageType != 'history'">
-							<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
-								<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病历</button>
+							<div class="text-right">
+								<button (click)="updateCasehistory(casehistory)" class="pure-button pure-button-primary">修改</button>
 							</div>
 						</div>
+						<div class="section">
+							<div class="title">基本信息</div>
+							<div class="pure-g">
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">体温：</label>
+									<div class="flex-1">{{casehistory.bodyTemperature}}</div>
+								</div>
+								<div class="pure-u-8-24"></div>
+								<div class="pure-u-8-24"></div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">体重：</label>
+									<div class="flex-1">{{casehistory.weight}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">中等值：</label>
+									<div class="flex-1">{{casehistory.midWeight}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">体重对比：</label>
+									<div class="flex-1">{{casehistory.compareWeight}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">身高：</label>
+									<div class="flex-1">{{casehistory.height}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">中等值：</label>
+									<div class="flex-1">{{casehistory.midHeight}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">身高对比：</label>
+									<div class="flex-1">{{casehistory.compareHeight}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">头围：</label>
+									<div class="flex-1">{{casehistory.headCircum}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">胸围：</label>
+									<div class="flex-1">{{casehistory.breastCircum}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">出牙数：</label>
+									<div class="flex-1">{{casehistory.teeth}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">主诉：</label>
+									<div class="flex-1">{{casehistory.topicComment}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">检查结果：</label>
+									<div class="flex-1">{{casehistory.checkResult}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">现病史：</label>
+									<div class="flex-1">{{casehistory.presentIllness}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">既往史：</label>
+									<div class="flex-1">{{casehistory.previousHistory}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">过敏史：</label>
+									<div class="flex-1">{{casehistory.allergy}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">家族史：</label>
+									<div class="flex-1">{{casehistory.familyHistory}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">孕育史：</label>
+									<div class="flex-1">{{casehistory.breedHistory}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">生长发育史：</label>
+									<div class="flex-1">{{casehistory.growthHistory}}</div>
+								</div>
+							</div>
+						</div>
+						<div class="section">
+							<div class="title flex cursor-p" (click)="changeExamination()">
+								<span class="flex-1">体格检查</span>
+								<span *ngIf="!showExamination">
+									隐藏
+									<i class="icon-chevron-down"></i>
+								</span>
+								<span *ngIf="showExamination">
+									展开
+									<i class="icon-chevron-right"></i>
+								</span>
+							</div>
+							<div *ngIf="showExamination" class="pure-g">
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">呼吸：</label>
+									<div class="flex-1">{{casehistory.breathe}}</div>
+								</div>
+								<div class="pure-u-8-24 bt info flex">
+									<label class="w150p">血压：</label>
+									<div class="flex-1">{{casehistory.bloodPressure}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">面、颈部：</label>
+									<div class="flex-1">{{casehistory.faceNeck}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">心肺：</label>
+									<div class="flex-1">{{casehistory.heartLung}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">腹部：</label>
+									<div class="flex-1">{{casehistory.abdomen}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">四肢：</label>
+									<div class="flex-1">{{casehistory.limbs}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">神经系统：</label>
+									<div class="flex-1">{{casehistory.nervousSystem}}</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="casehistory.checkList.length > 0" class="section">
+							<div class="title">检测项目</div>
+							<div class="flex flex-wrap">
+								<div *ngFor="let check of casehistory.checkList" class="mr20 info">
+									<label>{{check.checkName}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="section">
+							<div class="title">诊疗记录</div>
+							<div class="pure-g">
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">诊断：</label>
+									<div class="flex-1">{{casehistory.diagnosis}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">处方：</label>
+									<div class="flex-1">
+										<ng-container *ngFor="let item of prescription">
+											<div>{{item.value}}</div>
+										</ng-container>
+									</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">建议：</label>
+									<div class="flex-1">{{casehistory.advise}}</div>
+								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">就诊日期：</label>
+									<div class="flex-1">{{casehistory.time}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt10">
+					<nodata title="未查询到病历"></nodata>
+				</div>
+				<!-- pageType 空为医生接站， history为查看 -->
+				<div *ngIf="pageType != 'history'">
+					<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20">
+						<button (click)="addCasehistory()" class="pure-button pure-button-primary">新增病历</button>
 					</div>
 				</div>
 			</div>

@@ -1,58 +1,53 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-doctor-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="">
-				<table *ngIf="doctorlist.length > 0" class="list" class="pure-table pure-table-horizontal w100">
-					<thead>
-						<tr>
-							<th>头像</th>
-							<th>姓名</th>
-							<th>性别</th>
-							<th>学术职称</th>
-							<th>医生职称</th>
-							<th>简介</th>
-							<th>科室</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let doctor of doctorlist">
-							<td class="w80p">
-								<div class="img-tab">
-									<img src="{{(!doctor.avatarUrl || doctor.avatarUrl == '') ? '../assets/images/img.png' : doctor.avatarUrl}}">
-								</div>
-							</td>
-							<td>{{doctor.realName}}</td>
-							<td>{{doctor.doctorProfile.gender == 'F' ? '女' : '男'}}</td>
-							<td>{{doctor.doctorProfile.atitleText}}</td>
-							<td>{{doctor.doctorProfile.ctitleText}}</td>
-							<td class="w30">
-								<div class="description">{{doctor.doctorProfile.description}}</div>
-							</td>
-							<td>
-								<div *ngFor="let service of doctor.serviceList">{{service.serviceName}}</div>
-							</td>
-							<td>
-								<div *ngIf="moduleAuthority.service">
-									<button (click)="showService(doctor.id)" class="pure-button pure-button-primary">查看服务</button>
-								</div>
-								<div *ngIf="moduleAuthority.scheduling" [ngClass]="{'pt10': moduleAuthority.service}">
-									<button (click)="showInfo(doctor.id)" class="pure-button pure-button-primary">服务排班</button>
-								</div>
-								<div class="pt10">
-									<button (click)="showRecordTempletList(doctor.id)" class="pure-button pure-button-primary">儿保记录模板</button>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && doctorlist.length == 0" class="mt10">
-					<nodata title="未查询到医生信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-doctor-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="">
+		<table *ngIf="doctorlist.length > 0" class="list" class="pure-table pure-table-horizontal w100">
+			<thead>
+				<tr>
+					<th>头像</th>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>学术职称</th>
+					<th>医生职称</th>
+					<th>简介</th>
+					<th>科室</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let doctor of doctorlist">
+					<td class="w80p">
+						<div class="img-tab">
+							<img src="{{(!doctor.avatarUrl || doctor.avatarUrl == '') ? '../assets/images/img.png' : doctor.avatarUrl}}">
+						</div>
+					</td>
+					<td>{{doctor.realName}}</td>
+					<td>{{doctor.doctorProfile.gender == 'F' ? '女' : '男'}}</td>
+					<td>{{doctor.doctorProfile.atitleText}}</td>
+					<td>{{doctor.doctorProfile.ctitleText}}</td>
+					<td class="w30">
+						<div class="description">{{doctor.doctorProfile.description}}</div>
+					</td>
+					<td>
+						<div *ngFor="let service of doctor.serviceList">{{service.serviceName}}</div>
+					</td>
+					<td>
+						<div *ngIf="moduleAuthority.service">
+							<button (click)="showService(doctor.id)" class="pure-button pure-button-primary">查看服务</button>
+						</div>
+						<div *ngIf="moduleAuthority.scheduling" [ngClass]="{'pt10': moduleAuthority.service}">
+							<button (click)="showInfo(doctor.id)" class="pure-button pure-button-primary">服务排班</button>
+						</div>
+						<div class="pt10">
+							<button (click)="showRecordTempletList(doctor.id)" class="pure-button pure-button-primary">儿保记录模板</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && doctorlist.length == 0" class="mt10">
+			<nodata title="未查询到医生信息"></nodata>
 		</div>
 	</div>
 </div>

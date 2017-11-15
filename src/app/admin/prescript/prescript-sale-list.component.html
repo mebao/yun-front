@@ -1,73 +1,68 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-prescript-back-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="second-bar-tab flex">
-				<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
-				<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
-				<div class="item active">药品零售</div>
-			</div>
-            <div class="pure-form flex mt10">
-                <div class="flex-1">
-                    <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescriptSale')" class="pure-button pure-button-primary">新增零售</button>
-                </div>
-				<div class="pure-control-group mr10">
-					<label for="mobile">患者手机号码：</label>
-					<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入患者手机号码">
-				</div>
-				<div class="pure-control-group mr10 flex">
-					<label for="day">日期：</label>
-					<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="admin_name">售药员工：</label>
-					<input type="text" id="admin_name" name="admin_name" [(ngModel)]="searchInfo.admin_name" placeholder="请输入售药员工">
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-            </div>
-			<div class="">
-				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>用户名</th>
-							<th>手机号码</th>
-							<th>身份证号</th>
-                            <th>药品名</th>
-                            <th>数量</th>
-							<th>总价格</th>
-							<th>免除金额</th>
-							<th>折后价格</th>
-							<th class="w10">备注</th>
-							<th>日期</th>
-							<th>操作人</th>
-						</tr>
-					</thead>
-					<tbody>
-						<ng-container *ngFor="let item of list;">
-							<tr *ngFor="let info of item.info; let indexInfo=index;">
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.mobile}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
-								<td>{{info.pname}}</td>
-								<td>{{info.num}}{{info.unit}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-									<div class="length-text">{{item.remark}}</div>
-								</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
-							</tr>
-						</ng-container>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到药品零售信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-prescript-back-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="second-bar-tab flex">
+		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
+		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
+		<div class="item active">药品零售</div>
+	</div>
+    <div class="pure-form flex mt10">
+        <div class="flex-1">
+            <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescriptSale')" class="pure-button pure-button-primary">新增零售</button>
+        </div>
+		<div class="pure-control-group mr10">
+			<label for="mobile">患者手机号码：</label>
+			<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入患者手机号码">
+		</div>
+		<div class="pure-control-group mr10 flex">
+			<label for="day">日期：</label>
+			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="admin_name">售药员工：</label>
+			<input type="text" id="admin_name" name="admin_name" [(ngModel)]="searchInfo.admin_name" placeholder="请输入售药员工">
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+    </div>
+	<div class="">
+		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>手机号码</th>
+					<th>身份证号</th>
+                    <th>药品名</th>
+                    <th>数量</th>
+					<th>总价格</th>
+					<th>免除金额</th>
+					<th>折后价格</th>
+					<th class="w10">备注</th>
+					<th>日期</th>
+					<th>操作人</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ng-container *ngFor="let item of list;">
+					<tr *ngFor="let info of item.info; let indexInfo=index;">
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.mobile}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
+						<td>{{info.pname}}</td>
+						<td>{{info.num}}{{info.unit}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+							<div class="length-text">{{item.remark}}</div>
+						</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && list.length == 0" class="mt10">
+			<nodata title="未查询到药品零售信息"></nodata>
 		</div>
 	</div>
 </div>

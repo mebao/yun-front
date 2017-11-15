@@ -1,75 +1,70 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-material-has-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/materialList')">物资管理</div>
-				<div class="item" (click)="goUrl('./admin/materialPurchaseList')">入库管理</div>
-				<div class="item active">库存管理</div>
-				<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
-				<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
-			</div>
-			<div class="flex pure-form mt10 search-tab max">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="name">物资名:</label>
-					<input type="text" id="name" name="name" [(ngModel)]="info.name">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="type">物资类型：</label>
-					<select id="type" name="type" [(ngModel)]="info.type">
-						<option value="3,4">全部</option>
-						<option value="3">医用耗材</option>
-						<option value="4">其他</option>
-					</select>
-				</div>
-				<div class="w64p"></div>
-			</div>
-			<div class="flex pure-form mt10 search-tab max">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="b_stock">库存数量大于：</label>
-					<input type="number" id="b_stock" name="b_stock" [(ngModel)]="info.b_stock" placeholder="请输入数量">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="l_stock">库存数量小于：</label>
-					<input type="number" id="l_stock" name="l_stock" [(ngModel)]="info.l_stock" placeholder="请输入数量">
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-			</div>
-			<div class="">
-				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>物资</th>
-							<th>单位</th>
-							<th>物资类型</th>
-							<th>是否优惠</th>
-							<th>库存</th>
-							<th>售价</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let item of list">
-							<td>{{item.name}}</td>
-							<td>{{item.unit}}</td>
-							<td>{{item.typeText}}</td>
-							<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
-							<td>{{item.others[0].stock}}</td>
-							<td>{{item.others[0].price}}</td>
-							<td>
-								<button *ngIf="moduleAuthority.editHas" (click)="update(item.others[0].id)" class="pure-button pure-button-primary">修改</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到物资信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-material-has-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="second-bar-tab flex">
+		<div class="item" (click)="goUrl('./admin/materialList')">物资管理</div>
+		<div class="item" (click)="goUrl('./admin/materialPurchaseList')">入库管理</div>
+		<div class="item active">库存管理</div>
+		<div class="item" (click)="goUrl('./admin/materialLostList')">报损管理</div>
+		<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
+	</div>
+	<div class="flex pure-form mt10 search-tab max">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="name">物资名:</label>
+			<input type="text" id="name" name="name" [(ngModel)]="info.name">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="type">物资类型：</label>
+			<select id="type" name="type" [(ngModel)]="info.type">
+				<option value="3,4">全部</option>
+				<option value="3">医用耗材</option>
+				<option value="4">其他</option>
+			</select>
+		</div>
+		<div class="w64p"></div>
+	</div>
+	<div class="flex pure-form mt10 search-tab max">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="b_stock">库存数量大于：</label>
+			<input type="number" id="b_stock" name="b_stock" [(ngModel)]="info.b_stock" placeholder="请输入数量">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="l_stock">库存数量小于：</label>
+			<input type="number" id="l_stock" name="l_stock" [(ngModel)]="info.l_stock" placeholder="请输入数量">
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div class="">
+		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>物资</th>
+					<th>单位</th>
+					<th>物资类型</th>
+					<th>是否优惠</th>
+					<th>库存</th>
+					<th>售价</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of list">
+					<td>{{item.name}}</td>
+					<td>{{item.unit}}</td>
+					<td>{{item.typeText}}</td>
+					<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
+					<td>{{item.others[0].stock}}</td>
+					<td>{{item.others[0].price}}</td>
+					<td>
+						<button *ngIf="moduleAuthority.editHas" (click)="update(item.others[0].id)" class="pure-button pure-button-primary">修改</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && list.length == 0" class="mt10">
+			<nodata title="未查询到物资信息"></nodata>
 		</div>
 	</div>
 </div>

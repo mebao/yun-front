@@ -1,91 +1,86 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-transaction-record">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="mt10">
-				<div class="flex pure-form search-tab max">
-					<div class="pure-control-group mr10">
-						<label for="user_name">用户：</label>
-						<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
-					</div>
-					<div class="pure-control-group mr10 flex">
-						<label for="b_time">大于此时间：</label>
-						<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
-					</div>
-					<div class="pure-control-group mr10 flex">
-						<label for="l_time">小于此时间：</label>
-						<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
-					</div>
-					<div class="flex-1"></div>
-				</div>
-				<div class="flex pure-form mt10 search-tab max">
-					<div class="pure-control-group mr10">
-						<label for="type">交易类型：</label>
-						<select id="type" name="type" [(ngModel)]="searchInfo.type">
-							<option value=""></option>
-							<option value="1">支付费用</option>
-							<option value="2">会员充值</option>
-						</select>
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="b_amount">大于此金额：</label>
-						<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="l_amount">小于此金额：</label>
-						<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
-					</div>
-					<div class="flex-1"></div>
-				</div>
-				<div class="flex pure-form mt10 search-tab max">
-					<div class="pure-control-group mr10">
-						<label for="pay_way">支付方式：</label>
-						<select id="pay_way" name="pay_way" [(ngModel)]="searchInfo.pay_way">
-							<option value=""></option>
-							<option value="ali">支付宝支付</option>
-							<option value="wechat">微信支付</option>
-							<option value="card">刷卡支付</option>
-							<option value="member">会员余额支付</option>
-							<option value="money">现金支付</option>
-						</select>
-					</div>
-					<div class="flex-1"></div>
-					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-				</div>
-				<table *ngIf="recordList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>用户名</th>
-							<th>金额</th>
-							<th>赠送金额</th>
-							<th>支付方式</th>
-							<th>支付类型</th>
-							<th>操作人</th>
-							<th class="th-width">备注</th>
-							<th>时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let record of recordList; let index=index;">
-							<td>{{record.userName}}</td>
-							<td>{{record.amount}}</td>
-							<td>{{record.giveAmount}}</td>
-							<td>{{record.wayText}}</td>
-							<td>{{record.typeText}}</td>
-							<td>{{record.adminName}}</td>
-							<td>
-								<div class="length-text">{{record.remark}}</div>
-							</td>
-							<td>{{record.time}}</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && recordList.length == 0" class="mt10">
-					<nodata title="未查询到病人交易记录"></nodata>
-				</div>
+<header-nav></header-nav>
+<div class="content admin-transaction-record">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<div class="flex pure-form search-tab max">
+			<div class="pure-control-group mr10">
+				<label for="user_name">用户：</label>
+				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
 			</div>
+			<div class="pure-control-group mr10 flex">
+				<label for="b_time">大于此时间：</label>
+				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
+			</div>
+			<div class="pure-control-group mr10 flex">
+				<label for="l_time">小于此时间：</label>
+				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
+			</div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="flex pure-form mt10 search-tab max">
+			<div class="pure-control-group mr10">
+				<label for="type">交易类型：</label>
+				<select id="type" name="type" [(ngModel)]="searchInfo.type">
+					<option value=""></option>
+					<option value="1">支付费用</option>
+					<option value="2">会员充值</option>
+				</select>
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="b_amount">大于此金额：</label>
+				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="l_amount">小于此金额：</label>
+				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
+			</div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="flex pure-form mt10 search-tab max">
+			<div class="pure-control-group mr10">
+				<label for="pay_way">支付方式：</label>
+				<select id="pay_way" name="pay_way" [(ngModel)]="searchInfo.pay_way">
+					<option value=""></option>
+					<option value="ali">支付宝支付</option>
+					<option value="wechat">微信支付</option>
+					<option value="card">刷卡支付</option>
+					<option value="member">会员余额支付</option>
+					<option value="money">现金支付</option>
+				</select>
+			</div>
+			<div class="flex-1"></div>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+		</div>
+		<table *ngIf="recordList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>金额</th>
+					<th>赠送金额</th>
+					<th>支付方式</th>
+					<th>支付类型</th>
+					<th>操作人</th>
+					<th class="th-width">备注</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let record of recordList; let index=index;">
+					<td>{{record.userName}}</td>
+					<td>{{record.amount}}</td>
+					<td>{{record.giveAmount}}</td>
+					<td>{{record.wayText}}</td>
+					<td>{{record.typeText}}</td>
+					<td>{{record.adminName}}</td>
+					<td>
+						<div class="length-text">{{record.remark}}</div>
+					</td>
+					<td>{{record.time}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && recordList.length == 0" class="mt10">
+			<nodata title="未查询到病人交易记录"></nodata>
 		</div>
 	</div>
 </div>

@@ -1,160 +1,155 @@
-<div class="container flex">
-	<left-nav [title]="'这是'"></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-create-user-page">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="">
-				<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-					<fieldset>
-						<div class="pure-control-group">
-							<label for="name">
-								<span>姓名（初始密码默认：123456）</span>
-								<span class="required">*</span>
-							</label>
-							<input id="name" type="text" name="name" [(ngModel)]="user.name" #name="ngModel" placeholder="请输入姓名" required="">
-							<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-							    <div [hidden]="!name.errors.required">
-							    	姓名不可为空
-							    </div>
-							</div>
-						</div>
-						<div class="pure-control-group">
-							<label for="mobile">
-								<span>手机号码</span>
-								<span class="required">*</span>
-							</label>
-							<input id="mobile" type="tel" name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel" placeholder="请输入手机号码" minlength="11" maxlength="11" required="">
-							<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
-								<div [hidden]="!mobile.errors.required">
-									手机号码不可为空
-								</div>
-								<div [hidden]="!mobile.errors.minlength">
-									手机号码至少11位
-								</div>
-								<div [hidden]="!mobile.errors.maxlength">
-									手机号码最多11位
-								</div>
-							</div>
-						</div>
-						<div class="pure-control-group">
-							<label for="gender">
-								<span>性别</span>
-								<span class="required">*</span>
-							</label>
-							<select id="gender" name="gender" [(ngModel)]="user.gender" #gender="ngModel" required="">
-								<option value="M">男</option>
-								<option value="F">女</option>
-							</select>
-							<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
-								<div [hidden]="!gender.errors.required">
-									性别不可为空
-								</div>
-							</div>
-						</div>
-						<div *ngFor="let child of childlist" class="add-child-tab">
-							<div *ngIf="child.use">
-								<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
-									<div>
-										<span>{{child.show ? '隐藏' : '展开'}}</span>
-									</div>
-									<div class="flex-1 text-right pr10">
-										<button (click)="removeChild(child.key);$event.stopPropagation();" class="pure-button button-error">删除</button>
-									</div>
-								</div> -->
-								<div [ngClass]="{'hide': !child.show}">
-									<div class="flex">
-										<div class="w90p mr10 mt10">
-											<a class="upload-tab">
-												<img id="imgEle_{{child.key}}" src="../assets/images/img.png">
-												<input type="hidden" id="file_{{child.key}}" name="file_{{child.key}}" ngModel>
-												<input class="upload" type="file" (change)="selectedFile($event, child.key)">
-											</a>
-										</div>
-										<div class="flex-1 pure-g">
-											<div class="pure-control-group pure-u-8-24 pr10">
-												<label for="name_{{child.key}}">
-													<span>姓名</span>
-													<span class="required">*</span>
-												</label>
-												<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入宝宝姓名" ngModel>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl5 pr5">
-												<label for="gender_{{child.key}}">
-													<span>性别</span>
-													<span class="required">*</span>
-												</label>
-												<select id="gender_{{child.key}}" name="gender_{{child.key}}" ngModel>
-													<option value="M">男</option>
-													<option value="F">女</option>
-												</select>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl10">
-												<label for="birth_date_{{child.key}}">
-													<span>出生日期</span>
-													<span class="required">*</span>
-												</label>
-												<input type="date" id="birth_date_{{child.key}}" name="birth_date_{{child.key}}" ngModel>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pr10">
-												<label for="blood_type_{{child.key}}">血型</label>
-												<select id="blood_type_{{child.key}}" name="blood_type_{{child.key}}" ngModel>
-													<ng-container *ngFor="let bloodType of bloodTypeList">
-														<option value="{{bloodType.key}}">{{bloodType.value}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl5 pr5">
-												<label for="horoscope_{{child.key}}">星座</label>
-												<select id="horoscope_{{child.key}}" name="horoscope_{{child.key}}" ngModel>
-													<ng-container *ngFor="let horoscope of horoscopeList">
-														<option value="{{horoscope.key}}">{{horoscope.value}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl10">
-												<label for="shengxiao_{{child.key}}">生肖</label>
-												<select id="shengxiao_{{child.key}}" name="shengxiao_{{child.key}}" ngModel>
-													<ng-container *ngFor="let shengxiao of shengxiaoList">
-														<option value="{{shengxiao.key}}">{{shengxiao.value}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pr10">
-												<label for="height_{{child.key}}">身高（cm）</label>
-												<input type="number" id="height_{{child.key}}" step="0.01" name="height_{{child.key}}" placeholder="请输入身高" ngModel>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl5 pr5">
-												<label for="weight_{{child.key}}">体重（kg）</label>
-												<input type="number" id="weight_{{child.key}}" step="0.01" name="weight_{{child.key}}" placeholder="请输入体重" ngModel>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl10">
-												<label for="nickname_{{child.key}}">昵称</label>
-												<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" ngModel>
-											</div>
-											<div class="pure-control-group pure-u-8-24 pr10">
-												<label for="head_circum_{{child.key}}">头围（cm）</label>
-												<input type="number" id="head_circum_{{child.key}}" step="0.01" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
-											</div>
-											<div class="pure-control-group pure-u-8-24 pl5 pr5">
-												<label for="breast_circum_{{child.key}}">胸围（cm）</label>
-												<input type="number" id="breast_circum_{{child.key}}" step="0.01" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="childlist.length == 0" class="pt5">
-							<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
-						</div>
-					</fieldset>
-					<div class="text-center">
-						<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">创建</button>
+<header-nav></header-nav>
+<div class="content admin-create-user-page">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="">
+		<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+			<fieldset>
+				<div class="pure-control-group">
+					<label for="name">
+						<span>姓名（初始密码默认：123456）</span>
+						<span class="required">*</span>
+					</label>
+					<input id="name" type="text" name="name" [(ngModel)]="user.name" #name="ngModel" placeholder="请输入姓名" required="">
+					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+					    <div [hidden]="!name.errors.required">
+					    	姓名不可为空
+					    </div>
 					</div>
-				</form>
+				</div>
+				<div class="pure-control-group">
+					<label for="mobile">
+						<span>手机号码</span>
+						<span class="required">*</span>
+					</label>
+					<input id="mobile" type="tel" name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel" placeholder="请输入手机号码" minlength="11" maxlength="11" required="">
+					<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
+						<div [hidden]="!mobile.errors.required">
+							手机号码不可为空
+						</div>
+						<div [hidden]="!mobile.errors.minlength">
+							手机号码至少11位
+						</div>
+						<div [hidden]="!mobile.errors.maxlength">
+							手机号码最多11位
+						</div>
+					</div>
+				</div>
+				<div class="pure-control-group">
+					<label for="gender">
+						<span>性别</span>
+						<span class="required">*</span>
+					</label>
+					<select id="gender" name="gender" [(ngModel)]="user.gender" #gender="ngModel" required="">
+						<option value="M">男</option>
+						<option value="F">女</option>
+					</select>
+					<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
+						<div [hidden]="!gender.errors.required">
+							性别不可为空
+						</div>
+					</div>
+				</div>
+				<div *ngFor="let child of childlist" class="add-child-tab">
+					<div *ngIf="child.use">
+						<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
+							<div>
+								<span>{{child.show ? '隐藏' : '展开'}}</span>
+							</div>
+							<div class="flex-1 text-right pr10">
+								<button (click)="removeChild(child.key);$event.stopPropagation();" class="pure-button button-error">删除</button>
+							</div>
+						</div> -->
+						<div [ngClass]="{'hide': !child.show}">
+							<div class="flex">
+								<div class="w90p mr10 mt10">
+									<a class="upload-tab">
+										<img id="imgEle_{{child.key}}" src="../assets/images/img.png">
+										<input type="hidden" id="file_{{child.key}}" name="file_{{child.key}}" ngModel>
+										<input class="upload" type="file" (change)="selectedFile($event, child.key)">
+									</a>
+								</div>
+								<div class="flex-1 pure-g">
+									<div class="pure-control-group pure-u-8-24 pr10">
+										<label for="name_{{child.key}}">
+											<span>姓名</span>
+											<span class="required">*</span>
+										</label>
+										<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入宝宝姓名" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+										<label for="gender_{{child.key}}">
+											<span>性别</span>
+											<span class="required">*</span>
+										</label>
+										<select id="gender_{{child.key}}" name="gender_{{child.key}}" ngModel>
+											<option value="M">男</option>
+											<option value="F">女</option>
+										</select>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl10">
+										<label for="birth_date_{{child.key}}">
+											<span>出生日期</span>
+											<span class="required">*</span>
+										</label>
+										<input type="date" id="birth_date_{{child.key}}" name="birth_date_{{child.key}}" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pr10">
+										<label for="blood_type_{{child.key}}">血型</label>
+										<select id="blood_type_{{child.key}}" name="blood_type_{{child.key}}" ngModel>
+											<ng-container *ngFor="let bloodType of bloodTypeList">
+												<option value="{{bloodType.key}}">{{bloodType.value}}</option>
+											</ng-container>
+										</select>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+										<label for="horoscope_{{child.key}}">星座</label>
+										<select id="horoscope_{{child.key}}" name="horoscope_{{child.key}}" ngModel>
+											<ng-container *ngFor="let horoscope of horoscopeList">
+												<option value="{{horoscope.key}}">{{horoscope.value}}</option>
+											</ng-container>
+										</select>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl10">
+										<label for="shengxiao_{{child.key}}">生肖</label>
+										<select id="shengxiao_{{child.key}}" name="shengxiao_{{child.key}}" ngModel>
+											<ng-container *ngFor="let shengxiao of shengxiaoList">
+												<option value="{{shengxiao.key}}">{{shengxiao.value}}</option>
+											</ng-container>
+										</select>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pr10">
+										<label for="height_{{child.key}}">身高（cm）</label>
+										<input type="number" id="height_{{child.key}}" step="0.01" name="height_{{child.key}}" placeholder="请输入身高" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+										<label for="weight_{{child.key}}">体重（kg）</label>
+										<input type="number" id="weight_{{child.key}}" step="0.01" name="weight_{{child.key}}" placeholder="请输入体重" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl10">
+										<label for="nickname_{{child.key}}">昵称</label>
+										<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pr10">
+										<label for="head_circum_{{child.key}}">头围（cm）</label>
+										<input type="number" id="head_circum_{{child.key}}" step="0.01" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+										<label for="breast_circum_{{child.key}}">胸围（cm）</label>
+										<input type="number" id="breast_circum_{{child.key}}" step="0.01" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="childlist.length == 0" class="pt5">
+					<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
+				</div>
+			</fieldset>
+			<div class="text-center">
+				<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">创建</button>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

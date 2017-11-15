@@ -1,50 +1,45 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinicroom-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form mt10">
-				<div class="flex-1">
-					<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增医疗用品供应商</button>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="name">供应商名：</label>
-					<input type="text" id="name" name="name" [(ngModel)]="info.name" placeholder="请输入供应商名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="company">供应商公司：</label>
-					<input type="text" id="company" name="company" [(ngModel)]="info.company" placeholder="请输入供应商公司">
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-			</div>
-			<div class="">
-				<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>供应商名</th>
-							<th>供应商公司</th>
-							<th>联系人</th>
-							<th>联系人电话</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="pure-form" *ngFor="let item of list">
-							<td>{{item.name}}</td>
-							<td>{{item.company}}</td>
-							<td>{{item.contacts}}</td>
-							<td>{{item.mobile}}</td>
-							<td>
-								<button *ngIf="moduleAuthority.edit" (click)="update(item.id)" class="pure-button pure-button-primary">修改</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && list.length == 0" class="mt10">
-					<nodata title="未查询到供应商信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-clinicroom-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="flex pure-form mt10">
+		<div class="flex-1">
+			<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增医疗用品供应商</button>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="name">供应商名：</label>
+			<input type="text" id="name" name="name" [(ngModel)]="info.name" placeholder="请输入供应商名">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="company">供应商公司：</label>
+			<input type="text" id="company" name="company" [(ngModel)]="info.company" placeholder="请输入供应商公司">
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div class="">
+		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>供应商名</th>
+					<th>供应商公司</th>
+					<th>联系人</th>
+					<th>联系人电话</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="pure-form" *ngFor="let item of list">
+					<td>{{item.name}}</td>
+					<td>{{item.company}}</td>
+					<td>{{item.contacts}}</td>
+					<td>{{item.mobile}}</td>
+					<td>
+						<button *ngIf="moduleAuthority.edit" (click)="update(item.id)" class="pure-button pure-button-primary">修改</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && list.length == 0" class="mt10">
+			<nodata title="未查询到供应商信息"></nodata>
 		</div>
 	</div>
 </div>

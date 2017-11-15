@@ -1,58 +1,53 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-user-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="mt10">
-				<div class="flex pure-form">
-					<div class="flex-1"></div>
-					<div class="pure-control-group mr10">
-						<label for="name">姓名：</label>
-						<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
-					</div>
-					<div class="pure-control-group mr10">
-						<label for="mobile">手机号码：</label>
-						<input type="text" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
-					</div>
-					<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-				</div>
-				<table *ngIf="childList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th class="w70p"></th>
-							<th>姓名</th>
-							<th>电话号码</th>
-							<th>性别</th>
-							<th>年龄</th>
-							<th>生日</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let child of childList; let index=index;">
-							<td>
-								<div class="img-tab-default">
-									<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
-								</div>
-							</td>
-							<td>{{child.childName}}</td>
-							<td>{{child.mobile}}</td>
-							<td>{{child.gender}}</td>
-							<td>{{child.age}}</td>
-							<td>{{child.birthday}}</td>
-							<td>
-								<button *ngIf="moduleAuthority.info" (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
-								<button *ngIf="moduleAuthority.booking" (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
-								<button *ngIf="moduleAuthority.bookingHistory" (click)="goBookingHistory(child)" class="pure-button pure-button-primary">预约记录</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && childList.length == 0" class="mt10">
-					<nodata title="未查询到病人信息"></nodata>
-				</div>
+<header-nav></header-nav>
+<div class="content admin-user-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<div class="flex pure-form">
+			<div class="flex-1"></div>
+			<div class="pure-control-group mr10">
+				<label for="name">姓名：</label>
+				<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
 			</div>
+			<div class="pure-control-group mr10">
+				<label for="mobile">手机号码：</label>
+				<input type="text" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
+			</div>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+		</div>
+		<table *ngIf="childList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th class="w70p"></th>
+					<th>姓名</th>
+					<th>电话号码</th>
+					<th>性别</th>
+					<th>年龄</th>
+					<th>生日</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let child of childList; let index=index;">
+					<td>
+						<div class="img-tab-default">
+							<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
+						</div>
+					</td>
+					<td>{{child.childName}}</td>
+					<td>{{child.mobile}}</td>
+					<td>{{child.gender}}</td>
+					<td>{{child.age}}</td>
+					<td>{{child.birthday}}</td>
+					<td>
+						<button *ngIf="moduleAuthority.info" (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
+						<button *ngIf="moduleAuthority.booking" (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
+						<button *ngIf="moduleAuthority.bookingHistory" (click)="goBookingHistory(child)" class="pure-button pure-button-primary">预约记录</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && childList.length == 0" class="mt10">
+			<nodata title="未查询到病人信息"></nodata>
 		</div>
 	</div>
 </div>

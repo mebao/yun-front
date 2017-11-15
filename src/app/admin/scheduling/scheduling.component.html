@@ -1,38 +1,33 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-scheduling-page">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="flex">
-				<div class="flex-1">
-					<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-					<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-					<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
-				</div>
-				<button *ngIf="weekNum >= 0" (click)="copyPrec()" class="pure-button pure-button-primary">复制上周排班</button>
+<header-nav></header-nav>
+<div class="content admin-scheduling-page">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="flex">
+		<div class="flex-1">
+			<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
+			<button (click)="now()" class="pure-button pure-button-primary">本周</button>
+			<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+		</div>
+		<button *ngIf="weekNum >= 0" (click)="copyPrec()" class="pure-button pure-button-primary">复制上周排班</button>
+	</div>
+	<div class="list-tab mt10">
+		<div class="pure-g title-tab">
+			<div class="pure-u-1-24 title"></div>
+			<div class="pure-u-2-24 title text-center">医生</div>
+			<div class="pure-u-3-24 title text-center" *ngFor="let title of weektitle">
+				<div>{{title.date}}</div>
+				<div>{{title.title}}</div>
 			</div>
-			<div class="list-tab mt10">
-				<div class="pure-g title-tab">
-					<div class="pure-u-1-24 title"></div>
-					<div class="pure-u-2-24 title text-center">医生</div>
-					<div class="pure-u-3-24 title text-center" *ngFor="let title of weektitle">
-						<div>{{title.date}}</div>
-						<div>{{title.title}}</div>
-					</div>
+		</div>
+		<div class="doctor-list">
+			<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
+				<div class="pure-u-1-24 img-tab pad10 text-center">
+					<img src="{{(!scheduling.avatarUrl || scheduling.avatarUrl == '') ? '../assets/images/img.png' : scheduling.avatarUrl}}" />
 				</div>
-				<div class="doctor-list">
-					<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
-						<div class="pure-u-1-24 img-tab pad10 text-center">
-							<img src="{{(!scheduling.avatarUrl || scheduling.avatarUrl == '') ? '../assets/images/img.png' : scheduling.avatarUrl}}" />
-						</div>
-						<div class="pure-u-2-24 info text-center pt20 name">{{scheduling.realName}}</div>
-						<div class="pure-u-3-24 info pad10 pt15 scheduling-tab text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;">
-							<div (click)="configChange(day.use, day.id, day.dutyDay, day.dutyConfig, scheduling.adminId, scheduling.adminName)" class="edit" [ngClass]="{'disabled': !day.use}">
-								<div>
-									<div *ngFor="let item of day.dutyConfigList">{{item}}</div>
-								</div>
-							</div>
+				<div class="pure-u-2-24 info text-center pt20 name">{{scheduling.realName}}</div>
+				<div class="pure-u-3-24 info pad10 pt15 scheduling-tab text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;">
+					<div (click)="configChange(day.use, day.id, day.dutyDay, day.dutyConfig, scheduling.adminId, scheduling.adminName)" class="edit" [ngClass]="{'disabled': !day.use}">
+						<div>
+							<div *ngFor="let item of day.dutyConfigList">{{item}}</div>
 						</div>
 					</div>
 				</div>

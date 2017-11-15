@@ -1,69 +1,64 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-medicalsupplies">
-			<top-bar [data]="topBar"></top-bar>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="name">供应商名</label>
-								<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入供应商名" required="">
-								<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
-									<div [hidden]="!name.errors.required">
-										供应商名不可为空
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-8-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="company">供应商公司</label>
-								<input type="text" id="company" name="company" #company="ngModel" [(ngModel)]="info.company" placeholder="请输入供应商公司" required="">
-								<div *ngIf="company.errors && (company.dity || company.touched)" class="alert alert-danger">
-									<div [hidden]="!company.errors.required">
-										供应商公司不可为空
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-8-24 pl10">
-							<div class="pure-control-group">
-								<label for="contacts">联系人</label>
-								<input type="text" id="contacts" name="contacts" #contacts="ngModel" [(ngModel)]="info.contacts" placeholder="请输入联系人" required="">
-								<div *ngIf="contacts.errors && (contacts.dity || contacts.touched)" class="alert alert-danger">
-									<div [hidden]="!contacts.errors.required">
-										联系人不可为空
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="mobile">联系人电话</label>
-								<input type="tel" id="mobile" name="mobile" #mobile="ngModel" [(ngModel)]="info.mobile" minlength="11" maxlength="11" placeholder="请输入联系人电话" required="">
-								<div *ngIf="mobile.errors && (mobile.dity || mobile.touched)" class="alert alert-danger">
-									<div [hidden]="!mobile.errors.required">
-										联系人电话不可为空
-									</div>
-									<div [hidden]="!mobile.errors.minlength">
-										联系人电话至少11位
-									</div>
-									<div [hidden]="!mobile.errors.maxlength">
-										联系人电话至多11位
-									</div>
-								</div>
+<header-nav></header-nav>
+<div class="content admin-medicalsupplies">
+	<top-bar [data]="topBar"></top-bar>
+	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="name">供应商名</label>
+						<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入供应商名" required="">
+						<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
+							<div [hidden]="!name.errors.required">
+								供应商名不可为空
 							</div>
 						</div>
 					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.editType == 'create' ? '创建' : '修改'}}</button>
 				</div>
-			</form>
+				<div class="pure-u-8-24 pl5 pr5">
+					<div class="pure-control-group">
+						<label for="company">供应商公司</label>
+						<input type="text" id="company" name="company" #company="ngModel" [(ngModel)]="info.company" placeholder="请输入供应商公司" required="">
+						<div *ngIf="company.errors && (company.dity || company.touched)" class="alert alert-danger">
+							<div [hidden]="!company.errors.required">
+								供应商公司不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24 pl10">
+					<div class="pure-control-group">
+						<label for="contacts">联系人</label>
+						<input type="text" id="contacts" name="contacts" #contacts="ngModel" [(ngModel)]="info.contacts" placeholder="请输入联系人" required="">
+						<div *ngIf="contacts.errors && (contacts.dity || contacts.touched)" class="alert alert-danger">
+							<div [hidden]="!contacts.errors.required">
+								联系人不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="mobile">联系人电话</label>
+						<input type="tel" id="mobile" name="mobile" #mobile="ngModel" [(ngModel)]="info.mobile" minlength="11" maxlength="11" placeholder="请输入联系人电话" required="">
+						<div *ngIf="mobile.errors && (mobile.dity || mobile.touched)" class="alert alert-danger">
+							<div [hidden]="!mobile.errors.required">
+								联系人电话不可为空
+							</div>
+							<div [hidden]="!mobile.errors.minlength">
+								联系人电话至少11位
+							</div>
+							<div [hidden]="!mobile.errors.maxlength">
+								联系人电话至多11位
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<div class="text-center">
+			<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.editType == 'create' ? '创建' : '修改'}}</button>
 		</div>
-	</div>
+	</form>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -1,176 +1,171 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-user-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="mt10">
-				<div class="info-tab">
-					<div class="item flex">
-						<label>姓名</label>
-						<div class="info">{{userInfo.name}}</div>
-					</div>
-					<div class="item flex">
-						<label>手机号码</label>
-						<div class="info">{{userInfo.mobile}}</div>
-					</div>
-					<div class="item flex">
-						<label>性别</label>
-						<div class="info">{{userInfo.gender == 'M' ? '男' : '女'}}</div>
-					</div>
-				</div>
-				<table *ngIf="childs.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>头像</th>
-							<th>姓名</th>
-							<th>昵称</th>
-							<th>性别</th>
-							<th>生日</th>
-							<th>年龄</th>
-							<th>血型</th>
-							<th>星座</th>
-							<th>生肖</th>
-							<th>其它详情</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<ng-container *ngFor="let child of childs;">
-							<tr *ngFor="let item of infoList; let indexItem=index;">
-								<td rowspan="4" *ngIf="indexItem == 0" class="img-tab">
-									<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
-								</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.childName}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.nickName}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.gender}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.birthdayString}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.age}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.bloodTypeText}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.horoscopeText}}</td>
-								<td rowspan="4" *ngIf="indexItem == 0">{{child.shengxiaoText}}</td>
-								<td>
-									<!-- 0，身高 -->
-									<ng-container *ngIf="indexItem == 0">身高（cm）：{{child.height}}</ng-container>
-									<!-- 1，体重 -->
-									<ng-container *ngIf="indexItem == 1">体重（kg）：{{child.weight}}</ng-container>
-									<!-- 2，头围 -->
-									<ng-container *ngIf="indexItem == 2">头围（cm）：{{child.headCircum}}</ng-container>
-									<!-- 3，胸围 -->
-									<ng-container *ngIf="indexItem == 3">胸围（cm）：{{child.breastCircum}}</ng-container>
-								</td>
-								<td rowspan="4" *ngIf="indexItem == 0">
-									<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
-									<button (click)="delete(child)" class="pure-button button-error">删除</button>
-								</td>
-							</tr>
-						</ng-container>
-					</tbody>
-				</table>
-				<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
-					<div *ngFor="let child of childlist" class="add-child-tab">
-						<div *ngIf="child.use">
-							<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
-								<div>
-									<span>{{child.show ? '隐藏' : '展开'}}</span>
+<header-nav></header-nav>
+<div class="content admin-user-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<div class="info-tab">
+			<div class="item flex">
+				<label>姓名</label>
+				<div class="info">{{userInfo.name}}</div>
+			</div>
+			<div class="item flex">
+				<label>手机号码</label>
+				<div class="info">{{userInfo.mobile}}</div>
+			</div>
+			<div class="item flex">
+				<label>性别</label>
+				<div class="info">{{userInfo.gender == 'M' ? '男' : '女'}}</div>
+			</div>
+		</div>
+		<table *ngIf="childs.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>头像</th>
+					<th>姓名</th>
+					<th>昵称</th>
+					<th>性别</th>
+					<th>生日</th>
+					<th>年龄</th>
+					<th>血型</th>
+					<th>星座</th>
+					<th>生肖</th>
+					<th>其它详情</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ng-container *ngFor="let child of childs;">
+					<tr *ngFor="let item of infoList; let indexItem=index;">
+						<td rowspan="4" *ngIf="indexItem == 0" class="img-tab">
+							<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
+						</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.childName}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.nickName}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.gender}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.birthdayString}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.age}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.bloodTypeText}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.horoscopeText}}</td>
+						<td rowspan="4" *ngIf="indexItem == 0">{{child.shengxiaoText}}</td>
+						<td>
+							<!-- 0，身高 -->
+							<ng-container *ngIf="indexItem == 0">身高（cm）：{{child.height}}</ng-container>
+							<!-- 1，体重 -->
+							<ng-container *ngIf="indexItem == 1">体重（kg）：{{child.weight}}</ng-container>
+							<!-- 2，头围 -->
+							<ng-container *ngIf="indexItem == 2">头围（cm）：{{child.headCircum}}</ng-container>
+							<!-- 3，胸围 -->
+							<ng-container *ngIf="indexItem == 3">胸围（cm）：{{child.breastCircum}}</ng-container>
+						</td>
+						<td rowspan="4" *ngIf="indexItem == 0">
+							<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
+							<button (click)="delete(child)" class="pure-button button-error">删除</button>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+		<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
+			<div *ngFor="let child of childlist" class="add-child-tab">
+				<div *ngIf="child.use">
+					<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
+						<div>
+							<span>{{child.show ? '隐藏' : '展开'}}</span>
+						</div>
+						<div class="flex-1 text-right pr10">
+							<button (click)="removeChild(child.key);$event.stopPropagation();" class="pure-button button-error">删除</button>
+						</div>
+					</div> -->
+					<div [ngClass]="{'hide': !child.show}">
+						<input type="hidden" name="id_{{child.key}}" [(ngModel)]="child.id">
+						<div class="flex">
+							<div class="w90p mr10 mt10">
+								<a class="upload-tab">
+									<img id="imgEle_{{child.key}}" src="{{child.imageUrl ? child.imageUrl : '../assets/images/img.png'}}">
+									<input type="hidden" id="file_{{child.key}}" name="file_{{child.key}}" ngModel>
+									<input class="upload" type="file" (change)="selectedFile($event, child.key)">
+								</a>
+							</div>
+							<div class="flex-1 pure-g">
+								<div class="pure-control-group pure-u-8-24 pr10">
+									<label for="name_{{child.key}}">
+										<span>姓名</span>
+										<span class="required">*</span>
+									</label>
+									<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入宝宝姓名" [(ngModel)]="child.name">
 								</div>
-								<div class="flex-1 text-right pr10">
-									<button (click)="removeChild(child.key);$event.stopPropagation();" class="pure-button button-error">删除</button>
+								<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<label for="gender_{{child.key}}">
+										<span>性别</span>
+										<span class="required">*</span>
+									</label>
+									<select id="gender_{{child.key}}" name="gender_{{child.key}}" [(ngModel)]="child.gender">
+										<option value="M">男</option>
+										<option value="F">女</option>
+									</select>
 								</div>
-							</div> -->
-							<div [ngClass]="{'hide': !child.show}">
-								<input type="hidden" name="id_{{child.key}}" [(ngModel)]="child.id">
-								<div class="flex">
-									<div class="w90p mr10 mt10">
-										<a class="upload-tab">
-											<img id="imgEle_{{child.key}}" src="{{child.imageUrl ? child.imageUrl : '../assets/images/img.png'}}">
-											<input type="hidden" id="file_{{child.key}}" name="file_{{child.key}}" ngModel>
-											<input class="upload" type="file" (change)="selectedFile($event, child.key)">
-										</a>
-									</div>
-									<div class="flex-1 pure-g">
-										<div class="pure-control-group pure-u-8-24 pr10">
-											<label for="name_{{child.key}}">
-												<span>姓名</span>
-												<span class="required">*</span>
-											</label>
-											<input type="text" id="name_{{child.key}}" name="name_{{child.key}}" placeholder="请输入宝宝姓名" [(ngModel)]="child.name">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl5 pr5">
-											<label for="gender_{{child.key}}">
-												<span>性别</span>
-												<span class="required">*</span>
-											</label>
-											<select id="gender_{{child.key}}" name="gender_{{child.key}}" [(ngModel)]="child.gender">
-												<option value="M">男</option>
-												<option value="F">女</option>
-											</select>
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl10">
-											<label for="birth_date_{{child.key}}">
-												<span>出生日期</span>
-												<span class="required">*</span>
-											</label>
-											<input type="date" id="birth_date_{{child.key}}" name="birth_date_{{child.key}}" [(ngModel)]="child.birth_date">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pr10">
-											<label for="blood_type_{{child.key}}">血型</label>
-											<select id="blood_type_{{child.key}}" name="blood_type_{{child.key}}" [(ngModel)]="child.blood_type">
-												<ng-container *ngFor="let bloodType of bloodTypeList">
-													<option value="{{bloodType.key}}">{{bloodType.value}}</option>
-												</ng-container>
-											</select>
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl5 pr5">
-											<label for="horoscope_{{child.key}}">星座</label>
-											<select id="horoscope_{{child.key}}" name="horoscope_{{child.key}}" [(ngModel)]="child.horoscope">
-												<ng-container *ngFor="let horoscope of horoscopeList">
-													<option value="{{horoscope.key}}">{{horoscope.value}}</option>
-												</ng-container>
-											</select>
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl10">
-											<label for="shengxiao_{{child.key}}">生肖</label>
-											<select id="shengxiao_{{child.key}}" name="shengxiao_{{child.key}}" [(ngModel)]="child.shengxiao">
-												<ng-container *ngFor="let shengxiao of shengxiaoList">
-													<option value="{{shengxiao.key}}">{{shengxiao.value}}</option>
-												</ng-container>
-											</select>
-										</div>
-										<div class="pure-control-group pure-u-8-24 pr10">
-											<label for="height_{{child.key}}">身高（cm）</label>
-											<input type="number" id="height_{{child.key}}" step="0.01" name="height_{{child.key}}" placeholder="请输入身高" [(ngModel)]="child.height">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl5 pr5">
-											<label for="weight_{{child.key}}">体重（kg）</label>
-											<input type="number" id="weight_{{child.key}}" step="0.01" name="weight_{{child.key}}" placeholder="请输入体重" [(ngModel)]="child.weight">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl10">
-											<label for="nickname_{{child.key}}">昵称</label>
-											<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" [(ngModel)]="child.nickname">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pr10">
-											<label for="head_circum_{{child.key}}">头围（cm）</label>
-											<input type="number" id="head_circum_{{child.key}}" step="0.01" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
-										</div>
-										<div class="pure-control-group pure-u-8-24 pl5 pr5">
-											<label for="breast_circum_{{child.key}}">胸围（cm）</label>
-											<input type="number" id="breast_circum_{{child.key}}" step="0.01" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
-										</div>
-									</div>
+								<div class="pure-control-group pure-u-8-24 pl10">
+									<label for="birth_date_{{child.key}}">
+										<span>出生日期</span>
+										<span class="required">*</span>
+									</label>
+									<input type="date" id="birth_date_{{child.key}}" name="birth_date_{{child.key}}" [(ngModel)]="child.birth_date">
+								</div>
+								<div class="pure-control-group pure-u-8-24 pr10">
+									<label for="blood_type_{{child.key}}">血型</label>
+									<select id="blood_type_{{child.key}}" name="blood_type_{{child.key}}" [(ngModel)]="child.blood_type">
+										<ng-container *ngFor="let bloodType of bloodTypeList">
+											<option value="{{bloodType.key}}">{{bloodType.value}}</option>
+										</ng-container>
+									</select>
+								</div>
+								<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<label for="horoscope_{{child.key}}">星座</label>
+									<select id="horoscope_{{child.key}}" name="horoscope_{{child.key}}" [(ngModel)]="child.horoscope">
+										<ng-container *ngFor="let horoscope of horoscopeList">
+											<option value="{{horoscope.key}}">{{horoscope.value}}</option>
+										</ng-container>
+									</select>
+								</div>
+								<div class="pure-control-group pure-u-8-24 pl10">
+									<label for="shengxiao_{{child.key}}">生肖</label>
+									<select id="shengxiao_{{child.key}}" name="shengxiao_{{child.key}}" [(ngModel)]="child.shengxiao">
+										<ng-container *ngFor="let shengxiao of shengxiaoList">
+											<option value="{{shengxiao.key}}">{{shengxiao.value}}</option>
+										</ng-container>
+									</select>
+								</div>
+								<div class="pure-control-group pure-u-8-24 pr10">
+									<label for="height_{{child.key}}">身高（cm）</label>
+									<input type="number" id="height_{{child.key}}" step="0.01" name="height_{{child.key}}" placeholder="请输入身高" [(ngModel)]="child.height">
+								</div>
+								<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<label for="weight_{{child.key}}">体重（kg）</label>
+									<input type="number" id="weight_{{child.key}}" step="0.01" name="weight_{{child.key}}" placeholder="请输入体重" [(ngModel)]="child.weight">
+								</div>
+								<div class="pure-control-group pure-u-8-24 pl10">
+									<label for="nickname_{{child.key}}">昵称</label>
+									<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" [(ngModel)]="child.nickname">
+								</div>
+								<div class="pure-control-group pure-u-8-24 pr10">
+									<label for="head_circum_{{child.key}}">头围（cm）</label>
+									<input type="number" id="head_circum_{{child.key}}" step="0.01" name="head_circum_{{child.key}}" placeholder="请输入头围" [(ngModel)]="child.head_circum">
+								</div>
+								<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<label for="breast_circum_{{child.key}}">胸围（cm）</label>
+									<input type="number" id="breast_circum_{{child.key}}" step="0.01" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
 								</div>
 							</div>
 						</div>
 					</div>
-					<div *ngIf="childlist.length == 0" class="pt5">
-						<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
-					</div>
-					<div *ngIf="childlist.length > 0" class="mt10 text-center">
-						<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">提交</button>
-					</div>
-				</form>
+				</div>
 			</div>
-		</div>
+			<div *ngIf="childlist.length == 0" class="pt5">
+				<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
+			</div>
+			<div *ngIf="childlist.length > 0" class="mt10 text-center">
+				<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">提交</button>
+			</div>
+		</form>
 	</div>
 </div>
 <div class="modal" *ngIf="modalConfirmTab">

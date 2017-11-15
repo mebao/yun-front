@@ -1,96 +1,91 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinicroom-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="button-tab">
-				<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增诊室</button>
-				<button *ngIf="moduleAuthority.records" (click)="goRecords()" class="pure-button pure-button-primary">诊室使用记录</button>
-			</div>
-			<div class="">
-				<table *ngIf="conditions.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>诊室名称</th>
-							<th>诊室类型</th>
-							<th>诊室编号</th>
-							<th>坐诊专家</th>
-							<th>就诊宝宝</th>
-							<th>就诊用户</th>
-							<th>使用情况</th>
-							<th>分配专家</th>
-							<th>分配患者</th>
-							<th>修改状态</th>
-							<th>坐诊专家</th>
-							<th>修改诊室信息</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="pure-form" *ngFor="let condition of conditions">
-							<td>{{condition.name}}</td>
-							<td>{{condition.typeText}}</td>
-							<td>{{condition.roomNo}}</td>
-							<td>{{condition.doctorName}}</td>
-							<td>
-								<button *ngIf="condition.childId && condition.childId != ''" (click)="bookingReceive(condition)" class="pure-button pure-button-primary">{{condition.childName}}</button>
-							</td>
-							<td>{{condition.userName}}</td>
-							<td>{{condition.canUse == 1 ? '未使用' : '使用中...'}}</td>
-							<td>
-								<!-- 分配专家 -->
-								<select *ngIf="!(!moduleAuthority.doctor || (condition.doctorName && condition.doctorId))" name="doctor_{{condition.id}}" ngModel (change)="doctorChange($event.target.value, condition.id)" class="maxw100p">
-									<ng-container *ngFor="let doctor of doctorlist">
-										<option *ngIf="!doctor.use" disabled="" value="{{doctor.string}}">
-											<span class="mr10">{{doctor.realName}}</span>
-											<span>(接诊中...)</span>
-										</option>
-										<option *ngIf="doctor.use" value="{{doctor.string}}">{{doctor.realName}}</option>
-									</ng-container>
-								</select>
-								<!-- 已分配专家 -->
-								<span *ngIf="!moduleAuthority.doctor || (condition.doctorName && condition.doctorId)">-</span>
-							</td>
-							<td>
-								<!-- 分配患者 -->
-								<select *ngIf="!(!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName))" name="booking_{{condition.id}}" ngModel (change)="bookingChange($event.target.value, condition.doctorId, condition.id)" class="maxw100p">
-									<ng-container *ngFor="let booking of bookinglist">
-										<ng-container *ngFor="let service of booking.services">
-											<!-- 该预约中该服务已诊断结束 -->
-											<option *ngIf="service.isFinish == '1'" disabled="" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}(服务已完成)</option>
-											<!-- 该预约中该服务未完成：就诊中和待分配 -->
-											<option *ngIf="service.isFinish == '0'" [disabled]="!booking.use" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}{{booking.use ? '' : '(就诊中...)'}}</option>
-										</ng-container>
-									</ng-container>
-								</select>
-								<!-- 已分配患者 -->
-								<span *ngIf="!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName)">-</span>
-							</td>
-							<td>
-								<!-- 可用状态 -->
-								<button *ngIf="!(!moduleAuthority.bookingEnd || condition.canUse == 1)" (click)="updateStatus(condition.id)" class="pure-button pure-button-primary">诊室使用结束</button>
-								<!-- 不可用状态 -->
-								<span *ngIf="!moduleAuthority.bookingEnd || condition.canUse == 1">-</span>
-							</td>
-							<td>
-								<!-- 诊室有专家 -->
-								<button *ngIf="!(!moduleAuthority.doctorEnd || condition.canUse != 1 || !(condition.doctorName && condition.doctorId))" (click)="removeroomdoctor(condition.id)" class="pure-button pure-button-primary">就诊结束</button>
-								<!-- 诊室没有专家 -->
-								<span *ngIf="!moduleAuthority.doctorEnd || condition.canUse != 1 || !(condition.doctorName && condition.doctorId)">-</span>
-							</td>
-							<td>
-								<!-- 诊室使用中或者有医生坐诊，不可编辑 -->
-								<span *ngIf="!moduleAuthority.edit || condition.doctorName || (condition.userName && condition.childName)">-</span>
-								<!-- 诊室未使用，可编辑 -->
-								<button *ngIf="!(!moduleAuthority.edit || condition.doctorName || (condition.userName && condition.childName))" (click)="updateClinicroom(condition.id)" class="pure-button pure-button-primary">修改</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && conditions.length == 0" class="mt10">
-					<nodata title="未查询到您的就诊信息，请联系前台分配患者"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-clinicroom-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="button-tab">
+		<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增诊室</button>
+		<button *ngIf="moduleAuthority.records" (click)="goRecords()" class="pure-button pure-button-primary">诊室使用记录</button>
+	</div>
+	<div class="">
+		<table *ngIf="conditions.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>诊室名称</th>
+					<th>诊室类型</th>
+					<th>诊室编号</th>
+					<th>坐诊专家</th>
+					<th>就诊宝宝</th>
+					<th>就诊用户</th>
+					<th>使用情况</th>
+					<th>分配专家</th>
+					<th>分配患者</th>
+					<th>修改状态</th>
+					<th>坐诊专家</th>
+					<th>修改诊室信息</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="pure-form" *ngFor="let condition of conditions">
+					<td>{{condition.name}}</td>
+					<td>{{condition.typeText}}</td>
+					<td>{{condition.roomNo}}</td>
+					<td>{{condition.doctorName}}</td>
+					<td>
+						<button *ngIf="condition.childId && condition.childId != ''" (click)="bookingReceive(condition)" class="pure-button pure-button-primary">{{condition.childName}}</button>
+					</td>
+					<td>{{condition.userName}}</td>
+					<td>{{condition.canUse == 1 ? '未使用' : '使用中...'}}</td>
+					<td>
+						<!-- 分配专家 -->
+						<select *ngIf="!(!moduleAuthority.doctor || (condition.doctorName && condition.doctorId))" name="doctor_{{condition.id}}" ngModel (change)="doctorChange($event.target.value, condition.id)" class="maxw100p">
+							<ng-container *ngFor="let doctor of doctorlist">
+								<option *ngIf="!doctor.use" disabled="" value="{{doctor.string}}">
+									<span class="mr10">{{doctor.realName}}</span>
+									<span>(接诊中...)</span>
+								</option>
+								<option *ngIf="doctor.use" value="{{doctor.string}}">{{doctor.realName}}</option>
+							</ng-container>
+						</select>
+						<!-- 已分配专家 -->
+						<span *ngIf="!moduleAuthority.doctor || (condition.doctorName && condition.doctorId)">-</span>
+					</td>
+					<td>
+						<!-- 分配患者 -->
+						<select *ngIf="!(!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName))" name="booking_{{condition.id}}" ngModel (change)="bookingChange($event.target.value, condition.doctorId, condition.id)" class="maxw100p">
+							<ng-container *ngFor="let booking of bookinglist">
+								<ng-container *ngFor="let service of booking.services">
+									<!-- 该预约中该服务已诊断结束 -->
+									<option *ngIf="service.isFinish == '1'" disabled="" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}(服务已完成)</option>
+									<!-- 该预约中该服务未完成：就诊中和待分配 -->
+									<option *ngIf="service.isFinish == '0'" [disabled]="!booking.use" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}{{booking.use ? '' : '(就诊中...)'}}</option>
+								</ng-container>
+							</ng-container>
+						</select>
+						<!-- 已分配患者 -->
+						<span *ngIf="!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName)">-</span>
+					</td>
+					<td>
+						<!-- 可用状态 -->
+						<button *ngIf="!(!moduleAuthority.bookingEnd || condition.canUse == 1)" (click)="updateStatus(condition.id)" class="pure-button pure-button-primary">诊室使用结束</button>
+						<!-- 不可用状态 -->
+						<span *ngIf="!moduleAuthority.bookingEnd || condition.canUse == 1">-</span>
+					</td>
+					<td>
+						<!-- 诊室有专家 -->
+						<button *ngIf="!(!moduleAuthority.doctorEnd || condition.canUse != 1 || !(condition.doctorName && condition.doctorId))" (click)="removeroomdoctor(condition.id)" class="pure-button pure-button-primary">就诊结束</button>
+						<!-- 诊室没有专家 -->
+						<span *ngIf="!moduleAuthority.doctorEnd || condition.canUse != 1 || !(condition.doctorName && condition.doctorId)">-</span>
+					</td>
+					<td>
+						<!-- 诊室使用中或者有医生坐诊，不可编辑 -->
+						<span *ngIf="!moduleAuthority.edit || condition.doctorName || (condition.userName && condition.childName)">-</span>
+						<!-- 诊室未使用，可编辑 -->
+						<button *ngIf="!(!moduleAuthority.edit || condition.doctorName || (condition.userName && condition.childName))" (click)="updateClinicroom(condition.id)" class="pure-button pure-button-primary">修改</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && conditions.length == 0" class="mt10">
+			<nodata title="未查询到您的就诊信息，请联系前台分配患者"></nodata>
 		</div>
 	</div>
 </div>

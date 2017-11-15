@@ -1,68 +1,63 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-material-purchase-info">
-			<top-bar [data]="topBar"></top-bar>
-			<div *ngFor="let info of infoList">
-                <div class="pure-g">
-                    <div class="pure-u-8-24 mb10">
-                        <div class="flex">
-                            <div class="w110p">供应商：</div>
-                            <div class="flex-1">{{info.supplierName}}</div>
-                        </div>
-                    </div>
-                    <div class="pure-u-8-24 mb10">
-                        <div class="flex">
-                            <div class="w110p">发货时间：</div>
-                            <div class="flex-1">{{info.aboutTime}}</div>
-                        </div>
-                    </div>
-                    <div class="pure-u-8-24 mb10">
-                        <div class="flex">
-                            <div class="w110p">入库时间：</div>
-                            <div class="flex-1">{{info.purshaseTime}}</div>
-                        </div>
-                    </div>
-                    <div class="pure-u-8-24 mb10">
-                        <div class="flex">
-                            <div class="w110p">制单人：</div>
-                            <div class="flex-1">{{info.adminName}}</div>
-                        </div>
-                    </div>
-                    <div class="pure-u-8-24 mb10">
-                        <div class="flex">
-                            <div class="w110p">总费用：</div>
-                            <div class="flex-1">{{info.fee}}</div>
-                        </div>
-                    </div>
+<header-nav></header-nav>
+<div class="content admin-material-purchase-info">
+	<top-bar [data]="topBar"></top-bar>
+	<div *ngFor="let info of infoList">
+        <div class="pure-g">
+            <div class="pure-u-8-24 mb10">
+                <div class="flex">
+                    <div class="w110p">供应商：</div>
+                    <div class="flex-1">{{info.supplierName}}</div>
                 </div>
-				<table class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>物资名</th>
-							<th>物资类型</th>
-							<th>能否优惠</th>
-							<th>单位</th>
-							<th>进价</th>
-							<th>入库数量</th>
-							<th>总价</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let item of info.info">
-							<td>{{item.msName}}</td>
-							<td>{{item.typeText}}</td>
-							<td>{{item.canDiscount == '0' ? '不可' : '可以'}}</td>
-							<td>{{item.unit}}</td>
-							<td>{{item.bid}}</td>
-							<td>{{item.num}}</td>
-							<td>{{item.fee}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+            </div>
+            <div class="pure-u-8-24 mb10">
+                <div class="flex">
+                    <div class="w110p">发货时间：</div>
+                    <div class="flex-1">{{info.aboutTime}}</div>
+                </div>
+            </div>
+            <div class="pure-u-8-24 mb10">
+                <div class="flex">
+                    <div class="w110p">入库时间：</div>
+                    <div class="flex-1">{{info.purshaseTime}}</div>
+                </div>
+            </div>
+            <div class="pure-u-8-24 mb10">
+                <div class="flex">
+                    <div class="w110p">制单人：</div>
+                    <div class="flex-1">{{info.adminName}}</div>
+                </div>
+            </div>
+            <div class="pure-u-8-24 mb10">
+                <div class="flex">
+                    <div class="w110p">总费用：</div>
+                    <div class="flex-1">{{info.fee}}</div>
+                </div>
+            </div>
+        </div>
+		<table class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>物资名</th>
+					<th>物资类型</th>
+					<th>能否优惠</th>
+					<th>单位</th>
+					<th>进价</th>
+					<th>入库数量</th>
+					<th>总价</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of info.info">
+					<td>{{item.msName}}</td>
+					<td>{{item.typeText}}</td>
+					<td>{{item.canDiscount == '0' ? '不可' : '可以'}}</td>
+					<td>{{item.unit}}</td>
+					<td>{{item.bid}}</td>
+					<td>{{item.num}}</td>
+					<td>{{item.fee}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

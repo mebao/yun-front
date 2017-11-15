@@ -1,37 +1,32 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinic-service-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="button-tab">
-				<button (click)="goCreate()" class="pure-button pure-button-primary">新增诊所服务</button>
-			</div>
-			<div *ngIf="clinicServiceList.length > 0" class="pure-g">
-				<div class="pure-u-6-24 clinic-service-tab pad10" *ngFor="let clinicService of clinicServiceList">
-					<div class="info pad10">
-						<div class="flex">
-							<div class="w70p">服务名：</div>
-							<div class="flex-1">
-								{{clinicService.serviceName}}
-							</div>
-						</div>
-						<div class="flex pt10">
-							<div class="w70p">服务费用：</div>
-							<div class="flex-1">
-								{{clinicService.fee}}
-							</div>
-						</div>
+<header-nav></header-nav>
+<div class="content admin-clinic-service-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="button-tab">
+		<button (click)="goCreate()" class="pure-button pure-button-primary">新增诊所服务</button>
+	</div>
+	<div *ngIf="clinicServiceList.length > 0" class="pure-g">
+		<div class="pure-u-6-24 clinic-service-tab pad10" *ngFor="let clinicService of clinicServiceList">
+			<div class="info pad10">
+				<div class="flex">
+					<div class="w70p">服务名：</div>
+					<div class="flex-1">
+						{{clinicService.serviceName}}
 					</div>
-					<a class="edit pad10 text-center" (click)="update(clinicService.id)">
-						修改
-					</a>
+				</div>
+				<div class="flex pt10">
+					<div class="w70p">服务费用：</div>
+					<div class="flex-1">
+						{{clinicService.fee}}
+					</div>
 				</div>
 			</div>
-			<div *ngIf="hasData && clinicServiceList.length == 0" class="mt10">
-				<nodata title="未查询到诊所服务"></nodata>
-			</div>
+			<a class="edit pad10 text-center" (click)="update(clinicService.id)">
+				修改
+			</a>
 		</div>
+	</div>
+	<div *ngIf="hasData && clinicServiceList.length == 0" class="mt10">
+		<nodata title="未查询到诊所服务"></nodata>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

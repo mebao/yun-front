@@ -1,197 +1,192 @@
-<div class="container flex">
-	<left-nav [title]="''"></left-nav>
-	<div class="right-content flex-1">
-		<header-nav [title]="'kkk'"></header-nav>
-		<div class="content admin-doctor-prescript">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="info-tab">
-				<div class="item flex">
-					<label>家长姓名</label>
-					<div class="info">{{bookingInfo.creatorName}}</div>
-				</div>
-				<div class="item flex">
-					<label>宝宝姓名</label>
-					<div class="info">{{bookingInfo.childName}}</div>
-				</div>
-				<div class="item flex">
-					<label>年龄</label>
-					<div class="info">{{bookingInfo.age}}</div>
-				</div>
-				<!-- <div class="item flex">
-					<label>预约类型</label>
-					<div class="info">{{bookingInfo.type == 'PT' ? '普通号' : '专家号'}}</div>
-				</div> -->
-				<div class="item flex">
-					<label>预约日期</label>
-					<div class="info">{{bookingInfo.bookingDate}}</div>
-				</div>
-				<div class="item flex">
-					<label>预约时间</label>
-					<div class="info">{{bookingInfo.time}}</div>
-				</div>
-			</div>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-7-24 pr10">
-							<label for="name">药方名</label>
-							<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" #name="ngModel" placeholder="请输入药方名" [disabled]="secondType != ''">
-						</div>
-					</div>
-					<div *ngFor="let ms of plist" class="ms-tab mt5">
-						<div *ngIf="ms.use">
-							<div (click)="showMs(ms.key)" class="ms-bar flex">
-								<div class="flex-1 pt5">
-									<ng-container *ngIf="ms.show">
-										<span>隐藏</span>
-										<i class="icon-chevron-right"></i>
-									</ng-container>
-									<ng-container *ngIf="!ms.show">
-										<span>展开</span>
-										<i class="icon-chevron-down"></i>
-									</ng-container>
-								</div>
-								<div *ngIf="secondType != '' || ms.key != 1">
-									<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
-								</div>
-							</div>
-							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-7-24 pr10">
-									<div class="pure-control-group">
-										<label for="ms_{{ms.key}}">
-											<span>药品名</span>
-											<span class="required">*</span>
-										</label>
-										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType != ''">
-											<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
-												</ng-container>
-											</ng-container>
-										</select>
-									</div>
-								</div>
-								<div class="pure-u-3-24 pr10">
-									<div class="pure-control-group">
-										<label for="batch_{{ms.key}}">
-											<span>批次</span>
-											<span class="required">*</span>
-										</label>
-										<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType != ''">
-											<ng-container *ngFor="let batch of ms.batchList">
-												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-											</ng-container>
-										</select>
-									</div>
-								</div>
-								<div class="pure-u-3-24 pr10">
-									<div class="pure-control-group">
-										<label for="one_num_{{ms.key}}">
-											<span>单次剂量</span>
-											<span class="required">*</span>
-										</label>
-										<div class="flex flex-tab">
-											<ng-container *ngIf="secondType == ''">
-												<select-search [title]="ms.ms.oneNum" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
-											</ng-container>
-											<ng-container *ngIf="secondType != ''">
-												<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" disabled>
-											</ng-container>
-											<select disabled="">
-												<option>{{ms.ms.oneUnit}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="pure-u-3-24 pr10">
-									<div class="pure-control-group">
-										<label for="frequency_{{ms.key}}">
-											<span>用法</span>
-											<span class="required">*</span>
-										</label>
-										<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" #frequency_{{ms.key}}="ngModel" [(ngModel)]="ms.ms.frequency" [disabled]="secondType != ''">
-											<ng-container *ngFor="let frequency of frequencylist">
-												<option value="{{frequency}}">{{frequency}}</option>
-											</ng-container>
-										</select>
-									</div>
-								</div>
-								<div class="pure-u-3-24 pr10">
-									<div class="pure-control-group">
-										<label for="usage_{{ms.key}}">
-											<span>用药频次</span>
-											<span class="required">*</span>
-										</label>
-										<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage" [disabled]="secondType != ''">
-											<ng-container *ngFor="let usage of usagelsit">
-												<option value="{{usage}}">{{usage}}</option>
-											</ng-container>
-										</select>
-									</div>
-								</div>
-								<div class="pure-u-2-24 pr10">
-									<div class="pure-control-group">
-										<label for="days_{{ms.key}}">
-											<span>天数</span>
-											<span class="required">*</span>
-										</label>
-										<ng-container *ngIf="secondType == ''">
-											<select-search [title]="ms.ms.days" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'days')"></select-search>
-										</ng-container>
-										<ng-container *ngIf="secondType != ''">
-											<input type="number" id="days_{{ms.key}}" name="days_{{ms.key}}" [(ngModel)]="ms.ms.days" disabled>
-										</ng-container>
-									</div>
-								</div>
-								<div class="pure-u-3-24 pl5 pr5">
-									<div class="pure-control-group">
-										<label for="num_{{ms.key}}">
-											<span>{{secondType == '' ? '总量' : '退药'}}</span>
-											<span class="required">*</span>
-										</label>
-										<div class="flex flex-tab">
-											<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
-											<select disabled="">
-												<option>{{ms.ms.unit}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="pure-u-7-24 pr10">
-									<div class="pure-control-group">
-										<label for="ms_usage_{{ms.key}}">
-											<span>一般用法</span>
-										</label>
-										<textarea id="ms_usage_{{ms.key}}" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" disabled></textarea>
-									</div>
-								</div>
-								<div class="pure-u-6-24 pl5 pr5">
-									<div class="pure-control-group">
-										<label for="remark_{{ms.key}}">
-											<span>说明（最多200字）</span>
-										</label>
-										<textarea maxlength="200" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div *ngIf="secondType == ''" class="mt10">
-						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
-					</div>
-					<div class="pure-g">
-						<div class="pure-u-7-24 pr10">
-							<label for="remark">{{secondType == '' ? '备注' : '退药说明'}}（最多100字）</label>
-							<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="prescriptInfo.remark" placeholder="请输入"></textarea>
-						</div>
-					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' ? (this.editType == 'create' ? '创建' : '修改') : '退药'}}</button>
-				</div>
-			</form>
+<header-nav [title]="'kkk'"></header-nav>
+<div class="content admin-doctor-prescript">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="info-tab">
+		<div class="item flex">
+			<label>家长姓名</label>
+			<div class="info">{{bookingInfo.creatorName}}</div>
+		</div>
+		<div class="item flex">
+			<label>宝宝姓名</label>
+			<div class="info">{{bookingInfo.childName}}</div>
+		</div>
+		<div class="item flex">
+			<label>年龄</label>
+			<div class="info">{{bookingInfo.age}}</div>
+		</div>
+		<!-- <div class="item flex">
+			<label>预约类型</label>
+			<div class="info">{{bookingInfo.type == 'PT' ? '普通号' : '专家号'}}</div>
+		</div> -->
+		<div class="item flex">
+			<label>预约日期</label>
+			<div class="info">{{bookingInfo.bookingDate}}</div>
+		</div>
+		<div class="item flex">
+			<label>预约时间</label>
+			<div class="info">{{bookingInfo.time}}</div>
 		</div>
 	</div>
+	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-7-24 pr10">
+					<label for="name">药方名</label>
+					<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" #name="ngModel" placeholder="请输入药方名" [disabled]="secondType != ''">
+				</div>
+			</div>
+			<div *ngFor="let ms of plist" class="ms-tab mt5">
+				<div *ngIf="ms.use">
+					<div (click)="showMs(ms.key)" class="ms-bar flex">
+						<div class="flex-1 pt5">
+							<ng-container *ngIf="ms.show">
+								<span>隐藏</span>
+								<i class="icon-chevron-right"></i>
+							</ng-container>
+							<ng-container *ngIf="!ms.show">
+								<span>展开</span>
+								<i class="icon-chevron-down"></i>
+							</ng-container>
+						</div>
+						<div *ngIf="secondType != '' || ms.key != 1">
+							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
+						</div>
+					</div>
+					<div [ngClass]="{'hide': !ms.show}" class="pure-g">
+						<div class="pure-u-7-24 pr10">
+							<div class="pure-control-group">
+								<label for="ms_{{ms.key}}">
+									<span>药品名</span>
+									<span class="required">*</span>
+								</label>
+								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType != ''">
+									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+											<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
+										</ng-container>
+									</ng-container>
+								</select>
+							</div>
+						</div>
+						<div class="pure-u-3-24 pr10">
+							<div class="pure-control-group">
+								<label for="batch_{{ms.key}}">
+									<span>批次</span>
+									<span class="required">*</span>
+								</label>
+								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType != ''">
+									<ng-container *ngFor="let batch of ms.batchList">
+										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
+									</ng-container>
+								</select>
+							</div>
+						</div>
+						<div class="pure-u-3-24 pr10">
+							<div class="pure-control-group">
+								<label for="one_num_{{ms.key}}">
+									<span>单次剂量</span>
+									<span class="required">*</span>
+								</label>
+								<div class="flex flex-tab">
+									<ng-container *ngIf="secondType == ''">
+										<select-search [title]="ms.ms.oneNum" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
+									</ng-container>
+									<ng-container *ngIf="secondType != ''">
+										<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" disabled>
+									</ng-container>
+									<select disabled="">
+										<option>{{ms.ms.oneUnit}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-3-24 pr10">
+							<div class="pure-control-group">
+								<label for="frequency_{{ms.key}}">
+									<span>用法</span>
+									<span class="required">*</span>
+								</label>
+								<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" #frequency_{{ms.key}}="ngModel" [(ngModel)]="ms.ms.frequency" [disabled]="secondType != ''">
+									<ng-container *ngFor="let frequency of frequencylist">
+										<option value="{{frequency}}">{{frequency}}</option>
+									</ng-container>
+								</select>
+							</div>
+						</div>
+						<div class="pure-u-3-24 pr10">
+							<div class="pure-control-group">
+								<label for="usage_{{ms.key}}">
+									<span>用药频次</span>
+									<span class="required">*</span>
+								</label>
+								<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage" [disabled]="secondType != ''">
+									<ng-container *ngFor="let usage of usagelsit">
+										<option value="{{usage}}">{{usage}}</option>
+									</ng-container>
+								</select>
+							</div>
+						</div>
+						<div class="pure-u-2-24 pr10">
+							<div class="pure-control-group">
+								<label for="days_{{ms.key}}">
+									<span>天数</span>
+									<span class="required">*</span>
+								</label>
+								<ng-container *ngIf="secondType == ''">
+									<select-search [title]="ms.ms.days" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'days')"></select-search>
+								</ng-container>
+								<ng-container *ngIf="secondType != ''">
+									<input type="number" id="days_{{ms.key}}" name="days_{{ms.key}}" [(ngModel)]="ms.ms.days" disabled>
+								</ng-container>
+							</div>
+						</div>
+						<div class="pure-u-3-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="num_{{ms.key}}">
+									<span>{{secondType == '' ? '总量' : '退药'}}</span>
+									<span class="required">*</span>
+								</label>
+								<div class="flex flex-tab">
+									<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
+									<select disabled="">
+										<option>{{ms.ms.unit}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-7-24 pr10">
+							<div class="pure-control-group">
+								<label for="ms_usage_{{ms.key}}">
+									<span>一般用法</span>
+								</label>
+								<textarea id="ms_usage_{{ms.key}}" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" disabled></textarea>
+							</div>
+						</div>
+						<div class="pure-u-6-24 pl5 pr5">
+							<div class="pure-control-group">
+								<label for="remark_{{ms.key}}">
+									<span>说明（最多200字）</span>
+								</label>
+								<textarea maxlength="200" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="secondType == ''" class="mt10">
+				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
+			</div>
+			<div class="pure-g">
+				<div class="pure-u-7-24 pr10">
+					<label for="remark">{{secondType == '' ? '备注' : '退药说明'}}（最多100字）</label>
+					<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="prescriptInfo.remark" placeholder="请输入"></textarea>
+				</div>
+			</div>
+		</fieldset>
+		<div class="text-center">
+			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' ? (this.editType == 'create' ? '创建' : '修改') : '退药'}}</button>
+		</div>
+	</form>
 </div>
 <div class="modal" *ngIf="modalConfirmTab">
 	<div class="modal-mask" (click)="closeConfirm()"></div>

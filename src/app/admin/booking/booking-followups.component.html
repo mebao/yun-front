@@ -1,58 +1,53 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-booking-followups">
-			<top-bar [data]="topBar"></top-bar>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-1-5"></div>
-						<div class="pure-u-3-5">
-							<!-- <div class="pure-control-group">
-								<label for="up_user">
-									<span>随访人员</span>
-									<span class="required">*</span>
-								</label>
-								<select-search *ngIf="editType == 'create'" [title]="selectSearchTitle" [selectList]="adminList" (onVoted)="onVoted($event)"></select-search>
-								<input *ngIf="editType == 'update'" type="text" id="up_user" name="up_user" [(ngModel)]="info.up_user" disabled="">
-							</div> -->
-							<div class="pure-control-group">
-								<label for="time">
-									<span>随访日期</span>
-									<span class="required">*</span>
-								</label>
-								<select-date title="{{info.timeText}}" [disabled]="editType == 'update'" (onVoted)="changeDate($event)"></select-date>
-							</div>
-							<div class="pure-control-group">
-								<label for="account">
-									<span>随访内容和原因（最长200字）</span>
-									<span class="required">*</span>
-								</label>
-								<textarea id="account" maxlength="200" name="account" #account="ngModel" [(ngModel)]="info.account" placeholder="请输入备注说明" required="" [disabled]="editType == 'update'"></textarea>
-								<div *ngIf="account.errors && (account.dity || account.touched)" class="alert alert-danger">
-									<div [hidden]="!account.errors.required">
-										随访内容和原因不可为空
-									</div>
-								</div>
-							</div>
-							<div class="pure-control-group">
-								<label for="remarks">备注说明（最长200字）</label>
-								<textarea id="remarks" name="remarks" #remarks="ngModel" [(ngModel)]="info.remarks" placeholder="请输入备注说明"  maxlength="200" [disabled]="editType == 'update'"></textarea>
-							</div>
-							<div *ngIf="editType == 'update'" class="pure-control-group">
-								<label for="results">随访结果（最长200字）</label>
-								<textarea id="results" name="results" #results="ngModel" [(ngModel)]="info.results" placeholder="请输入随访结果" maxlength="200"></textarea>
+<header-nav></header-nav>
+<div class="content admin-booking-followups">
+	<top-bar [data]="topBar"></top-bar>
+	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-1-5"></div>
+				<div class="pure-u-3-5">
+					<!-- <div class="pure-control-group">
+						<label for="up_user">
+							<span>随访人员</span>
+							<span class="required">*</span>
+						</label>
+						<select-search *ngIf="editType == 'create'" [title]="selectSearchTitle" [selectList]="adminList" (onVoted)="onVoted($event)"></select-search>
+						<input *ngIf="editType == 'update'" type="text" id="up_user" name="up_user" [(ngModel)]="info.up_user" disabled="">
+					</div> -->
+					<div class="pure-control-group">
+						<label for="time">
+							<span>随访日期</span>
+							<span class="required">*</span>
+						</label>
+						<select-date title="{{info.timeText}}" [disabled]="editType == 'update'" (onVoted)="changeDate($event)"></select-date>
+					</div>
+					<div class="pure-control-group">
+						<label for="account">
+							<span>随访内容和原因（最长200字）</span>
+							<span class="required">*</span>
+						</label>
+						<textarea id="account" maxlength="200" name="account" #account="ngModel" [(ngModel)]="info.account" placeholder="请输入备注说明" required="" [disabled]="editType == 'update'"></textarea>
+						<div *ngIf="account.errors && (account.dity || account.touched)" class="alert alert-danger">
+							<div [hidden]="!account.errors.required">
+								随访内容和原因不可为空
 							</div>
 						</div>
-						<div class="pure-u-1-5"></div>
 					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '创建' : '修改'}}</button>
+					<div class="pure-control-group">
+						<label for="remarks">备注说明（最长200字）</label>
+						<textarea id="remarks" name="remarks" #remarks="ngModel" [(ngModel)]="info.remarks" placeholder="请输入备注说明"  maxlength="200" [disabled]="editType == 'update'"></textarea>
+					</div>
+					<div *ngIf="editType == 'update'" class="pure-control-group">
+						<label for="results">随访结果（最长200字）</label>
+						<textarea id="results" name="results" #results="ngModel" [(ngModel)]="info.results" placeholder="请输入随访结果" maxlength="200"></textarea>
+					</div>
 				</div>
-			</form>
+				<div class="pure-u-1-5"></div>
+			</div>
+		</fieldset>
+		<div class="text-center">
+			<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '创建' : '修改'}}</button>
 		</div>
-	</div>
+	</form>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -1,65 +1,60 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinicroom-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="second-bar-tab flex">
-				<div class="item active">药品管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">入库管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
-				<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
-			</div>
-			<div class="flex pure-form mt10">
-				<div class="flex-1">
-					<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增药品</button>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="name">药品名：</label>
-					<input type="text" id="name" name="name" [(ngModel)]="info.name" placeholder="请输入药品名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="type">类型：</label>
-					<select id="type" name="type" [(ngModel)]="info.type">
-						<option value="1,2">全部</option>
-						<option value="1">中药</option>
-						<option value="2">西药</option>
-					</select>
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-			</div>
-			<div class="">
-				<table *ngIf="medicalSupplies.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>药品名</th>
-							<th>药品类型</th>
-							<th>单位</th>
-							<th>计量单位</th>
-							<th class="th-width">一般用法</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="pure-form" *ngFor="let medicalSupplie of medicalSupplies">
-							<td>{{medicalSupplie.name}}</td>
-							<td>{{medicalSupplie.typeText}}</td>
-							<td>{{medicalSupplie.unit}}</td>
-							<td>{{medicalSupplie.oneUnit}}</td>
-							<td>
-								<div class="length-text">{{medicalSupplie.usage}}</div>
-							</td>
-							<td>
-								<button *ngIf="moduleAuthority.edit" (click)="update(medicalSupplie.id)" class="pure-button pure-button-primary">修改</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && medicalSupplies.length == 0" class="mt10">
-					<nodata title="未查询到药品信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-clinicroom-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="second-bar-tab flex">
+		<div class="item active">药品管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalPurchaseList')">入库管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
+		<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
+	</div>
+	<div class="flex pure-form mt10">
+		<div class="flex-1">
+			<button *ngIf="moduleAuthority.edit" (click)="goCreate()" class="pure-button pure-button-primary">新增药品</button>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="name">药品名：</label>
+			<input type="text" id="name" name="name" [(ngModel)]="info.name" placeholder="请输入药品名">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="type">类型：</label>
+			<select id="type" name="type" [(ngModel)]="info.type">
+				<option value="1,2">全部</option>
+				<option value="1">中药</option>
+				<option value="2">西药</option>
+			</select>
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div class="">
+		<table *ngIf="medicalSupplies.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>药品名</th>
+					<th>药品类型</th>
+					<th>单位</th>
+					<th>计量单位</th>
+					<th class="th-width">一般用法</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="pure-form" *ngFor="let medicalSupplie of medicalSupplies">
+					<td>{{medicalSupplie.name}}</td>
+					<td>{{medicalSupplie.typeText}}</td>
+					<td>{{medicalSupplie.unit}}</td>
+					<td>{{medicalSupplie.oneUnit}}</td>
+					<td>
+						<div class="length-text">{{medicalSupplie.usage}}</div>
+					</td>
+					<td>
+						<button *ngIf="moduleAuthority.edit" (click)="update(medicalSupplie.id)" class="pure-button pure-button-primary">修改</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && medicalSupplies.length == 0" class="mt10">
+			<nodata title="未查询到药品信息"></nodata>
 		</div>
 	</div>
 </div>

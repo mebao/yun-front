@@ -1,37 +1,32 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-doctor-list">
-			<top-bar [data]="topBar"></top-bar>
-            <div class="flex">
-                <button (click)="add()" class="pure-button pure-button-primary">新增儿保记录模板</button>
-                <div class="flex-1"></div>
-            </div>
-			<div class="mt10">
-				<table *ngIf="recordtempletList.length > 0" class="list" class="pure-table pure-table-horizontal w100">
-					<thead>
-						<tr>
-							<th>模板名</th>
-							<th>状态</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let recordtemplet of recordtempletList">
-							<td>{{recordtemplet.name}}</td>
-							<td>{{recordtemplet.status == '1' ? '可用' : '停用'}}</td>
-							<td>
-								<button (click)="update(recordtemplet)" class="pure-button pure-button-primary">修改</button>
-								<button (click)="updateStatus(recordtemplet.id, recordtemplet.status)" class="pure-button pure-button-primary">修改状态</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && recordtempletList.length == 0" class="mt10">
-					<nodata title="未查询到儿保记录模板信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-doctor-list">
+	<top-bar [data]="topBar"></top-bar>
+    <div class="flex">
+        <button (click)="add()" class="pure-button pure-button-primary">新增儿保记录模板</button>
+        <div class="flex-1"></div>
+    </div>
+	<div class="mt10">
+		<table *ngIf="recordtempletList.length > 0" class="list" class="pure-table pure-table-horizontal w100">
+			<thead>
+				<tr>
+					<th>模板名</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let recordtemplet of recordtempletList">
+					<td>{{recordtemplet.name}}</td>
+					<td>{{recordtemplet.status == '1' ? '可用' : '停用'}}</td>
+					<td>
+						<button (click)="update(recordtemplet)" class="pure-button pure-button-primary">修改</button>
+						<button (click)="updateStatus(recordtemplet.id, recordtemplet.status)" class="pure-button pure-button-primary">修改状态</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && recordtempletList.length == 0" class="mt10">
+			<nodata title="未查询到儿保记录模板信息"></nodata>
 		</div>
 	</div>
 </div>

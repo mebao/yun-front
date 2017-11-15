@@ -1,122 +1,117 @@
-<div class="container flex">
-	<left-nav [title]="''"></left-nav>
-	<div class="right-content flex-1">
-		<header-nav [title]="'kkk'"></header-nav>
-		<div class="content admin-prescript-sale">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="second-bar-tab flex">
-				<div class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
-				<div class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
-				<div class="item active" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
+<header-nav [title]="'kkk'"></header-nav>
+<div class="content admin-prescript-sale">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="second-bar-tab flex">
+		<div class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
+		<div class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
+		<div class="item active" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
+	</div>
+	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="type">用户类型</label>
+						<select id="type" name="type" #type="ngModel" [(ngModel)]="sale.type">
+							<option value="1">诊所用户</option>
+							<option value="2">外来用户</option>
+						</select>
+					</div>
+				</div>
 			</div>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-				<fieldset>
-					<div class="pure-g">
+			<div *ngIf="sale.type != ''" class="pure-g">
+				<div *ngIf="sale.type == '1'" class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="user">用户</label>
+						<select-search [title]="'请选择用户'" [selectList]="userList" (onVoted)="changeUser($event)"></select-search>
+					</div>
+				</div>
+				<div *ngIf="sale.type == '2'" class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="mobile">手机号码</label>
+						<input type="tel" id="mobile" name="mobile" maxlength="11" minlength="11" [(ngModel)]="sale.mobile" placeholder="请输入手机号码">
+					</div>
+				</div>
+				<div class="pure-u-8-24 pl5 pr5">
+					<div class="pure-control-group">
+						<label for="idcard">身份证号</label>
+						<input type="tel" id="idcard" name="idcard" [(ngModel)]="sale.idcard" placeholder="请输入身份证号">
+					</div>
+				</div>
+			</div>
+			<div *ngFor="let ms of plist" class="ms-tab mt5">
+				<div *ngIf="ms.use">
+					<div (click)="showMs(ms.key)" class="ms-bar flex">
+						<div class="flex-1 pt5">
+							<ng-container *ngIf="ms.show">
+								<span>隐藏</span>
+								<i class="icon-chevron-right"></i>
+							</ng-container>
+							<ng-container *ngIf="!ms.show">
+								<span>展开</span>
+								<i class="icon-chevron-down"></i>
+							</ng-container>
+						</div>
+						<div *ngIf="ms.key != 1">
+							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
+						</div>
+					</div>
+					<div [ngClass]="{'hide': !ms.show}" class="pure-g">
 						<div class="pure-u-8-24 pr10">
 							<div class="pure-control-group">
-								<label for="type">用户类型</label>
-								<select id="type" name="type" #type="ngModel" [(ngModel)]="sale.type">
-									<option value="1">诊所用户</option>
-									<option value="2">外来用户</option>
+								<label for="ms_{{ms.key}}">
+									<span>药品名</span>
+									<span class="required">*</span>
+								</label>
+								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
+									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+											<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
+										</ng-container>
+									</ng-container>
 								</select>
 							</div>
 						</div>
-					</div>
-					<div *ngIf="sale.type != ''" class="pure-g">
-						<div *ngIf="sale.type == '1'" class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="user">用户</label>
-								<select-search [title]="'请选择用户'" [selectList]="userList" (onVoted)="changeUser($event)"></select-search>
-							</div>
-						</div>
-						<div *ngIf="sale.type == '2'" class="pure-u-8-24 pr10">
-							<div class="pure-control-group">
-								<label for="mobile">手机号码</label>
-								<input type="tel" id="mobile" name="mobile" maxlength="11" minlength="11" [(ngModel)]="sale.mobile" placeholder="请输入手机号码">
-							</div>
-						</div>
-						<div class="pure-u-8-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="idcard">身份证号</label>
-								<input type="tel" id="idcard" name="idcard" [(ngModel)]="sale.idcard" placeholder="请输入身份证号">
-							</div>
-						</div>
-					</div>
-					<div *ngFor="let ms of plist" class="ms-tab mt5">
-						<div *ngIf="ms.use">
-							<div (click)="showMs(ms.key)" class="ms-bar flex">
-								<div class="flex-1 pt5">
-									<ng-container *ngIf="ms.show">
-										<span>隐藏</span>
-										<i class="icon-chevron-right"></i>
-									</ng-container>
-									<ng-container *ngIf="!ms.show">
-										<span>展开</span>
-										<i class="icon-chevron-down"></i>
-									</ng-container>
-								</div>
-								<div *ngIf="ms.key != 1">
-									<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
-								</div>
-							</div>
-							<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-								<div class="pure-u-8-24 pr10">
-									<div class="pure-control-group">
-										<label for="ms_{{ms.key}}">
-											<span>药品名</span>
-											<span class="required">*</span>
-										</label>
-										<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
-											<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-												<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-													<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
-												</ng-container>
+							<div class="pure-u-3-24 pl5 pr5">
+								<div class="pure-control-group">
+									<label for="batch_{{ms.key}}">
+										<span>批次</span>
+										<span class="required">*</span>
+									</label>
+									<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
+										<ng-container *ngFor="let batch of ms.batchList">
+											<ng-container *ngIf="batch.isPrescribed == '0'">
+												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
 											</ng-container>
-										</select>
-									</div>
+										</ng-container>
+									</select>
 								</div>
-									<div class="pure-u-3-24 pl5 pr5">
-										<div class="pure-control-group">
-											<label for="batch_{{ms.key}}">
-												<span>批次</span>
-												<span class="required">*</span>
-											</label>
-											<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
-												<ng-container *ngFor="let batch of ms.batchList">
-													<ng-container *ngIf="batch.isPrescribed == '0'">
-														<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-													</ng-container>
-												</ng-container>
-											</select>
-										</div>
-									</div>
-								<div class="pure-u-3-24 pl10">
-									<div class="pure-control-group">
-										<label for="num_{{ms.key}}">
-											<span>总量</span>
-											<span class="required">*</span>
-										</label>
-										<div class="flex flex-tab">
-											<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
-											<select disabled="">
-												<option>{{ms.ms.unit}}</option>
-											</select>
-										</div>
-									</div>
+							</div>
+						<div class="pure-u-3-24 pl10">
+							<div class="pure-control-group">
+								<label for="num_{{ms.key}}">
+									<span>总量</span>
+									<span class="required">*</span>
+								</label>
+								<div class="flex flex-tab">
+									<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
+									<select disabled="">
+										<option>{{ms.ms.unit}}</option>
+									</select>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="mt10">
-						<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
-					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">出售</button>
 				</div>
-			</form>
+			</div>
+			<div class="mt10">
+				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
+			</div>
+		</fieldset>
+		<div class="text-center">
+			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">出售</button>
 		</div>
-	</div>
+	</form>
 </div>
 <div class="modal" *ngIf="modalTab">
 	<div class="modal-mask" (click)="close()"></div>

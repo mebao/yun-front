@@ -1,82 +1,77 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-inspect-results-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form search-tab max mt10">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="check_name">检查项目名：</label>
-					<select id="check_name" name="check_name" [(ngModel)]="info.check_name">
-						<ng-container *ngFor="let project of checkProjestList">
-							<option value="{{project.name}}">{{project.name}}
-						</ng-container>
-					</select>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="doctor_name">医生姓名：</label>
-					<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="info.doctor_name" placeholder="请输入医生名">
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="child_name">宝宝姓名：</label>
-					<input type="text" id="child_name" name="child_name" [(ngModel)]="info.child_name" placeholder="请输入宝宝名">
-				</div>
-				<div class="w64p"></div>
-			</div>
-			<div class="flex pure-form search-tab max">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="ischeck">是否检查：</label>
-					<select id="ischeck" name="ischeck" [(ngModel)]="info.ischeck">
-						<option value="0">未检查</option>
-						<option value="1">已检查</option>
-						<option value="">所有</option>
-					</select>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="today">时间：</label>
-					<select id="today" name="today" [(ngModel)]="info.today">
-						<option value="">今日</option>
-						<option value="1">所有</option>
-					</select>
-				</div>
-				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-			</div>
-			<div>
-				<div *ngIf="userCheckList.length > 0" class="pure-g">
-					<ng-container *ngFor="let userCheck of userCheckList">
-						<div class="pure-u-6-24 card-tab pad10">
-							<div class="info pad10 flex max">
-								<div class="img-tab-default mr10">
-									<img (click)="childInfo(userCheck.infoList[0].childId)" src="{{userCheck.infoList[0].imageUrl == '' || userCheck.infoList[0].imageUrl == null ? '../assets/images/img.png' : userCheck.infoList[0].imageUrl}}" class="cursor-p">
-								</div>
+<header-nav></header-nav>
+<div class="content admin-inspect-results-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="flex pure-form search-tab max mt10">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="check_name">检查项目名：</label>
+			<select id="check_name" name="check_name" [(ngModel)]="info.check_name">
+				<ng-container *ngFor="let project of checkProjestList">
+					<option value="{{project.name}}">{{project.name}}
+				</ng-container>
+			</select>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="doctor_name">医生姓名：</label>
+			<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="info.doctor_name" placeholder="请输入医生名">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="child_name">宝宝姓名：</label>
+			<input type="text" id="child_name" name="child_name" [(ngModel)]="info.child_name" placeholder="请输入宝宝名">
+		</div>
+		<div class="w64p"></div>
+	</div>
+	<div class="flex pure-form search-tab max">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="ischeck">是否检查：</label>
+			<select id="ischeck" name="ischeck" [(ngModel)]="info.ischeck">
+				<option value="0">未检查</option>
+				<option value="1">已检查</option>
+				<option value="">所有</option>
+			</select>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="today">时间：</label>
+			<select id="today" name="today" [(ngModel)]="info.today">
+				<option value="">今日</option>
+				<option value="1">所有</option>
+			</select>
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div>
+		<div *ngIf="userCheckList.length > 0" class="pure-g">
+			<ng-container *ngFor="let userCheck of userCheckList">
+				<div class="pure-u-6-24 card-tab pad10">
+					<div class="info pad10 flex max">
+						<div class="img-tab-default mr10">
+							<img (click)="childInfo(userCheck.infoList[0].childId)" src="{{userCheck.infoList[0].imageUrl == '' || userCheck.infoList[0].imageUrl == null ? '../assets/images/img.png' : userCheck.infoList[0].imageUrl}}" class="cursor-p">
+						</div>
+						<div class="flex-1">
+							<div>{{userCheck.infoList[0].childName}}</div>
+							<div *ngFor="let info of userCheck.infoList" class="flex pt10" [ngClass]="{'red': info.checkDoctorId == null}">
 								<div class="flex-1">
-									<div>{{userCheck.infoList[0].childName}}</div>
-									<div *ngFor="let info of userCheck.infoList" class="flex pt10" [ngClass]="{'red': info.checkDoctorId == null}">
-										<div class="flex-1">
-											{{info.checkName}}
-										</div>
-										<div class="icon">{{info.checkDoctorId == null ? '未检查' : '已检查'}}</div>
-									</div>
-									<div class="flex pt10 pb10">
-										<div class="w90p">开单医生：</div>
-										<div class="flex-1">
-											{{userCheck.infoList[0].doctorName}}
-										</div>
-									</div>
+									{{info.checkName}}
+								</div>
+								<div class="icon">{{info.checkDoctorId == null ? '未检查' : '已检查'}}</div>
+							</div>
+							<div class="flex pt10 pb10">
+								<div class="w90p">开单医生：</div>
+								<div class="flex-1">
+									{{userCheck.infoList[0].doctorName}}
 								</div>
 							</div>
-							<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
-								检查
-							</a>
 						</div>
-					</ng-container>
+					</div>
+					<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">
+						检查
+					</a>
 				</div>
-				<div *ngIf="hasData && userCheckList.length == 0" class="mt10">
-					<nodata title="未查询到项目"></nodata>
-				</div>
-			</div>
+			</ng-container>
+		</div>
+		<div *ngIf="hasData && userCheckList.length == 0" class="mt10">
+			<nodata title="未查询到项目"></nodata>
 		</div>
 	</div>
 </div>

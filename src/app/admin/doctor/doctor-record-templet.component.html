@@ -1,41 +1,36 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-doctor-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="pure-g">
-				<div class="pure-u-1-5"></div>
-				<div class="pure-u-3-5">
-					<form class="pure-form pure-form-stacked form-tab">
-						<fieldset>
-							<div class="pure-control-group">
-								<label for="name">模板名</label>
-								<input type="text" id="name" name="name" [(ngModel)]="name" placeholder="请输入模板名" [disabled]="editType == 'update'">
+<header-nav></header-nav>
+<div class="content admin-doctor-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="pure-g">
+		<div class="pure-u-1-5"></div>
+		<div class="pure-u-3-5">
+			<form class="pure-form pure-form-stacked form-tab">
+				<fieldset>
+					<div class="pure-control-group">
+						<label for="name">模板名</label>
+						<input type="text" id="name" name="name" [(ngModel)]="name" placeholder="请输入模板名" [disabled]="editType == 'update'">
+					</div>
+					<div class="pure-control-group">
+						<label for="rk">模板内容</label>
+						<ng-container *ngFor="let rk of rkList">
+							<div *ngIf="rk.use" class="mb10 flex">
+								<div class="flex-1">
+									<select-search [title]="'请选择模板内容'" [selectList]="recordtempletKeys" [selectedValue]="rk.selectedValue" (onVoted)="selectedRk($event, rk.key)"></select-search>
+								</div>
+								<div class="w100p text-right">
+									<button *ngIf="rk.key != 1" (click)="removeRk(rk.key)" class="pure-button">移除</button>
+								</div>
 							</div>
-							<div class="pure-control-group">
-								<label for="rk">模板内容</label>
-								<ng-container *ngFor="let rk of rkList">
-									<div *ngIf="rk.use" class="mb10 flex">
-										<div class="flex-1">
-											<select-search [title]="'请选择模板内容'" [selectList]="recordtempletKeys" [selectedValue]="rk.selectedValue" (onVoted)="selectedRk($event, rk.key)"></select-search>
-										</div>
-										<div class="w100p text-right">
-											<button *ngIf="rk.key != 1" (click)="removeRk(rk.key)" class="pure-button">移除</button>
-										</div>
-									</div>
-								</ng-container>
-								<button (click)="addRk()" class="pure-button pure-button-primary">添加模板内容</button>
-							</div>
-							<div class="text-center mt10">
-								<button (click)="add()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '新增' : '保存'}}</button>
-							</div>
-						</fieldset>
-					</form>
-				</div>
-				<div class="pure-u-1-5"></div>
-			</div>
+						</ng-container>
+						<button (click)="addRk()" class="pure-button pure-button-primary">添加模板内容</button>
+					</div>
+					<div class="text-center mt10">
+						<button (click)="add()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '新增' : '保存'}}</button>
+					</div>
+				</fieldset>
+			</form>
 		</div>
+		<div class="pure-u-1-5"></div>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

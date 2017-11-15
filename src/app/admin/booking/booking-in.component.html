@@ -1,99 +1,94 @@
-	<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-booking-in">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="text-right">
-				<button (click)="todayBooking()" class="pure-button pure-button-primary">今日预约</button>
-			</div>
-			<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-				<fieldset>
-					<div class="pure-g">
-						<div class="pure-u-1-5"></div>
-						<div class="pure-u-3-5">
-							<div class="pure-control-group">
-								<label for="service">预约科室</label>
-								<select id="service" name="service" (change)="serviceChange($event.target.value)" [(ngModel)]="bookingInfo.service" #service="ngModel">
-									<ng-container *ngFor="let service of servicelist">
-										<option value="{{service.string}}">{{service.serviceName}}</option>
-									</ng-container>
-								</select>
-							</div>
-							<div class="pure-control-group">
-								<label for="user_doctor">预约医生</label>
-								<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()">
-									<ng-container *ngFor="let doctor of doctorlist">
-										<option value="{{doctor.string}}">{{doctor.doctorName}}</option>
-									</ng-container>
-								</select>
-							</div>
-							<div class="pure-control-group">
-								<label for="booking_date">预约日期</label>
-								<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()">
-									<ng-container *ngFor="let date of doctorDutys">
-										<option value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
-									</ng-container>
-								</select>
-							</div>
-							<div class="pure-control-group">
-								<label for="time">
-									<span>预约时间段（请先选择日期）：</span>
-									<span class="can">可预约颜色（蓝色）</span>
-									<span class="overdue">不可选颜色（灰色）</span>
-									<span class="already">已预约颜色（红色）</span>
-									<span class="selected">已选中颜色（绿色）</span>
-								</label>
-								<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
-									<ng-container *ngFor="let time of timelist; let index=index;">
-										<div class="w25" [ngClass]="{'text-center': index % 4 == 1 || index % 4 == 2, 'text-right': index % 4 == 3}">
-											<div
-												(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
-												class="item"
-												[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'can': time.type == 'can' || (bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'overdue': time.type == 'overdue' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'already': time.type == 'already' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)}">
-												<div class="flex">
-													<div class="radioTab mr10">
-														<ng-container *ngIf="time.type == 'already' && time.value != bookingInfo.timeInfo && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)">
-															x
-														</ng-container>
-													</div>
-													<div class="flex-1">{{time.value}}</div>
-												</div>
-											</div>
-										</div>
-									</ng-container>
-								</div>
-								<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
-									<ng-container *ngFor="let time of timelist">
-										<option value="{{time.value}}" *ngIf="time.use">{{time.value}}</option>
-										<option value="{{time.value}}" *ngIf="!time.use" disabled="">{{time.value}}{{time.type}}</option>
-									</ng-container>
-								</select> -->
-							</div>
-							<div *ngIf="booking.refNo ==''" class="pure-control-group">
-								<label for="child">预约宝宝</label>
-								<select-search [title]="selectSearchTitle" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
-							</div>
-							<div *ngIf="booking.refNo !=''" class="pure-control-group">
-								<label for="child">预约宝宝</label>
-								<select id="child" name="child" disabled="">
-									<option value="">{{booking.childName}}</option>
-								</select>
-							</div>
-							<div class="pure-control-group">
-								<label for="remark">备注（最多200字）</label>
-								<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="bookingInfo.remark"></textarea>
-							</div>
-						</div>
-						<div class="pure-u-1-5"></div>
-					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="editIn(f)" class="pure-button pure-button-primary" [disabled]="canEdit">登记</button>
-				</div>
-			</form>
-		</div>
+<header-nav></header-nav>
+<div class="content admin-booking-in">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="text-right">
+		<button (click)="todayBooking()" class="pure-button pure-button-primary">今日预约</button>
 	</div>
+	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-1-5"></div>
+				<div class="pure-u-3-5">
+					<div class="pure-control-group">
+						<label for="service">预约科室</label>
+						<select id="service" name="service" (change)="serviceChange($event.target.value)" [(ngModel)]="bookingInfo.service" #service="ngModel">
+							<ng-container *ngFor="let service of servicelist">
+								<option value="{{service.string}}">{{service.serviceName}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<div class="pure-control-group">
+						<label for="user_doctor">预约医生</label>
+						<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()">
+							<ng-container *ngFor="let doctor of doctorlist">
+								<option value="{{doctor.string}}">{{doctor.doctorName}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<div class="pure-control-group">
+						<label for="booking_date">预约日期</label>
+						<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()">
+							<ng-container *ngFor="let date of doctorDutys">
+								<option value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<div class="pure-control-group">
+						<label for="time">
+							<span>预约时间段（请先选择日期）：</span>
+							<span class="can">可预约颜色（蓝色）</span>
+							<span class="overdue">不可选颜色（灰色）</span>
+							<span class="already">已预约颜色（红色）</span>
+							<span class="selected">已选中颜色（绿色）</span>
+						</label>
+						<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
+							<ng-container *ngFor="let time of timelist; let index=index;">
+								<div class="w25" [ngClass]="{'text-center': index % 4 == 1 || index % 4 == 2, 'text-right': index % 4 == 3}">
+									<div
+										(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
+										class="item"
+										[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'can': time.type == 'can' || (bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'overdue': time.type == 'overdue' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'already': time.type == 'already' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)}">
+										<div class="flex">
+											<div class="radioTab mr10">
+												<ng-container *ngIf="time.type == 'already' && time.value != bookingInfo.timeInfo && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)">
+													x
+												</ng-container>
+											</div>
+											<div class="flex-1">{{time.value}}</div>
+										</div>
+									</div>
+								</div>
+							</ng-container>
+						</div>
+						<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
+							<ng-container *ngFor="let time of timelist">
+								<option value="{{time.value}}" *ngIf="time.use">{{time.value}}</option>
+								<option value="{{time.value}}" *ngIf="!time.use" disabled="">{{time.value}}{{time.type}}</option>
+							</ng-container>
+						</select> -->
+					</div>
+					<div *ngIf="booking.refNo ==''" class="pure-control-group">
+						<label for="child">预约宝宝</label>
+						<select-search [title]="selectSearchTitle" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
+					</div>
+					<div *ngIf="booking.refNo !=''" class="pure-control-group">
+						<label for="child">预约宝宝</label>
+						<select id="child" name="child" disabled="">
+							<option value="">{{booking.childName}}</option>
+						</select>
+					</div>
+					<div class="pure-control-group">
+						<label for="remark">备注（最多200字）</label>
+						<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="bookingInfo.remark"></textarea>
+					</div>
+				</div>
+				<div class="pure-u-1-5"></div>
+			</div>
+		</fieldset>
+		<div class="text-center">
+			<button (click)="editIn(f)" class="pure-button pure-button-primary" [disabled]="canEdit">登记</button>
+		</div>
+	</form>
 </div>
 <div class="modal" *ngIf="modalTab">
 	<div class="modal-mask" (click)="close()"></div>

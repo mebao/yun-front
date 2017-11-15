@@ -1,49 +1,44 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinic-service-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="flex pure-form">
-				<div class="flex-1">
-					<button (click)="goCreate()" class="pure-button pure-button-primary">新增排班配置</button>
-				</div>
-				<div class="pure-control-group">
-					<label for="status">状态：</label>
-					<select id="status" name="status" (change)="statusChange($event.target.value)" [(ngModel)]="status">
-						<option value=""></option>
-						<option value="1">正常</option>
-						<option vlaue="0">停用</option>
-					</select>
-				</div>
-			</div>
-			<div>
-				<table *ngIf="dutylist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th></th>
-							<th>班次名称</th>
-							<th>班次时间</th>
-							<th>状态</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let duty of dutylist; let index=index;">
-							<td>{{index + 1}}</td>
-							<td>{{duty.name}}</td>
-							<td>{{duty.timeConfig}}</td>
-							<td>{{duty.status == 1 ? '正常' : '停用'}}</td>
-							<td>
-								<button (click)="update(duty)" class="pure-button pure-button-primary">{{duty.status == 1 ? '停用' : '启用'}}</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && dutylist.length == 0" class="mt10">
-					<nodata title="未查询到排班配置"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-clinic-service-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="flex pure-form">
+		<div class="flex-1">
+			<button (click)="goCreate()" class="pure-button pure-button-primary">新增排班配置</button>
+		</div>
+		<div class="pure-control-group">
+			<label for="status">状态：</label>
+			<select id="status" name="status" (change)="statusChange($event.target.value)" [(ngModel)]="status">
+				<option value=""></option>
+				<option value="1">正常</option>
+				<option vlaue="0">停用</option>
+			</select>
+		</div>
+	</div>
+	<div>
+		<table *ngIf="dutylist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th></th>
+					<th>班次名称</th>
+					<th>班次时间</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let duty of dutylist; let index=index;">
+					<td>{{index + 1}}</td>
+					<td>{{duty.name}}</td>
+					<td>{{duty.timeConfig}}</td>
+					<td>{{duty.status == 1 ? '正常' : '停用'}}</td>
+					<td>
+						<button (click)="update(duty)" class="pure-button pure-button-primary">{{duty.status == 1 ? '停用' : '启用'}}</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && dutylist.length == 0" class="mt10">
+			<nodata title="未查询到排班配置"></nodata>
 		</div>
 	</div>
 </div>

@@ -1,69 +1,64 @@
-<div class="container flex">
-	<left-nav></left-nav>
-	<div class="right-content flex-1">
-		<header-nav></header-nav>
-		<div class="content admin-clinicroom-list">
-			<top-bar [data]="topBar"></top-bar>
-			<div class="pure-form flex">
-				<div class="flex-1"></div>
-				<div class="pure-control-group mr10">
-					<label for="type">诊室类型：</label>
-					<select id="type" name="type" [(ngModel)]="search.type" (change)="searchChange()">
-						<option value=""></option>
-						<option value="PT">普通诊室</option>
-						<option value="TN">推拿室</option>
-						<option value="YP">药品室</option>
-						<option value="JY">检验室</option>
-					</select>
-				</div>
-				<div class="pure-control-group mr10">
-					<label for="room_no">诊室编号：</label>
-					<select id="room_no" name="room_no" [(ngModel)]="search.room_no" (change)="searchChange()">
-						<ng-container *ngFor="let condition of conditionList">
-							<option value="{{condition.roomNo}}">{{condition.name}}</option>
-						</ng-container>
-					</select>
-				</div>
-				<div class="pure-control-group">
-					<label for="doctor_id">医生：</label>
-					<select id="doctor_id" name="doctor_id" [(ngModel)]="search.doctor_id" (change)="searchChange()">
-						<ng-container *ngFor="let doctor of doctorList">
-							<option value="{{doctor.id}}">{{doctor.realName}}</option>
-						</ng-container>
-					</select>
-				</div>
-			</div>
-			<div class="">
-				<table *ngIf="conditions.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-					<thead>
-						<tr>
-							<th>诊室名称</th>
-							<th>诊室类型</th>
-							<th>诊室编号</th>
-							<th>坐诊专家</th>
-							<th>就诊用户</th>
-							<th>就诊宝宝</th>
-							<th>开始时间</th>
-							<th>结束时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="pure-form" *ngFor="let condition of conditions">
-							<td>{{condition.name}}</td>
-							<td>{{condition.typeText}}</td>
-							<td>{{condition.roomNo}}</td>
-							<td>{{condition.doctorName}}</td>
-							<td>{{condition.userName}}</td>
-							<td>{{condition.childName}}</td>
-							<td>{{condition.beginTime}}</td>
-							<td>{{condition.endTime}}</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="hasData && conditions.length == 0" class="mt10">
-					<nodata title="未查询到诊所使用信息"></nodata>
-				</div>
-			</div>
+<header-nav></header-nav>
+<div class="content admin-clinicroom-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="pure-form flex">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="type">诊室类型：</label>
+			<select id="type" name="type" [(ngModel)]="search.type" (change)="searchChange()">
+				<option value=""></option>
+				<option value="PT">普通诊室</option>
+				<option value="TN">推拿室</option>
+				<option value="YP">药品室</option>
+				<option value="JY">检验室</option>
+			</select>
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="room_no">诊室编号：</label>
+			<select id="room_no" name="room_no" [(ngModel)]="search.room_no" (change)="searchChange()">
+				<ng-container *ngFor="let condition of conditionList">
+					<option value="{{condition.roomNo}}">{{condition.name}}</option>
+				</ng-container>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="doctor_id">医生：</label>
+			<select id="doctor_id" name="doctor_id" [(ngModel)]="search.doctor_id" (change)="searchChange()">
+				<ng-container *ngFor="let doctor of doctorList">
+					<option value="{{doctor.id}}">{{doctor.realName}}</option>
+				</ng-container>
+			</select>
+		</div>
+	</div>
+	<div class="">
+		<table *ngIf="conditions.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>诊室名称</th>
+					<th>诊室类型</th>
+					<th>诊室编号</th>
+					<th>坐诊专家</th>
+					<th>就诊用户</th>
+					<th>就诊宝宝</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="pure-form" *ngFor="let condition of conditions">
+					<td>{{condition.name}}</td>
+					<td>{{condition.typeText}}</td>
+					<td>{{condition.roomNo}}</td>
+					<td>{{condition.doctorName}}</td>
+					<td>{{condition.userName}}</td>
+					<td>{{condition.childName}}</td>
+					<td>{{condition.beginTime}}</td>
+					<td>{{condition.endTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && conditions.length == 0" class="mt10">
+			<nodata title="未查询到诊所使用信息"></nodata>
 		</div>
 	</div>
 </div>
