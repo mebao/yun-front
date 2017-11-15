@@ -252,7 +252,10 @@ export class PaymentBookingFee{
                 this.btnCanEdit = false;
             }else{
                 if(this.paymentInfo.type == '0'){
-                    this.toastTab('支付成功，已登记', 'error');
+                    this.toastTab('支付成功，已登记', '');
+                    setTimeout(() => {
+                        this.confirm();
+                    }, 2000);
                 }else{
                     this.paymentInfo.result += '，登记成功';
                     this.modalConfirmTab = true;
