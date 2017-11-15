@@ -86,7 +86,7 @@ export class AuthorizeGivefeeComponent{
             }else{
                 this.toastTab('授权成功', '');
                 setTimeout(() => {
-                    this.router.navigate(['./admin/authorizeSuccess']);
+                    this.router.navigate(['./admin/authorizeSuccess'], {queryParams: {layout: 'all'}});
                 }, 2000);
             }
         });

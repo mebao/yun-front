@@ -400,7 +400,7 @@ export class BookingPaymentComponent{
 	}
 
 	print() {
-		this.router.navigate(['./admin/paymentPrint'], {queryParams: {id: this.id}});
+		window.open('./admin/paymentPrint?id=' + this.id + '&layout=all');
 	}
 
 	confirmPay() {

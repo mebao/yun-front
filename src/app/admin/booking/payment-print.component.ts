@@ -44,6 +44,11 @@ export class PaymentPrintComponent{
 		statusText: string,
 		time: string,
 		type: string,
+		yyj: {
+			amount: string,
+			time: string,
+			wayText: string,
+		}
 	}
 	url: string;
 	id: string;

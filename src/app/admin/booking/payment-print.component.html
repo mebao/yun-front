@@ -11,6 +11,11 @@
 			<div class="flex-1 flex"><div class="flex-0">家长</div><div class="flex-1 fill">{{bookingInfo.creatorName}}</div></div>
 		</div>
 		<div class="flex mt20">
+			<div class="flex-1 flex"><div class="flex-0">预约金</div><div class="flex-1 fill">{{bookingInfo.yyj.amount}}元</div></div>
+			<div class="flex-1 flex"><div class="flex-0">支付方式</div><div class="flex-1 fill">{{bookingInfo.yyj.wayText}}</div></div>
+			<div class="flex-1 flex"><div class="flex-0">支付日期</div><div class="flex-1 fill">{{bookingInfo.yyj.time}}</div></div>
+		</div>
+		<div class="flex mt20">
 			<div class="flex-1 flex"><div class="flex-0">收费日期</div><div class="flex-1 fill">{{this.tran.info.time}}</div></div>
 			<div class="flex-1"></div>
 			<div class="flex-1"></div>
@@ -95,6 +100,7 @@
 		<div class="flex money">
 			<div class="flex-1">费用合计 {{fee.originalCost}}元</div>
 			<div class="flex-1">应收费用 {{fee.fee}}元</div>
+			<div class="flex-1">已付预约金 {{bookingInfo.yyj.amount}}元</div>
 			<div class="flex-1">{{tran.info.wayText}}支付 {{tran.info.amount}}元</div>
 		</div>
 		<div class="flex">
