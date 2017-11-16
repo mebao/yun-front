@@ -2,14 +2,13 @@ import { Headers, Http, RequestOptions }          from '@angular/http';
 import { Injectable }                             from '@angular/core';
 
 import { Data }                                   from './data';
+import { config }                                 from '../config';
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	public url = 'http://192.168.31.200/jiabaokangle';
-	// private url = 'http://wapapi.jiabaokangle.com';
-	// private url = 'http://wapapi.meb168.com';
+	url = config.baseHTTP;
 
 	constructor(
 		private http: Http,

@@ -7,12 +7,11 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import { Data } from './admin/data';
+import { config }  from './config';
 
 @Injectable()
 export class AuthService {
-	// private url = 'http://192.168.31.200/jiabaokangle';
-	// private url = 'http://wapapi.jiabaokangle.com';
-	private url = 'http://wapapi.meb168.com';
+	url = config.baseHTTP;
 
   	isLoggedIn: boolean = true;
 
