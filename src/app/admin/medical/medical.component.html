@@ -3,8 +3,8 @@
 	<top-bar [data]="topBar"></top-bar>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<fieldset>
-			<div class="pure-g">
-				<div class="pure-u-8-24 pr10">
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="name">
 							<span>药品名</span>
@@ -17,7 +17,35 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pl5 pr5">
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="trade_name">
+							<span>商品名</span>
+						</label>
+						<input type="text" id="trade_name" name="trade_name" #trade_name="ngModel" [(ngModel)]="info.trade_name" placeholder="请输入商品名" required="">
+						<div *ngIf="trade_name.errors && (trade_name.dity || trade_name.touched)" class="alert alert-danger">
+							<div [hidden]="!trade_name.errors.required">
+								商品名不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="format">
+							<span>规格</span>
+						</label>
+						<input type="text" id="format" name="format" #format="ngModel" [(ngModel)]="info.format" placeholder="请输入规格" required="">
+						<div *ngIf="format.errors && (format.dity || format.touched)" class="alert alert-danger">
+							<div [hidden]="!format.errors.required">
+								规格不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="type">
 							<span>药品类型</span>
@@ -33,7 +61,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pl10">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="unit">
 							<span>单位</span>
@@ -50,7 +78,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pr10">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="one_unit">
 							<span>计量单位</span>
@@ -67,9 +95,69 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24"></div>
-				<div class="pure-u-8-24"></div>
-				<div class="pure-u-8-24 pr10">
+			</div>
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="otc">
+							<span>国药准字</span>
+						</label>
+						<input type="text" id="otc" name="otc" maxlength="500" #otc="ngModel" [(ngModel)]="info.otc" placeholder="请输入国药准字" required="">
+						<div *ngIf="otc.errors && (otc.dity || otc.touched)" class="alert alert-danger">
+							<div [hidden]="!otc.errors.required">
+								国药准字不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="code">
+							<span>条形码</span>
+						</label>
+						<input type="text" id="code" name="code" maxlength="500" #code="ngModel" [(ngModel)]="info.code" placeholder="请输入条形码" required="">
+						<div *ngIf="code.errors && (code.dity || code.touched)" class="alert alert-danger">
+							<div [hidden]="!code.errors.required">
+								条形码不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="can_discount">
+							<span>能否优惠</span>
+						</label>
+						<select id="can_discount" name="can_discount" #can_discount="ngModel" [(ngModel)]="info.can_discount" required="">
+							<option value="0">不可</option>
+							<option value='1'>可以</option>
+						</select>
+						<div *ngIf="can_discount.errors && (can_discount.dity || can_discount.touched)" class="alert alert-danger">
+							<div [hidden]="!can_discount.errors.required">
+								能否优惠不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="is_prescribed">
+							<span>是否处方药</span>
+						</label>
+						<select id="is_prescribed" name="is_prescribed" #is_prescribed="ngModel" [(ngModel)]="info.is_prescribed" required="">
+							<option value="0">非处方</option>
+							<option value='1'>处方</option>
+						</select>
+						<div *ngIf="is_prescribed.errors && (is_prescribed.dity || is_prescribed.touched)" class="alert alert-danger">
+							<div [hidden]="!is_prescribed.errors.required">
+								是否处方药不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="usage">
 							<span>一般用法（最多500字）</span>

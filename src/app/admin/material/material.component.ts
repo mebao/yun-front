@@ -23,6 +23,7 @@ export class MaterialComponent{
 		type: string,
 		unit: string,
 		oneUnit: string,
+		can_discount: string,
 		usage: string,
 	};
 	editType: string;
@@ -54,6 +55,7 @@ export class MaterialComponent{
 			type: '',
 			unit: '',
 			oneUnit: '',
+			can_discount: '',
 			usage: '',
 		}
 
@@ -74,6 +76,7 @@ export class MaterialComponent{
 						for(var i = 0; i < results.medicalSupplies.length; i++){
 							if(results.medicalSupplies[i].id == this.info.id){
 								this.info = results.medicalSupplies[i];
+								this.info.can_discount = results.medicalSupplies[i].canDiscount;
 							}
 						}
 					}
@@ -129,6 +132,11 @@ export class MaterialComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(f.value.can_discount == ''){
+			this.toastTab('能否优惠不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
 			this.btnCanEdit = false;
@@ -143,6 +151,7 @@ export class MaterialComponent{
 			unit: f.value.unit,
 			usage: f.value.usage,
 			one_unit: f.value.one_unit,
+			can_discount: f.value.can_discount,
 		}
 
 		var urlOptions = '';

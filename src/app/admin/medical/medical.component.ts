@@ -20,9 +20,15 @@ export class MedicalComponent{
 	info: {
 		id: string,
 		name: string,
+		trade_name: string,
+		format: string,
 		type: string,
 		unit: string,
 		oneUnit: string,
+		otc: string,
+		code: string,
+		can_discount: string,
+		is_prescribed: string,
 		usage: string,
 	};
 	editType: string;
@@ -51,9 +57,15 @@ export class MedicalComponent{
 		this.info = {
 			id: '',
 			name: '',
+			trade_name: '',
+			format: '',
 			type: '',
 			unit: '',
 			oneUnit: '',
+			otc: '',
+			code: '',
+			can_discount: '',
+			is_prescribed: '',
 			usage: '',
 		}
 
@@ -76,6 +88,9 @@ export class MedicalComponent{
 						for(var i = 0; i < results.medicalSupplies.length; i++){
 							if(results.medicalSupplies[i].id == this.info.id){
 								this.info = results.medicalSupplies[i];
+								this.info.trade_name = results.medicalSupplies[i].tradeName;
+								this.info.can_discount = results.medicalSupplies[i].canDiscount;
+								this.info.is_prescribed = results.medicalSupplies[i].isPrescribed;
 							}
 						}
 					}
@@ -116,6 +131,16 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(f.value.trade_name == ''){
+			this.toastTab('商品名不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(f.value.format == ''){
+			this.toastTab('规格不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.type == ''){
 			this.toastTab('药品类型不可为空', 'error');
 			this.btnCanEdit = false;
@@ -131,6 +156,26 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(f.value.otc == ''){
+			this.toastTab('国药准字不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(f.value.code == ''){
+			this.toastTab('条形码不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(f.value.can_discount == ''){
+			this.toastTab('能否优惠不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(f.value.is_prescribed == ''){
+			this.toastTab('是否处方药不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
 			this.btnCanEdit = false;
@@ -141,9 +186,15 @@ export class MedicalComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			name: f.value.name,
+			trade_name: f.value.name,
+			format: f.value.format,
 			type: f.value.type,
 			unit: f.value.unit,
 			usage: f.value.usage,
+			otc: f.value.otc,
+			code: f.value.code,
+			can_discount: f.value.can_discount,
+			is_prescribed: f.value.is_prescribed,
 			one_unit: f.value.one_unit,
 		}
 

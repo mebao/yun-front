@@ -68,7 +68,23 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24"></div>
+				<div class="pure-u-8-24 pr10">
+					<div class="pure-control-group">
+						<label for="can_discount">
+							<span>能否优惠</span>
+							<span class="required">*</span>
+						</label>
+						<select id="can_discount" name="can_discount" #can_discount="ngModel" [(ngModel)]="info.can_discount" required="">
+							<option value="0">不可</option>
+							<option value='1'>可以</option>
+						</select>
+						<div *ngIf="can_discount.errors && (can_discount.dity || can_discount.touched)" class="alert alert-danger">
+							<div [hidden]="!can_discount.errors.required">
+								能否优惠不可为空
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="pure-u-8-24"></div>
 				<div class="pure-u-8-24 pr10">
 					<div class="pure-control-group">

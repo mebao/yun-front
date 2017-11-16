@@ -226,12 +226,7 @@ export class MaterialPurchaseComponent{
 					}
 					msParams.bid = f.value['bid_' + key];
 					msParams.price = '';
-					if(f.value['can_discount_' + key] == ''){
-						this.toastTab('第' + num + '条物资优惠类型不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.can_discount = f.value['can_discount_' + key];
+					msParams.can_discount = JSON.parse(f.value['ms_' + key]).canDiscount;
 					msParamsList.push(msParams);
 				}
 			}

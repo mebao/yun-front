@@ -203,18 +203,8 @@ export class MedicalPurchaseComponent{
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
-					if(f.value['trade_name_' + key] == ''){
-						this.toastTab('第' + num + '条商品名不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.trade_name = f.value['trade_name_' + key];
-					if(f.value['format_' + key] == ''){
-						this.toastTab('第' + num + '条规格不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.format = f.value['format_' + key];
+					msParams.trade_name = JSON.parse(f.value['ms_' + key]).tradeName;
+					msParams.format = JSON.parse(f.value['ms_' + key]).format;
 					msParams.unit = JSON.parse(f.value['ms_' + key]).unit;
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
@@ -242,30 +232,10 @@ export class MedicalPurchaseComponent{
 					}
 					msParams.bid = f.value['bid_' + key];
 					msParams.price = '';
-					if(f.value['can_discount_' + key] == ''){
-						this.toastTab('第' + num + '条药品优惠类型不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.can_discount = f.value['can_discount_' + key];
-					if(f.value['is_prescribed_' + key] == ''){
-						this.toastTab('第' + num + '条药品处方药类型不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.is_prescribed = f.value['is_prescribed_' + key];
-					if(f.value['otc_' + key] == ''){
-						this.toastTab('第' + num + '条药品国药准字不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.otc = f.value['otc_' + key];
-					if(f.value['code_' + key] == ''){
-						this.toastTab('第' + num + '条药品条形码不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					msParams.code = f.value['code_' + key];
+					msParams.can_discount = JSON.parse(f.value['ms_' + key]).canDiscount;
+					msParams.is_prescribed = JSON.parse(f.value['ms_' + key]).isPrescribed;
+					msParams.otc = JSON.parse(f.value['ms_' + key]).otc;
+					msParams.code = JSON.parse(f.value['ms_' + key]).code;
 					if(f.value['batch_' + key] == ''){
 						this.toastTab('第' + num + '条药品批次不可为空', 'error');
 						this.btnCanEdit = false;
