@@ -166,6 +166,7 @@ export class DoctorRecordTempletComponent{
         this.btnCanEdit = true;
         if(this.name == ''){
             this.toastTab('模板名不可为空', 'error');
+            this.btnCanEdit = false;
             return;
         }
         var rk = [];

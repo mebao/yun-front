@@ -141,12 +141,12 @@ export class MaterialCheckComponent{
 						remark: this.checkList[i].remark,
 					}
 					if(this.adminService.isFalse(this.checkList[i].reality_stock)){
-						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存不可为空', 'error');
+						this.toastTab(this.checkList[i].name + '，实际库存不可为空', 'error');
 						this.btnCanEdit = false;
 						return;
 					}
-					if(Number(this.checkList[i].reality_stock) <= 0 || Number(this.checkList[i].reality_stock) % 1 != 0){
-						this.toastTab(this.checkList[i].name + this.checkList[i].batch + '批次 ，实际库存应为大于0的整数', 'error');
+					if(Number(this.checkList[i].reality_stock) < 0 || Number(this.checkList[i].reality_stock) % 1 != 0){
+						this.toastTab(this.checkList[i].name + '，实际库存应为大于等于0的整数', 'error');
 						this.btnCanEdit = false;
 						return;
 					}
