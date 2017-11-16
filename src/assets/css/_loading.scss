@@ -4,6 +4,10 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
+	.content{
+		margin: 0!important;
+		border: none!important;
+	}
 }
 .modal .modal-mask{
 	position: absolute;
@@ -51,15 +55,15 @@
 		margin-left: -40%;
 	}
 }
-.modal-toast .container .content{
+.modal-toast .container .content-tab{
 	background-color: #1CB841;
 	color: #fff;
 }
-.modal-toast .container .content.error{
+.modal-toast .container .content-tab.error{
 	background-color: #CA3C3C;
 	color: #fff;
 }
-.modal-toast .container .content.warning{
+.modal-toast .container .content-tab.warning{
 	background-color: #DF7514;
 	color: #fff;
 }

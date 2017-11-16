@@ -39,7 +39,7 @@ export class AdminService{
 	//删除后台用户
 	private deleteadminUrl = this.url + '/mebcrm/deleteadmin/';
 	deleteadmin(urlOptions): Promise<Data>{
-		return this.http.delete(this.deleteadminUrl + urlOptions)
+		return this.http.get(this.deleteadminUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -511,7 +511,7 @@ export class AdminService{
 	//删除用户,用户下面的宝宝
 	private deleteuserUrl = this.url + '/mebcrm/deleteuser/';
 	deleteuser(urlOptions): Promise<Data>{
-		return this.http.delete(this.deleteuserUrl + urlOptions)
+		return this.http.get(this.deleteuserUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -538,7 +538,7 @@ export class AdminService{
 	//删除宝宝
 	private deletechildUrl = this.url + '/mebcrm/deletechild/';
 	deletechild(urlOptions): Promise<Data>{
-		return this.http.delete(this.deletechildUrl + urlOptions)
+		return this.http.get(this.deletechildUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -592,7 +592,7 @@ export class AdminService{
 	//删除药方
 	private deleteprescriptUrl = this.url + '/mebcrm/deleteprescript/';
 	deleteprescript(urlOptions): Promise<Data>{
-		return this.http.delete(this.deleteprescriptUrl + urlOptions)
+		return this.http.get(this.deleteprescriptUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -880,7 +880,7 @@ export class AdminService{
 	// 删除检查
 	private deleteusercheckUrl = this.url + '/mebcrm/deleteusercheck/';
 	deleteusercheck(urlOptions): Promise<Data>{
-		return this.http.delete(this.deleteusercheckUrl + urlOptions)
+		return this.http.get(this.deleteusercheckUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
@@ -988,7 +988,7 @@ export class AdminService{
 	// 删除预约的辅助项目
 	private deleteassistUrl = this.url + '/mebcrm/deleteassist/';
 	deleteassist(urlOptions): Promise<Data>{
-		return this.http.delete(this.deleteassistUrl + urlOptions)
+		return this.http.get(this.deleteassistUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
