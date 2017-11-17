@@ -65,6 +65,53 @@
 			</tbody>
 		</table>
 		<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
+			<ng-container *ngIf="editType == 'update'">
+				<div class="pure-control-group">
+					<label for="name">
+						<span>姓名</span>
+						<span class="required">*</span>
+					</label>
+					<input id="name" type="text" name="name" [(ngModel)]="userInfo.name" #name="ngModel" placeholder="请输入姓名" required="">
+					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+						<div [hidden]="!name.errors.required">
+							姓名不可为空
+						</div>
+					</div>
+				</div>
+				<div class="pure-control-group">
+					<label for="mobile">
+						<span>手机号码</span>
+						<span class="required">*</span>
+					</label>
+					<input id="mobile" type="tel" name="mobile" [(ngModel)]="userInfo.mobile" #mobile="ngModel" placeholder="请输入手机号码" minlength="11" maxlength="11" required="">
+					<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
+						<div [hidden]="!mobile.errors.required">
+							手机号码不可为空
+						</div>
+						<div [hidden]="!mobile.errors.minlength">
+							手机号码至少11位
+						</div>
+						<div [hidden]="!mobile.errors.maxlength">
+							手机号码最多11位
+						</div>
+					</div>
+				</div>
+				<div class="pure-control-group">
+					<label for="gender">
+						<span>性别</span>
+						<span class="required">*</span>
+					</label>
+					<select id="gender" name="gender" [(ngModel)]="userInfo.gender" #gender="ngModel" required="">
+						<option value="M">男</option>
+						<option value="F">女</option>
+					</select>
+					<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
+						<div [hidden]="!gender.errors.required">
+							性别不可为空
+						</div>
+					</div>
+				</div>
+			</ng-container>
 			<div *ngFor="let child of childlist" class="add-child-tab">
 				<div *ngIf="child.use">
 					<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
@@ -163,6 +210,7 @@
 				<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
 			</div>
 			<div *ngIf="childlist.length > 0" class="mt10 text-center">
+				<button (click)="cancel()" class="pure-button">取消</button>
 				<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">提交</button>
 			</div>
 		</form>

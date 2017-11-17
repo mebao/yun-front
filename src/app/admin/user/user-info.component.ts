@@ -266,6 +266,11 @@ export class UserInfoComponent{
 		}
 	}
 
+	cancel() {
+		this.editType = '';
+		this.childlist = [];
+	}
+
 	createChild(f) {
 		this.btnCanEdit = true;
 		// 宝宝信息
@@ -372,8 +377,40 @@ export class UserInfoComponent{
 					childData.push(child);
 				}
 			}
-			for(var i = 0; i < childData.length; i++){
-				if(this.editType == 'create'){
+			if(this.editType == 'update'){
+				// 先修改个人信息
+				var user = {
+					username: this.adminService.getUser().username,
+					token: this.adminService.getUser().token,
+					id: this.userInfo.id,
+					name: this.userInfo.name,
+					mobile: this.userInfo.mobile,
+					gender: this.userInfo.gender,
+				}
+				this.adminService.createUser(user).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
+					}else{
+						for(var i = 0; i < childData.length; i++){
+							//修改宝宝
+							this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
+								if(data.status == 'no'){
+									this.toastTab(data.errorMsg, 'error');
+									this.btnCanEdit = false;
+								}else{
+									this.editType = '';
+									this.toastTab('修改成功', '');
+									this.getUserInfo();
+									this.childlist = [];
+									this.btnCanEdit = false;
+								}
+							});
+						}
+					}
+				});
+			}else{
+				for(var i = 0; i < childData.length; i++){
 					//新增宝宝
 					this.adminService.crmchild(childData[i]).then((data) => {
 						if(data.status == 'no'){
@@ -386,21 +423,9 @@ export class UserInfoComponent{
 							this.btnCanEdit = false;
 						}
 					});
-				}else{
-					//修改宝宝
-					this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
-						if(data.status == 'no'){
-							this.toastTab(data.errorMsg, 'error');
-							this.btnCanEdit = false;
-						}else{
-							this.toastTab('修改成功', '');
-							this.getUserInfo();
-							this.childlist = [];
-							this.btnCanEdit = false;
-						}
-					});
 				}
 			}
+
 		}else{
 			this.toastTab('请先录入宝宝信息', 'error');
 		}

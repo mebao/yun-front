@@ -1,6 +1,6 @@
 <div class="select-date">
     <div class="title flex" [ngClass]="{'disabled': disabled}">
-        <div (click)="changeDateTab()" class="item flex-1">{{dateText == '' ? title : dateText}}</div>
+        <div (click)="changeDateTab()" class="item flex-1">{{dateText && dateText != '' ? dateText : title}}</div>
 		<div (click)="clear()" *ngIf="showClear && dateText != ''" class="item clear">
 			<div></div>
 		</div>

@@ -89,7 +89,6 @@ export class WorkbenchReceptionComponent{
 	 	var adminlistUrl = this.url + '&role=2';
 	 	this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -99,7 +98,6 @@ export class WorkbenchReceptionComponent{
 					}
 				}
 				this.doctorList = results.adminlist;
-				this.loadingShow = false;
 			}
 		});
 
@@ -150,6 +148,7 @@ export class WorkbenchReceptionComponent{
 	getList(urlOptions) {
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var adminduty = JSON.parse(JSON.stringify(data.results)).adminduty;
@@ -187,6 +186,7 @@ export class WorkbenchReceptionComponent{
 				}
 				this.weektitle = weektitle;
 				this.schedulinglist = adminduty;
+				this.loadingShow = false;
 			}
 		})
 	}
