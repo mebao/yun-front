@@ -75,7 +75,7 @@ export class CrmRoleListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.searchInfo = {
-			status: ''
+			status: '1'
 		}
 
 		this.search();

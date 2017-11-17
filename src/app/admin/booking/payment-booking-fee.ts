@@ -124,6 +124,10 @@ export class PaymentBookingFee{
                             }
                         }
                     }
+                    // 预约未支付预约金，开启推送通道
+                    if(this.booking.status == '1'){
+                        this.getMessage(this.id);
+                    }
                     // 获取家长信息
                     this.getUserInfo(this.booking.creatorId);
                 }
@@ -174,12 +178,18 @@ export class PaymentBookingFee{
         this.paymentInfo.type = '';
     }
 
+    closeQrcode() {
+        this.btnCanEdit = false;
+        this.paymentInfo.qrcode = false;
+    }
+
     comfirm() {
         this.btnCanEdit = true;
-        if(this.paymentInfo.type == '0'){
+        if(this.paymentInfo.type == 'member' || this.paymentInfo.type == 'card' || this.paymentInfo.type == 'money'){
             // 余额支付
             var urlOptions = this.id + '?username=' + this.adminService.getUser().username
-                 + '&token=' + this.adminService.getUser().token;
+                 + '&token=' + this.adminService.getUser().token
+                 + '&pay_way=' + this.paymentInfo.type;
             this.adminService.memberbooking(urlOptions).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
@@ -206,11 +216,8 @@ export class PaymentBookingFee{
         }else{
             this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token;
             this.paymentInfo.qrcode = true;
-            this.getMessage(this.id);
         }
     }
-
-
 
     getMessage(id) {
 		let that = this;

@@ -286,16 +286,6 @@ export class CrmUserComponent implements OnInit{
 				this.btnCanEdit = false;
 				return;
 			}
-			if(f.value.academical_title == ''){
-				this.toastTab('学术职称不可为空', 'error');
-				this.btnCanEdit = false;
-				return;
-			}
-			if(f.value.clinical_title == ''){
-				this.toastTab('医生职称不可为空', 'error');
-				this.btnCanEdit = false;
-				return;
-			}
 		}
 
 		var imgUrl = document.getElementById('file').getAttribute('value');

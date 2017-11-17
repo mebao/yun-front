@@ -106,37 +106,25 @@
 						    </div>
 						</div>
 					</div>
-					<div class="pure-control-group" *ngIf="addDoctor">
+					<!-- <div class="pure-control-group" *ngIf="addDoctor">
 						<label for="academical_title">
 							<span>学术职称</span>
-							<span class="required">*</span>
 						</label>
-						<select id="academical_title" name="academical_title" [(ngModel)]="user.academical_title" #academical_title="ngModel" required="">
+						<select id="academical_title" name="academical_title" [(ngModel)]="user.academical_title">
 							<ng-container *ngFor="let academic of academicTitle">
 								<option value="{{academic.id}}">{{academic.name}}</option>
 							</ng-container>
 						</select>
-						<div *ngIf="academical_title.errors && (academical_title.dirty || academical_title.touched)" class="alert alert-danger">
-						    <div [hidden]="!academical_title.errors.required">
-						    	学术职称不可为空
-						    </div>
-						</div>
-					</div>
+					</div> -->
 					<div class="pure-control-group" *ngIf="addDoctor">
 						<label for="clinical_title">
 							<span>医生职称</span>
-							<span class="required">*</span>
 						</label>
-						<select id="clinical_title" name="clinical_title" [(ngModel)]="user.clinical_title" #clinical_title="ngModel" required="">
+						<select id="clinical_title" name="clinical_title" [(ngModel)]="user.clinical_title">
 							<ng-container *ngFor="let clinical of clinicalTitle">
 								<option value="{{clinical.id}}">{{clinical.name}}</option>
 							</ng-container>
 						</select>
-						<div *ngIf="clinical_title.errors && (clinical_title.dirty || clinical_title.touched)" class="alert alert-danger">
-						    <div [hidden]="!clinical_title.errors.required">
-						    	医生职称不可为空
-						    </div>
-						</div>
 					</div>
 					<div class="pure-control-group" *ngIf="addDoctor">
 						<label for="description">医生简介（最多500字）</label>

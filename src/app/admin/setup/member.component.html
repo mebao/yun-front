@@ -20,7 +20,7 @@
 						</div>
 						<div class="pure-control-group">
 							<label for="service">
-								<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同）</span>
+								<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同。服务折扣用于具体服务折扣未设置时收费使用）</span>
 							</label>
 							<div class="flex flex-tab">
 								<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入服务折扣" required="" class="flex-1">
@@ -47,7 +47,7 @@
 						</ng-container>
 						<div class="pure-control-group">
 							<label for="assist">
-								<span>辅助治疗</span>
+								<span>辅助治疗（辅助治疗用于具体辅助治疗未设置时收费使用）</span>
 							</label>
 							<div class="flex flex-tab">
 								<input type="number" id="assist" name="assist" #assist="ngModel" [(ngModel)]="memberInfo.assist" placeholder="请输入辅助治疗折扣" required="" class="flex-1">
