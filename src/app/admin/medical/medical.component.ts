@@ -186,7 +186,7 @@ export class MedicalComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			name: f.value.name,
-			trade_name: f.value.name,
+			trade_name: f.value.trade_name,
 			format: f.value.format,
 			type: f.value.type,
 			unit: f.value.unit,
