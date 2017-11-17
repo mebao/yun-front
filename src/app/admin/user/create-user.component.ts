@@ -141,6 +141,11 @@ export class CreateUserComponent{
     	}
     }
 
+	// 选择日期
+	changeDate(value, key) {
+		this.childlist[key].birth_date = JSON.parse(value).value;
+	}
+
 	create(f): void {
 		this.btnCanEdit = true;
 		if(f.value.name == ''){
@@ -191,8 +196,8 @@ export class CreateUserComponent{
 						return;
 					}
 					//判断出生日期
-					if(f.value['birth_date_' + this.childlist[i].key]){
-						child['birth_date'] = f.value['birth_date_' + this.childlist[i].key];
+					if(!this.adminService.isFalse(this.childlist[i].birth_date)){
+						child['birth_date'] = this.childlist[i].birth_date;
 					}else{
 						this.toastTab('宝宝的出生日期不可为空', 'error');
 						this.btnCanEdit = false;
@@ -305,7 +310,7 @@ export class CreateUserComponent{
 	}
 
 	addChild() {
-		var key = this.childlist.length + 1;
+		var key = this.childlist.length;
 		if(this.childlist.length > 0){
 			for(var i = 0; i < this.childlist.length; i++){
 				this.childlist[i].show = false;

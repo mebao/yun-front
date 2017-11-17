@@ -108,7 +108,7 @@
 										<span>出生日期</span>
 										<span class="required">*</span>
 									</label>
-									<input type="date" id="birth_date_{{child.key}}" name="birth_date_{{child.key}}" [(ngModel)]="child.birth_date">
+									<select-date title="请选择日期" [dateText]="child.birth_date_text" (onVoted)="changeDate($event, child.key)"></select-date>
 								</div>
 								<div class="pure-control-group pure-u-8-24 pr10">
 									<label for="blood_type_{{child.key}}">血型</label>

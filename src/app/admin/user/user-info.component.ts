@@ -224,6 +224,7 @@ export class UserInfoComponent{
 			nickname: childInfo.nickName,
 			gender: childInfo.gender == '男' ? 'M' : 'F',
 			birth_date: childInfo.birthday,
+			birth_date_text: this.adminService.dateFormat(childInfo.birthday),
 			blood_type: childInfo.bloodType,
 			height: childInfo.height,
 			weight: childInfo.weight,
@@ -250,6 +251,17 @@ export class UserInfoComponent{
 		for(var i = 0; i < this.childlist.length; i++){
 			if(this.childlist[i].key == _key){
 				this.childlist[i].use = false;
+			}
+		}
+	}
+
+	// 选择日期
+	changeDate(value, key) {
+		if(this.childlist.length > 0){
+			for(var i = 0; i < this.childlist.length; i++){
+				if(this.childlist[i].key == key){
+					this.childlist[i].birth_date = JSON.parse(value).value;
+				}
 			}
 		}
 	}
@@ -285,8 +297,8 @@ export class UserInfoComponent{
 						return;
 					}
 					//判断出生日期
-					if(f.value['birth_date_' + this.childlist[i].key]){
-						child['birth_date'] = f.value['birth_date_' + this.childlist[i].key];
+					if(!this.adminService.isFalse(this.childlist[i].birth_date)){
+						child['birth_date'] = this.childlist[i].birth_date;
 					}else{
 						this.toastTab('宝宝的出生日期不可为空', 'error');
 						this.btnCanEdit = false;
