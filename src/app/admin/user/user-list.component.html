@@ -42,7 +42,6 @@
 					<td>{{user.balance ? user.balance : 0}}</td>
 					<td>
 						<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
-						<button *ngIf="moduleAuthority.member" (click)="setMember(user)" class="pure-button pure-button-primary">设置会员</button>
 						<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
 						<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
 					</td>
@@ -51,30 +50,6 @@
 		</table>
 		<div *ngIf="hasData && users.length == 0" class="mt10">
 			<nodata title="未查询到客户信息"></nodata>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalTab">
-	<div class="modal-mask" (click)="close()"></div>
-	<div class="container">
-		<div class="title">设置会员</div>
-		<div class="content pad10 pure-form">
-			<div class="pure-control-group flex">
-				<label for="text" class="w100p">用户：</label>
-				<div class="flex-1 p-group">{{selector.text}}</div>
-			</div>
-			<div class="pure-control-group flex">
-				<label for="member" class="w100p">会员类型：</label>
-				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
-					<ng-container *ngFor="let member of memberList">
-						<option value="{{member.string}}">{{member.name}}</option>
-					</ng-container>
-				</select>
-			</div>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button">关闭</button>
-			<button (click)="confirmMember()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>
@@ -90,6 +65,14 @@
 			<div class="pure-control-group flex mt10">
 				<label for="balance" class="w100p">余额：</label>
 				<div class="flex-1 p-group">{{selector.balance}}</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="member" class="w100p">会员类型：</label>
+				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
+					<ng-container *ngFor="let member of memberList">
+						<option value="{{member.string}}">{{member.name}}</option>
+					</ng-container>
+				</select>
 			</div>
 			<div class="pure-control-group flex mt10">
 				<label for="amount" class="w100p">支付金额：</label>
