@@ -1003,6 +1003,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 检查是否预约
+	private checkbookingUrl = this.url + '/mebcrm/checkbooking';
+	checkbooking(urlOptions): Promise<Data>{
+		return this.http.get(this.checkbookingUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

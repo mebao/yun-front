@@ -29,12 +29,14 @@ export class BookingInComponent{
 		creatorId: string,
 		creatorName: string,
 		refNo: string,
+		fees: any[],
 		services: any[],
 		time: string,
 		type: string,
 		userDoctorId: string,
 		userDoctorName: string,
 		remark: string,
+		bookingFee: string,
 	};
 	bookingInfo: {
 		type: string,
@@ -68,8 +70,12 @@ export class BookingInComponent{
 	}
 	// 不可连续点击
 	canEdit: boolean;
-	// 添加预约金
-	modalTabBooking: boolean;
+	// 预约成功后的id
+	successBookingId: string;
+	// 预约成功后，
+	modalTabType: boolean;
+	// 再次预约
+	modalTabAgain: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -121,7 +127,9 @@ export class BookingInComponent{
 
 		this.canEdit = false;
 
-		this.modalTabBooking = false;
+		this.successBookingId = '';
+		this.modalTabType = false;
+		this.modalTabAgain = false;
 	}
 
 	initData() {
@@ -169,12 +177,14 @@ export class BookingInComponent{
 			creatorId: '',
 			creatorName: '',
 			refNo: '',
+			fees: [],
 			services: [],
 			time: '',
 			type: '',
 			userDoctorId: '',
 			userDoctorName: '',
 			remark: '',
+			bookingFee: '',
 		};
 
 		this.bookingInfo = {
@@ -258,6 +268,14 @@ export class BookingInComponent{
 		booking.bookingDate = this.adminService.dateFormatHasWord(booking.bookingDate);
 		this.booking = booking;
 		this.bookingInfo.remark = this.booking.remark;
+		// 获取预约金
+		if(this.booking.fees.length > 0){
+			for(var i = 0; i < this.booking.fees.length; i++){
+				if(this.booking.fees[i].type == 'booking'){
+					this.bookingInfo.booking_fee = this.booking.fees[i].fee;
+				}
+			}
+		}
 		this.modalTab = false;
 		//根据选择的预约，初始化页面
 		if(this.servicelist.length > 0){
@@ -314,6 +332,7 @@ export class BookingInComponent{
 	//切换医生
 	doctorChange() {
 		var doctor = JSON.parse(this.bookingInfo.user_doctor);
+		this.bookingInfo.booking_fee = doctor.bookingFee;
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
@@ -435,28 +454,54 @@ export class BookingInComponent{
 		//判断是新预约还是登记已经预约信息
 		if(this.booking.refNo == ''){
 			//创建预约，添加预约金
-			this.modalTabBooking = true;
+			if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
+				this.toastTab('预约金不可为空', 'error');
+				this.canEdit = false;
+				return;
+			}
+			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
+				this.toastTab('预约金应大于等于0，小于服务费', 'error');
+				return;
+			}
+			// 创建预约时，验证该患者是否已经预约
+			var todayDate = this.adminService.getDayByDate(new Date());
+			var url = '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token
+				 + '&clinic_id=' + this.adminService.getUser().clinicId
+				 + '&child_id=' + JSON.parse(this.bookingInfo.child).childId
+				 + '&creator_id=' + JSON.parse(this.bookingInfo.creator).id
+				 + '&booking_date=' + todayDate;
+			this.adminService.checkbooking(url).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+					this.canEdit = false;
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.id != ''){
+						this.modalTabAgain = true;
+					}else{
+						this.confirmBooking();
+					}
+				}
+			});
 		}else{
 			//修改预约并登记
 			this.updateBooking(f);
 		}
 	}
 
-	closeBooking() {
-		this.modalTabBooking = false;
+	closeAgain() {
+		this.canEdit = false;
+		this.modalTabAgain = false;
 	}
 
+	confirmAgain() {
+		this.modalTabAgain = false;
+		this.confirmBooking();
+	}
+
+	// 预约
 	confirmBooking() {
-		if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
-			this.toastTab('预约金不可为空', 'error');
-			this.canEdit = false;
-			return;
-		}
-		if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-			this.toastTab('预约金应大于等于0，小于服务费', 'error');
-			return;
-		}
-		this.modalTabBooking = false;
 		var param = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -481,15 +526,20 @@ export class BookingInComponent{
 				this.canEdit = false;
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				// 去支付
-				this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: results.bookingId, type: 'bookingIn'}});
-				// this.booking.bookingId = results.bookingId;
-				// //构造宝宝数据，用以清空宝宝组件
-				// this.booking.refNo = 'clear';
-				// this.booking.childName = JSON.parse(this.bookingInfo.child).childName;
-				// this.bookingIn();
+				this.successBookingId = results.bookingId;
+				this.modalTabType = true;
 			}
 		});
+	}
+
+	// 继续预约
+	closeType() {
+		this.router.navigate(['./admin/repage'], {queryParams: {from: 'bookingIn'}});
+	}
+
+	// 去支付
+	confirmType() {
+		this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: this.successBookingId, type: 'bookingIn'}});
 	}
 
 	updateBooking(f) {

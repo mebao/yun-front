@@ -100,6 +100,7 @@ import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-inf
 import { MaterialPurchaseInfoComponent }    from './material/material-purchase-info.component';
 import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
+import { Repage }                           from './booking/repage';
 
 const adminRoutes: Routes = [
 	{
@@ -580,6 +581,10 @@ const adminRoutes: Routes = [
 						path: 'paymentBookingFee',
 						canActivate: [AuthGuardRole],
 						component: PaymentBookingFee,
+					},
+					{
+						path: 'repage',
+						component: Repage,
 					},
 					{
 						path: '**',
