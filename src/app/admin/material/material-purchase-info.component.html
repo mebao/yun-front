@@ -38,7 +38,11 @@
 			<thead>
 				<tr>
 					<th>物资名</th>
+					<th>商品名</th>
+					<th>生产厂家</th>
+					<th>规格</th>
 					<th>物资类型</th>
+					<th>有效日期</th>
 					<th>能否优惠</th>
 					<th>单位</th>
 					<th>进价</th>
@@ -49,7 +53,11 @@
 			<tbody>
 				<tr *ngFor="let item of info.info">
 					<td>{{item.msName}}</td>
+					<td>{{item.tradeName}}</td>
+					<td>{{item.manufacturer}}</td>
+					<td>{{item.format}}</td>
 					<td>{{item.typeText}}</td>
+					<td>{{item.expiringDate}}</td>
 					<td>{{item.canDiscount == '0' ? '不可' : '可以'}}</td>
 					<td>{{item.unit}}</td>
 					<td>{{item.bid}}</td>

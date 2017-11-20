@@ -3,11 +3,12 @@
 	<top-bar [data]="topBar"></top-bar>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<fieldset>
-			<div class="pure-g">
-				<div class="pure-u-8-24 pr10">
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="name">
 							<span>物资名</span>
+							<span class="required">*</span>
 						</label>
 						<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" placeholder="请输入物资名" required="">
 						<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
@@ -17,10 +18,35 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pl5 pr5">
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="trade_name">
+							<span>商品名</span>
+						</label>
+						<input type="text" id="trade_name" name="trade_name" #trade_name="ngModel" [(ngModel)]="info.trade_name" placeholder="请输入商品名">
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="manufacturer">
+							<span>生产厂家</span>
+						</label>
+						<input type="text" id="manufacturer" name="manufacturer" #manufacturer="ngModel" [(ngModel)]="info.manufacturer" placeholder="请输入生产厂家">
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="format">
+							<span>规格</span>
+						</label>
+						<input type="text" id="format" name="format" #format="ngModel" [(ngModel)]="info.format" placeholder="请输入规格">
+					</div>
+				</div>
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="type">
 							<span>物资类型</span>
+							<span class="required">*</span>
 						</label>
 						<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="">
 							<option value="3">医用耗材</option>
@@ -33,10 +59,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pl10">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="unit">
 							<span>单位</span>
+							<span class="required">*</span>
 						</label>
 						<select id="unit" name="unit" #unit="ngModel" [(ngModel)]="info.unit" required="">
 							<ng-container *ngFor="let unit of drugUnits">
@@ -50,10 +77,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pr10">
+			</div>
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="one_unit">
 							<span>计量单位</span>
+							<span class="required">*</span>
 						</label>
 						<select id="one_unit" name="one_unit" #one_unit="ngModel" [(ngModel)]="info.oneUnit" required="">
 							<option></option>
@@ -68,7 +98,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24 pr10">
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="price">
+							<span>售价</span>
+							<span class="required">*</span>
+						</label>
+						<input type="number" step="0.01" id="price" name="price" #price="ngModel" [(ngModel)]="info.price" required="">
+						<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
+							<div [hidden]="!price.errors.required">
+								售价不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="can_discount">
 							<span>能否优惠</span>
@@ -85,11 +129,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="pure-u-8-24"></div>
-				<div class="pure-u-8-24 pr10">
+				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="usage">
 							<span>一般用法（最多500字）</span>
+							<span class="required">*</span>
 						</label>
 						<textarea id="usage" name="usage" maxlength="500" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
 						<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">

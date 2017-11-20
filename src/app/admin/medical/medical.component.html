@@ -32,6 +32,21 @@
 				</div>
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
+						<label for="manufacturer">
+							<span>生产厂家</span>
+						</label>
+						<input type="text" id="manufacturer" name="manufacturer" #manufacturer="ngModel" [(ngModel)]="info.manufacturer" placeholder="请输入生产厂家" required="">
+						<div *ngIf="manufacturer.errors && (manufacturer.dity || manufacturer.touched)" class="alert alert-danger">
+							<div [hidden]="!manufacturer.errors.required">
+								生产厂家不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pure-g pure-tab">
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
 						<label for="format">
 							<span>规格</span>
 						</label>
@@ -43,8 +58,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="pure-g pure-tab">
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="type">
@@ -78,6 +91,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="pure-g pure-tab">
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="one_unit">
@@ -95,8 +110,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="pure-g pure-tab">
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="otc">
@@ -119,6 +132,19 @@
 						<div *ngIf="code.errors && (code.dity || code.touched)" class="alert alert-danger">
 							<div [hidden]="!code.errors.required">
 								条形码不可为空
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="price">
+							<span>售价</span>
+						</label>
+						<input type="number" step="0.01" id="price" name="price" #price="ngModel" [(ngModel)]="info.price" required="">
+						<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
+							<div [hidden]="!price.errors.required">
+								售价不可为空
 							</div>
 						</div>
 					</div>

@@ -32,12 +32,14 @@
 				<tr>
 					<th>药品名</th>
 					<th>商品名</th>
+					<th>生产厂家</th>
 					<th>规格</th>
 					<th>药品类型</th>
 					<th>单位</th>
 					<th>计量单位</th>
 					<th>国药准字</th>
 					<th>条形码</th>
+					<th>售价</th>
 					<th>能否优惠</th>
 					<th>是否处方药</th>
 					<th class="th-width">一般用法</th>
@@ -48,12 +50,14 @@
 				<tr class="pure-form" *ngFor="let medicalSupplie of medicalSupplies">
 					<td>{{medicalSupplie.name}}</td>
 					<td>{{medicalSupplie.tradeName}}</td>
+					<td>{{medicalSupplie.manufacturer}}</td>
 					<td>{{medicalSupplie.format}}</td>
 					<td>{{medicalSupplie.typeText}}</td>
 					<td>{{medicalSupplie.unit}}</td>
 					<td>{{medicalSupplie.oneUnit}}</td>
 					<td>{{medicalSupplie.otc}}</td>
 					<td>{{medicalSupplie.code}}</td>
+					<td>{{medicalSupplie.price}}</td>
 					<td>{{medicalSupplie.canDiscount == '0' ? '不可' : '可以'}}</td>
 					<td>{{medicalSupplie.isPrescribed == '0' ? '非处方药' : '处方药'}}</td>
 					<td>

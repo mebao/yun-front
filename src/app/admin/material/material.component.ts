@@ -20,9 +20,13 @@ export class MaterialComponent{
 	info: {
 		id: string,
 		name: string,
+		trade_name: string,
+		manufacturer: string,
+		format: string,
 		type: string,
 		unit: string,
 		oneUnit: string,
+		price: string,
 		can_discount: string,
 		usage: string,
 	};
@@ -52,9 +56,13 @@ export class MaterialComponent{
 		this.info = {
 			id: '',
 			name: '',
+			trade_name: '',
+			manufacturer: '',
+			format: '',
 			type: '',
 			unit: '',
 			oneUnit: '',
+			price: '',
 			can_discount: '',
 			usage: '',
 		}
@@ -66,7 +74,8 @@ export class MaterialComponent{
 		if(this.info.id && this.info.id != ''){
 			this.editType = 'update';
 			var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 	 + '&token=' + this.adminService.getUser().token
+			 	 + '&clinic_id=' + this.adminService.getUser().clinicId;
 			this.adminService.medicalsupplieslist(urlOptions).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
@@ -76,6 +85,7 @@ export class MaterialComponent{
 						for(var i = 0; i < results.medicalSupplies.length; i++){
 							if(results.medicalSupplies[i].id == this.info.id){
 								this.info = results.medicalSupplies[i];
+								this.info.trade_name = results.medicalSupplies[i].tradeName;
 								this.info.can_discount = results.medicalSupplies[i].canDiscount;
 							}
 						}
@@ -128,7 +138,17 @@ export class MaterialComponent{
 			return;
 		}
 		if(f.value.one_unit == ''){
-			this.toastTab('剂量单位不可为空', 'error');
+			this.toastTab('计量单位不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.adminService.isFalse(f.value.price)){
+			this.toastTab('售价不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(f.value.price) <= 0){
+			this.toastTab('售价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -142,15 +162,19 @@ export class MaterialComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
 			name: f.value.name,
+			trade_name: f.value.trade_name,
+			manufacturer: f.value.manufacturer,
+			format: f.value.format,
 			type: f.value.type,
 			unit: f.value.unit,
 			usage: f.value.usage,
 			one_unit: f.value.one_unit,
+			price: f.value.price,
 			can_discount: f.value.can_discount,
 		}
 

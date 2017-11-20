@@ -77,6 +77,7 @@ export class MaterialPurchaseComponent{
 		//获取医疗用品
 		var materialsupplieslistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&type=3,4';
 		this.adminService.medicalsupplieslist(materialsupplieslistUrl).then((data) => {
 			if(data.status == 'no'){
@@ -124,6 +125,14 @@ export class MaterialPurchaseComponent{
 		}
 	}
 
+	changeMaterial(value, key) {
+		for(var i = 0; i < this.mslist.length; i++){
+			if(this.mslist[i].key == key){
+				this.mslist[i].ms_type = JSON.parse(value).type;
+			}
+		}
+	}
+
 	feeChange(f) {
 		var numBoolean = false;
 		var bidBoolean = false;
@@ -150,15 +159,25 @@ export class MaterialPurchaseComponent{
 				}
 			}
 			if(numBoolean && bidBoolean){
-				feeAll += Number(f.value['num_' + key]) * Number(f.value['bid_' + key]);
+				// 处理浮点数偏差
+				feeAll += Number(f.value['num_' + key]) * (Number(f.value['bid_' + key] * 100)) / 100;
 			}
 		}
-		this.info.fee = String(feeAll);
+		this.info.fee = this.adminService.toDecimal2(feeAll);
 	}
 
 	// 选择时间
 	changeDate(_value) {
 		this.info.about_time = JSON.parse(_value).value;
+	}
+
+	// 选择有效期
+	selectExpiringDate(_value, key) {
+		for(var i = 0; i < this.mslist.length; i++){
+			if(this.mslist[i].key == key){
+				this.mslist[i].expiring_date = JSON.parse(_value).value;
+			}
+		}
 	}
 
 	create(f) {
@@ -181,6 +200,9 @@ export class MaterialPurchaseComponent{
 				if(this.mslist[i].use){
 					var msParams = {
 						ms_name: '',
+						trade_name: '',
+						manufacturer: '',
+						format: '',
 						unit: '',
 						num: '',
 						bid: '',
@@ -190,6 +212,7 @@ export class MaterialPurchaseComponent{
 						price: '',
 						can_discount: '',
 						is_prescribed: '0',
+						expiring_date: '',
 					}
 					var key = this.mslist[i].key;
 					num++;
@@ -199,10 +222,14 @@ export class MaterialPurchaseComponent{
 						return;
 					}
 					msParams.ms_name = JSON.parse(f.value['ms_' + key]).name;
+					msParams.trade_name = JSON.parse(f.value['ms_' + key]).tradeName;
+					msParams.manufacturer = JSON.parse(f.value['ms_' + key]).manufacturer;
+					msParams.format = JSON.parse(f.value['ms_' + key]).format;
 					msParams.unit = JSON.parse(f.value['ms_' + key]).unit;
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
+					msParams.price = JSON.parse(f.value['ms_' + key]).price;
 					if(this.adminService.isFalse(f.value['num_' + key])){
 						this.toastTab('第' + num + '条物资入库数量不可为空', 'error');
 						this.btnCanEdit = false;
@@ -225,7 +252,14 @@ export class MaterialPurchaseComponent{
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];
-					msParams.price = '';
+					// 是否医用耗材
+					if(msParams.type == '3' && this.adminService.isFalse(this.mslist[i].expiring_date)){
+						this.toastTab('第' + num + '条物资有效日期不可为空', 'error');
+						this.btnCanEdit = false;
+						return;
+					}
+					msParams.bid = f.value['bid_' + key];
+					msParams.expiring_date = this.mslist[i].expiring_date ? this.mslist[i].expiring_date : null;
 					msParams.can_discount = JSON.parse(f.value['ms_' + key]).canDiscount;
 					msParamsList.push(msParams);
 				}

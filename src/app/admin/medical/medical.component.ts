@@ -21,6 +21,7 @@ export class MedicalComponent{
 		id: string,
 		name: string,
 		trade_name: string,
+		manufacturer: string,
 		format: string,
 		type: string,
 		unit: string,
@@ -30,6 +31,7 @@ export class MedicalComponent{
 		can_discount: string,
 		is_prescribed: string,
 		usage: string,
+		price: string,
 	};
 	editType: string;
 	drugUnits: any[];
@@ -58,6 +60,7 @@ export class MedicalComponent{
 			id: '',
 			name: '',
 			trade_name: '',
+			manufacturer: '',
 			format: '',
 			type: '',
 			unit: '',
@@ -67,6 +70,7 @@ export class MedicalComponent{
 			can_discount: '',
 			is_prescribed: '',
 			usage: '',
+			price: '',
 		}
 
 		this.OneUnits = [];
@@ -78,7 +82,8 @@ export class MedicalComponent{
 		if(this.info.id && this.info.id != ''){
 			this.editType = 'update';
 			var urlOptions = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 	 + '&token=' + this.adminService.getUser().token
+			 	 + '&clinic_id=' + this.adminService.getUser().clinicId;
 			this.adminService.medicalsupplieslist(urlOptions).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
@@ -136,6 +141,11 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(f.value.manufacturer == ''){
+			this.toastTab('生产厂家不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.format == ''){
 			this.toastTab('规格不可为空', 'error');
 			this.btnCanEdit = false;
@@ -166,6 +176,16 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(this.adminService.isFalse(f.value.price)){
+			this.toastTab('售价不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(f.value.price) <= 0){
+			this.toastTab('售价应大于等于0', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.can_discount == ''){
 			this.toastTab('能否优惠不可为空', 'error');
 			this.btnCanEdit = false;
@@ -181,18 +201,20 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
 			name: f.value.name,
 			trade_name: f.value.trade_name,
+			manufacturer: f.value.manufacturer,
 			format: f.value.format,
 			type: f.value.type,
 			unit: f.value.unit,
 			usage: f.value.usage,
 			otc: f.value.otc,
 			code: f.value.code,
+			price: f.value.price,
 			can_discount: f.value.can_discount,
 			is_prescribed: f.value.is_prescribed,
 			one_unit: f.value.one_unit,

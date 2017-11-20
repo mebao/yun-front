@@ -49,6 +49,10 @@
 						</div>
 					</div>
 					<div class="pure-control-group">
+						<label for="expiring_date">有效日期</label>
+						<input type="text" id="expiring_date" name="expiring_date" #expiring_date="ngModel" [(ngModel)]="info.expiring_date" disabled>
+					</div>
+					<div class="pure-control-group">
 						<label for="usage">一般用法（最多500字）</label>
 						<textarea id="usage" name="usage" maxlength="500" #usage="ngModel" [(ngModel)]="info.usage" placeholder="请输入一般用法" required=""></textarea>
 						<div *ngIf="usage.errors && (usage.dity || usage.touched)" class="alert alert-danger">

@@ -21,6 +21,7 @@ export class MedicalHasComponent{
 		id: string,
 		name: string,
 		trade_name: string,
+		manufacturer: string,
 		format: string,
 		type: string,
 		typeText: string,
@@ -35,6 +36,7 @@ export class MedicalHasComponent{
 		otc: string,
 		code: string,
 		batch: string,
+		expiring_date: string,
 	}
 	drugUnits: any[];
 	OneUnits: any[];
@@ -62,6 +64,7 @@ export class MedicalHasComponent{
 			id: '',
 			name: '',
 			trade_name: '',
+			manufacturer: '',
 			format: '',
 			type: '',
 			typeText: '',
@@ -76,6 +79,7 @@ export class MedicalHasComponent{
 			otc: '',
 			code: '',
 			batch: '',
+			expiring_date: '',
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -97,6 +101,7 @@ export class MedicalHasComponent{
 							id: results.list[0].others[0].id,
 							name: results.list[0].name,
 							trade_name: results.list[0].others[0].tradeName,
+							manufacturer: results.list[0].others[0].manufacturer,
 							format: results.list[0].others[0].format,
 							type: results.list[0].type,
 							typeText: results.list[0].typeText,
@@ -111,6 +116,7 @@ export class MedicalHasComponent{
 							otc: results.list[0].others[0].otc,
 							code: results.list[0].others[0].code,
 							batch: results.list[0].others[0].batch,
+							expiring_date: results.list[0].others[0].expiringDate,
 						};
 					}
 				}
@@ -148,6 +154,11 @@ export class MedicalHasComponent{
 		this.btnCanEdit = true;
 		if(f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(f.value.manufacturer == ''){
+			this.toastTab('生产厂家不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -213,6 +224,7 @@ export class MedicalHasComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			id: this.info.id,
 			trade_name: this.info.trade_name,
+			manufacturer: this.info.manufacturer,
 			format: this.info.format,
 			unit: f.value.unit,
 			one_unit: f.value.one_unit,
@@ -223,6 +235,7 @@ export class MedicalHasComponent{
 			price: f.value.price,
 			can_discount: f.value.canDiscount,
 			is_prescribed: f.value.is_prescribed,
+			expiring_date: this.info.expiring_date,
 		}
 
 		this.adminService.updatesupplies(this.info.id, params).then((data) => {

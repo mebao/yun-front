@@ -92,6 +92,15 @@
 								<input type="text" id="batch_{{ms.key}}" name="batch_{{ms.key}}" ngModel placeholder="请输入批次">
 							</div>
 						</div>
+						<div class="pure-u-8-24">
+							<div class="pure-control-group">
+								<label for="expiring_date_{{ms.key}}">
+									<span>有效日期</span>
+									<span class="required">*</span>
+								</label>
+								<select-date title="请选择有效日期" [showClear]="true" (onVoted)="selectExpiringDate($event,  ms.key)"></select-date>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

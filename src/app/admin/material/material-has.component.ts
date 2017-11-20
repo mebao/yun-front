@@ -27,6 +27,7 @@ export class MaterialHasComponent{
 		bid: string,
 		price: string,
 		canDiscount: string,
+		expiring_date: string,
 		unit: string,
 		one_unit: string,
 	}
@@ -62,6 +63,7 @@ export class MaterialHasComponent{
 			bid: '',
 			price: '',
 			canDiscount: '',
+			expiring_date: '',
 			unit: '',
 			one_unit: '',
 		}
@@ -91,6 +93,7 @@ export class MaterialHasComponent{
 								bid: results.list[i].others[0].bid,
 								price: results.list[i].others[0].price,
 								canDiscount: results.list[i].others[0].canDiscount,
+								expiring_date: results.list[i].others[0].expiringDate,
 								unit: results.list[i].unit,
 								one_unit: results.list[i].oneUnit,
 							};
@@ -174,6 +177,7 @@ export class MaterialHasComponent{
 			usage: f.value.usage,
 			price: f.value.price,
 			can_discount: f.value.canDiscount,
+			expiring_date: this.info.expiring_date,
 		}
 
 		this.adminService.updatesupplies(this.info.id, params).then((data) => {

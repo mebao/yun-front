@@ -74,7 +74,8 @@ export class MaterialListComponent{
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.materialSupplies = [];
 
 		this.search();

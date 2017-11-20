@@ -66,6 +66,11 @@ export class MedicalPurchaseInfoComponent{
                 if(results.list.length > 0){
                     for(var i = 0; i < results.list.length; i++){
 						results.list[i].aboutTime = !this.adminService.isFalse(results.list[i].aboutTime) ? this.adminService.dateFormat(results.list[i].aboutTime) : '';
+                        if(results.list[i].info.length > 0){
+                            for(var j = 0; j < results.list[i].info.length; j++){
+		                        results.list[i].info[j].expiringDate = !this.adminService.isFalse(results.list[i].info[j].expiringDate) ? this.adminService.dateFormat(results.list[i].info[j].expiringDate) : '';
+                            }
+                        }
                     }
                 }
                 this.infoList = results.list;
