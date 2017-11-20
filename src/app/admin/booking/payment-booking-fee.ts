@@ -161,7 +161,7 @@ export class PaymentBookingFee{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
                     this.paymentInfo.balance = results.users[0].balance;
-                    if(parseFloat(this.paymentInfo.balance) > parseFloat(this.booking.bookingFee)){
+                    if(parseFloat(this.paymentInfo.balance) >= parseFloat(this.booking.bookingFee)){
                         this.paymentInfo.canBalance = true;
                     }
                 }

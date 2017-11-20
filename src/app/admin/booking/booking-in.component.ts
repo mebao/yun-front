@@ -452,8 +452,8 @@ export class BookingInComponent{
 			this.canEdit = false;
 			return;
 		}
-		if(parseFloat(this.bookingInfo.booking_fee) < 0.01 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-			this.toastTab('预约金应大于等于0.01，小于服务费', 'error');
+		if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
+			this.toastTab('预约金应大于等于0，小于服务费', 'error');
 			return;
 		}
 		this.modalTabBooking = false;
@@ -473,7 +473,7 @@ export class BookingInComponent{
 			child_name: JSON.parse(this.bookingInfo.child).childName,
 			child_id: JSON.parse(this.bookingInfo.child).childId,
 			remark: this.bookingInfo.remark,
-			booking_fee: this.bookingInfo.booking_fee,
+			booking_fee: this.bookingInfo.booking_fee.toString(),
 		}
 		this.adminService.bookingcreate(param).then((data) => {
 			if(data.status == 'no'){

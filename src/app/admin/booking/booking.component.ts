@@ -604,8 +604,8 @@ export class BookingComponent implements OnInit{
 				this.canEdit = false;
 				return;
 			}
-			if(parseFloat(this.bookingInfo.booking_fee) < 0.01 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-				this.toastTab('预约金应大于等于0.01，小于服务费', 'error');
+			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
+				this.toastTab('预约金应大于等于0，小于服务费', 'error');
 				return;
 			}
 		}
@@ -629,7 +629,7 @@ export class BookingComponent implements OnInit{
 			// gender: this.childs.length == 0 ? f.value.gender : null,
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
 			remark: this.bookingInfo.remark,
-			booking_fee: this.editType == 'update' ? null : this.bookingInfo.booking_fee,
+			booking_fee: this.editType == 'update' ? null : this.bookingInfo.booking_fee.toString(),
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
