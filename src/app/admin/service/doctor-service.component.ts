@@ -29,6 +29,7 @@ export class DoctorServiceComponent{
 		service: string,
 		doctor_id: string,
 		fee: string,
+		booking_fee: string,
 	}
 	// 不可连续点击
 	btnCanEdit: boolean;
@@ -54,6 +55,7 @@ export class DoctorServiceComponent{
 			service: '',
 			doctor_id: '',
 			fee: '',
+			booking_fee: '',
 		}
 
 		//获取医生服务id
@@ -77,6 +79,7 @@ export class DoctorServiceComponent{
 						for(var i = 0; i < results.servicelist.length; i++){
 							if(this.doctorService_id == results.servicelist[i].id){
 								this.serviceModel.fee = results.servicelist[i].fee;
+								this.serviceModel.booking_fee = results.servicelist[i].bookingFee;
 								this.serviceId = results.servicelist[i].serviceId;
 								this.getData();
 							}
@@ -94,7 +97,10 @@ export class DoctorServiceComponent{
 
 	getData() {
 		//获取宝宝服务
-		this.adminService.servicelist().then((data) => {
+		var servicelistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
@@ -130,6 +136,16 @@ export class DoctorServiceComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(this.adminService.isFalse(f.value.booking_fee)){
+			this.toastTab('预约金不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(Number(f.value.booking_fee) < 0){
+			this.toastTab('预约金应大于等于0', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
@@ -138,6 +154,7 @@ export class DoctorServiceComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			user_doctor_id: this.serviceModel.doctor_id,
 			fee: f.value.fee,
+			booking_fee: f.value.booking_fee.toString(),
 			id: this.type == 'update' ? this.doctorService_id : null,
 		}
 

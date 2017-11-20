@@ -40,6 +40,7 @@ export class BookingListComponent implements OnInit{
 		bdate_less_text: string,
 		bdate_big: string,
 		bdate_big_text: string,
+		statuslist: string,
 	}
 	bookinglist: any[];
 	weeklist: any[];
@@ -132,6 +133,7 @@ export class BookingListComponent implements OnInit{
 			bdate_less_text: this.adminService.dateFormat(todayDate),
 			bdate_big: todayDate,
 			bdate_big_text: this.adminService.dateFormat(todayDate),
+			statuslist: '',
 		}
 
 		this.use = true;
@@ -276,7 +278,7 @@ export class BookingListComponent implements OnInit{
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				var todayTime = new Date().getTime();
+				var todayTime = new Date(this.adminService.getDayByDate(new Date())).getTime();
 				if(type == 'week'){
 					var weekbooks = JSON.parse(JSON.stringify(data.results)).weekbooks;
 					var weekArray = this.adminService.getWeekByNumber(this.weekNum);
@@ -351,7 +353,7 @@ export class BookingListComponent implements OnInit{
 							week.timeList[j].value = serviceListData;
 						}
 						//日期若未过去，则不可修改，只可查看
-						if((new Date(weekArray[i]).getTime() + 24*60*60*1000) < todayTime){
+						if((new Date(weekArray[i]).getTime()) < todayTime){
 							week.use = false;
 						}else{
 							week.use = true;
@@ -364,7 +366,7 @@ export class BookingListComponent implements OnInit{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.weekbooks.length > 0){
 						for(var i = 0; i < results.weekbooks.length; i++){
-							if((new Date(results.weekbooks[i].bookingDate).getTime() + 24*60*60*1000) < todayTime){
+							if((new Date(this.adminService.dateFormatHasWord(results.weekbooks[i].bookingDate)).getTime()) < todayTime){
 								results.weekbooks[i].use = false;
 							}else{
 								results.weekbooks[i].use = true;
@@ -464,9 +466,18 @@ export class BookingListComponent implements OnInit{
 		this.router.navigate(['./admin/booking'], {queryParams: {id: this.booking.bookingId, type: 'update'}});
 	}
 
+	// 支付预约金
+	paymentBookingFee(booking) {
+		console.log(booking);
+		this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: booking.bookingId, type: 'bookingList'}});
+	}
+
 	getUrlOptios() {
 		var urlOptions = this.url;
 		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId;
+		if(this.searchInfo.statuslist && this.searchInfo.statuslist != ''){
+			urlOptions += '&statuslist=' + this.searchInfo.statuslist;
+		}
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}

@@ -21,16 +21,11 @@
 					</div>
 					<div *ngIf="this.type != 'create'" class="pure-control-group">
 						<label for="service">服务</label>
-						<select id="service" name="service" [(ngModel)]="serviceModel.service" #service="ngModel" required="" disabled="">
+						<select id="service" name="service" [(ngModel)]="serviceModel.service" disabled="">
 							<ng-container *ngFor="let childService of childServiceList">
 								<option value="{{childService.string}}">{{childService.serviceName}}</option>
 							</ng-container>
 						</select>
-						<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
-							<div [hidden]="!service.errors.required">
-								服务不可为空
-							</div>
-						</div>
 					</div>
 					<div class="pure-control-group">
 						<label for="fee">费用</label>
@@ -38,6 +33,15 @@
 						<div *ngIf="fee.errors && (fee.dity || fee.touched)" class="alert alert-danger">
 							<div [hidden]="!fee.errors.required">
 								费用不可为空
+							</div>
+						</div>
+					</div>
+					<div class="pure-control-group">
+						<label for="booking_fee">预约金</label>
+						<input id="booking_fee" type="number" step="0.01" name="booking_fee" [(ngModel)]="serviceModel.booking_fee" #booking_fee="ngModel" required="">
+						<div *ngIf="booking_fee.errors && (booking_fee.dity || booking_fee.touched)" class="alert alert-danger">
+							<div [hidden]="!booking_fee.errors.required">
+								预约金不可为空
 							</div>
 						</div>
 					</div>

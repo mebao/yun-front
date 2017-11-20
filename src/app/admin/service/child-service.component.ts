@@ -48,7 +48,10 @@ export class ChildServiceComponent{
 		//判断id是否存在，新增和修改
 		if(this.id){
 			this.type = 'update';
-			var childServiceList = this.adminService.servicelist().then((data) => {
+			var servicelistUrl = '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token
+				 + '&clinic_id=' + this.adminService.getUser().clinicId;
+			this.adminService.servicelist(servicelistUrl).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
 				}else{
@@ -82,6 +85,7 @@ export class ChildServiceComponent{
 		var param = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
 			service_name: f.value.service_name,
 			description: f.value.description,
 			service_id: this.id ? this.id : null,

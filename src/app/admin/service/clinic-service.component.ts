@@ -83,7 +83,10 @@ export class ClinicServiceComponent implements OnInit{
 
 	getChildServiceList() {
 		//获取宝宝服务
-		this.adminService.servicelist().then((data) => {
+		var servicelistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

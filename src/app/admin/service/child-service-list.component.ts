@@ -63,7 +63,10 @@ export class ChildServiceListComponent implements OnInit{
 
 		this.childServiceList = [];
 
-		this.adminService.servicelist().then((data) => {
+		var servicelistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');

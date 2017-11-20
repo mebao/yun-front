@@ -164,8 +164,8 @@ export class AdminService{
 
 	//查询宝宝服务列表
 	private servicelistUrl = this.url + '/mebcrm/servicelist';
-	servicelist(): Promise<Data>{
-		return this.http.get(this.servicelistUrl)
+	servicelist(urlOptions): Promise<Data>{
+		return this.http.get(this.servicelistUrl + urlOptions)
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();
