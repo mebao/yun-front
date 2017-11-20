@@ -426,6 +426,11 @@ export class BookingInComponent{
 	//登记
 	editIn(f) {
 		this.canEdit = true;
+		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
+			this.toastTab('宝宝不可为空', 'error');
+			this.canEdit = false;
+			return;
+		}
 		if(f.value.service == ''){
 			this.toastTab('科室不可为空', 'error');
 			this.canEdit = false;
@@ -443,11 +448,6 @@ export class BookingInComponent{
 		}
 		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
-			this.canEdit = false;
-			return;
-		}
-		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
-			this.toastTab('宝宝不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}

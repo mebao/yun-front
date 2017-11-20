@@ -568,6 +568,16 @@ export class BookingComponent implements OnInit{
 		// 	this.toastTab('预约类型不可为空', 'error');
 		// 	return;
 		// }
+		if(this.bookingInfo.creator == ''){
+			this.toastTab('预约用户不可为空', 'error');
+			this.canEdit = false;
+			return;
+		}
+		if(this.bookingInfo.child == ''){
+			this.toastTab('宝宝不可为空', 'error');
+			this.canEdit = false;
+			return;
+		}
 		if(this.bookingInfo.service == ''){
 			this.toastTab('服务不可为空', 'error');
 			this.canEdit = false;
@@ -585,16 +595,6 @@ export class BookingComponent implements OnInit{
 		}
 		if(this.bookingInfo.timeInfo == ''){
 			this.toastTab('预约时间段不可为空', 'error');
-			this.canEdit = false;
-			return;
-		}
-		if(this.bookingInfo.creator == ''){
-			this.toastTab('预约用户不可为空', 'error');
-			this.canEdit = false;
-			return;
-		}
-		if(this.bookingInfo.child == ''){
-			this.toastTab('宝宝不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
