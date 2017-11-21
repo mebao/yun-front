@@ -217,7 +217,7 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
-							// 追加服务
+							// 追加科室
 							{
 								url: '/admin/bookingAddService',
 								authority: 'receive',

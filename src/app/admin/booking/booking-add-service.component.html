@@ -7,7 +7,7 @@
 			<form #f="ngForm" class="pure-form pure-form-stacked">
 				<fieldset>
 					<div class="pure-control-group">
-						<label for="service">追加服务</label>
+						<label for="service">追加科室</label>
 						<select id="service" name="service" #service="ngModel" [(ngModel)]="bookingInfo.service" (change)="serviceChange()" required="">
 							<ng-container *ngFor="let service of servicelist">
 								<option value="{{service.string}}">{{service.serviceName}}</option>
@@ -15,7 +15,7 @@
 						</select>
 						<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
 							<div [hidden]="!service.errors.required">
-								追加服务不可为空
+								追加科室不可为空
 							</div>
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 						</div>
 					</div>
 					<div class="pure-control-group">
-						<label for="service_date">服务日期</label>
+						<label for="service_date">科室日期</label>
 						<select id="service_date" name="service_date" #service_date="ngModel" [(ngModel)]="bookingInfo.service_date" (change)="dateChange()" required="">
 							<ng-container *ngFor="let duty of doctorDutys">
 								<option value="{{duty.string}}">{{duty.dutyDate}}{{duty.weekDay}}</option>
@@ -50,12 +50,12 @@
 						</select>
 						<div *ngIf="service_date.errors && (service_date.dity || service_date.touched)" class="alert alert-danger">
 							<div [hidden]="!service_date.errors.required">
-								服务日期不可为空
+								科室日期不可为空
 							</div>
 						</div>
 					</div>
 					<div class="pure-control-group">
-						<label for="time">服务时间</label>
+						<label for="time">科室时间</label>
 						<select id="time" name="time" #time="ngModel" [(ngModel)]="bookingInfo.time" required="">
 							<ng-container *ngFor="let time of timelist">
 								<option *ngIf="time.use" value="{{time.value}}">{{time.value}}</option><option *ngIf="!time.use" disabled="" value="{{time.value}}">{{time.value}}已预约</option>
@@ -63,7 +63,7 @@
 						</select>
 						<div *ngIf="time.errors && (time.dity || time.touched)" class="alert alert-danger">
 							<div [hidden]="!time.errors.required">
-								服务时间不可为空
+								科室时间不可为空
 							</div>
 						</div>
 					</div>

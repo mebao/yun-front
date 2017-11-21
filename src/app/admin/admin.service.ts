@@ -126,7 +126,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询诊所服务
+	//查询诊所科室
 	private clinicservicesUrl = this.url + '/mebcrm/clinicservices';
 	clinicservices(urlOptions): Promise<Data>{
 		return this.http.get(this.clinicservicesUrl + urlOptions)
@@ -135,7 +135,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//根据服务查询医生可预约日期
+	//根据科室查询医生可预约日期
 	private searchdoctorserviceUrl = this.url + '/mebcrm/searchdoctorservice';
 	searchdoctorservice(urlOptions): Promise<Data>{
 		return this.http.get(this.searchdoctorserviceUrl + urlOptions)
@@ -153,7 +153,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//新增或修改宝宝服务信息
+	//新增或修改宝宝科室信息
 	private clinicserviceUrl = this.url + '/mebcrm/clinicservice';
 	clinicservice(param): Promise<Data>{
 		return this.http.post(this.clinicserviceUrl, JSON.stringify(param))
@@ -162,7 +162,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询宝宝服务列表
+	//查询宝宝科室列表
 	private servicelistUrl = this.url + '/mebcrm/servicelist';
 	servicelist(urlOptions): Promise<Data>{
 		return this.http.get(this.servicelistUrl + urlOptions)
@@ -171,7 +171,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//新增或修改诊所服务信息
+	//新增或修改诊所科室信息
 	private clinicservicejoinUrl = this.url + '/mebcrm/clinicservicejoin';
 	clinicservicejoin(params): Promise<Data>{
 		return this.http.post(this.clinicservicejoinUrl, params)
@@ -207,7 +207,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//创建或修改医生服务信息
+	//创建或修改医生科室信息
 	private doctorservicejoinUrl = this.url + '/mebcrm/doctorservicejoin';
 	doctorservicejoin(params): Promise<Data>{
 		return this.http.post(this.doctorservicejoinUrl, JSON.stringify(params))
@@ -216,7 +216,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询医生所有服务
+	//查询医生所有科室
 	private doctorserviceUrl = this.url + '/mebcrm/doctorservice';
 	doctorservice(urlOptions): Promise<Data>{
 		return this.http.get(this.doctorserviceUrl + urlOptions)
@@ -234,7 +234,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询医生的服务预约信息
+	//查询医生的科室预约信息
 	private doctordutysUrl = this.url + '/mebcrm/doctordutys';
 	doctordutys(urlOptions): Promise<Data>{
 		return this.http.get(this.doctordutysUrl + urlOptions)
@@ -261,7 +261,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//追加预约服务
+	//追加预约科室
 	private addserviceUrl = this.url + '/mebcrm/addservice';
 	addservice(params): Promise<Data>{
 		return this.http.post(this.addserviceUrl, JSON.stringify(params))
@@ -607,7 +607,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询所有医生的服务信息
+	//查询所有医生的科室信息
 	private doctorbookingUrl = this.url + '/mebcrm/doctorbooking';
 	doctorbooking(urlOptions): Promise<Data>{
 		return this.http.get(this.doctorbookingUrl + urlOptions)
