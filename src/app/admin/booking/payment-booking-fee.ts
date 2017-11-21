@@ -244,6 +244,8 @@ export class PaymentBookingFee{
                     that.modalConfirmTab = true;
                 }else if(that.type == 'bookingConfirm'){
                     that.modalConfirmTab = true;
+                }else if(that.type == 'bookingList'){
+                    that.modalConfirmTab = true;
                 }else if(that.type == 'bookingIn'){
                     // 支付成功，后进行登记操作
                     that.bookingIn();
