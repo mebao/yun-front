@@ -92,7 +92,7 @@ export class BookingHistoryComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.serviceList = results.servicelist;
-				this.serviceList.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择服务'});
+				this.serviceList.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
 		})
     }

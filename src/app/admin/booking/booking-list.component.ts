@@ -245,7 +245,7 @@ export class BookingListComponent implements OnInit{
 		})
 	}
 
-	//服务列表
+	//科室列表
 	getServiceList() {
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.clinicservices(urlOptions).then((data) => {
@@ -261,7 +261,7 @@ export class BookingListComponent implements OnInit{
 				}
 				this.servicelist = results.servicelist;
 
-				// 根据服务获取服务颜色
+				// 根据科室获取科室颜色
 				// //week列表
 				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
 				// //booking列表
@@ -331,7 +331,7 @@ export class BookingListComponent implements OnInit{
 							]
 						}
 						for(var j = 0; j < week.timeList.length; j++){
-							// 服务列表
+							// 科室列表
 							var serviceListData = JSON.parse(JSON.stringify(this.servicelist));
 
 							//遍历返回结果，将预约信息添加进timeList
@@ -339,7 +339,7 @@ export class BookingListComponent implements OnInit{
 								if(this.adminService.dateFormat(weekArray[i]) == weekbooks[k].bookingDate && week.timeList[j].key == weekbooks[k].time){
 									// weekbooks[k].servicesLength = weekbooks[k].services.length;
 									// week.timeList[j].value.push(weekbooks[k]);
-									// 添加服务列表
+									// 添加科室列表
 									if(serviceListData.length > 0){
 										for(var m = 0; m < serviceListData.length; m++){
 											if(serviceListData[m].serviceId == weekbooks[k].services[0].serviceId){

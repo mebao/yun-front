@@ -229,7 +229,7 @@ export class BookingInComponent{
 	}
 
 	getData() {
-		//查询诊所服务
+		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -288,7 +288,7 @@ export class BookingInComponent{
 		}
 	}
 
-	// 切换服务
+	// 切换科室
 	serviceChange(service) {
 		this.bookingInfo.service_name = JSON.parse(service).serviceName;
 		this.bookingInfo.service_fee = JSON.parse(service).fee;
@@ -296,7 +296,7 @@ export class BookingInComponent{
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&service_id=' + JSON.parse(service).serviceId;
-		//根据服务查询医生可预约日期
+		//根据科室查询医生可预约日期
 		this.adminService.searchdoctorservice(urlOptions).then((data) =>　{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -460,7 +460,7 @@ export class BookingInComponent{
 				return;
 			}
 			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-				this.toastTab('预约金应大于等于0，小于服务费', 'error');
+				this.toastTab('预约金应大于等于0，小于科室费', 'error');
 				return;
 			}
 			// 创建预约时，验证该患者是否已经预约

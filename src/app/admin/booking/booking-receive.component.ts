@@ -118,7 +118,7 @@ export class BookingReceiveComponent{
 		})
 	}
 
-	//服务列表
+	//科室列表
 	getServiceList() {
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.clinicservices(urlOptions).then((data) => {
@@ -127,7 +127,7 @@ export class BookingReceiveComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.servicelist = results.servicelist;
-				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择服务'});
+				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
 		})
 	}

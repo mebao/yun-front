@@ -117,7 +117,7 @@ export class BookingChargeComponent{
 		})
 	}
 
-	//服务列表
+	//科室列表
 	getServiceList() {
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.clinicservices(urlOptions).then((data) => {

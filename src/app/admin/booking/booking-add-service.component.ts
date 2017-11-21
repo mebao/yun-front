@@ -39,7 +39,7 @@ export class BookingAddServiceComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '追加服务',
+			title: '追加科室',
 			back: true,
 		}
 		this.toast = {
@@ -62,7 +62,7 @@ export class BookingAddServiceComponent{
 			this.doctorId = params['doctorId'];
 		});
 
-		//查询诊所服务
+		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -81,13 +81,13 @@ export class BookingAddServiceComponent{
 		})
 	}
 
-	//切换服务
+	//切换科室
 	serviceChange() {
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&service_id=' + JSON.parse(this.bookingInfo.service).serviceId;
-		//根据服务查询医生可预约日期
+		//根据科室查询医生可预约日期
 		this.adminService.searchdoctorservice(urlOptions).then((data) =>　{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -111,7 +111,7 @@ export class BookingAddServiceComponent{
 		this.bookingInfo.fee = doctor.fee;
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
-				//追加服务，只能追加当天的服务
+				//追加科室，只能追加当天的科室
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
 			}
 		}
@@ -143,7 +143,7 @@ export class BookingAddServiceComponent{
 
 	create(f) {
 		if(f.value.service == ''){
-			this.toastTab('追加服务不可为空', 'error');
+			this.toastTab('追加科室不可为空', 'error');
 			return;
 		}
 		if(f.value.user_doctor == ''){
@@ -155,11 +155,11 @@ export class BookingAddServiceComponent{
 			return;
 		}
 		if(f.value.service_date == ''){
-			this.toastTab('服务日期不可为空', 'error');
+			this.toastTab('科室日期不可为空', 'error');
 			return;
 		}
 		if(f.value.time == ''){
-			this.toastTab('服务时间不可为空', 'error');
+			this.toastTab('科室时间不可为空', 'error');
 			return;
 		}
 		var params = {
@@ -178,7 +178,7 @@ export class BookingAddServiceComponent{
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
-				this.toastTab('追加服务成功', '');
+				this.toastTab('追加科室成功', '');
 				setTimeout(() => {
 					this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
 				}, 2000);
