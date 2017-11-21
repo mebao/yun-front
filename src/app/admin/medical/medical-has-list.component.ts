@@ -2,6 +2,7 @@ import { Component, OnInit }                     from '@angular/core';
 import { Router }                                from '@angular/router';
 
 import { AdminService }                          from '../admin.service';
+import { config }                                 from '../../config';
 
 @Component({
 	selector: 'app-medical-has-list',
@@ -123,6 +124,24 @@ export class MedicalHasListComponent{
 			urlOptions += '&b_stock=' + this.info.b_stock;
 		}
 		this.getData(urlOptions);
+	}
+
+	export() {
+		var urlOptions=this.url;
+		urlOptions += '&stockType=1';
+		if(this.info.name != ''){
+			urlOptions += '&name=' + this.info.name;
+		}
+		if(this.info.type != ''){
+			urlOptions += '&type=' + this.info.type;
+		}
+		if(this.info.l_stock && this.info.l_stock != ''){
+			urlOptions += '&l_stock=' + this.info.l_stock;
+		}
+		if(this.info.b_stock && this.info.b_stock != ''){
+			urlOptions += '&b_stock=' + this.info.b_stock;
+		}
+		window.location.href = config.baseHTTP + '/mebcrm/stockexport'+ urlOptions;
 	}
 
 	goUrl(_url) {

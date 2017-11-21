@@ -9,7 +9,9 @@
 		<div class="item" (click)="goUrl('./admin/materialCheckList')">盘点管理</div>
 	</div>
 	<div class="flex pure-form mt10 search-tab max">
-		<div class="flex-1"></div>
+		<div class="flex-1">
+			<button (click)="export()" class="pure-button pure-button-primary">导出</button>
+		</div>
 		<div class="pure-control-group mr10">
 			<label for="name">物资名:</label>
 			<input type="text" id="name" name="name" [(ngModel)]="info.name">
@@ -55,7 +57,7 @@
 					<td>{{item.name}}</td>
 					<td>{{item.unit}}</td>
 					<td>{{item.typeText}}</td>
-					<td>{{item.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
+					<td>{{item.others[0].canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
 					<td>{{item.others[0].stock}}</td>
 					<td>{{item.others[0].price}}</td>
 					<td>{{item.others[0].expiringDate}}</td>
