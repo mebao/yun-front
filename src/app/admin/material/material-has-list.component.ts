@@ -92,6 +92,15 @@ export class MaterialHasListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						if(results.list[i].others.length){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								results.list[i].others[j].expiringDate = results.list[i].others[j].expiringDate ? this.adminService.dateFormat(results.list[i].others[j].expiringDate) : '';
+							}
+						}
+					}
+				}
 				this.list = results.list;
 				this.hasData = true;
 				this.loadingShow = false;

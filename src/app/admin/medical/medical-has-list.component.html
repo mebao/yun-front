@@ -48,6 +48,7 @@
 					<th>是否优惠</th>
 					<th>库存</th>
 					<th>售价</th>
+					<th>有效日期</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -62,6 +63,7 @@
 						<td>{{other.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
 						<td>{{other.stock}}</td>
 						<td>{{other.price}}</td>
+						<td>{{other.expiringDate}}</td>
 						<td>
 							<button *ngIf="moduleAuthority.editHas" (click)="update(other.id)" class="pure-button pure-button-primary">修改</button>
 						</td>
