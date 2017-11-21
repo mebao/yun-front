@@ -135,6 +135,9 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
         &.min{
             height: 100px;
         }
+        &.auto{
+            height: auto;
+        }
 	}
 	label{
 		padding: 5px 0;
@@ -248,7 +251,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 
 .color-tab{
     .color1{
-        background-color: #9966CB!important;
+        background-color: #c080ff!important;
     }
     .color2{
         background-color: #003499!important;
@@ -257,13 +260,13 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
         background-color: #CC0232!important;
     }
     .color4{
-        background-color: #33689A!important;
+        background-color: #000000!important;
     }
     .color5{
-        background-color: #006732!important;
+        background-color: #00dc6b!important;
     }
     .color6{
-        background-color: #666698!important;
+        background-color: #ff7300!important;
     }
     .color7{
         background-color: #653567!important;
@@ -509,6 +512,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 						padding: 10px;
 						border-top: 1px solid #efefef;
 						height: 37px;
+        				&:nth-child(even){
+
+        				}
+        				&:nth-child(odd){
+        					background-color: #efefef;
+        				}
 					}
 				}
 				.info-tab{
@@ -527,6 +536,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 							color: #efefef;
 							cursor: pointer;
 						}
+        				&:nth-child(even){
+
+        				}
+        				&:nth-child(odd){
+        					background-color: #efefef;
+        				}
 					}
 				}
 			}

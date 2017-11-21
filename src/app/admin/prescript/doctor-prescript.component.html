@@ -159,7 +159,7 @@
 								<label for="ms_usage_{{ms.key}}">
 									<span>一般用法</span>
 								</label>
-								<textarea id="ms_usage_{{ms.key}}" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" disabled></textarea>
+								<textarea id="ms_usage_{{ms.key}}" rows="4" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" class="auto" disabled></textarea>
 							</div>
 						</div>
 						<div class="pure-u-6-24 pl5 pr5">
@@ -167,19 +167,19 @@
 								<label for="remark_{{ms.key}}">
 									<span>说明（最多200字）</span>
 								</label>
-								<textarea maxlength="200" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark"></textarea>
+								<textarea maxlength="200" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto"></textarea>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div *ngIf="secondType == ''" class="mt10">
-				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加医疗用品</button>
+				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 			</div>
 			<div class="pure-g">
 				<div class="pure-u-7-24 pr10">
 					<label for="remark">{{secondType == '' ? '备注' : '退药说明'}}（最多100字）</label>
-					<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="prescriptInfo.remark" placeholder="请输入"></textarea>
+					<textarea id="remark" name="remark" rows="4" maxlength="100" [(ngModel)]="prescriptInfo.remark" class="auto" placeholder="请输入"></textarea>
 				</div>
 			</div>
 		</fieldset>
