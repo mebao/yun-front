@@ -683,7 +683,7 @@ export class BookingComponent implements OnInit{
 			// gender: this.childs.length == 0 ? f.value.gender : null,
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
 			remark: this.bookingInfo.remark,
-			booking_fee: this.editType == 'update' ? null : this.bookingInfo.booking_fee.toString(),
+			booking_fee: (this.editType == 'create' || this.bookingInfo.status == '1') ? this.bookingInfo.booking_fee.toString() : null,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
