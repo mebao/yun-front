@@ -342,7 +342,7 @@ export class BookingGrowthrecordComponent{
 			bone_density: this.info.bone_density,
 			BALP: this.info.BALP == '' ? this.info.BALP_other : this.info.BALP,
 			trace_element: this.info.trace_element == '' ? this.info.trace_element_other : this.info.trace_element,
-			check_date: this.info.check_date == '' ? null : this.info.check_date,
+			check_date: this.info.check_date == '' ? this.adminService.getDayByDate(new Date()) : this.info.check_date,
 			review_date: this.info.review_date == '' ? null : this.info.review_date,
 		}
 

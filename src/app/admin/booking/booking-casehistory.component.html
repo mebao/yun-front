@@ -221,12 +221,6 @@
 					<textarea id="advise" maxlength="200" name="advise" #advise="ngModel" [(ngModel)]="info.advise" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-8-24 pr10">
-				<div class="pure-control-group">
-					<label for="time">就诊日期：</label>
-					<select-date title="请选择就诊日期" dateText="{{info.timeText}}" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
-				</div>
-			</div>
 		</div>
 		<div class="text-center mt10">
 			<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '创建' : '修改'}}</button>
