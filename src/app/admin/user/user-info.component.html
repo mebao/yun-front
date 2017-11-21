@@ -29,6 +29,7 @@
 					<th>星座</th>
 					<th>生肖</th>
 					<th>其它详情</th>
+					<th class="th-width">备注</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -55,6 +56,9 @@
 							<ng-container *ngIf="indexItem == 2">头围（cm）：{{child.headCircum}}</ng-container>
 							<!-- 3，胸围 -->
 							<ng-container *ngIf="indexItem == 3">胸围（cm）：{{child.breastCircum}}</ng-container>
+						</td>
+						<td rowspan="4" *ngIf="indexItem == 0">
+							<div class="length-text">{{child.remark}}</div>
 						</td>
 						<td rowspan="4" *ngIf="indexItem == 0">
 							<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
@@ -200,6 +204,11 @@
 								<div class="pure-control-group pure-u-8-24 pl5 pr5">
 									<label for="breast_circum_{{child.key}}">胸围（cm）</label>
 									<input type="number" id="breast_circum_{{child.key}}" step="0.01" name="breast_circum_{{child.key}}" placeholder="请输入胸围" [(ngModel)]="child.breast_circum">
+								</div>
+								<div class="pure-control-group pure-u-8-24"></div>
+								<div class="pure-control-group pure-u-8-24 pr10">
+									<label for="remark_{{child.key}}">备注</label>
+									<textarea id="remark_{{child.key}}" name="remark_{{child.key}}" placeholder="请输入备注" [(ngModel)]="child.remark"></textarea>
 								</div>
 							</div>
 						</div>

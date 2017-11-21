@@ -143,6 +143,8 @@ export class RoleAuthorityListComponent{
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
             }else{
+                // 清空session中的角色权限
+                sessionStorage.removeItem('userClinicRoles');
                 this.toastTab('权限保存成功', '');
                 setTimeout(() => {
                     this.router.navigate(['./admin/crmRoleList']);

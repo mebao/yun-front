@@ -235,6 +235,7 @@ export class UserInfoComponent{
 			head_circum: childInfo.headCircum,
 			waist_circum: childInfo.waistCircum,
 			breast_circum: childInfo.breastCircum,
+			remark: childInfo.remark,
 		}
 		this.childlist.push(child);
 	}
@@ -373,6 +374,10 @@ export class UserInfoComponent{
 					}
 					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
 						child['breast_circum'] = f.value['breast_circum_' + this.childlist[i].key];
+					}
+					//判断备注
+					if(f.value['remark_' + this.childlist[i].key]){
+						child['remark'] = f.value['remark_' + this.childlist[i].key];
 					}
 					childData.push(child);
 				}
