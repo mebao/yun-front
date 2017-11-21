@@ -234,6 +234,7 @@ export class PaymentBookingFee{
 		goEasy.subscribe({
 			channel: 'pay_yyj' + id,
 			onMessage: function (message) {
+                console.log(message);
                 goEasy.unsubscribe({
         			channel: 'pay_yyj' + id,
                 });

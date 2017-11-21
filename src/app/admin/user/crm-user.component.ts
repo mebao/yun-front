@@ -330,7 +330,7 @@ export class CrmUserComponent implements OnInit{
 				academical_title: this.addDoctor ? f.value.academical_title : null,
 				clinical_title: this.addDoctor ? f.value.clinical_title : null,
 				description: this.addDoctor ? f.value.description : null,
-				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : (imgUrl.indexOf('http') == -1 ? 'http://static.jiabaokangle.com/' + imgUrl : imgUrl)) : null,
+				avatar_url: this.addDoctor ? (imgUrl == '' ? '' : (imgUrl.indexOf('http') == -1 ? 'http://static.meb168.com/' + imgUrl : imgUrl)) : null,
 			}
 			this.adminService.adminupdate(this.id, updateParam).then((data) => {
 				if(data.status == 'no'){

@@ -468,7 +468,6 @@ export class BookingListComponent implements OnInit{
 
 	// 支付预约金
 	paymentBookingFee(booking) {
-		console.log(booking);
 		this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: booking.bookingId, type: 'bookingList'}});
 	}
 
