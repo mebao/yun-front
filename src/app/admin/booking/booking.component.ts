@@ -411,13 +411,13 @@ export class BookingComponent implements OnInit{
 							//修改
 							if(this.editType == 'update' && results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
 								this.bookingInfo.user_doctor = results.doctors[i].string;
-								this.doctorChange();
+								this.doctorChange('');
 							}
 							// 预约时，已选定医生
 							if(this.editType == 'create' && this.urlSelected.doctorId && this.urlSelected.doctorId != ''){
 								if(results.doctors[i].doctorId == this.urlSelected.doctorId){
 									this.bookingInfo.user_doctor = results.doctors[i].string;
-									this.doctorChange();
+									this.doctorChange('');
 								}
 							}
 						}

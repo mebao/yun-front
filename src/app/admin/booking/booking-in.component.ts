@@ -312,7 +312,7 @@ export class BookingInComponent{
 								if(results.doctors[i].doctorId == this.booking.services[0].userDoctorId){
 									//修改
 									this.bookingInfo.user_doctor = results.doctors[i].string;
-									this.doctorChange();
+									this.doctorChange('');
 								}
 							}
 						}
