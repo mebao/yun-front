@@ -56,7 +56,7 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
-		//宝宝服务列表
+		//宝宝科室列表
 		childServiceList: {
 			use: string,
 			authority: any[],

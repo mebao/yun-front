@@ -254,7 +254,7 @@ export class PaymentPrintComponent{
 		if(results.feeinfo['医生服务费用'].length > 0){
 			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
 				var serviceDiscount = '';
-				// 遍历会员服务折扣
+				// 遍历会员科室折扣
 				if(userMember.services.length > 0){
 					for(var j = 0; j < userMember.services.length; j++){
 						// 通过serviceId
@@ -316,12 +316,12 @@ export class PaymentPrintComponent{
 		var fee = 0;
 		// 原价
 		var originalCost = 0;
-		//服务
+		//科室
 		var serviceFee = 0;
 		var originalServiceFee = 0;
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
-				// 如果具体服务折扣存在，则以具体服务折扣计算，否则以默认服务折扣计算
+				// 如果具体科室折扣存在，则以具体科室折扣计算，否则以默认科室折扣计算
 				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userMember.service);
 				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee);
 				this.fee.feeInfo.serviceFeeList[i].serviceFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userMember.service));
@@ -329,7 +329,7 @@ export class PaymentPrintComponent{
 				this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].originalServiceFee) - parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceFee));
 			}
 		}
-		// 服务费用，应减去对应的预约金
+		// 科室费用，应减去对应的预约金
 		serviceFee = serviceFee - parseFloat(this.fee.feeInfo.bookingFee);
 		fee += parseFloat(this.adminService.toDecimal2(serviceFee));
 		originalCost += parseFloat(this.adminService.toDecimal2(originalServiceFee));

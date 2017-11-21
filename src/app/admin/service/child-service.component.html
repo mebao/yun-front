@@ -7,20 +7,20 @@
 			<form #f="ngForm" class="pure-form pure-form-stacked">
 				<fieldset>
 					<div class="pure-control-group">
-						<label for="service_name">服务名</label>
-						<input id="service_name" type="text" [(ngModel)]="childService.serviceName" #service_name="ngModel" name="service_name" placeholder="请输入服务名" required="">
+						<label for="service_name">科室名</label>
+						<input id="service_name" type="text" [(ngModel)]="childService.serviceName" #service_name="ngModel" name="service_name" placeholder="请输入科室名" required="">
 						<div *ngIf="service_name.errors && (service_name.dity || service_name.touched)" class="alert alert-danger">
 							<div [hidden]="!service_name.errors.required">
-								服务名不可为空
+								科室名不可为空
 							</div>
 						</div>
 					</div>
 					<div class="pure-control-group">
-						<label for="description">服务说明（最多200字）</label>
-						<textarea id="description" maxlength="200" [(ngModel)]="childService.description" name="description" #description="ngModel" placeholder="请输入服务说明" required=""></textarea>
+						<label for="description">科室说明（最多200字）</label>
+						<textarea id="description" maxlength="200" [(ngModel)]="childService.description" name="description" #description="ngModel" placeholder="请输入科室说明" required=""></textarea>
 						<div *ngIf="description.errors && (description.dity || description.touched)" class="alert alert-danger">
 							<div [hidden]="!description.errors.required">
-								服务说明不可为空
+								科室说明不可为空
 							</div>
 						</div>
 					</div>

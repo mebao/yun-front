@@ -23,12 +23,12 @@
 			routerLinkActive="active">
 				预约列表
 		</a>
-		<a
+		<!-- <a
 			*ngIf="clinicRole.bookingConfirm.use != ''"
 			routerLink="./bookingConfirm"
 			routerLinkActive="active">
 				预约金支付
-		</a>
+		</a> -->
 	  	<a
 			*ngIf="clinicRole.bookingIn.use != ''"
 			routerLink="./bookingIn"
@@ -75,7 +75,7 @@
 			*ngIf="clinicRole.childServiceList.use != ''"
 			[routerLink]="['./childServiceList']"
 			routerLinkActive="active">
-				服务项目
+				科室项目
 		</a>
 	  	<a
 			*ngIf="clinicRole.setupInspectList.use != ''"

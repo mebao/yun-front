@@ -30,7 +30,7 @@ export class ChildServiceListComponent implements OnInit{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '宝宝服务列表',
+			title: '宝宝科室列表',
 			back: false,
 		}
 		this.toast = {

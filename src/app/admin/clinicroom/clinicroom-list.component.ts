@@ -163,7 +163,7 @@ export class ClinicroomListComponent{
 								}
 							}
 						}
-						//构造预约服务列表
+						//构造预约科室列表
 						if(results.weekbooks[i].services.length > 0){
 							for(var j = 0; j < results.weekbooks[i].services.length; j++){
 								var serviceBooking = {
@@ -215,8 +215,8 @@ export class ClinicroomListComponent{
 		this.conditionId = _id;
 		var bookingInfo = JSON.parse(booking);
 		if(bookingInfo.service.userDoctorId != doctorId){
-			//判断不匹配医生是否有该服务项目，若没有，不允许分配
-			//获取当前预约服务
+			//判断不匹配医生是否有该科室项目，若没有，不允许分配
+			//获取当前预约科室
 			var service = bookingInfo.service.serviceId;
 			var hasService = false;
 			for(var i = 0; i < this.doctorlist.length; i++){
@@ -231,7 +231,7 @@ export class ClinicroomListComponent{
 			if(hasService){
 				this.confirmText = '该诊室医生与预约医生不匹配，是否继续分配？';
 			}else{
-				this.toastTab('该诊室医生与预约医生不匹配，并且该医生不存在' + bookingInfo.service.serviceName + '服务，不可分配。', 'error');
+				this.toastTab('该诊室医生与预约医生不匹配，并且该医生不存在' + bookingInfo.service.serviceName + '科室，不可分配。', 'error');
 				this.getList();
 				return;
 			}

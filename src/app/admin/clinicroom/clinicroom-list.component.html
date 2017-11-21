@@ -53,9 +53,9 @@
 						<select *ngIf="!(!moduleAuthority.booking || !condition.doctorId || (condition.userName && condition.childName))" name="booking_{{condition.id}}" ngModel (change)="bookingChange($event.target.value, condition.doctorId, condition.id)" class="maxw100p">
 							<ng-container *ngFor="let booking of bookinglist">
 								<ng-container *ngFor="let service of booking.services">
-									<!-- 该预约中该服务已诊断结束 -->
-									<option *ngIf="service.isFinish == '1'" disabled="" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}(服务已完成)</option>
-									<!-- 该预约中该服务未完成：就诊中和待分配 -->
+									<!-- 该预约中该科室已诊断结束 -->
+									<option *ngIf="service.isFinish == '1'" disabled="" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}(科室已完成)</option>
+									<!-- 该预约中该科室未完成：就诊中和待分配 -->
 									<option *ngIf="service.isFinish == '0'" [disabled]="!booking.use" value="{{service.string}}">{{booking.creatorName}}-{{booking.childName}}-{{service.serviceName}}{{booking.use ? '' : '(就诊中...)'}}</option>
 								</ng-container>
 							</ng-container>

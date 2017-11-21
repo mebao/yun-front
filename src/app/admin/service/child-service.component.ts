@@ -35,7 +35,7 @@ export class ChildServiceComponent{
 
 	ngOnInit(): void{
 		this.topBar = {
-			title: '宝宝服务',
+			title: '宝宝科室',
 			back: true,
 		}
 		this.toast = {
@@ -73,12 +73,12 @@ export class ChildServiceComponent{
 	submit(f) {
 		this.btnCanEdit = true;
 		if(f.value.service_name == ''){
-			this.toastTab('服务名不可为空', 'error');
+			this.toastTab('科室名不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(f.value.description == ''){
-			this.toastTab('服务说明不可为空', 'error');
+			this.toastTab('科室说明不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
