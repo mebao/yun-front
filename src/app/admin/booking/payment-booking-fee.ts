@@ -219,7 +219,7 @@ export class PaymentBookingFee{
                 this.toastTab('服务器数据错误', 'error');
             });
         }else{
-            this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token;
+            this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token + '&pay_way=' + this.paymentInfo.type;
             this.paymentInfo.qrcode = true;
         }
     }
@@ -269,7 +269,7 @@ export class PaymentBookingFee{
                         this.confirm();
                     }, 2000);
                 }else{
-                    this.paymentInfo.result += '，登记成功';
+                    this.paymentInfo.result += '登记成功';
                     this.modalConfirmTab = true;
                 }
             }

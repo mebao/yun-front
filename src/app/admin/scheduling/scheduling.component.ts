@@ -32,6 +32,7 @@ export class SchedulingComponent{
 		value: string,
 		adminId: string,
 		adminName: string,
+		realName: string,
 		date: string,
 	}
 	//排班配置
@@ -98,6 +99,7 @@ export class SchedulingComponent{
 			value: '',
 			adminId: '',
 			adminName: '',
+			realName: '',
 			date: '',
 		}
 
@@ -358,13 +360,14 @@ export class SchedulingComponent{
 		}
 	}
 
-	configChange(use, _id, date, dutyConfig, adminId, adminName) {
+	configChange(use, _id, date, dutyConfig, adminId, adminName, realName) {
 		if(use){
 			this.changeData = {
 				_id: _id,
 				value: dutyConfig,
 				adminId: adminId,
 				adminName: adminName,
+				realName: realName,
 				date: date,
 			}
 			//判断是否已存在排班,并初始化排班配置信息
