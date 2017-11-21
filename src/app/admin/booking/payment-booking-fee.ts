@@ -185,6 +185,11 @@ export class PaymentBookingFee{
 
     comfirm() {
         this.btnCanEdit = true;
+        if(this.adminService.isFalse(this.paymentInfo.type)){
+            this.toastTab('支付方式不可为空', 'error');
+            this.btnCanEdit = false;
+            return;
+        }
         if(this.paymentInfo.type == 'member' || this.paymentInfo.type == 'card' || this.paymentInfo.type == 'money' || this.paymentInfo.type == 'wc_zhuan'){
             // 支付
             var urlOptions = this.id + '?username=' + this.adminService.getUser().username
@@ -284,6 +289,8 @@ export class PaymentBookingFee{
             this.router.navigate(['./admin/bookingList']);
         }else if(this.type == 'bookingConfirm'){
             this.router.navigate(['./admin/bookingConfirm']);
+        }else if(this.type == 'bookingList'){
+            this.router.navigate(['./admin/bookingList']);
         }else if(this.type == 'bookingIn'){
             this.router.navigate(['./admin/bookingIn']);
         }
