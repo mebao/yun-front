@@ -80,7 +80,7 @@ export class MemberListComponent{
 			status: '',
 		}
 
-		// 获取诊所服务
+		// 获取诊所科室
 		this.serviceList = [];
 		this.adminService.clinicservices(this.url).then((data) => {
 			if(data.status == 'no'){
@@ -111,11 +111,11 @@ export class MemberListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				// 通过诊所服务构造会员折扣
+				// 通过诊所科室构造会员折扣
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
 				// 		var serviceDiscountList = [];
-				// 		// 便利诊所服务
+				// 		// 便利诊所科室
 				// 		if(this.serviceList.length > 0){
 				// 			for(var j = 0; j < this.serviceList.length; j++){
 				// 				var serviceDiscount = {
@@ -123,7 +123,7 @@ export class MemberListComponent{
 				// 					serviceName: this.serviceList[j].serviceName,
 				// 					discount: '',
 				// 				};
-				// 				// 便利会员下所有服务折扣
+				// 				// 便利会员下所有科室折扣
 				// 				if(results.list[i].services.length > 0){
 				// 					for(var k = 0; k < results.list[i].services.length; k++){
 				// 						// 通过serviceId,查找discount

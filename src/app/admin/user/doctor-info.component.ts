@@ -46,7 +46,7 @@ export class DoctorInfoComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '医生服务及排班信息',
+			title: '医生科室及排班信息',
 			back: true,
 		}
 

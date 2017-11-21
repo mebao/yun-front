@@ -42,7 +42,7 @@ export class DoctorServiceComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '医生服务',
+			title: '医生科室',
 			back: true,
 		}
 		this.toast = {
@@ -58,7 +58,7 @@ export class DoctorServiceComponent{
 			booking_fee: '',
 		}
 
-		//获取医生服务id
+		//获取医生科室id
 		this.route.queryParams.subscribe((params) => {
 			this.serviceModel.doctor_id = params['doctor_id'];
 			this.doctorService_id = params['doctorService_id'];
@@ -96,7 +96,7 @@ export class DoctorServiceComponent{
 	}
 
 	getData() {
-		//获取宝宝服务
+		//获取宝宝科室
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -122,7 +122,7 @@ export class DoctorServiceComponent{
 	submit(f) {
 		this.btnCanEdit = true;
 		if(f.value.service == ''){
-			this.toastTab('服务不可为空', 'error');
+			this.toastTab('科室不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}

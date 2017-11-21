@@ -366,12 +366,12 @@ export class WorkbenchReceptionComponent{
 				}
 			}
 			if(hasDuty){
-				// 查找医生拥有的服务，并默认选择第一个
+				// 查找医生拥有的科室，并默认选择第一个
 				var serviceId = '';
 				if(this.doctorList.length > 0){
 					for(var i = 0; i < this.doctorList.length; i++){
 						if(booking.doctorId == this.doctorList[i].id){
-							// 服务列表
+							// 科室列表
 							if(this.doctorList[i].serviceList.length > 0){
 								serviceId = this.doctorList[i].serviceList[0].serviceId;
 							}
@@ -380,7 +380,7 @@ export class WorkbenchReceptionComponent{
 				}
 				if(serviceId == ''){
 					this.modalConfirm = {
-						text: booking.doctorName + '医生尚未分配服务，不可预约',
+						text: booking.doctorName + '医生尚未分配科室，不可预约',
 					}
 					this.modalConfirmTab = true;
 				}else{

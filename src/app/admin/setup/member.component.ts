@@ -67,7 +67,7 @@ export class MemberComponent{
 			assist: '',
 		}
 
-		// 获取诊所服务
+		// 获取诊所科室
 		this.serviceList = [];
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -113,10 +113,10 @@ export class MemberComponent{
 				assist: member.assist,
 			}
 
-			// 遍历诊所服务
+			// 遍历诊所科室
 			if(this.serviceList.length > 0){
 				for(var i = 0; i < this.serviceList.length; i++){
-					// 遍历会员服务
+					// 遍历会员科室
 					if(member.services.length > 0){
 						for(var j = 0; j < member.services.length; j++){
 							if(this.serviceList[i].serviceId == member.services[j].serviceId){
@@ -146,7 +146,7 @@ export class MemberComponent{
 			// 遍历诊所辅助治疗
 			if(this.assistList.length > 0){
 				for(var i = 0; i < this.assistList.length; i++){
-					// 遍历会员服务
+					// 遍历会员科室
 					if(member.assists.length > 0){
 						for(var j = 0; j < member.assists.length; j++){
 							if(this.assistList[i].id == member.assists[j].assistId){
@@ -167,12 +167,12 @@ export class MemberComponent{
 			return;
 		}
 		if(this.adminService.isFalse(f.value.service)){
-			this.toastTab('服务折扣不能为空', 'error');
+			this.toastTab('科室折扣不能为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(f.value.service) < 0 || Number(f.value.service) > 100 || (Number(f.value.service) % 1 != 0)){
-			this.toastTab('服务折扣应为大于0小于100的正整数', 'error');
+			this.toastTab('科室折扣应为大于0小于100的正整数', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -181,12 +181,12 @@ export class MemberComponent{
 			for(var i = 0; i < this.serviceList.length; i++){
 				var key = 'service_' + this.serviceList[i].serviceId;
 				if(this.adminService.isFalse(f.value[key])){
-					this.toastTab(this.serviceList[i].serviceName + '服务折扣不能为空', 'error');
+					this.toastTab(this.serviceList[i].serviceName + '科室折扣不能为空', 'error');
 					this.btnCanEdit = false;
 					return;
 				}
 				if(Number(f.value[key]) < 0 || Number(f.value[key]) > 100 || (Number(f.value[key]) % 1 != 0)){
-					this.toastTab(this.serviceList[i].serviceName + '服务折扣应为大于0小于100的正整数', 'error');
+					this.toastTab(this.serviceList[i].serviceName + '科室折扣应为大于0小于100的正整数', 'error');
 					this.btnCanEdit = false;
 					return;
 				}
@@ -208,12 +208,12 @@ export class MemberComponent{
 			for(var i = 0; i < this.assistList.length; i++){
 				var key = 'assist_' + this.assistList[i].id;
 				if(this.adminService.isFalse(f.value[key])){
-					this.toastTab(this.assistList[i].name + '服务折扣不能为空', 'error');
+					this.toastTab(this.assistList[i].name + '科室折扣不能为空', 'error');
 					this.btnCanEdit = false;
 					return;
 				}
 				if(Number(f.value[key]) < 0 || Number(f.value[key]) > 100 || (Number(f.value[key]) % 1 != 0)){
-					this.toastTab(this.assistList[i].name + '服务折扣应为大于0小于100的正整数', 'error');
+					this.toastTab(this.assistList[i].name + '科室折扣应为大于0小于100的正整数', 'error');
 					this.btnCanEdit = false;
 					return;
 				}

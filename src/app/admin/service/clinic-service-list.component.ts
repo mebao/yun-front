@@ -28,7 +28,7 @@ export class ClinicServiceListComponent implements OnInit{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '诊所服务列表',
+			title: '诊所科室列表',
 			back: true,
 		}
 		this.toast = {

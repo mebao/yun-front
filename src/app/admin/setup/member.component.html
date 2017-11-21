@@ -20,25 +20,25 @@
 						</div>
 						<div class="pure-control-group">
 							<label for="service">
-								<span>服务折扣（会员折扣为百分比，如50，实际为50%，即5折，下同。服务折扣用于具体服务折扣未设置时收费使用）</span>
+								<span>科室折扣（会员折扣为百分比，如50，实际为50%，即5折，下同。科室折扣用于具体科室折扣未设置时收费使用）</span>
 							</label>
 							<div class="flex flex-tab">
-								<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入服务折扣" required="" class="flex-1">
+								<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入科室折扣" required="" class="flex-1">
 								<select disabled class="w40p">
 									<option>%</option>
 								</select>
 							</div>
 							<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
 								<div [hidden]="!service.errors.required">
-									服务折扣不可为空
+									科室折扣不可为空
 								</div>
 							</div>
 						</div>
 						<ng-container *ngFor="let service of serviceList; let index=index;">
 							<div class="pure-control-group">
-								<label for="service_{{service.serviceId}}">{{service.serviceName}}服务折扣</label>
+								<label for="service_{{service.serviceId}}">{{service.serviceName}}科室折扣</label>
 								<div class="flex flex-tab">
-									<input type="number" id="service_{{service.serviceId}}" name="service_{{service.serviceId}}" [(ngModel)]="service.discount" placeholder="请输入{{service.serviceName}}服务折扣" required="" class="flex-1">
+									<input type="number" id="service_{{service.serviceId}}" name="service_{{service.serviceId}}" [(ngModel)]="service.discount" placeholder="请输入{{service.serviceName}}科室折扣" required="" class="flex-1">
 									<select disabled class="w40p">
 										<option>%</option>
 									</select>

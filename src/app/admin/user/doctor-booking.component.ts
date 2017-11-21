@@ -410,7 +410,7 @@ export class DoctorBookingComponent implements OnInit{
 		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 	}
 
-	//追加服务
+	//追加科室
 	addService() {
 		this.router.navigate(['./admin/bookingAddService'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 	}

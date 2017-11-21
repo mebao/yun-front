@@ -34,10 +34,10 @@
 					</td>
 					<td>
 						<div *ngIf="moduleAuthority.service">
-							<button (click)="showService(doctor.id)" class="pure-button pure-button-primary">查看服务</button>
+							<button (click)="showService(doctor.id)" class="pure-button pure-button-primary">查看科室</button>
 						</div>
 						<div *ngIf="moduleAuthority.scheduling" [ngClass]="{'pt10': moduleAuthority.service}">
-							<button (click)="showInfo(doctor.id)" class="pure-button pure-button-primary">服务排班</button>
+							<button (click)="showInfo(doctor.id)" class="pure-button pure-button-primary"科室排班</button>
 						</div>
 						<div class="pt10">
 							<button (click)="showRecordTempletList(doctor.id)" class="pure-button pure-button-primary">儿保记录模板</button>

@@ -30,7 +30,7 @@ export class DoctorServiceListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '医生服务列表',
+			title: '医生科室列表',
 			back: true,
 		}
 		this.toast = {

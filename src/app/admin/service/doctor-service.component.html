@@ -7,7 +7,7 @@
 			<form #f="ngForm" class="pure-form pure-form-stacked">
 				<fieldset>
 					<div *ngIf="this.type == 'create'" class="pure-control-group">
-						<label for="service">服务</label>
+						<label for="service">科室</label>
 						<select id="service" name="service" [(ngModel)]="serviceModel.service" #service="ngModel" required="">
 							<ng-container *ngFor="let childService of childServiceList">
 								<option value="{{childService.string}}">{{childService.serviceName}}</option>
@@ -15,12 +15,12 @@
 						</select>
 						<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
 							<div [hidden]="!service.errors.required">
-								服务不可为空
+								科室不可为空
 							</div>
 						</div>
 					</div>
 					<div *ngIf="this.type != 'create'" class="pure-control-group">
-						<label for="service">服务</label>
+						<label for="service">科室</label>
 						<select id="service" name="service" [(ngModel)]="serviceModel.service" disabled="">
 							<ng-container *ngFor="let childService of childServiceList">
 								<option value="{{childService.string}}">{{childService.serviceName}}</option>

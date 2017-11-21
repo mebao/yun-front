@@ -18,9 +18,9 @@
 			</select>
 		</div>
 		<div class="pure-control-group mr10">
-			<label for="service">服务：</label>
+			<label for="service">科室：</label>
 			<select id="service" name="service" [(ngModel)]="searchInfo.service">
-				<option value="">请选择服务</option>
+				<option value="">请选择科室</option>
 				<ng-container *ngFor="let service of serviceList">
 					<option [value]="service.string">{{service.serviceName}}</option>
 				</ng-container>
@@ -116,7 +116,7 @@
 					<table class="pure-table pure-table-horizontal w100">
 						<thead>
 							<tr>
-								<th>预约服务</th>
+								<th>预约科室</th>
 								<th>宝宝姓名</th>
 								<th>家长姓名</th>
 								<th>手机号码</th>

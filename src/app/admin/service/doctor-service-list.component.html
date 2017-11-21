@@ -2,19 +2,19 @@
 <div class="content admin-doctor-service-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="button-tab">
-		<button (click)="goCreate()" class="pure-button pure-button-primary">新增医生服务</button>
+		<button (click)="goCreate()" class="pure-button pure-button-primary">新增医生科室</button>
 	</div>
 	<div *ngIf="doctorServiceList.length > 0" class="pure-g">
 		<div class="pure-u-6-24 doctor-service-tab pad10" *ngFor="let doctorService of doctorServiceList">
 			<div class="info pad10">
 				<div class="flex">
-					<div class="w80p">服务名：</div>
+					<div class="w80p">科室名：</div>
 					<div class="flex-1">
 						{{doctorService.serviceName}}
 					</div>
 				</div>
 				<div class="flex pt10">
-					<div class="w80p">服务费用：</div>
+					<div class="w80p">科室费用：</div>
 					<div class="flex-1">
 						{{doctorService.fee}}元
 					</div>
@@ -32,7 +32,7 @@
 		</div>
 	</div>
 	<div *ngIf="hasData && doctorServiceList.length == 0" class="mt10">
-		<nodata title="未查询到医生服务"></nodata>
+		<nodata title="未查询到医生科室"></nodata>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

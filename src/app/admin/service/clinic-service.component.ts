@@ -36,7 +36,7 @@ export class ClinicServiceComponent implements OnInit{
 
 	ngOnInit(): void{
 		this.topBar = {
-			title: '诊所服务',
+			title: '诊所科室',
 			back: true,
 		}
 		this.toast = {
@@ -57,7 +57,7 @@ export class ClinicServiceComponent implements OnInit{
 
 		if(this.id){
 			this.type = 'update';
-			//获取诊所服务列表
+			//获取诊所科室列表
 			var urlOptions = '?username=' +　this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
 				　+　'&clinic_id=' + this.adminService.getUser().clinicId;
@@ -82,7 +82,7 @@ export class ClinicServiceComponent implements OnInit{
 	}
 
 	getChildServiceList() {
-		//获取宝宝服务
+		//获取宝宝科室
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -107,7 +107,7 @@ export class ClinicServiceComponent implements OnInit{
 
 	submit(f) {
 		if(f.value.service == ''){
-			this.toastTab('服务不可为空', 'error');
+			this.toastTab('科室不可为空', 'error');
 			return;
 		}
 		if(f.value.fee == ''){
