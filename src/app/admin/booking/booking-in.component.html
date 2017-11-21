@@ -29,7 +29,7 @@
 					</div>
 					<div class="pure-control-group">
 						<label for="user_doctor">预约医生</label>
-						<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()">
+						<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange('changeBookingFee')">
 							<ng-container *ngFor="let doctor of doctorlist">
 								<option value="{{doctor.string}}">{{doctor.doctorName}}：{{doctor.fee}}</option>
 							</ng-container>

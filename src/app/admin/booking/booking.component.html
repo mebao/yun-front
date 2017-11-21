@@ -89,7 +89,7 @@
 							<span>预约医生</span>
 							<span class="required">*</span>
 						</label>
-						<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange()" required="">
+						<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange('changeBookingFee')" required="">
 							<ng-container *ngFor="let doctor of doctorlist">
 								<option value="{{doctor.string}}">{{doctor.doctorName}}：{{doctor.fee}}</option>
 							</ng-container>

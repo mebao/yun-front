@@ -330,9 +330,11 @@ export class BookingInComponent{
 	}
 
 	//切换医生
-	doctorChange() {
+	doctorChange(type) {
 		var doctor = JSON.parse(this.bookingInfo.user_doctor);
-		this.bookingInfo.booking_fee = doctor.bookingFee;
+		if(type == 'changeBookingFee'){
+			this.bookingInfo.booking_fee = doctor.bookingFee;
+		}
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
