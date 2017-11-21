@@ -24,12 +24,12 @@
 					<td>{{visit.visitChild}}</td>
 					<td>
 						<button *ngIf="!visit.visitChild" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button pure-button-primary">开始接诊</button>
-						<button *ngIf="visit.visitChild" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button pure-button-primary">结束接诊</button>
+						<button *ngIf="visit.visitChild" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button button-error">结束接诊</button>
 					</td>
 					<td>{{visit.visitTime}}</td>
 					<td>
 						<div *ngIf="visit.visitChild">
-							结束就诊后，可就诊下一位。
+							结束就诊后，可接诊下一位。
 						</div>
 						<div class="radio-tab" [ngClass]="{'disabled': visit.visitChild}">
 							<ng-container *ngFor="let child of visit.doctorChilds">
