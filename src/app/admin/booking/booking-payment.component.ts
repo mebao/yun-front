@@ -299,11 +299,13 @@ export class BookingPaymentComponent{
 				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee);
 			}
 		}
+		// 服务费用，应减去对应的预约金
+		serviceFee = serviceFee - parseFloat(this.fee.feeInfo.bookingFee);
 		fee += parseFloat(this.adminService.toDecimal2(serviceFee));
 		originalCost += parseFloat(this.adminService.toDecimal2(originalServiceFee));
 		this.fee.feeInfo.serviceFee = this.adminService.toDecimal2(serviceFee);
 		this.fee.feeInfo.serviceOriginalFee = this.adminService.toDecimal2(originalServiceFee);
-		this.fee.feeInfo.serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceOriginalFee) - parseFloat(this.fee.feeInfo.serviceFee));
+		this.fee.feeInfo.serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceOriginalFee) - parseFloat(this.fee.feeInfo.serviceFee) - parseFloat(this.fee.feeInfo.bookingFee));
 		// 辅助项目
 		var assistFee = 0;
 		var originalAssistFee = 0;
@@ -382,7 +384,7 @@ export class BookingPaymentComponent{
 
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
 		this.fee.fee = this.adminService.toDecimal2(fee);
-		this.fee.realFee = this.adminService.toDecimal2(fee - parseFloat(this.fee.feeInfo.bookingFee));
+		this.fee.realFee = this.adminService.toDecimal2(fee);
 
 		this.loadingShow = false;
 	}
@@ -422,14 +424,14 @@ export class BookingPaymentComponent{
 		}
 		var amountFee = '';
 		if(!this.adminService.isFalse(this.payInfo.give_amount)){
-			amountFee = this.adminService.toDecimal2(Number(this.fee.realFee) - Number(this.payInfo.give_amount));
+			amountFee = this.adminService.toDecimal2(Number(this.fee.fee) - Number(this.payInfo.give_amount));
 			if(Number(amountFee) < 0){
 				this.toastTab('减免金额不可大于应付金额', 'error');
 				this.btnCanEdit = false;
 				return;
 			}
 		}else{
-			amountFee = this.fee.realFee;
+			amountFee = this.fee.fee;
 		}
 		if(parseFloat(amountFee) < 0){
 			this.toastTab('订单错误，不可支付', 'error');

@@ -51,6 +51,7 @@
 			<div class="flex-1">数量</div>
 			<div class="flex-1">费用合计</div>
 			<div class="flex-1">折扣金额</div>
+			<div class="flex-1">其他</div>
 			<div class="flex-1">应收费用</div>
 		</div>
 		<div class="detail-item">
@@ -60,7 +61,8 @@
 				<div class="flex-1">{{service.number}}</div>
 				<div class="flex-1">{{service.originalServiceFee}}</div>
 				<div class="flex-1">{{service.serviceDiscount}}</div>
-				<div class="flex-1">{{service.serviceFee}}</div>
+				<div class="flex-1">已支付预约金{{bookingInfo.yyj.amount}}</div>
+				<div class="flex-1">{{fee.feeInfo.serviceFee}}</div>
 			</div>
 			<div class="flex" *ngFor="let assist of fee.feeInfo.assistFeeList">
 				<div class="flex-1">{{assist.projectName}}</div>
@@ -68,6 +70,7 @@
 				<div class="flex-1">{{assist.number}}</div>
 				<div class="flex-1">{{assist.originalAssistFee}}</div>
 				<div class="flex-1">{{assist.assistDiscount}}</div>
+				<div class="flex-1"></div>
 				<div class="flex-1">{{assist.assistFee}}</div>
 			</div>
 			<div class="flex" *ngFor="let check of fee.feeInfo.checkFeeList">
@@ -76,6 +79,7 @@
 				<div class="flex-1">{{check.number}}</div>
 				<div class="flex-1">{{check.originalCheckFee}}</div>
 				<div class="flex-1">{{check.checkDiscount}}</div>
+				<div class="flex-1"></div>
 				<div class="flex-1">{{check.checkFee}}</div>
 			</div>
 			<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList">
@@ -85,6 +89,7 @@
 					<div class="flex-1">{{info.num}}</div>
 					<div class="flex-1">{{info.originalMedicalFee}}</div>
 					<div class="flex-1">{{info.medicalDiscount}}</div>
+					<div class="flex-1"></div>
 					<div class="flex-1">{{info.medicalFee}}</div>
 				</div>
 			</ng-container>
@@ -94,13 +99,13 @@
 				<div class="flex-1">{{other.number}}</div>
 				<div class="flex-1">{{other.originalOtherFee}}</div>
 				<div class="flex-1">{{other.otherDiscount}}</div>
+				<div class="flex-1"></div>
 				<div class="flex-1">{{other.otherFee}}</div>
 			</div>
 		</div>
 		<div class="flex money">
 			<div class="flex-1">费用合计 {{fee.originalCost}}元</div>
 			<div class="flex-1">应收费用 {{fee.fee}}元</div>
-			<div class="flex-1">已付预约金 {{bookingInfo.yyj.amount}}元</div>
 			<div class="flex-1">{{tran.info.wayText}}支付 {{tran.info.amount}}元</div>
 		</div>
 		<div class="flex">

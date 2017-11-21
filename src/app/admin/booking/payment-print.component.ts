@@ -76,6 +76,7 @@ export class PaymentPrintComponent{
 			otherOriginalFee: string,
 			otherDiscount: string,
 			otherFee: string,
+			bookingFee: string,
 		},
 		fee: string,
 		originalCost: string,
@@ -153,6 +154,7 @@ export class PaymentPrintComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
+				bookingFee: '',
 			},
 			fee: '',
 			originalCost: '',
@@ -303,6 +305,7 @@ export class PaymentPrintComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
+				bookingFee: results.feeinfo['预约金'].fee,
 			},
 			fee: '',
 			originalCost: '',
@@ -326,11 +329,13 @@ export class PaymentPrintComponent{
 				this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].originalServiceFee) - parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceFee));
 			}
 		}
+		// 服务费用，应减去对应的预约金
+		serviceFee = serviceFee - parseFloat(this.fee.feeInfo.bookingFee);
 		fee += parseFloat(this.adminService.toDecimal2(serviceFee));
 		originalCost += parseFloat(this.adminService.toDecimal2(originalServiceFee));
 		this.fee.feeInfo.serviceFee = this.adminService.toDecimal2(serviceFee);
 		this.fee.feeInfo.serviceOriginalFee = this.adminService.toDecimal2(originalServiceFee);
-		this.fee.feeInfo.serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceOriginalFee) - parseFloat(this.fee.feeInfo.serviceFee));
+		this.fee.feeInfo.serviceDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceOriginalFee) - parseFloat(this.fee.feeInfo.serviceFee) - parseFloat(this.fee.feeInfo.bookingFee));
 		// 辅助项目
 		var assistFee = 0;
 		var originalAssistFee = 0;
