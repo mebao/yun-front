@@ -56,6 +56,12 @@ export class LoginComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 接诊管理
+		doctorVisit: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//接诊
 		bookingReceive: {
 			use: string,
@@ -227,6 +233,11 @@ export class LoginComponent{
 			bookingIn: {
 				use: '',
 				authority: ['bookingIn'],
+				infos: [],
+			},
+			doctorVisit: {
+				use: '',
+				authority: ['see', 'personal'],
 				infos: [],
 			},
 			bookingReceive: {

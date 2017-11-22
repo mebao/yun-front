@@ -302,7 +302,7 @@ export class SchedulingComponent{
 					token: this.adminService.getUser().token,
 					clinic_id: this.adminService.getUser().clinicId,
 					admin_id: this.changeData.adminId,
-					admin_name: this.changeData.adminName,
+					admin_name: this.changeData.realName,
 					config_id: results.id,
 					config_name: dateStr,
 					duty_date: this.adminService.dateFormatHasWord(this.changeData.date),
