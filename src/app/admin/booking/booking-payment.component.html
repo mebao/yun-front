@@ -306,9 +306,12 @@
 				<label for="user" class="w120p">用户：</label>
 				<label class="flex-1">{{bookingInfo.creatorName}}</label>
 			</div>
-			<div *ngIf="userMember.member" class="pure-control-group flex">
+			<div class="pure-control-group flex">
 				<label for="member" class="w120p">余额：</label>
-				<label class="flex-1">{{userMember.balance}}</label>
+				<label>{{userMember.balance}}</label>
+				<div *ngIf="moduleAuthority.recharge" class="flex-1 ml20">
+					<button (click)="recharge()" class="pure-button pure-button-primary">充值</button>
+				</div>
 			</div>
 			<div class="pure-control-group flex">
 				<label for="fee" class="w120p">消费金额：</label>
@@ -323,7 +326,7 @@
 					<option value="ali">支付宝支付</option>
 					<option value="wechat">微信支付</option>
 					<option value="card">刷卡支付</option>
-					<option value="member" [disabled]="!userMember.member || !payInfo.memberBalance">会员余额支付{{userMember.member ? (payInfo.memberBalance ? '' : '（余额不足）') : '（暂未升级会员）'}}</option>
+					<option value="member" [disabled]="!payInfo.memberBalance">余额支付{{(payInfo.memberBalance ? '' : '（余额不足）')}}</option>
 					<option value="money">现金支付</option>
 				</select>
 			</div>
@@ -333,7 +336,7 @@
 			</div>
 			<div class="pure-control-group flex mt10">
 				<label for="remark" class="w120p">减免金额原因（最多200字）：</label>
-				<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="payInfo.remark" placeholder="请输入减免金额原因" class="flex-1"></textarea>
+				<textarea id="remark" name="remark" rows="4" maxlength="200" [(ngModel)]="payInfo.remark" placeholder="请输入减免金额原因" class="flex-1 auto"></textarea>
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">

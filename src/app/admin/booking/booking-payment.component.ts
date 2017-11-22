@@ -18,6 +18,10 @@ export class BookingPaymentComponent{
 		text: string,
 		type:  string,
 	};
+	// 权限
+	moduleAuthority: {
+		recharge: boolean,
+	}
 	loadingShow: boolean;
 	bookingInfo: {
 		age: string,
@@ -114,6 +118,32 @@ export class BookingPaymentComponent{
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
 		this.loadingShow = true;
+
+		// 获取用户是否含有充值权限
+		this.moduleAuthority = {
+			recharge: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+			this.moduleAuthority.recharge = true;
+		}else{
+			var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+			if(userClinicRoles.length > 0){
+				for(var i = 0; i < userClinicRoles.length; i++){
+					if(userClinicRoles[i].keyName == 'userList'){
+						// 查询用户管理下是否含有充值权限
+						if(userClinicRoles[i].infos.length > 0){
+							for(var j = 0; j < userClinicRoles[i].infos.length; j++){
+								if(userClinicRoles[i].infos[j].keyName == 'recharge'){
+									this.moduleAuthority.recharge = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		//获取费用详情
 		this.fee = {
@@ -220,6 +250,11 @@ export class BookingPaymentComponent{
 		});
 
 		this.btnCanEdit = false;
+	}
+
+	// 去充值
+	recharge() {
+		this.router.navigate(['./admin/userList']);
 	}
 
 	getFeeInfo(userMember, results) {

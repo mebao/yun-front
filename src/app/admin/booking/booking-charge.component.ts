@@ -178,7 +178,7 @@ export class BookingChargeComponent{
 
 	getUrlOptios() {
 		var urlOptions = this.url;
-		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=4,5';
+		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=5,11';
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}
