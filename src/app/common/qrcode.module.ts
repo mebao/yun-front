@@ -1,4 +1,4 @@
-import { NgModule, Component, Input, OnInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { NgModule, Component, Input, Output, EventEmitter, OnInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import * as QRious from 'qrious';
 
 @Component({
@@ -6,40 +6,41 @@ import * as QRious from 'qrious';
   template: ''
 })
 export class QRCodeComponent implements OnInit, OnChanges {
+    @Input() value: string;
+    @Input() size: number;
+	@Output() onVoted = new EventEmitter<string>();
 
-  @Input() value: string;
+    constructor(private elementRef: ElementRef) {}
 
-  @Input() size: number;
-
-  constructor(private elementRef: ElementRef) {}
-
-  ngOnInit() {
-    this.init();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (!changes.value && !changes.size) {
-      return;
+    ngOnInit() {
+        this.init();
     }
 
-    this.init();
-  }
+    ngOnChanges(changes: SimpleChanges) {
+        if (!changes.value && !changes.size) {
+            return;
+        }
 
-  private init(): void {
-    const qr = new QRious({
-      value: this.value,
-      size: this.size
-    });
+        this.init();
+    }
 
-    this.elementRef.nativeElement.innerHTML = '';
-    this.elementRef.nativeElement.appendChild(qr.image);
-  }
+    private init(): void {
+        const qr = new QRious({
+            value: this.value,
+            size: this.size
+        });
+
+		this.onVoted.emit(qr.image.src);
+
+        this.elementRef.nativeElement.innerHTML = '';
+        this.elementRef.nativeElement.appendChild(qr.image);
+    }
 
 }
 
 @NgModule({
-  exports: [QRCodeComponent],
-  declarations: [QRCodeComponent],
-  entryComponents: [QRCodeComponent]
+    exports: [QRCodeComponent],
+    declarations: [QRCodeComponent],
+    entryComponents: [QRCodeComponent]
 })
 export class QRCodeModule {}

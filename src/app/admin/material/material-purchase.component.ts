@@ -125,14 +125,6 @@ export class MaterialPurchaseComponent{
 		}
 	}
 
-	changeMaterial(value, key) {
-		for(var i = 0; i < this.mslist.length; i++){
-			if(this.mslist[i].key == key){
-				this.mslist[i].ms_type = JSON.parse(value).type;
-			}
-		}
-	}
-
 	feeChange(f) {
 		var numBoolean = false;
 		var bidBoolean = false;
@@ -252,12 +244,6 @@ export class MaterialPurchaseComponent{
 						return;
 					}
 					msParams.bid = f.value['bid_' + key];
-					// 是否医用耗材
-					if(msParams.type == '3' && this.adminService.isFalse(this.mslist[i].expiring_date)){
-						this.toastTab('第' + num + '条物资有效日期不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
 					msParams.bid = f.value['bid_' + key];
 					msParams.expiring_date = this.mslist[i].expiring_date ? this.mslist[i].expiring_date : null;
 					msParams.can_discount = JSON.parse(f.value['ms_' + key]).canDiscount;

@@ -56,7 +56,7 @@
 									<span>物资</span>
 									<span class="required">*</span>
 								</label>
-								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel (change)="changeMaterial($event.target.value, ms.key)">
+								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" ngModel>
 									<ng-container *ngFor="let materialSupplie of materialSupplies">
 										<option value="{{materialSupplie.string}}">{{materialSupplie.name}}({{materialSupplie.unit}})</option>
 									</ng-container>
@@ -81,7 +81,7 @@
 								<input type="number" id="bid_{{ms.key}}" step="0.01" name="bid_{{ms.key}}" ngModel (change)="feeChange(f)">
 							</div>
 						</div>
-						<div *ngIf="ms.ms_type && ms.ms_type == '3'" class="pure-u-8-24">
+						<div class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="expiring_date_{{ms.key}}">
 									<span>有效日期</span>
