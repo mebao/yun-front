@@ -77,6 +77,10 @@ export class BookingListComponent implements OnInit{
 	userList: any[];
 	// 详情
 	modalTabInfo: boolean;
+	selectorBooking: {
+		text: string,
+		bookingId: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -223,6 +227,11 @@ export class BookingListComponent implements OnInit{
 				this.userList = results.users;
 			}
 		});
+
+		this.selectorBooking = {
+			text: '',
+			bookingId: '',
+		}
 	}
 
 	// 选择日期
@@ -506,6 +515,38 @@ export class BookingListComponent implements OnInit{
 
 	close() {
 		this.modalTab = false;
+	}
+
+	cancel(booking) {
+		this.modalTab = false;
+		this.selectorBooking = {
+			bookingId: booking.bookingId,
+			text: '确认取消该预约'
+		}
+		this.modalConfirmTab = true;
+	}
+
+	// 取消预约
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	// 确认取消
+	confirm(){
+		this.modalConfirmTab = false;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			status: 0,
+		}
+		this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('预约单取消成功', '');
+				this.search();
+			}
+		});
 	}
 
 	toastTab(text, type) {
