@@ -1,7 +1,6 @@
 import { NgModule }                        from '@angular/core';
 import { CommonModule }                    from '@angular/common';
 import { FormsModule }                     from '@angular/forms';
-import { QRCodeModule }                    from '../common/qrcode.module';
 
 import { AdminComponent }                  from './admin.component';
 
@@ -14,16 +13,8 @@ import { LeftNavComponent }                from './nav/left-nav.component';
 import { HeaderNavComponent }              from './nav/header-nav.component';
 import { TopBarComponent }                 from './nav/top-bar.component';
 
-//modal
-import { ModalToastComponent }             from '../common/modal/modal-toast.component';
-import { ModalImgComponent }               from '../common/modal/modal-img.component';
-import { NodataComponent }                 from '../common/nodata/nodata.component';
-import { LoadingComponent }                from '../common/modal/loading.component';
-
 //common
-import { DropDownComponent }               from '../common/dropdown/dropdown.component';
-import { SelectSearchComponent }           from '../common/form/select-search.component';
-import { SelectDateComponent }             from '../common/form/select-date.component';
+import { AngCommonModule }                    from '../common/ang-common.module';
 
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
@@ -132,15 +123,13 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CommonModule,
 		AdminRoutingModule,
 		FormsModule,
-		QRCodeModule,
+		AngCommonModule,
 	],
 	declarations: [
 		AdminComponent,
 		LeftNavComponent,
 		HeaderNavComponent,
 		TopBarComponent,
-		DropDownComponent,
-		SelectSearchComponent,
 		HomeComponent,
 		CreateUserComponent,
 		SchedulingConfigListComponent,
@@ -163,10 +152,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CrmUserListComponent,
 		CrmUserComponent,
 		WorkbenchReceptionComponent,
-		ModalToastComponent,
-		ModalImgComponent,
-		NodataComponent,
-		LoadingComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
@@ -225,7 +210,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
 		BookingReceiveComponent,
-		SelectDateComponent,
 		BookingHealthrecordComponent,
 		PrescriptSaleComponent,
 		PrescriptSaleListComponent,
