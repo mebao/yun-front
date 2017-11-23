@@ -23,7 +23,6 @@ import { UserInfoComponent }                from './user/user-info.component';
 import { DoctorListComponent }              from './user/doctor-list.component';
 import { CrmUserListComponent }             from './user/crm-user-list.component';
 import { CrmUserComponent }                 from './user/crm-user.component';
-import { WorkbenchReceptionComponent }      from './workbench/workbench-reception.component';
 import { DoctorInfoComponent }              from './user/doctor-info.component';
 import { BookingInComponent }               from './booking/booking-in.component';
 import { BookingInfoComponent }             from './booking/booking-info.component';
@@ -204,8 +203,7 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'workbenchReception',
-						canActivate: [AuthGuardRole],
-						component: WorkbenchReceptionComponent
+						loadChildren: './workbench/workbench.module#WorkbenchModule',
 					},
 					{
 						path: 'doctorInfo',

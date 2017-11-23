@@ -9,12 +9,10 @@ import { AdminRoutingModule }              from './admin-routing.module';
 import { AuthGuardRole }                   from './auth-guard-role.service';
 
 //nav
-import { LeftNavComponent }                from './nav/left-nav.component';
-import { HeaderNavComponent }              from './nav/header-nav.component';
-import { TopBarComponent }                 from './nav/top-bar.component';
+import { NavModule }                       from './nav/nav.module';
 
 //common
-import { AngCommonModule }                    from '../common/ang-common.module';
+import { AngCommonModule }                 from '../common/ang-common.module';
 
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
@@ -38,7 +36,6 @@ import { UserInfoComponent }               from './user/user-info.component';
 import { DoctorListComponent }             from './user/doctor-list.component';
 import { CrmUserListComponent }            from './user/crm-user-list.component';
 import { CrmUserComponent }                from './user/crm-user.component';
-import { WorkbenchReceptionComponent }     from './workbench/workbench-reception.component';
 import { DoctorInfoComponent }             from './user/doctor-info.component';
 import { BookingInComponent }              from './booking/booking-in.component';
 import { BookingInfoComponent }            from './booking/booking-info.component';
@@ -124,12 +121,10 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AdminRoutingModule,
 		FormsModule,
 		AngCommonModule,
+		NavModule,
 	],
 	declarations: [
 		AdminComponent,
-		LeftNavComponent,
-		HeaderNavComponent,
-		TopBarComponent,
 		HomeComponent,
 		CreateUserComponent,
 		SchedulingConfigListComponent,
@@ -151,7 +146,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		DoctorInfoComponent,
 		CrmUserListComponent,
 		CrmUserComponent,
-		WorkbenchReceptionComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,

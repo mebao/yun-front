@@ -2,7 +2,6 @@ import { Component, OnInit }            from '@angular/core';
 import { Router, ActivatedRoute }       from '@angular/router';
 
 import { AdminService }                 from '../admin.service';
-import { DropDownComponent }            from '../../common/dropdown/dropdown.component';
 
 @Component({
 	selector: 'app-create-admin',
