@@ -791,6 +791,12 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'info',
 								queryType: '',
 								queryParams: '',
+							},
+							{
+								url: '/admin/booking',
+								authority: 'info',
+								queryType: 'type',
+								queryParams: 'createUserInfo',
 							}
 						]
 					},

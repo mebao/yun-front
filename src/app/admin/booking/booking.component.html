@@ -11,7 +11,10 @@
 							<span>预约宝宝</span>
 							<span class="required">*</span>
 						</label>
-						<select-search [title]="selectSearchTitle" [selectedValue]="selectSearchValue" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
+						<div class="flex">
+							<select-search [title]="selectSearchTitle" [selectedValue]="selectSearchValue" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
+							<button *ngIf="this.moduleAuthority.see" (click)="addChild()" class="pure-button pure-button-primary ml20">添加宝宝</button>
+						</div>
 					</div>
 					<div *ngIf="editType == 'update' || listChild.childId" class="pure-control-group">
 						<label for="child">

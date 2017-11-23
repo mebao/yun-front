@@ -61,8 +61,15 @@
 							<div class="length-text">{{child.remark}}</div>
 						</td>
 						<td rowspan="4" *ngIf="indexItem == 0">
-							<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
-							<button (click)="delete(child)" class="pure-button button-error">删除</button>
+							<div>
+								<button (click)="update(child)" class="pure-button pure-button-primary">修改</button>
+							</div>
+							<div class="mt10">
+								<button (click)="booking(child)" class="pure-button pure-button-primary">预约</button>
+							</div>
+							<div class="mt10">
+								<button (click)="delete(child)" class="pure-button button-error">删除</button>
+							</div>
 						</td>
 					</tr>
 				</ng-container>

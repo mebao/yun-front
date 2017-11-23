@@ -240,6 +240,11 @@ export class UserInfoComponent{
 		this.childlist.push(child);
 	}
 
+	// 预约
+	booking(child) {
+		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, type: 'createUserInfo'}});
+	}
+
 	hideTab(_key) {
 		for(var i = 0; i < this.childlist.length; i++){
 			if(this.childlist[i].key == _key){

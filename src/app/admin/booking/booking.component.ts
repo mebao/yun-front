@@ -14,6 +14,10 @@ export class BookingComponent implements OnInit{
 		title: string,
 		back: boolean,
 	};
+	moduleAuthority: {
+		// 用户管理
+		see: boolean,
+	}
 	id: number;
 	bookingInfo: {
 		type: string,
@@ -112,6 +116,32 @@ export class BookingComponent implements OnInit{
 			text: '',
 			type: '',
 		};
+
+		// 获取用户是否含有用户管理权限
+		this.moduleAuthority = {
+			see: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+			this.moduleAuthority.see = true;
+		}else{
+			var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+			if(userClinicRoles.length > 0){
+				for(var i = 0; i < userClinicRoles.length; i++){
+					if(userClinicRoles[i].keyName == 'userList'){
+						// 查询用户管理下是否含有用户管理权限
+						if(userClinicRoles[i].infos.length > 0){
+							for(var j = 0; j < userClinicRoles[i].infos.length; j++){
+								if(userClinicRoles[i].infos[j].keyName == 'see'){
+									this.moduleAuthority.see = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		this.bookingInfo = {
 			type: 'ZJ',
@@ -285,6 +315,11 @@ export class BookingComponent implements OnInit{
 
 		this.canEdit = false;
 		this.modalTabType = false;
+	}
+
+	// 添加宝宝
+	addChild() {
+		this.router.navigate(['./admin/userList']);
 	}
 
 	getData() {
