@@ -129,7 +129,7 @@ export class MedicalSupplierComponent{
 				}else{
 					this.toastTab('医疗用品供应商创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/medicalSupplierList']);
+						this.router.navigate(['./admin/medical/supplierList']);
 					}, 2000);
 				}
 			})

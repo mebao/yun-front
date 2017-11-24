@@ -135,7 +135,7 @@ export class MaterialCheckListComponent{
 
 	update(material) {
 		sessionStorage.setItem('materialCheck', JSON.stringify(material));
-		this.router.navigate(['./admin/materialCheck'], {queryParams: {id: material.id}});
+		this.router.navigate(['./admin/material/check'], {queryParams: {id: material.id}});
 	}
 
 	toastTab(text, type) {

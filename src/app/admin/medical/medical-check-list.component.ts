@@ -135,7 +135,7 @@ export class MedicalCheckListComponent{
 
 	update(medical) {
 		sessionStorage.setItem('medicalCheck', JSON.stringify(medical));
-		this.router.navigate(['./admin/medicalCheck'], {queryParams: {id: medical.id}});
+		this.router.navigate(['./admin/medical/check'], {queryParams: {id: medical.id}});
 	}
 
 	toastTab(text, type) {
