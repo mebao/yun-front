@@ -94,7 +94,7 @@ export class AuthGuardRole implements CanActivate{
 						firstUrl: 'workbenchReception',
 						second: [
 							{
-								url: '/admin/workbenchReception',
+								url: '/admin/workbench/reception',
 								authority: 'workerPanel',
 								queryType: '',
 								queryParams: '',

@@ -160,7 +160,7 @@ const adminRoutes: Routes = [
 						component: CrmUserComponent,
 					},
 					{
-						path: 'workbenchReception',
+						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
 					},
 					{

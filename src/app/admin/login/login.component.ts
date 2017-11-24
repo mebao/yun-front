@@ -382,31 +382,31 @@ export class LoginComponent{
 				sessionStorage.removeItem('userClinicRolesInfos');
 
 				//默认进入所有权限中，第一个一级页面
-				var firstUrl = '';
-				if(results.admininfo.role == '0' || results.admininfo.role == '9'){
-					firstUrl = '/admin/workbenchReception';
-				}else{
-					if(results.admininfo.clinicRoles.length == 0){
-						firstUrl = '/admin/noPermissions';
-					}else{
-						for(var i = 0; i < results.admininfo.clinicRoles.length; i++){
-							if(firstUrl == ''){
-								//判断是否具有进入一级页面的权限
-								var hasAuthority = false;
-								for(var j = 0; j < this.clinicRole[results.admininfo.clinicRoles[i].keyName].authority.length; j++){
-									for(var k = 0; k < results.admininfo.clinicRoles[i].infos.length; k++){
-										if(this.clinicRole[results.admininfo.clinicRoles[i].keyName].authority[j] == results.admininfo.clinicRoles[i].infos[k].keyName){
-											hasAuthority = true;
-										}
-									}
-								}
-								if(hasAuthority){
-									firstUrl = '/admin/' + results.admininfo.clinicRoles[i].keyName;
-								}
-							}
-						}
-					}
-				}
+				var firstUrl = '/admin/home';
+				// if(results.admininfo.role == '0' || results.admininfo.role == '9'){
+				// 	firstUrl = '/admin/workbench/reception';
+				// }else{
+				// 	if(results.admininfo.clinicRoles.length == 0){
+				// 		firstUrl = '/admin/noPermissions';
+				// 	}else{
+				// 		for(var i = 0; i < results.admininfo.clinicRoles.length; i++){
+				// 			if(firstUrl == ''){
+				// 				//判断是否具有进入一级页面的权限
+				// 				var hasAuthority = false;
+				// 				for(var j = 0; j < this.clinicRole[results.admininfo.clinicRoles[i].keyName].authority.length; j++){
+				// 					for(var k = 0; k < results.admininfo.clinicRoles[i].infos.length; k++){
+				// 						if(this.clinicRole[results.admininfo.clinicRoles[i].keyName].authority[j] == results.admininfo.clinicRoles[i].infos[k].keyName){
+				// 							hasAuthority = true;
+				// 						}
+				// 					}
+				// 				}
+				// 				if(hasAuthority){
+				// 					firstUrl = '/admin/' + results.admininfo.clinicRoles[i].keyName;
+				// 				}
+				// 			}
+				// 		}
+				// 	}
+				// }
 				let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : firstUrl;
 				if(redirect.indexOf('?') != -1){
 					this.router.navigate([redirect.slice(0, redirect.indexOf('?'))], {queryParams: this.adminService.getUrlParams(redirect)});

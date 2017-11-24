@@ -7,7 +7,7 @@ import { WorkbenchReceptionComponent }    from './workbench-reception.component'
 @NgModule({
     imports: [RouterModule.forChild([
         {
-            path: '',
+            path: 'reception',
             canActivate: [AuthGuardRole],
             component: WorkbenchReceptionComponent,
         }
