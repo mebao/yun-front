@@ -615,25 +615,25 @@ export class AuthGuardRole implements CanActivate{
 						firstUrl: '',
 						second: [
 							{
-								url: '/admin/prescriptList',
+								url: '/admin/prescript/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/prescriptBackList',
+								url: '/admin/prescript/backList',
 								authority: 'seeBack',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/prescriptSaleList',
+								url: '/admin/prescript/saleList',
 								authority: 'seeSale',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/prescriptSale',
+								url: '/admin/prescript/sale',
 								authority: 'editSale',
 								queryType: '',
 								queryParams: '',

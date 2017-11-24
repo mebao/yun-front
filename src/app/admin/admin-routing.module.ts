@@ -33,7 +33,6 @@ import { ClinicroomComponent }              from './clinicroom/clinicroom.compon
 import { ClinicroomListComponent }          from './clinicroom/clinicroom-list.component';
 import { ClinicroomRecordsComponent }       from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
-import { PrescriptListComponent }           from './prescript/prescript-list.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
 import { DoctorBookingComponent }           from './user/doctor-booking.component';
 import { DoctorBookingGrowthrecordsComponent }       from './user/doctor-booking-growthrecords.component';
@@ -45,7 +44,6 @@ import { InspectResultsListComponent }      from './setup/inspect-results-list.c
 import { InspectResultsComponent }          from './setup/inspect-results.component';
 import { BookingFollowupsComponent }        from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
-import { PrescriptBackListComponent }       from './prescript/prescript-back-list.component';
 import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord.component';
 import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
 import { ChildListComponent }               from './user/child-list.component';
@@ -60,8 +58,6 @@ import { CrmRoleListComponent }             from './user/crm-role-list.component
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 import { BookingReceiveComponent }          from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
-import { PrescriptSaleComponent }           from './prescript/prescript-sale.component';
-import { PrescriptSaleListComponent }       from './prescript/prescript-sale-list.component';
 import { DoctorRecordTempletComponent }     from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 import { BookingHistoryComponent }          from './booking/booking-history.component';
@@ -176,6 +172,10 @@ const adminRoutes: Routes = [
 						loadChildren: './scheduling/scheduling.module#SchedulingModule',
 					},
 					{
+						path: 'prescript',
+						loadChildren: './prescript/prescript.module#PrescriptModule',
+					},
+					{
 						path: 'doctorInfo',
 						canActivate: [AuthGuardRole],
 						component: DoctorInfoComponent
@@ -229,11 +229,6 @@ const adminRoutes: Routes = [
 						path: 'doctorPrescript',
 						canActivate: [AuthGuardRole],
 						component: DoctorPrescriptComponent
-					},
-					{
-						path: 'prescriptList',
-						canActivate: [AuthGuardRole],
-						component: PrescriptListComponent
 					},
 					{
 						path: 'noPermissions',
@@ -294,11 +289,6 @@ const adminRoutes: Routes = [
 						path: 'bookingFollowupsList',
 						canActivate: [AuthGuardRole],
 						component: BookingFollowupsListComponent,
-					},
-					{
-						path: 'prescriptBackList',
-						canActivate: [AuthGuardRole],
-						component: PrescriptBackListComponent,
 					},
 					{
 						path: 'bookingGrowthrecord',
@@ -369,16 +359,6 @@ const adminRoutes: Routes = [
 						path: 'bookingHealthrecord',
 						canActivate: [AuthGuardRole],
 						component: BookingHealthrecordComponent,
-					},
-					{
-						path: 'prescriptSale',
-						canActivate: [AuthGuardRole],
-						component: PrescriptSaleComponent,
-					},
-					{
-						path: 'prescriptSaleList',
-						canActivate: [AuthGuardRole],
-						component: PrescriptSaleListComponent,
 					},
 					{
 						path: 'doctorRecordTemplet',

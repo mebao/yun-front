@@ -2,13 +2,13 @@
 <div class="content admin-prescript-back-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
-		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescriptList')">出药</div>
-		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
+		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescript/list')">出药</div>
+		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescript/backList')">退药</div>
 		<div class="item active">药品零售</div>
 	</div>
     <div class="pure-form flex mt10">
         <div class="flex-1">
-            <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescriptSale')" class="pure-button pure-button-primary">新增零售</button>
+            <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescript/sale')" class="pure-button pure-button-primary">新增零售</button>
         </div>
 		<div class="pure-control-group mr10">
 			<label for="mobile">患者手机号码：</label>

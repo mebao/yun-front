@@ -402,7 +402,7 @@ export class PrescriptSaleComponent{
 			}else{
 				this.toastTab('支付成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/prescriptSaleList']);
+					this.router.navigate(['./admin/prescript/saleList']);
 				}, 2000);
 			}
 		});

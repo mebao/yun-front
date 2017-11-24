@@ -44,7 +44,6 @@ import { ClinicroomComponent }             from './clinicroom/clinicroom.compone
 import { ClinicroomListComponent }         from './clinicroom/clinicroom-list.component';
 import { ClinicroomRecordsComponent }      from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
-import { PrescriptListComponent }          from './prescript/prescript-list.component';
 import { BookingChargeComponent }          from './booking/booking-charge.component';
 import { DoctorBookingComponent }          from './user/doctor-booking.component';
 import { DoctorBookingGrowthrecordsComponent } from './user/doctor-booking-growthrecords.component';
@@ -56,7 +55,6 @@ import { InspectResultsListComponent }     from './setup/inspect-results-list.co
 import { InspectResultsComponent }         from './setup/inspect-results.component';
 import { BookingFollowupsComponent }       from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
-import { PrescriptBackListComponent }      from './prescript/prescript-back-list.component';
 import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.component';
 import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
 import { ChildListComponent }              from './user/child-list.component';
@@ -71,8 +69,6 @@ import { CrmRoleListComponent }            from './user/crm-role-list.component'
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 import { BookingReceiveComponent }         from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
-import { PrescriptSaleComponent }          from './prescript/prescript-sale.component';
-import { PrescriptSaleListComponent }      from './prescript/prescript-sale-list.component';
 import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
@@ -126,7 +122,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		ClinicroomListComponent,
 		ClinicroomRecordsComponent,
 		DoctorPrescriptComponent,
-		PrescriptListComponent,
 		BookingChargeComponent,
 		DoctorBookingComponent,
 		DoctorBookingGrowthrecordsComponent,
@@ -138,7 +133,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		InspectResultsComponent,
 		BookingFollowupsComponent,
 		BookingFollowupsListComponent,
-		PrescriptBackListComponent,
 		BookingGrowthrecordComponent,
 		BookingCasehistoryComponent,
 		ChildListComponent,
@@ -153,8 +147,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		RoleAuthorityListComponent,
 		BookingReceiveComponent,
 		BookingHealthrecordComponent,
-		PrescriptSaleComponent,
-		PrescriptSaleListComponent,
 		DoctorRecordTempletComponent,
 		DoctorRecordTempletListComponent,
 		BookingHistoryComponent,

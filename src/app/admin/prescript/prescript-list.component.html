@@ -3,8 +3,8 @@
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
 		<div class="item active">出药</div>
-		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescriptBackList')">退药</div>
-		<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescriptSaleList')">药品零售</div>
+		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescript/backList')">退药</div>
+		<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescript/saleList')">药品零售</div>
 	</div>
 	<form #f="ngForm" class="pure-form mt10 search-tab max">
 		<div class="flex">
