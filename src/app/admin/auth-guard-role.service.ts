@@ -895,13 +895,13 @@ export class AuthGuardRole implements CanActivate{
 						firstUrl: '',
 						second: [
 							{
-								url: '/admin/authorizeGivefee',
+								url: '/admin/authorize/givefee',
 								authority: 'givefee',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/authorizeSuccess',
+								url: '/admin/authorize/success',
 								authority: 'givefee',
 								queryType: '',
 								queryParams: '',

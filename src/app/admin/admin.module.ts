@@ -72,9 +72,7 @@ import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.
 import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
-import { AuthorizeGivefeeComponent }       from './authorize/authorize-givefee.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
-import { AuthorizeSuccessComponent }       from './authorize/authorize-success.component';
 import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
 import { DoctorVisitComponent }            from './doctor/doctor-visit.component';
@@ -150,9 +148,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		DoctorRecordTempletComponent,
 		DoctorRecordTempletListComponent,
 		BookingHistoryComponent,
-		AuthorizeGivefeeComponent,
 		GivefeeListComponent,
-		AuthorizeSuccessComponent,
 		AssistListComponent,
 		AssistComponent,
 		DoctorVisitComponent,
