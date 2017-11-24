@@ -183,7 +183,7 @@ export class MedicalLostComponent{
 			}else{
 				this.toastTab('报损成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/medicalLostList'])
+					this.router.navigate(['./admin/medical/lostList'])
 				}, 2000);
 			}
 		})

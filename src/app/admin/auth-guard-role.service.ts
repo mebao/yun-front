@@ -431,13 +431,13 @@ export class AuthGuardRole implements CanActivate{
 						firstUrl: '',
 						second: [
 							{
-								url: '/admin/medicalSupplierList',
+								url: '/admin/medical/supplierList',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/medicalSupplier',
+								url: '/admin/medical/supplier',
 								authority: 'edit',
 								queryType: '',
 								queryParams: '',
@@ -533,77 +533,77 @@ export class AuthGuardRole implements CanActivate{
 						second: [
 							// 药品管理
 							{
-								url: '/admin/medicalList',
+								url: '/admin/medical/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑药品
 							{
-								url: '/admin/medical',
+								url: '/admin/medical/index',
 								authority: 'edit',
 								queryType: '',
 								queryParams: '',
 							},
 							// 入库管理
 							{
-								url: '/admin/medicalPurchaseList',
+								url: '/admin/medical/purchaseList',
 								authority: 'seePut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 新增入库
 							{
-								url: '/admin/medicalPurchase',
+								url: '/admin/medical/purchase',
 								authority: 'addPut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 入库详情
 							{
-								url: '/admin/medicalPurchaseInfo',
+								url: '/admin/medical/purchaseInfo',
 								authority: 'infoPut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 库存管理
 							{
-								url: '/admin/medicalHasList',
+								url: '/admin/medical/hasList',
 								authority: 'seeHas',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑库存
 							{
-								url: '/admin/medicalHas',
+								url: '/admin/medical/has',
 								authority: 'editHas',
 								queryType: '',
 								queryParams: '',
 							},
 							// 报损管理
 							{
-								url: '/admin/medicalLostList',
+								url: '/admin/medical/lostList',
 								authority: 'seeLost',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑报损
 							{
-								url: '/admin/medicalLost',
+								url: '/admin/medical/lost',
 								authority: 'editLost',
 								queryType: '',
 								queryParams: '',
 							},
 							// 盘点管理
 							{
-								url: '/admin/medicalCheckList',
+								url: '/admin/medical/checkList',
 								authority: 'seeCheck',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑盘点
 							{
-								url: '/admin/medicalCheck',
+								url: '/admin/medical/check',
 								authority: 'addCheck',
 								queryType: '',
 								queryParams: '',

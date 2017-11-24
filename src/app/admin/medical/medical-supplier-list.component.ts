@@ -111,11 +111,11 @@ export class MedicalSupplierListComponent{
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/medicalSupplier']);
+		this.router.navigate(['./admin/medical/supplier']);
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/medicalSupplier'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/supplier'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

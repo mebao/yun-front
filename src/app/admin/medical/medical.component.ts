@@ -236,7 +236,7 @@ export class MedicalComponent{
 					this.toastTab('药品创建成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/medicalList']);
+					this.router.navigate(['./admin/medical/list']);
 				}, 2000);
 			}
 		})

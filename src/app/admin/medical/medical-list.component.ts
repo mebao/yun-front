@@ -110,11 +110,11 @@ export class MedicalListComponent{
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/medical']);
+		this.router.navigate(['./admin/medical/index']);
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/medical'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/index'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

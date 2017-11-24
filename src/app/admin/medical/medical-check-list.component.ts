@@ -89,7 +89,7 @@ export class MedicalCheckListComponent{
 	}
 
 	add() {
-		this.router.navigate(['./admin/medicalCheck']);
+		this.router.navigate(['./admin/medical/check']);
 	}
 
 	search() {

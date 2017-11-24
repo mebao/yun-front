@@ -2,15 +2,15 @@
 <div class="content admin-medical-purchase-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
-		<div class="item" (click)="goUrl('./admin/medicalList')">药品管理</div>
+		<div class="item" (click)="goUrl('./admin/medical/list')">药品管理</div>
 		<div class="item active">入库管理</div>
-		<div class="item" (click)="goUrl('./admin/medicalHasList')">库存管理</div>
-		<div class="item" (click)="goUrl('./admin/medicalLostList')">报损管理</div>
-		<div class="item" (click)="goUrl('./admin/medicalCheckList')">盘点管理</div>
+		<div class="item" (click)="goUrl('./admin/medical/hasList')">库存管理</div>
+		<div class="item" (click)="goUrl('./admin/medical/lostList')">报损管理</div>
+		<div class="item" (click)="goUrl('./admin/medical/checkList')">盘点管理</div>
 	</div>
 	<div class="flex pure-form search-tab mt10">
 		<div class="flex-1">
-			<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medicalPurchase')" class="pure-button pure-button-primary">新增入库</button>
+			<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medical/purchase')" class="pure-button pure-button-primary">新增入库</button>
 		</div>
 		<div class="pure-control-group mr10 flex">
 			<label for="b_date">入库时间大于：</label>

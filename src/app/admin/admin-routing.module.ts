@@ -35,16 +35,6 @@ import { BookingAddFeeComponent }           from './booking/booking-add-fee.comp
 import { ClinicroomComponent }              from './clinicroom/clinicroom.component';
 import { ClinicroomListComponent }          from './clinicroom/clinicroom-list.component';
 import { ClinicroomRecordsComponent }       from './clinicroom/clinicroom-records.component';
-import { MedicalComponent }                 from './medical/medical.component';
-import { MedicalListComponent }             from './medical/medical-list.component';
-import { MedicalSupplierComponent }         from './medical/medical-supplier.component';
-import { MedicalSupplierListComponent }     from './medical/medical-supplier-list.component';
-import { MedicalPurchaseComponent }         from './medical/medical-purchase.component';
-import { MedicalPurchaseListComponent }     from './medical/medical-purchase-list.component';
-import { MedicalHasListComponent }          from './medical/medical-has-list.component';
-import { MedicalHasComponent }              from './medical/medical-has.component';
-import { MedicalLostListComponent }         from './medical/medical-lost-list.component';
-import { MedicalLostComponent }             from './medical/medical-lost.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
 import { PrescriptListComponent }           from './prescript/prescript-list.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
@@ -58,8 +48,6 @@ import { InspectResultsListComponent }      from './setup/inspect-results-list.c
 import { InspectResultsComponent }          from './setup/inspect-results.component';
 import { BookingFollowupsComponent }        from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
-import { MedicalCheckListComponent }        from './medical/medical-check-list.component';
-import { MedicalCheckComponent }            from './medical/medical-check.component';
 import { PrescriptBackListComponent }       from './prescript/prescript-back-list.component';
 import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord.component';
 import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
@@ -85,7 +73,6 @@ import { GivefeeListComponent }             from './user/givefee-list.component'
 import { AuthorizeSuccessComponent }        from './authorize/authorize-success.component';
 import { AssistListComponent }              from './setup/assist-list.component';
 import { AssistComponent }                  from './setup/assist.component';
-import { MedicalPurchaseInfoComponent }     from './medical/medical-purchase-info.component';
 import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
@@ -199,6 +186,10 @@ const adminRoutes: Routes = [
 						loadChildren: './material/material.module#MaterialModule',
 					},
 					{
+						path: 'medical',
+						loadChildren: './medical/medical.module#MedicalModule',
+					},
+					{
 						path: 'doctorInfo',
 						canActivate: [AuthGuardRole],
 						component: DoctorInfoComponent
@@ -247,56 +238,6 @@ const adminRoutes: Routes = [
 						path: 'clinicroomRecords',
 						canActivate: [AuthGuardRole],
 						component: ClinicroomRecordsComponent
-					},
-					{
-						path: 'medical',
-						canActivate: [AuthGuardRole],
-						component: MedicalComponent
-					},
-					{
-						path: 'medicalList',
-						canActivate: [AuthGuardRole],
-						component: MedicalListComponent
-					},
-					{
-						path: 'medicalSupplier',
-						canActivate: [AuthGuardRole],
-						component: MedicalSupplierComponent
-					},
-					{
-						path: 'medicalSupplierList',
-						canActivate: [AuthGuardRole],
-						component: MedicalSupplierListComponent
-					},
-					{
-						path: 'medicalPurchase',
-						canActivate: [AuthGuardRole],
-						component: MedicalPurchaseComponent
-					},
-					{
-						path: 'medicalPurchaseList',
-						canActivate: [AuthGuardRole],
-						component: MedicalPurchaseListComponent
-					},
-					{
-						path: 'medicalHasList',
-						canActivate: [AuthGuardRole],
-						component:MedicalHasListComponent
-					},
-					{
-						path: 'medicalHas',
-						canActivate: [AuthGuardRole],
-						component: MedicalHasComponent
-					},
-					{
-						path: 'medicalLostList',
-						canActivate: [AuthGuardRole],
-						component: MedicalLostListComponent
-					},
-					{
-						path: 'medicalLost',
-						canActivate: [AuthGuardRole],
-						component: MedicalLostComponent
 					},
 					{
 						path: 'doctorPrescript',
@@ -367,16 +308,6 @@ const adminRoutes: Routes = [
 						path: 'bookingFollowupsList',
 						canActivate: [AuthGuardRole],
 						component: BookingFollowupsListComponent,
-					},
-					{
-						path: 'medicalCheckList',
-						canActivate: [AuthGuardRole],
-						component: MedicalCheckListComponent,
-					},
-					{
-						path: 'medicalCheck',
-						canActivate: [AuthGuardRole],
-						component: MedicalCheckComponent,
 					},
 					{
 						path: 'prescriptBackList',
@@ -502,11 +433,6 @@ const adminRoutes: Routes = [
 						path: 'assist',
 						canActivate: [AuthGuardRole],
 						component: AssistComponent,
-					},
-					{
-						path: 'medicalPurchaseInfo',
-						canActivate: [AuthGuardRole],
-						component: MedicalPurchaseInfoComponent,
 					},
 					{
 						path: 'doctorVisit',

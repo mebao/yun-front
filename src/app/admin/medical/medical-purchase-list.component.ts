@@ -130,12 +130,12 @@ export class MedicalPurchaseListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/medicalPurchase'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/purchase'], {queryParams: {id: _id}});
 	}
 
 	// 详情
 	showInfo(_id) {
-		this.router.navigate(['./admin/medicalPurchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
+		this.router.navigate(['./admin/medical/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {

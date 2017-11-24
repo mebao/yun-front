@@ -149,7 +149,7 @@ export class MedicalHasListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/medicalHas'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/has'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {
