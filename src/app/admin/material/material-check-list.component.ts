@@ -89,7 +89,7 @@ export class MaterialCheckListComponent{
 	}
 
 	add() {
-		this.router.navigate(['./admin/materialCheck']);
+		this.router.navigate(['./admin/material/check']);
 	}
 
 	search() {

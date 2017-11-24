@@ -65,20 +65,10 @@ import { DoctorBookingCasehistoryComponent } from './user/doctor-booking-casehis
 import { DoctorBookingHealthrecordComponent } from './user/doctor-booking-healthrecord.component';
 import { SetupInspectComponent }           from './setup/inspect.component';
 import { SetupInspectListComponent }       from './setup/inspect-list.component';
-import { MaterialListComponent }           from './material/material-list.component';
-import { MaterialComponent }               from './material/material.component';
-import { MaterialPurchaseListComponent }   from './material/material-purchase-list.component';
-import { MaterialPurchaseComponent }       from './material/material-purchase.component';
-import { MaterialHasListComponent }        from './material/material-has-list.component';
-import { MaterialHasComponent }            from './material/material-has.component';
-import { MaterialLostListComponent }       from './material/material-lost-list.component';
-import { MaterialLostComponent }           from './material/material-lost.component';
 import { InspectResultsListComponent }     from './setup/inspect-results-list.component';
 import { InspectResultsComponent }         from './setup/inspect-results.component';
 import { BookingFollowupsComponent }       from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
-import { MaterialCheckListComponent }      from './material/material-check-list.component';
-import { MaterialCheckComponent }          from './material/material-check.component';
 import { MedicalCheckListComponent }       from './medical/medical-check-list.component';
 import { MedicalCheckComponent }           from './medical/medical-check.component';
 import { PrescriptBackListComponent }      from './prescript/prescript-back-list.component';
@@ -107,7 +97,6 @@ import { AuthorizeSuccessComponent }       from './authorize/authorize-success.c
 import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
 import { MedicalPurchaseInfoComponent }    from './medical/medical-purchase-info.component';
-import { MaterialPurchaseInfoComponent }   from './material/material-purchase-info.component';
 import { DoctorVisitComponent }            from './doctor/doctor-visit.component';
 import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
@@ -174,20 +163,10 @@ import { DoctorService }                   from './doctor/doctor.service';
 		DoctorBookingHealthrecordComponent,
 		SetupInspectComponent,
 		SetupInspectListComponent,
-		MaterialListComponent,
-		MaterialComponent,
-		MaterialPurchaseListComponent,
-		MaterialPurchaseComponent,
-		MaterialHasListComponent,
-		MaterialHasComponent,
-		MaterialLostListComponent,
-		MaterialLostComponent,
 		InspectResultsListComponent,
 		InspectResultsComponent,
 		BookingFollowupsComponent,
 		BookingFollowupsListComponent,
-		MaterialCheckListComponent,
-		MaterialCheckComponent,
 		MedicalCheckListComponent,
 		MedicalCheckComponent,
 		PrescriptBackListComponent,
@@ -216,7 +195,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AssistListComponent,
 		AssistComponent,
 		MedicalPurchaseInfoComponent,
-		MaterialPurchaseInfoComponent,
 		DoctorVisitComponent,
 		PaymentBookingFee,
 		Repage,

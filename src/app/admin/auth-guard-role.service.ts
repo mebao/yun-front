@@ -450,77 +450,77 @@ export class AuthGuardRole implements CanActivate{
 						second: [
 							// 物资管理
 							{
-								url: '/admin/materialList',
+								url: '/admin/material/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑物资
 							{
-								url: '/admin/material',
+								url: '/admin/material/index',
 								authority: 'edit',
 								queryType: '',
 								queryParams: '',
 							},
 							// 入库管理
 							{
-								url: '/admin/materialPurchaseList',
+								url: '/admin/material/purchaseList',
 								authority: 'seePut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 新增入库
 							{
-								url: '/admin/materialPurchase',
+								url: '/admin/material/purchase',
 								authority: 'editPut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 入库详情
 							{
-								url: '/admin/materialPurchaseInfo',
+								url: '/admin/material/purchaseInfo',
 								authority: 'infoPut',
 								queryType: '',
 								queryParams: '',
 							},
 							// 库存管理
 							{
-								url: '/admin/materialHasList',
+								url: '/admin/material/hasList',
 								authority: 'seeHas',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑库存
 							{
-								url: '/admin/materialHas',
+								url: '/admin/material/has',
 								authority: 'editHas',
 								queryType: '',
 								queryParams: '',
 							},
 							// 报损管理
 							{
-								url: '/admin/materialLostList',
+								url: '/admin/material/lostList',
 								authority: 'seeLost',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑报损
 							{
-								url: '/admin/materialLost',
+								url: '/admin/material/lost',
 								authority: 'editLost',
 								queryType: '',
 								queryParams: '',
 							},
 							// 盘点管理
 							{
-								url: '/admin/materialCheckList',
+								url: '/admin/material/checkList',
 								authority: 'seeCheck',
 								queryType: '',
 								queryParams: '',
 							},
 							// 编辑盘点
 							{
-								url: '/admin/materialCheck',
+								url: '/admin/material/check',
 								authority: 'addCheck',
 								queryType: '',
 								queryParams: '',

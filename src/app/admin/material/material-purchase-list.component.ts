@@ -131,11 +131,11 @@ export class MaterialPurchaseListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/materialPurchase'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/material/purchase'], {queryParams: {id: _id}});
 	}
 
 	showInfo(_id) {
-		this.router.navigate(['./admin/materialPurchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
+		this.router.navigate(['./admin/material/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {

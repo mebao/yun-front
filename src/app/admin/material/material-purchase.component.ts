@@ -269,7 +269,7 @@ export class MaterialPurchaseComponent{
 			}else{
 				this.toastTab('物资入库创建成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/materialPurchaseList']);
+					this.router.navigate(['./admin/material/purchaseList']);
 				}, 2000);
 			}
 		})

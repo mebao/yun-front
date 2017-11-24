@@ -169,7 +169,7 @@ export class MaterialCheckComponent{
 			}else{
 				this.toastTab('盘点添加成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/materialCheckList']);
+					this.router.navigate(['./admin/material/checkList']);
 				}, 2000);
 			}
 		});

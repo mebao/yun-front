@@ -194,7 +194,7 @@ export class MaterialComponent{
 					this.toastTab('物资创建成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/materialList']);
+					this.router.navigate(['./admin/material/list']);
 				}, 2000);
 			}
 		})

@@ -187,7 +187,7 @@ export class MaterialHasComponent{
 			}else{
 				this.toastTab('物资信息修改成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/materialHasList']);
+					this.router.navigate(['./admin/material/hasList']);
 				}, 2000);
 			}
 		})

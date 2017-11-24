@@ -149,7 +149,7 @@ export class MaterialHasListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/materialHas'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/material/has'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

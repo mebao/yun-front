@@ -111,11 +111,11 @@ export class MaterialListComponent{
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/material']);
+		this.router.navigate(['./admin/material/index']);
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/material'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/material/index'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {
