@@ -20,9 +20,6 @@ import { NoPermissionsComponent }          from '../error/no-permissions.compone
 
 import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
-import { SchedulingConfigListComponent }   from './scheduling/scheduling-config-list.component';
-import { SchedulingConfigComponent }       from './scheduling/scheduling-config.component';
-import { SchedulingComponent }             from './scheduling/scheduling.component';
 import { BookingComponent }                from './booking/booking.component';
 import { BookingListComponent }            from './booking/booking-list.component';
 import { ChildServiceComponent }           from './service/child-service.component';
@@ -103,9 +100,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		AdminComponent,
 		HomeComponent,
 		CreateUserComponent,
-		SchedulingConfigListComponent,
-		SchedulingConfigComponent,
-		SchedulingComponent,
 		BookingComponent,
 		BookingListComponent,
 		BookingInComponent,
