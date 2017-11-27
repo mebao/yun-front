@@ -1,15 +1,41 @@
 .admin-booking-in{
-    .can{
-        color: #0078e7;
-    }
-    .overdue{
-        color: #cccccc;
-    }
-    .already{
-        color: #ff5674;
-    }
-    .selected{
-        color: #39A99D;
+    .time{
+        .item{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            position: relative;
+            top: 4px;
+            border-width: 1px;
+            border-style: solid;
+        }
+        .can{
+            color: #0078e7;
+            border-color: #0078e7;
+        }
+        .overdue{
+            color: #cccccc;
+            border-color: #cccccc;
+        }
+        .already{
+            color: #ff5674;
+            border-color: #ff5674;
+            &.item{
+                top: 3px;
+                .icon{
+                    position: relative;
+                    top: -3px;
+                    left: 5px;
+                }
+            }
+        }
+        .selected{
+            color: #39A99D;
+            border-color: #39A99D;
+            &.item{
+                background-color: #39A99D;
+            }
+        }
     }
     .time-list{
         justify-content: space-between;

@@ -132,13 +132,19 @@
 						</div>
 					</div>
 					<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-						<label for="time">
+						<label for="time" class="time">
 							<span>预约时间段（请先选择日期）</span>
 							<span class="required">*</span>
-							<span class="can">：可预约颜色（蓝色）</span>
-							<span class="overdue">不可选颜色（灰色）</span>
-							<span class="already">已预约颜色（红色）</span>
-							<span class="selected">已选中颜色（绿色）</span>
+							<span class="can">：可预约</span>
+							<span class="can item"></span>
+							<span class="overdue">未开放</span>
+							<span class="overdue item"></span>
+							<span class="already">已预约</span>
+							<span class="already item">
+								<span class="icon">x</span>
+							</span>
+							<span class="selected">已选择</span>
+							<span class="selected item"></span>
 						</label>
 						<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
 							<ng-container *ngFor="let time of timelist; let index=index;">
