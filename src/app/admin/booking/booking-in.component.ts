@@ -80,6 +80,8 @@ export class BookingInComponent{
 	modalTabType: boolean;
 	// 再次预约
 	modalTabAgain: boolean;
+	// 加载中
+	loadingShow: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -160,6 +162,7 @@ export class BookingInComponent{
 		this.successBookingId = '';
 		this.modalTabType = false;
 		this.modalTabAgain = false;
+		this.loadingShow = false;
 	}
 
 	// 添加宝宝
@@ -500,6 +503,7 @@ export class BookingInComponent{
 				this.toastTab('预约金应大于等于0，小于科室费', 'error');
 				return;
 			}
+			this.loadingShow = true;
 			// 创建预约时，验证该患者是否已经预约
 			var todayDate = this.adminService.getDayByDate(new Date());
 			var url = '?username=' + this.adminService.getUser().username
@@ -510,11 +514,13 @@ export class BookingInComponent{
 				 + '&booking_date=' + todayDate;
 			this.adminService.checkbooking(url).then((data) => {
 				if(data.status == 'no'){
+					this.loadingShow = false;
 					this.toastTab(data.errorMsg, 'error');
 					this.canEdit = false;
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.id != ''){
+						this.loadingShow = false;
 						this.modalTabAgain = true;
 					}else{
 						this.confirmBooking();
@@ -522,6 +528,7 @@ export class BookingInComponent{
 				}
 			});
 		}else{
+			this.loadingShow = true;
 			//修改预约并登记
 			this.updateBooking(f);
 		}
@@ -559,11 +566,13 @@ export class BookingInComponent{
 		}
 		this.adminService.bookingcreate(param).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 				this.canEdit = false;
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.successBookingId = results.bookingId;
+				this.loadingShow = false;
 				this.modalTabType = true;
 			}
 		});
@@ -594,6 +603,7 @@ export class BookingInComponent{
 		}
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 				this.canEdit = false;
 			}else{
@@ -610,9 +620,11 @@ export class BookingInComponent{
 		}
 		this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 				this.canEdit = false;
 			}else{
+				this.loadingShow = false;
 				this.toastTab('登记成功', '');
 				this.getBooking();
 				//登记成功后，清空选中预约信息

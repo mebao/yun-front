@@ -98,6 +98,8 @@ export class BookingComponent implements OnInit{
 	modalTabType: boolean;
 	// 预约成功后的id
 	successBookingId: string;
+	// 显示加载中
+	loadingShow: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -315,6 +317,7 @@ export class BookingComponent implements OnInit{
 
 		this.canEdit = false;
 		this.modalTabType = false;
+		this.loadingShow = false;
 	}
 
 	// 添加宝宝
@@ -658,6 +661,7 @@ export class BookingComponent implements OnInit{
 				this.canEdit = false;
 				return;
 			}
+			this.loadingShow = true;
 			if(this.editType == 'create'){
 				// 创建预约时，验证该患者是否已经预约
 				var todayDate = this.adminService.getDayByDate(new Date());
@@ -669,11 +673,13 @@ export class BookingComponent implements OnInit{
 					 + '&booking_date=' + todayDate;
 				this.adminService.checkbooking(url).then((data) => {
 					if(data.status == 'no'){
+						this.loadingShow = false;
 						this.toastTab(data.errorMsg, 'error');
 						this.canEdit = false;
 					}else{
 						var results = JSON.parse(JSON.stringify(data.results));
 						if(results.id != ''){
+							this.loadingShow = false;
 							this.modalTabAgain = true;
 						}else{
 							this.confirmBooking();
@@ -684,6 +690,7 @@ export class BookingComponent implements OnInit{
 				this.confirmBooking();
 			}
 		}else{
+			this.loadingShow = true;
 			this.confirmBooking();
 		}
 	}
@@ -723,9 +730,11 @@ export class BookingComponent implements OnInit{
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
 				if(data.status == 'no'){
+					this.loadingShow = false;
 					this.toastTab(data.errorMsg, 'error');
 					this.canEdit = false;
 				}else{
+					this.loadingShow = false;
 					this.toastTab('修改成功', '');
 					setTimeout(() => {
 						this.location.back();
@@ -735,11 +744,13 @@ export class BookingComponent implements OnInit{
 		}else{
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
+					this.loadingShow = false;
 					this.toastTab(data.errorMsg, 'error');
 					this.canEdit = false;
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.successBookingId = results.bookingId;
+					this.loadingShow = false;
 					this.modalTabType = true;
 				}
 			})
