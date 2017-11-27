@@ -290,7 +290,7 @@ export class CreateUserComponent{
 							}else{
 								this.toastTab('用户创建成功', '');
 								setTimeout(() =>　{
-									this.router.navigate(['./admin/userList']);
+									this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
 								}, 2000);
 							}
 						})
@@ -298,7 +298,7 @@ export class CreateUserComponent{
 				}else{
 					this.toastTab('用户创建成功', '');
 					setTimeout(() =>　{
-						this.router.navigate(['./admin/userList']);
+						this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
 					}, 2000);
 				}
 			}
