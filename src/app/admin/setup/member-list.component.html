@@ -37,7 +37,7 @@
 			</thead>
 			<tbody>
 				<ng-container *ngFor="let member of memberList">
-					<tr *ngFor="let info of member.infoList; let indexInfo=index;">
+					<tr *ngFor="let info of member.infoList; let indexInfo=index; let lastInfo=last;">
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.name}}</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.service}}{{member.service && member.service != '' ? '%' : ''}}</td>
 						<td>
@@ -46,10 +46,8 @@
 							</ng-container>
 						</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.assist}}{{member.assist && member.assist != '' ? '%' : ''}}</td>
-						<td>
-							<ng-container *ngIf="info.assistId != ''">
-								{{info.assistName}}：{{info.assistDiscount}}{{info.assistDiscount == '' ? '' : '%'}}
-							</ng-container>
+						<td [style.border-bottom]="info.assistId != '' || lastInfo ? '' : 'none'">
+							{{info.assistName == '' ? '' : info.assistName + '：'}}{{info.assistDiscount}}{{info.assistDiscount == '' ? '' : '%'}}
 						</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.check}}%</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.prescript}}%</td>
