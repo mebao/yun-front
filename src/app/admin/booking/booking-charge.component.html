@@ -33,22 +33,22 @@
 	</div>
 	<div class="flex pure-form search-tab max mt2">
 		<div class="pure-control-group mr10 flex">
-			<label for="cdate_big">创建时间大于：</label>
+			<label for="cdate_big">创建时间：</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'cdate_big')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="cdate_less">创建时间小于：</label>
+			<label for="cdate_less" class="text-center">至</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'cdate_less')"></select-date>
 		</div>
 		<div class="flex-1"></div>
 	</div>
 	<div class="flex pure-form search-tab max mt2">
 		<div class="pure-control-group mr10 flex">
-			<label for="bdate_big">预约时间大于：</label>
+			<label for="bdate_big">预约时间：</label>
 			<select-date title="请选择日期" [dateText]="searchInfo.bdate_big_text" [showClear]="true" (onVoted)="changeDate($event, 'bdate_big')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="bdate_less">预约时间小于：</label>
+			<label for="bdate_less" class="text-center">至</label>
 			<select-date title="请选择日期" [dateText]="searchInfo.bdate_less_text" [showClear]="true" (onVoted)="changeDate($event, 'bdate_less')"></select-date>
 		</div>
 		<div class="flex-1"></div>

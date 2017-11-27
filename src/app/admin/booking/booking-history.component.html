@@ -25,11 +25,11 @@
 		<div class="flex pure-form search-tab max mt2">
 			<div class="flex-1"></div>
 			<div class="pure-control-group mr10 flex">
-				<label for="bdate_big">预约时间大于：</label>
+				<label for="bdate_big">预约时间：</label>
 				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'bdate_big')"></select-date>
 			</div>
 			<div class="pure-control-group mr10 flex">
-				<label for="bdate_less">预约时间小于：</label>
+				<label for="bdate_less" class="text-center">至</label>
 				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'bdate_less')"></select-date>
 			</div>
 			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>

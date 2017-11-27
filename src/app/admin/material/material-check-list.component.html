@@ -13,7 +13,7 @@
 			<button *ngIf="moduleAuthority.addCheck" (click)="add()" class="pure-button pure-button-primary">新增盘点</button>
 		</div>
 		<div class="pure-control-group mr10">
-			<label for="name">物资名:</label>
+			<label for="name">物资名：</label>
 			<input type="text" id="name" name="name" [(ngModel)]="info.name">
 		</div>
 		<div class="pure-control-group mr10">
@@ -29,11 +29,11 @@
 	<div class="flex pure-form mt10 search-tab max">
 		<div class="flex-1"></div>
 		<div class="pure-control-group mr10 flex">
-			<label for="b_time">检查时间大于：</label>
+			<label for="b_time">检查时间：</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="l_time">检查时间小于：</label>
+			<label for="l_time" class="text-center">至</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
 		</div>
 		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>

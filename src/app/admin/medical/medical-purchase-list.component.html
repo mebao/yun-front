@@ -13,11 +13,11 @@
 			<button *ngIf="moduleAuthority.addPut" (click)="goUrl('./admin/medical/purchase')" class="pure-button pure-button-primary">新增入库</button>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="b_date">入库时间大于：</label>
+			<label for="b_date">入库时间：</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="l_date">入库时间小于：</label>
+			<label for="l_date" class="text-center">至</label>
 			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10">

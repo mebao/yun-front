@@ -8,11 +8,11 @@
 				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
 			</div>
 			<div class="pure-control-group mr10 flex">
-				<label for="b_time">大于此时间：</label>
+				<label for="b_time">时间：</label>
 				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_time')"></select-date>
 			</div>
 			<div class="pure-control-group mr10 flex">
-				<label for="l_time">小于此时间：</label>
+				<label for="l_time" class="text-center">至</label>
 				<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_time')"></select-date>
 			</div>
 			<div class="flex-1"></div>
@@ -27,11 +27,11 @@
 				</select>
 			</div>
 			<div class="pure-control-group mr10">
-				<label for="b_amount">大于此金额：</label>
+				<label for="b_amount">金额：</label>
 				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
 			</div>
 			<div class="pure-control-group mr10">
-				<label for="l_amount">小于此金额：</label>
+				<label for="l_amount" class="text-center">至</label>
 				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
 			</div>
 			<div class="flex-1"></div>
