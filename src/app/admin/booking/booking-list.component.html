@@ -209,16 +209,16 @@
 							</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.statusText}}</td>
 							<td>
-								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2')" class="mb10">
-									<button class="pure-button button-error" (click)="cancel(showBooking)">
-										取消
-									</button>
-								</div>
 								<div>
 									<button *ngIf="moduleAuthority.info" (click)="info(showBooking)" class="pure-button pure-button-primary">详情</button>
 								</div>
 								<div *ngIf="moduleAuthority.add && showBooking.status == '1' && use" class="mt10">
 									<button (click)="paymentBookingFee(showBooking)" class="pure-button pure-button-primary">支付</button>
+								</div>
+								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2')" class="mt10">
+									<button class="pure-button button-error" (click)="cancel(showBooking)">
+										取消
+									</button>
 								</div>
 							</td>
 						</tr>
@@ -240,16 +240,24 @@
 			</div>
 			<div class="tab">
 				<div class="item flex bb-default">
-					<label>家长姓名</label>
-					<div class="info">{{booking.creatorName}}</div>
+					<div class="flex-1 flex">
+						<label>宝宝姓名</label>
+						<div class="info">{{booking.childName}}</div>
+					</div>
+					<div class="flex-1 flex">
+						<label>手机号码</label>
+						<div class="info">{{booking.mobile}}</div>
+					</div>
 				</div>
 				<div class="item flex bb-default">
-					<label>宝宝姓名</label>
-					<div class="info">{{booking.childName}}</div>
-				</div>
-				<div class="item flex bb-default">
-					<label>年龄</label>
-					<div class="info">{{booking.age}}</div>
+					<div class="flex-1 flex">
+						<label>年龄</label>
+						<div class="info">{{booking.age}}</div>
+					</div>
+					<div class="flex-1 flex">
+						<label>性别</label>
+						<div class="info">{{booking.genderText}}</div>
+					</div>
 				</div>
 				<div class="item flex">
 					<label>备注</label>
