@@ -29,12 +29,12 @@
 	</div>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<fieldset>
-			<div class="pure-g">
+			<!-- <div class="pure-g">
 				<div class="pure-u-7-24 pr10">
 					<label for="name">药方名</label>
 					<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" #name="ngModel" placeholder="请输入药方名" [disabled]="secondType != ''">
 				</div>
-			</div>
+			</div> -->
 			<div *ngFor="let ms of plist" class="ms-tab mt5">
 				<div *ngIf="ms.use">
 					<div (click)="showMs(ms.key)" class="ms-bar flex">

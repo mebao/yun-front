@@ -37,7 +37,7 @@
 		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>
-					<th>药方名</th>
+					<!-- <th>药方名</th> -->
 					<th>就诊医生</th>
 					<th>用户名</th>
 					<th>宝宝名</th>
@@ -54,7 +54,7 @@
 			<tbody>
 				<ng-container *ngFor="let item of list;">
 					<tr *ngFor="let info of item.info; let indexInfo=index;">
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td>
+						<!-- <td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td> -->
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>

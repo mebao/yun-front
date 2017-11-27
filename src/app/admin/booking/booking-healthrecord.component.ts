@@ -102,7 +102,9 @@ export class BookingHealthrecordComponent{
         stool_routine_examination: string,
         stool_routine_examination_other: string,
         bone_density: string,
+        bone_density_other: string,
         BALP: string,
+        BALP_other: string,
         trace_element: string,
         trace_element_other: string,
         heavy_metal: string,
@@ -154,6 +156,7 @@ export class BookingHealthrecordComponent{
 
         var doctorBooking = JSON.parse(sessionStorage.getItem('doctorBooking'));
         var healthrecord = JSON.parse(sessionStorage.getItem('healthrecord'));
+        var childcontrast = JSON.parse(sessionStorage.getItem('childcontrast'));
 
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
@@ -246,7 +249,9 @@ export class BookingHealthrecordComponent{
                 stool_routine_examination: healthrecord.stoolRoutineExamination,
                 stool_routine_examination_other: healthrecord.stoolRoutineExamination == '未见异常' ? '' : healthrecord.stoolRoutineExamination,
                 bone_density: healthrecord.boneDensity,
+                bone_density_other: healthrecord.boneDensity == '未见异常' ? '' : healthrecord.boneDensity,
                 BALP: healthrecord.BALP,
+                BALP_other: healthrecord.BALP == '未见异常' ? '' : healthrecord.BALP,
                 trace_element: healthrecord.traceElement,
                 trace_element_other: healthrecord.traceElement == '未见异常' ? '' : healthrecord.traceElement,
                 heavy_metal: healthrecord.heavyMetal,
@@ -357,7 +362,9 @@ export class BookingHealthrecordComponent{
                 stool_routine_examination: null,
                 stool_routine_examination_other: '',
                 bone_density: null,
+                bone_density_other: '',
                 BALP: null,
+                BALP_other: '',
                 trace_element: null,
                 trace_element_other: '',
                 heavy_metal: null,
@@ -388,6 +395,12 @@ export class BookingHealthrecordComponent{
                 for(var i = 0; i < doctorBookingRecordTemplet.recordkeys.length; i++){
                     this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
                     this.baseInfo[doctorBookingRecordTemplet.recordkeys[i].key] = '';
+                    if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_height'){
+                        this.info.medium_height=childcontrast.info.height;
+                    }
+                    if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_weight'){
+                        this.info.medium_weight=childcontrast.info.weight;
+                    }
                 }
             }
         }
@@ -547,8 +560,8 @@ export class BookingHealthrecordComponent{
             blood_routine_examination: this.info.blood_routine_examination != '' ? this.info.blood_routine_examination : this.info.blood_routine_examination_other,
             routine_urine: this.info.routine_urine != '' ? this.info.routine_urine : this.info.routine_urine_other,
             stool_routine_examination: this.info.stool_routine_examination != '' ? this.info.stool_routine_examination : this.info.stool_routine_examination_other,
-            bone_density: this.info.bone_density,
-            BALP: this.info.BALP,
+            bone_density: this.info.bone_density != '' ? this.info.bone_density : this.info.bone_density_other,
+            BALP: this.info.BALP != '' ? this.info.BALP : this.info.BALP_other,
             trace_element: this.info.trace_element != '' ? this.info.trace_element : this.info.trace_element_other,
             heavy_metal: this.info.heavy_metal != '' ? this.info.heavy_metal : this.info.heavy_metal_other,
             feeding: this.info.feeding,

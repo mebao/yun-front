@@ -33,7 +33,7 @@
 				<div *ngIf="baseInfo.medium_height != null" class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="medium_height">中等值（cm）：</label>
-						<input type="number" id="medium_height" name="medium_height" step="0.01" [(ngModel)]="info.medium_height" (change)="changeHeight()">
+						<input type="number" id="medium_height" name="medium_height" step="0.001" [(ngModel)]="info.medium_height" (change)="changeHeight()">
 					</div>
 				</div>
 				<div *ngIf="baseInfo.height != null && baseInfo.medium_height != null" class="pure-u-8-24">
@@ -51,7 +51,7 @@
 				<div *ngIf="baseInfo.medium_weight != null" class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="medium_weight">中等值（kg）：</label>
-						<input type="number" id="medium_weight" name="medium_weight" step="0.01" [(ngModel)]="info.medium_weight" (change)="changeWeight()">
+						<input type="number" id="medium_weight" name="medium_weight" step="0.001" [(ngModel)]="info.medium_weight" (change)="changeWeight()">
 					</div>
 				</div>
 				<div *ngIf="baseInfo.weight != null && baseInfo.medium_weight != null" class="pure-u-8-24">
@@ -614,7 +614,9 @@
 								<div class="radioTab mr10"></div>
 								<div class="flex-1">钙缺乏</div>
 							</div>
-							<div class="flex-1"></div>
+							<div class="flex-1" (click)="changeRedio('', 'bone_density_other')">
+								<textarea maxlength="200" name="bone_density_other" #bone_density_other="ngModel" [(ngModel)]="info.bone_density_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -630,7 +632,9 @@
 								<div class="radioTab mr10"></div>
 								<div class="flex-1">高值</div>
 							</div>
-							<div class="flex-1"></div>
+							<div class="flex-1" (click)="changeRedio('', 'BALP_other')">
+								<textarea maxlength="200" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>

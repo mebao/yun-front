@@ -1012,6 +1012,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询小孩中等身高体重
+	private childcontrastUrl = this.url + '/mebcrm/childcontrast';
+	childcontrast(urlOptions): Promise<Data>{
+		return this.http.get(this.childcontrastUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
