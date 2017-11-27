@@ -242,6 +242,7 @@ export class UserInfoComponent{
 
 	// 预约
 	booking(child) {
+		sessionStorage.setItem('childList-childName', child.childName);
 		this.router.navigate(['./admin/booking'], {queryParams: {childId: child.childId, type: 'createUserInfo'}});
 	}
 
