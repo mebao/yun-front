@@ -57,7 +57,7 @@
                     <td>{{booking.services[0].userDoctorName}}</td>
                     <td>{{booking.statusText}}</td>
                     <td>
-                        <button *ngIf="booking.status == '4' || booking.status == '5'" (click)="doctorBookingHistory(booking)" class="pure-button pure-button-primary">就诊记录</button>
+                        <button *ngIf="booking.status == '4' || booking.status == '5' || booking.status == '11'" (click)="doctorBookingHistory(booking)" class="pure-button pure-button-primary">就诊记录</button>
                     </td>
 				</tr>
 			</tbody>
