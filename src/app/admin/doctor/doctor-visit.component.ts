@@ -2,6 +2,7 @@ import { Component }                         from '@angular/core';
 
 import { DoctorService }                     from './doctor.service';
 import { AdminService }                      from '../admin.service';
+import { Router }                            from '@angular/router';
 
 @Component({
     selector: 'admin-doctor-visit',
@@ -30,10 +31,13 @@ export class DoctorVisitComponent{
     timeGo: any;
 	// 不可连续点击
 	canEdit: boolean;
+    modalTabAgain : boolean;
+    bookingId: string;
 
     constructor(
         public doctorService: DoctorService,
         public adminService: AdminService,
+        private router: Router,
     ) {}
 
 	ngOnInit() {
@@ -76,6 +80,8 @@ export class DoctorVisitComponent{
         this.getData();
 
         this.canEdit = false;
+        this.modalTabAgain = false;
+        this.bookingId = '';
     }
 
     getData() {
@@ -160,6 +166,26 @@ export class DoctorVisitComponent{
                     this.toastTab('结束就诊', '');
                     this.getData();
                     this.canEdit = false;
+                    var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+        			if(userClinicRoles.length > 0){
+        				for(var i = 0; i < userClinicRoles.length; i++){
+        					if(userClinicRoles[i].keyName == 'bookingCharge'){
+        						// 查询用户是否含有收费权限
+        						if(userClinicRoles[i].infos.length > 0){
+        							for(var j = 0; j < userClinicRoles[i].infos.length; j++){
+        								if(userClinicRoles[i].infos[j].keyName == 'payment'){
+        									this.modalTabAgain = true;
+                                            for(var x in visit.doctorChilds){
+                                                if(visit.doctorChilds[x].serviceId==visit.selected){
+                                                        this.bookingId = visit.doctorChilds[x].bookingId;
+                                                }
+                                            }
+        								}
+        							}
+        						}
+        					}
+        				}
+        			}
                 }
             });
         }
@@ -174,6 +200,14 @@ export class DoctorVisitComponent{
         var hour = parseInt((minutes / 60).toString());
         return (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + ':' + (second < 10 ? '0' + second : second);
     }
+
+    closeAgain(){
+        this.modalTabAgain = false;
+    }
+
+    confirmType() {
+        this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
+	}
 
 	toastTab(text, type) {
 		this.toast = {

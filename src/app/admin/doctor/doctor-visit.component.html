@@ -53,5 +53,18 @@
 		</div>
 	</div>
 </div>
+<div class="modal" *ngIf="modalTabAgain">
+	<div class="modal-mask"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			该患者就诊结束，是否去收费？
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeAgain()" class="pure-button">取消</button>
+			<button (click)="confirmType()" class="pure-button pure-button-primary">去收费</button>
+		</div>
+	</div>
+</div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>
