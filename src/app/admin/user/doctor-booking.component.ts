@@ -344,7 +344,9 @@ export class DoctorBookingComponent implements OnInit{
 				var total = 0;
 				if(fees.length > 0){
 					for(var i = 0; i < fees.length; i++){
-						total += Number(fees[i].fee);
+						if(fees[i].type != 'booking'){
+							total += Number(fees[i].fee);
+						}
 					}
 				}
 				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
