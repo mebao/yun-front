@@ -26,9 +26,9 @@
 					<th>会员名</th>
 					<th>科室折扣</th>
 					<th>科室折扣详情</th>
-					<th>辅助治疗折扣</th>
+					<th class="text-center">辅助治疗折扣</th>
 					<th>辅助治疗折扣详情</th>
-					<th>检查折扣</th>
+					<th class="text-center">检查折扣</th>
 					<th>药品折扣</th>
 					<th>其他折扣</th>
 					<th>状态</th>
@@ -36,8 +36,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<ng-container *ngFor="let member of memberList">
-					<tr *ngFor="let info of member.infoList; let indexInfo=index; let lastInfo=last;">
+				<ng-container *ngFor="let member of memberList; let indexMember=index;">
+					<tr *ngFor="let info of member.infoList; let indexInfo=index; let lastInfo=last;" [class.bg-default]="indexMember % 2 != 0">
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.name}}</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.service}}{{member.service && member.service != '' ? '%' : ''}}</td>
 						<td>
@@ -45,11 +45,11 @@
 								{{info.serviceName}}：{{info.serviceDiscount}}{{info.serviceDiscount == '' ? '' : '%'}}
 							</ng-container>
 						</td>
-						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.assist}}{{member.assist && member.assist != '' ? '%' : ''}}</td>
+						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'" class="text-center">{{member.assist}}{{member.assist && member.assist != '' ? '%' : ''}}</td>
 						<td [style.border-bottom]="info.assistId != '' || lastInfo ? '' : 'none'">
 							{{info.assistName == '' ? '' : info.assistName + '：'}}{{info.assistDiscount}}{{info.assistDiscount == '' ? '' : '%'}}
 						</td>
-						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.check}}%</td>
+						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'" class="text-center">{{member.check}}%</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.prescript}}%</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.other}}%</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.status == '1' ? '可用' : '停用'}}</td>
