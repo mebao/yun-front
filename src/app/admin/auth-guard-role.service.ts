@@ -68,7 +68,7 @@ export class AuthGuardRole implements CanActivate{
 					}
 					sessionStorage.setItem('userClinicRoles', JSON.stringify(resultsUserClinicRoles));
 				}
-				if((url.indexOf('noPermissions') != -1) || (url.indexOf('admin/home') != -1)){
+				if(url.indexOf('noPermissions') != -1){
 					this.router.navigate(['.' + url]);
 					return false;
 				}else{
@@ -81,7 +81,7 @@ export class AuthGuardRole implements CanActivate{
 	//筛选模块，病将二级权限存储到sessionStorage中
 	checkRole(url: string): boolean{
 		//根据url筛选权限
-		if((url.indexOf('noPermissions') != -1) || (url.indexOf('admin/home') != -1)){
+		if(url.indexOf('noPermissions') != -1){
 			return true;
 		}else{
 			//sessionStorage中userClinicRolesInfos是否为当前url，若是，则无需权限判断
@@ -91,7 +91,8 @@ export class AuthGuardRole implements CanActivate{
 				var authorityList = [
 					{
 						firstKey: 'workbenchReception',
-						firstUrl: 'workbenchReception',
+						firstUrl: '/admin/workbench/reception',
+						authority: ['workerPanel'],
 						second: [
 							{
 								url: '/admin/workbench/reception',
@@ -109,7 +110,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'scheduling',
-						firstUrl: '',
+						firstUrl: '/admin/scheduling/index',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/scheduling/index',
@@ -121,7 +123,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingList',
-						firstUrl: '',
+						firstUrl: '/admin/bookingList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/bookingList',
@@ -158,7 +161,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingConfirm',
-						firstUrl: '',
+						firstUrl: '/admin/bookingConfirm',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/bookingConfirm',
@@ -177,7 +181,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingIn',
-						firstUrl: '',
+						firstUrl: '/admin/bookingIn',
+						authority: ['bookingIn'],
 						second: [
 							{
 								url: '/admin/bookingIn',
@@ -196,7 +201,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingReceive',
-						firstUrl: '',
+						firstUrl: '/admin/bookingReceive',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/bookingReceive',
@@ -274,7 +280,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingCharge',
-						firstUrl: '',
+						firstUrl: '/admin/bookingCharge',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/bookingCharge',
@@ -300,7 +307,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'childServiceList',
-						firstUrl: '',
+						firstUrl: '/admin/childServiceList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/childServiceList',
@@ -350,7 +358,8 @@ export class AuthGuardRole implements CanActivate{
 					// },
 					{
 						firstKey: 'doctorVisit',
-						firstUrl: '',
+						firstUrl: '/admin/doctorVisit',
+						authority: ['see', 'personal'],
 						second: [
 							{
 								url: '/admin/doctorVisit',
@@ -368,7 +377,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'doctorList',
-						firstUrl: '',
+						firstUrl: '/admin/doctorList',
+						authority: ['see', 'personal'],
 						second: [
 							{
 								url: '/admin/doctorList',
@@ -428,7 +438,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'medicalSupplierList',
-						firstUrl: '',
+						firstUrl: '/admin/medical/supplierList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/medical/supplierList',
@@ -446,7 +457,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'materialList',
-						firstUrl: '',
+						firstUrl: '/admin/material/list',
+						authority: ['see'],
 						second: [
 							// 物资管理
 							{
@@ -529,7 +541,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'medicalList',
-						firstUrl: '',
+						firstUrl: '/admin/medical/list',
+						authority: ['see'],
 						second: [
 							// 药品管理
 							{
@@ -612,7 +625,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'prescriptList',
-						firstUrl: '',
+						firstUrl: '/admin/prescript/list',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/prescript/list',
@@ -642,7 +656,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'assistList',
-						firstUrl: '',
+						firstUrl: '/admin/assistList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/assistList',
@@ -660,7 +675,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'setupInspectList',
-						firstUrl: '',
+						firstUrl: '/admin/setupInspectList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/setupInspectList',
@@ -678,7 +694,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'inspectResultsList',
-						firstUrl: '',
+						firstUrl: '/admin/inspectResultsList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/inspectResultsList',
@@ -696,7 +713,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingFollowupsList',
-						firstUrl: '',
+						firstUrl: '/admin/bookingFollowupsList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/bookingFollowupsList',
@@ -714,7 +732,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'childList',
-						firstUrl: '',
+						firstUrl: '/admin/childList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/childList',
@@ -772,7 +791,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'userList',
-						firstUrl: '',
+						firstUrl: '/admin/userList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/userList',
@@ -802,7 +822,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'memberList',
-						firstUrl: '',
+						firstUrl: '/admin/memberList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/memberList',
@@ -820,7 +841,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'crmRoleList',
-						firstUrl: '',
+						firstUrl: '/admin/crmRoleList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/crmRoleList',
@@ -844,7 +866,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'crmUserList',
-						firstUrl: '',
+						firstUrl: '/admin/crmUserList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/crmUserList',
@@ -868,7 +891,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'transactionRecordList',
-						firstUrl: '',
+						firstUrl: '/admin/transactionRecordList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/transactionRecordList',
@@ -880,7 +904,8 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'givefeeList',
-						firstUrl: '',
+						firstUrl: '/admin/givefeeList',
+						authority: ['see'],
 						second: [
 							{
 								url: '/admin/givefeeList',
@@ -893,6 +918,7 @@ export class AuthGuardRole implements CanActivate{
 					{
 						firstKey: 'authority',
 						firstUrl: '',
+						authority: [],
 						second: [
 							{
 								url: '/admin/authorize/givefee',
@@ -909,7 +935,33 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 				];
+
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+				// 验证url为''和'/admin'------没有默认首页
+				if(url == '' || url == '/admin' || url == '/admin/home'){
+					if(userClinicRoles.length > 0){
+						// 遍历用户拥有的权限
+						for(var i = 0; i < userClinicRoles.length; i++){
+							// 遍历所有权限
+							for(var j = 0; j < authorityList.length; j++){
+								if(userClinicRoles[i].keyName == authorityList[j].firstKey){
+									// 遍历拥有的二级权限
+									if(userClinicRoles[i].infos.length){
+										for(var k = 0; k < userClinicRoles[i].infos.length; k++){
+											if(authorityList[j].authority.indexOf(userClinicRoles[i].infos[k].keyName)){
+												this.router.navigate([authorityList[j].firstUrl]);
+												return false;
+											}
+										}
+									}
+								}
+							}
+						}
+					}else{
+						this.router.navigate(['./admin/noPermissions'], {queryParams: {layout: 'all'}});
+					}
+					return false;
+				}
 
 				var authority = {
 					firstKey: '',
@@ -947,7 +999,7 @@ export class AuthGuardRole implements CanActivate{
 				//根据一级权限筛选路由
 				//没有该模块权限，重定向到无权限页面
 				if(authority.firstKey == ''){
-					this.router.navigate(['./admin/noPermissions']);
+					this.router.navigate(['./admin/noPermissions'], {queryParams: {layout: 'all'}});
 					return false;
 				}else{
 					sessionStorage.setItem('userClinicRolesInfos', JSON.stringify(authority));
