@@ -206,6 +206,27 @@ export class DoctorVisitComponent{
     }
 
     confirmType() {
+        var urlOptions = this.url;
+		urlOptions += '&id=' + this.bookingId;
+        this.adminService.searchbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.weekbooks.length > 0){
+					var allFee = 0;
+					if(results.weekbooks[0].fees.length > 0){
+						for(var j = 0; j < results.weekbooks[0].fees.length; j++){
+							allFee += Number(results.weekbooks[0].fees[j].fee);
+						}
+					}
+					results.weekbooks[0].allFee = parseFloat(allFee.toString());
+				}
+                sessionStorage.setItem('bookingInfo', JSON.stringify(results.weekbooks[0]));
+				this.loadingShow = false;
+			}
+		})
         this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
 	}
 
