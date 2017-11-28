@@ -5,18 +5,74 @@
 		<div class="info-tab">
 			<div class="item flex">
 				<label>姓名</label>
-				<div class="info">{{userInfo.name}}</div>
+				<div class="info">{{olduserInfo.name}}</div>
 			</div>
 			<div class="item flex">
 				<label>手机号码</label>
-				<div class="info">{{userInfo.mobile}}</div>
+				<div class="info">{{olduserInfo.mobile}}</div>
 			</div>
 			<div class="item flex">
 				<label>性别</label>
-				<div class="info">{{userInfo.gender == 'M' ? '男' : '女'}}</div>
+				<div class="info">{{olduserInfo.gender == 'M' ? '男' : '女'}}</div>
+			</div>
+			<div>
+				<button (click)="updateuser()" class="pure-button pure-button-primary">修改</button>
 			</div>
 		</div>
-		<table *ngIf="childs.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+		<form #userf="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
+			<ng-container *ngIf="editType == 'updateuser'">
+				<div class="pure-control-group">
+					<label for="name">
+						<span>姓名</span>
+						<span class="required">*</span>
+					</label>
+					<input id="name" type="text" name="name" [(ngModel)]="userInfo.name" #name="ngModel" placeholder="请输入姓名" required="">
+					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+						<div [hidden]="!name.errors.required">
+							姓名不可为空
+						</div>
+					</div>
+				</div>
+				<div class="pure-control-group">
+					<label for="mobile">
+						<span>手机号码</span>
+						<span class="required">*</span>
+					</label>
+					<input id="mobile" type="tel" name="mobile" [(ngModel)]="userInfo.mobile" #mobile="ngModel" placeholder="请输入手机号码" minlength="11" maxlength="11" required="">
+					<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
+						<div [hidden]="!mobile.errors.required">
+							手机号码不可为空
+						</div>
+						<div [hidden]="!mobile.errors.minlength">
+							手机号码至少11位
+						</div>
+						<div [hidden]="!mobile.errors.maxlength">
+							手机号码最多11位
+						</div>
+					</div>
+				</div>
+				<div class="pure-control-group">
+					<label for="gender">
+						<span>性别</span>
+						<span class="required">*</span>
+					</label>
+					<select id="gender" name="gender" [(ngModel)]="userInfo.gender" #gender="ngModel" required="">
+						<option value="M">男</option>
+						<option value="F">女</option>
+					</select>
+					<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
+						<div [hidden]="!gender.errors.required">
+							性别不可为空
+						</div>
+					</div>
+				</div>
+				<div class="mt10 text-center">
+					<button (click)="cancel()" class="pure-button">取消</button>
+					<button (click)="createUser(userf)" class="pure-button pure-button-primary button-max" [disabled]="btnUserCanEdit">提交</button>
+				</div>
+			</ng-container>
+		</form>
+		<table *ngIf="childs.length > 0 && editType != 'updateuser'" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>
 					<th>头像</th>
@@ -75,54 +131,7 @@
 				</ng-container>
 			</tbody>
 		</table>
-		<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
-			<ng-container *ngIf="editType == 'update'">
-				<div class="pure-control-group">
-					<label for="name">
-						<span>姓名</span>
-						<span class="required">*</span>
-					</label>
-					<input id="name" type="text" name="name" [(ngModel)]="userInfo.name" #name="ngModel" placeholder="请输入姓名" required="">
-					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-						<div [hidden]="!name.errors.required">
-							姓名不可为空
-						</div>
-					</div>
-				</div>
-				<div class="pure-control-group">
-					<label for="mobile">
-						<span>手机号码</span>
-						<span class="required">*</span>
-					</label>
-					<input id="mobile" type="tel" name="mobile" [(ngModel)]="userInfo.mobile" #mobile="ngModel" placeholder="请输入手机号码" minlength="11" maxlength="11" required="">
-					<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
-						<div [hidden]="!mobile.errors.required">
-							手机号码不可为空
-						</div>
-						<div [hidden]="!mobile.errors.minlength">
-							手机号码至少11位
-						</div>
-						<div [hidden]="!mobile.errors.maxlength">
-							手机号码最多11位
-						</div>
-					</div>
-				</div>
-				<div class="pure-control-group">
-					<label for="gender">
-						<span>性别</span>
-						<span class="required">*</span>
-					</label>
-					<select id="gender" name="gender" [(ngModel)]="userInfo.gender" #gender="ngModel" required="">
-						<option value="M">男</option>
-						<option value="F">女</option>
-					</select>
-					<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
-						<div [hidden]="!gender.errors.required">
-							性别不可为空
-						</div>
-					</div>
-				</div>
-			</ng-container>
+		<form #f="ngForm" class="pure-form pure-form-stacked mt10 form-tab" *ngIf="editType != 'updateuser'">
 			<div *ngFor="let child of childlist" class="add-child-tab">
 				<div *ngIf="child.use">
 					<!-- <div (click)="hideTab(child.key)" class="bar pad5 flex">
@@ -222,7 +231,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="childlist.length == 0" class="pt5">
+			<div *ngIf="childlist.length == 0 && editType != 'updateuser'" class="pt5">
 				<button (click)="addChild()" class="pure-button pure-button-primary">添加宝宝</button>
 			</div>
 			<div *ngIf="childlist.length > 0" class="mt10 text-center">

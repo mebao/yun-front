@@ -26,6 +26,12 @@ export class UserInfoComponent{
 		mobile: string,
 		gender: string,
 	}
+	olduserInfo: {
+		id: string,
+		name: string,
+		mobile: string,
+		gender: string,
+	}
 	childs: any[];
 	bloodTypeList: any[];
 	horoscopeList: any[];
@@ -42,6 +48,7 @@ export class UserInfoComponent{
 	infoList: any[];
 	// 不可连续点击
 	btnCanEdit: boolean;
+	btnUserCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -67,6 +74,13 @@ export class UserInfoComponent{
 		})
 
 		this.userInfo = {
+			id: '',
+			name: '',
+			mobile: '',
+			gender: '',
+		}
+
+		this.olduserInfo = {
 			id: '',
 			name: '',
 			mobile: '',
@@ -114,6 +128,7 @@ export class UserInfoComponent{
 		}
 
 		this.btnCanEdit = false;
+		this.btnUserCanEdit = false;
 	}
 
 	setClinicData(results) {
@@ -141,6 +156,7 @@ export class UserInfoComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
 					this.userInfo = results.users[0];
+					this.olduserInfo = JSON.parse(JSON.stringify(results.users[0]));
 					this.childs = results.users[0].childs;
 					// 更新宝宝生日格式
 					if(results.users[0].childs.length > 0){
@@ -204,6 +220,10 @@ export class UserInfoComponent{
 			}
 		}
 		this.childlist.push({key: key, show: true, use: true});
+	}
+
+	updateuser(){
+		this.editType = 'updateuser';
 	}
 
 	update(childInfo) {
@@ -276,6 +296,49 @@ export class UserInfoComponent{
 	cancel() {
 		this.editType = '';
 		this.childlist = [];
+	}
+
+	createUser(f){
+		if(f.value.name == ''){
+			this.toastTab('姓名不可为空', 'error');
+			this.btnUserCanEdit = false;
+			return;
+		}
+		if(f.value.mobile == ''){
+			this.toastTab('手机号码不可为空', 'error');
+			this.btnUserCanEdit = false;
+			return;
+		}
+		if(f.value.mobile.length != 11){
+			this.toastTab('手机号码不正确', 'error');
+			this.btnUserCanEdit = false;
+			return;
+		}
+		if(f.value.gender == ''){
+			this.toastTab('性别不可为空', 'error');
+			this.btnUserCanEdit = false;
+			return;
+		}
+		// 修改个人信息
+		var user = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			id: this.userInfo.id,
+			name: this.userInfo.name,
+			mobile: this.userInfo.mobile,
+			gender: this.userInfo.gender,
+		}
+		this.adminService.createUser(user).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+				this.btnUserCanEdit = false;
+			}else{
+				this.editType = '';
+				this.toastTab('修改成功', '');
+				this.getUserInfo();
+				this.btnUserCanEdit = false;
+			}
+		});
 	}
 
 	createChild(f) {
@@ -389,37 +452,21 @@ export class UserInfoComponent{
 				}
 			}
 			if(this.editType == 'update'){
-				// 先修改个人信息
-				var user = {
-					username: this.adminService.getUser().username,
-					token: this.adminService.getUser().token,
-					id: this.userInfo.id,
-					name: this.userInfo.name,
-					mobile: this.userInfo.mobile,
-					gender: this.userInfo.gender,
-				}
-				this.adminService.createUser(user).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-						this.btnCanEdit = false;
-					}else{
-						for(var i = 0; i < childData.length; i++){
-							//修改宝宝
-							this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
-								if(data.status == 'no'){
-									this.toastTab(data.errorMsg, 'error');
-									this.btnCanEdit = false;
-								}else{
-									this.editType = '';
-									this.toastTab('修改成功', '');
-									this.getUserInfo();
-									this.childlist = [];
-									this.btnCanEdit = false;
-								}
-							});
+				for(var i = 0; i < childData.length; i++){
+					//修改宝宝
+					this.adminService.updatechild(childData[i].id, childData[i]).then((data) => {
+						if(data.status == 'no'){
+							this.toastTab(data.errorMsg, 'error');
+							this.btnCanEdit = false;
+						}else{
+							this.editType = '';
+							this.toastTab('修改成功', '');
+							this.getUserInfo();
+							this.childlist = [];
+							this.btnCanEdit = false;
 						}
-					}
-				});
+					});
+				}
 			}else{
 				for(var i = 0; i < childData.length; i++){
 					//新增宝宝
