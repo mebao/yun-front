@@ -52,13 +52,6 @@
 		</div>
 	</div>
 	<div class="second-title">医生预约信息</div>
-	<!-- <div class="flex">
-		<div class="flex-1">
-			<button (click)="precBooking()" class="pure-button pure-button-primary">上一周</button>
-			<button (click)="nowBooking()" class="pure-button pure-button-primary">本周</button>
-			<button (click)="nextBooking()" class="pure-button pure-button-primary">下一周</button>
-		</div>
-	</div> -->
 	<div *ngIf="doctorBookingList.length > 0" class="list-tab mt10">
 		<div class="pure-g title-tab">
 			<div class="pure-u-1-24 title"></div>
@@ -147,7 +140,7 @@
 				</div>
 				<div *ngIf="selected.tab == '2'" class="left-right-tab">
 					<div class="right-tab">
-						<div *ngIf="doctorDutyList.length == 0">
+						<div *ngIf="hasDutyData && doctorDutyList.length == 0">
 							<nodata title="未查询到排班信息，请先排班"></nodata>
 						</div>
 						<div *ngFor="let duty of doctorDutyList" class="section">

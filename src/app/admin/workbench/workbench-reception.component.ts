@@ -28,7 +28,6 @@ export class WorkbenchReceptionComponent{
 	weektitle: any[];
 	schedulinglist: any[];
 	weekNumConfig: number;
-	weekNumBooking: number;
 	url: string;
 	hasDoctorBookingData: boolean;
 	doctorBookingList: any[];
@@ -51,6 +50,7 @@ export class WorkbenchReceptionComponent{
 	modalConfirm: {
 		text: string,
 	}
+	hasDutyData: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -79,7 +79,6 @@ export class WorkbenchReceptionComponent{
 		}
 
 		this.weekNumConfig = 0;
-		this.weekNumBooking = 0;
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -129,6 +128,7 @@ export class WorkbenchReceptionComponent{
 		}
 
 		this.search();
+		this.hasDutyData = false;
 	}
 
 	search() {
@@ -202,7 +202,7 @@ export class WorkbenchReceptionComponent{
 				// 当天日期
 				var todayTime = new Date().getTime();
 				if(results.list.length > 0){
-					var weekArray = this.adminService.getWeekByNumber(this.weekNumBooking);
+					var weekArray = this.adminService.getWeekByNumber(this.weekNumConfig);
 					for(var i = 0; i < results.list.length; i++){
 						var doctorBooking = {
 							doctorId: results.list[i].doctorId,
@@ -266,29 +266,12 @@ export class WorkbenchReceptionComponent{
 		this.search();
 	}
 
-	precBooking() {
-		this.weekNumBooking--;
-		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
-		this.getBookingList(urlOptions);
-	}
-
-	nowBooking() {
-		this.weekNumBooking = 0;
-		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
-		this.getBookingList(urlOptions);
-	}
-
-	nextBooking() {
-		this.weekNumBooking++;
-		var urlOptions = this.url + '&weekindex=' + this.weekNumBooking;
-		this.getBookingList(urlOptions);
-	}
-
 	close() {
 		this.modalTab = false;
 	}
 
 	showBooking(day, booking, type) {
+		this.hasDutyData = false;
 		this.doctorDutyList = [];
 		this.selected = {
 			doctor: booking.doctorName,
@@ -298,42 +281,61 @@ export class WorkbenchReceptionComponent{
 		this.showBookinglist = JSON.parse(day.string);
 		this.modalTab = true;
 
-		// 获取排班信息
-		var doctordutysUrl = this.url + '&doctor_id=' + booking.doctorId;
-		this.adminService.doctordutys(doctordutysUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.doctors.length > 0){
-					if(results.doctors[0].doctorDutys.length > 0){
-						for(var i = 0; i < results.doctors[0].doctorDutys.length; i++){
-							var dutylist = [];
-							if(results.doctors[0].doctorDutys[i].timeList.length> 0){
-								//给时间排序
-								results.doctors[0].doctorDutys[i].timeList.sort(function(a,b){return Number(a.replace(':', '')) - Number(b.replace(':', ''))});
-								for(var j = 0; j < results.doctors[0].doctorDutys[i].timeList.length; j++){
-									var duty = {
-										date: results.doctors[0].doctorDutys[i].timeList[j],
-										use: '',
+		// 获取排班信息，如果日期为过期日期，查看排班则为当天排班，否则为未来排班
+		var doctordutysUrl = '';
+		if(day.use){
+			doctordutysUrl = this.url + '&doctor_id=' + booking.doctorId;
+			this.adminService.doctordutys(doctordutysUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.structureDuty(results);
+				}
+			});
+		}else{
+			doctordutysUrl = this.url + '&doctor_id=' + booking.doctorId + '&duty_date=' + this.adminService.dateFormatHasWord(day.date);
+			this.adminService.doctordaydutys(doctordutysUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.structureDuty(results);
+				}
+			});
+		}
+	}
+
+	// 构造排班信息
+	structureDuty(results) {
+		if(results.doctors.length > 0){
+			if(results.doctors[0].doctorDutys.length > 0){
+				for(var i = 0; i < results.doctors[0].doctorDutys.length; i++){
+					var dutylist = [];
+					if(results.doctors[0].doctorDutys[i].timeList.length> 0){
+						//给时间排序
+						results.doctors[0].doctorDutys[i].timeList.sort(function(a,b){return Number(a.replace(':', '')) - Number(b.replace(':', ''))});
+						for(var j = 0; j < results.doctors[0].doctorDutys[i].timeList.length; j++){
+							var duty = {
+								date: results.doctors[0].doctorDutys[i].timeList[j],
+								use: '',
+							}
+							if(results.doctors[0].doctorDutys[i].selectedList.length){
+								for(var k = 0; k < results.doctors[0].doctorDutys[i].selectedList.length; k++){
+									if(results.doctors[0].doctorDutys[i].timeList[j] == results.doctors[0].doctorDutys[i].selectedList[k]){
+										duty.use = '已预约';
 									}
-									if(results.doctors[0].doctorDutys[i].selectedList.length){
-										for(var k = 0; k < results.doctors[0].doctorDutys[i].selectedList.length; k++){
-											if(results.doctors[0].doctorDutys[i].timeList[j] == results.doctors[0].doctorDutys[i].selectedList[k]){
-												duty.use = '已预约';
-											}
-										}
-									}
-									dutylist.push(duty);
 								}
 							}
-							results.doctors[0].doctorDutys[i].list = dutylist;
+							dutylist.push(duty);
 						}
 					}
-					this.doctorDutyList = results.doctors[0].doctorDutys;
+					results.doctors[0].doctorDutys[i].list = dutylist;
 				}
 			}
-		});
+			this.doctorDutyList = results.doctors[0].doctorDutys;
+		}
+		this.hasDutyData = true;
 	}
 
 	changeSelected(value) {
