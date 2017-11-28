@@ -15,7 +15,7 @@
 				<label>性别</label>
 				<div class="info">{{olduserInfo.gender == 'M' ? '男' : '女'}}</div>
 			</div>
-			<div>
+			<div *ngIf="editType != 'updateuser'">
 				<button (click)="updateuser()" class="pure-button pure-button-primary">修改</button>
 			</div>
 		</div>
