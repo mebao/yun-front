@@ -1021,8 +1021,26 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询医生某天值班信息
+	private doctordaydutysUrl = this.url + '/mebcrm/doctordaydutys';
+	doctordaydutys(urlOptions): Promise<Data>{
+		return this.http.get(this.doctordaydutysUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
+	}
+
+	// 去除左右空格
+	trim(str){
+		if(str == ''){
+			return str;
+		}else{
+		    return str.replace(/^(\s|\u00A0)+/,'').replace(/(\s|\u00A0)+$/,'');
+		}
 	}
 
 	//保留两位小数

@@ -67,6 +67,10 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	pageType: string;
 	// 体格检查
 	showExamination: boolean;
+	// 就诊记录
+	historyList: any[];
+	hasHistoryData: boolean;
+	modalTab: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -179,6 +183,34 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		this.prescriptList = [];
 		this.prescription = [];
 		this.getPrescriptData();
+		
+		this.historyList = [];
+		this.hasHistoryData = false;
+		this.modalTab = false;
+	}
+
+	// 历史记录
+	showHistory() {
+		this.modalTab = true;
+		this.hasHistoryData = false;
+		var urlOptions = this.url + '&child_id=' + this.booking.childId;
+		this.adminService.searchbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.historyList = results.weekbooks;
+				this.hasHistoryData = true;
+			}
+		});
+	}
+
+	close() {
+		this.modalTab = false;
+	}
+
+	goHistory(history) {
+		window.open('./admin/doctorBookingHealthrecord?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getBookingData() {

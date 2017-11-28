@@ -117,6 +117,10 @@ export class DoctorBookingComponent implements OnInit{
 	};
 	// 不可连续点击
 	btnCanEdit: boolean;
+	// 就诊记录
+	historyList: any[];
+	hasHistoryData: boolean;
+	modalTab: boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -314,6 +318,34 @@ export class DoctorBookingComponent implements OnInit{
 		});
 
 		this.btnCanEdit = false;
+
+		this.historyList = [];
+		this.hasHistoryData = false;
+		this.modalTab = false;
+	}
+
+	// 历史记录
+	showHistory() {
+		this.modalTab = true;
+		this.hasHistoryData = false;
+		var urlOptions = this.url + '&child_id=' + this.booking.childId;
+		this.adminService.searchbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.historyList = results.weekbooks;
+				this.hasHistoryData = true;
+			}
+		});
+	}
+
+	close() {
+		this.modalTab = false;
+	}
+
+	goHistory(history) {
+		window.open('./admin/doctorBookingHealthrecord?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	// 成长记录

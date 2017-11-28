@@ -27,6 +27,9 @@
 				<span>接诊医生：</span>
 				<span>{{doctorInfo.realName}}</span>
 			</div>
+			<div *ngIf="pageType != 'history'" class="mt20">
+				<button (click)="showHistory()" class="pure-button pure-button-primary">就诊记录</button>
+			</div>
 		</div>
 		<div class="pure-u-4-5 right-tab booking-info pad10">
 			<div class="second-bar-tab flex mb10">
@@ -216,6 +219,53 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTab">
+	<div class="modal-mask" (click)="close()"></div>
+	<div class="container">
+		<div class="title">就诊记录</div>
+		<div class="content pad10">
+			<div class="mt10">
+				<table *ngIf="historyList.length > 0" class="pure-table pure-table-horizontal w100">
+					<thead>
+						<tr>
+							<th>预约科室</th>
+							<th>接诊医生</th>
+							<th>宝宝姓名</th>
+							<th>手机号码</th>
+							<th>预约时间</th>
+							<th class="th-width">备注</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let history of historyList">
+							<td>{{history.services.length > 0 ? history.services[0].serviceName : ''}}</td>
+							<td>{{history.services.length > 0 ? history.services[0].userDoctorName : ''}}</td>
+							<td>{{history.childName}}</td>
+							<td>{{history.mobile}}</td>
+							<td>
+								<span>{{history.bookingDate}}</span>
+								<span>{{history.time}}</span>
+							</td>
+							<td>
+								<div class="length-text">{{history.remark}}</div>
+							</td>
+							<td>
+								<button (click)="goHistory(history)" class="pure-button pure-button-primary">详情</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="hasHistoryData && historyList.length == 0" class="mt10">
+					<nodata title="未查询到就诊记录"></nodata>
+				</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="close()" class="pure-button">关闭</button>
 		</div>
 	</div>
 </div>
