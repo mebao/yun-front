@@ -225,9 +225,9 @@ export class DoctorVisitComponent{
 				}
                 sessionStorage.setItem('bookingInfo', JSON.stringify(results.weekbooks[0]));
 				this.loadingShow = false;
+                this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
 			}
 		})
-        this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
 	}
 
 	toastTab(text, type) {
