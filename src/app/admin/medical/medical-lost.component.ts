@@ -161,6 +161,7 @@ export class MedicalLostComponent{
 				}
 			}
 		}
+		f.value.remark = this.adminService.trim(f.value.remark);
 		if(f.value.remark == ''){
 			this.toastTab('报损原因不可为空', 'error');
 			this.btnCanEdit = false;

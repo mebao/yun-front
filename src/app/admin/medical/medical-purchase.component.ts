@@ -210,6 +210,7 @@ export class MedicalPurchaseComponent{
 					}
 					var key = this.mslist[i].key;
 					num++;
+					f.value['batch_' + key] = this.adminService.trim(f.value['batch_' + key]);
 					if(f.value['ms_' + key] == ''){
 						this.toastTab('第' + num + '条药品不可为空', 'error');
 						this.btnCanEdit = false;
