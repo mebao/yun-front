@@ -23,6 +23,7 @@ export class DoctorVisitComponent{
 	moduleAuthority: {
 		see: boolean,
 		personal: boolean,
+        payment: boolean,
 	}
 	loadingShow: boolean;
     url: string;
@@ -55,6 +56,7 @@ export class DoctorVisitComponent{
 		this.moduleAuthority = {
 			see: false,
 			personal: false,
+            payment: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -67,6 +69,21 @@ export class DoctorVisitComponent{
 			for(var i = 0; i < authority.infos.length; i++){
 				this.moduleAuthority[authority.infos[i].keyName] = true;
 			}
+            var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+            if(userClinicRoles.length > 0){
+                for(var i = 0; i < userClinicRoles.length; i++){
+                    if(userClinicRoles[i].keyName == 'bookingCharge'){
+                        // 查询用户是否含有收费权限
+                        if(userClinicRoles[i].infos.length > 0){
+                            for(var j = 0; j < userClinicRoles[i].infos.length; j++){
+                                if(userClinicRoles[i].infos[j].keyName == 'payment'){
+                                    this.moduleAuthority.payment = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
 		this.loadingShow = true;
@@ -166,26 +183,14 @@ export class DoctorVisitComponent{
                     this.toastTab('结束就诊', '');
                     this.getData();
                     this.canEdit = false;
-                    var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
-        			if(userClinicRoles.length > 0){
-        				for(var i = 0; i < userClinicRoles.length; i++){
-        					if(userClinicRoles[i].keyName == 'bookingCharge'){
-        						// 查询用户是否含有收费权限
-        						if(userClinicRoles[i].infos.length > 0){
-        							for(var j = 0; j < userClinicRoles[i].infos.length; j++){
-        								if(userClinicRoles[i].infos[j].keyName == 'payment'){
-        									this.modalTabAgain = true;
-                                            for(var x in visit.doctorChilds){
-                                                if(visit.doctorChilds[x].serviceId==visit.selected){
-                                                        this.bookingId = visit.doctorChilds[x].bookingId;
-                                                }
-                                            }
-        								}
-        							}
-        						}
-        					}
-        				}
-        			}
+                    if(this.moduleAuthority.payment){
+                        this.modalTabAgain = true;
+                        for(var x in visit.doctorChilds){
+                            if(visit.doctorChilds[x].serviceId==visit.selected){
+                                    this.bookingId = visit.doctorChilds[x].bookingId;
+                            }
+                        }
+                    }
                 }
             });
         }
