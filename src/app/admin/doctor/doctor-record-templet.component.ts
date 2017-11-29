@@ -164,6 +164,7 @@ export class DoctorRecordTempletComponent{
 
     add() {
         this.btnCanEdit = true;
+        this.name = this.adminService.trim(this.name);
         if(this.name == ''){
             this.toastTab('模板名不可为空', 'error');
             this.btnCanEdit = false;

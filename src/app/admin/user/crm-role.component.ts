@@ -48,6 +48,7 @@ export class CrmRoleComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		f.value.name = this.adminService.trim(f.value.name);
 		if(f.value.name == ''){
 			this.toastTab('角色名不可为空', 'error');
 			this.btnCanEdit = false;

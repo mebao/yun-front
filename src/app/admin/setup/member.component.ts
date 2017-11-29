@@ -161,6 +161,7 @@ export class MemberComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		f.value.name = this.adminService.trim(f.value.name);
 		if(f.value.name == ''){
 			this.toastTab('会员名不能为空', 'error');
 			this.btnCanEdit = false;

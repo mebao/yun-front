@@ -152,6 +152,12 @@ export class MedicalHasComponent{
 
 	update(f) {
 		this.btnCanEdit = true;
+		f.value.trade_name = this.adminService.trim(f.value.trade_name);
+		f.value.manufacturer = this.adminService.trim(f.value.manufacturer);
+		f.value.format = this.adminService.trim(f.value.format);
+		f.value.otc = this.adminService.trim(f.value.otc);
+		f.value.code = this.adminService.trim(f.value.code);
+		f.value.usage = this.adminService.trim(f.value.usage);
 		if(f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
 			this.btnCanEdit = false;

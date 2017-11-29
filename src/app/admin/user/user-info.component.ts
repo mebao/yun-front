@@ -299,8 +299,15 @@ export class UserInfoComponent{
 	}
 
 	createUser(f){
+		f.value.name = this.adminService.trim(f.value.name);
+		f.value.mobile = this.adminService.trim(f.value.mobile);
 		if(f.value.name == ''){
 			this.toastTab('姓名不可为空', 'error');
+			this.btnUserCanEdit = false;
+			return;
+		}
+		if(f.value.name.length > 5){
+			this.toastTab('姓名最多五位', 'error');
 			this.btnUserCanEdit = false;
 			return;
 		}
@@ -309,7 +316,7 @@ export class UserInfoComponent{
 			this.btnUserCanEdit = false;
 			return;
 		}
-		if(f.value.mobile.length != 11){
+		if(f.value.mobile.length != 11 || !this.adminService.trim(f.value.mobile)){
 			this.toastTab('手机号码不正确', 'error');
 			this.btnUserCanEdit = false;
 			return;
@@ -355,6 +362,9 @@ export class UserInfoComponent{
 					child['token'] = this.adminService.getUser().token;
 					child['user_id'] = this.id;
 					child['id'] = f.value['id_' + this.childlist[i].key];
+					f.value['name_' + this.childlist[i].key] = this.adminService.trim(f.value['name_' + this.childlist[i].key]);
+					f.value['nickname_' + this.childlist[i].key] = this.adminService.trim(f.value['nickname_' + this.childlist[i].key]);
+					f.value['remark_' + this.childlist[i].key] = this.adminService.trim(f.value['remark_' + this.childlist[i].key]);
 					//判断姓名
 					if(f.value['name_' + this.childlist[i].key]){
 						child['name'] = f.value['name_' + this.childlist[i].key];

@@ -244,12 +244,17 @@ export class CrmUserComponent implements OnInit{
 
 	create(f): void {
 		this.btnCanEdit = true;
+		f.value.mobile = this.adminService.trim(f.value.mobile);
+		f.value.user_name = this.adminService.trim(f.value.user_name);
+		this.user.user_name = this.adminService.trim(this.user.user_name);
+		f.value.real_name = this.adminService.trim(f.value.real_name);
+		f.value.description = this.adminService.trim(f.value.description);
 		if(f.value.mobile == ''){
 			this.toastTab('手机号码不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.mobile.length != 11){
+		if(f.value.mobile.length != 11 || !this.adminService.checkMobile(f.value.mobile)){
 			this.toastTab('手机号码输入不正确', 'error');
 			this.btnCanEdit = false;
 			return;
