@@ -122,6 +122,11 @@ export class MaterialComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		f.value.name = this.adminService.trim(f.value.name);
+		f.value.trade_name = this.adminService.trim(f.value.trade_name);
+		f.value.manufacturer = this.adminService.trim(f.value.manufacturer);
+		f.value.format = this.adminService.trim(f.value.format);
+		f.value.usage = this.adminService.trim(f.value.usage);
 		if(f.value.name == ''){
 			this.toastTab('物资名不可为空', 'error');
 			this.btnCanEdit = false;

@@ -112,6 +112,7 @@ export class AssistComponent{
 
     create() {
         this.btnCanEdit = true;
+        this.info.name = this.adminService.trim(this.info.name);
         if(this.adminService.isFalse(this.info.name)){
             this.toastTab('辅助治疗名不可为空', 'error');
             this.btnCanEdit = false;

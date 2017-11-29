@@ -85,6 +85,10 @@ export class MedicalSupplierComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		f.value.name = this.adminService.trim(f.value.name);
+		f.value.company = this.adminService.trim(f.value.company);
+		f.value.contacts = this.adminService.trim(f.value.contacts);
+		f.value.mobile = this.adminService.trim(f.value.mobile);
 		if(f.value.name == ''){
 			this.toastTab('供应商名不可为空', 'error');
 			this.btnCanEdit = false;
@@ -105,8 +109,8 @@ export class MedicalSupplierComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.mobile.length != 11){
-			this.toastTab('联系人电话应为11位', 'error');
+		if(f.value.mobile.length != 11 || !this.adminService.checkMobile(f.value.mobile)){
+			this.toastTab('联系人电话不正确', 'error');
 			this.btnCanEdit = false;
 			return;
 		}

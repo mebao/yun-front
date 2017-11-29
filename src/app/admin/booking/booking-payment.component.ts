@@ -442,6 +442,7 @@ export class BookingPaymentComponent{
 
 	confirmPay() {
 		this.btnCanEdit = true;
+		this.payInfo.remark = this.adminService.trim(this.payInfo.remark);
 		if(this.payInfo.payWay == ''){
 			this.toastTab('请选择支付方式', 'error');
 			this.btnCanEdit = false;

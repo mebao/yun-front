@@ -121,6 +121,9 @@ export class BookingFollowupsComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		f.value.account = this.adminService.trim(f.value.account);
+		f.value.remarks = this.adminService.trim(f.value.remarks);
+		f.value.results = this.adminService.trim(f.value.results);
 		if(this.editType == 'create'){
 			// if(this.selectUser == ''){
 			// 	this.toastTab('随访人员不可为空', 'error');

@@ -72,6 +72,8 @@ export class ChildServiceComponent{
 
 	submit(f) {
 		this.btnCanEdit = true;
+		f.value.service_name = this.adminService.trim(f.value.service_name);
+		f.value.description = this.adminService.trim(f.value.description);
 		if(f.value.service_name == ''){
 			this.toastTab('科室名不可为空', 'error');
 			this.btnCanEdit = false;
