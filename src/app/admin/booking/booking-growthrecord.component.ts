@@ -267,6 +267,27 @@ export class BookingGrowthrecordComponent{
 
 	create(f) {
 		this.btnCanEdit = true;
+		this.info.personal_history = this.adminService.trim(this.info.personal_history);
+		this.info.feeding_way = this.adminService.trim(this.info.feeding_way);
+		this.info.allergy = this.adminService.trim(this.info.allergy);
+		this.info.mental_state = this.adminService.trim(this.info.mental_state);
+		this.info.heart_lung = this.adminService.trim(this.info.heart_lung);
+		this.info.liver = this.adminService.trim(this.info.liver);
+		this.info.spleen = this.adminService.trim(this.info.spleen);
+		this.info.torticollis_screening = this.adminService.trim(this.info.torticollis_screening);
+		this.info.hip_screening = this.adminService.trim(this.info.hip_screening);
+		this.info.genital = this.adminService.trim(this.info.genital);
+		this.info.nervous_system = this.adminService.trim(this.info.nervous_system);
+		this.info.other = this.adminService.trim(this.info.other);
+		this.info.blood_routine_examination = this.adminService.trim(this.info.blood_routine_examination);
+		this.info.blood_routine_examination_other = this.adminService.trim(this.info.blood_routine_examination_other);
+		this.info.routine_urine = this.adminService.trim(this.info.routine_urine);
+		this.info.routine_urine_other = this.adminService.trim(this.info.routine_urine_other);
+		this.info.bone_density = this.adminService.trim(this.info.bone_density);
+		this.info.BALP = this.adminService.trim(this.info.BALP);
+		this.info.BALP_other = this.adminService.trim(this.info.BALP_other);
+		this.info.trace_element = this.adminService.trim(this.info.trace_element);
+		this.info.trace_element_other = this.adminService.trim(this.info.trace_element_other);
 		if(!this.validateNumber('feeding_volume', '奶量')){
 			this.btnCanEdit = false;
 			return;

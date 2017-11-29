@@ -341,6 +341,21 @@ export class BookingCasehistoryComponent{
 
 	create() {
 		this.btnCanEdit = true;
+		this.info.topic_comment = this.adminService.trim(this.info.topic_comment);
+		this.info.check_result = this.adminService.trim(this.info.check_result);
+		this.info.present_illness = this.adminService.trim(this.info.present_illness);
+		this.info.previous_history = this.adminService.trim(this.info.previous_history);
+		this.info.allergy = this.adminService.trim(this.info.allergy);
+		this.info.family_history = this.adminService.trim(this.info.family_history);
+		this.info.breed_history = this.adminService.trim(this.info.breed_history);
+		this.info.growth_history = this.adminService.trim(this.info.growth_history);
+		this.info.face_neck = this.adminService.trim(this.info.face_neck);
+		this.info.heart_lung = this.adminService.trim(this.info.heart_lung);
+		this.info.abdomen = this.adminService.trim(this.info.abdomen);
+		this.info.limbs = this.adminService.trim(this.info.limbs);
+		this.info.nervous_system = this.adminService.trim(this.info.nervous_system);
+		this.info.diagnosis = this.adminService.trim(this.info.diagnosis);
+		this.info.advise = this.adminService.trim(this.info.advise);
 		if(!this.validateNumber('weight', '体重')){
 			this.btnCanEdit = false;
 			return;
