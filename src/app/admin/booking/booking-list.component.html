@@ -16,14 +16,6 @@
 			</select>
 		</div>
 		<div class="pure-control-group mr10">
-			<label for="doctor_id">医生：</label>
-			<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
-				<ng-container *ngFor="let doctor of doctorlist">
-					<option value="{{doctor.id}}">{{doctor.realName}}</option>
-				</ng-container>
-			</select>
-		</div>
-		<div class="pure-control-group mr10">
 			<label for="service_id">科室：</label>
 			<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
 				<option value="">请选择科室</option>
@@ -34,11 +26,19 @@
 		</div>
 		<div class="w64p"></div>
 	</div>
-	<div class="flex pure-form search-tab mt5">
+	<div class="flex pure-form mt5">
 		<div class="flex-1"></div>
 		<div class="pure-control-group mr10 flex">
 			<label for="creator_name">家长姓名或手机号码：</label>
 			<select-search [title]="'请选择家长姓名或手机号码'" [selectList]="userList" [showClear]="true" (onVoted)="selectUser($event)"></select-search>
+		</div>
+		<div class="pure-control-group search-tab max mr10">
+			<label for="doctor_id">医生：</label>
+			<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
+				<ng-container *ngFor="let doctor of doctorlist">
+					<option value="{{doctor.id}}">{{doctor.realName}}</option>
+				</ng-container>
+			</select>
 		</div>
 		<div *ngIf="selectedTab == 1" class="w64p"></div>
 		<button *ngIf="selectedTab == 0" (click)="search()" class="pure-button pure-button-primary">搜索</button>
