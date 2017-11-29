@@ -40,10 +40,8 @@
 					<tr *ngFor="let info of member.infoList; let indexInfo=index; let lastInfo=last;" [class.bg-default]="indexMember % 2 != 0">
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.name}}</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.service}}{{member.service && member.service != '' ? '%' : ''}}</td>
-						<td>
-							<ng-container *ngIf="info.serviceId != ''">
-								{{info.serviceName}}：{{info.serviceDiscount}}{{info.serviceDiscount == '' ? '' : '%'}}
-							</ng-container>
+						<td [style.border-bottom]="info.serviceId != '' || lastInfo ? '' : 'none'">
+							{{info.serviceName == '' ? '' : info.serviceName + '：'}}{{info.serviceDiscount}}{{info.serviceDiscount == '' ? '' : '%'}}
 						</td>
 						<td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'" class="text-center">{{member.assist}}{{member.assist && member.assist != '' ? '%' : ''}}</td>
 						<td [style.border-bottom]="info.assistId != '' || lastInfo ? '' : 'none'">
