@@ -10,23 +10,23 @@
 @import './assets/css/_wh.scss';
 
 
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-::-webkit-scrollbar{
-    width: 5px;
-    height: 5px;
-    background-color: #000;
-}
-/*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: #fff;
-}
-/*定义滑块 内阴影+圆角*/
-::-webkit-scrollbar-thumb{
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: rgba(0,0,0,.3);
-}
+// /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+// ::-webkit-scrollbar{
+//     width: 5px;
+//     height: 5px;
+//     background-color: #000;
+// }
+// /*定义滚动条轨道 内阴影+圆角*/
+// ::-webkit-scrollbar-track{
+//     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+//     background-color: #fff;
+// }
+// /*定义滑块 内阴影+圆角*/
+// ::-webkit-scrollbar-thumb{
+//     border-radius: 10px;
+//     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+//     background-color: rgba(0,0,0,.3);
+// }
 
 .cursor-p{
 	cursor: pointer;
@@ -76,13 +76,14 @@ select:focus, input:focus, textarea:focus{
 	}
 	.right-content{
 		background-color: #F7F7F7;
-		overflow-x: hidden;
+		overflow-x: auto;
 		overflow-y: auto;
 		.content{
 			margin: 20px 20px 40px;
 			background-color: #fff;
 			border: 1px solid #E6E9ED;
 			padding: 10px 15px;
+            min-width: 1150px;
 		}
 	}
 }
