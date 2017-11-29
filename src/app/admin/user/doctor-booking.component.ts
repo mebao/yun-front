@@ -501,6 +501,8 @@ export class DoctorBookingComponent implements OnInit{
 
 	editFee(f) {
 		this.btnCanEdit = true;
+		this.addFeeInfo.project_name = this.adminService.trim(this.addFeeInfo.project_name);
+		this.addFeeInfo.remarks = this.adminService.trim(this.addFeeInfo.remarks);
 		if(this.addFeeInfo.project_name == ''){
 			this.toastTab('消费项目名不可为空', 'error');
 			this.btnCanEdit = false;
@@ -728,7 +730,7 @@ export class DoctorBookingComponent implements OnInit{
 			price: this.addAssistInfo.price,
 			number: this.addAssistInfo.number,
 			fee: this.addAssistInfo.fee,
-			remarks: this.addAssistInfo.remarks,
+			remarks: this.adminService.trim(this.addAssistInfo.remarks),
 			id: this.addAssistInfo.editType == 'update' ? this.addAssistInfo.editProjectId : null,
 		}
 

@@ -419,6 +419,7 @@ export class DoctorPrescriptComponent{
 							days: '',
 							remark: '',
 						};
+						f.value['remark_' + this.plist[i].key] = this.adminService.trim(f.value['remark_' + this.plist[i].key]);
 						if(f.value['ms_' + this.plist[i].key] == ''){
 							this.toastTab('第' + num + '条药品名不可为空', 'error');
 							this.btnCanEdit = false;
@@ -513,7 +514,7 @@ export class DoctorPrescriptComponent{
 					child_name: this.bookingInfo.childName,
 					name: f.value.name,
 					plist: JSON.stringify(plist),
-					remark: f.value.remark,
+					remark: this.adminService.trim(f.value.remark),
 					fee: feeAll.toString(),
 				}
 
