@@ -455,7 +455,7 @@ export class BookingComponent implements OnInit{
 							if(this.editType == 'create' && this.urlSelected.doctorId && this.urlSelected.doctorId != ''){
 								if(results.doctors[i].doctorId == this.urlSelected.doctorId){
 									this.bookingInfo.user_doctor = results.doctors[i].string;
-									this.doctorChange('');
+									this.doctorChange('changeBookingFee');
 								}
 							}
 						}
@@ -724,7 +724,7 @@ export class BookingComponent implements OnInit{
 			// age: this.editType == 'update' ? JSON.parse(this.bookingInfo.child).age : (this.childs.length == 0 ? null : JSON.parse(f.value.child).age),
 			// gender: this.childs.length == 0 ? f.value.gender : null,
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
-			remark: this.bookingInfo.remark,
+			remark: this.adminService.trim(this.bookingInfo.remark),
 			booking_fee: (this.editType == 'create' || this.bookingInfo.status == '1') ? this.bookingInfo.booking_fee.toString() : null,
 		}
 		if(this.editType == 'update'){

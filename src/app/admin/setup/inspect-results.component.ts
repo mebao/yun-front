@@ -252,6 +252,7 @@ export class InspectResultsComponent{
 					remark: '',
 					compare: '',
 				}
+				this.checkProjectList[indexCheck].resultList[i].values = this.adminService.trim(this.checkProjectList[indexCheck].resultList[i].values);
 				// 判断该项是否使用
 				if(this.checkProjectList[indexCheck].resultList[i].use){
 					// 图片判断

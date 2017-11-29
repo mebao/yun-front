@@ -561,7 +561,7 @@ export class BookingInComponent{
 			mobile: JSON.parse(this.bookingInfo.creator).mobile,
 			child_name: JSON.parse(this.bookingInfo.child).childName,
 			child_id: JSON.parse(this.bookingInfo.child).childId,
-			remark: this.bookingInfo.remark,
+			remark: this.adminService.trim(this.bookingInfo.remark),
 			booking_fee: this.bookingInfo.booking_fee.toString(),
 		}
 		this.adminService.bookingcreate(param).then((data) => {
@@ -599,7 +599,7 @@ export class BookingInComponent{
 			user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
 			booking_date: JSON.parse(f.value.booking_date).dutyDate,
 			time: this.bookingInfo.timeInfo,
-			remark: this.bookingInfo.remark,
+			remark: this.adminService.trim(this.bookingInfo.remark),
 		}
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){
