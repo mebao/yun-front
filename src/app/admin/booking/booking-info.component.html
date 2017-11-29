@@ -1,5 +1,5 @@
 <header-nav></header-nav>
-<div class="content admin-booking-info">
+<div class="content-section admin-booking-info">
 	<top-bar [data]="topBar"></top-bar>
 	<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2') && canEdit">
 		<button (click)="updateBooking()" class="pure-button pure-button-primary">修改</button>

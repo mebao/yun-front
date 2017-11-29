@@ -1036,11 +1036,19 @@ export class AdminService{
 
 	// 去除左右空格
 	trim(str){
-		if(str == ''){
+		if(str == '' || str == undefined || str == null){
 			return str;
 		}else{
 		    return str.replace(/^(\s|\u00A0)+/,'').replace(/(\s|\u00A0)+$/,'');
 		}
+	}
+
+	// 验证手机号
+	checkMobile(mobile) {
+		if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))){
+			return false;
+		}
+		return true;
 	}
 
 	//保留两位小数
