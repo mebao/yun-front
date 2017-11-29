@@ -797,3 +797,16 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
         }
     }
 }
+
+//实验室检查列表
+.admin-inspect-results-list{
+    .search-tab{
+        .select-date{
+            margin-top:0.25em!important;
+            .title{
+                height:2.25em!important;
+            }
+        }
+    }
+
+}

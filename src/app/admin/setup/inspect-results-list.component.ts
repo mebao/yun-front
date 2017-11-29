@@ -32,6 +32,8 @@ export class InspectResultsListComponent{
 		child_name: string,
 		ischeck: string,
 		today: string,
+		date: string,
+		date_text: string,
 	}
 	url: string;
 
@@ -71,12 +73,15 @@ export class InspectResultsListComponent{
 
 		this.loadingShow = true;
 
+		var todayDate = this.adminService.getDayByDate(new Date());
 		this.info = {
 			check_name: '',
 			doctor_name: '',
 			child_name: '',
 			ischeck: '0',
 			today: '',
+			date: todayDate,
+			date_text: this.adminService.dateFormat(todayDate),
 		}
 
 		this.hasData = false;
@@ -138,6 +143,11 @@ export class InspectResultsListComponent{
 		});
 	}
 
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
+	}
+
 	search() {
 		var urlOptions = this.url;
 		if(this.info.check_name != ''){
@@ -154,6 +164,9 @@ export class InspectResultsListComponent{
 		}
 		if(this.info.today != ''){
 			urlOptions += '&today=' + this.info.today;
+		}
+		if(this.info.date != ''){
+			urlOptions += '&date=' + this.info.date;
 		}
 		this.getData(urlOptions);
 	}
