@@ -46,8 +46,8 @@
 					<th>单位</th>
 					<th>药品类型</th>
 					<th>批次</th>
-					<th>处方类型</th>
-					<th>是否优惠</th>
+					<!-- <th>处方类型</th>
+					<th>是否优惠</th> -->
 					<th>库存</th>
 					<th>售价</th>
 					<th>有效日期</th>
@@ -61,8 +61,8 @@
 						<td [attr.rowspan]="item.others.length" *ngIf="indexOther == 0">{{item.unit}}</td>
 						<td [attr.rowspan]="item.others.length" *ngIf="indexOther == 0">{{item.typeText}}</td>
 						<td>{{other.batch}}</td>
-						<td>{{other.isPrescribed == '0' ? '不是' : '是'}}</td>
-						<td>{{other.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td>
+						<!-- <td>{{other.isPrescribed == '0' ? '不是' : '是'}}</td>
+						<td>{{other.canDiscount == '0' ? '不可优惠' : '可优惠'}}</td> -->
 						<td>{{other.stock}}</td>
 						<td>{{other.price}}</td>
 						<td>{{other.expiringDate}}</td>
