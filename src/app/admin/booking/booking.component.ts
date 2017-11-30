@@ -762,11 +762,11 @@ export class BookingComponent implements OnInit{
 		this.route.queryParams.subscribe((params) => {
 			var paramObj = {
 				type: params.type,
-				id: params.id,
-				childId: params.childId,
-				serviceId: params.serviceId,
-				doctorId: params.doctorId,
-				date: params.date,
+				// id: params.id,
+				// childId: params.childId,
+				// serviceId: params.serviceId,
+				// doctorId: params.doctorId,
+				// date: params.date,
 				from: 'booking',
 			}
 			this.router.navigate(['./admin/repage'], {queryParams: paramObj});
