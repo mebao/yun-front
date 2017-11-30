@@ -1,0 +1,42 @@
+<div class="forgetpwd-page">
+	<div class="pure-g">
+		<div class="pure-u-1-5"></div>
+		<div class="pure-u-3-5 flex">
+			<div class="flex-1"></div>
+			<div class="mt50 w400p form-tab">
+				<div class="title text-center">嘉宝康乐</div>
+				<form class="pure-form">
+				    <fieldset class="pure-group">
+			            <input type="tel" id="username" name="username" maxlength="11" [(ngModel)]="info.username" class="w100" placeholder="请输入手机号码">
+						<div class="flex left-right-tab">
+			            	<input type="text" id="vali_code" name="vali_code" maxlength="4" [(ngModel)]="info.vali_code" class="w100" placeholder="请输入图形验证码">
+							<div class="code-img">
+								<img [src]="codeImg" (click)="changeCodeImg()">
+							</div>
+						</div>
+						<div class="flex left-right-tab">
+			            	<input id="verify_code" type="tel" name="verify_code" [(ngModel)]="info.verify_code" class="w100" placeholder="请输入验证码">
+							<div class="sms">
+								<button (click)="sendSms()" class="pure-button pure-button-primary" [disabled]="info.username.length != 11 || info.vali_code.length != 4 || sms.disabled">{{sms.text}}</button>
+							</div>
+						</div>
+			            <input id="password" type="password" name="password" [(ngModel)]="info.password" class="w100" placeholder="请输入新密码">
+				    </fieldset>
+					<button (click)="updatePwd()" class="pure-button pure-button-primary w100" [disabled]="info.username.length != 11 || info.vali_code.length != 4 || info.verify_code.length == 0 || info.password.length == 0 || btnCanEdit">确定</button>
+					<div class="mt50 text-right">
+						<a (click)="login()">去登录</a>
+					</div>
+				</form>
+			</div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="pure-u-1-5"></div>
+	</div>
+</div>
+<div class="modal-toast" *ngIf="toast.show == 1">
+	<div class="container mobile">
+		<div class="content-tab {{toast.type}} pad10">
+			{{toast.text}}
+		</div>
+	</div>
+</div>

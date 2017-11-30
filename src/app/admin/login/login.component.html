@@ -11,6 +11,9 @@
 			            <input id="password" type="password" #password class="w100" placeholder="请输入密码">
 				    </fieldset>
 					<button (click)="login(username.value, password.value)" class="pure-button pure-button-primary w100">登录</button>
+					<div class="mt50 text-right">
+						<a (click)="forgetpwd()">找回密码？</a>
+					</div>
 				</form>
 			</div>
 			<div class="flex-1"></div>

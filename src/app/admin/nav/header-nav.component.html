@@ -2,6 +2,7 @@
 	<div class="title">{{clinicName}}</div>
 	<div class="flex-1 right-tab text-right">
 		<div class="item">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
+		<div (click)="updatepwd()" class="item cursor-p">忘记密码</div>
 		<div (click)="logout()" class="item cursor-p">退出</div>
 	</div>
 </div>

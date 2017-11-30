@@ -1030,6 +1030,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 修改密码
+	private updatepwdUrl = this.url + '/mebcrm/updatepwd';
+	updatepwd(params): Promise<Data>{
+		return this.http.post(this.updatepwdUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

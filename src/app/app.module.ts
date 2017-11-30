@@ -13,11 +13,13 @@ import { AuthService }                    from './auth.service';
 
 import { LoginRoutingModule }             from './admin/login/login-routing.module';
 import { LoginComponent }                 from './admin/login/login.component';
+import { ForgetpwdComponent }             from './admin/login/forgetpwd.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		LoginComponent,
+		ForgetpwdComponent,
 	],
 	imports: [
 		BrowserModule,

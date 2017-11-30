@@ -1,0 +1,26 @@
+<header-nav></header-nav>
+<div class="content-section admin-user-updatepwd">
+	<top-bar [data]="topBar"></top-bar>
+	<form class="pure-form pure-form-stacked form-tab pure-tab">
+		<fieldset>
+			<div class="pure-g">
+				<div class="pure-u-1-5"></div>
+                <div class="pure-u-3-5">
+                    <div class="pure-control-group">
+                        <label for="password">新密码：</label>
+                        <input type="password" id="passwrod" name="password" [(ngModel)]="info.password" class="w100" placeholder="请输入新密码">
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="repassword">重复新密码：</label>
+                        <input type="password" id="repassword" name="repassword" [(ngModel)]="info.repassword" class="w100" placeholder="请输入重复新密码">
+                    </div>
+                </div>
+				<div class="pure-u-1-5"></div>
+            </div>
+			<div class="text-center">
+				<button (click)="updatepwd(); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10" [disabled]="btnCanEdit || info.password.length == 0 || info.repassword.length == 0">提交</button>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

@@ -1,0 +1,29 @@
+.forgetpwd-page{
+    input{
+        box-shadow: none;
+    }
+    .left-right-tab{
+        border-right: 1px solid #ccc;
+        input{
+            border-radius: 0;
+            border-top: none;
+            border-right: none;
+        }
+        .code-img{
+            width: 120px;
+            img{
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+        }
+        .sms{
+            width: 120px;
+            text-align: right;
+            border-top: 1px solid #ccc;
+            button{
+                margin: 0;
+            }
+        }
+    }
+}

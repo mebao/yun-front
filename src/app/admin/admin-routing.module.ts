@@ -67,6 +67,7 @@ import { AssistComponent }                  from './setup/assist.component';
 import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
+import { UpdatepwdComponent }               from './user/updatepwd.component';
 
 const adminRoutes: Routes = [
 	{
@@ -405,6 +406,10 @@ const adminRoutes: Routes = [
 					{
 						path: 'repage',
 						component: Repage,
+					},
+					{
+						path: 'updatepwd',
+						component: UpdatepwdComponent,
 					},
 					{
 						path: '**',

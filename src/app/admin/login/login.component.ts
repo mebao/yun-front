@@ -470,6 +470,11 @@ export class LoginComponent{
 		})
 	}
 
+	// 忘记密码
+	forgetpwd() {
+		this.router.navigate(['./forgetpwd']);
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,
