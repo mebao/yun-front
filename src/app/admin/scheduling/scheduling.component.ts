@@ -279,14 +279,14 @@ export class SchedulingComponent{
 		this.modalTab = false;
 		//设置之前先删除，判断是否可以删除
 		if(this.changeData.value != ''){
-			this.delete('update', dutylist);
+			this.configAndScheduling('update', dutylist);
 		}else{
-			this.configAndScheduling(dutylist);
+			this.configAndScheduling('add', dutylist);
 		}
 	}
 
 	//创建判断配置，并排班
-	configAndScheduling(dutylist) {
+	configAndScheduling(type, dutylist) {
 		var dateStr = new Date().getTime();
 		var param = {
 			username: this.adminService.getUser().username,
@@ -313,16 +313,20 @@ export class SchedulingComponent{
 					duty_date: this.adminService.dateFormatHasWord(this.changeData.date),
 					interval: 30*60,
 				}
-				this.adminService.adminScheduling(createParams).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						this.toastTab('排班成功', '');
-						//清空排班配置
-						this.dutylist = [{id: 1, use: true}];
-						this.getList(this.url + '&weekindex=' + this.weekNum);
-					}
-				})
+				if(type == 'add'){
+					this.adminService.adminScheduling(createParams).then((data) => {
+						if(data.status == 'no'){
+							this.toastTab(data.errorMsg, 'error');
+						}else{
+							this.toastTab('排班成功', '');
+							//清空排班配置
+							this.dutylist = [{id: 1, use: true}];
+							this.getList(this.url + '&weekindex=' + this.weekNum);
+						}
+					})
+				}else{
+					this.update(dateStr, results.id);
+				}
 			}
 		});
 	}
@@ -346,8 +350,27 @@ export class SchedulingComponent{
 					this.getList(this.url + '&weekindex=' + this.weekNum);
 				}else{
 					//删除成功后，添加排班配置并排班
-					this.configAndScheduling(list);
+					this.configAndScheduling('', list);
 				}
+			}
+		});
+	}
+
+	update(name, id) {
+		var updateParams = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			config_name: name,
+			config_id: id,
+		}
+		this.adminService.updateduty(this.changeData._id, updateParams).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('排班修改成功', '');
+				//清空排班配置
+				this.dutylist = [{id: 1, use: true}];
+				this.getList(this.url + '&weekindex=' + this.weekNum);
 			}
 		});
 	}
