@@ -7,6 +7,14 @@
 				<button *ngIf="moduleAuthority.add" (click)="add()" class="pure-button pure-button-primary">新增员工</button>
 			</div>
 			<div class="pure-control-group mr10">
+				<label for="name">姓名：</label>
+				<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="mobile">手机号码：</label>
+				<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
+			</div>
+			<div class="pure-control-group mr10">
 				<label for="role">筛选类型：</label>
 				<select id="role" name="role" [(ngModel)]="searchInfo.role">
 					<option value=""></option>
@@ -31,6 +39,7 @@
 				<tr>
 					<th></th>
 					<th>姓名</th>
+					<th>手机号码</th>
 					<th>类型</th>
 					<th>角色</th>
 					<th>操作</th>
@@ -40,6 +49,7 @@
 				<tr *ngFor="let user of adminlist; let index=index;">
 					<td>{{index + 1}}</td>
 					<td>{{user.realName}}</td>
+					<td>{{user.mobile}}</td>
 					<td>{{user.roleText}}</td>
 					<td>{{user.clinicRoleName}}</td>
 					<td>

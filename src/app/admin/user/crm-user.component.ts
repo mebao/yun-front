@@ -264,11 +264,11 @@ export class CrmUserComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(!this.user.user_name.match(/^\w+$/)){
-			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
-			this.btnCanEdit = false;
-			return;
-		};
+		// if(!this.user.user_name.match(/^\w+$/)){
+		// 	this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
+		// 	this.btnCanEdit = false;
+		// 	return;
+		// };
 		if(f.value.real_name == ''){
 			this.toastTab('真实姓名不可为空', 'error');
 			this.btnCanEdit = false;

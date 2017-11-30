@@ -456,6 +456,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 					height: 180px;
 					overflow-x: hidden;
 					overflow-y: auto;
+					position:relative;
 					.status{
 						background-color: #efefef;
 						color: #D45D5D;
@@ -492,6 +493,16 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 					.edit{
 						border-color: #39A99D;
 						color: #39A99D;
+					}
+				}
+				&:hover{
+					.vip-tip-text{
+						display: inline-block;
+					}
+					.info{
+						&.active{
+							margin-top:-24px;
+						}
 					}
 				}
 			}
@@ -810,4 +821,37 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
         }
     }
 
+}
+
+.vip-tip-text{
+	display: none;
+	background-color: #000;
+    color: #fff;
+    position: relative;
+    top: -29px;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 12px;
+	.arrow{
+		display:block; border-width:5px; position:absolute; bottom:-10px; left:50%;border-style:solid dashed dashed; border-color:#000 transparent transparent;font-size:0; line-height:0;
+	}
+}
+.vip-tip-text-null{
+	margin-bottom:29px;
+}
+
+.vip-icon{
+	position: absolute;
+    top: -5px;
+    left: -3px;
+    width: 30px;
+	height:30px;
+}
+.vip-icon-text{
+	position:relative;
+	.vip-icon{
+		top:2px;
+		width: 25px;
+		height:22px;
+	}
 }

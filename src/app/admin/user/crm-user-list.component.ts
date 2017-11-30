@@ -36,6 +36,8 @@ export class CrmUserListComponent{
 	url: string;
 	clinicRoleList: any[];
 	searchInfo: {
+		name: string,
+		mobile: string,
 		role: string,
 		clinic_role: string,
 	}
@@ -93,6 +95,8 @@ export class CrmUserListComponent{
 			text: '',
 		}
 		this.searchInfo = {
+			name: '',
+			mobile: '',
 			role: '',
 			clinic_role: '',
 		}
@@ -134,6 +138,12 @@ export class CrmUserListComponent{
 
 	search() {
 		var urlOptions = this.url;
+		if(this.searchInfo.name != ''){
+			urlOptions += '&name=' + this.searchInfo.name;
+		}
+		if(this.searchInfo.mobile != ''){
+			urlOptions += '&mobile=' + this.searchInfo.mobile;
+		}
 		if(this.searchInfo.role != ''){
 			urlOptions += '&role=' + this.searchInfo.role;
 		}

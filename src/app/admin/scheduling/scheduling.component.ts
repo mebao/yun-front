@@ -34,6 +34,7 @@ export class SchedulingComponent{
 		adminName: string,
 		realName: string,
 		date: string,
+		title_date: string,
 	}
 	//排班配置
 	dutylist: any[];
@@ -101,6 +102,7 @@ export class SchedulingComponent{
 			adminName: '',
 			realName: '',
 			date: '',
+			title_date: '',
 		}
 
 		this.modalTab = false;
@@ -146,11 +148,14 @@ export class SchedulingComponent{
 								dutyName: '',
 								id: '',
 								use: true,
+								dutyDayTitle: this.adminService.dateFormat(weekArray[j]),
 							}
 							if(adminduty[i].DutyList.length > 0){
 								for(var k = 0; k < adminduty[i].DutyList.length; k++){
 									if(weekArray[j] == adminduty[i].DutyList[k].dutyDay){
 										scheduling = adminduty[i].DutyList[k];
+										//排班展示日期
+										scheduling.dutyDayTitle = this.adminService.dateFormat(adminduty[i].DutyList[k].dutyDay);
 										scheduling.dutyConfigList = adminduty[i].DutyList[k].dutyConfig.split(' / ');
 									}
 								}
@@ -360,7 +365,7 @@ export class SchedulingComponent{
 		}
 	}
 
-	configChange(use, _id, date, dutyConfig, adminId, adminName, realName) {
+	configChange(use, _id, date, dutyConfig, adminId, adminName, realName, title_date) {
 		if(use){
 			this.changeData = {
 				_id: _id,
@@ -369,6 +374,7 @@ export class SchedulingComponent{
 				adminName: adminName,
 				realName: realName,
 				date: date,
+				title_date: title_date,
 			}
 			//判断是否已存在排班,并初始化排班配置信息
 			if(this.changeData.value != ''){

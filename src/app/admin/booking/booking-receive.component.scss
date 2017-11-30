@@ -7,6 +7,7 @@
 				height: 180px;
 				overflow-x: hidden;
 				overflow-y: auto;
+				position: relative;
 				.status{
 					background-color: #efefef;
 					color: #D45D5D;
@@ -43,6 +44,16 @@
 				.edit{
 					border-color: #39A99D;
 					color: #39A99D;
+				}
+			}
+			&:hover{
+				.vip-tip-text{
+					display: inline-block;
+				}
+				.info{
+					&.active{
+						margin-top:-24px;
+					}
 				}
 			}
 			&.complete{

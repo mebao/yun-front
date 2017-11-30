@@ -81,7 +81,6 @@ export class BookingListComponent implements OnInit{
 		text: string,
 		bookingId: string,
 	}
-
 	constructor(
 		public adminService: AdminService,
 		public router: Router,
