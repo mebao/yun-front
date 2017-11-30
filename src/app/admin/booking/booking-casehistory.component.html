@@ -30,7 +30,7 @@
 			<div class="pure-u-8-24 pl5 pr5">
 				<div class="pure-control-group">
 					<label for="mid_weight">中等值（Kg）：</label>
-					<input type="number" id="mid_weight" step="0.01" name="mid_weight" #mid_weight="ngModel" [(ngModel)]="info.mid_weight" (change)="changeWeight()">
+					<input type="number" id="mid_weight" name="mid_weight" step="0.001" [(ngModel)]="info.mid_weight" (change)="changeHeight()">
 				</div>
 			</div>
 			<div class="pure-u-8-24 pl10">
@@ -48,7 +48,7 @@
 			<div class="pure-u-8-24 pl5 pr5">
 				<div class="pure-control-group">
 					<label for="mid_height">中等值（cm）：</label>
-					<input type="number" id="mid_height" step="0.01" name="mid_height" #mid_height="ngModel" [(ngModel)]="info.mid_height" (change)="changeHeight()">
+					<input type="number" id="mid_height" name="mid_height" step="0.001" [(ngModel)]="info.mid_height" (change)="changeHeight()">
 				</div>
 			</div>
 			<div class="pure-u-8-24 pl10">
