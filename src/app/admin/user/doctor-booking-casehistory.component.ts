@@ -183,7 +183,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		this.prescriptList = [];
 		this.prescription = [];
 		this.getPrescriptData();
-		
+
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
@@ -210,7 +210,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBookingHealthrecord?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getBookingData() {

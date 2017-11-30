@@ -196,7 +196,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				}
 			}
 		});
-		
+
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
@@ -223,7 +223,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBookingHealthrecord?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getBookingData() {
