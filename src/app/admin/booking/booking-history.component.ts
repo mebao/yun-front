@@ -27,7 +27,9 @@ export class BookingHistoryComponent{
         doctor_id: string,
         service_id: string,
         bdate_big: string,
+        bdate_big_num: number,
         bdate_less: string,
+        bdate_less_num: number,
     }
     doctorList: any[];
     serviceList: any[];
@@ -58,7 +60,9 @@ export class BookingHistoryComponent{
             doctor_id: '',
             service_id: '',
             bdate_big: '',
+            bdate_big_num: 0,
             bdate_less: '',
+            bdate_less_num: 0,
         }
 
 		this.loadingShow = true;
@@ -131,6 +135,7 @@ export class BookingHistoryComponent{
     // 选择时间
     changeDate(_value, key) {
         this.searchInfo[key] = JSON.parse(_value).value;
+        this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
     }
 
     // 就诊记录
