@@ -101,6 +101,11 @@ export class PrescriptListComponent{
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
 						results.list[i].infoLength = results.list[i].info.length;
+						if(results.list[i].info.length > 0){
+							for(var j = 0; j < results.list[i].info.length; j++){
+								results.list[i].info[j].msExplain = '单次：' + parseFloat(results.list[i].info[j].oneNum) + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+							}
+						}
 					}
 				}
 				this.list = results.list;
