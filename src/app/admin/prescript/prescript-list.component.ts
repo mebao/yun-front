@@ -118,9 +118,9 @@ export class PrescriptListComponent{
 		if(f.value.today != ''){
 			urlOptions += ('&today=' + f.value.today);
 		}
-		if(f.value.name != ''){
-			urlOptions += ('&name=' + f.value.name);
-		}
+		// if(f.value.name != ''){
+		// 	urlOptions += ('&name=' + f.value.name);
+		// }
 		if(f.value.doctor_name != ''){
 			urlOptions += ('&doctor_name=' + f.value.doctor_name);
 		}
