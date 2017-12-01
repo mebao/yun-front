@@ -103,7 +103,6 @@ export class InspectResultsComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
-					this.selectTab = _selectTab != '' ? _selectTab : results.list[0].id;
 					this.bookingInfo = {
 						imageUrl: results.list[0].imageUrl,
 						childName: results.list[0].childName,
@@ -127,6 +126,14 @@ export class InspectResultsComponent{
 								results.list[i].editType = 'create';
 							}
 						}
+
+						// 获取最新检查结果
+						if(_selectTab != '' && _selectTab == results.list[i].id){
+							this.changeTab(results.list[i]);
+						}
+					}
+					if(_selectTab == ''){
+						this.changeTab(results.list[0]);
 					}
 				}
 				this.checkProjectList = results.list;
@@ -174,12 +181,20 @@ export class InspectResultsComponent{
     	}
     }
 
-	changeTab(_value) {
-		this.selectTab = _value;
+	changeTab(check) {
 		if(this.buttonType == 'save'){
-			this.getData(_value);
-			this.buttonType = 'update';
+			this.getData(check.id);
+			// this.buttonType = 'update';
 		}
+		this.buttonType = 'save';
+		if(check.resultList.length > 0){
+			for(var i = 0; i < check.resultList.length; i++){
+				if(check.resultList[i].values && check.resultList[i].values != ''){
+					this.buttonType = 'update';
+				}
+			}
+		}
+		this.selectTab = check.id;
 	}
 
 	changeButton() {

@@ -4,13 +4,13 @@
 	<div class="pure-g left-right-tab">
 		<div class="pure-u-1-5 left-tab pr20">
 			<div class="img-tab-default">
-				<img src="{{bookingInfo.imageUrl}}">
+				<img src="{{bookingInfo.imageUrl == '' || bookingInfo.imageUrl == null ? '../assets/images/img.png' : bookingInfo.imageUrl}}">
 			</div>
 			<div class="item">{{bookingInfo.childName}}</div>
 		</div>
 		<div class="pure-u-4-5 right-tab">
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="changeTab(check.id)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
+				<div class="item" (click)="changeTab(check)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
 			</div>
 			<div *ngFor="let check of checkProjectList; let indexCheck=index;">
 				<div *ngIf="selectTab == check.id">
