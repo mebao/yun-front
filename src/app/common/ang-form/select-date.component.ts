@@ -11,6 +11,10 @@ export class SelectDateComponent{
 	@Output() onVoted = new EventEmitter<string>();
     @Input() disabled = false;
     @Input() showClear = false;
+    // 可以选择的时间-开始
+    @Input() startDate = 0;
+    // 可以选择的时间-结束
+    @Input() endDate = 0;
     showDateTab: boolean;
     dayList: any[];
     dayInfo: {
@@ -120,6 +124,7 @@ export class SelectDateComponent{
                 year: dayDate.getFullYear(),
                 nowMonth: nowMonth,
                 date: this.getDateString(dayDate),
+                num: new Date(this.getDateString(dayDate)).getTime(),
                 canUse: '',
             }
             dayList.push(dayItem);
@@ -159,18 +164,20 @@ export class SelectDateComponent{
         this.getDate(this.selectInfo.year + '-' + this.selectInfo.month + '-01');
     }
 
-    selectDay(_value) {
-		var v = _value.split('-');
-		v = v[0] + '年' + v[1] + '月' + v[2] + '日';
-        this.selectInfo.date = _value;
-        this.dateText = v;
-        this.showTab = 'day';
-        this.showDateTab = false;
-        var returnData = {
-            value: _value,
-            type: this.type,
+    selectDay(_value, canSelected) {
+        if(canSelected){
+    		var v = _value.split('-');
+    		v = v[0] + '年' + v[1] + '月' + v[2] + '日';
+            this.selectInfo.date = _value;
+            this.dateText = v;
+            this.showTab = 'day';
+            this.showDateTab = false;
+            var returnData = {
+                value: _value,
+                type: this.type,
+            }
+    		this.onVoted.emit(JSON.stringify(returnData));
         }
-		this.onVoted.emit(JSON.stringify(returnData));
     }
 
     // 清空

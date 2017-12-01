@@ -33,10 +33,14 @@ export class BookingChargeComponent{
 		mobile: string,
 		creator_name: string,
 		cdate_less: string,
+		cdate_less_num: number,
 		cdate_big: string,
+		cdate_big_num: number,
 		bdate_less: string,
+		bdate_less_num: number,
 		bdate_less_text: string,
 		bdate_big: string,
+		bdate_big_num: number,
 		bdate_big_text: string,
 	}
 	bookinglist: any[];
@@ -85,10 +89,14 @@ export class BookingChargeComponent{
 			mobile: '',
 			creator_name: '',
 			cdate_less: '',
+			cdate_less_num: 0,
 			cdate_big: '',
+			cdate_big_num: 0,
 			bdate_less: todayDate,
+			bdate_less_num: new Date(todayDate).getTime(),
 			bdate_less_text: this.adminService.dateFormat(todayDate),
 			bdate_big: todayDate,
+			bdate_big_num: new Date(todayDate).getTime(),
 			bdate_big_text: this.adminService.dateFormat(todayDate),
 		}
 
@@ -197,6 +205,7 @@ export class BookingChargeComponent{
 	// 选择日期
 	changeDate(_value, key) {
 		this.searchInfo[key] = JSON.parse(_value).value;
+		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	//付款

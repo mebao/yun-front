@@ -30,7 +30,9 @@ export class MedicalPurchaseListComponent{
 	url: string;
 	info: {
 		b_date: string,
+		b_date_num: number,
 		l_date: string,
+		l_date_num: number,
 		type: string,
 	}
 
@@ -75,7 +77,9 @@ export class MedicalPurchaseListComponent{
 		this.list = [];
 		this.info = {
 			b_date: '',
+			b_date_num: 0,
 			l_date: '',
+			l_date_num: 0,
 			type: '1,2',
 		}
 
@@ -123,6 +127,7 @@ export class MedicalPurchaseListComponent{
 	// 选择日期
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
+		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	goUrl(_url) {

@@ -54,7 +54,7 @@
                 </div>
                 <div class="tab-date flex flex-wrap">
                     <ng-container *ngFor="let day of dayList">
-                        <div (click)="selectDay(day.date)" class="w14 item" [ngClass]="{'notNowMonth': day.month != day.nowMonth, 'active': day.date == selectInfo.date, 'today': day.date == today}">
+                        <div (click)="selectDay(day.date, !((startDate != 0 && startDate > day.num) || (endDate != 0 && endDate < day.num)))" class="w14 item" [ngClass]="{'notNowMonth': day.month != day.nowMonth, 'active': day.date == selectInfo.date, 'today': day.date == today, 'disabled': (startDate != 0 && startDate > day.num) || (endDate != 0 && endDate < day.num)}">
                             {{day.day}}
                         </div>
                     </ng-container>

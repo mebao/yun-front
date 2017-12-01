@@ -13,12 +13,12 @@
 			<button *ngIf="moduleAuthority.editLost" (click)="goUrl('./admin/material/lost')" class="pure-button pure-button-primary">新增报损</button>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="b_date">开始时间：</label>
-			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
+			<label for="b_date">报损时间：</label>
+			<select-date title="请选择日期" [showClear]="true" [endDate]="info.l_date_num" (onVoted)="changeDate($event, 'b_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="l_date">结束时间：</label>
-			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event, 'l_date')"></select-date>
+			<label for="l_date">至</label>
+			<select-date title="请选择日期" [showClear]="true" [startDate]="info.b_date_num" (onVoted)="changeDate($event, 'l_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10">
 			<label for="type">物资类型：</label>
@@ -40,6 +40,7 @@
 					<th>报损数量</th>
 					<th class="th-width">报损原因</th>
 					<th>总费用</th>
+					<th>报损时间</th>
 					<th>报损人</th>
 				</tr>
 			</thead>
@@ -54,6 +55,7 @@
 							<div class="length-text">{{item.remark}}</div>
 						</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.time}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
 					</tr>
 				</ng-container>

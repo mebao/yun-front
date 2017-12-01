@@ -137,6 +137,10 @@
                         background-color: #173267;
                         color: #fff;
                     }
+                    &.disabled{
+                        background-color: #efefef;
+                        cursor: no-drop;
+                    }
                 }
             }
         }

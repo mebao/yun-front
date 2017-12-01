@@ -23,7 +23,9 @@ export class TransactionRecordListComponent{
 	searchInfo: {
 		user_name: string,
 		b_time: string,
+		b_time_num: number,
 		l_time: string,
+		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
 		type: string,
@@ -53,7 +55,9 @@ export class TransactionRecordListComponent{
 		this.searchInfo = {
 			user_name: '',
 			b_time: '',
+			b_time_num: 0,
 			l_time: '',
+			l_time_num: 0,
 			b_amount: '',
 			l_amount: '',
 			type: '',
@@ -110,6 +114,7 @@ export class TransactionRecordListComponent{
 	// 选择时间
 	changeDate(_value, key) {
 		this.searchInfo[key] = JSON.parse(_value).value;
+		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	toastTab(text, type) {

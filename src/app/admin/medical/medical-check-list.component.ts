@@ -30,7 +30,9 @@ export class MedicalCheckListComponent{
 		name: string,
 		type: string,
 		b_time: string,
+		b_time_num: number,
 		l_time: string,
+		l_time_num: number,
 	}
 
 	constructor(
@@ -76,7 +78,9 @@ export class MedicalCheckListComponent{
 			name: '',
 			type: '1,2',
 			b_time: '',
+			b_time_num: 0,
 			l_time: '',
+			l_time_num: 0,
 		}
 
 		this.stockList = [];
@@ -112,6 +116,7 @@ export class MedicalCheckListComponent{
 	// 选择日期
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
+		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	getData(urlOptions) {
