@@ -78,7 +78,7 @@
 						</label>
 						<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
 							<ng-container *ngFor="let time of timelist; let index=index;">
-								<div class="w12-5 text-center">
+								<div class="">
 									<div
 										(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
 										class="item"
@@ -93,6 +93,7 @@
 										</div>
 									</div>
 								</div>
+								<div *ngIf="index % 8 != 7" style="width: calc((100% - 744px) / 7)"></div>
 							</ng-container>
 						</div>
 						<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
