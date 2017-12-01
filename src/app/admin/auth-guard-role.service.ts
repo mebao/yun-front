@@ -18,6 +18,11 @@ export class AuthGuardRole implements CanActivate{
 	}
 
 	checkUserClinicRoles(url: string): boolean{
+		// 验证url为''和'/admin'------没有默认首页
+		if((this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') && (url == '' || url == '/admin' || url == '/admin/home')){
+			this.router.navigate(['./admin/workbench/reception']);
+			return false;
+		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
 		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
