@@ -129,11 +129,15 @@
 									<label class="w150p">生长发育史：</label>
 									<div class="flex-1">{{casehistory.growthHistory}}</div>
 								</div>
+								<div class="pure-u-24-24 bt info flex">
+									<label class="w150p">体格检查：</label>
+									<div class="flex-1">{{casehistory.physicalCheck}}</div>
+								</div>
 							</div>
 						</div>
 						<div class="section">
 							<div class="title flex cursor-p" (click)="changeExamination()">
-								<span class="flex-1">体格检查</span>
+								<span class="flex-1">体格检查详情</span>
 								<span *ngIf="!showExamination">
 									隐藏
 									<i class="icon-chevron-down"></i>

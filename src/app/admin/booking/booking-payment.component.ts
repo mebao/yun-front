@@ -485,7 +485,7 @@ export class BookingPaymentComponent{
 			amount: amountFee,
 			need_amount: this.fee.originalCost,
 			pay_way: this.payInfo.payWay,
-			give_amount: this.adminService.isFalse(this.payInfo.give_amount) ? null : this.payInfo.give_amount,
+			give_amount: this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount,
 			remark: this.payInfo.remark,
 		}
 		this.adminService.feepay(this.id, params).then((data) => {

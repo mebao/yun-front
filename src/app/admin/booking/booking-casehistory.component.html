@@ -78,15 +78,7 @@
 			<div class="pure-u-8-24"></div>
 			<div class="pure-u-24-24">
 				<div class="pure-control-group">
-					<div class="flex">
-						<label for="topic_comment">主诉（最多200字）：</label>
-						<select name="cprtemplateList" [(ngModel)]="cprtemplate" (change)="changeCprtemplate()" class="w210p">
-							<option value="">请选择主诉模板</option>
-							<ng-container *ngFor="let cprtemplate of cprtemplateList">
-								<option value="{{cprtemplate.string}}">{{cprtemplate.action}}</option>
-							</ng-container>
-						</select>
-					</div>
+					<label for="topic_comment">主诉（最多200字）：</label>
 					<textarea id="topic_comment" maxlength="200" name="topic_comment" #topic_comment="ngModel" [(ngModel)]="info.topic_comment" class="min"></textarea>
 				</div>
 			</div>
@@ -130,6 +122,20 @@
 				<div class="pure-control-group">
 					<label for="growth_history">生长发育史：</label>
 					<textarea id="growth_history" maxlength="200" name="growth_history" #growth_history="ngModel" [(ngModel)]="info.growth_history" class="min"></textarea>
+				</div>
+			</div>
+			<div class="pure-u-24-24">
+				<div class="pure-control-group">
+					<div class="flex">
+						<label for="physical_check">体格检查：</label>
+						<select name="cprtemplateList" [(ngModel)]="cprtemplate" (change)="changeCprtemplate()" class="w210p">
+							<option value="">请选择模板</option>
+							<ng-container *ngFor="let cprtemplate of cprtemplateList">
+								<option value="{{cprtemplate.string}}">{{cprtemplate.action}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<textarea id="physical_check" maxlength="200" name="physical_check" #physical_check="ngModel" [(ngModel)]="info.physical_check" class="min"></textarea>
 				</div>
 			</div>
 		</div>
@@ -209,16 +215,16 @@
 			</div>
 			<div class="pure-u-24-24">
 				<div class="pure-control-group">
-					<label for="prescription">
-						处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>
-					</label>
-					<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" class="min" disabled=""></textarea>
+					<label for="advise">建议（最多200字）：</label>
+					<textarea id="advise" maxlength="200" name="advise" #advise="ngModel" [(ngModel)]="info.advise" class="min"></textarea>
 				</div>
 			</div>
 			<div class="pure-u-24-24">
 				<div class="pure-control-group">
-					<label for="advise">建议（最多200字）：</label>
-					<textarea id="advise" maxlength="200" name="advise" #advise="ngModel" [(ngModel)]="info.advise" class="min"></textarea>
+					<label for="prescription">
+						处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>
+					</label>
+					<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" class="min" disabled=""></textarea>
 				</div>
 			</div>
 		</div>

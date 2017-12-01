@@ -16,7 +16,7 @@ export class BookingCasehistoryComponent{
 	toast: {
 		show: number,
 		text: string,
-		type:  string,
+		type: string,
 	};
 	loadingShow: boolean;
 	info: {
@@ -39,6 +39,7 @@ export class BookingCasehistoryComponent{
 		family_history: string,
 		breed_history: string,
 		growth_history: string,
+		physical_check: string,
 		body_temperature: string,
 		breathe: string,
 		blood_pressure: string,
@@ -150,6 +151,7 @@ export class BookingCasehistoryComponent{
 				family_history: casehistory.familyHistory,
 				breed_history: casehistory.breedHistory,
 				growth_history: casehistory.growthHistory,
+				physical_check: casehistory.physicalCheck,
 				body_temperature: casehistory.bodyTemperature,
 				breathe: casehistory.breathe,
 				blood_pressure: casehistory.bloodPressure,
@@ -195,6 +197,7 @@ export class BookingCasehistoryComponent{
 				family_history: '',
 				breed_history: '',
 				growth_history: '',
+				physical_check: '',
 				body_temperature: '',
 				breathe: '',
 				blood_pressure: '',
@@ -310,8 +313,8 @@ export class BookingCasehistoryComponent{
 
 	// 主诉模板切换
 	changeCprtemplate() {
-		this.info.topic_comment = JSON.parse(this.cprtemplate).action;
-		this.info.check_result = JSON.parse(this.cprtemplate).peValue;
+		this.info.diagnosis = JSON.parse(this.cprtemplate).action;
+		this.info.physical_check = JSON.parse(this.cprtemplate).peValue;
 	}
 
 	changeExamination() {
@@ -349,6 +352,7 @@ export class BookingCasehistoryComponent{
 		this.info.family_history = this.adminService.trim(this.info.family_history);
 		this.info.breed_history = this.adminService.trim(this.info.breed_history);
 		this.info.growth_history = this.adminService.trim(this.info.growth_history);
+		this.info.physical_check = this.adminService.trim(this.info.physical_check);
 		this.info.face_neck = this.adminService.trim(this.info.face_neck);
 		this.info.heart_lung = this.adminService.trim(this.info.heart_lung);
 		this.info.abdomen = this.adminService.trim(this.info.abdomen);
@@ -419,6 +423,7 @@ export class BookingCasehistoryComponent{
 			family_history: this.info.family_history,
 			breed_history: this.info.breed_history,
 			growth_history: this.info.growth_history,
+			physical_check: this.info.physical_check,
 			body_temperature: this.info.body_temperature == '' ? null : this.info.body_temperature,
 			breathe: this.info.breathe,
 			blood_pressure: this.info.blood_pressure,
