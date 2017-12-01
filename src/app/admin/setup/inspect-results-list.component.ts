@@ -32,8 +32,12 @@ export class InspectResultsListComponent{
 		child_name: string,
 		ischeck: string,
 		today: string,
-		date: string,
-		date_text: string,
+		b_date: string,
+		b_date_num: number,
+		b_date_text: string,
+		e_date: string,
+		e_date_num: number,
+		e_date_text: string,
 	}
 	url: string;
 
@@ -80,8 +84,12 @@ export class InspectResultsListComponent{
 			child_name: '',
 			ischeck: '0',
 			today: '',
-			date: todayDate,
-			date_text: this.adminService.dateFormat(todayDate),
+			b_date: todayDate,
+			b_date_text: this.adminService.dateFormat(todayDate),
+			b_date_num: new Date(todayDate).getTime(),
+			e_date: todayDate,
+			e_date_text: this.adminService.dateFormat(todayDate),
+			e_date_num: new Date(todayDate).getTime(),
 		}
 
 		this.hasData = false;
@@ -146,6 +154,7 @@ export class InspectResultsListComponent{
 	// 选择日期
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
+		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	search() {
@@ -165,8 +174,11 @@ export class InspectResultsListComponent{
 		if(this.info.today != ''){
 			urlOptions += '&today=' + this.info.today;
 		}
-		if(this.info.date != ''){
-			urlOptions += '&date=' + this.info.date;
+		if(this.info.b_date != ''){
+			urlOptions += '&b_date=' + this.info.b_date;
+		}
+		if(this.info.e_date != ''){
+			urlOptions += '&e_date=' + this.info.e_date;
 		}
 		this.getData(urlOptions);
 	}

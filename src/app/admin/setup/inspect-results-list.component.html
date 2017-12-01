@@ -32,12 +32,20 @@
 			</select>
 		</div>
 		<div class="pure-control-group mr10 flex">
-			<label for="date">时间：</label>
+			<label for="b_date">时间：</label>
 			<!-- <select id="today" name="today" [(ngModel)]="info.today">
 				<option value="">今日</option>
 				<option value="1">所有</option>
 			</select> -->
-			<select-date title="请选择日期" [dateText]="info.date_text" [showClear]="true" (onVoted)="changeDate($event, 'date')"></select-date>
+			<select-date title="请选择日期" [dateText]="info.b_date_text" [endDate]="info.e_date_num" [showClear]="true" (onVoted)="changeDate($event, 'b_date')"></select-date>
+		</div>
+		<div class="pure-control-group mr10 flex">
+			<label for="e_date">至：</label>
+			<!-- <select id="today" name="today" [(ngModel)]="info.today">
+				<option value="">今日</option>
+				<option value="1">所有</option>
+			</select> -->
+			<select-date title="请选择日期" [dateText]="info.e_date_text" [startDate]="info.b_date_num" [showClear]="true" (onVoted)="changeDate($event, 'e_date')"></select-date>
 		</div>
 		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 	</div>
