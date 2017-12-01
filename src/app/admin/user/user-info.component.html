@@ -68,7 +68,7 @@
 				</div>
 				<div class="mt10 text-center">
 					<button (click)="cancel()" class="pure-button">取消</button>
-					<button (click)="createUser(userf)" class="pure-button pure-button-primary button-max" [disabled]="btnUserCanEdit">提交</button>
+					<button (click)="createUser(userf)" class="pure-button pure-button-primary button-max" [disabled]="btnUserCanEdit">保存</button>
 				</div>
 			</ng-container>
 		</form>
@@ -236,7 +236,7 @@
 			</div>
 			<div *ngIf="childlist.length > 0" class="mt10 text-center">
 				<button (click)="cancel()" class="pure-button">取消</button>
-				<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">提交</button>
+				<button (click)="createChild(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
 			</div>
 		</form>
 	</div>

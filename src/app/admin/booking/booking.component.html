@@ -144,7 +144,7 @@
 			</fieldset>
 			<div class="text-center">
 				<button *ngIf="editType == 'update'" (click)="cancalUpdate()" class="pure-button">取消修改</button>
-				<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="canEdit">{{editType == 'create' ? '创建' : '保存修改'}}</button>
+				<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="canEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 			</div>
 		</form>
 	</div>
