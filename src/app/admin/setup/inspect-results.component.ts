@@ -129,10 +129,12 @@ export class InspectResultsComponent{
 
 						// 获取最新检查结果
 						if(_selectTab != '' && _selectTab == results.list[i].id){
+							this.buttonType = 'update';
 							this.changeTab(results.list[i]);
 						}
 					}
 					if(_selectTab == ''){
+						this.buttonType = 'update';
 						this.changeTab(results.list[0]);
 					}
 				}
