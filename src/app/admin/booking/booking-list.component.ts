@@ -84,6 +84,7 @@ export class BookingListComponent implements OnInit{
 	selectorBooking: {
 		text: string,
 		bookingId: string,
+		remark: string,
 	}
 	constructor(
 		public adminService: AdminService,
@@ -238,6 +239,7 @@ export class BookingListComponent implements OnInit{
 		this.selectorBooking = {
 			text: '',
 			bookingId: '',
+			remark: '',
 		}
 	}
 
@@ -529,7 +531,8 @@ export class BookingListComponent implements OnInit{
 		this.modalTab = false;
 		this.selectorBooking = {
 			bookingId: booking.bookingId,
-			text: '确认取消该预约'
+			text: '确认取消该预约',
+			remark: '',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -541,13 +544,14 @@ export class BookingListComponent implements OnInit{
 
 	// 确认取消
 	confirm(){
-		this.modalConfirmTab = false;
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			status: 0,
+		if(this.adminService.trim(this.selectorBooking.remark) == ''){
+			this.toastTab('取消原因不可为空', 'error');
+			return false;
 		}
-		this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
+		this.modalConfirmTab = false;
+		var urlOptions = this.selectorBooking.bookingId + '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token + '&remark=' + this.selectorBooking.remark;
+		this.adminService.bookingcancelled(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

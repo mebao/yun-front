@@ -141,13 +141,13 @@
 							<div class="flex">
 								<div class="w90p">预约日期：</div>
 								<div class="flex-1">
-									{{service.serviceDate}}
+									{{booking.bookingDate}}
 								</div>
 							</div>
 							<div class="flex">
 								<div class="w90p">预约时间：</div>
 								<div class="flex-1">
-									{{service.serviceTime}}
+									{{booking.time}}
 								</div>
 							</div>
 							<div class="flex">
@@ -203,8 +203,8 @@
 							<td>{{service.userDoctorName}}</td>
 							<td>{{service.serviceName}}</td>
 							<td>
-								<span>{{service.serviceDate}}</span>
-								<span>{{service.serviceTime}}</span>
+								<span>{{showBooking.bookingDate}}</span>
+								<span>{{showBooking.time}}</span>
 							</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
 								<div class="length-text">{{showBooking.remark}}</div>
@@ -319,7 +319,9 @@
 	<div class="container">
 		<div class="title">提示</div>
 		<div class="content pad10">
-			{{selectorBooking.text}}
+			<div class="pure-form">
+				<textarea id="remark" class="w100" name="remark" [(ngModel)]="selectorBooking.remark" placeholder="请输入取消原因"></textarea>
+			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>

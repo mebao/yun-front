@@ -31,8 +31,4 @@ export class HeaderNavComponent{
 		sessionStorage.removeItem('userClinicRolesInfos');
 		this.router.navigate(['./login']);
 	}
-
-	updatepwd() {
-		this.router.navigate(['./admin/updatepwd']);
-	}
 }

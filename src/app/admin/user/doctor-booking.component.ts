@@ -328,7 +328,7 @@ export class DoctorBookingComponent implements OnInit{
 	showHistory() {
 		this.modalTab = true;
 		this.hasHistoryData = false;
-		var urlOptions = this.url + '&child_id=' + this.booking.childId;
+		var urlOptions = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
@@ -382,7 +382,7 @@ export class DoctorBookingComponent implements OnInit{
 					}
 				}
 				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
-				
+
 				//中等值身高体重
 				var childcontrastUrl = '?child_id=' + this.booking.childId;
 				 this.adminService.childcontrast(childcontrastUrl).then((data) => {

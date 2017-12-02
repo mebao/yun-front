@@ -396,10 +396,18 @@ export class BookingHealthrecordComponent{
                     this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
                     this.baseInfo[doctorBookingRecordTemplet.recordkeys[i].key] = '';
                     if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_height'){
-                        this.info.medium_height=childcontrast.info.height;
+                        if(childcontrast.info){
+                            this.info.medium_height = childcontrast.info.height;
+                        }else{
+                            this.info.medium_height = '';
+                        }
                     }
                     if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_weight'){
-                        this.info.medium_weight=childcontrast.info.weight;
+                        if(childcontrast.info){
+                            this.info.medium_weight = childcontrast.info.weight;
+                        }else{
+                            this.info.medium_weight = '';
+                        }
                     }
                 }
             }

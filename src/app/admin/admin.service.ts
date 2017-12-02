@@ -1039,6 +1039,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 取消预约
+	private bookingcancelledUrl = this.url + '/mebcrm/bookingcancelled/';
+	bookingcancelled(urlOptions): Promise<Data>{
+		return this.http.get(this.bookingcancelledUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
