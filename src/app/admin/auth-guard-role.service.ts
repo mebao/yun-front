@@ -951,9 +951,9 @@ export class AuthGuardRole implements CanActivate{
 							for(var j = 0; j < authorityList.length; j++){
 								if(userClinicRoles[i].keyName == authorityList[j].firstKey){
 									// 遍历拥有的二级权限
-									if(userClinicRoles[i].infos.length){
+									if(userClinicRoles[i].infos.length > 0){
 										for(var k = 0; k < userClinicRoles[i].infos.length; k++){
-											if(authorityList[j].authority.indexOf(userClinicRoles[i].infos[k].keyName)){
+											if(authorityList[j].authority.indexOf(userClinicRoles[i].infos[k].keyName) != -1){
 												this.router.navigate([authorityList[j].firstUrl]);
 												return false;
 											}
