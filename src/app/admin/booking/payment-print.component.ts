@@ -29,6 +29,7 @@ export class PaymentPrintComponent{
 	};
 	bookingInfo: {
 		age: string,
+		genderText: string,
 		allFee: string,
 		bookingDate: string,
 		bookingId: string,
@@ -237,7 +238,7 @@ export class PaymentPrintComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.tran.id = results.weekbooks[0].tranId;
-					this.adminService.searchtran(this.url + '&id=' + this.tran.id + '&clinic_id=' + this.adminService.getUser().clinicId).then((data) => {
+				this.adminService.searchtran(this.url + '&id=' + this.tran.id + '&clinic_id=' + this.adminService.getUser().clinicId).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
 					}else{
