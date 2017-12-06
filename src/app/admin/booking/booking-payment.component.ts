@@ -575,17 +575,23 @@ export class BookingPaymentComponent{
 			this.toastTab('其他折扣应大于0，小于等于1', 'error');
 			return;
 		}
+
 		// 验证成功，重新缓存折扣
 		if(this.userMember.services.length > 0){
 			for(var service in this.userMember.services){
+				this.userMember.services[service].discount = this.adminService.toDecimal2(this.userMember.services[service].discount);
 				this.userMember.services[service].discount_session = this.userMember.services[service].discount;
 			}
 		}
 		if(this.userMember.assists.length > 0){
 			for(var assist in this.userMember.assists){
+				this.userMember.assists[assist].discount = this.adminService.toDecimal2(this.userMember.assists[assist].discount);
 				this.userMember.assists[assist].discount_session = this.userMember.assists[assist].discount;
 			}
 		}
+		this.userMember.check = this.adminService.toDecimal2(this.userMember.check);
+		this.userMember.prescript = this.adminService.toDecimal2(this.userMember.prescript);
+		this.userMember.other = this.adminService.toDecimal2(this.userMember.other);
 		this.userMember.check_session = this.userMember.check;
 		this.userMember.prescript_session = this.userMember.prescript;
 		this.userMember.other_session = this.userMember.other;
