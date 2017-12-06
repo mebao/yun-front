@@ -1,0 +1,34 @@
+<header-nav></header-nav>
+<div class="content-section admin-doctor-list">
+	<top-bar [data]="topBar"></top-bar>
+    <div class="flex">
+        <button (click)="add()" class="pure-button pure-button-primary">新增病历模板</button>
+        <div class="flex-1"></div>
+    </div>
+	<div class="mt10">
+		<table *ngIf="casetempletList.length > 0" class="list" class="pure-table pure-table-horizontal w100">
+			<thead>
+				<tr>
+					<th>模板名</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let casetemplet of casetempletList">
+					<td>{{casetemplet.name}}</td>
+					<td>{{casetemplet.status == '1' ? '可用' : '停用'}}</td>
+					<td>
+						<button (click)="update(casetemplet)" class="pure-button pure-button-primary">修改</button>
+						<button (click)="updateStatus(casetemplet.id, casetemplet.status)" class="pure-button pure-button-primary">修改状态</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && casetempletList.length == 0" class="mt10">
+			<nodata title="未查询到病历模板信息"></nodata>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<loading [show]="loadingShow"></loading>

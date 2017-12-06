@@ -1,130 +1,130 @@
 <header-nav></header-nav>
 <div class="content-section admin-booking-casehistory">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="pure-form pure-form-stacked form-tab">
+	<div class="pure-form pure-form-stacked form-tab pure-tab">
 		<div class="pure-g">
-			<div class="pure-u-8-24 pr10">
+			<div class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="name">姓名：</label>
 					<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="info.name" disabled="">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl5 pr5">
+			<div class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="age">年龄：</label>
 					<input type="text" id="age" name="age" #age="ngModel" [(ngModel)]="info.age" disabled="">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl10">
+			<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="body_temperature">体温（T、°C）：</label>
 					<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pr10">
-				<div class="pure-control-group">
-					<label for="weight">体重（Kg）：</label>
-					<input type="number" id="weight" step="0.01" name="weight" #weight="ngModel" [(ngModel)]="info.weight" (change)="changeWeight()">
-				</div>
-			</div>
-			<div class="pure-u-8-24 pl5 pr5">
-				<div class="pure-control-group">
-					<label for="mid_weight">中等值（Kg）：</label>
-					<input type="number" id="mid_weight" name="mid_weight" step="0.001" [(ngModel)]="info.mid_weight" (change)="changeHeight()">
-				</div>
-			</div>
-			<div class="pure-u-8-24 pl10">
-				<div class="pure-control-group">
-					<label for="compare_weight">体重对比：</label>
-					<input type="text" id="compare_weight" name="compare_weight" #compare_weight="ngModel" [(ngModel)]="info.compare_weight" disabled>
-				</div>
-			</div>
-			<div class="pure-u-8-24 pr10">
+			<div *ngIf="baseInfo.height != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="height">身高（cm）：</label>
 					<input type="number" id="height" step="0.01" name="height" #height="ngModel" [(ngModel)]="info.height" (change)="changeHeight()">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl5 pr5">
+			<div *ngIf="baseInfo.mid_height != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="mid_height">中等值（cm）：</label>
 					<input type="number" id="mid_height" name="mid_height" step="0.001" [(ngModel)]="info.mid_height" (change)="changeHeight()">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl10">
+			<div *ngIf="baseInfo.height != null && baseInfo.mid_height != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="compare_height">身高对比：</label>
 					<input type="text" id="compare_height" name="compare_height" #compare_height="ngModel" [(ngModel)]="info.compare_height" disabled>
 				</div>
 			</div>
-			<div class="pure-u-8-24 pr10">
+			<div *ngIf="baseInfo.weight != null" class="pure-u-8-24">
+				<div class="pure-control-group">
+					<label for="weight">体重（Kg）：</label>
+					<input type="number" id="weight" step="0.01" name="weight" #weight="ngModel" [(ngModel)]="info.weight" (change)="changeWeight()">
+				</div>
+			</div>
+			<div *ngIf="baseInfo.mid_weight != null" class="pure-u-8-24">
+				<div class="pure-control-group">
+					<label for="mid_weight">中等值（Kg）：</label>
+					<input type="number" id="mid_weight" name="mid_weight" step="0.001" [(ngModel)]="info.mid_weight" (change)="changeHeight()">
+				</div>
+			</div>
+			<div *ngIf="baseInfo.weight != null && baseInfo.mid_weight != null" class="pure-u-8-24">
+				<div class="pure-control-group">
+					<label for="compare_weight">体重对比：</label>
+					<input type="text" id="compare_weight" name="compare_weight" #compare_weight="ngModel" [(ngModel)]="info.compare_weight" disabled>
+				</div>
+			</div>
+			<div *ngIf="baseInfo.head_circum != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="head_circum">头围（3岁及以下）cm：</label>
 					<input type="number" id="head_circum" step="0.01" name="head_circum" #head_circum="ngModel" [(ngModel)]="info.head_circum" (change)="validateNumber('head_circum', '头围')">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl5 pr5">
+			<div *ngIf="baseInfo.breast_circum != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="breast_circum">胸围（cm）：</label>
 					<input type="number" id="breast_circum" step="0.01" name="breast_circum" #breast_circum="ngModel" [(ngModel)]="info.breast_circum" (change)="validateNumber('breast_circum', '胸围')">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl10">
+			<div *ngIf="baseInfo.teeth != null" class="pure-u-8-24">
 				<div class="pure-control-group">
 					<label for="teeth">出牙数（颗）：</label>
 					<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth" (change)="validateNumber('teeth', '出牙数')">
 				</div>
 			</div>
 			<div class="pure-u-8-24"></div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.topic_comment != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="topic_comment">主诉（最多200字）：</label>
 					<textarea id="topic_comment" maxlength="200" name="topic_comment" #topic_comment="ngModel" [(ngModel)]="info.topic_comment" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.check_result != null" class="pure-u-24-24">
 				<div class="pure-control-group">
-					<label for="check_result">检查结果：</label>
+					<label for="check_result">检查结果（最多200字）：</label>
 					<textarea id="check_result" maxlength="200" name="check_result" #check_result="ngModel" [(ngModel)]="info.check_result" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.present_illness != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="present_illness">现病史（最多200字）：</label>
 					<textarea id="present_illness" maxlength="200" name="present_illness" #present_illness="ngModel" [(ngModel)]="info.present_illness" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.previous_history != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="previous_history">既往史（最多200字）：</label>
 					<textarea id="previous_history" maxlength="200" name="previous_history" #previous_history="ngModel" [(ngModel)]="info.previous_history" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.allergy != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="allergy">过敏史（食物、药物及其他，最多200字）：</label>
 					<textarea id="allergy" maxlength="200" name="allergy" #allergy="ngModel" [(ngModel)]="info.allergy" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.family_history != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="family_history">家族史：</label>
 					<textarea id="family_history" maxlength="200" name="family_history" #family_history="ngModel" [(ngModel)]="info.family_history" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.breed_history != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="breed_history">孕育史：</label>
 					<textarea id="breed_history" maxlength="200" name="breed_history" #breed_history="ngModel" [(ngModel)]="info.breed_history" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.growth_history != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="growth_history">生长发育史：</label>
 					<textarea id="growth_history" maxlength="200" name="growth_history" #growth_history="ngModel" [(ngModel)]="info.growth_history" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.physical_check != null"  class="pure-u-24-24">
 				<div class="pure-control-group">
 					<div class="flex">
 						<label for="physical_check">体格检查：</label>
@@ -139,7 +139,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="bg-title mt10 flex cursor-p" (click)="changeExamination()">
+		<div *ngIf="baseInfo.breathe != null || baseInfo.blood_pressure != null || info.face_neck != null || info.heart_lung != null || info.abdomen != null || info.limbs != null || info.nervous_system != null" class="bg-title mt10 flex cursor-p" (click)="changeExamination()">
 			<span class="flex-1">体格检查详情</span>
 			<span *ngIf="!showExamination">
 				隐藏
@@ -151,47 +151,87 @@
 			</span>
 		</div>
 		<div *ngIf="showExamination" class="pure-g">
-			<div class="pure-u-8-24 pr10">
+			<div *ngIf="baseInfo.breathe != null" class="pure-u-8-24 pr10">
 				<div class="pure-control-group">
 					<label for="breathe">呼吸（P、次/分）：</label>
 					<input type="number" id="breathe" name="breathe" #breathe="ngModel" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')">
 				</div>
 			</div>
-			<div class="pure-u-8-24 pl5 pr5">
+			<div *ngIf="baseInfo.blood_pressure != null" class="pure-u-8-24 pl5 pr5">
 				<div class="pure-control-group">
 					<label for="blood_pressure">血压（BP、mmHg）：</label>
 					<input type="number" id="blood_pressure" name="blood_pressure" #blood_pressure="ngModel" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')">
 				</div>
 			</div>
 			<div class="pure-u-8-24"></div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.face_neck != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="face_neck">面、颈部（最多200字）：</label>
-					<textarea id="face_neck" maxlength="200" name="face_neck" #face_neck="ngModel" [(ngModel)]="info.face_neck" class="min"></textarea>
+					<div class="flex">
+						<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'face_neck')" [ngClass]="{'active': info.face_neck == '未见异常'}">
+							<div class="radioTab mr10"></div>
+							<div class="flex-1">未见异常</div>
+						</div>
+						<div class="flex-1" (click)="changeRedio('', 'face_neck_other')">
+							<textarea id="face_neck_other" maxlength="200" name="face_neck_other" #face_neck="ngModel" [(ngModel)]="info.face_neck_other" class="min"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.heart_lung != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="heart_lung">心肺（最多200字）：</label>
-					<textarea id="heart_lung" maxlength="200" name="heart_lung" #heart_lung="ngModel" [(ngModel)]="info.heart_lung" class="min"></textarea>
+					<div class="flex">
+						<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'heart_lung')" [ngClass]="{'active': info.heart_lung == '未见异常'}">
+							<div class="radioTab mr10"></div>
+							<div class="flex-1">未见异常</div>
+						</div>
+						<div class="flex-1" (click)="changeRedio('', 'face_neck_other')">
+							<textarea id="heart_lung_other" maxlength="200" name="heart_lung_other" #heart_lung="ngModel" [(ngModel)]="info.heart_lung_other" class="min"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.abdomen != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="abdomen">腹部（最多200字）：</label>
-					<textarea id="abdomen" maxlength="200" name="abdomen" #abdomen="ngModel" [(ngModel)]="info.abdomen" class="min"></textarea>
+					<div class="flex">
+						<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'abdomen')" [ngClass]="{'active': info.abdomen == '未见异常'}">
+							<div class="radioTab mr10"></div>
+							<div class="flex-1">未见异常</div>
+						</div>
+						<div class="flex-1" (click)="changeRedio('', 'abdomen_other')">
+							<textarea id="abdomen_other" maxlength="200" name="abdomen_other" #abdomen="ngModel" [(ngModel)]="info.abdomen_other" class="min"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.limbs != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="limbs">四肢（最多200字）：</label>
-					<textarea id="limbs" maxlength="200" name="limbs" #limbs="ngModel" [(ngModel)]="info.limbs" class="min"></textarea>
+					<div class="flex">
+						<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'limbs')" [ngClass]="{'active': info.limbs == '未见异常'}">
+							<div class="radioTab mr10"></div>
+							<div class="flex-1">未见异常</div>
+						</div>
+						<div class="flex-1" (click)="changeRedio('', 'limbs_other')">
+							<textarea id="limbs_other" maxlength="200" name="limbs_other" #limbs="ngModel" [(ngModel)]="info.limbs_other" class="min"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.nervous_system != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="nervous_system">神经系统（最多200字）：</label>
-					<textarea id="nervous_system" maxlength="200" name="nervous_system" #nervous_system="ngModel" [(ngModel)]="info.nervous_system" class="min"></textarea>
+					<div class="flex">
+						<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'nervous_system')" [ngClass]="{'active': info.nervous_system == '未见异常'}">
+							<div class="radioTab mr10"></div>
+							<div class="flex-1">未见异常</div>
+						</div>
+						<div class="flex-1" (click)="changeRedio('', 'nervous_system_other')">
+							<textarea id="nervous_system_other" maxlength="200" name="nervous_system_other" #limbs="ngModel" [(ngModel)]="info.nervous_system_other" class="min"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -205,21 +245,21 @@
 				</div>
 			</div>
 		</ng-container>
-		<div class="bg-title mt10">诊疗记录</div>
+		<div *ngIf="info.diagnosis != null || info.advise != null || info.prescription != null" class="bg-title mt10">诊疗记录</div>
 		<div class="pure-g">
-			<div class="pure-u-24-24">
+			<div *ngIf="info.diagnosis != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="diagnosis">诊断（最多200字）：</label>
 					<textarea id="diagnosis" maxlength="200" name="diagnosis" #diagnosis="ngModel" [(ngModel)]="info.diagnosis" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.advise != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="advise">建议（最多200字）：</label>
 					<textarea id="advise" maxlength="200" name="advise" #advise="ngModel" [(ngModel)]="info.advise" class="min"></textarea>
 				</div>
 			</div>
-			<div class="pure-u-24-24">
+			<div *ngIf="info.prescription != null" class="pure-u-24-24">
 				<div class="pure-control-group">
 					<label for="prescription">
 						处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>

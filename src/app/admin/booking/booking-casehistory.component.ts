@@ -44,10 +44,15 @@ export class BookingCasehistoryComponent{
 		breathe: string,
 		blood_pressure: string,
 		face_neck: string,
+		face_neck_other: string,
 		heart_lung: string,
+		heart_lung_other: string,
 		abdomen: string,
+		abdomen_other: string,
 		limbs: string,
+		limbs_other: string,
 		nervous_system: string,
+		nervous_system_other: string,
 		blood_routine_examination: string,
 		blood_routine_examination_other: string,
 		routine_urine: string,
@@ -64,6 +69,19 @@ export class BookingCasehistoryComponent{
 		timeText: string,
 		checkList: any[],
 	};
+	// 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
+	baseInfo: {
+        height: string,
+        mid_height: string,
+        weight: string,
+        mid_weight: string,
+        head_circum: string,
+        breast_circum: string,
+        body_temperature: string,
+        breathe: string,
+        blood_pressure: string,
+		teeth: string,
+    }
 	id: string;
 	doctorId: string;
 	status: string;
@@ -96,6 +114,8 @@ export class BookingCasehistoryComponent{
 			text: '',
 			type: '',
 		};
+
+		var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params.id;
@@ -156,10 +176,15 @@ export class BookingCasehistoryComponent{
 				breathe: casehistory.breathe,
 				blood_pressure: casehistory.bloodPressure,
 				face_neck: casehistory.faceNeck,
+				face_neck_other: casehistory.faceNeck == '未见异常' ? '' : casehistory.faceNeck,
 				heart_lung: casehistory.heartLung,
+				heart_lung_other: casehistory.heartLung == '未见异常' ? '' : casehistory.heartLung,
 				abdomen: casehistory.abdomen,
+				abdomen_other: casehistory.abdomen == '未见异常' ? '' : casehistory.abdomen,
 				limbs: casehistory.limbs,
+				limbs_other: casehistory.limbs == '未见异常' ? '' : casehistory.limbs,
 				nervous_system: casehistory.nervousSystem,
+				nervous_system_other: casehistory.nervousSystem == '未见异常' ? '' : casehistory.nervousSystem,
 				blood_routine_examination: casehistory.bloodRoutineExamination,
 				blood_routine_examination_other: casehistory.bloodRoutineExamination == '正常' || casehistory.bloodRoutineExamination == '贫血' || casehistory.bloodRoutineExamination == '白细胞高值' ? '' : casehistory.bloodRoutineExamination,
 				routine_urine: casehistory.routineUrine,
@@ -176,55 +201,122 @@ export class BookingCasehistoryComponent{
 				timeText: casehistory.time,
 				checkList: casehistory.checkList,
 			}
+			this.baseInfo = {
+                height: casehistory.height,
+                mid_height: casehistory.height,
+                weight: casehistory.weight,
+                mid_weight: casehistory.midWeight,
+                head_circum: casehistory.headCircum,
+                breast_circum: casehistory.breastCircum,
+                body_temperature: casehistory.bodyTemperature,
+                breathe: casehistory.breathe,
+                blood_pressure: casehistory.bloodPressure,
+				teeth: casehistory.teeth,
+            }
 		}else{
 			this.info = {
 				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
 				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
-				weight: '',
-				mid_weight: JSON.parse(sessionStorage.getItem('childcontrast')).info ? JSON.parse(sessionStorage.getItem('childcontrast')).info.weight : '',
-				compare_weight: '',
-				height: '',
-				mid_height: JSON.parse(sessionStorage.getItem('childcontrast')).info ? JSON.parse(sessionStorage.getItem('childcontrast')).info.height : '',
-				compare_height: '',
-				head_circum: '',
-				breast_circum: '',
-				teeth: '',
-				topic_comment: '',
-				check_result: '',
-				present_illness: '',
-				previous_history: '',
-				allergy: '',
-				family_history: '',
-				breed_history: '',
-				growth_history: '',
-				physical_check: '',
-				body_temperature: '',
-				breathe: '',
-				blood_pressure: '',
-				face_neck: '',
-				heart_lung: '',
-				abdomen: '',
-				limbs: '',
-				nervous_system: '',
-				blood_routine_examination: '',
+				weight: null,
+				mid_weight: null,
+				compare_weight: null,
+				height: null,
+				mid_height: null,
+				compare_height: null,
+				head_circum: null,
+				breast_circum: null,
+				teeth: null,
+				topic_comment: null,
+				check_result: null,
+				present_illness: null,
+				previous_history: null,
+				allergy: null,
+				family_history: null,
+				breed_history: null,
+				growth_history: null,
+				physical_check: null,
+				body_temperature: null,
+				breathe: null,
+				blood_pressure: null,
+				face_neck: null,
+				face_neck_other: '',
+				heart_lung: null,
+				heart_lung_other: '',
+				abdomen: null,
+				abdomen_other: '',
+				limbs: null,
+				limbs_other: '',
+				nervous_system: null,
+				nervous_system_other: '',
+				blood_routine_examination: null,
 				blood_routine_examination_other: '',
-				routine_urine: '',
+				routine_urine: null,
 				routine_urine_other: '',
-				bone_density: '',
-				BALP: '',
+				bone_density: null,
+				BALP: null,
 				BALP_other: '',
-				trace_element: '',
+				trace_element: null,
 				trace_element_other: '',
-				diagnosis: '',
+				diagnosis: null,
 				prescription: prescription,
-				advise: '',
+				advise: null,
 				time: '',
 				timeText: '',
 				checkList: [],
 			}
-
+			this.baseInfo = {
+                height: null,
+                mid_height: null,
+                weight: null,
+                mid_weight: null,
+                head_circum: null,
+                breast_circum: null,
+                body_temperature: null,
+                breathe: null,
+                blood_pressure: null,
+				teeth:null,
+            }
+			var doctorBookingCaseTemplet = JSON.parse(sessionStorage.getItem('doctorBookingCaseTemplet'));
+			var childcontrast = JSON.parse(sessionStorage.getItem('childcontrast'));
+			if(doctorBookingCaseTemplet != null){
+            if(doctorBookingCaseTemplet.casekeys.length > 0){
+                for(var i = 0; i < doctorBookingCaseTemplet.casekeys.length; i++){
+                    this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
+                    this.baseInfo[doctorBookingCaseTemplet.casekeys[i].key] = '';
+                    if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
+						if(childcontrast.info){
+                            this.info.mid_height = childcontrast.info.height;
+                        }else{
+                            this.info.mid_height = '';
+                        }
+                    }
+                    if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
+						if(childcontrast.info){
+                            this.info.mid_weight = childcontrast.info.weight;
+                        }else{
+                            this.info.mid_weight = '';
+                        }
+                    }
+					if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck'){
+                            this.info.face_neck = '未见异常';
+                    }
+					if(doctorBookingCaseTemplet.casekeys[i].key=='heart_lung'){
+                            this.info.heart_lung = '未见异常';
+                    }
+					if(doctorBookingCaseTemplet.casekeys[i].key=='abdomen'){
+                            this.info.abdomen = '未见异常';
+                    }
+					if(doctorBookingCaseTemplet.casekeys[i].key=='limbs'){
+                            this.info.limbs = '未见异常';
+                    }
+					if(doctorBookingCaseTemplet.casekeys[i].key=='nervous_system'){
+                            this.info.nervous_system = '未见异常';
+                    }
+                }
+            }
+			}
 			// 新增时，因为没有检查项目，所以需要请求
-			this.getBookingCheckList();
+			//this.getBookingCheckList();
 		}
 
 		this.loadingShow = true;
@@ -313,8 +405,12 @@ export class BookingCasehistoryComponent{
 
 	// 主诉模板切换
 	changeCprtemplate() {
-		this.info.diagnosis = JSON.parse(this.cprtemplate).action;
-		this.info.physical_check = JSON.parse(this.cprtemplate).peValue;
+		if(this.info.diagnosis != null){
+			this.info.diagnosis = JSON.parse(this.cprtemplate).action;
+		}
+		if(this.info.physical_check != null){
+			this.info.physical_check = JSON.parse(this.cprtemplate).peValue;
+		}
 	}
 
 	changeExamination() {
@@ -406,15 +502,15 @@ export class BookingCasehistoryComponent{
 			clinic_id: this.adminService.getUser().clinicId,
 			child_id: this.childId,
 			booking_id: this.id,
-			weight: this.info.weight == '' ? null : this.info.weight,
-			mid_weight: this.info.mid_weight == '' ? null : this.info.mid_weight,
+			weight: this.info.weight == '' ? '0' : this.info.weight,
+			mid_weight: this.info.mid_weight == '' ? '0' : this.info.mid_weight,
 			compare_weight: this.info.compare_weight,
-			height: this.info.height == '' ? null : this.info.height,
-			mid_height: this.info.mid_height == '' ? null : this.info.mid_height,
+			height: this.info.height == '' ? '0' : this.info.height,
+			mid_height: this.info.mid_height == '' ? '0' : this.info.mid_height,
 			compare_height: this.info.compare_height,
-			head_circum: this.info.head_circum == '' ? null : this.info.head_circum,
-			breast_circum: this.info.breast_circum == '' ? null : this.info.breast_circum,
-			teeth: this.info.teeth,
+			head_circum: this.info.head_circum == '' ? '0' : this.info.head_circum,
+			breast_circum: this.info.breast_circum == '' ? '0' : this.info.breast_circum,
+			teeth: this.info.teeth == '' ? '0' : this.info.teeth,
 			topic_comment: this.info.topic_comment,
 			check_result: this.info.check_result,
 			present_illness: this.info.present_illness,
@@ -424,14 +520,14 @@ export class BookingCasehistoryComponent{
 			breed_history: this.info.breed_history,
 			growth_history: this.info.growth_history,
 			physical_check: this.info.physical_check,
-			body_temperature: this.info.body_temperature == '' ? null : this.info.body_temperature,
-			breathe: this.info.breathe,
-			blood_pressure: this.info.blood_pressure,
-			face_neck: this.info.face_neck,
-			heart_lung: this.info.heart_lung,
-			abdomen: this.info.abdomen,
-			limbs: this.info.limbs,
-			nervous_system: this.info.nervous_system,
+			body_temperature: this.info.body_temperature == '' ? '0' : this.info.body_temperature,
+			breathe: this.info.breathe == '' ? '0' : this.info.breathe,
+			blood_pressure: this.info.blood_pressure == '' ? '0' : this.info.blood_pressure,
+			face_neck: this.info.face_neck != '' ? this.info.face_neck : this.info.face_neck_other,
+			heart_lung: this.info.heart_lung != '' ? this.info.heart_lung : this.info.heart_lung_other,
+			abdomen: this.info.abdomen != '' ? this.info.abdomen : this.info.abdomen_other,
+			limbs: this.info.limbs != '' ? this.info.limbs : this.info.limbs_other,
+			nervous_system: this.info.nervous_system != '' ? this.info.nervous_system : this.info.nervous_system_other,
 			blood_routine_examination: this.info.blood_routine_examination == '' ? this.info.blood_routine_examination_other : this.info.blood_routine_examination,
 			routine_urine: this.info.routine_urine == '' ? this.info.routine_urine_other : this.info.routine_urine,
 			bone_density: this.info.bone_density,

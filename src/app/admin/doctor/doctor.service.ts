@@ -76,4 +76,49 @@ export class DoctorService{
 			.then(response => response.json() as Data)
 			.catch();
 	}
+
+	// 创建病历模板
+    private casetempletUrl = this.url + '/mebcrm/casetemplet';
+    casetemplet(params): Promise<Data>{
+        return this.http.post(this.casetempletUrl, JSON.stringify(params))
+            .toPromise()
+            .then(response => response.json() as Data)
+            .catch();
+    }
+
+	// 查看医生病历模板
+	private searchcasetempletUrl = this.url + '/mebcrm/searchcasetemplet';
+	searchcasetemplet(urlOptions): Promise<Data>{
+		return this.http.get(this.searchcasetempletUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查看病历字段
+	private searchcasekeysUrl = this.url + '/mebcrm/searchcasekeys';
+	searchcasekeys(urlOptions): Promise<Data>{
+		return this.http.get(this.searchcasekeysUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 修改医生病历模板使用状态
+	private casetempletstatusUrl = this.url + '/mebcrm/casetempletstatus/';
+	casetempletstatus(urlOptions, params): Promise<Data>{
+		return this.http.post(this.casetempletstatusUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 修改医生病历模板
+	private updatecasetempletUrl = this.url + '/mebcrm/updatecasetemplet/';
+	updatecasetemplet(urlOptions, params): Promise<Data>{
+		return this.http.post(this.updatecasetempletUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
 }

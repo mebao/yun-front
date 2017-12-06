@@ -60,6 +60,8 @@ import { BookingReceiveComponent }          from './booking/booking-receive.comp
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
 import { DoctorRecordTempletComponent }     from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
+import { DoctorCaseTempletComponent }     from './doctor/doctor-case-templet.component';
+import { DoctorCaseTempletListComponent } from './doctor/doctor-case-templet-list.component';
 import { BookingHistoryComponent }          from './booking/booking-history.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
 import { AssistListComponent }              from './setup/assist-list.component';
@@ -373,6 +375,16 @@ const adminRoutes: Routes = [
 						path: 'doctorRecordTempletList',
 						canActivate: [AuthGuardRole],
 						component: DoctorRecordTempletListComponent,
+					},
+					{
+						path: 'doctorCaseTemplet',
+						//canActivate: [AuthGuardRole],
+						component: DoctorCaseTempletComponent,
+					},
+					{
+						path: 'doctorCaseTempletList',
+						//canActivate: [AuthGuardRole],
+						component: DoctorCaseTempletListComponent,
 					},
 					{
 						path: 'bookingHistory',

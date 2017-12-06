@@ -788,6 +788,15 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		&:nth-child(9){
 			padding-left: 10px;
 		}
+		&:nth-child(10){
+			padding-right: 10px;
+		}
+		&:nth-child(11){
+			padding: 0 5px 0 5px;
+		}
+		&:nth-child(12){
+			padding-left: 10px;
+		}
 	}
 	.pure-u-16-24{
         &.bt{
@@ -853,5 +862,25 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		top:2px;
 		width: 25px;
 		height:22px;
+	}
+}
+
+.admin-doctor-booking{
+	.radio{
+		width: 130px;
+		border-radius:  4px;
+		cursor: pointer;
+		&.active{
+			.radioTab{
+				background-color: #173267;
+			}
+		}
+		.radioTab{
+			margin-top: 2px;
+			width: 20px;
+			height: 20px;
+			border: 1px solid #484848;
+			border-radius: 50%;
+		}
 	}
 }

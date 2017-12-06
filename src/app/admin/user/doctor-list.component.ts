@@ -105,6 +105,11 @@ export class DoctorListComponent implements OnInit{
 		this.router.navigate(['./admin/doctorRecordTempletList'], {queryParams: {'id': _id}});
 	}
 
+	// 病历模板
+	showCaseTempletList(_id) {
+		this.router.navigate(['./admin/doctorCaseTempletList'], {queryParams: {'id': _id}});
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

@@ -71,6 +71,8 @@ import { BookingReceiveComponent }         from './booking/booking-receive.compo
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
 import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
 import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
+import { DoctorCaseTempletComponent }    from './doctor/doctor-case-templet.component';
+import { DoctorCaseTempletListComponent } from './doctor/doctor-case-templet-list.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
 import { AssistListComponent }             from './setup/assist-list.component';
@@ -149,6 +151,8 @@ import { DoctorService }                   from './doctor/doctor.service';
 		BookingHealthrecordComponent,
 		DoctorRecordTempletComponent,
 		DoctorRecordTempletListComponent,
+		DoctorCaseTempletComponent,
+		DoctorCaseTempletListComponent,
 		BookingHistoryComponent,
 		GivefeeListComponent,
 		AssistListComponent,
