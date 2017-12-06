@@ -261,10 +261,12 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		};
 
 		this.route.queryParams.subscribe((params) => {
-			this.id = params['id'];
-			this.doctorId = params['doctorId'];
+			this.id = params.id;
+			this.doctorId = params.doctorId;
 			this.pageType = params.pageType;
 		});
+
+		this.canUpdatePrescript = false;
 
 		this.url = '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
@@ -319,6 +321,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				}
 				this.casetempletList = results.list;
 				if(this.casetempletList.length > 0){
+					this.selectedTemplet = this.casetempletList[0].string;
 					sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
 					this.initEdit();
 				}
@@ -357,7 +360,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		//获取开方信息
 		// this.prescriptList = [];
 		// this.prescription = [];
-		//this.getPrescriptData();
+		this.getPrescriptData();
 
 		this.historyList = [];
 		this.hasHistoryData = false;
@@ -366,59 +369,6 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 
 	initEdit() {
 		var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
-
-		this.route.queryParams.subscribe((params) => {
-			this.id = params.id;
-			this.doctorId = params.doctorId;
-			// this.status = params.status;
-			// this.childId = params.childId;
-			// this.editType = params.type;
-		});
-
-		this.canUpdatePrescript = false;
-
-		var urlOptions = this.url + '&booking_id=' + this.id + '&isout=1&today=1';
-		this.adminService.searchprescript(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].infoLength = results.list[i].info.length;
-					}
-					var prescript = results.list[0];
-					if(prescript.info.length > 0){
-						for(var i = 0; i < prescript.info.length; i++){
-							this.prescription.push({
-								value: prescript.info[i].pname + ': ' + prescript.info[i].frequency
-									 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
-									 + '，' + prescript.info[i].usage
-									 + '，需服用' + prescript.info[i].days + '天'
-									 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。'
-							});
-						}
-					}
-				}
-				this.prescriptList = results.list;
-				if(this.prescriptList.length > 0){
-					var prescript = this.prescriptList[0];
-					if(prescript.info.length > 0){
-						for(var i = 0; i < prescript.info.length; i++){
-							this.prescriptionText += prescript.info[i].pname + prescript.info[i].batch + '批次: ' + prescript.info[i].frequency
-								 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
-								 + '，' + prescript.info[i].usage
-								 + '，需服用' + prescript.info[i].days + '天'
-								 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。\n';
-						}
-					}
-
-					if(this.status != '5' && !prescript.apotId){
-						this.canUpdatePrescript = true;
-					}
-				}
-			}
-		});
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -572,6 +522,9 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	                            this.info.mid_weight = '';
 	                        }
 	                    }
+						if(doctorBookingCaseTemplet.casekeys[i].key == 'previous_history'){
+							this.info.previous_history = '否认肝炎、结核病史及接触史，无药物过敏史';
+						}
 						if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck'){
 	                            this.info.face_neck = '未见异常';
 	                    }
@@ -670,39 +623,34 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		});
 	}
 
-	// getPrescriptData() {
-	// 	var urlOptions = this.url + '&booking_id=' + this.id + '&isout=1&today=1';
-	// 	this.adminService.searchprescript(urlOptions).then((data) => {
-	// 		if(data.status == 'no'){
-	// 			this.toastTab(data.errorMsg, 'error');
-	// 		}else{
-	// 			var results = JSON.parse(JSON.stringify(data.results));
-	// 			if(results.list.length > 0){
-	// 				for(var i = 0; i < results.list.length; i++){
-	// 					results.list[i].infoLength = results.list[i].info.length;
-	// 				}
-	// 				var prescript = results.list[0];
-	// 				if(prescript.info.length > 0){
-	// 					for(var i = 0; i < prescript.info.length; i++){
-	// 						this.prescription.push({
-	// 							value: prescript.info[i].pname + ': ' + prescript.info[i].frequency
-	// 								 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
-	// 								 + '，' + prescript.info[i].usage
-	// 								 + '，需服用' + prescript.info[i].days + '天'
-	// 								 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。'
-	// 						});
-	// 					}
-	// 				}
-	// 			}
-	// 			this.prescriptList = results.list;
-	// 			if(this.prescriptList.length > 0){
-	// 				sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
-	// 			}else{
-	// 				sessionStorage.setItem('prescript', '');
-	// 			}
-	// 		}
-	// 	});
-	// }
+	getPrescriptData() {
+		var urlOptions = this.url + '&booking_id=' + this.id + '&isout=1&today=1';
+		this.adminService.searchprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.prescriptList = results.list;
+				this.prescriptionText = '';
+				if(this.prescriptList.length > 0){
+					var prescript = this.prescriptList[0];
+					if(prescript.info.length > 0){
+						for(var i = 0; i < prescript.info.length; i++){
+							this.prescriptionText += prescript.info[i].pname + prescript.info[i].batch + '批次: ' + prescript.info[i].frequency
+								 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
+								 + '，' + prescript.info[i].usage
+								 + '，需服用' + prescript.info[i].days + '天'
+								 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。\n';
+						}
+					}
+
+					if(this.status != '5' && !prescript.apotId){
+						this.canUpdatePrescript = true;
+					}
+				}
+			}
+		});
+	}
 
 	changeTab(_value, url) {
 		sessionStorage.setItem('doctorBookingTab', _value);
@@ -777,6 +725,11 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		this.editType = 'update';
 		this.initEdit();
 		this.btnCanEdit = false;
+	}
+
+	// 取消修改
+	cancel() {
+		this.editType = 'view';
 	}
 
 	getBookingCheckList(){
@@ -862,8 +815,8 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 
 	// 去修改药方
 	updatePrescript() {
-		if(sessionStorage.getItem('prescript') != ''){
-			var prescript = JSON.parse(sessionStorage.getItem('prescript'));
+		if(this.prescriptList.length > 0){
+			var prescript = this.prescriptList[0];
 			this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: prescript.id}});
 		}
 	}

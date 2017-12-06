@@ -32,7 +32,6 @@
 			</div>
 		</div>
 		<div class="pure-u-4-5 right-tab booking-info pad10">
-
 			<div class="second-bar-tab flex mb10">
 				<div (click)="changeTab('3', 'doctorBooking')" class="item">实验室检查</div>
 				<div (click)="changeTab('6', 'doctorBooking')" class="item">辅助治疗</div>
@@ -50,7 +49,8 @@
 						<!-- pageType 空为医生接站， history为查看 -->
 						<div *ngIf="pageType != 'history'">
 							<div class="text-right">
-								<button (click)="updateCaseHistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
+								<button *ngIf="editType != 'update'" (click)="updateCaseHistory(casehistory)" class="pure-button pure-button-primary">修改</button>
 							</div>
 						</div>
 						<div class="" *ngIf="editType == 'view'">
@@ -193,17 +193,15 @@
 										<label class="w150p">诊断：</label>
 										<div class="flex-1">{{casehistory.diagnosis}}</div>
 									</div>
-									<div *ngIf="prescription.length > 0" class="pure-u-24-24 bt info flex">
-										<label class="w150p">处方：</label>
-										<div class="flex-1">
-											<ng-container *ngFor="let item of prescription">
-												<div>{{item.value}}</div>
-											</ng-container>
-										</div>
-									</div>
 									<div *ngIf="casehistory.advise != null" class="pure-u-24-24 bt info flex">
 										<label class="w150p">建议：</label>
 										<div class="flex-1">{{casehistory.advise}}</div>
+									</div>
+									<div *ngIf="prescriptionText != 0" class="pure-u-24-24 bt info flex">
+										<label class="w150p">处方：</label>
+										<div class="flex-1">
+											{{prescriptionText}}
+										</div>
 									</div>
 									<div class="pure-u-24-24 bt info flex">
 										<label class="w150p">就诊日期：</label>
@@ -228,11 +226,11 @@
 								</ng-container>
 							</select>
 						</div>
-						<button (click)="addCaseHistory()" class="pure-button pure-button-primary">新增病历</button>
+						<button (click)="addCaseHistory()" class="pure-button pure-button-primary">切换病历</button>
 					</div>
 				</div>
 				<div class="pure-form pure-form-stacked form-tab pure-tab" *ngIf="editType == 'create' || editType == 'update'">
-					<div class="pure-g">
+					<div class="pure-g hide">
 						<div class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="name">姓名：</label>
@@ -245,12 +243,8 @@
 								<input type="text" id="age" name="age" #age="ngModel" [(ngModel)]="info.age" disabled="">
 							</div>
 						</div>
-						<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="body_temperature">体温（T、°C）：</label>
-								<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
-							</div>
-						</div>
+					</div>
+					<div class="pure-g">
 						<div *ngIf="baseInfo.height != null" class="pure-u-8-24">
 							<div class="pure-control-group">
 								<label for="height">身高（cm）：</label>
@@ -285,6 +279,12 @@
 							<div class="pure-control-group">
 								<label for="compare_weight">体重对比：</label>
 								<input type="text" id="compare_weight" name="compare_weight" #compare_weight="ngModel" [(ngModel)]="info.compare_weight" disabled>
+							</div>
+						</div>
+						<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
+							<div class="pure-control-group">
+								<label for="body_temperature">体温（T、°C）：</label>
+								<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.head_circum != null" class="pure-u-8-24">
@@ -494,7 +494,7 @@
 								<label for="prescription">
 									处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>
 								</label>
-								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="info.prescription" class="min" disabled=""></textarea>
+								<textarea id="prescription" name="prescription" #prescription="ngModel" [(ngModel)]="prescriptionText" class="min" disabled=""></textarea>
 							</div>
 						</div>
 					</div>
