@@ -82,6 +82,12 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
+		guazhangList: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		},
 		//宝宝科室列表
 		childServiceList: {
 			use: string,
@@ -282,6 +288,12 @@ export class LoginComponent{
 				use: '',
 				authority: ['see'],
 				url: '/admin/bookingCharge',
+				infos: [],
+			},
+			guazhangList: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/guazhangList',
 				infos: [],
 			},
 			childServiceList: {

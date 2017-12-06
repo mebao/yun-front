@@ -66,6 +66,12 @@
 				收费
 		</a>
 	  	<a
+			*ngIf="clinicRole.guazhangList.use != ''"
+			routerLink="./guazhangList"
+			routerLinkActive="active">
+				挂账收费
+		</a>
+	  	<a
 			*ngIf="clinicRole.bookingFollowupsList.use != ''"
 			routerLink="./bookingFollowupsList"
 			routerLinkActive="active">

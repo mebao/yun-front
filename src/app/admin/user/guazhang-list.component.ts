@@ -1,13 +1,14 @@
-import { Component }                              from '@angular/core';
+import { Component }                      from '@angular/core';
 
-import { AdminService }                           from '../admin.service';
+import { AdminService }                   from '../admin.service';
 
 @Component({
-	selector: 'admin-transaction-record-list',
-	templateUrl: './transaction-record-list.component.html',
+    selector: 'admin-guazhang-list',
+    templateUrl: './guazhang-list.component.html'
 })
-export class TransactionRecordListComponent{
-	topBar: {
+
+export class GuazhangList{
+    topBar: {
 		title: string,
 		back: boolean,
 	};
@@ -28,10 +29,16 @@ export class TransactionRecordListComponent{
 		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
-		type: string,
-		pay_way: string,
+        second_type: string,
 	}
 	commonList: any[];
+    modalConfirmTab: boolean;
+    selector: {
+        id: string,
+        amount: string,
+        text: string,
+    }
+    btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -39,7 +46,7 @@ export class TransactionRecordListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '交易记录',
+			title: '挂账收费',
 			back: false,
 		}
 		this.toast = {
@@ -61,14 +68,21 @@ export class TransactionRecordListComponent{
 			l_time_num: 0,
 			b_amount: '',
 			l_amount: '',
-			type: '',
-			pay_way: '',
+            second_type: '1',
 		}
 
 		this.commonList = [
 			{id: 1},
 			{id: 2},
 		]
+
+        this.modalConfirmTab = false;;
+        this.selector = {
+            id: '',
+            amount: '',
+            text: '',
+        }
+        this.btnCanEdit = false;
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -94,11 +108,8 @@ export class TransactionRecordListComponent{
 		if(this.searchInfo.l_amount != ''){
 			urlOptions += '&l_amount=' + this.searchInfo.l_amount;
 		}
-		if(this.searchInfo.type != ''){
-			urlOptions += '&type=' + this.searchInfo.type;
-		}
-		if(this.searchInfo.pay_way != ''){
-			urlOptions += '&pay_way=' + this.searchInfo.pay_way;
+		if(this.searchInfo.second_type != ''){
+			urlOptions += '&second_type=' + this.searchInfo.second_type;
 		}
 		this.getData(urlOptions);
 	}
@@ -122,6 +133,40 @@ export class TransactionRecordListComponent{
 		this.searchInfo[key] = JSON.parse(_value).value;
 		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
+
+    closeConfirm() {
+        this.modalConfirmTab = false;
+    }
+
+    pay(record) {
+        this.selector = {
+            id: record.id,
+            amount: record.payWay == 'guazhang' ? record.amount : record.secondAmount,
+            text: '确认支付？',
+        }
+        this.modalConfirmTab = true;
+    }
+
+    confirm() {
+        this.btnCanEdit = true;
+        var params = {
+            username: this.adminService.getUser().username,
+            token: this.adminService.getUser().token,
+            id: this.selector.id,
+            amount: this.selector.amount,
+        }
+        this.adminService.payguazhang(this.selector.id, params).then((data) => {
+            if(data.status == 'no'){
+                this.toastTab(data.errorMsg, 'error');
+                this.btnCanEdit = false;
+            }else{
+                this.toastTab('支付成功', '');
+                this.modalConfirmTab = false;
+                this.btnCanEdit = false;
+                this.search();
+            }
+        });
+    }
 
 	toastTab(text, type) {
 		this.toast = {

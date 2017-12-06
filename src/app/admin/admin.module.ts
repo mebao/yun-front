@@ -79,6 +79,7 @@ import { DoctorVisitComponent }            from './doctor/doctor-visit.component
 import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
+import { GuazhangList }                    from './user/guazhang-list.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -156,6 +157,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		PaymentBookingFee,
 		Repage,
 		UpdatepwdComponent,
+		GuazhangList,
 	],
 	providers: [
 		AdminService,

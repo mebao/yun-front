@@ -269,6 +269,7 @@ export class BookingListComponent implements OnInit{
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.clinicservices(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));

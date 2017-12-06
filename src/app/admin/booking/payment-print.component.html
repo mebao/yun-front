@@ -103,10 +103,17 @@
 				<div class="w15">{{other.otherFee}}</div>
 			</div>
 		</div>
-		<div class="flex money">
-			<div class="flex-1">费用合计：{{fee.originalCost}}元</div>
-			<div class="flex-1">应收费用：{{fee.fee}}元</div>
-			<div class="flex-1">{{tran.info.wayText}}支付：{{tran.info.amount}}元</div>
+		<div class="money">
+			<div class="flex">
+				<div class="flex-1">费用合计：{{fee.originalCost}}元</div>
+				<div class="flex-1">应收费用：{{fee.fee}}元</div>
+				<div *ngIf="tran.info.secondWay" class="flex-1"></div>
+			</div>
+			<div class="flex mt10">
+				<div class="flex-1">减免金额：{{tran.info.giveAmount}}元</div>
+				<div class="flex-1">{{tran.info.wayText}}支付：{{tran.info.amount}}元</div>
+				<div *ngIf="tran.info.secondWay" class="flex-1">{{tran.info.secondWayText}}支付：{{tran.info.secondAmount}}元</div>
+			</div>
 		</div>
 		<div class="flex">
 			<div class="flex-1"></div>

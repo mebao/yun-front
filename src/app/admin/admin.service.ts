@@ -27,6 +27,23 @@ export class AdminService{
 		return this.url;
 	}
 
+	// 获取clinicdata
+	getClinicdata() {
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			return JSON.parse(clinicdata);
+		}else{
+			this.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					return 'error';
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					return results;
+				}
+			});
+		}
+	}
+
 	//创建用户
 	private createUrl = this.url + '/mebcrm/admincreate';
 	create(param): Promise<Data>{
@@ -1043,6 +1060,15 @@ export class AdminService{
 	private bookingcancelledUrl = this.url + '/mebcrm/bookingcancelled/';
 	bookingcancelled(urlOptions): Promise<Data>{
 		return this.http.get(this.bookingcancelledUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 支付挂账金额
+	private payguazhangUrl = this.url + '/mebcrm/payguazhang/';
+	payguazhang(urlOptions, params): Promise<Data>{
+		return this.http.post(this.payguazhangUrl + urlOptions, JSON.stringify(params))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

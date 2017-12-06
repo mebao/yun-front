@@ -56,6 +56,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 挂账收费
+		guazhangList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//宝宝科室列表
 		childServiceList: {
 			use: string,
@@ -215,6 +221,11 @@ export class LeftNavComponent{
 				infos: []
 			},
 			bookingCharge: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			guazhangList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

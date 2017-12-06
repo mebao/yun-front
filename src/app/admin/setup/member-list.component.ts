@@ -157,7 +157,9 @@ export class MemberListComponent{
 								info.assistName = results.list[i].assists[j].assistName;
 								info.assistDiscount = results.list[i].assists[j].discount;
 							}
-							results.list[i].infoList.push(info);
+							if(info.assistDiscount != '' || info.serviceDiscount != ''){
+								results.list[i].infoList.push(info);
+							}
 						}
 					}
 				}

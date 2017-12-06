@@ -23,7 +23,11 @@ export class PaymentPrintComponent{
 			time: string,
 			wayText: string,
 			amount: string,
+			giveAmount: string,
 			adminName: string,
+			secondAmount: string,
+			secondWay: string,
+			secondWayText: string,
 		},
 		id: string,
 	};
@@ -114,7 +118,11 @@ export class PaymentPrintComponent{
 				time: '',
 				wayText: '',
 				amount: '',
+				giveAmount: '',
 				adminName: '',
+				secondAmount: '',
+				secondWay: '',
+				secondWayText: '',
 			},
 			id:''
 		}
@@ -193,42 +201,9 @@ export class PaymentPrintComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.fee.remark = results.tranRemark;
-				var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
-				this.adminService.searchuser(userUrl).then((userData) => {
-					if(userData.status == 'no'){
-						this.toastTab(userData.errorMsg, 'error');
-					}else{
-						var userResults = JSON.parse(JSON.stringify(userData.results));
-						if(userResults.users.length > 0 && userResults.users[0].memberId){
-							this.userMember.member = true;
-							this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
-							//获取会员折扣信息
-							var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-								 + '&id=' + userResults.users[0].memberId + '&status=1';
-							this.adminService.memberlist(memberUrl).then((memberData) => {
-								if(memberData.status == 'no'){
-									this.toastTab(memberData.errorMsg, 'error');
-								}else{
-									var memberResults = JSON.parse(JSON.stringify(memberData.results));
-									if(memberResults.list.length > 0){
-										this.userMember.service = this.adminService.isFalse(memberResults.list[0].service) ? '1.00' : this.adminService.toDecimal2(Number(memberResults.list[0].service) / 100);
-										this.userMember.services = memberResults.list[0].services;
-										this.userMember.assist = this.adminService.isFalse(memberResults.list[0].assist) ? '1.00' :  this.adminService.toDecimal2(Number(memberResults.list[0].assist) / 100);
-										this.userMember.assists = memberResults.list[0].assists;
-										this.userMember.check = this.adminService.toDecimal2(Number(memberResults.list[0].check) / 100);
-										this.userMember.prescript = this.adminService.toDecimal2(Number(memberResults.list[0].prescript) / 100);
-										this.userMember.other = this.adminService.toDecimal2(Number(memberResults.list[0].other) / 100);
-									}
-									//计算折扣后的费用信息
-									this.getFeeInfo(this.userMember, results);
-								}
-							});
-						}else{
-							//计算折扣后的费用信息
-							this.getFeeInfo(this.userMember, results);
-						}
-					}
-				});
+				this.userMember = results.discountInfo;
+				//计算折扣后的费用信息
+				this.getFeeInfo(this.userMember, results);
 			}
 		});
 
@@ -260,7 +235,7 @@ export class PaymentPrintComponent{
 					for(var j = 0; j < userMember.services.length; j++){
 						// 通过serviceId
 						if(results.feeinfo['医生服务费用'][i].serviceId == userMember.services[j].serviceId){
-							serviceDiscount = this.adminService.toDecimal2(Number(userMember.services[j].discount) / 100);
+							serviceDiscount = userMember.services[j].discount;
 						}
 					}
 				}
@@ -275,7 +250,7 @@ export class PaymentPrintComponent{
 					for(var j = 0; j < userMember.assists.length; j++){
 						// 通过assistId
 						if(results.feeinfo['辅助项目费用'][i].projectId == userMember.assists[j].assistId){
-							assistDiscount = this.adminService.toDecimal2(Number(userMember.assists[j].discount) / 100);
+							assistDiscount = userMember.assists[j].discount;
 						}
 					}
 				}
@@ -407,7 +382,7 @@ export class PaymentPrintComponent{
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.otherFeeList.length; i++){
 				otherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].fee) * parseFloat(userMember.other);
-				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].fee) * parseFloat(userMember.other);
+				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].fee);
 				this.fee.feeInfo.otherFeeList[i].otherFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].fee) * parseFloat(userMember.other));
 				this.fee.feeInfo.otherFeeList[i].originalOtherFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].fee));
 				this.fee.feeInfo.otherFeeList[i].otherDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].originalOtherFee) - parseFloat(this.fee.feeInfo.otherFeeList[i].otherFee));

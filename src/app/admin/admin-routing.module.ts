@@ -68,6 +68,7 @@ import { DoctorVisitComponent }             from './doctor/doctor-visit.componen
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
+import { GuazhangList }                     from './user/guazhang-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -402,6 +403,11 @@ const adminRoutes: Routes = [
 						path: 'paymentBookingFee',
 						canActivate: [AuthGuardRole],
 						component: PaymentBookingFee,
+					},
+					{
+						path: 'guazhangList',
+						canActivate: [AuthGuardRole],
+						component: GuazhangList,
 					},
 					{
 						path: 'repage',

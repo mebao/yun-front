@@ -78,7 +78,7 @@ export class ForgetpwdComponent{
                 this.sms.disabled = false;
             }else{
                 this.toastTab('短信验证码发送成功', '');
-                var count = 10;
+                var count = 60;
                 this.sms.text = count + '秒后重发';
                 var verifyCodeInterval = setInterval(() => {
                     this.sms.text = count-- + '秒后重发';

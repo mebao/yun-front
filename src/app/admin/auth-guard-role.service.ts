@@ -311,6 +311,19 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'guazhangList',
+						firstUrl: '/admin/guazhangList',
+						authority: ['see'],
+						second: [
+							{
+								url: '/admin/guazhangList',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
 						firstKey: 'childServiceList',
 						firstUrl: '/admin/childServiceList',
 						authority: ['see'],
@@ -963,7 +976,7 @@ export class AuthGuardRole implements CanActivate{
 							}
 						}
 					}else{
-						this.router.navigate(['./admin/noPermissions'], {queryParams: {layout: 'all'}});
+						this.router.navigate(['./admin/noPermissions']);
 					}
 					return false;
 				}
