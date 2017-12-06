@@ -155,8 +155,8 @@ export class CreateUserComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.name.length > 5){
-			this.toastTab('姓名最多五位', 'error');
+		if(f.value.name.length > 10){
+			this.toastTab('姓名最多十位', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
