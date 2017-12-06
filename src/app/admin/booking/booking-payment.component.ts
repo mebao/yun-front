@@ -790,6 +790,10 @@ export class BookingPaymentComponent{
 	}
 
 	pay() {
+		// 如果折扣，为修改状态，默认执行取消操作
+		if(this.editMemberType == 'update'){
+			this.cancelMember();
+		}
 		this.payInfo.payway = {
 			way: '',
 			text: '',
