@@ -545,8 +545,6 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
             }
 		}
 
-		this.loadingShow = true;
-
 		// 主诉模板
 		this.cprtemplateList = [];
 		this.cprtemplate = '';
