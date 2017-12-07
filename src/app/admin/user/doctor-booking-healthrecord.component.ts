@@ -383,7 +383,6 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
 						results.list[i].stoolRoutineExamination = results.list[i].stoolRoutineExamination.replace('镜检：', '\n镜检：');
-						console.log(results.list[i].stoolRoutineExamination);
 						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
 					}
 				}
@@ -473,8 +472,6 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 		if(doctorBooking == null){
 			return;
 		}
-
-		console.log(this.editType);
 
 		if(this.editType == 'update'){
 			this.info = {
@@ -840,7 +837,6 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 					}
 				}
 			}
-			console.log(this.info);
 		}
 	}
 
