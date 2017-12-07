@@ -988,6 +988,10 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         this.info.review_date = JSON.parse(_value).value;
     }
 
+	cancel() {
+		this.editType = 'view';
+	}
+
     create(f) {
         this.btnCanEdit = true;
         this.info.skin = this.adminService.trim(this.info.skin);
