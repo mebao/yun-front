@@ -819,13 +819,13 @@ export class BookingPaymentComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(this.payInfo.payway.way != '' && this.payInfo.payway.money == ''){
+		if(this.payInfo.payway.way != '' && this.payInfo.payway.money.toString() == ''){
 			this.toastTab(this.payInfo.payway.text + '金额不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(this.payInfo.payway.way != '' && parseFloat(this.payInfo.payway.money) <= 0){
-			this.toastTab(this.payInfo.payway.text + '金额应大于0', 'error');
+		if(this.payInfo.payway.way != '' && parseFloat(this.payInfo.payway.money) < 0){
+			this.toastTab(this.payInfo.payway.text + '金额应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
