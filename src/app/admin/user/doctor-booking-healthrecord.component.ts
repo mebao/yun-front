@@ -89,6 +89,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         pulse: string,
         breathe: string,
         blood_pressure: string,
+		spirit: string,//精神及神志
+		nutritional_status: string,//营养状态
         skin: string,
         skin_other: string,
         oral_mucosa: string,
@@ -99,6 +101,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         lymph_node_other: string,
         heart: string,
         heart_other: string,
+		thoracic: string,//胸廓
+		thoracic_other: string,
         lung: string,
         lung_other: string,
         liver_spleen: string,
@@ -127,6 +131,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         teeth_pit_other: string,
         plaque: string,
         plaque_other: string,
+		teeth_num: string,//出牙数
         dental_caries: string,
         dental_caries_other: string,
         limb: string,
@@ -134,9 +139,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         ribs: string,
         ribs_other: string,
         head: string,
-        head_other: string,
         bregmatic: string,
-        bregmatic_other: string,
         hip_joint: string,
         hip_joint_other: string,
         torticollis: string,
@@ -161,6 +164,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         trace_element_other: string,
         heavy_metal: string,
         heavy_metal_other: string,
+		blood_type: string,//ABO血型鉴定
         feeding: string,
         life: string,
         immunization: string,
@@ -182,6 +186,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         pulse: string,
         breathe: string,
         blood_pressure: string,
+		teeth_num: string,
     }
     editType: string;
 	// 不可连续点击
@@ -224,6 +229,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			pulse: '',
 			breathe: '',
 			blood_pressure: '',
+			spirit: '',
+			nutritional_status: '',
 			skin: '',
 			skin_other: '',
 			oral_mucosa: '',
@@ -234,6 +241,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			lymph_node_other: '',
 			heart: '',
 			heart_other: '',
+			thoracic: '',
+			thoracic_other: '',
 			lung: '',
 			lung_other: '',
 			liver_spleen: '',
@@ -262,6 +271,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			teeth_pit_other: '',
 			plaque: '',
 			plaque_other: '',
+			teeth_num: '',
 			dental_caries: '',
 			dental_caries_other: '',
 			limb: '',
@@ -269,9 +279,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			ribs: '',
 			ribs_other: '',
 			head: '',
-			head_other: '',
 			bregmatic: '',
-			bregmatic_other: '',
 			hip_joint: '',
 			hip_joint_other: '',
 			torticollis: '',
@@ -296,6 +304,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			trace_element_other: '',
 			heavy_metal: '',
 			heavy_metal_other: '',
+			blood_type: '',
 			feeding: '',
 			life: '',
 			immunization: '',
@@ -316,6 +325,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			pulse: '',
 			breathe: '',
 			blood_pressure: '',
+			teeth_num: '',
 		}
 
 		this.loadingShow = true;
@@ -372,6 +382,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						results.list[i].stoolRoutineExamination = results.list[i].stoolRoutineExamination.replace('镜检：', '\n镜检：');
+						console.log(results.list[i].stoolRoutineExamination);
 						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
 					}
 				}
@@ -404,6 +416,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				}
 				this.recordtempletList = results.list;
 				if(this.recordtempletList.length > 0){
+					this.selectedTemplet = this.recordtempletList[0].string;
 					sessionStorage.setItem('doctorBookingRecordTemplet', JSON.stringify(this.recordtempletList[0]));
 					this.initEdit();
 				}
@@ -461,6 +474,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			return;
 		}
 
+		console.log(this.editType);
+
 		if(this.editType == 'update'){
 			this.info = {
 				id: healthrecord.id,
@@ -481,6 +496,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				pulse: healthrecord.pulse,
 				breathe: healthrecord.breathe,
 				blood_pressure: healthrecord.bloodPressure,
+				spirit: healthrecord.spirit,
+				nutritional_status: healthrecord.nutritionalStatus,
 				skin: healthrecord.skin,
 				skin_other: healthrecord.skin == '未见异常' ? '' : healthrecord.skin,
 				oral_mucosa: healthrecord.oralMucosa,
@@ -491,6 +508,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				lymph_node_other: healthrecord.lymphNode == '未见异常' ? '' : healthrecord.lymphNode,
 				heart: healthrecord.heart,
 				heart_other: healthrecord.heart == '未见异常' ? '' : healthrecord.heart,
+				thoracic: healthrecord.thoracic,
+				thoracic_other: healthrecord.thoracic == '未见异常' ? '' : healthrecord.thoracic,
 				lung: healthrecord.lung,
 				lung_other: healthrecord.lung == '未见异常' ? '' : healthrecord.lung,
 				liver_spleen: healthrecord.liverSpleen,
@@ -510,7 +529,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				eyes: healthrecord.eyes,
 				eyes_other: healthrecord.eyes == '未见明显畸形' ? '' : healthrecord.eyes,
 				vision: healthrecord.vision,
-				vision_other: healthrecord.vision == '未见异常' ? '' : healthrecord.vision,
+				vision_other: healthrecord.vision == '未做' ? '' : healthrecord.vision,
 				gums: healthrecord.gums,
 				gums_other: healthrecord.gums == '未见异常' ? '' : healthrecord.gums,
 				tongue_tie: healthrecord.tongue_tie,
@@ -519,6 +538,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				teeth_pit_other: healthrecord.teeth_pit == '未见异常' ? '' : healthrecord.teeth_pit,
 				plaque: healthrecord.plaque,
 				plaque_other: healthrecord.plaque == '未见异常' ? '' : healthrecord.plaque,
+				teeth_num: healthrecord.teeth_num,
 				dental_caries: healthrecord.dental_caries,
 				dental_caries_other: healthrecord.dental_caries == '未见异常' ? '' : healthrecord.dental_caries,
 				limb: healthrecord.limb,
@@ -526,9 +546,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				ribs: healthrecord.ribs,
 				ribs_other: healthrecord.ribs == '未见异常' ? '' : healthrecord.ribs,
 				head: healthrecord.head,
-				head_other: healthrecord.head == '未见异常' ? '' : healthrecord.head,
 				bregmatic: healthrecord.bregmatic,
-				bregmatic_other: healthrecord.bregmatic == '未见异常' ? '' : healthrecord.bregmatic,
 				hip_joint: healthrecord.hip_joint,
 				hip_joint_other: healthrecord.hip_joint == '未见异常' ? '' : healthrecord.hip_joint,
 				torticollis: healthrecord.torticollis,
@@ -553,6 +571,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				trace_element_other: healthrecord.traceElement == '未见异常' ? '' : healthrecord.traceElement,
 				heavy_metal: healthrecord.heavyMetal,
 				heavy_metal_other: healthrecord.heavyMetal == '未见异常' ? '' : healthrecord.heavyMetal,
+				blood_type: healthrecord.bloodType,
 				feeding: healthrecord.feeding,
 				life: healthrecord.life,
 				immunization: healthrecord.immunization,
@@ -573,6 +592,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				pulse: healthrecord.pulse,
 				breathe: healthrecord.breathe,
 				blood_pressure: healthrecord.bloodPressure,
+				teeth_num: healthrecord.teeth_num,
 			}
 		}else if(this.editType=='create'){
 			this.info = {
@@ -594,6 +614,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				pulse: null,
 				breathe: null,
 				blood_pressure: null,
+				spirit: null,
+				nutritional_status: null,
 				skin: null,
 				skin_other: '',
 				oral_mucosa: null,
@@ -604,6 +626,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				lymph_node_other: '',
 				heart: null,
 				heart_other: '',
+				thoracic: null,
+				thoracic_other: '',
 				lung: null,
 				lung_other: '',
 				liver_spleen: null,
@@ -632,6 +656,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				teeth_pit_other: '',
 				plaque: null,
 				plaque_other: '',
+				teeth_num: null,
 				dental_caries: null,
 				dental_caries_other: '',
 				limb: null,
@@ -639,9 +664,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				ribs: null,
 				ribs_other: '',
 				head: null,
-				head_other: '',
 				bregmatic: null,
-				bregmatic_other: '',
 				hip_joint: null,
 				hip_joint_other: '',
 				torticollis: null,
@@ -666,6 +689,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				trace_element_other: '',
 				heavy_metal: null,
 				heavy_metal_other: '',
+				blood_type: null,
 				feeding: null,
 				life: null,
 				immunization: null,
@@ -686,6 +710,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				pulse: null,
 				breathe: null,
 				blood_pressure: null,
+				teeth_num: null,
 			}
 			var doctorBookingRecordTemplet = JSON.parse(sessionStorage.getItem('doctorBookingRecordTemplet'));
 			if(doctorBookingRecordTemplet != null){
@@ -722,6 +747,9 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='heart'){
 								this.info.heart = '未见异常';
 						}
+						if(doctorBookingRecordTemplet.recordkeys[i].key=='thoracic'){
+								this.info.thoracic = '未见异常';
+						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='lung'){
 								this.info.lung = '未见异常';
 						}
@@ -750,7 +778,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 								this.info.eyes = '未见明显畸形';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='vision'){
-								this.info.vision = '未见异常';
+								this.info.vision = '未做';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='gums'){
 								this.info.gums = '未见异常';
@@ -773,12 +801,6 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='ribs'){
 								this.info.ribs = '未见异常';
 						}
-						if(doctorBookingRecordTemplet.recordkeys[i].key=='head'){
-								this.info.head = '未见异常';
-						}
-						if(doctorBookingRecordTemplet.recordkeys[i].key=='bregmatic'){
-								this.info.bregmatic = '未见异常';
-						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='hip_joint'){
 								this.info.hip_joint = '未见异常';
 						}
@@ -795,13 +817,13 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 								this.info.neurodevelopment = '未见异常';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='blood_routine_examination'){
-								this.info.blood_routine_examination = '未见异常';
+								this.info.blood_routine_examination = '红细胞数：     ，白细胞总数：     ，血小板总数：     ，血红蛋白：     ';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='routine_urine'){
 								this.info.routine_urine = '未见异常';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='stool_routine_examination'){
-								this.info.stool_routine_examination = '未见异常';
+								this.info.stool_routine_examination = '隐血：\n镜检：';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='bone_density'){
 								this.info.bone_density = '未见异常';
@@ -810,14 +832,15 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 								this.info.BALP = '未见异常';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='trace_element'){
-								this.info.trace_element = '未见异常';
+								this.info.trace_element = '锌：     ，铁：     ，钙：     ，镁：     ，铜：     ';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='heavy_metal'){
-								this.info.heavy_metal = '未见异常';
+								this.info.heavy_metal = '铅：     ，镉：     ，锰：     ';
 						}
 					}
 				}
 			}
+			console.log(this.info);
 		}
 	}
 
@@ -977,6 +1000,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         this.info.lymph_node_other = this.adminService.trim(this.info.lymph_node_other);
         this.info.heart = this.adminService.trim(this.info.heart);
         this.info.heart_other = this.adminService.trim(this.info.heart_other);
+        this.info.thoracic = this.adminService.trim(this.info.thoracic);
+        this.info.thoracic_other = this.adminService.trim(this.info.thoracic_other);
         this.info.lung = this.adminService.trim(this.info.lung);
         this.info.lung_other = this.adminService.trim(this.info.lung_other);
         this.info.kidney = this.adminService.trim(this.info.kidney);
@@ -1010,9 +1035,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         this.info.ribs = this.adminService.trim(this.info.ribs);
         this.info.ribs_other = this.adminService.trim(this.info.ribs_other);
         this.info.head = this.adminService.trim(this.info.head);
-        this.info.head_other = this.adminService.trim(this.info.head_other);
         this.info.bregmatic = this.adminService.trim(this.info.bregmatic);
-        this.info.bregmatic_other = this.adminService.trim(this.info.bregmatic_other);
         this.info.hip_joint = this.adminService.trim(this.info.hip_joint);
         this.info.hip_joint_other = this.adminService.trim(this.info.hip_joint_other);
         this.info.torticollis = this.adminService.trim(this.info.torticollis);
@@ -1038,6 +1061,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         this.info.heavy_metal = this.adminService.trim(this.info.heavy_metal);
         this.info.heavy_metal_other = this.adminService.trim(this.info.heavy_metal_other);
         this.info.feeding = this.adminService.trim(this.info.feeding);
+		this.info.blood_type = this.adminService.trim(this.info.blood_type);
         this.info.life = this.adminService.trim(this.info.life);
         this.info.immunization = this.adminService.trim(this.info.immunization);
         this.info.disease_prevention = this.adminService.trim(this.info.disease_prevention);
@@ -1083,6 +1107,11 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             this.btnCanEdit = false;
 			return;
 		}
+		if(!this.adminService.isFalse(this.info.teeth_num) && (Number(this.info.teeth_num) <= 0 || parseFloat(this.info.teeth_num) % 1 != 0)){
+			this.toastTab('出牙数应为大于0的整数', 'error');
+            this.btnCanEdit = false;
+			return false;
+		}
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
@@ -1102,11 +1131,14 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             pulse: this.info.pulse,
             breathe: this.info.breathe,
             blood_pressure: this.info.blood_pressure,
+            spirit: this.info.spirit,
+            nutritional_status: this.info.nutritional_status,
             skin: this.info.skin != '' ? this.info.skin : this.info.skin_other,
             oral_mucosa: this.info.oral_mucosa != '' ? this.info.oral_mucosa : this.info.oral_mucosa_other,
             hair: this.info.hair != '' ? this.info.hair : this.info.hair_other,
             lymph_node: this.info.lymph_node != '' ? this.info.lymph_node : this.info.lymph_node_other,
             heart: this.info.heart != '' ? this.info.heart : this.info.heart_other,
+			thoracic: this.info.thoracic != '' ? this.info.thoracic : this.info.thoracic_other,
             lung: this.info.lung != '' ? this.info.lung : this.info.lung_other,
             liver_spleen: this.info.liver_spleen != '' ? this.info.liver_spleen : this.info.liver_spleen_other,
             kidney: this.info.kidney != '' ? this.info.kidney : this.info.kidney_other,
@@ -1121,11 +1153,12 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             tongue_tie: this.info.tongue_tie != '' ? this.info.tongue_tie : this.info.tongue_tie_other,
             teeth_pit: this.info.teeth_pit != '' ? this.info.teeth_pit : this.info.teeth_pit_other,
             plaque: this.info.plaque != '' ? this.info.plaque : this.info.plaque_other,
+			teeth_num: this.info.teeth_num,
             dental_caries: this.info.dental_caries != '' ? this.info.dental_caries : this.info.dental_caries_other,
             limb: this.info.limb != '' ? this.info.limb : this.info.limb_other,
             ribs: this.info.ribs != '' ? this.info.ribs : this.info.ribs_other,
-            head: this.info.head != '' ? this.info.head : this.info.head_other,
-            bregmatic: this.info.bregmatic != '' ? this.info.bregmatic : this.info.bregmatic_other,
+            head: this.info.head,
+            bregmatic: this.info.bregmatic,
             hip_joint: this.info.hip_joint != '' ? this.info.hip_joint : this.info.hip_joint_other,
             torticollis: this.info.torticollis != '' ? this.info.torticollis : this.info.torticollis_other,
             genitalia: this.info.genitalia != '' ? this.info.genitalia : this.info.genitalia_other,
@@ -1139,6 +1172,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             trace_element: this.info.trace_element != '' ? this.info.trace_element : this.info.trace_element_other,
             heavy_metal: this.info.heavy_metal != '' ? this.info.heavy_metal : this.info.heavy_metal_other,
             feeding: this.info.feeding,
+			blood_type: this.info.blood_type,
             life: this.info.life,
             immunization: this.info.immunization,
             disease_prevention: this.info.disease_prevention,

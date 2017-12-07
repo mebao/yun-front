@@ -93,7 +93,7 @@
 							</div>
 						</div>
 						<div
-							*ngIf="healthrecord.bodyTemperature != null || healthrecord.pulse != null || healthrecord.breathe != null || healthrecord.bloodPressure != null"
+							*ngIf="healthrecord.bodyTemperature != null || healthrecord.pulse != null || healthrecord.breathe != null || healthrecord.bloodPressure != null || healthrecord.spirit != null || healthrecord.nutritionalStatus != null"
 							class="section">
 							<div class="title">生命体征 (通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 							<div class="pure-g">
@@ -113,10 +113,18 @@
 									<label class="w150p">血压：</label>
 									<div class="flex-1">{{healthrecord.bloodPressure}}</div>
 								</div>
+								<div *ngIf="healthrecord.spirit != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">精神及神志：</label>
+									<div class="flex-1">{{healthrecord.spirit}}</div>
+								</div>
+								<div *ngIf="healthrecord.nutritionalStatus != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">营养状态：</label>
+									<div class="flex-1">{{healthrecord.nutritionalStatus}}</div>
+								</div>
 							</div>
 						</div>
 						<div
-							*ngIf="healthrecord.skin != null || healthrecord.oralMucosa != null || healthrecord.hair != null || healthrecord.lymphNode != null"
+							*ngIf="healthrecord.skin != null || healthrecord.oralMucosa != null || healthrecord.hair != null || healthrecord.lymphNode != null || healthrecord.head != null || healthrecord.bregmatic != null"
 							class="section">
 							<div class="title">体表检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 							<div class="pure-g">
@@ -136,28 +144,13 @@
 									<label class="w150p">浅表淋巴结：</label>
 									<div class="flex-1">{{healthrecord.lymphNode}}</div>
 								</div>
-							</div>
-						</div>
-						<div
-							*ngIf="healthrecord.heart != null || healthrecord.lung != null || healthrecord.kidney != null || healthrecord.abdomen != null"
-							class="section">
-							<div class="title">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
-							<div class="pure-g">
-								<div *ngIf="healthrecord.heart != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">心脏听诊：</label>
-									<div class="flex-1">{{healthrecord.heart}}</div>
+								<div *ngIf="healthrecord.head != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">头颅：</label>
+									<div class="flex-1">{{healthrecord.head}}</div>
 								</div>
-								<div *ngIf="healthrecord.lung != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">双肺听诊：</label>
-									<div class="flex-1">{{healthrecord.lung}}</div>
-								</div>
-								<div *ngIf="healthrecord.kidney != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">双肾：</label>
-									<div class="flex-1">{{healthrecord.kidney}}</div>
-								</div>
-								<div *ngIf="healthrecord.abdomen != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">腹部：</label>
-									<div class="flex-1">{{healthrecord.abdomen}}</div>
+								<div *ngIf="healthrecord.bregmatic != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">前囟：</label>
+									<div class="flex-1">{{healthrecord.bregmatic}}</div>
 								</div>
 							</div>
 						</div>
@@ -200,7 +193,7 @@
 							</div>
 						</div>
 						<div
-							*ngIf="healthrecord.gums != null || healthrecord.tongue_tie != null || healthrecord.teeth_pit != null || healthrecord.plaque != null || healthrecord.dental_caries != null"
+							*ngIf="healthrecord.gums != null || healthrecord.tongue_tie != null || healthrecord.teeth_pit != null || healthrecord.plaque != null || healthrecord.teeth_num || healthrecord.dental_caries != null"
 							class="section">
 							<div class="title">口腔检查 （发现口腔异常情况，如：有无诞生牙及畸形）</div>
 							<div class="pure-g">
@@ -220,6 +213,10 @@
 									<label class="w150p">牙菌斑：</label>
 									<div class="flex-1">{{healthrecord.plaque}}</div>
 								</div>
+								<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">出牙数：</label>
+									<div class="flex-1">{{healthrecord.teeth_num}}</div>
+								</div>
 								<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">龋齿：</label>
 									<div class="flex-1">{{healthrecord.dental_caries}}</div>
@@ -227,7 +224,34 @@
 							</div>
 						</div>
 						<div
-							*ngIf="healthrecord.limb != null || healthrecord.ribs != null || healthrecord.head != null || healthrecord.bregmatic != null || healthrecord.hip_joint != null || healthrecord.torticollis != null"
+							*ngIf="healthrecord.thoracic != null || healthrecord.heart != null || healthrecord.lung != null || healthrecord.kidney != null || healthrecord.abdomen != null"
+							class="section">
+							<div class="title">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
+							<div class="pure-g">
+								<div *ngIf="healthrecord.thoracic != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">胸廓：</label>
+									<div class="flex-1">{{healthrecord.thoracic}}</div>
+								</div>
+								<div *ngIf="healthrecord.heart != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">心脏：</label>
+									<div class="flex-1">{{healthrecord.heart}}</div>
+								</div>
+								<div *ngIf="healthrecord.lung != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">双肺：</label>
+									<div class="flex-1">{{healthrecord.lung}}</div>
+								</div>
+								<div *ngIf="healthrecord.kidney != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">双肾：</label>
+									<div class="flex-1">{{healthrecord.kidney}}</div>
+								</div>
+								<div *ngIf="healthrecord.abdomen != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">腹部：</label>
+									<div class="flex-1">{{healthrecord.abdomen}}</div>
+								</div>
+							</div>
+						</div>
+						<div
+							*ngIf="healthrecord.limb != null || healthrecord.ribs != null || healthrecord.hip_joint != null || healthrecord.torticollis != null"
 							class="section">
 							<div class="title">骨骼检查 （前期筛查孩子骨骼发育相关问题，尽早干预）</div>
 							<div class="pure-g">
@@ -238,14 +262,6 @@
 								<div *ngIf="healthrecord.ribs != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">肋骨：</label>
 									<div class="flex-1">{{healthrecord.ribs}}</div>
-								</div>
-								<div *ngIf="healthrecord.head != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">头颅：</label>
-									<div class="flex-1">{{healthrecord.head}}</div>
-								</div>
-								<div *ngIf="healthrecord.bregmatic != null" class="pure-u-24-24 bt info flex">
-									<label class="w150p">前囟：</label>
-									<div class="flex-1">{{healthrecord.bregmatic}}</div>
 								</div>
 								<div *ngIf="healthrecord.hip_joint != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">髋关节：</label>
@@ -284,7 +300,7 @@
 							</div>
 						</div>
 						<div
-							*ngIf="healthrecord.bloodRoutineExamination != null || healthrecord.routineUrine != null || healthrecord.stoolRoutineExamination != null || healthrecord.boneDensity != null || healthrecord.BALP != null || healthrecord.traceElement != null || healthrecord.heavyMetal != null"
+							*ngIf="healthrecord.bloodRoutineExamination != null || healthrecord.routineUrine != null || healthrecord.stoolRoutineExamination != null || healthrecord.boneDensity != null || healthrecord.BALP != null || healthrecord.traceElement != null || healthrecord.heavyMetal != null || healthrecord.bloodType != null"
 							class="section">
 							<div class="title">辅助治疗 （收费项目，由医生建议）</div>
 							<div class="pure-g">
@@ -316,12 +332,16 @@
 									<label class="w150p">铅、镉、锰：</label>
 									<div class="flex-1">{{healthrecord.heavyMetal}}</div>
 								</div>
+								<div *ngIf="healthrecord.bloodType != null" class="pure-u-24-24 bt info flex">
+									<label class="w150p">ABO血型鉴定：</label>
+									<div class="flex-1">{{healthrecord.bloodType}}</div>
+								</div>
 							</div>
 						</div>
 						<div
 							*ngIf="healthrecord.feeding != null"
 							class="section">
-							<div class="title">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导，最多200字）</div>
+							<div class="title">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导）</div>
 							<div class="pure-g">
 								<div *ngIf="healthrecord.feeding != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">喂养指导：</label>
@@ -332,7 +352,7 @@
 						<div
 							*ngIf="healthrecord.life != null"
 							class="section">
-							<div class="title">生活指导（宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等，最多200字）</div>
+							<div class="title">生活指导（宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等）</div>
 							<div class="pure-g">
 								<div *ngIf="healthrecord.life != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">生活指导：</label>
@@ -343,7 +363,7 @@
 						<div
 							*ngIf="healthrecord.immunization != null"
 							class="section">
-							<div class="title">免疫接种指导（根据孩子接种史和家长意愿给予建议，最多200字）</div>
+							<div class="title">免疫接种指导（根据孩子接种史和家长意愿给予建议）</div>
 							<div class="pure-g">
 								<div *ngIf="healthrecord.immunization != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">免疫接种指导：</label>
@@ -354,7 +374,7 @@
 						<div
 							*ngIf="healthrecord.diseasePrevention != null"
 							class="section">
-							<div class="title">疾病预防（常见病健康宣教，最多200字）</div>
+							<div class="title">疾病预防（常见病健康宣教）</div>
 							<div class="pure-g">
 								<div *ngIf="healthrecord.diseasePrevention != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">疾病预防：</label>
@@ -365,7 +385,7 @@
 						<div
 							*ngIf="healthrecord.answeringQuestions != null"
 							class="section">
-							<div class="title">答疑解惑（针对家长所关注的孩子养育问题、成长问题进行解答，最多200字）</div>
+							<div class="title">答疑解惑（针对家长所关注的孩子养育问题、成长问题进行解答）</div>
 							<div class="pure-g">
 								<div *ngIf="healthrecord.answeringQuestions != null" class="pure-u-24-24 bt info flex">
 									<label class="w150p">答疑解惑：</label>
@@ -403,7 +423,7 @@
 								</ng-container>
 							</select>
 						</div>
-						<button (click)="addHealthrecord()" class="pure-button pure-button-primary mt10">选择模板</button>
+						<button (click)="addHealthrecord()" class="pure-button pure-button-primary mt10">切换模板</button>
 					</div>
 				</div>
 			</div>
@@ -432,91 +452,103 @@
 					<div class="pure-g">
 						<!-- 根据null判断该字段是否属于模板 -->
 						<div *ngIf="baseInfo.height != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="height">身高（cm）：</label>
-								<input type="number" id="height" name="height" step="0.01" [(ngModel)]="info.height" (change)="changeHeight()">
+							<div class="pure-control-group flex">
+								<label for="height" class="w150p">身高（cm）：</label>
+								<input type="number" id="height" name="height" step="0.01" [(ngModel)]="info.height" (change)="changeHeight()" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.medium_height != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="medium_height">中等值（cm）：</label>
-								<input type="number" id="medium_height" name="medium_height" step="0.001" [(ngModel)]="info.medium_height" (change)="changeHeight()">
+							<div class="pure-control-group flex">
+								<label for="medium_height" class="w150p">中等值（cm）：</label>
+								<input type="number" id="medium_height" name="medium_height" step="0.001" [(ngModel)]="info.medium_height" (change)="changeHeight()" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.height != null && baseInfo.medium_height != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="compare_height">身高对比：</label>
-								<input type="text" id="compare_height" name="compare_height" [(ngModel)]="info.compare_height" disabled>
+							<div class="pure-control-group flex">
+								<label for="compare_height" class="w150p">身高对比：</label>
+								<input type="text" id="compare_height" name="compare_height" [(ngModel)]="info.compare_height" class="flex-1" disabled>
 							</div>
 						</div>
 						<div *ngIf="baseInfo.weight != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="weight">体重（kg）：</label>
-								<input type="number" id="weight" name="weight" step="0.01" [(ngModel)]="info.weight" (change)="changeWeight()">
+							<div class="pure-control-group flex">
+								<label for="weight" class="w150p">体重（kg）：</label>
+								<input type="number" id="weight" name="weight" step="0.01" [(ngModel)]="info.weight" (change)="changeWeight()" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.medium_weight != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="medium_weight">中等值（kg）：</label>
-								<input type="number" id="medium_weight" name="medium_weight" step="0.001" [(ngModel)]="info.medium_weight" (change)="changeWeight()">
+							<div class="pure-control-group flex">
+								<label for="medium_weight" class="w150p">中等值（kg）：</label>
+								<input type="number" id="medium_weight" name="medium_weight" step="0.001" [(ngModel)]="info.medium_weight" (change)="changeWeight()" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.weight != null && baseInfo.medium_weight != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="compare_weight">体重对比：</label>
-								<input type="text" id="compare_weight" name="compare_weight" [(ngModel)]="info.compare_weight" disabled>
+							<div class="pure-control-group flex">
+								<label for="compare_weight" class="w150p">体重对比：</label>
+								<input type="text" id="compare_weight" name="compare_weight" [(ngModel)]="info.compare_weight" class="flex-1" disabled>
 							</div>
 						</div>
 						<div *ngIf="baseInfo.head_circum != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="head_circum">头围（cm）：</label>
-								<input type="number" id="head_circum" name="head_circum" step="0.01" [(ngModel)]="info.head_circum" (change)="validateNumber('head_circum', '头围')">
+							<div class="pure-control-group flex">
+								<label for="head_circum" class="w150p">头围（cm）：</label>
+								<input type="number" id="head_circum" name="head_circum" step="0.01" [(ngModel)]="info.head_circum" (change)="validateNumber('head_circum', '头围')" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.breast_circum != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="breast_circum">胸围（cm）：</label>
-								<input type="number" id="breast_circum" name="breast_circum" step="0.01" [(ngModel)]="info.breast_circum" (change)="validateNumber('breast_circum', '胸围')">
+							<div class="pure-control-group flex">
+								<label for="breast_circum" class="w150p">胸围（cm）：</label>
+								<input type="number" id="breast_circum" name="breast_circum" step="0.01" [(ngModel)]="info.breast_circum" (change)="validateNumber('breast_circum', '胸围')" class="flex-1">
 							</div>
 						</div>
 					</div>
 					<div
-						*ngIf="info.body_temperature != null || info.pulse != null || info.breathe != null || info.blood_pressure != null"
+						*ngIf="info.body_temperature != null || info.pulse != null || info.breathe != null || info.blood_pressure != null || info.spirit != null || info.nutritional_status != null"
 						class="bg-title mt10">生命体征 (通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 					<div class="pure-g">
 						<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="body_temperature">体温（°C）：</label>
-								<input type="number" id="body_temperature" name="body_temperature" step="0.01" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')">
+							<div class="pure-control-group flex">
+								<label for="body_temperature" class="w150p">体温（°C）：</label>
+								<input type="number" id="body_temperature" name="body_temperature" step="0.01" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.pulse != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="pulse">脉搏（次/分钟）：</label>
-								<input type="number" id="pulse" name="pulse" [(ngModel)]="info.pulse" (change)="validateNumber('pulse', '脉搏')">
+							<div class="pure-control-group flex">
+								<label for="pulse" class="w150p">脉搏（次/分钟）：</label>
+								<input type="number" id="pulse" name="pulse" [(ngModel)]="info.pulse" (change)="validateNumber('pulse', '脉搏')" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.breathe != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="breathe">呼吸（次/分钟）：</label>
-								<input type="number" id="breathe" name="breathe" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')">
+							<div class="pure-control-group flex">
+								<label for="breathe" class="w150p">呼吸（次/分钟）：</label>
+								<input type="number" id="breathe" name="breathe" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.blood_pressure != null" class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="blood_pressure">血压（/ mmHg）：</label>
-								<input type="number" id="blood_pressure" name="blood_pressure" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')">
+							<div class="pure-control-group flex">
+								<label for="blood_pressure" class="w150p">血压（/ mmHg）：</label>
+								<input type="number" id="blood_pressure" name="blood_pressure" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')" class="flex-1">
+							</div>
+						</div>
+						<div *ngIf="info.spirit != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="spirit" class="w150p">精神及神志：</label>
+								<textarea id="spirit" rows="2" name="spirit" [(ngModel)]="info.spirit" class="auto flex-1"></textarea>
+							</div>
+						</div>
+						<div *ngIf="info.nutritional_status != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="nutritional_status" class="w150p">营养状态：</label>
+								<textarea id="nutritional_status" rows="2" name="nutritional_status" [(ngModel)]="info.nutritional_status" class="auto flex-1"></textarea>
 							</div>
 						</div>
 					</div>
 					<div
-						*ngIf="info.skin != null || info.oral_mucosa != null || info.hair != null || info.lymph_node != null"
+						*ngIf="info.skin != null || info.oral_mucosa != null || info.hair != null || info.lymph_node != null || info.head != null || info.bregmatic != null"
 						class="bg-title mt10">体表检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 					<div class="pure-g">
 						<div *ngIf="info.skin != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="skin">皮肤（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="skin" class="w150p">皮肤：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'skin')" [ngClass]="{'active': info.skin == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -528,9 +560,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.oral_mucosa != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="oral_mucosa">口腔黏膜（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="oral_mucosa" class="w150p">口腔黏膜：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'oral_mucosa')" [ngClass]="{'active': info.oral_mucosa == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -542,9 +574,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.hair != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="hair">毛发（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="hair" class="w150p">毛发：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'hair')" [ngClass]="{'active': info.hair == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex">未见异常</div>
@@ -556,9 +588,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.lymph_node != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="lymph_node">浅表淋巴结（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="lymph_node" class="w150p">浅表淋巴结：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'lymph_node')" [ngClass]="{'active': info.lymph_node == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -569,79 +601,16 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div
-						*ngIf="info.heart != null || info.lung != null || info.liver_spleen != null || info.kidney != null || info.abdomen != null"
-						class="bg-title mt10">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
-					<div class="pure-g">
-						<div *ngIf="info.heart != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="heart">心脏听诊（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'heart')" [ngClass]="{'active': info.heart == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'heart_other')">
-										<textarea maxlength="200" name="heart_other" #heart_other="ngModel" [(ngModel)]="info.heart_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
+						<div *ngIf="info.head != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="head" class="w150p">头颅：</label>
+								<textarea id="head" maxlength="200" rows="2" name="head" [(ngModel)]="info.head" class="auto flex-1"></textarea>
 							</div>
 						</div>
-						<div *ngIf="info.lung != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="lung">双肺听诊（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'lung')" [ngClass]="{'active': info.lung == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'lung_other')">
-										<textarea maxlength="200" name="lung_other" #lung_other="ngModel" [(ngModel)]="info.lung_other" placeholder="其他" class="mt0 mb0 min"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="info.liver_spleen != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="liver_spleen">肝脾（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'liver_spleen')" [ngClass]="{'active': info.liver_spleen == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'liver_spleen_other')">
-										<textarea maxlength="200" name="liver_spleen_other" #liver_spleen_other="ngModel" [(ngModel)]="info.liver_spleen_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="info.kidney != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="kidney">双肾（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'kidney')" [ngClass]="{'active': info.kidney == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'kidney_other')">
-										<textarea maxlength="200" name="kidney_other" #kidney_other="ngModel" [(ngModel)]="info.kidney_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="info.abdomen != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="abdomen">腹部（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'abdomen')" [ngClass]="{'active': info.abdomen == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'abdomen_other')">
-										<textarea maxlength="200" name="abdomen_other" #abdomen_other="ngModel" [(ngModel)]="info.abdomen_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
+						<div *ngIf="info.bregmatic != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="bregmatic" class="w150p">前囟：</label>
+								<textarea id="bregmatic" maxlength="200" rows="2" name="bregmatic" [(ngModel)]="info.bregmatic" class="auto flex-1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -650,9 +619,9 @@
 						class="bg-title mt10">耳鼻喉检查 （有助于早期发现鼻部、咽喉异常及听力障碍的征兆，尽早干预)</div>
 					<div class="pure-g">
 						<div *ngIf="info.ear != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="ear">耳（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="ear" class="w150p">耳：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'ear')" [ngClass]="{'active': info.ear == '未见明显畸形'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex--">未见明显畸形</div>
@@ -664,9 +633,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.nose != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="nose">鼻（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="nose" class="w150p">鼻：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'nose')" [ngClass]="{'active': info.nose == '未见明显畸形'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见明显畸形</div>
@@ -678,9 +647,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.throat != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="throat">咽喉（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="throat" class="w150p">咽喉：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'throat')" [ngClass]="{'active': info.throat == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -692,9 +661,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.tonsil != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="tonsil">扁桃体（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="tonsil" class="w150p">扁桃体：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'tonsil')" [ngClass]="{'active': info.tonsil == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -711,9 +680,9 @@
 						class="bg-title mt10">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
 					<div class="pure-g">
 						<div *ngIf="info.eyes != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="eyes">双眼（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="eyes" class="w150p">双眼：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'eyes')" [ngClass]="{'active': info.eyes == '未见明显畸形'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见明显畸形</div>
@@ -725,12 +694,12 @@
 							</div>
 						</div>
 						<div *ngIf="info.vision != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="vision">视力筛查（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'vision')" [ngClass]="{'active': info.vision == '未见异常'}">
+							<div class="pure-control-group flex">
+								<label for="vision" class="w150p">视力筛查(收费)：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未做', 'vision')" [ngClass]="{'active': info.vision == '未做'}">
 										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
+										<div class="flex-1">未做</div>
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'vision_other')">
 										<textarea maxlength="200" name="vision_other" #vision_other="ngModel" [(ngModel)]="info.vision_other" placeholder="其他" class="mt0 mb0 min"></textarea>
@@ -740,13 +709,13 @@
 						</div>
 					</div>
 					<div
-						*ngIf="info.gums != null || info.tongue_tie != null || info.teeth_pit != null || info.plaque != null || info.dental_caries != null"
+						*ngIf="info.gums != null || info.tongue_tie != null || info.teeth_pit != null || info.plaque != null || info.teeth_num != null || info.dental_caries != null"
 						class="bg-title mt10">口腔检查 （发现口腔异常情况，如：有无诞生牙及畸形）</div>
 					<div class="pure-g">
 						<div *ngIf="info.gums != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="gums">牙龈（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="gums" class="w150p">牙龈：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'gums')" [ngClass]="{'active': info.gums == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -758,9 +727,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.tongue_tie != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="tongue_tie">舌系带（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="tongue_tie" class="w150p">舌系带：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'tongue_tie')" [ngClass]="{'active': info.tongue_tie == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -772,9 +741,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.teeth_pit != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="teeth_pit">牙窝沟（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="teeth_pit" class="w150p">牙窝沟：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'teeth_pit')" [ngClass]="{'active': info.teeth_pit == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -786,9 +755,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.plaque != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="plaque">牙菌斑（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="plaque" class="w150p">牙菌斑：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'plaque')" [ngClass]="{'active': info.plaque == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -799,10 +768,16 @@
 								</div>
 							</div>
 						</div>
+						<div *ngIf="baseInfo.teeth_num != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="teeth_num" class="w150p">出牙数(颗)：</label>
+								<input type="number" id="teeth_num" name="teeth_num" [(ngModel)]="info.teeth_num" class="flex-1">
+							</div>
+						</div>
 						<div *ngIf="info.dental_caries != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="dental_caries">龋齿（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="dental_caries" class="w150p">龋齿：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'dental_caries')" [ngClass]="{'active': info.dental_caries == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -815,13 +790,102 @@
 						</div>
 					</div>
 					<div
-						*ngIf="info.limb != null || info.ribs != null || info.head != null || info.bregmatic != null || info.hip_joint != null || info.torticollis != null"
+						*ngIf="info.thoracic != null || info.heart != null || info.lung != null || info.liver_spleen != null || info.kidney != null || info.abdomen != null"
+						class="bg-title mt10">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
+					<div class="pure-g">
+						<div *ngIf="info.thoracic != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="thoracic" class="w150p">胸廓：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'thoracic')" [ngClass]="{'active': info.thoracic == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'thoracic_other')">
+										<textarea maxlength="200" name="thoracic_other" #thoracic_other="ngModel" [(ngModel)]="info.thoracic_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="info.heart != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="heart" class="w150p">心脏：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'heart')" [ngClass]="{'active': info.heart == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'heart_other')">
+										<textarea maxlength="200" name="heart_other" #heart_other="ngModel" [(ngModel)]="info.heart_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="info.lung != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="lung" class="w150p">双肺：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'lung')" [ngClass]="{'active': info.lung == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'lung_other')">
+										<textarea maxlength="200" name="lung_other" #lung_other="ngModel" [(ngModel)]="info.lung_other" placeholder="其他" class="mt0 mb0 min"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pure-u-24-24">
+							<div *ngIf="info.liver_spleen != null" class="pure-control-group flex">
+								<label for="liver_spleen" class="w150p">肝脾：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'liver_spleen')" [ngClass]="{'active': info.liver_spleen == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'liver_spleen_other')">
+										<textarea maxlength="200" name="liver_spleen_other" #liver_spleen_other="ngModel" [(ngModel)]="info.liver_spleen_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="info.kidney != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="kidney" class="w150p">双肾：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'kidney')" [ngClass]="{'active': info.kidney == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'kidney_other')">
+										<textarea maxlength="200" name="kidney_other" #kidney_other="ngModel" [(ngModel)]="info.kidney_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="info.abdomen != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="abdomen" class="w150p">腹部：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'abdomen')" [ngClass]="{'active': info.abdomen == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'abdomen_other')">
+										<textarea maxlength="200" name="abdomen_other" #abdomen_other="ngModel" [(ngModel)]="info.abdomen_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						*ngIf="info.limb != null || info.ribs != null || info.hip_joint != null || info.torticollis != null"
 						class="bg-title mt10">骨骼检查 （前期筛查孩子骨骼发育相关问题，尽早干预）</div>
 					<div class="pure-g">
 						<div *ngIf="info.limb != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="limb">四肢（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="limb" class="w150p">四肢：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'limb')" [ngClass]="{'active': info.limb == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -833,9 +897,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.ribs != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="ribs">肋骨（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="ribs" class="w150p">肋骨：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'ribs')" [ngClass]="{'active': info.ribs == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -846,38 +910,10 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="info.head != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="head">头颅（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'head')" [ngClass]="{'active': info.head == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'head_other')">
-										<textarea maxlength="200" name="head_other" #head_other="ngModel" [(ngModel)]="info.head_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="info.bregmatic != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="bregmatic">前囟（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'bregmatic')" [ngClass]="{'active': info.bregmatic == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'bregmatic_other')">
-										<textarea maxlength="200" name="bregmatic_other" #bregmatic_other="ngModel" [(ngModel)]="info.bregmatic_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
 						<div *ngIf="info.hip_joint != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="hip_joint">髋关节（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="hip_joint" class="w150p">髋关节：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'hip_joint')" [ngClass]="{'active': info.hip_joint == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -889,9 +925,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.torticollis != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="torticollis">斜颈（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="torticollis" class="w150p">斜颈：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'torticollis')" [ngClass]="{'active': info.torticollis == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -908,9 +944,9 @@
 						class="bg-title mt10">生殖器及肛门检查 （有助于早期发现男孩生殖系统异常，尽早干预）</div>
 					<div class="pure-g">
 						<div *ngIf="info.genitalia != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="genitalia">外生殖器（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="genitalia" class="w150p">外生殖器：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'genitalia')" [ngClass]="{'active': info.genitalia == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -922,9 +958,9 @@
 							</div>
 						</div>
 						<div *ngIf="info.anus != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="anus">肛门（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="anus" class="w150p">肛门：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'anus')" [ngClass]="{'active': info.anus == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -941,9 +977,9 @@
 						class="bg-title mt10">神经发育筛查 （有助于发现孩子神经发育上相关问题，尽早干预）</div>
 					<div class="pure-g">
 						<div *ngIf="info.neurodevelopment != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="neurodevelopment">神经发育（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="neurodevelopment" class="w150p">神经发育：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'neurodevelopment')" [ngClass]="{'active': info.neurodevelopment == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -956,35 +992,19 @@
 						</div>
 					</div>
 					<div
-						*ngIf="info.blood_routine_examination != null || info.routine_urine != null || info.stool_routine_examination != null || info.bone_density != null || info.BALP != null || info.trace_element != null || info.heavy_metal != null"
+						*ngIf="info.blood_routine_examination != null || info.routine_urine != null || info.stool_routine_examination != null || info.bone_density != null || info.BALP != null || info.trace_element != null || info.heavy_metal != null || info.blood_type != null"
 						class="bg-title mt10">辅助治疗 （收费项目，由医生建议）</div>
 					<div class="pure-g">
 						<div *ngIf="info.blood_routine_examination != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="blood_routine_examination">血常规（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="radio mr10 flex" (click)="changeRedio('贫血', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '贫血'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">贫血</div>
-									</div>
-									<div class="radio mr10 flex" (click)="changeRedio('白细胞高值', 'blood_routine_examination')" [ngClass]="{'active': info.blood_routine_examination == '白细胞高值'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">白细胞高值</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'blood_routine_examination_other')">
-										<textarea maxlength="200" name="blood_routine_examination_other" #blood_routine_examination_other="ngModel" [(ngModel)]="info.blood_routine_examination_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
+							<div class="pure-control-group flex">
+								<label for="blood_routine_examination" class="w150p">血常规：</label>
+								<textarea id="blood_routine_examination" rows="2" name="blood_routine_examination" [(ngModel)]="info.blood_routine_examination" class="auto"></textarea>
 							</div>
 						</div>
 						<div *ngIf="info.routine_urine != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="routine_urine">尿常规（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="routine_urine" class="w150p">尿常规：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'routine_urine')" [ngClass]="{'active': info.routine_urine == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -996,23 +1016,15 @@
 							</div>
 						</div>
 						<div *ngIf="info.stool_routine_examination != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="stool_routine_examination">大便常规（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'stool_routine_examination')" [ngClass]="{'active': info.stool_routine_examination == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'stool_routine_examination_other')">
-										<textarea maxlength="200" name="stool_routine_examination_other" #stool_routine_examination_other="ngModel" [(ngModel)]="info.stool_routine_examination_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
+							<div class="pure-control-group flex">
+								<label for="stool_routine_examination" class="w150p">大便常规：</label>
+								<textarea id="stool_routine_examination" rows="2" name="stool_routine_examination" [(ngModel)]="info.stool_routine_examination" class="auto"></textarea>
 							</div>
 						</div>
 						<div *ngIf="info.bone_density != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="bone_density">骨密度（最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="bone_density" class="w150p">骨密度：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'bone_density')" [ngClass]="{'active': info.bone_density == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -1021,16 +1033,16 @@
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">钙缺乏</div>
 									</div>
-									<div class="flex-1" (click)="changeRedio('', 'bone_density_other')">
+									<!-- <div class="flex-1" (click)="changeRedio('', 'bone_density_other')">
 										<textarea maxlength="200" name="bone_density_other" #bone_density_other="ngModel" [(ngModel)]="info.bone_density_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
 						<div *ngIf="info.BALP != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="BALP">骨碱性磷酸酶（小儿佝偻病筛查及预防，最多200字）：</label>
-		                        <div class="flex">
+							<div class="pure-control-group flex">
+								<label for="BALP" class="w150p">骨碱性磷酸酶（小儿佝偻病筛查及预防）：</label>
+		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'BALP')" [ngClass]="{'active': info.BALP == '未见异常'}">
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">未见异常</div>
@@ -1039,36 +1051,51 @@
 										<div class="radioTab mr10"></div>
 										<div class="flex-1">高值</div>
 									</div>
-									<div class="flex-1" (click)="changeRedio('', 'BALP_other')">
+									<!-- <div class="flex-1" (click)="changeRedio('', 'BALP_other')">
 										<textarea maxlength="200" name="BALP_other" #BALP_other="ngModel" [(ngModel)]="info.BALP_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
 						<div *ngIf="info.trace_element != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="trace_element">微量元素（锌、镁、钙、铁、铜，最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'trace_element')" [ngClass]="{'active': info.trace_element == '未见异常'}">
-										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
-									</div>
-									<div class="flex-1" (click)="changeRedio('', 'trace_element_other')">
-										<textarea maxlength="200" name="trace_element_other" #trace_element_other="ngModel" [(ngModel)]="info.trace_element_other" placeholder="其他" class="mt0 mb0 min"></textarea>
-									</div>
-								</div>
+							<div class="pure-control-group flex">
+								<label for="trace_element" class="w150p">微量元素（锌、镁、钙、铁、铜）：</label>
+								<textarea id="trace_element" rows="2" name="trace_element" [(ngModel)]="info.trace_element" class="auto"></textarea>
 							</div>
 						</div>
 						<div *ngIf="info.heavy_metal != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="heavy_metal">铅、镉、锰（最多200字）：</label>
-		                        <div class="flex">
-									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'heavy_metal')" [ngClass]="{'active': info.heavy_metal == '未见异常'}">
+							<div class="pure-control-group flex">
+								<label for="heavy_metal" class="w150p">铅、镉、锰：</label>
+								<textarea id="heavy_metal" rows="2" name="heavy_metal" [(ngModel)]="info.heavy_metal" class="auto"></textarea>
+							</div>
+						</div>
+						<div *ngIf="info.blood_type != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="blood_type" class="w150p">ABO血型鉴定：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('A型', 'blood_type')" [ngClass]="{'active': info.blood_type == 'A型'}">
 										<div class="radioTab mr10"></div>
-										<div class="flex-1">未见异常</div>
+										<div class="flex-1">A型</div>
 									</div>
-									<div class="flex-1" (click)="changeRedio('', 'heavy_metal_other')">
-										<textarea maxlength="200" name="heavy_metal_other" #heavy_metal_other="ngModel" [(ngModel)]="info.heavy_metal_other" placeholder="其他" class="mt0 mb0 min"></textarea>
+									<div class="radio mr10 flex" (click)="changeRedio('B型', 'blood_type')" [ngClass]="{'active': info.blood_type == 'B型'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">B型</div>
+									</div>
+									<div class="radio mr10 flex" (click)="changeRedio('AB型', 'blood_type')" [ngClass]="{'active': info.blood_type == 'AB型'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">AB型</div>
+									</div>
+									<div class="radio mr10 flex" (click)="changeRedio('O型', 'blood_type')" [ngClass]="{'active': info.blood_type == 'O型'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">O型</div>
+									</div>
+									<div class="radio mr10 flex" (click)="changeRedio('RH阳性', 'blood_type')" [ngClass]="{'active': info.blood_type == 'RH阳性'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">RH阳性</div>
+									</div>
+									<div class="radio mr10 flex" (click)="changeRedio('RH阴性', 'blood_type')" [ngClass]="{'active': info.blood_type == 'RH阴性'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">RH阴性</div>
 									</div>
 								</div>
 							</div>
@@ -1079,9 +1106,9 @@
 						class="bg-title mt10">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导）</div>
 					<div class="pure-g">
 						<div *ngIf="info.feeding != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="feeding">喂养指导（最多200字）：</label>
-								<textarea id="feeding" maxlength="200" name="feeding" [(ngModel)]="info.feeding" placeholder="宝宝饮食状况调查、针对性喂养指导、营养指导" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="feeding" class="w150p">喂养指导：</label>
+								<textarea id="feeding" maxlength="200" name="feeding" [(ngModel)]="info.feeding" placeholder="宝宝饮食状况调查、针对性喂养指导、营养指导" class="min flex-1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -1090,9 +1117,9 @@
 						class="bg-title mt10">生活指导（宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等）</div>
 					<div class="pure-g">
 						<div *ngIf="info.life != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="life">生活指导（最多200字）：</label>
-								<textarea id="life" maxlength="200" name="life" [(ngModel)]="info.life" placeholder="宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="life" class="w150p">生活指导：</label>
+								<textarea id="life" maxlength="200" name="life" [(ngModel)]="info.life" placeholder="宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等" class="min flex-1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -1101,9 +1128,9 @@
 						class="bg-title mt10">免疫接种指导（根据孩子接种史和家长意愿给予建议）</div>
 					<div class="pure-g">
 						<div *ngIf="info.immunization != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="immunization">免疫接种指导（最多200字）：</label>
-								<textarea id="immunization" maxlength="200" name="immunization" [(ngModel)]="info.immunization" placeholder="根据孩子接种史和家长意愿给予建议" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="immunization" class="w150p">免疫接种指导：</label>
+								<textarea id="immunization" maxlength="200" name="immunization" [(ngModel)]="info.immunization" placeholder="根据孩子接种史和家长意愿给予建议" class="min flex-1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -1112,9 +1139,9 @@
 						class="bg-title mt10">疾病预防（常见病健康宣教）</div>
 					<div class="pure-g">
 						<div *ngIf="info.disease_prevention != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="disease_prevention">疾病预防（最多200字）：</label>
-								<textarea id="disease_prevention" maxlength="200" name="disease_prevention" [(ngModel)]="info.disease_prevention" placeholder="常见病健康宣教" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="disease_prevention" class="w150p">疾病预防：</label>
+								<textarea id="disease_prevention" maxlength="200" name="disease_prevention" [(ngModel)]="info.disease_prevention" placeholder="常见病健康宣教" class="min flex-1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -1123,23 +1150,25 @@
 						class="bg-title mt10">答疑解惑（针对家长所关注的孩子养育问题、成长问题进行解答）</div>
 					<div class="pure-g">
 						<div *ngIf="info.answering_questions != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="answering_questions">答疑解惑（最多200字）：</label>
-								<textarea id="answering_questions" maxlength="200" name="answering_questions" [(ngModel)]="info.answering_questions" placeholder="针对家长所关注的孩子养育问题、成长问题进行解答" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="answering_questions" class="w150p">答疑解惑：</label>
+								<textarea id="answering_questions" maxlength="200" name="answering_questions" [(ngModel)]="info.answering_questions" placeholder="针对家长所关注的孩子养育问题、成长问题进行解答" class="min flex-1"></textarea>
 							</div>
 						</div>
 					</div>
 					<div class="bg-title mt10">诊疗记录</div>
 					<div class="pure-g">
 						<div *ngIf="info.record != null" class="pure-u-24-24">
-							<div class="pure-control-group">
-								<label for="record">诊疗记录（最多200字）：</label>
-								<textarea id="record" maxlength="200" name="record" [(ngModel)]="info.record" class="min"></textarea>
+							<div class="pure-control-group flex">
+								<label for="record" class="w150p">诊疗记录：</label>
+								<textarea id="record" maxlength="200" name="record" [(ngModel)]="info.record" class="min flex-1"></textarea>
 							</div>
 						</div>
-						<div class="pure-u-8-24">
-							<div class="pure-control-group">
-								<label for="review_date">复查日期：</label>
+					</div>
+					<div class="pure-g">
+						<div class="pure-u-24-24">
+							<div class="pure-control-group flex has-select-date">
+								<label for="review_date" class="w150p">复查日期：</label>
 								<select-date title="请选择复查日期" dateText="{{info.review_date_text}}" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
