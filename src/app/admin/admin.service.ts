@@ -1089,7 +1089,7 @@ export class AdminService{
 
 	// 验证手机号
 	checkMobile(mobile) {
-		if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))){
+		if(!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(mobile))){
 			return false;
 		}
 		return true;

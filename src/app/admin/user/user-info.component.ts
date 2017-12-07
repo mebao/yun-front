@@ -316,7 +316,7 @@ export class UserInfoComponent{
 			this.btnUserCanEdit = false;
 			return;
 		}
-		if(f.value.mobile.length != 11 || !this.adminService.trim(f.value.mobile)){
+		if(f.value.mobile.length != 11 || !this.adminService.checkMobile(f.value.mobile)){
 			this.toastTab('手机号码不正确', 'error');
 			this.btnUserCanEdit = false;
 			return;
