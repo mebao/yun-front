@@ -271,8 +271,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 		this.url = '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
 				 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		//获取预约信息
-		this.getBookingData();
+
 		this.prescriptionText = '';
 
 		//病例
@@ -323,8 +322,9 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				if(this.casetempletList.length > 0){
 					this.selectedTemplet = this.casetempletList[0].string;
 					sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
-					this.initEdit();
 				}
+				//获取预约信息
+				this.getBookingData();
 			}
 		});
 

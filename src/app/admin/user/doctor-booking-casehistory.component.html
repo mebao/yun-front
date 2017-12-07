@@ -65,7 +65,7 @@
 										<label class="w150p">中等值：</label>
 										<div class="flex-1">{{casehistory.midHeight}}</div>
 									</div>
-									<div *ngIf="casehistory.midHeight != null || casehistory.height != null" class="pure-u-8-24 bt info flex">
+									<div *ngIf="casehistory.midHeight != null && casehistory.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150p">身高对比：</label>
 										<div class="flex-1">{{casehistory.compareHeight}}</div>
 									</div>
@@ -77,7 +77,7 @@
 										<label class="w150p">中等值：</label>
 										<div class="flex-1">{{casehistory.midWeight}}</div>
 									</div>
-									<div *ngIf="casehistory.midWeight != null || casehistory.weight != null" class="pure-u-8-24 bt info flex">
+									<div *ngIf="casehistory.midWeight != null && casehistory.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150p">体重对比：</label>
 										<div class="flex-1">{{casehistory.compareWeight}}</div>
 									</div>
