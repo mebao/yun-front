@@ -543,6 +543,9 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	                }
 				}
             }
+
+			// 获取实验室检查信息
+			this.getBookingCheckList();
 		}
 
 		// 主诉模板
@@ -815,6 +818,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	updatePrescript() {
 		if(this.prescriptList.length > 0){
 			var prescript = this.prescriptList[0];
+			sessionStorage.setItem('prescript', JSON.stringify(prescript));
 			this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: prescript.id}});
 		}
 	}
