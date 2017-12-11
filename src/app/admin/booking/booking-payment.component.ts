@@ -247,7 +247,7 @@ export class BookingPaymentComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.fee.remark = results.tranRemark;
 				// 是否支付完成，支付完成后，discountInfo不为空
-				if(results.discountInfo == ''){
+				if(results.discountInfo == '' || !results.discountInfo){
 					var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
 					this.adminService.searchuser(userUrl).then((userData) => {
 						if(userData.status == 'no'){

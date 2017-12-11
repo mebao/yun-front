@@ -883,6 +883,11 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 			border-radius: 50%;
 		}
 	}
+	.fixed-btn{
+		position: fixed;
+		top: 40%;
+		right: 20px;
+	}
 }
 
 .has-select-date{

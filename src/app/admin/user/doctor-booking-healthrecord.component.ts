@@ -382,7 +382,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].stoolRoutineExamination = results.list[i].stoolRoutineExamination.replace('镜检：', '\n镜检：');
+						// results.list[i].stoolRoutineExamination = results.list[i].stoolRoutineExamination.replace('镜检：', '\n镜检：');
 						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
 					}
 				}

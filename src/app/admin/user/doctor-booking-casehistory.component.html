@@ -284,7 +284,7 @@
 						</div>
 						<div *ngIf="baseInfo.body_temperature != null" class="pure-u-8-24">
 							<div class="pure-control-group flex">
-								<label for="body_temperature" class="w150p text-right">体温（T、°C）：</label>
+								<label for="body_temperature" class="w150p text-right">体温（°C）：</label>
 								<input type="number" id="body_temperature" step="0.01" name="body_temperature" #body_temperature="ngModel" [(ngModel)]="info.body_temperature" (change)="validateNumber('body_temperature', '体温')" class="flex-1">
 							</div>
 						</div>
@@ -502,6 +502,7 @@
 					<div class="text-center mt10">
 						<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 					</div>
+					<button (click)="create()" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 				</div>
 			</div>
 		</div>
