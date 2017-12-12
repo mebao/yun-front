@@ -61,11 +61,17 @@
 								<div class="pure-g">
 									<div *ngIf="healthrecord.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高：</label>
-										<div class="flex-1">{{healthrecord.height}}</div>
+										<div class="flex-1">
+											{{healthrecord.height}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
-										<div class="flex-1">{{healthrecord.mediumHeight}}</div>
+										<div class="flex-1">
+											{{healthrecord.mediumHeight}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.height != null || healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高对比：</label>
@@ -73,11 +79,17 @@
 									</div>
 									<div *ngIf="healthrecord.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重：</label>
-										<div class="flex-1">{{healthrecord.weight}}</div>
+										<div class="flex-1">
+											{{healthrecord.weight}}
+											<span class="pl5">kg</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
-										<div class="flex-1">{{healthrecord.mediumWeight}}</div>
+										<div class="flex-1">
+											{{healthrecord.mediumWeight}}
+											<span class="pl5">kg</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.weight != null || healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重对比：</label>
@@ -85,11 +97,17 @@
 									</div>
 									<div *ngIf="healthrecord.headCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">头围：</label>
-										<div class="flex-1">{{healthrecord.headCircum}}</div>
+										<div class="flex-1">
+											{{healthrecord.headCircum}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.breastCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">胸围：</label>
-										<div class="flex-1">{{healthrecord.breastCircum}}</div>
+										<div class="flex-1">
+											{{healthrecord.breastCircum}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -100,19 +118,31 @@
 								<div class="pure-g">
 									<div *ngIf="healthrecord.bodyTemperature != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体温：</label>
-										<div class="flex-1">{{healthrecord.bodyTemperature}}</div>
+										<div class="flex-1">
+											{{healthrecord.bodyTemperature}}
+											<span *ngIf="healthrecord.bodyTemperature != ''" class="pl5">°C</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.pulse != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">脉搏：</label>
-										<div class="flex-1">{{healthrecord.pulse}}</div>
+										<div class="flex-1">
+											{{healthrecord.pulse}}
+											<span *ngIf="healthrecord.pulse != ''" class="pl5">次/分钟</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.breathe != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">呼吸：</label>
-										<div class="flex-1">{{healthrecord.breathe}}</div>
+										<div class="flex-1">
+											{{healthrecord.breathe}}
+											<span *ngIf="healthrecord.breathe != ''" class="pl5">次/分钟</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.bloodPressure != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">血压：</label>
-										<div class="flex-1">{{healthrecord.bloodPressure}}</div>
+										<div class="flex-1">
+											{{healthrecord.bloodPressure}}
+											<span *ngIf="healthrecord.bloodPressure != ''" class="pl5">mmHg</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.spirit != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">精神及神志：</label>
@@ -216,7 +246,10 @@
 									</div>
 									<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">出牙数：</label>
-										<div class="flex-1">{{healthrecord.teeth_num}}</div>
+										<div class="flex-1">
+											{{healthrecord.teeth_num}}
+											<span *ngIf="healthrecord.teeth_num != ''" class="pl5">颗</span>
+										</div>
 									</div>
 									<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">龋齿：</label>
@@ -525,7 +558,7 @@
 						</div>
 						<div *ngIf="baseInfo.blood_pressure != null" class="pure-u-8-24">
 							<div class="pure-control-group flex">
-								<label for="blood_pressure" class="w150pp">血压（/ mmHg）：</label>
+								<label for="blood_pressure" class="w150pp">血压（mmHg）：</label>
 								<input type="number" id="blood_pressure" name="blood_pressure" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')" class="flex-1">
 							</div>
 						</div>

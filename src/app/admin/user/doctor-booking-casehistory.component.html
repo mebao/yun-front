@@ -59,11 +59,17 @@
 								<div class="pure-g">
 									<div *ngIf="casehistory.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高：</label>
-										<div class="flex-1">{{casehistory.height}}</div>
+										<div class="flex-1">
+											<span>{{casehistory.height}}</span>
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.midHeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
-										<div class="flex-1">{{casehistory.midHeight}}</div>
+										<div class="flex-1">
+											{{casehistory.midHeight}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.midHeight != null && casehistory.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高对比：</label>
@@ -71,11 +77,17 @@
 									</div>
 									<div *ngIf="casehistory.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重：</label>
-										<div class="flex-1">{{casehistory.weight}}</div>
+										<div class="flex-1">
+											{{casehistory.weight}}
+											<span class="pl5">Kg</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.midWeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
-										<div class="flex-1">{{casehistory.midWeight}}</div>
+										<div class="flex-1">
+											{{casehistory.midWeight}}
+											<span class="pl5">Kg</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.midWeight != null && casehistory.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重对比：</label>
@@ -83,15 +95,24 @@
 									</div>
 									<div *ngIf="casehistory.bodyTemperature != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体温：</label>
-										<div class="flex-1">{{casehistory.bodyTemperature}}</div>
+										<div class="flex-1">
+											{{casehistory.bodyTemperature}}
+											<span class="pl5">°C</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.headCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">头围：</label>
-										<div class="flex-1">{{casehistory.headCircum}}</div>
+										<div class="flex-1">
+											{{casehistory.headCircum}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.breastCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">胸围：</label>
-										<div class="flex-1">{{casehistory.breastCircum}}</div>
+										<div class="flex-1">
+											{{casehistory.breastCircum}}
+											<span class="pl5">cm</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.teeth != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">出牙数：</label>
@@ -150,11 +171,17 @@
 								<div *ngIf="showExamination" class="pure-g">
 									<div *ngIf="casehistory.breathe != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">呼吸：</label>
-										<div class="flex-1">{{casehistory.breathe}}</div>
+										<div class="flex-1">
+											{{casehistory.breathe}}
+											<span class="pl5">次/分</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.bloodPressure != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">血压：</label>
-										<div class="flex-1">{{casehistory.bloodPressure}}</div>
+										<div class="flex-1">
+											{{casehistory.bloodPressure}}
+											<span class="pl5">mmHg</span>
+										</div>
 									</div>
 									<div *ngIf="casehistory.faceNeck != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">面、颈部：</label>
@@ -384,13 +411,13 @@
 					<div *ngIf="showExamination" class="pure-g">
 						<div *ngIf="baseInfo.breathe != null" class="pure-u-8-24 pr10">
 							<div class="pure-control-group flex">
-								<label for="breathe" class="w150pp text-right">呼吸（P、次/分）：</label>
+								<label for="breathe" class="w150pp text-right">呼吸（次/分）：</label>
 								<input type="number" id="breathe" name="breathe" #breathe="ngModel" [(ngModel)]="info.breathe" (change)="validateNumber('breathe', '呼吸')" class="flex-1">
 							</div>
 						</div>
 						<div *ngIf="baseInfo.blood_pressure != null" class="pure-u-8-24 pl5 pr5">
 							<div class="pure-control-group flex">
-								<label for="blood_pressure" class="w150pp text-right">血压（BP、mmHg）：</label>
+								<label for="blood_pressure" class="w150pp text-right">血压（mmHg）：</label>
 								<input type="number" id="blood_pressure" name="blood_pressure" #blood_pressure="ngModel" [(ngModel)]="info.blood_pressure" (change)="validateNumber('blood_pressure', '血压')" class="flex-1">
 							</div>
 						</div>

@@ -927,11 +927,11 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 
 	// 身高对比
     changeHeight() {
-        if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) <= 0){
+        if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
             this.toastTab('身高应大于0', 'error');
             return;
         }
-        if(!this.adminService.isFalse(this.info.medium_height) && parseFloat(this.info.medium_height) <= 0){
+        if(!this.adminService.isFalse(this.info.medium_height) && parseFloat(this.info.medium_height) < 0){
             this.toastTab('中等值应大于0', 'error');
             return;
         }
@@ -945,11 +945,11 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 
     // 体重对比
     changeWeight() {
-        if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) <= 0){
+        if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
             this.toastTab('体重应大于0', 'error');
             return;
         }
-        if(!this.adminService.isFalse(this.info.medium_weight) && parseFloat(this.info.medium_weight) <= 0){
+        if(!this.adminService.isFalse(this.info.medium_weight) && parseFloat(this.info.medium_weight) < 0){
             this.toastTab('中等值应大于0', 'error');
             return;
         }
@@ -972,7 +972,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	}
 
 	validateNumber(type, info) {
-		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) <= 0){
+		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this.toastTab(info + '应大于0', 'error');
 			return false;
 		}
@@ -1107,7 +1107,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             this.btnCanEdit = false;
 			return;
 		}
-		if(!this.adminService.isFalse(this.info.teeth_num) && (Number(this.info.teeth_num) <= 0 || parseFloat(this.info.teeth_num) % 1 != 0)){
+		if(!this.adminService.isFalse(this.info.teeth_num) && (Number(this.info.teeth_num) < 0 || parseFloat(this.info.teeth_num) % 1 != 0)){
 			this.toastTab('出牙数应为大于0的整数', 'error');
             this.btnCanEdit = false;
 			return false;

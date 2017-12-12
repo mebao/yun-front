@@ -747,11 +747,11 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 
     // 身高对比
     changeHeight() {
-		if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) <= 0){
+		if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
 			this.toastTab('身高应大于0', 'error');
 			return;
 		}
-		if(!this.adminService.isFalse(this.info.mid_height) && parseFloat(this.info.mid_height) <= 0){
+		if(!this.adminService.isFalse(this.info.mid_height) && parseFloat(this.info.mid_height) < 0){
 			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
@@ -765,11 +765,11 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 
     // 体重对比
     changeWeight() {
-		if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) <= 0){
+		if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
 			this.toastTab('体重应大于0', 'error');
 			return;
 		}
-		if(!this.adminService.isFalse(this.info.mid_weight) && parseFloat(this.info.mid_weight) <= 0){
+		if(!this.adminService.isFalse(this.info.mid_weight) && parseFloat(this.info.mid_weight) < 0){
 			this.toastTab('中等值应大于0', 'error');
 			return;
 		}
@@ -807,7 +807,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	}
 
 	validateNumber(type, info) {
-		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) <= 0){
+		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this.toastTab(info + '应大于0', 'error');
 			return false;
 		}
