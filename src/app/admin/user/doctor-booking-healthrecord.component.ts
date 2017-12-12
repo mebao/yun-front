@@ -837,6 +837,31 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 					}
 				}
 			}
+			// 获取病例，若是身高、体重、头围、体温等信息已存在，则直接使用
+			if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
+				var casehistoryUrl = this.url + '&booking_id=' + this.id;
+				this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						if(results.list.length > 0){
+							if(this.info.height != null && results.list[0].height){
+								this.info.height = results.list[0].height;
+							}
+							if(this.info.weight != null && results.list[0].weight){
+								this.info.weight = results.list[0].weight;
+							}
+							if(this.info.head_circum != null && results.list[0].headCircum){
+								this.info.head_circum = results.list[0].headCircum;
+							}
+							if(this.info.body_temperature != null && results.list[0].bodyTemperature){
+								this.info.body_temperature = results.list[0].bodyTemperature;
+							}
+						}
+					}
+				});
+			}
 		}
 	}
 

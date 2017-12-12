@@ -39,7 +39,7 @@ export class DoctorCaseTempletListComponent{
 		}
 
 		this.topBar = {
-			title: '儿保记录模板列表',
+			title: '病历模板列表',
 			back: true,
 		}
 		this.loadingShow = true;

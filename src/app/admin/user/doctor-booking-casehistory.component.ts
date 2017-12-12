@@ -543,6 +543,31 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	                }
 				}
             }
+			// 获取儿保记录，若是身高、体重、头围、体温等信息已存在，则直接使用
+			if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
+				var healthrecordUrl = this.url + '&booking_id=' + this.id;
+				this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						if(results.list.length > 0){
+							if(this.info.height != null && results.list[0].height){
+								this.info.height = results.list[0].height;
+							}
+							if(this.info.weight != null && results.list[0].weight){
+								this.info.weight = results.list[0].weight;
+							}
+							if(this.info.head_circum != null && results.list[0].headCircum){
+								this.info.head_circum = results.list[0].headCircum;
+							}
+							if(this.info.body_temperature != null && results.list[0].bodyTemperature){
+								this.info.body_temperature = results.list[0].bodyTemperature;
+							}
+						}
+					}
+				});
+			}
 
 			// 获取实验室检查信息
 			this.getBookingCheckList();
@@ -667,31 +692,6 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	changeExamination() {
 		this.showExamination = !this.showExamination;
 	}
-
-	// //新增病例
-	// addCasehistory() {
-	// 	//判断是否有药方
-	// 	if(this.prescriptList.length > 0){
-	// 		sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
-	// 	}else{
-	// 		sessionStorage.setItem('prescript', '');
-	// 	}
-	// 	sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-	// 	this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create', status: this.booking.status}});
-	// }
-	//
-	// //修改病例
-	// updateCasehistory(casehistory) {
-	// 	//判断是否有药方
-	// 	if(this.prescriptList.length > 0){
-	// 		sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
-	// 	}else{
-	// 		sessionStorage.setItem('prescript', '');
-	// 	}
-	// 	sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-	// 	sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
-	// 	this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'update', status: this.booking.status}});
-	// }
 
 	// 新增病历
 	addCaseHistory() {
