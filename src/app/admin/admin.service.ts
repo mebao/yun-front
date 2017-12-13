@@ -822,6 +822,15 @@ export class AdminService{
 			.catch();
 	}
 
+	//交易
+	private tranStatisticsUrl = this.url + '/mebcrm/transtatistics';
+	transtatistics(urlOptions): Promise<Data>{
+		return this.http.get(this.tranStatisticsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	//预约费用详情
 	private bookingfeeUrl = this.url + '/mebcrm/bookingfee/';
 	bookingfee(urlOptions): Promise<Data>{

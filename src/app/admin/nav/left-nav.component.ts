@@ -164,6 +164,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		//交易统计
+		transactionStatistics: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		// 减免金额记录
 		givefeeList: {
 			use: string,
@@ -311,6 +317,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			transactionRecordList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			transactionStatistics: {
 				use: '',
 				authority: ['see'],
 				infos: [],

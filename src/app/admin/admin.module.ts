@@ -62,6 +62,7 @@ import { ChildInfoComponent }              from './user/child-info.component';
 import { MemberComponent }                 from './setup/member.component';
 import { MemberListComponent }             from './setup/member-list.component';
 import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
+import { TransactionStatisticsComponent }  from './user/transaction-statistics.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
 import { PaymentPrintComponent }           from './booking/payment-print.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
@@ -142,6 +143,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		MemberComponent,
 		MemberListComponent,
 		TransactionRecordListComponent,
+		TransactionStatisticsComponent,
 		BookingPaymentComponent,
 		PaymentPrintComponent,
 		CrmRoleComponent,

@@ -945,6 +945,19 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'transactionStatistics',
+						firstUrl: '/admin/transactionStatistics',
+						authority: ['see'],
+						second: [
+							{
+								url: '/admin/transactionStatistics',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
+					{
 						firstKey: 'givefeeList',
 						firstUrl: '/admin/givefeeList',
 						authority: ['see'],

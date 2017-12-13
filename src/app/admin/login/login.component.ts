@@ -207,6 +207,13 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
+		//交易统计
+		transactionStatistics: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		},
 		// 接诊金额记录
 		givefeeList: {
 			use: string,
@@ -396,6 +403,12 @@ export class LoginComponent{
 				use: '',
 				authority: ['see'],
 				url: '/admin/transactionRecordList',
+				infos: [],
+			},
+			transactionStatistics: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/transactionStatistics',
 				infos: [],
 			},
 			givefeeList: {

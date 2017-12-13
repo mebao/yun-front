@@ -156,6 +156,12 @@
 				交易记录
 		</a>
 		<a
+			*ngIf="clinicRole.transactionStatistics.use != ''"
+			routerLink="./transactionStatistics"
+			routerLinkActive="active">
+				交易统计
+		</a>
+		<a
 			routerLink="./updatepwd"
 			routerLinkActive="active">
 			忘记密码

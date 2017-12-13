@@ -1,0 +1,132 @@
+<header-nav></header-nav>
+<div class="content-section admin-transaction-statistics">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<div class="flex pure-form search-tab max">
+			<div class="pure-control-group search-tab max mr10">
+				<label for="doctor_id">医生：</label>
+				<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
+					<ng-container *ngFor="let doctor of doctorlist">
+						<option value="{{doctor.id}}">{{doctor.realName}}</option>
+					</ng-container>
+				</select>
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="user_name">用户：</label>
+				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="service_id">科室：</label>
+				<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
+					<option value="">请选择科室</option>
+					<ng-container *ngFor="let service of servicelist">
+						<option value="{{service.serviceId}}">{{service.serviceName}}</option>
+					</ng-container>
+				</select>
+			</div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="flex pure-form mt10 search-tab max">
+			<div class="pure-control-group mr10">
+				<label for="type">交易类型：</label>
+				<select id="type" name="type" [(ngModel)]="searchInfo.type">
+					<option value=""></option>
+					<option value="1">支付费用</option>
+					<option value="2">会员充值</option>
+					<option value="4">药品零售</option>
+				</select>
+			</div>
+			<div class="pure-control-group mr10 flex">
+				<label for="b_time">时间：</label>
+				<select-date title="请选择日期" [showClear]="true" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
+			</div>
+			<div class="pure-control-group mr10 flex">
+				<label for="l_time" class="text-center">至</label>
+				<select-date title="请选择日期" [showClear]="true" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
+			</div>
+			<!-- <div class="pure-control-group mr10">
+				<label for="b_amount">金额：</label>
+				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
+			</div>
+			<div class="pure-control-group mr10">
+				<label for="l_amount" class="text-center">至</label>
+				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
+			</div> -->
+			<div class="flex-1"></div>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+		</div>
+		<!-- <div class="flex pure-form mt10 search-tab max">
+			<div class="pure-control-group mr10">
+				<label for="pay_way">支付方式：</label>
+				<select id="pay_way" name="pay_way" [(ngModel)]="searchInfo.pay_way">
+					<option value=""></option>
+					<option value="ali">支付宝支付</option>
+					<option value="wechat">微信支付</option>
+					<option value="card">刷卡支付</option>
+					<option value="member">会员余额支付</option>
+					<option value="money">现金支付</option>
+				</select>
+			</div>
+			<div class="flex-1"></div>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+		</div> -->
+		<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>应收金额</th>
+					<th>折扣金额</th>
+					<th>赠送金额</th>
+					<th>预约金</th>
+					<th>实收金额</th>
+					<th>现金</th>
+					<th>线上支付</th>
+					<th>余额支付</th>
+					<th>挂账</th>
+					<th>总收入</th>
+					<th>交易类型</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ng-container *ngFor="let tran of tranList; let index=index;">
+					<tr>
+						<td>{{tran.userName}}</td>
+						<td>{{tran.needAmount}}</td>
+						<td>{{tran.discount}}</td>
+						<td>{{tran.giveAmount}}</td>
+						<td>{{tran.bookingFee}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.gua}}</td>
+						<td>{{tran.total}}</td>
+						<td>{{tran.type == 1 || tran.type == 3?'支付费用' : tran.typeText}}</td>
+						<td >{{tran.time}}</td>
+					</tr>
+				</ng-container>
+				<tr class="bg-gray">
+					<td>总计</td>
+					<td>{{total.needAmount}}</td>
+					<td>{{discount}}</td>
+					<td>{{total.giveAmount}}</td>
+					<td>{{total.bookingFee}}</td>
+					<td>{{total.paidUp}}</td>
+					<td>{{total.cash}}</td>
+					<td>{{total.online}}</td>
+					<td>{{total.balance}}</td>
+					<td>{{total.gua}}</td>
+					<td>{{total.total}}</td>
+					<td >--</td>
+					<td >--</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && tranList.length == 0" class="mt10">
+			<nodata title="未查询到病人交易记录"></nodata>
+		</div>
+	</div>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<loading [show]="loadingShow"></loading>
