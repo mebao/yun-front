@@ -601,8 +601,6 @@ export class BookingPaymentComponent{
 		this.fee.fee = this.adminService.toDecimal2(fee);
 		this.fee.realFee = this.adminService.toDecimal2(fee);
 
-		console.log(this.fee);
-
 		this.payInfo.stillNeedPay = this.fee.fee;
 
 		this.loadingShow = false;

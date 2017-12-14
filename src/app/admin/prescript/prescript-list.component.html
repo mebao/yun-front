@@ -6,12 +6,12 @@
 		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescript/backList')">退药</div>
 		<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescript/saleList')">药品零售</div>
 	</div>
-	<form #f="ngForm" class="pure-form mt10 search-tab max">
+	<form class="pure-form mt10 search-tab max">
 		<div class="flex">
 			<div class="flex-1"></div>
 			<div class="pure-control-group mr10">
 				<label for="isout">出药：</label>
-				<select id="isout" name="isout" ngModel>
+				<select id="isout" name="isout" [(ngModel)]="searchInfo.isout">
 					<option value=""></option>
 					<option value="">未出药</option>
 					<option value="1">全部</option>
@@ -19,7 +19,7 @@
 			</div>
 			<div class="pure-control-group mr10">
 				<label for="today">时间：</label>
-				<select id="today" name="today" ngModel>
+				<select id="today" name="today" [(ngModel)]="searchInfo.today">
 					<option value=""></option>
 					<option value="">今天</option>
 					<option value="1">全部</option>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="pure-control-group mr10">
 				<label for="doctor_name">医生名：</label>
-				<input type="text" id="doctor_name" name="doctor_name" ngModel placeholder="请输入医生名">
+				<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" placeholder="请输入医生名">
 			</div>
 			<div class="w64p"></div>
 		</div>
@@ -39,13 +39,13 @@
 			</div> -->
 			<div class="pure-control-group mr10">
 				<label for="user_name">用户名：</label>
-				<input type="text" id="user_name" name="user_name" ngModel placeholder="请输入用户名">
+				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
 			</div>
 			<div class="pure-control-group mr10">
 				<label for="child_name">宝宝名：</label>
-				<input type="text" id="child_name" name="child_name" ngModel placeholder="请输入宝宝名">
+				<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝名">
 			</div>
-			<button (click)="search(f)" class="pure-button pure-button-primary">搜索</button>
+			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 		</div>
 	</form>
 	<div class="">
@@ -60,6 +60,7 @@
 					<th>批次</th>
 					<th>药品数量</th>
 					<th class="th-width">用法说明</th>
+					<th>状态</th>
 					<th class="th-width">备注</th>
 					<th>日期</th>
 					<th>出药人</th>
@@ -79,14 +80,15 @@
 						<td>
 							<div class="length-text">{{info.msExplain}}</div>
 						</td>
+						<td [ngClass]="{'canEdit': info.isOut == '0'}">{{info.isOut == '0' ? '未出药' : '已出药'}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 							<div class="length-text">{{item.remark}}</div>
 						</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-							<span *ngIf="item.apotId">-</span>
-							<button *ngIf="moduleAuthority.edit && (!item.apotId)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
+							<span *ngIf="item.outCode == 0">-</span>
+							<button *ngIf="moduleAuthority.edit && (item.outCode == 1 || item.outCode == 2)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
 						</td>
 					</tr>
 				</ng-container>

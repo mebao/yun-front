@@ -35,6 +35,13 @@ export class PrescriptListComponent{
 	}
 	url: string;
 	searchUrl: string;
+	searchInfo: {
+		isout: string,
+		today: string,
+		doctor_name: string,
+		user_name: string,
+		child_name: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -84,11 +91,18 @@ export class PrescriptListComponent{
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.searchUrl = this.url;
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&isout=1';
 
-		var urlOptions = this.url;
-		this.getData(urlOptions);
+ 		this.searchInfo = {
+ 			isout: '',
+ 			today: '',
+ 			doctor_name: '',
+ 			user_name: '',
+ 			child_name: '',
+ 		}
+
+		this.search();
 	}
 
 	getData(urlOptions) {
@@ -97,43 +111,47 @@ export class PrescriptListComponent{
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
+				var prescriptList = [];
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].infoLength = results.list[i].info.length;
-						if(results.list[i].info.length > 0){
-							for(var j = 0; j < results.list[i].info.length; j++){
-								results.list[i].info[j].msExplain = '单次：' + parseFloat(results.list[i].info[j].oneNum) + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+						if(this.searchInfo.isout == '1' || (this.searchInfo.isout == '' && results.list[i].outCode != 0)){
+							results.list[i].infoLength = results.list[i].info.length;
+							if(results.list[i].info.length > 0){
+								for(var j = 0; j < results.list[i].info.length; j++){
+									results.list[i].info[j].msExplain = '单次：' + parseFloat(results.list[i].info[j].oneNum) + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+								}
 							}
+							prescriptList.push(results.list[i]);
 						}
 					}
 				}
-				this.list = results.list;
+				this.list = prescriptList;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
 		})
 	}
 
-	search(f) {
+	search() {
 		var urlOptions = this.url;
-		if(f.value.isout != ''){
-			urlOptions += ('&isout=' + f.value.isout);
-		}
-		if(f.value.today != ''){
-			urlOptions += ('&today=' + f.value.today);
+		// if(this.searchInfo.isout != ''){
+		// 	urlOptions += ('&isout=' + this.searchInfo.isout);
+		// }
+		if(this.searchInfo.today != ''){
+			urlOptions += ('&today=' + this.searchInfo.today);
 		}
 		// if(f.value.name != ''){
 		// 	urlOptions += ('&name=' + f.value.name);
 		// }
-		if(f.value.doctor_name != ''){
-			urlOptions += ('&doctor_name=' + f.value.doctor_name);
+		if(this.searchInfo.doctor_name != ''){
+			urlOptions += ('&doctor_name=' + this.searchInfo.doctor_name);
 		}
-		if(f.value.user_name != ''){
-			urlOptions += ('&user_name=' + f.value.user_name);
+		if(this.searchInfo.user_name != ''){
+			urlOptions += ('&user_name=' + this.searchInfo.user_name);
 		}
-		if(f.value.child_name != ''){
-			urlOptions += ('&child_name=' + f.value.child_name);
+		if(this.searchInfo.child_name != ''){
+			urlOptions += ('&child_name=' + this.searchInfo.child_name);
 		}
 		this.searchUrl = urlOptions;
 		this.getData(urlOptions);

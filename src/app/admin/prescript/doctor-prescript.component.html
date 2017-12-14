@@ -48,7 +48,7 @@
 								<i class="icon-chevron-down"></i>
 							</ng-container>
 						</div>
-						<div *ngIf="secondType != '' || ms.key != 1">
+						<div *ngIf="secondType == 'back' || (secondType == '' && ms.key != 1) || !(secondType == 'continueAdd' && ms.ms.isOut != '')">
 							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 									<span>药品名</span>
 									<span class="required">*</span>
 								</label>
-								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType != ''">
+								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
 										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
 											<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
@@ -74,7 +74,7 @@
 									<span>批次</span>
 									<span class="required">*</span>
 								</label>
-								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType != ''">
+								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let batch of ms.batchList">
 										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
 									</ng-container>
@@ -88,10 +88,10 @@
 									<span class="required">*</span>
 								</label>
 								<div class="flex flex-tab">
-									<ng-container *ngIf="secondType == ''">
+									<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '')">
 										<select-search [title]="ms.ms.oneNum" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
 									</ng-container>
-									<ng-container *ngIf="secondType != ''">
+									<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 										<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" disabled>
 									</ng-container>
 									<select disabled="">
@@ -106,7 +106,7 @@
 									<span>用法</span>
 									<span class="required">*</span>
 								</label>
-								<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" #frequency_{{ms.key}}="ngModel" [(ngModel)]="ms.ms.frequency" [disabled]="secondType != ''">
+								<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" #frequency_{{ms.key}}="ngModel" [(ngModel)]="ms.ms.frequency" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let frequency of frequencylist">
 										<option value="{{frequency}}">{{frequency}}</option>
 									</ng-container>
@@ -119,7 +119,7 @@
 									<span>用药频次</span>
 									<span class="required">*</span>
 								</label>
-								<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage" [disabled]="secondType != ''">
+								<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let usage of usagelsit">
 										<option value="{{usage}}">{{usage}}</option>
 									</ng-container>
@@ -132,10 +132,10 @@
 									<span>天数</span>
 									<span class="required">*</span>
 								</label>
-								<ng-container *ngIf="secondType == ''">
+								<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '')">
 									<select-search [title]="ms.ms.days" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'days')"></select-search>
 								</ng-container>
-								<ng-container *ngIf="secondType != ''">
+								<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<input type="number" id="days_{{ms.key}}" name="days_{{ms.key}}" [(ngModel)]="ms.ms.days" disabled>
 								</ng-container>
 							</div>
@@ -143,11 +143,16 @@
 						<div class="pure-u-3-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="num_{{ms.key}}">
-									<span>{{secondType == '' ? '总量' : '退药'}}</span>
+									<span>{{secondType == '' || secondType == 'continueAdd' ? '总量' : '退药'}}</span>
 									<span class="required">*</span>
 								</label>
 								<div class="flex flex-tab">
-									<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
+									<ng-container *ngIf="secondType == '' || (secondType == 'back') || (secondType == 'continueAdd' && ms.ms.isOut == '')">
+										<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
+									</ng-container>
+									<ng-container *ngIf="secondType == 'continueAdd' && ms.ms.isOut != ''">
+										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num" disabled>
+									</ng-container>
 									<select disabled="">
 										<option>{{ms.ms.unit}}</option>
 									</select>
@@ -167,24 +172,24 @@
 								<label for="remark_{{ms.key}}">
 									<span>说明（最多200字）</span>
 								</label>
-								<textarea maxlength="200" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto"></textarea>
+								<textarea maxlength="200" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')"></textarea>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div *ngIf="secondType == ''" class="mt10">
+			<div *ngIf="secondType == '' || secondType == 'continueAdd'" class="mt10">
 				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 			</div>
 			<div class="pure-g">
 				<div class="pure-u-7-24 pr10">
-					<label for="remark">{{secondType == '' ? '备注' : '退药说明'}}（最多100字）</label>
+					<label for="remark">{{secondType == '' || secondType == 'continueAdd' ? '备注' : '退药说明'}}（最多100字）</label>
 					<textarea id="remark" name="remark" rows="4" maxlength="100" [(ngModel)]="prescriptInfo.remark" class="auto" placeholder="请输入"></textarea>
 				</div>
 			</div>
 		</fieldset>
 		<div class="text-center">
-			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' ? (this.editType == 'create' ? '保存' : '保存') : '退药'}}</button>
+			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' || secondType == 'continueAdd' ? (this.editType == 'create' ? '保存' : '保存') : '退药'}}</button>
 		</div>
 	</form>
 </div>

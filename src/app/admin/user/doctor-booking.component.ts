@@ -777,7 +777,7 @@ export class DoctorBookingComponent implements OnInit{
 	//修改药方
 	updatePrescript(info) {
 		sessionStorage.setItem('prescript', JSON.stringify(info));
-		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id}});
+		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'update'}});
 	}
 
 	//删除药方
@@ -788,6 +788,12 @@ export class DoctorBookingComponent implements OnInit{
 			type: 'prescript',
 		}
 		this.modalConfirmTab = true;
+	}
+
+	// 出药后，可继续加药
+	continueAdd(info) {
+		sessionStorage.setItem('prescript', JSON.stringify(info));
+		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'continueAdd'}});
 	}
 
 	//退药

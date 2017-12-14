@@ -1083,6 +1083,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 继续加药
+	private adddrugUrl = this.url + '/mebcrm/adddrug/';
+	adddrug(urlOptions, params): Promise<Data>{
+		return this.http.post(this.adddrugUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

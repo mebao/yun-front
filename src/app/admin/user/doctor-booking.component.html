@@ -307,14 +307,16 @@
 									<div *ngIf="pageType != 'history'">
 										<!-- 订单未完成，可操作 -->
 										<ng-container *ngIf="booking.status != '5'">
-											<div *ngIf="item.apotId && (item.isBack != 0)">-</div>
 											<div *ngIf="!item.apotId">
 												<button (click)="updatePrescript(item)" class="pure-button pure-button-primary">修改</button>
 											</div>
 											<div *ngIf="!item.apotId" class="mt10">
 												<button (click)="deletePrescript(item.id)" class="pure-button button-error">删除</button>
 											</div>
-											<div *ngIf="item.apotId && (item.isBack == 0)" class="mt10">
+											<div *ngIf="item.apotId && (item.isBack == 2 || item.isBack == 0)">
+												<button (click)="continueAdd(item)" class="pure-button pure-button-primary">加药</button>
+											</div>
+											<div *ngIf="item.apotId && item.isBack == 0 && (item.outCode == 0)" class="mt10">
 												<button (click)="backdrug(item)" class="pure-button pure-button-primary">退药</button>
 											</div>
 										</ng-container>
