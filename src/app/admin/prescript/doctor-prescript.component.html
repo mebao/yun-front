@@ -48,7 +48,7 @@
 								<i class="icon-chevron-down"></i>
 							</ng-container>
 						</div>
-						<div *ngIf="secondType == 'back' || (secondType == '' && ms.key != 1) || !(secondType == 'continueAdd' && ms.ms.isOut != '')">
+						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update') && ms.key != 1) || (secondType == 'continueAdd' && ms.ms.isOut == '')">
 							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
 						</div>
 					</div>
@@ -178,7 +178,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="secondType == '' || secondType == 'continueAdd'" class="mt10">
+			<div *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'" class="mt10">
 				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="icon-plus mr5"></i>添加药品</button>
 			</div>
 			<div class="pure-g">
