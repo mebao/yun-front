@@ -92,8 +92,8 @@
 				<ng-container *ngFor="let tran of tranList; let index=index;">
 					<tr *ngFor="let info of tran.bookinginfos; let indexInfo=index;">
 						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{info.userName}}</td>
-						<td>{{info.needAmount}}</td>
-						<td>{{info.discount}}</td>
+						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{tran.needAmount}}</td>
+						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{tran.discount}}</td>
 						<td>{{info.giveAmount}}</td>
 						<td>{{info.paidUp}}</td>
 						<td>{{info.cash}}</td>

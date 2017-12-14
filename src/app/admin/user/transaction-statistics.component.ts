@@ -160,11 +160,14 @@ export class TransactionStatisticsComponent{
 					total: results.total.total,
 					discount: results.total.discount,
 				}
-				this.hasData = true;
-				this.loadingShow = false;
+				var discountTotal = 0;
 				if(this.tranList.length>0){
 					for(var i=0;i<this.tranList.length;i++){
 						this.tranList[i].total = this.adminService.toDecimal2(this.tranList[i].total);
+						this.tranList[i].discount = this.adminService.toDecimal2(this.tranList[i].discount);
+						this.tranList[i].needAmount = this.adminService.toDecimal2(this.tranList[i].needAmount);
+						// 计算总折扣
+						discountTotal += parseFloat(this.tranList[i].discount) * 100;
 						if(this.tranList[i].bookinginfos.length > 0){
 							for(var j = 0; j < this.tranList[i].bookinginfos.length; j++){
 								this.tranList[i].bookinginfos[j].needAmount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].needAmount);
@@ -179,6 +182,9 @@ export class TransactionStatisticsComponent{
 						}
 					}
 				}
+				this.total.discount = this.adminService.toDecimal2(discountTotal / 100);
+				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}
