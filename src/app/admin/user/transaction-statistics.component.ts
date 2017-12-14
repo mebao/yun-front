@@ -19,16 +19,17 @@ export class TransactionStatisticsComponent{
 	loadingShow: boolean;
 	hasData: boolean;
 	tranList: any[];
-	needAmount: string;
-	giveAmount: string;
-	bookingFee: string;
-	paidUp: string;
-	cash: string;
-	online: string;
-	balance: string;
-	gua: string;
-	total: string;
-	discount: string;
+	total: {
+		needAmount: string,
+		giveAmount: string,
+		paidUp: string,
+		cash: string,
+		online: string,
+		balance: string,
+		gua: string,
+		total: string,
+		discount: string,
+	}
 	url: string;
 	doctorlist: any[];
 	servicelist: any[];
@@ -66,7 +67,17 @@ export class TransactionStatisticsComponent{
 
 		this.hasData = false;
 		this.tranList = [];
-		this.discount = '';
+		this.total = {
+			needAmount: '',
+			giveAmount: '',
+			paidUp: '',
+			cash: '',
+			online: '',
+			balance: '',
+			gua: '',
+			total: '',
+			discount: '',
+		}
 
 		this.searchInfo = {
 			doctor_id: '',
@@ -131,16 +142,6 @@ export class TransactionStatisticsComponent{
 	}
 
 	getData(urlOptions) {
-		var discount = 0;
-		var needAmount = 0;
-		var giveAmount = 0;
-		var bookingFee = 0;
-		var paidUp = 0;
-		var cash = 0;
-		var online = 0;
-		var balance = 0;
-		var gua = 0;
-		var total= 0;
 		this.adminService.transtatistics(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -148,78 +149,36 @@ export class TransactionStatisticsComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.tranList = results.list;
+				this.total = {
+					needAmount: results.total.needAmount,
+					giveAmount: results.total.giveAmount,
+					paidUp: results.total.paidUp,
+					cash: results.total.cash,
+					online: results.total.online,
+					balance: results.total.balance,
+					gua: results.total.gua,
+					total: results.total.total,
+					discount: results.total.discount,
+				}
 				this.hasData = true;
 				this.loadingShow = false;
 				if(this.tranList.length>0){
 					for(var i=0;i<this.tranList.length;i++){
-						this.tranList[i].cash = 0//现金
-						this.tranList[i].online = 0;//线上
-						this.tranList[i].balance = 0;//余额
-						this.tranList[i].gua = 0;//挂账
-						this.tranList[i].paidUp = 0;//实收
-						this.tranList[i].total = 0;//总收入
-						this.tranList[i].discount = 0;//折扣
-						if(this.tranList[i].payWay=='money'){
-							this.tranList[i].cash+=parseFloat(this.tranList[i].amount);
+						this.tranList[i].total = this.adminService.toDecimal2(this.tranList[i].total);
+						if(this.tranList[i].bookinginfos.length > 0){
+							for(var j = 0; j < this.tranList[i].bookinginfos.length; j++){
+								this.tranList[i].bookinginfos[j].needAmount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].needAmount);
+								this.tranList[i].bookinginfos[j].discount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].discount);
+								this.tranList[i].bookinginfos[j].giveAmount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].giveAmount);
+								this.tranList[i].bookinginfos[j].paidUp = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].paidUp);
+								this.tranList[i].bookinginfos[j].cash = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].cash);
+								this.tranList[i].bookinginfos[j].online = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].online);
+								this.tranList[i].bookinginfos[j].balance = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].balance);
+								this.tranList[i].bookinginfos[j].gua = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].gua);
+							}
 						}
-						if(this.tranList[i].secondWay=='money'){
-							this.tranList[i].cash+=parseFloat(this.tranList[i].secondAmount);
-						}
-						if(this.tranList[i].payWay=='ali' || this.tranList[i].payWay=='wechat' || this.tranList[i].payWay=='wc_zhuan' || this.tranList[i].payWay=='card'){
-							this.tranList[i].online+=parseFloat(this.tranList[i].amount);
-						}
-						if(this.tranList[i].secondWay=='ali' || this.tranList[i].secondWay=='wechat' || this.tranList[i].secondWay=='wc_zhuan' || this.tranList[i].secondWay=='card'){
-							this.tranList[i].online+=parseFloat(this.tranList[i].secondAmount);
-						}
-						if(this.tranList[i].payWay=='member'){
-							this.tranList[i].balance+=parseFloat(this.tranList[i].amount);
-						}
-						if(this.tranList[i].secondWay=='member'){
-							this.tranList[i].balance+=parseFloat(this.tranList[i].secondAmount);
-						}
-						if(this.tranList[i].payWay=='guazhang'){
-							this.tranList[i].gua+=parseFloat(this.tranList[i].amount);
-						}
-						if(this.tranList[i].secondWay=='guazhang'){
-							this.tranList[i].gua+=parseFloat(this.tranList[i].secondAmount);
-						}
-						this.tranList[i].cash = this.adminService.toDecimal2(Number(this.tranList[i].cash));
-						this.tranList[i].online = this.adminService.toDecimal2(Number(this.tranList[i].online));
-						this.tranList[i].balance = this.adminService.toDecimal2(Number(this.tranList[i].balance));
-						this.tranList[i].gua = this.adminService.toDecimal2(Number(this.tranList[i].gua));
-						this.tranList[i].paidUp = this.adminService.toDecimal2(Number(parseFloat(this.tranList[i].cash) + parseFloat(this.tranList[i].online)));
-						this.tranList[i].bookingFee = this.tranList[i].bookingFee == '' ? this.adminService.toDecimal2(0) : this.adminService.toDecimal2(this.tranList[i].bookingFee);
-						this.tranList[i].needAmount = this.tranList[i].needAmount == null || this.tranList[i].needAmount == '' ? this.adminService.toDecimal2(0) : this.adminService.toDecimal2(this.tranList[i].needAmount);
-						this.tranList[i].giveAmount = this.tranList[i].giveAmount == null || this.tranList[i].giveAmount == '' ? this.adminService.toDecimal2(0) : this.adminService.toDecimal2(this.tranList[i].giveAmount);
-						this.tranList[i].bookingFee = this.tranList[i].bookingFee == null || this.tranList[i].bookingFee == '' ? this.adminService.toDecimal2(0) : this.adminService.toDecimal2(this.tranList[i].bookingFee);
-						this.tranList[i].total = this.adminService.toDecimal2(Number(parseFloat(this.tranList[i].paidUp) + parseFloat(this.tranList[i].bookingFee) + parseFloat(this.tranList[i].gua) + parseFloat(this.tranList[i].balance)));
-						if(this.tranList[i].type == 2 || this.tranList[i].type == 3){
-							this.tranList[i].discount = this.adminService.toDecimal2(0);
-						}else{
-							this.tranList[i].discount = this.adminService.toDecimal2(parseFloat(this.tranList[i].needAmount) - parseFloat(this.tranList[i].total) - parseFloat(this.tranList[i].giveAmount));
-							discount += (Number(parseFloat(this.tranList[i].needAmount)*100) - Number(parseFloat(this.tranList[i].total)*100) - Number(parseFloat(this.tranList[i].giveAmount)*100))/100;
-						}
-						needAmount += Number(this.tranList[i].needAmount);
-						giveAmount += Number(this.tranList[i].giveAmount);
-						bookingFee += Number(this.tranList[i].bookingFee);
-						paidUp += Number(this.tranList[i].paidUp);
-						cash += Number(this.tranList[i].cash);
-						online += Number(this.tranList[i].online);
-						balance += Number(this.tranList[i].balance);
-						gua += Number(this.tranList[i].gua);
-						total += Number(this.tranList[i].total);
 					}
 				}
-				this.discount = this.adminService.toDecimal2(discount);
-				this.needAmount = this.adminService.toDecimal2(needAmount);
-				this.giveAmount = this.adminService.toDecimal2(giveAmount);
-				this.bookingFee = this.adminService.toDecimal2(bookingFee);
-				this.paidUp = this.adminService.toDecimal2(paidUp);
-				this.cash = this.adminService.toDecimal2(cash);
-				this.online = this.adminService.toDecimal2(online);
-				this.balance = this.adminService.toDecimal2(balance);
-				this.gua = this.adminService.toDecimal2(gua);
-				this.total = this.adminService.toDecimal2(total);
 			}
 		});
 	}
