@@ -579,6 +579,7 @@ export class DoctorPrescriptComponent{
 			//退药逻辑，填写需要退多少量的药品，计算剩下的药品
 			if(this.plist.length > 0){
 				var backPlist = [];
+				var hasBack = false;
 				var feeAll = 0;
 				for(var i = 0; i < this.plist.length; i++){
 					//判断该药品是否退药
@@ -588,6 +589,7 @@ export class DoctorPrescriptComponent{
 						remark: this.plist[i].ms.remark,
 					}
 					if(this.plist[i].use){
+						hasBack = true;
 						//判断是否填写
 						if(this.plist[i].ms.num == ''){
 							this.toastTab(this.plist[i].ms.pname + '退药数量不可为空', 'error');
@@ -606,7 +608,7 @@ export class DoctorPrescriptComponent{
 					backPlist.push(backP);
 					feeAll += Number(backP.num) * Number(this.plist[i].ms.price);
 				}
-				if(backPlist.length == 0){
+				if(!hasBack){
 					this.toastTab('未选择退药信息', 'error');
 					this.btnCanEdit = false;
 					return;
