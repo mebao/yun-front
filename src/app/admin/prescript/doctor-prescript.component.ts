@@ -606,6 +606,11 @@ export class DoctorPrescriptComponent{
 					backPlist.push(backP);
 					feeAll += Number(backP.num) * Number(this.plist[i].ms.price);
 				}
+				if(backPlist.length == 0){
+					this.toastTab('未选择退药信息', 'error');
+					this.btnCanEdit = false;
+					return;
+				}
 				if(f.value.remark == ''){
 					this.toastTab('退药说明不可为空', 'error');
 					this.btnCanEdit = false;
