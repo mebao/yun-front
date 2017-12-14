@@ -88,7 +88,7 @@
 									<span class="required">*</span>
 								</label>
 								<div class="flex flex-tab">
-									<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '')">
+									<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
 										<select-search [title]="ms.ms.oneNum" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
 									</ng-container>
 									<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
@@ -132,7 +132,7 @@
 									<span>天数</span>
 									<span class="required">*</span>
 								</label>
-								<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '')">
+								<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
 									<select-search [title]="ms.ms.days" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'days')"></select-search>
 								</ng-container>
 								<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
@@ -143,11 +143,11 @@
 						<div class="pure-u-3-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="num_{{ms.key}}">
-									<span>{{secondType == '' || secondType == 'continueAdd' ? '总量' : '退药'}}</span>
+									<span>{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '总量' : '退药'}}</span>
 									<span class="required">*</span>
 								</label>
 								<div class="flex flex-tab">
-									<ng-container *ngIf="secondType == '' || (secondType == 'back') || (secondType == 'continueAdd' && ms.ms.isOut == '')">
+									<ng-container *ngIf="secondType == '' || (secondType == 'back') || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
 										<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
 									</ng-container>
 									<ng-container *ngIf="secondType == 'continueAdd' && ms.ms.isOut != ''">
@@ -183,13 +183,13 @@
 			</div>
 			<div class="pure-g">
 				<div class="pure-u-7-24 pr10">
-					<label for="remark">{{secondType == '' || secondType == 'continueAdd' ? '备注' : '退药说明'}}（最多100字）</label>
+					<label for="remark">{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '备注' : '退药说明'}}（最多100字）</label>
 					<textarea id="remark" name="remark" rows="4" maxlength="100" [(ngModel)]="prescriptInfo.remark" class="auto" placeholder="请输入"></textarea>
 				</div>
 			</div>
 		</fieldset>
 		<div class="text-center">
-			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' || secondType == 'continueAdd' ? (this.editType == 'create' ? '保存' : '保存') : '退药'}}</button>
+			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? (this.editType == 'create' ? '保存' : '保存') : '退药'}}</button>
 		</div>
 	</form>
 </div>

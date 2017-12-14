@@ -213,7 +213,7 @@ export class DoctorPrescriptComponent{
 				for(var i = 0; i < sessionPrescript.info.length; i++){
 					var p = {
 						key: this.plist.length + 1,
-						show: this.secondType == '' || this.secondType == 'back',
+						show: this.secondType == '' || this.secondType == 'back' || this.secondType == 'update',
 						use: true,
 						ms: sessionPrescript.info[i],
 						batchList: [],
@@ -508,7 +508,7 @@ export class DoctorPrescriptComponent{
 					}
 				}
 			}
-			if(this.secondType == ''){
+			if(this.secondType == '' || this.secondType == 'update'){
 				if(this.editType == 'create'){
 					var params = {
 						username: this.adminService.getUser().username,
