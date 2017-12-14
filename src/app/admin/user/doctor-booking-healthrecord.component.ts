@@ -846,16 +846,16 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 					}else{
 						var results = JSON.parse(JSON.stringify(data.results));
 						if(results.list.length > 0){
-							if(this.info.height != null && results.list[0].height){
+							if(this.info.height != null && results.list[0].height && parseFloat(results.list[0].height) != 0){
 								this.info.height = results.list[0].height;
 							}
-							if(this.info.weight != null && results.list[0].weight){
+							if(this.info.weight != null && results.list[0].weight && parseFloat(results.list[0].weight) != 0){
 								this.info.weight = results.list[0].weight;
 							}
-							if(this.info.head_circum != null && results.list[0].headCircum){
+							if(this.info.head_circum != null && results.list[0].headCircum && parseFloat(results.list[0].headCircum) != 0){
 								this.info.head_circum = results.list[0].headCircum;
 							}
-							if(this.info.body_temperature != null && results.list[0].bodyTemperature){
+							if(this.info.body_temperature != null && results.list[0].bodyTemperature && parseFloat(results.list[0].bodyTemperature) != 0){
 								this.info.body_temperature = results.list[0].bodyTemperature;
 							}
 						}
