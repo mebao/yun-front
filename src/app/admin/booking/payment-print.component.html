@@ -60,7 +60,14 @@
 				<div class="w10">{{service.fee}}</div>
 				<div class="w5">{{service.number}}</div>
 				<div class="w15">{{service.originalServiceFee}}</div>
-				<div class="w15">{{service.serviceDiscountFee}}</div>
+				<div class="w15">
+					<ng-container *ngIf="dataCode == '0'">
+						{{service.serviceDiscount}}
+					</ng-container>
+					<ng-container *ngIf="dataCode == '1'">
+						{{service.serviceDiscountFee}}
+					</ng-container>
+				</div>
 				<div class="w20">已支付预约金{{bookingInfo.yyj.amount}}元</div>
 				<div class="w15">{{fee.feeInfo.serviceFee}}</div>
 			</div>
@@ -69,7 +76,14 @@
 				<div class="w10">{{assist.price}}</div>
 				<div class="w5">{{assist.number}}</div>
 				<div class="w15">{{assist.originalAssistFee}}</div>
-				<div class="w15">{{assist.assistDiscountFee}}</div>
+				<div class="w15">
+					<ng-container *ngIf="dataCode == '0'">
+						{{assist.assistDiscount}}
+					</ng-container>
+					<ng-container *ngIf="dataCode == '1'">
+						{{assist.assistDiscountFee}}
+					</ng-container>
+				</div>
 				<div class="w20"></div>
 				<div class="w15">{{assist.assistFee}}</div>
 			</div>
@@ -78,7 +92,14 @@
 				<div class="w10">{{check.price}}</div>
 				<div class="w5">{{check.number}}</div>
 				<div class="w15">{{check.originalCheckFee}}</div>
-				<div class="w15">{{check.checkDiscountFee}}</div>
+				<div class="w15">
+					<ng-container *ngIf="dataCode == '0'">
+						{{check.checkDiscount}}
+					</ng-container>
+					<ng-container *ngIf="dataCode == '1'">
+						{{check.checkDiscountFee}}
+					</ng-container>
+				</div>
 				<div class="w20"></div>
 				<div class="w15">{{check.checkFee}}</div>
 			</div>
@@ -88,7 +109,14 @@
 					<div class="w10">{{info.price}}</div>
 					<div class="w5">{{info.num}}</div>
 					<div class="w15">{{info.originalMedicalFee}}</div>
-					<div class="w15">{{info.medicalDiscountFee}}</div>
+					<div class="w15">
+						<ng-container *ngIf="dataCode == '0'">
+							{{info.medicalDiscount}}
+						</ng-container>
+						<ng-container *ngIf="dataCode == '1'">
+							{{info.medicalDiscountFee}}
+						</ng-container>
+					</div>
 					<div class="w20"></div>
 					<div class="w15">{{info.medicalFee}}</div>
 				</div>
@@ -98,7 +126,14 @@
 				<div class="w10">{{other.price}}</div>
 				<div class="w5">{{other.number}}</div>
 				<div class="w15">{{other.originalOtherFee}}</div>
-				<div class="w15">{{other.otherDiscountFee}}</div>
+				<div class="w15">
+					<ng-container *ngIf="dataCode == '0'">
+						{{other.otherDiscount}}
+					</ng-container>
+					<ng-container *ngIf="dataCode == '1'">
+						{{other.otherDiscountFee}}
+					</ng-container>
+				</div>
 				<div class="w20"></div>
 				<div class="w15">{{other.otherFee}}</div>
 			</div>
