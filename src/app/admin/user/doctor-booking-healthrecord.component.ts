@@ -1143,7 +1143,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
             clinic_id: this.adminService.getUser().clinicId,
             child_id: this.info.child_id,
             booking_id: this.info.booking_id,
-            check_date: this.adminService.getDayByDate(new Date()),
+            check_date: this.adminService.dateFormatHasWord(this.booking.bookingDate),
             height: this.info.height == '' ? '0' : this.info.height,
             medium_height: this.info.medium_height == '' ? '0' : this.info.medium_height,
             compare_height: this.info.compare_height,

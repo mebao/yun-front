@@ -920,7 +920,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 			trace_element: this.info.trace_element == '' ? this.info.trace_element_other : this.info.trace_element,
 			diagnosis: this.info.diagnosis,
 			advise: this.info.advise,
-			time: this.info.time == '' ? this.adminService.getDayByDate(new Date()) : this.adminService.dateFormatHasWord(this.info.time),
+			time: this.info.time == '' ? this.adminService.dateFormatHasWord(this.booking.bookingDate) : this.adminService.dateFormatHasWord(this.info.time),
 		}
 		if(this.editType == 'create'){
 			this.adminService.casehistory('', params).then((data) => {
