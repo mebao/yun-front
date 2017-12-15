@@ -2,6 +2,13 @@
 <div class="content-section admin-doctor-visit">
 	<top-bar [data]="topBar"></top-bar>
 	<div>
+		<div class="flex pure-form search-tab max mt2">
+			<div class="flex-1"></div>
+			<div class="pure-control-group mr10 flex">
+				<label for="cdate_big">预约时间：</label>
+				<select-date title="请选择日期" [dateText]="searchInfo.duty_text" [endDate]="searchInfo.today_num" (onVoted)="changeDate($event)"></select-date>
+			</div>
+		</div>
 		<table *ngIf="visitList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>

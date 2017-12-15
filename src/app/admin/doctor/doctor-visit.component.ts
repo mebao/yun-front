@@ -34,6 +34,11 @@ export class DoctorVisitComponent{
 	canEdit: boolean;
     modalTabAgain : boolean;
     bookingId: string;
+    searchInfo: {
+        duty: string,
+        duty_text: string,
+        today_num: number,
+    }
 
     constructor(
         public doctorService: DoctorService,
@@ -94,15 +99,30 @@ export class DoctorVisitComponent{
 
         this.visitList = [];
         this.hasData = false;
+
+		var todayDate = this.adminService.getDayByDate(new Date());
+        this.searchInfo = {
+            duty: todayDate,
+            duty_text: this.adminService.dateFormat(todayDate),
+            today_num: new Date(todayDate).getTime(),
+        }
+
         this.getData();
 
         this.canEdit = false;
         this.modalTabAgain = false;
         this.bookingId = '';
+
+
+    }
+
+    changeDate(_value) {
+		this.searchInfo.duty = JSON.parse(_value).value;
+        this.getData();
     }
 
     getData() {
-        var url = this.url;
+        var url = this.url + '&duty=' + this.searchInfo.duty;
         if(this.moduleAuthority.personal && !this.moduleAuthority.see){
             url += '&myself=1';
         }
