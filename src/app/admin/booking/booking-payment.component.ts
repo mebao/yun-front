@@ -267,14 +267,14 @@ export class BookingPaymentComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				// 	feeinfo为[]
-				if(results.feeinfo == []){
+				if(this.adminService.isArray(results.feeinfo)){
 					this.loadingShow = false;
 					this.pageType = '1';
 				}else{
 					this.fee.remark = results.tranRemark;
 					this.dataCode = results.dataCode;
 					// 第一种discount_info解析方式
-					if(results.dataCode == 0){
+					if(results.dataCode == '0'){
 						if(results.discountInfo == '' || !results.discountInfo){
 							var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
 							this.adminService.searchuser(userUrl).then((userData) => {
@@ -748,7 +748,7 @@ export class BookingPaymentComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
-				bookingFee: results.feeinfo['预约金'].fee,
+				bookingFee: results.feeinfo['预约金'] == null ? '0.00' : results.feeinfo['预约金'].fee,
 			},
 			originalCost: '',
 			fee: '',

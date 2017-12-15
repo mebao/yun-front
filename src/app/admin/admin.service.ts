@@ -1283,4 +1283,9 @@ export class AdminService{
 			'color10',
 		];
 	}
+
+	isArray(o) {
+		return Object.prototype.toString.call(o)=='[object Array]';
+	}
+
 }

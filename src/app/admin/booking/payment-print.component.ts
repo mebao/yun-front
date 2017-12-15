@@ -671,7 +671,7 @@ export class PaymentPrintComponent{
 				otherOriginalFee: '',
 				otherDiscount: '',
 				otherFee: '',
-				bookingFee: results.feeinfo['预约金'].fee,
+				bookingFee: results.feeinfo['预约金'] == null ? '0.00' : results.feeinfo['预约金'].fee,
 			},
 			fee: '',
 			originalCost: '',
