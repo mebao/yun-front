@@ -224,12 +224,28 @@
 										<label class="w150pp">建议：</label>
 										<div class="flex-1">{{casehistory.advise}}</div>
 									</div>
-									<div *ngIf="prescriptionText != 0" class="pure-u-24-24 bt info flex">
-										<label class="w150pp">处方：</label>
-										<div class="flex-1">
-											{{prescriptionText}}
+									<ng-container *ngIf="prescriptList.length > 0">
+										<div class="pure-u-24-24 bt info flex">
+											<label class="w150pp">处方：</label>
 										</div>
-									</div>
+										<div *ngFor="let info of prescriptList[0].info; let index=index;" class="pure-u-24-24 bt info" [ngClass]="{'bt-ef': index != 0}">
+											<div class="flex">
+												<div class="flex-1">
+													{{index + 1}}：
+													{{info.pname}}：
+													{{info.format}}
+												</div>
+												<div class="w100p">{{info.num + info.unit}}</div>
+												<div class="w100p">{{info.days}}天</div>
+											</div>
+											<div class="ml50">
+												用法：
+												<span>{{info.frequency}}</span>
+												<span>{{info.usage}}</span>
+												<span>一次{{info.oneNum + info.oneUnit}}</span>
+											</div>
+										</div>
+									</ng-container>
 									<div class="pure-u-24-24 bt info flex">
 										<label class="w150pp">就诊日期：</label>
 										<div class="flex-1">{{casehistory.time}}</div>
@@ -517,12 +533,30 @@
 								<textarea id="advise" maxlength="200" name="advise" rows="1" #advise="ngModel" [(ngModel)]="info.advise" class="auto flex-1"></textarea>
 							</div>
 						</div>
-						<div *ngIf="info.prescription != null" class="pure-u-24-24">
+						<div *ngIf="prescriptList.length > 0" class="pure-u-24-24">
 							<div class="pure-control-group">
 								<label for="prescription">
 									处方：<button *ngIf="canUpdatePrescript" (click)="updatePrescript()" class="pure-button pure-button-primary">修改药方</button>
 								</label>
-								<textarea id="prescription" name="prescription" rows="1" #prescription="ngModel" [(ngModel)]="prescriptionText" class="auto" disabled=""></textarea>
+								<div class="section">
+									<div *ngFor="let info of prescriptList[0].info; let index=index;" class="info" [ngClass]="{'bt-ef': index != 0}">
+										<div class="flex">
+											<div class="flex-1">
+												{{index + 1}}：
+												{{info.pname}}：
+												{{info.format}}
+											</div>
+											<div class="w100p">{{info.num + info.unit}}</div>
+											<div class="w100p">{{info.days}}天</div>
+										</div>
+										<div class="ml50">
+											用法：
+											<span>{{info.frequency}}</span>
+											<span>{{info.usage}}</span>
+											<span>一次{{info.oneNum + info.oneUnit}}</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

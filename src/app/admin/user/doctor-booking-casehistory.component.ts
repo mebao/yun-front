@@ -67,7 +67,6 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	// 药方
 	prescriptList: any[];
 	prescription: any[];
-	prescriptionText: string;
 	// pageType 空为医生接诊， history为查看
 	pageType: string;
 	// 体格检查
@@ -272,8 +271,6 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				 + '&token=' + this.adminService.getUser().token
 				 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		this.prescriptionText = '';
-
 		//病例
 		this.casehistoryList = [];
 		this.hasCasehistoryData = false;
@@ -420,7 +417,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				trace_element: casehistory.traceElement,
 				trace_element_other: casehistory.traceElement == '正常' ? '' : casehistory.traceElement,
 				diagnosis: casehistory.diagnosis,
-				prescription: this.prescriptionText,
+				prescription: '',
 				advise: casehistory.advise,
 				time: casehistory.time,
 				timeText: casehistory.time,
@@ -483,7 +480,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				trace_element: null,
 				trace_element_other: '',
 				diagnosis: null,
-				prescription: this.prescriptionText,
+				prescription: '',
 				advise: null,
 				time: '',
 				timeText: '',
@@ -656,24 +653,18 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.prescriptList = results.list;
-				this.prescriptionText = '';
-				if(this.prescriptList.length > 0){
-					var prescript = this.prescriptList[0];
-					if(prescript.info.length > 0){
-						for(var i = 0; i < prescript.info.length; i++){
-							this.prescriptionText += prescript.info[i].pname + prescript.info[i].batch + '批次: ' + prescript.info[i].frequency
-								 + '，一次' + prescript.info[i].oneNum + prescript.info[i].oneUnit
-								 + '，' + prescript.info[i].usage
-								 + '，需服用' + prescript.info[i].days + '天'
-								 + '，共开' + prescript.info[i].num + prescript.info[i].unit + '。\n';
+				if(results.list.length > 0){
+					if(results.list[0].info.length > 0){
+						for(var i = 0; i < results.list[0].info.length; i++){
+							results.list[0].info[i].oneNum = parseFloat(results.list[0].info[i].oneNum);
 						}
 					}
 
-					if(this.status != '5' && !prescript.apotId){
+					if(this.status != '5' && !results.list[0].apotId){
 						this.canUpdatePrescript = true;
 					}
 				}
+				this.prescriptList = results.list;
 			}
 		});
 	}
