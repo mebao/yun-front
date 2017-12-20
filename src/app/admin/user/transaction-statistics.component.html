@@ -2,7 +2,12 @@
 <div class="content-section admin-transaction-statistics">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="mt10">
-		<div class="flex pure-form search-tab max">
+		<div class="second-bar-tab flex">
+			<div class="item" (click)="changeType('1,3')" [ngClass]="{'active': searchInfo.type == '1,3'}">接诊费用</div>
+			<div class="item" (click)="changeType('2')" [ngClass]="{'active': searchInfo.type == '2'}">会员充值</div>
+			<div class="item" (click)="changeType('4')" [ngClass]="{'active': searchInfo.type == '4'}">药品零售</div>
+		</div>
+		<div class="flex pure-form search-tab max mt10">
 			<div class="pure-control-group search-tab max mr10">
 				<label for="doctor_id">医生：</label>
 				<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
@@ -27,16 +32,6 @@
 			<div class="flex-1"></div>
 		</div>
 		<div class="flex pure-form mt10 search-tab max">
-			<div class="pure-control-group mr10">
-				<label for="type">交易类型：</label>
-				<select id="type" name="type" [(ngModel)]="searchInfo.type">
-					<option value=""></option>
-					<option value="1">支付费用</option>
-					<option value="2">会员充值</option>
-					<option value="3">支付预约金</option>
-					<option value="4">药品零售</option>
-				</select>
-			</div>
 			<div class="pure-control-group mr10 flex">
 				<label for="b_time">时间：</label>
 				<select-date title="请选择日期" [showClear]="true" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
@@ -71,56 +66,132 @@
 			<div class="flex-1"></div>
 			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 		</div> -->
-		<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th>姓名</th>
-					<th>应收金额</th>
-					<th>折扣金额</th>
-					<th>赠送金额</th>
-					<th>实收金额</th>
-					<th>现金</th>
-					<th>线上支付</th>
-					<th>余额支付</th>
-					<th>挂账</th>
-					<th>交易类型</th>
-					<th>时间</th>
-					<th>总收入</th>
-				</tr>
-			</thead>
-			<tbody>
-				<ng-container *ngFor="let tran of tranList; let index=index;">
-					<tr *ngFor="let info of tran.bookinginfos; let indexInfo=index;">
-						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{info.userName}}</td>
-						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{tran.needAmount}}</td>
-						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{tran.discount}}</td>
-						<td>{{info.giveAmount}}</td>
-						<td>{{info.paidUp}}</td>
-						<td>{{info.cash}}</td>
-						<td>{{info.online}}</td>
-						<td>{{info.balance}}</td>
-						<td>{{info.gua}}</td>
-						<td>{{info.typeText}}</td>
-						<td>{{info.time}}</td>
-						<td *ngIf="indexInfo == 0" [attr.rowspan]="tran.bookinginfos.length">{{tran.total}}</td>
+		<div *ngIf="searchInfo.type == '1,3'">
+			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>应收金额</th>
+						<th>折扣金额</th>
+						<th>减免金额</th>
+						<th>预约金</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>挂账</th>
+						<th>时间</th>
+						<th>总收入</th>
 					</tr>
-				</ng-container>
-				<tr class="bg-gray">
-					<td>总计</td>
-					<td>{{total.needAmount}}</td>
-					<td>{{total.discount}}</td>
-					<td>{{total.giveAmount}}</td>
-					<td>{{total.paidUp}}</td>
-					<td>{{total.cash}}</td>
-					<td>{{total.online}}</td>
-					<td>{{total.balance}}</td>
-					<td>{{total.gua}}</td>
-					<td >--</td>
-					<td >--</td>
-					<td>{{total.total}}</td>
-				</tr>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<tr *ngFor="let tran of tranList; let index=index;">
+						<td>{{tran.childName ? tran.childName : tran.userName}}</td>
+						<td>{{tran.needAmount}}</td>
+						<td>{{tran.discount}}</td>
+						<td>{{tran.giveAmount}}</td>
+						<td>{{tran.bookingFee}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.gua + (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : ''))}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+					</tr>
+					<tr class="bg-gray">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.discount}}</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.bookingFee}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td>{{total.gua}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div *ngIf="searchInfo.type == '2'">
+			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>赠送金额</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>时间</th>
+						<th>总收入</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let tran of tranList">
+						<td>{{tran.userName}}</td>
+						<td>{{tran.giveAmount}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+					</tr>
+					<tr class="bg-gray">
+						<td>总计</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div *ngIf="searchInfo.type == '4'">
+			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>应收金额</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>时间</th>
+						<th>总收入</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let tran of tranList">
+						<td>{{tran.userName}}</td>
+						<td>{{tran.needAmount}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+					</tr>
+					<tr class="bg-gray">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div *ngIf="hasData && tranList.length == 0" class="mt10">
 			<nodata title="未查询到交易信息"></nodata>
 		</div>

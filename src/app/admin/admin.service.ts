@@ -1292,8 +1292,6 @@ export class AdminService{
 	    // 转换为拼音
 	    val1 = Pinyin.getCamelChars(val1.name).toLowerCase();
 	    val2 = Pinyin.getCamelChars(val2.name).toLowerCase();
-		console.log(val1);
-		console.log(val2);
 
 	    // 获取较长的拼音的长度
 	    var length =  val1.length > val2.length ? val1.length:val2.length ;

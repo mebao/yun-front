@@ -23,6 +23,7 @@ export class TransactionStatisticsComponent{
 		needAmount: string,
 		giveAmount: string,
 		paidUp: string,
+		bookingFee: string,
 		cash: string,
 		online: string,
 		balance: string,
@@ -54,7 +55,7 @@ export class TransactionStatisticsComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '交易记录',
+			title: '交易统计',
 			back: false,
 		}
 		this.toast = {
@@ -71,6 +72,7 @@ export class TransactionStatisticsComponent{
 			needAmount: '',
 			giveAmount: '',
 			paidUp: '',
+			bookingFee: '',
 			cash: '',
 			online: '',
 			balance: '',
@@ -89,7 +91,7 @@ export class TransactionStatisticsComponent{
 			l_time_num: 0,
 			b_amount: '',
 			l_amount: '',
-			type: '',
+			type: '1,3',
 			pay_way: '',
 		}
 
@@ -106,6 +108,11 @@ export class TransactionStatisticsComponent{
 		this.servicelist = [];
 		this.getServiceList();
 
+		this.search();
+	}
+
+	changeType(_value) {
+		this.searchInfo.type = _value;
 		this.search();
 	}
 
@@ -127,7 +134,11 @@ export class TransactionStatisticsComponent{
 			urlOptions += '&l_amount=' + this.searchInfo.l_amount;
 		}
 		if(this.searchInfo.type != ''){
-			urlOptions += '&type=' + this.searchInfo.type;
+			if(this.searchInfo.type == '1,3'){
+				urlOptions += '&typelist=' + this.searchInfo.type;
+			}else{
+				urlOptions += '&type=' + this.searchInfo.type;
+			}
 		}
 		if(this.searchInfo.pay_way != ''){
 			urlOptions += '&pay_way=' + this.searchInfo.pay_way;
@@ -148,41 +159,38 @@ export class TransactionStatisticsComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.tranList = results.list;
 				this.total = {
-					needAmount: results.total.needAmount,
-					giveAmount: results.total.giveAmount,
-					paidUp: results.total.paidUp,
-					cash: results.total.cash,
-					online: results.total.online,
-					balance: results.total.balance,
-					gua: results.total.gua,
-					total: results.total.total,
-					discount: results.total.discount,
+					needAmount: this.adminService.toDecimal2(results.total.needAmount),
+					giveAmount: this.adminService.toDecimal2(results.total.giveAmount),
+					paidUp: this.adminService.toDecimal2(results.total.paidUp),
+					bookingFee: this.adminService.toDecimal2(results.total.bookingFee),
+					cash: this.adminService.toDecimal2(results.total.cash),
+					online: this.adminService.toDecimal2(results.total.online),
+					balance: this.adminService.toDecimal2(results.total.balance),
+					gua: this.adminService.toDecimal2(results.total.gua),
+					total: this.adminService.toDecimal2(results.total.total),
+					discount: this.adminService.toDecimal2(results.total.discount),
 				}
-				var discountTotal = 0;
-				if(this.tranList.length>0){
-					for(var i=0;i<this.tranList.length;i++){
-						this.tranList[i].total = this.adminService.toDecimal2(this.tranList[i].total);
-						this.tranList[i].discount = this.adminService.toDecimal2(this.tranList[i].discount);
-						this.tranList[i].needAmount = this.adminService.toDecimal2(this.tranList[i].needAmount);
-						// 计算总折扣
-						discountTotal += parseFloat(this.tranList[i].discount) * 100;
-						if(this.tranList[i].bookinginfos.length > 0){
-							for(var j = 0; j < this.tranList[i].bookinginfos.length; j++){
-								this.tranList[i].bookinginfos[j].needAmount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].needAmount);
-								this.tranList[i].bookinginfos[j].discount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].discount);
-								this.tranList[i].bookinginfos[j].giveAmount = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].giveAmount);
-								this.tranList[i].bookinginfos[j].paidUp = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].paidUp);
-								this.tranList[i].bookinginfos[j].cash = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].cash);
-								this.tranList[i].bookinginfos[j].online = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].online);
-								this.tranList[i].bookinginfos[j].balance = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].balance);
-								this.tranList[i].bookinginfos[j].gua = this.adminService.toDecimal2(this.tranList[i].bookinginfos[j].gua);
-							}
+				if(results.list.length>0){
+					for(var i=0;i<results.list.length;i++){
+						var numList = [
+							'balance',
+							'bookingFee',
+							'cash',
+							'discount',
+							'giveAmount',
+							'gua',
+							'needAmount',
+							'online',
+							'paidUp',
+							'total',
+						]
+						for(var j = 0; j < numList.length; j++){
+							results.list[i][numList[j]] = this.adminService.toDecimal2(results.list[i][numList[j]]);
 						}
 					}
 				}
-				this.total.discount = this.adminService.toDecimal2(discountTotal / 100);
+				this.tranList = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
