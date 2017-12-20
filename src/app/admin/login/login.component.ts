@@ -452,7 +452,8 @@ export class LoginComponent{
 					username: results.admininfo.username,
 					realname: results.admininfo.realname,
 				}
-				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 1);
+				this.adminService.delCookie('user');
+				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 7);
 				//角色信息存储在sessionStorage中
 				sessionStorage.setItem('userClinicRoles', JSON.stringify(results.admininfo.clinicRoles));
 				//清空sessionStorage中角色权限信息

@@ -275,13 +275,14 @@ export class DoctorPrescriptComponent{
 		})
 
 		//查看库存
-		var searchsuppliesUrl = this.url;
+		var searchsuppliesUrl = this.url + '&type=1,2';
 		this.adminService.searchsupplies(searchsuppliesUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
+					results.list.sort(this.adminService.compare);
 					for(var i = 0; i < results.list.length; i++){
 						if(results.list[i].others.length > 0){
 							for(var j = 0; j < results.list[i].others.length; j++){
