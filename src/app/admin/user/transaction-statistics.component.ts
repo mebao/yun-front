@@ -39,8 +39,10 @@ export class TransactionStatisticsComponent{
 		service_id: string,
 		user_name: string,
 		b_time: string,
+		b_time_text: string,
 		b_time_num: number,
 		l_time: string,
+		l_time_text: string,
 		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
@@ -81,14 +83,17 @@ export class TransactionStatisticsComponent{
 			discount: '',
 		}
 
+		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
 			doctor_id: '',
 			service_id: '',
 			user_name: '',
-			b_time: '',
-			b_time_num: 0,
-			l_time: '',
-			l_time_num: 0,
+			b_time: todayDate,
+			b_time_text: this.adminService.dateFormat(todayDate),
+			b_time_num: new Date(todayDate).getTime(),
+			l_time: todayDate,
+			l_time_text: this.adminService.dateFormat(todayDate),
+			l_time_num: new Date(todayDate).getTime(),
 			b_amount: '',
 			l_amount: '',
 			type: '1,3',
