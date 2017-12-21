@@ -353,7 +353,7 @@
 				</div>
 				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group mt5">
 					<label for="backFee">退还部分预约金：</label>
-					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee" (keyup)="changeBackFee()">
+					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee">
 				</div>
 				<div *ngIf="booking.yyj.amount == '0.00'" class="mt5">不可退款</div>
 			</div>
