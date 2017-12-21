@@ -564,6 +564,7 @@ export class BookingListComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 				this.btnCanEdit = false;
 			}else{
+				this.modalTab = false;
 				this.toastTab('预约金退还成功', '');
 				this.btnCanEdit = false;
 				this.initBooking();

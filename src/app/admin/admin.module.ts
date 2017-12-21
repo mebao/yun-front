@@ -87,6 +87,8 @@ import { GuazhangList }                    from './user/guazhang-list.component'
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
 
+import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -164,6 +166,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		Repage,
 		UpdatepwdComponent,
 		GuazhangList,
+		ToDecimal2Pipe,
 	],
 	providers: [
 		AdminService,
