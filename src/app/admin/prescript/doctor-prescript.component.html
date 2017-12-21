@@ -61,9 +61,7 @@
 								</label>
 								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-											<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
-										</ng-container>
+										<option value="{{medicalSupplie.string}}" [disabled]="medicalSupplie.others.length == 0">{{medicalSupplie.name}}{{medicalSupplie.others.length == 0 ? '（库存为0）' : ''}}</option>
 									</ng-container>
 								</select>
 							</div>

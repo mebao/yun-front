@@ -250,7 +250,10 @@ export class DoctorPrescriptComponent{
 				if(results.list.length > 0){
 					results.list.sort(this.adminService.compare);
 					for(var i = 0; i < results.list.length; i++){
+						// 处理库存信息，若批次库存为0，则不显示
+						var item = results.list[i];
 						if(results.list[i].others.length > 0){
+							var itemInfo = [];
 							for(var j = 0; j < results.list[i].others.length; j++){
 								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
 								//修改时，需要获取药品、批次数据
@@ -263,7 +266,11 @@ export class DoctorPrescriptComponent{
 										}
 									}
 								}
+								if(results.list[i].others[j].stock != '0'){
+									itemInfo.push(results.list[i].others[j]);
+								}
 							}
+							item.others = itemInfo;
 						}
 						results.list[i].string = JSON.stringify(results.list[i]);
 						//修改时，需要获取药品、批次数据
