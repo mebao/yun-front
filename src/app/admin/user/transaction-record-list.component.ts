@@ -110,6 +110,11 @@ export class TransactionRecordListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].amount = this.adminService.toDecimal2(results.list[i].amount);
+					}
+				}
 				this.recordList = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
