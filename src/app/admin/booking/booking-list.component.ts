@@ -75,6 +75,11 @@ export class BookingListComponent implements OnInit{
 		status: string,
 		totalFee: string,
 		remark: string,
+		yyj: {
+			amount: string,
+		},
+		// 退还部分预约金
+		backFee: string,
 	};
 	hasData: boolean;
 	// 家长
@@ -86,6 +91,11 @@ export class BookingListComponent implements OnInit{
 		bookingId: string,
 		remark: string,
 	}
+	// 退还部分预约金
+	modalBackBookingFee: boolean;
+    // 禁止支付按钮连续提交
+    btnCanEdit: boolean;
+
 	constructor(
 		public adminService: AdminService,
 		public router: Router,
@@ -150,27 +160,7 @@ export class BookingListComponent implements OnInit{
 
 		this.use = true;
 		this.modalTabInfo = false;
-		this.booking = {
-			age: '',
-			bookingDate: '',
-			bookingId: '',
-			childId: '',
-			childName: '',
-			creatorId: '',
-			creatorName: '',
-			refNo: '',
-			serviceId: '',
-			serviceName: '',
-			time: '',
-			type: '',
-			userDoctorId: '',
-			userDoctorName: '',
-			services: [],
-			fees: [],
-			status: '',
-			totalFee: '',
-			remark: '',
-		};
+		this.initBooking();
 
 		this.weekNum = 0;
 		this.modalTab = false;
@@ -241,6 +231,37 @@ export class BookingListComponent implements OnInit{
 			bookingId: '',
 			remark: '',
 		}
+
+		this.modalBackBookingFee = false;
+		this.btnCanEdit = false;
+	}
+
+	initBooking() {
+		this.booking = {
+			age: '',
+			bookingDate: '',
+			bookingId: '',
+			childId: '',
+			childName: '',
+			creatorId: '',
+			creatorName: '',
+			refNo: '',
+			serviceId: '',
+			serviceName: '',
+			time: '',
+			type: '',
+			userDoctorId: '',
+			userDoctorName: '',
+			services: [],
+			fees: [],
+			status: '',
+			totalFee: '',
+			remark: '',
+			yyj: {
+				amount: '',
+			},
+			backFee: ''
+		};
 	}
 
 	// 选择日期
@@ -489,6 +510,66 @@ export class BookingListComponent implements OnInit{
 	// 支付预约金
 	paymentBookingFee(booking) {
 		this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: booking.bookingId, type: 'bookingList'}});
+	}
+
+	// 退还部分预约金
+	backBookingFee(booking) {
+		this.booking = booking;
+		this.modalBackBookingFee = true;
+	}
+
+	closeBack() {
+		this.modalBackBookingFee = false;
+		this.initBooking();
+	}
+
+	changeBackFee() {
+		if(parseFloat(this.booking.backFee) <= 0){
+			this.toastTab('退还金额不可小于等于0', 'error');
+			this.booking.backFee = '';
+			return;
+		}
+		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
+			this.toastTab('退还金额不可大于已付金额', 'error');
+			this.booking.backFee = '';
+			return;
+		}
+	}
+
+	confirmBack() {
+		this.btnCanEdit = true;
+		if(this.adminService.isFalse(this.booking.backFee)){
+			this.toastTab('退还金额不可为空', 'error');
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(this.booking.backFee) <= 0){
+			this.toastTab('退还金额不可小于等于0', 'error');
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
+			this.toastTab('退还金额不可大于已付金额', 'error');
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		this.modalBackBookingFee = false;
+		var urlOptions = this.booking.bookingId + this.url + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&refund_fee=' + this.booking.backFee
+		this.adminService.bookingrefund(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
+			}else{
+				this.toastTab('预约金退还成功', '');
+				this.btnCanEdit = false;
+				this.initBooking();
+				this.search();
+			}
+		});
 	}
 
 	getUrlOptios() {

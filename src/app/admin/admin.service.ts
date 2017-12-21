@@ -1092,6 +1092,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 退还部分预约金
+	private bookingrefundUrl = this.url + '/mebcrm/bookingrefund/';
+	bookingrefund(urlOptions): Promise<Data>{
+		return this.http.get(this.bookingrefundUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

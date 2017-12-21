@@ -109,7 +109,7 @@
 	<div class="bookinglist" *ngIf="selectedTab == 1">
 		<div class="pure-g">
 			<div class="pure-u-6-24 booking-tab pad10" *ngFor="let booking of bookinglist">
-				<div class="tab" [ngClass]="{'cancel': booking.status == '0', 'in': (booking.status != '0' && booking.status != '1' && booking.status != '2')}">
+				<div class="tab" [ngClass]="{'cancel': booking.status == '0' || booking.status == '-1', 'in': (booking.status != '0' && booking.status != '-1' && booking.status != '1' && booking.status != '2')}">
 					<div *ngIf="booking.memberId != null" class="vip-tip-text">{{booking.memberName}}（{{booking.balance}}元）<div class="arrow"></div></div>
 					<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
 						<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/vip.png" />
@@ -168,6 +168,9 @@
 						<a *ngIf="moduleAuthority.add && booking.status == '1' && booking.use" class="edit flex-1 pt10 text-center" (click)="paymentBookingFee(booking)">
 							支付预约金
 						</a>
+						<a *ngIf="moduleAuthority.update && booking.status == '2'" class="edit flex-1 pt10 text-center" (click)="backBookingFee(booking)">
+							退还预约金
+						</a>
 					</div>
 				</div>
 			</div>
@@ -220,6 +223,11 @@
 								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2')" class="mt10">
 									<button class="pure-button button-error" (click)="cancel(showBooking)">
 										取消
+									</button>
+								</div>
+								<div *ngIf="moduleAuthority.update && showBooking.status == '2'" class="mt10">
+									<button (click)="backBookingFee(showBooking)" class="pure-button button-error">
+										退还预约金
 									</button>
 								</div>
 							</td>
@@ -326,6 +334,29 @@
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>
 			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalBackBookingFee">
+	<div class="modal-mask" (click)="closeBack()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			<div class="pure-form">
+				<div class="pure-control-group">
+					<label>已支付预约金：</label>
+					<label>{{booking.yyj.amount}}</label>
+				</div>
+				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group mt5">
+					<label for="backFee">退还部分预约金：</label>
+					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee" (keyup)="changeBackFee()">
+				</div>
+				<div *ngIf="booking.yyj.amount == '0.00'" class="mt5">不可退款</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeBack()" class="pure-button">取消</button>
+			<button *ngIf="booking.yyj.amount != '0.00'" (click)="confirmBack()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>
