@@ -77,6 +77,7 @@ export class BookingListComponent implements OnInit{
 		remark: string,
 		yyj: {
 			amount: string,
+			typeText: string,
 		},
 		// 退还部分预约金
 		backFee: string,
@@ -259,6 +260,7 @@ export class BookingListComponent implements OnInit{
 			remark: '',
 			yyj: {
 				amount: '',
+				typeText: '',
 			},
 			backFee: ''
 		};

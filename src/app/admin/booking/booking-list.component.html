@@ -347,6 +347,10 @@
 					<label>已支付预约金：</label>
 					<label>{{booking.yyj.amount}}</label>
 				</div>
+				<div class="pure-control-group mt5">
+					<label>支付方式：</label>
+					<label>{{booking.yyj.typeText}}</label>
+				</div>
 				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group mt5">
 					<label for="backFee">退还部分预约金：</label>
 					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee" (keyup)="changeBackFee()">
