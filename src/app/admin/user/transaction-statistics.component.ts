@@ -1,6 +1,7 @@
 import { Component }                              from '@angular/core';
 
 import { AdminService }                           from '../admin.service';
+import { config }                                 from '../../config';
 
 @Component({
 	selector: 'admin-transaction-statistics',
@@ -113,15 +114,15 @@ export class TransactionStatisticsComponent{
 		this.servicelist = [];
 		this.getServiceList();
 
-		this.search();
+		this.search('');
 	}
 
 	changeType(_value) {
 		this.searchInfo.type = _value;
-		this.search();
+		this.search('');
 	}
 
-	search() {
+	search(type) {
 		var urlOptions = this.url;
 		if(this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
@@ -154,7 +155,12 @@ export class TransactionStatisticsComponent{
 		if(this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}
-		this.getData(urlOptions);
+
+		if(type == ''){
+			this.getData(urlOptions);
+		}else{
+			window.location.href = config.baseHTTP + '/mebcrm/transtatisticsexport'+ urlOptions;
+		}
 	}
 
 	getData(urlOptions) {
@@ -164,19 +170,19 @@ export class TransactionStatisticsComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.total = {
-					needAmount: this.adminService.toDecimal2(results.total.needAmount),
-					giveAmount: this.adminService.toDecimal2(results.total.giveAmount),
-					paidUp: this.adminService.toDecimal2(results.total.paidUp),
-					bookingFee: this.adminService.toDecimal2(results.total.bookingFee),
-					cash: this.adminService.toDecimal2(results.total.cash),
-					online: this.adminService.toDecimal2(results.total.online),
-					balance: this.adminService.toDecimal2(results.total.balance),
-					gua: this.adminService.toDecimal2(results.total.gua),
-					total: this.adminService.toDecimal2(results.total.total),
-					discount: this.adminService.toDecimal2(results.total.discount),
-				}
 				if(results.list.length>0){
+					this.total = {
+						needAmount: this.adminService.toDecimal2(results.total.needAmount),
+						giveAmount: this.adminService.toDecimal2(results.total.giveAmount),
+						paidUp: this.adminService.toDecimal2(results.total.paidUp),
+						bookingFee: this.adminService.toDecimal2(results.total.bookingFee),
+						cash: this.adminService.toDecimal2(results.total.cash),
+						online: this.adminService.toDecimal2(results.total.online),
+						balance: this.adminService.toDecimal2(results.total.balance),
+						gua: this.adminService.toDecimal2(results.total.gua),
+						total: this.adminService.toDecimal2(results.total.total),
+						discount: this.adminService.toDecimal2(results.total.discount),
+					}
 					for(var i=0;i<results.list.length;i++){
 						var numList = [
 							'balance',

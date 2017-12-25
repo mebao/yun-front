@@ -6,6 +6,9 @@
 			<div class="item" (click)="changeType('1,3')" [ngClass]="{'active': searchInfo.type == '1,3'}">接诊费用</div>
 			<div class="item" (click)="changeType('2')" [ngClass]="{'active': searchInfo.type == '2'}">会员充值</div>
 			<div class="item" (click)="changeType('4')" [ngClass]="{'active': searchInfo.type == '4'}">药品零售</div>
+			<div class="flex-1 text-right">
+				<button (click)="search('export')" class="pure-button pure-button-primary">导出</button>
+			</div>
 		</div>
 		<div class="flex pure-form search-tab max mt10">
 			<div class="pure-control-group search-tab max mr10">
@@ -40,32 +43,9 @@
 				<label for="l_time" class="text-center">至</label>
 				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.l_time_text" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
 			</div>
-			<!-- <div class="pure-control-group mr10">
-				<label for="b_amount">金额：</label>
-				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
-			</div>
-			<div class="pure-control-group mr10">
-				<label for="l_amount" class="text-center">至</label>
-				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
-			</div> -->
 			<div class="flex-1"></div>
-			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			<button (click)="search('')" class="pure-button pure-button-primary">搜索</button>
 		</div>
-		<!-- <div class="flex pure-form mt10 search-tab max">
-			<div class="pure-control-group mr10">
-				<label for="pay_way">支付方式：</label>
-				<select id="pay_way" name="pay_way" [(ngModel)]="searchInfo.pay_way">
-					<option value=""></option>
-					<option value="ali">支付宝支付</option>
-					<option value="wechat">微信支付</option>
-					<option value="card">刷卡支付</option>
-					<option value="member">会员余额支付</option>
-					<option value="money">现金支付</option>
-				</select>
-			</div>
-			<div class="flex-1"></div>
-			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-		</div> -->
 		<div *ngIf="searchInfo.type == '1,3'">
 			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 				<thead>

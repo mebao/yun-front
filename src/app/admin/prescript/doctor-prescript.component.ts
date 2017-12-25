@@ -56,6 +56,7 @@ export class DoctorPrescriptComponent{
 		text: string,
 	}
 	numberList: any[];
+	oneNumList: any[];
 	// 不可连续点击
 	btnCanEdit: boolean;
 
@@ -150,8 +151,13 @@ export class DoctorPrescriptComponent{
 		];
 
 		this.numberList = [];
+		this.oneNumList = [];
 		for(var i = 1; i < 21; i++){
+			if(i == 1){
+				this.oneNumList.push({key: 0.5, value: 0.5});
+			}
 			this.numberList.push({key: i, value: i});
+			this.oneNumList.push({key: i, value: i});
 		}
 
 		this.route.queryParams.subscribe((params) => {

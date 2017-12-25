@@ -87,7 +87,7 @@
 								</label>
 								<div class="flex flex-tab">
 									<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
-										<select-search [title]="ms.ms.oneNum" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
+										<select-search [title]="ms.ms.oneNum" [selectList]="oneNumList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
 									</ng-container>
 									<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 										<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" disabled>
