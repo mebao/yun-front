@@ -37,6 +37,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	};
 	booking: {
 		age: string,
+		birthDate: string,
 		bookingDate: string,
 		bookingId: string,
 		childId: string,
@@ -173,6 +174,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
         answering_questions: string,
         record: string,
         review_date: string,
+		review_date_num: number,
         review_date_text: string,
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
@@ -313,6 +315,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			answering_questions: '',
 			record: '',
 			review_date: '',
+			review_date_num: 0,
 			review_date_text: '',
 		}
 		this.baseInfo = {
@@ -337,6 +340,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 
 		this.booking = {
 			age: '',
+			birthDate: '',
 			bookingDate: '',
 			bookingId: '',
 			childId: '',
@@ -475,6 +479,8 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 			return;
 		}
 
+
+		var todayDate = this.adminService.getDayByDate(new Date());
 		if(this.editType == 'update'){
 			this.info = {
 				id: healthrecord.id,
@@ -578,6 +584,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				answering_questions: healthrecord.answeringQuestions,
 				record: healthrecord.record,
 				review_date: healthrecord.reviewDate ? this.adminService.dateFormatHasWord(healthrecord.reviewDate) : healthrecord.reviewDate,
+				review_date_num: new Date(todayDate).getTime(),
 				review_date_text: healthrecord.reviewDate,
 			}
 			this.baseInfo = {
@@ -696,6 +703,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 				answering_questions: null,
 				record: null,
 				review_date: '',
+				review_date_num: new Date(todayDate).getTime(),
 				review_date_text: '',
 			}
 			this.baseInfo = {

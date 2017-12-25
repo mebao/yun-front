@@ -13,7 +13,7 @@
 			</div>
 			<div class="item">
 				<span>出生日期：</span>
-				<span>{{booking.bookingDate}}</span>
+				<span>{{booking.birthDate}}</span>
 			</div>
 			<div class="item">
 				<span>年龄：</span>
@@ -1197,7 +1197,7 @@
 						<div class="pure-u-24-24">
 							<div class="pure-control-group flex has-select-date">
 								<label for="review_date" class="w150pp">复查日期：</label>
-								<select-date title="请选择复查日期" dateText="{{info.review_date_text}}" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
+								<select-date title="请选择复查日期" dateText="{{info.review_date_text}}" [startDate]="info.review_date_num" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
 							</div>
 						</div>
 					</div>

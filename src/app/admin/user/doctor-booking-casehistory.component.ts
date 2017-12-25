@@ -37,6 +37,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	};
 	booking: {
 		age: string,
+		birthDate: string,
 		bookingDate: string,
 		bookingId: string,
 		childId: string,
@@ -239,6 +240,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 
 		this.booking = {
 			age: '',
+			birthDate: '',
 			bookingDate: '',
 			bookingId: '',
 			childId: '',

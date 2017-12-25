@@ -69,6 +69,7 @@ export class DoctorBookingComponent implements OnInit{
 	prescriptList: any[];
 	booking: {
 		age: string,
+		birthDate: string,
 		bookingDate: string,
 		bookingId: string,
 		childId: string,
@@ -159,6 +160,7 @@ export class DoctorBookingComponent implements OnInit{
 
 		this.booking = {
 			age: '',
+			birthDate: '',
 			bookingDate: '',
 			bookingId: '',
 			childId: '',
