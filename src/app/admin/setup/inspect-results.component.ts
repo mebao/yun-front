@@ -342,6 +342,10 @@ export class InspectResultsComponent{
 		}
 	}
 
+	print(check) {
+		window.open('./admin/inspectResultsPrint?id=' + check.id + '&layout=all');
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

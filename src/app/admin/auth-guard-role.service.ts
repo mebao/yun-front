@@ -750,6 +750,12 @@ export class AuthGuardRole implements CanActivate{
 								authority: 'edit',
 								queryType: '',
 								queryParams: '',
+							},
+							{
+								url: '/admin/inspectResultsPrint',
+								authority: 'edit',
+								queryType: '',
+								queryParams: '',
 							}
 						]
 					},

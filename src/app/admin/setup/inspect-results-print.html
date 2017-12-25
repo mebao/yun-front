@@ -1,0 +1,49 @@
+<div class="container pt20">
+    <ng-container *ngFor="let check of checkList">
+        <h1 class="title text-center">{{check.checkName}}</h1>
+        <div class="name text-right mb10">
+            开单医生：{{check.doctorName}}
+        </div>
+        <div class="name text-right mb10">
+            宝宝姓名：{{check.childName}}
+        </div>
+        <table class="pure-table pure-table-horizontal w100 table-tab mb50">
+            <thead>
+                <tr>
+                    <th class="w20">项目</th>
+                    <th class="w10">代码</th>
+                    <th class="w20">检查结果</th>
+                    <th class="w30">参考值</th>
+                    <th class="w10">单位</th>
+                    <th class="w10">性质</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of check.resultList; let indexResult=index;">
+                    <td>{{result.checkInfoName}}</td>
+                    <td>{{result.code}}</td>
+                    <!-- 文本填写亦或图片上传 -->
+                    <ng-container *ngIf="result.isUpload == '0'">
+                        <td>
+                            {{result.values}}
+                        </td>
+                        <td>
+                            <div class="length-text">{{result.references}}</div>
+                        </td>
+                        <td>{{result.unit}}</td>
+                        <td class="text-center">
+                            <i *ngIf="result.compare == 'low'" class="icon-arrow-down" style="color: #458DCB"></i>
+                            <i *ngIf="result.compare == 'high'" class="icon-arrow-up" style="color: #C92D54"></i>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="result.isUpload == '1'">
+                        <td colspan="4">
+                            <img src="{{result.values ? result.values : '../assets/images/result.png'}}">
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</div>
+<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

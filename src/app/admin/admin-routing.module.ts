@@ -72,6 +72,7 @@ import { PaymentBookingFee }                from './booking/payment-booking-fee'
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
+import { InspectResultsPrint }              from './setup/inspect-results-print';
 
 const adminRoutes: Routes = [
 	{
@@ -426,6 +427,11 @@ const adminRoutes: Routes = [
 						path: 'guazhangList',
 						canActivate: [AuthGuardRole],
 						component: GuazhangList,
+					},
+					{
+						path: 'inspectResultsPrint',
+						canActivate: [AuthGuardRole],
+						component: InspectResultsPrint,
 					},
 					{
 						path: 'repage',

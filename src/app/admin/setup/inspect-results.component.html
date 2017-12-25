@@ -14,7 +14,10 @@
 			</div>
 			<div *ngFor="let check of checkProjectList; let indexCheck=index;">
 				<div *ngIf="selectTab == check.id">
-					<div class="pt10 pb10">开单医生：{{check.doctorName}}</div>
+					<div class="pt10 pb10 flex">
+						<div class="flex-1">开单医生：{{check.doctorName}}</div>
+						<button (click)="print(check)" class="pure-button">打印</button>
+					</div>
 					<form #f="ngForm" class="pure-form">
 						<table class="pure-table pure-table-horizontal w100 table-tab">
 							<thead>
