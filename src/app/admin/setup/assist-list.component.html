@@ -12,10 +12,18 @@
         <div class="pure-control-group mr10">
             <label for="type">辅助治疗类型：</label>
             <select id="type" name="type" [(ngModel)]="searchInfo.type">
-				<option value="">请选择类型</option>
+				<option value=""></option>
                 <ng-container *ngFor="let item of typeList">
                     <option value="{{item.key}}">{{item.value}}</option>
                 </ng-container>
+            </select>
+        </div>
+        <div class="pure-control-group mr10">
+            <label for="status">状态：</label>
+            <select id="status" name="status" [(ngModel)]="searchInfo.status">
+				<option value=""></option>
+				<option value="1">可用</option>
+				<option value="0">停用</option>
             </select>
         </div>
         <button (click)="search()" class="pure-button pure-button-primary">搜索</button>
@@ -27,6 +35,7 @@
 					<th>辅助治疗名</th>
 					<th>辅助治疗类型</th>
 					<th>辅助治疗价格</th>
+					<th>状态</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -35,8 +44,10 @@
 					<td>{{assist.name}}</td>
 					<td>{{assist.typeText}}</td>
 					<td>{{assist.price}}</td>
+					<td>{{assist.status == '1' ? '可用' : '停用'}}</td>
 					<td>
 						<button *ngIf="moduleAuthority.edit" (click)="update(assist)" class="pure-button pure-button-primary">修改</button>
+						<button *ngIf="moduleAuthority.edit" (click)="updateStatus(assist)" class="pure-button pure-button-primary">修改状态</button>
 					</td>
 				</tr>
 			</tbody>

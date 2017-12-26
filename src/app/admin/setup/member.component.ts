@@ -85,7 +85,8 @@ export class MemberComponent{
 
 		// 获取辅助治疗
 		this.assistList = [];
-		this.adminService.searchassist(urlOptions).then((data) => {
+		var assistUrl = urlOptions + '&status=1';
+		this.adminService.searchassist(assistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

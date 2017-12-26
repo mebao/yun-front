@@ -25,7 +25,7 @@
 					<div class="flex-1"></div>
 					<div class="flex-0"><button (click)="print()" target="_blank" class="print-btn pure-button mt10">打印</button></div>
 				</div>
-				<div *ngIf="bookingInfo.status != '5' && userMember.member" class="text-right mt20">
+				<div *ngIf="bookingInfo.status != '5'" class="text-right mt20">
 					<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" class="pure-button">取消</button>
 					<button *ngIf="editMemberType != 'update'" (click)="updateMember()" class="pure-button pure-button-primary">修改折扣</button>
 					<button *ngIf="editMemberType == 'update'" (click)="saveMember()" class="pure-button pure-button-primary">保存</button>

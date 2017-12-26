@@ -31,6 +31,7 @@ export class AssistListComponent{
     searchInfo: {
         name: string,
         type: string,
+        status: string,
     }
 
     constructor(
@@ -90,6 +91,7 @@ export class AssistListComponent{
         this.searchInfo = {
             name: '',
             type: '',
+            status: '1'
         }
         this.url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
@@ -116,6 +118,9 @@ export class AssistListComponent{
         if(!this.adminService.isFalse(this.searchInfo.type)){
             urlOptions += '&type=' + this.searchInfo.type;
         }
+        if(!this.adminService.isFalse(this.searchInfo.status)){
+            urlOptions += '&status=' + this.searchInfo.status;
+        }
         this.getData(urlOptions);
     }
 
@@ -139,6 +144,28 @@ export class AssistListComponent{
 
     update(assist) {
         this.router.navigate(['./admin/assist'], {queryParams: {id: assist.id}});
+    }
+
+    updateStatus(assist) {
+        var params = {
+            username: this.adminService.getUser().username,
+            token: this.adminService.getUser().token,
+            clinic_id: this.adminService.getUser().clinicId,
+            name: assist.name,
+            type: assist.type,
+            price: assist.price,
+            status: assist.status == '1' ? '0' : '1',
+            assist_id: assist.id,
+        }
+
+        this.adminService.clinicassist(params).then((data) => {
+            if(data.status == 'no'){
+                this.toastTab(data.errorMsg, 'error');
+            }else{
+                this.toastTab('状态修改成功', '');
+                this.search();
+            }
+        });
     }
 
 	toastTab(text, type) {

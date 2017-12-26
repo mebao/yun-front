@@ -250,7 +250,8 @@ export class DoctorBookingComponent implements OnInit{
 
 		// 辅助治疗
 		this.assistProjects = [];
-		this.adminService.searchassist(this.url).then((data) => {
+		var assistUrl = this.url + '&status=1';
+		this.adminService.searchassist(assistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
