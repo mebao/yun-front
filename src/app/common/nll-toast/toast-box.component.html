@@ -1,0 +1,5 @@
+<div class="nl-toast-container" [ngClass]="toastPosition">
+    <div *ngFor="let toastCfg of getToastConfigs()">
+        <nll-toast [config]="toastCfg" (dismissed)="remove(toastCfg)"></nll-toast>
+    </div>
+</div>

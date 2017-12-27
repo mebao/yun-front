@@ -73,12 +73,12 @@ export class DoctorRecordTempletListComponent{
     }
 
     add() {
-        this.router.navigate(['./admin/doctorRecordTemplet'], {queryParams: {id: this.id, type: 'create'}});
+        this.router.navigate(['./admin/doctor/recordTemplet'], {queryParams: {id: this.id, type: 'create'}});
     }
 
     update(recordtemplet) {
         sessionStorage.setItem('recordtemplet', JSON.stringify(recordtemplet));
-        this.router.navigate(['./admin/doctorRecordTemplet'], {queryParams: {id: this.id, type: 'update'}});
+        this.router.navigate(['./admin/doctor/recordTemplet'], {queryParams: {id: this.id, type: 'update'}});
     }
 
     updateStatus(id, status) {

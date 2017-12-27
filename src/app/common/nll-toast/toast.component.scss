@@ -1,0 +1,41 @@
+$nl-toast-box: 1px 1px 3px rgba(100, 100, 100, 0.3) !default;
+$nl-info: #6acae6;
+$nl-warning: #bf9608;
+$nl-success: #4dbd74;
+$nl-error: #f86c6b;
+
+:host{
+    display: block;
+    margin-bottom: 20px;
+}
+.nl-toast{
+    border: 0px;
+    -webkit-box-shadow: $nl-toast-box;
+    box-shadow: $nl-toast-box;
+    -moz-box-shadow: $nl-toast-box;
+    border-radius: 20px;
+    padding: 15px;
+    color: #fff;
+}
+.bg-info{
+    background-color: $nl-info;
+}
+.bg-warning{
+    background-color: $nl-warning;
+}
+.bg-success{
+    background-color: $nl-success;
+}
+.bg-error{
+    background-color: $nl-error;
+}
+button{
+    float: right;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    span{
+        font-size: 20px;
+        position: relative;
+        top: -5px;
+    }
+}

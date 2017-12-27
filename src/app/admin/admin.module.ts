@@ -18,6 +18,8 @@ import { AngCommonModule }                 from '../common/ang-common.module';
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
 import { NoPermissionsComponent }          from '../error/no-permissions.component';
 
+import {SelectivePreloadingStrategy}       from '../selective-preloading-strategy';
+
 import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
@@ -26,14 +28,10 @@ import { ChildServiceComponent }           from './service/child-service.compone
 import { ChildServiceListComponent }       from './service/child-service-list.component';
 import { ClinicServiceComponent }          from './service/clinic-service.component';
 import { ClinicServiceListComponent }      from './service/clinic-service-list.component';
-import { DoctorServiceComponent }          from './service/doctor-service.component';
-import { DoctorServiceListComponent }      from './service/doctor-service-list.component';
 import { UserListComponent }               from './user/user-list.component';
 import { UserInfoComponent }               from './user/user-info.component';
-import { DoctorListComponent }             from './user/doctor-list.component';
 import { CrmUserListComponent }            from './user/crm-user-list.component';
 import { CrmUserComponent }                from './user/crm-user.component';
-import { DoctorInfoComponent }             from './user/doctor-info.component';
 import { BookingInComponent }              from './booking/booking-in.component';
 import { BookingInfoComponent }            from './booking/booking-info.component';
 import { BookingConfirmComponent }         from './booking/booking-confirm.component';
@@ -70,10 +68,6 @@ import { CrmRoleListComponent }            from './user/crm-role-list.component'
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 import { BookingReceiveComponent }         from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
-import { DoctorRecordTempletComponent }    from './doctor/doctor-record-templet.component';
-import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
-import { DoctorCaseTempletComponent }    from './doctor/doctor-case-templet.component';
-import { DoctorCaseTempletListComponent } from './doctor/doctor-case-templet-list.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
 import { AssistListComponent }             from './setup/assist-list.component';
@@ -110,12 +104,8 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		ChildServiceListComponent,
 		ClinicServiceComponent,
 		ClinicServiceListComponent,
-		DoctorServiceComponent,
-		DoctorServiceListComponent,
 		UserListComponent,
 		UserInfoComponent,
-		DoctorListComponent,
-		DoctorInfoComponent,
 		CrmUserListComponent,
 		CrmUserComponent,
 		BookingConfirmComponent,
@@ -154,10 +144,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		RoleAuthorityListComponent,
 		BookingReceiveComponent,
 		BookingHealthrecordComponent,
-		DoctorRecordTempletComponent,
-		DoctorRecordTempletListComponent,
-		DoctorCaseTempletComponent,
-		DoctorCaseTempletListComponent,
 		BookingHistoryComponent,
 		GivefeeListComponent,
 		AssistListComponent,
@@ -174,6 +160,7 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		AdminService,
 		DoctorService,
 		AuthGuardRole,
+		SelectivePreloadingStrategy,
 	]
 })
 export class AdminModule{

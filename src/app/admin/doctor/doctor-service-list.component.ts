@@ -72,11 +72,11 @@ export class DoctorServiceListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/doctorService'], {queryParams: {'doctor_id': this.doctor_id, 'doctorService_id': _id}});
+		this.router.navigate(['./admin/doctor/service'], {queryParams: {'doctor_id': this.doctor_id, 'doctorService_id': _id}});
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/doctorService'], {queryParams: {doctor_id: this.doctor_id}});
+		this.router.navigate(['./admin/doctor/service'], {queryParams: {doctor_id: this.doctor_id}});
 	}
 
 	toastTab(text, type) {

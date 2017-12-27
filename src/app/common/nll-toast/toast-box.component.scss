@@ -1,0 +1,28 @@
+.nl-toast-container{
+    position: absolute;
+    z-index: 22222;
+    margin-top: 100px;
+    width: 450px;
+}
+.nl-toast-top-left{
+    left: 10px;
+    top: 0;
+}
+.nl-toast-top-center{
+    top: 0;
+    left: -moz-calc(50% - 225px);
+    left: -webkit-calc(50% - 225px);
+    left: calc(50% - 225px);
+}
+.nl-toast-top-right{
+    top: 0;
+    right: 10px;
+}
+.nl-toast-bottom-right{
+    right: 10px;
+    bottom: 0;
+}
+.nl-toast-bottom-left{
+    left: 10px;
+    bottom: 0;
+}

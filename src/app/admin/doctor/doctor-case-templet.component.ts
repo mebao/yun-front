@@ -209,7 +209,7 @@ export class DoctorCaseTempletComponent{
                 }else{
                     this.toastTab('模板创建成功', '');
                     setTimeout(() => {
-                        this.router.navigate(['./admin/doctorCaseTempletList'], {queryParams: {id: this.id}});
+                        this.router.navigate(['./admin/doctor/caseTempletList'], {queryParams: {id: this.id}});
                     }, 2000);
                 }
             });
@@ -227,7 +227,7 @@ export class DoctorCaseTempletComponent{
                 }else{
                     this.toastTab('模板修改成功', '');
                     setTimeout(() => {
-                        this.router.navigate(['./admin/doctorCaseTempletList'], {queryParams: {id: this.id}});
+                        this.router.navigate(['./admin/doctor/caseTempletList'], {queryParams: {id: this.id}});
                     }, 2000);
                 }
             });

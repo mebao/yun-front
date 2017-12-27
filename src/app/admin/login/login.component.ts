@@ -318,7 +318,7 @@ export class LoginComponent{
 			doctorList: {
 				use: '',
 				authority: ['see', 'personal'],
-				url: '/admin/doctorList',
+				url: '/admin/doctor/list',
 				infos: [],
 			},
 			medicalSupplierList: {

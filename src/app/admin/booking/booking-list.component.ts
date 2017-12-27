@@ -1,7 +1,10 @@
 import { Component, OnInit }           from '@angular/core';
-import { Router, ActivatedRoute }     from '@angular/router';
+import { Router, ActivatedRoute }      from '@angular/router';
 
 import { AdminService }                from '../admin.service';
+
+import { ToastService }                from '../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }      from '../../common/nll-toast/toast-model';
 
 @Component({
 	selector: 'app-booking-list',
@@ -11,11 +14,6 @@ export class BookingListComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	//权限
 	moduleAuthority: {
@@ -100,6 +98,7 @@ export class BookingListComponent implements OnInit{
 	constructor(
 		public adminService: AdminService,
 		public router: Router,
+        private toastService: ToastService
 	) {}
 
 	ngOnInit(): void {
@@ -107,11 +106,6 @@ export class BookingListComponent implements OnInit{
 			title: '预约列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		//权限
 		this.moduleAuthority = {
@@ -213,7 +207,8 @@ export class BookingListComponent implements OnInit{
 		this.userList = [];
 		this.adminService.searchuser(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
@@ -225,6 +220,9 @@ export class BookingListComponent implements OnInit{
 				}
 				this.userList = results.users;
 			}
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
 		});
 
 		this.selectorBooking = {
@@ -278,13 +276,17 @@ export class BookingListComponent implements OnInit{
 			 + this.adminService.getUser().clinicId + '&role=2';
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
-		})
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
+		});
 	}
 
 	//科室列表
@@ -293,7 +295,8 @@ export class BookingListComponent implements OnInit{
 		this.adminService.clinicservices(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+		        this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -311,7 +314,10 @@ export class BookingListComponent implements OnInit{
 				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
 				this.search();
 			}
-		})
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
+		});
 	}
 
 	//预约列表
@@ -319,7 +325,8 @@ export class BookingListComponent implements OnInit{
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+		        this.toastService.toast(toastCfg);
 			}else{
 				var todayTime = new Date(this.adminService.getDayByDate(new Date())).getTime();
 				if(type == 'week'){
@@ -421,7 +428,10 @@ export class BookingListComponent implements OnInit{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
+		});
 	}
 
 	//上一周
@@ -527,12 +537,14 @@ export class BookingListComponent implements OnInit{
 
 	changeBackFee() {
 		if(parseFloat(this.booking.backFee) <= 0){
-			this.toastTab('退还金额不可小于等于0', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于等于0', 3000);
+			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			return;
 		}
 		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
-			this.toastTab('退还金额不可大于已付金额', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
+			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			return;
 		}
@@ -541,19 +553,22 @@ export class BookingListComponent implements OnInit{
 	confirmBack() {
 		this.btnCanEdit = true;
 		if(this.adminService.isFalse(this.booking.backFee)){
-			this.toastTab('退还金额不可为空', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可为空', 3000);
+			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) <= 0){
-			this.toastTab('退还金额不可小于等于0', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于等于0', 3000);
+			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
-			this.toastTab('退还金额不可大于已付金额', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
+			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
@@ -563,15 +578,20 @@ export class BookingListComponent implements OnInit{
 			 + '&refund_fee=' + this.booking.backFee
 		this.adminService.bookingrefund(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 				this.btnCanEdit = false;
 			}else{
+				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约金退还成功', 3000);
+				this.toastService.toast(toastCfg);
 				this.modalTab = false;
-				this.toastTab('预约金退还成功', '');
 				this.btnCanEdit = false;
 				this.initBooking();
 				this.search();
 			}
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
 		});
 	}
 
@@ -630,7 +650,8 @@ export class BookingListComponent implements OnInit{
 	// 确认取消
 	confirm(){
 		if(this.adminService.trim(this.selectorBooking.remark) == ''){
-			this.toastTab('取消原因不可为空', 'error');
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '取消原因不可为空', 3000);
+			this.toastService.toast(toastCfg);
 			return false;
 		}
 		this.modalConfirmTab = false;
@@ -638,26 +659,16 @@ export class BookingListComponent implements OnInit{
 			 + '&token=' + this.adminService.getUser().token + '&remark=' + this.selectorBooking.remark;
 		this.adminService.bookingcancelled(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
-				this.toastTab('预约单取消成功', '');
+				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
+				this.toastService.toast(toastCfg);
 				this.search();
 			}
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
 		});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

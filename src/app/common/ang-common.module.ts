@@ -4,6 +4,7 @@ import { AngFormModule }         from './ang-form/ang-form.module';
 import { ModalModule }           from './modal/modal.module';
 import { NodataModule }          from './nodata/nodata.module';
 import { QRCodeModule }          from './qrcode.module';
+import { ToastModule }           from './nll-toast/toast.module';
 
 @NgModule({
     exports: [
@@ -11,6 +12,7 @@ import { QRCodeModule }          from './qrcode.module';
         ModalModule,
         NodataModule,
         QRCodeModule,
+        ToastModule,
     ]
 })
 

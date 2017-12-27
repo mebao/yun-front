@@ -1,9 +1,11 @@
-import { RouterModule, Routes }              from '@angular/router';
+import { RouterModule, Routes }             from '@angular/router';
 import { NgModule }                         from '@angular/core';
 
 import { AdminComponent }                   from './admin.component';
 import { AuthGuard }                        from '../auth-guard.service';
 import { AuthGuardRole }                    from './auth-guard-role.service';
+
+import { SelectivePreloadingStrategy }      from '../selective-preloading-strategy';
 
 import { HomeComponent }                    from './home/home.component';
 import { CreateUserComponent }              from './user/create-user.component';
@@ -13,14 +15,10 @@ import { ChildServiceComponent }            from './service/child-service.compon
 import { ChildServiceListComponent }        from './service/child-service-list.component';
 import { ClinicServiceComponent }           from './service/clinic-service.component';
 import { ClinicServiceListComponent }       from './service/clinic-service-list.component';
-import { DoctorServiceComponent }           from './service/doctor-service.component';
-import { DoctorServiceListComponent }       from './service/doctor-service-list.component';
 import { UserListComponent }                from './user/user-list.component';
 import { UserInfoComponent }                from './user/user-info.component';
-import { DoctorListComponent }              from './user/doctor-list.component';
 import { CrmUserListComponent }             from './user/crm-user-list.component';
 import { CrmUserComponent }                 from './user/crm-user.component';
-import { DoctorInfoComponent }              from './user/doctor-info.component';
 import { BookingInComponent }               from './booking/booking-in.component';
 import { BookingInfoComponent }             from './booking/booking-info.component';
 import { BookingConfirmComponent }          from './booking/booking-confirm.component';
@@ -59,10 +57,6 @@ import { CrmRoleListComponent }             from './user/crm-role-list.component
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 import { BookingReceiveComponent }          from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
-import { DoctorRecordTempletComponent }     from './doctor/doctor-record-templet.component';
-import { DoctorRecordTempletListComponent } from './doctor/doctor-record-templet-list.component';
-import { DoctorCaseTempletComponent }     from './doctor/doctor-case-templet.component';
-import { DoctorCaseTempletListComponent } from './doctor/doctor-case-templet-list.component';
 import { BookingHistoryComponent }          from './booking/booking-history.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
 import { AssistListComponent }              from './setup/assist-list.component';
@@ -125,16 +119,6 @@ const adminRoutes: Routes = [
 						component: ClinicServiceListComponent
 					},
 					{
-						path: 'doctorService',
-						canActivate: [AuthGuardRole],
-						component: DoctorServiceComponent
-					},
-					{
-						path: 'doctorServiceList',
-						canActivate: [AuthGuardRole],
-						component: DoctorServiceListComponent
-					},
-					{
 						path: 'userList',
 						canActivate: [AuthGuardRole],
 						component: UserListComponent
@@ -143,11 +127,6 @@ const adminRoutes: Routes = [
 						path: 'userInfo',
 						canActivate: [AuthGuardRole],
 						component: UserInfoComponent
-					},
-					{
-						path: 'doctorList',
-						canActivate: [AuthGuardRole],
-						component: DoctorListComponent
 					},
 					{
 						path: 'crmUserList',
@@ -162,31 +141,37 @@ const adminRoutes: Routes = [
 					{
 						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
+						data: {preload: true},
 					},
 					{
 						path: 'material',
 						loadChildren: './material/material.module#MaterialModule',
+						data: {preload: true},
 					},
 					{
 						path: 'medical',
 						loadChildren: './medical/medical.module#MedicalModule',
+						data: {preload: true},
 					},
 					{
 						path: 'scheduling',
 						loadChildren: './scheduling/scheduling.module#SchedulingModule',
+						data: {preload: true},
 					},
 					{
 						path: 'prescript',
 						loadChildren: './prescript/prescript.module#PrescriptModule',
+						data: {preload: true},
 					},
 					{
 						path: 'authorize',
 						loadChildren: './authorize/authorize.module#AuthorizeModule',
+						data: {preload: true},
 					},
 					{
-						path: 'doctorInfo',
-						canActivate: [AuthGuardRole],
-						component: DoctorInfoComponent
+						path: 'doctor',
+						loadChildren: './doctor/doctor.module#DoctorModule',
+						data: {preload: true},
 					},
 					{
 						path: 'bookingIn',
@@ -374,26 +359,6 @@ const adminRoutes: Routes = [
 						component: BookingHealthrecordComponent,
 					},
 					{
-						path: 'doctorRecordTemplet',
-						canActivate: [AuthGuardRole],
-						component: DoctorRecordTempletComponent,
-					},
-					{
-						path: 'doctorRecordTempletList',
-						canActivate: [AuthGuardRole],
-						component: DoctorRecordTempletListComponent,
-					},
-					{
-						path: 'doctorCaseTemplet',
-						//canActivate: [AuthGuardRole],
-						component: DoctorCaseTempletComponent,
-					},
-					{
-						path: 'doctorCaseTempletList',
-						//canActivate: [AuthGuardRole],
-						component: DoctorCaseTempletListComponent,
-					},
-					{
 						path: 'bookingHistory',
 						canActivate: [AuthGuardRole],
 						component: BookingHistoryComponent,
@@ -453,7 +418,7 @@ const adminRoutes: Routes = [
 
 @NgModule({
 	imports: [
-		RouterModule.forChild(adminRoutes)
+		RouterModule.forRoot(adminRoutes, {preloadingStrategy: SelectivePreloadingStrategy}),
 	],
 	exports: [
 		RouterModule

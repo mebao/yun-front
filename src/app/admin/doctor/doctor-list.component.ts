@@ -93,21 +93,21 @@ export class DoctorListComponent implements OnInit{
 	}
 
 	showService(_id) {
-		this.router.navigate(['./admin/doctorServiceList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/serviceList'], {queryParams: {'id': _id}});
 	}
 
 	showInfo(_id){
-		this.router.navigate(['./admin/doctorInfo'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/info'], {queryParams: {'id': _id}});
 	}
 
 	// 儿保记录模板
 	showRecordTempletList(_id) {
-		this.router.navigate(['./admin/doctorRecordTempletList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/recordTempletList'], {queryParams: {'id': _id}});
 	}
 
 	// 病历模板
 	showCaseTempletList(_id) {
-		this.router.navigate(['./admin/doctorCaseTempletList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/caseTempletList'], {queryParams: {'id': _id}});
 	}
 
 	toastTab(text, type) {
