@@ -98,6 +98,7 @@ export class DoctorPrescriptComponent{
 
 		//用法
 		this.usagelsit = [
+			'每天五次',
 			'每天四次',
 			'每天三次',
 			'每天两次',
@@ -148,6 +149,8 @@ export class DoctorPrescriptComponent{
 			'外涂',
 			'含漱',
 			'外敷',
+			'PO',
+			'喷喉'
 		];
 
 		this.numberList = [];
