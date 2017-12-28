@@ -375,7 +375,7 @@ export class BookingGrowthrecordComponent{
 				}else{
 					this.toastTab('成长记录创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBookingGrowthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/docbooking/growthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
@@ -387,7 +387,7 @@ export class BookingGrowthrecordComponent{
 				}else{
 					this.toastTab('成长记录修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBookingGrowthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/docbooking/growthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});

@@ -317,7 +317,7 @@ export class CrmUserComponent implements OnInit{
 				}else{
 					this.toastTab('创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/crmUserList']);
+						this.router.navigate(['./admin/crmuser/list']);
 					}, 2000)
 				}
 			})
@@ -343,7 +343,7 @@ export class CrmUserComponent implements OnInit{
 				}else{
 					this.toastTab('修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/crmUserList']);
+						this.router.navigate(['./admin/crmuser/list']);
 					}, 2000)
 				}
 			})

@@ -321,7 +321,7 @@ export class ClinicroomListComponent{
 	// 接诊
 	bookingReceive(condition) {
 		sessionStorage.setItem('doctorBookingTab', '3');
-		this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: condition.bookingId, doctorId: condition.doctorId}});
+		this.router.navigate(['./admin/docbooking'], {queryParams: {id: condition.bookingId, doctorId: condition.doctorId}});
 	}
 
 	toastTab(text, type) {

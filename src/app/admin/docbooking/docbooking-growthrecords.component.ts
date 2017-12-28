@@ -5,9 +5,9 @@ import { AdminService }                       from '../admin.service';
 
 @Component({
 	selector: 'admin-doctor-booking-growthrecords',
-	templateUrl: './doctor-booking-growthrecords.component.html',
+	templateUrl: './docbooking-growthrecords.component.html',
 })
-export class DoctorBookingGrowthrecordsComponent implements OnInit{
+export class DocbookingGrowthrecordsComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -209,7 +209,7 @@ export class DoctorBookingGrowthrecordsComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getPrescriptData() {

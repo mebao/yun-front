@@ -142,7 +142,7 @@ export class BookingHistoryComponent{
     doctorBookingHistory(booking) {
 		//重置详情选中模块
 		sessionStorage.setItem('doctorBookingTab', '3');
-        this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: booking.bookingId, doctorId: booking.services[0].userDoctorId, pageType: 'history'}});
+        this.router.navigate(['./admin/docbooking'], {queryParams: {id: booking.bookingId, doctorId: booking.services[0].userDoctorId, pageType: 'history'}});
     }
 
 	toastTab(text, type) {

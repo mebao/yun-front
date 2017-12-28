@@ -6,9 +6,9 @@ import { DoctorService }                      from '../doctor/doctor.service';
 
 @Component({
 	selector: 'admin-doctor-booking-casehistory',
-	templateUrl: './doctor-booking-casehistory.component.html',
+	templateUrl: './docbooking-casehistory.component.html',
 })
-export class DoctorBookingCasehistoryComponent implements OnInit{
+export class DocbookingCasehistoryComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -619,7 +619,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getBookingData() {
@@ -925,7 +925,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				}else{
 					this.toastTab('病历创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'doctorBookingCasehistory', id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
 						this.editType = 'view';
 					}, 2000);
 				}
@@ -938,7 +938,7 @@ export class DoctorBookingCasehistoryComponent implements OnInit{
 				}else{
 					this.toastTab('病历修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'doctorBookingCasehistory', id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
 						this.editType = 'view';
 					}, 2000);
 				}

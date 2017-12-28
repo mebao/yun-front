@@ -30,8 +30,6 @@ import { ClinicServiceComponent }          from './service/clinic-service.compon
 import { ClinicServiceListComponent }      from './service/clinic-service-list.component';
 import { UserListComponent }               from './user/user-list.component';
 import { UserInfoComponent }               from './user/user-info.component';
-import { CrmUserListComponent }            from './user/crm-user-list.component';
-import { CrmUserComponent }                from './user/crm-user.component';
 import { BookingInComponent }              from './booking/booking-in.component';
 import { BookingInfoComponent }            from './booking/booking-info.component';
 import { BookingConfirmComponent }         from './booking/booking-confirm.component';
@@ -43,10 +41,6 @@ import { ClinicroomListComponent }         from './clinicroom/clinicroom-list.co
 import { ClinicroomRecordsComponent }      from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }          from './booking/booking-charge.component';
-import { DoctorBookingComponent }          from './user/doctor-booking.component';
-import { DoctorBookingGrowthrecordsComponent } from './user/doctor-booking-growthrecords.component';
-import { DoctorBookingCasehistoryComponent } from './user/doctor-booking-casehistory.component';
-import { DoctorBookingHealthrecordComponent } from './user/doctor-booking-healthrecord.component';
 import { SetupInspectComponent }           from './setup/inspect.component';
 import { SetupInspectListComponent }       from './setup/inspect-list.component';
 import { InspectResultsListComponent }     from './setup/inspect-results-list.component';
@@ -72,7 +66,6 @@ import { BookingHistoryComponent }         from './booking/booking-history.compo
 import { GivefeeListComponent }            from './user/givefee-list.component';
 import { AssistListComponent }             from './setup/assist-list.component';
 import { AssistComponent }                 from './setup/assist.component';
-import { DoctorVisitComponent }            from './doctor/doctor-visit.component';
 import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
@@ -106,8 +99,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		ClinicServiceListComponent,
 		UserListComponent,
 		UserInfoComponent,
-		CrmUserListComponent,
-		CrmUserComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
@@ -119,10 +110,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		ClinicroomRecordsComponent,
 		DoctorPrescriptComponent,
 		BookingChargeComponent,
-		DoctorBookingComponent,
-		DoctorBookingGrowthrecordsComponent,
-		DoctorBookingCasehistoryComponent,
-		DoctorBookingHealthrecordComponent,
 		SetupInspectComponent,
 		SetupInspectListComponent,
 		InspectResultsListComponent,
@@ -148,7 +135,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		GivefeeListComponent,
 		AssistListComponent,
 		AssistComponent,
-		DoctorVisitComponent,
 		PaymentBookingFee,
 		Repage,
 		UpdatepwdComponent,

@@ -133,7 +133,7 @@ export class CrmUserListComponent{
 	}
 
 	add() {
-		this.router.navigate(['./admin/crmUser'], {queryParams: {type: 'create'}});
+		this.router.navigate(['./admin/crmuser'], {queryParams: {type: 'create'}});
 	}
 
 	search() {
@@ -186,7 +186,7 @@ export class CrmUserListComponent{
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/crmUser'], {queryParams: {id: _id, type: 'update'}});
+		this.router.navigate(['./admin/crmuser'], {queryParams: {id: _id, type: 'update'}});
 	}
 
 	toastTab(text, type) {

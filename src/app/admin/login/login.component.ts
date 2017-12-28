@@ -282,7 +282,7 @@ export class LoginComponent{
 			doctorVisit: {
 				use: '',
 				authority: ['see', 'personal'],
-				url: '/admin/doctorVisit',
+				url: '/admin/docbooking/visit',
 				infos: [],
 			},
 			bookingReceive: {
@@ -396,7 +396,7 @@ export class LoginComponent{
 			crmUserList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/crmUserList',
+				url: '/admin/crmuser/list',
 				infos: [],
 			},
 			transactionRecordList: {

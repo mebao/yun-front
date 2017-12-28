@@ -546,7 +546,7 @@ export class BookingCasehistoryComponent{
 				}else{
 					this.toastTab('病历创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
@@ -558,7 +558,7 @@ export class BookingCasehistoryComponent{
 				}else{
 					this.toastTab('病历修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});

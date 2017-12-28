@@ -105,7 +105,7 @@ export class BookingAddFeeComponent{
 					this.toastTab('费用修改成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
+					this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
 				}, 2000);
 			}
 		})

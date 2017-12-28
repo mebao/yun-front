@@ -672,7 +672,7 @@ export class BookingHealthrecordComponent{
                     this.toastTab('儿保记录修改成功', '');
                 }
                 setTimeout(() => {
-                    this.router.navigate(['./admin/doctorBookingHealthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+                    this.router.navigate(['./admin/docbooking/healthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId}});
                 }, 2000);
             }
         });

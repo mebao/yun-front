@@ -17,8 +17,6 @@ import { ClinicServiceComponent }           from './service/clinic-service.compo
 import { ClinicServiceListComponent }       from './service/clinic-service-list.component';
 import { UserListComponent }                from './user/user-list.component';
 import { UserInfoComponent }                from './user/user-info.component';
-import { CrmUserListComponent }             from './user/crm-user-list.component';
-import { CrmUserComponent }                 from './user/crm-user.component';
 import { BookingInComponent }               from './booking/booking-in.component';
 import { BookingInfoComponent }             from './booking/booking-info.component';
 import { BookingConfirmComponent }          from './booking/booking-confirm.component';
@@ -32,10 +30,6 @@ import { ClinicroomListComponent }          from './clinicroom/clinicroom-list.c
 import { ClinicroomRecordsComponent }       from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
-import { DoctorBookingComponent }           from './user/doctor-booking.component';
-import { DoctorBookingGrowthrecordsComponent }       from './user/doctor-booking-growthrecords.component';
-import { DoctorBookingCasehistoryComponent } from './user/doctor-booking-casehistory.component';
-import { DoctorBookingHealthrecordComponent } from './user/doctor-booking-healthrecord.component';
 import { SetupInspectComponent }            from './setup/inspect.component';
 import { SetupInspectListComponent }        from './setup/inspect-list.component';
 import { InspectResultsListComponent }      from './setup/inspect-results-list.component';
@@ -61,7 +55,6 @@ import { BookingHistoryComponent }          from './booking/booking-history.comp
 import { GivefeeListComponent }             from './user/givefee-list.component';
 import { AssistListComponent }              from './setup/assist-list.component';
 import { AssistComponent }                  from './setup/assist.component';
-import { DoctorVisitComponent }             from './doctor/doctor-visit.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
@@ -129,16 +122,6 @@ const adminRoutes: Routes = [
 						component: UserInfoComponent
 					},
 					{
-						path: 'crmUserList',
-						canActivate: [AuthGuardRole],
-						component: CrmUserListComponent,
-					},
-					{
-						path: 'crmUser',
-						canActivate: [AuthGuardRole],
-						component: CrmUserComponent,
-					},
-					{
 						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
 						data: {preload: true},
@@ -171,6 +154,16 @@ const adminRoutes: Routes = [
 					{
 						path: 'doctor',
 						loadChildren: './doctor/doctor.module#DoctorModule',
+						data: {preload: true},
+					},
+					{
+						path: 'crmuser',
+						loadChildren: './crmuser/crmuser.module#CrmuserModule',
+						data: {preload: true},
+					},
+					{
+						path: 'docbooking',
+						loadChildren: './docbooking/docbooking.module#DocbookingModule',
 						data: {preload: true},
 					},
 					{
@@ -232,26 +225,6 @@ const adminRoutes: Routes = [
 						path: 'bookingCharge',
 						canActivate: [AuthGuardRole],
 						component: BookingChargeComponent,
-					},
-					{
-						path: 'doctorBooking',
-						canActivate: [AuthGuardRole],
-						component: DoctorBookingComponent,
-					},
-					{
-						path: 'doctorBookingGrowthrecords',
-						canActivate: [AuthGuardRole],
-						component: DoctorBookingGrowthrecordsComponent,
-					},
-					{
-						path: 'doctorBookingCasehistory',
-						canActivate: [AuthGuardRole],
-						component: DoctorBookingCasehistoryComponent,
-					},
-					{
-						path: 'doctorBookingHealthrecord',
-						canActivate: [AuthGuardRole],
-						component: DoctorBookingHealthrecordComponent,
 					},
 					{
 						path: 'setupInspect',
@@ -377,11 +350,6 @@ const adminRoutes: Routes = [
 						path: 'assist',
 						canActivate: [AuthGuardRole],
 						component: AssistComponent,
-					},
-					{
-						path: 'doctorVisit',
-						canActivate: [AuthGuardRole],
-						component: DoctorVisitComponent,
 					},
 					{
 						path: 'paymentBookingFee',

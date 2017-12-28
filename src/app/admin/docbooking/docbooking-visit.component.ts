@@ -1,15 +1,15 @@
 import { Component }                         from '@angular/core';
 
-import { DoctorService }                     from './doctor.service';
+import { DoctorService }                     from '../doctor/doctor.service';
 import { AdminService }                      from '../admin.service';
 import { Router }                            from '@angular/router';
 
 @Component({
     selector: 'admin-doctor-visit',
-    templateUrl: './doctor-visit.component.html',
+    templateUrl: './docbooking-visit.component.html',
 })
 
-export class DoctorVisitComponent{
+export class DocbookingVisitComponent{
 	topBar: {
 		title: string,
 		back: boolean,

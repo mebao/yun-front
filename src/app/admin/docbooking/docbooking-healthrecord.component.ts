@@ -6,9 +6,9 @@ import { DoctorService }                      from '../doctor/doctor.service';
 
 @Component({
 	selector: 'admin-doctor-booking-healthrecord',
-	templateUrl: './doctor-booking-healthrecord.component.html'
+	templateUrl: './docbooking-healthrecord.component.html'
 })
-export class DoctorBookingHealthrecordComponent implements OnInit{
+export class DocbookingHealthrecordComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -896,7 +896,7 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	getBookingData() {
@@ -1228,18 +1228,18 @@ export class DoctorBookingHealthrecordComponent implements OnInit{
                 if(this.editType == 'create'){
                     this.toastTab('儿保记录创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'doctorBookingHealthrecord', id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
 						this.editType = 'view';
 	                }, 2000);
                 }else{
                     this.toastTab('儿保记录修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'doctorBookingHealthrecord', id: this.id, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
 						this.editType = 'view';
 	                }, 2000);
                 }
                 // setTimeout(() => {
-                //     this.router.navigate(['./admin/repage'], {queryParams: {from:'doctorBookingHealthrecord', id: this.id, doctorId: this.doctorId}});
+                //     this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
                 // }, 2000);
             }
         });

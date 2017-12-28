@@ -216,7 +216,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctorBooking',
+								url: '/admin/docbooking',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
@@ -244,7 +244,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 成长记录
 							{
-								url: '/admin/doctorBookingGrowthrecords',
+								url: '/admin/docbooking/growthrecords',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
@@ -257,7 +257,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 病例
 							{
-								url: '/admin/doctorBookingCasehistory',
+								url: '/admin/docbooking/casehistory',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
@@ -270,7 +270,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 儿保记录
 							{
-								url: '/admin/doctorBookingHealthrecord',
+								url: '/admin/docbooking/healthrecord',
 								authority: 'receive',
 								queryType: '',
 								queryParams: '',
@@ -376,17 +376,17 @@ export class AuthGuardRole implements CanActivate{
 					// },
 					{
 						firstKey: 'doctorVisit',
-						firstUrl: '/admin/doctorVisit',
+						firstUrl: '/admin/docbooking/visit',
 						authority: ['see', 'personal'],
 						second: [
 							{
-								url: '/admin/doctorVisit',
+								url: '/admin/docbooking/visit',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctorVisit',
+								url: '/admin/docbooking/bisit',
 								authority: 'personal',
 								queryType: '',
 								queryParams: '',
@@ -808,21 +808,21 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctorBooking',
+								url: '/admin/docbooking',
 								authority: 'bookingHistory',
 								queryType: 'pageType',
 								queryParams: 'history',
 							},
 							// 成长记录
 							{
-								url: '/admin/doctorBookingGrowthrecords',
+								url: '/admin/docbooking/growthrecords',
 								authority: 'bookingHistory',
 								queryType: 'pageType',
 								queryParams: 'history',
 							},
 							// 病例
 							{
-								url: '/admin/doctorBookingCasehistory',
+								url: '/admin/docbooking/casehistory',
 								authority: 'bookingHistory',
 								queryType: 'pageType',
 								queryParams: 'history',
@@ -830,7 +830,7 @@ export class AuthGuardRole implements CanActivate{
 
 							// 儿保记录
 							{
-								url: '/admin/doctorBookingHealthrecord',
+								url: '/admin/docbooking/healthrecord',
 								authority: 'bookingHistory',
 								queryType: 'pageType',
 								queryParams: 'history',
@@ -914,23 +914,23 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'crmUserList',
-						firstUrl: '/admin/crmUserList',
+						firstUrl: '/admin/crmuser/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/crmUserList',
+								url: '/admin/crmuser/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/crmUser',
+								url: '/admin/crmuser',
 								authority: 'add',
 								queryType: 'type',
 								queryParams: 'create',
 							},
 							{
-								url: '/admin/crmUser',
+								url: '/admin/crmuser',
 								authority: 'update',
 								queryType: 'type',
 								queryParams: 'update',

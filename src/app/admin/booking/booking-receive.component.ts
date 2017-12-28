@@ -200,7 +200,7 @@ export class BookingReceiveComponent{
 		//可编辑日期
 		//重置详情选中模块
 		sessionStorage.setItem('doctorBookingTab', '3');
-		this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
+		this.router.navigate(['./admin/docbooking'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
 	}
 
 	getUrlOptios() {

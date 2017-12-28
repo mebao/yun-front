@@ -515,7 +515,7 @@ export class DoctorPrescriptComponent{
 						}else{
 							this.toastTab('开方成功', '');
 							setTimeout(() => {
-								this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
 						}
 					})
@@ -535,7 +535,7 @@ export class DoctorPrescriptComponent{
 						}else{
 							this.toastTab('药方修改成功', '');
 							setTimeout(() => {
-								this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
 						}
 					})
@@ -553,7 +553,7 @@ export class DoctorPrescriptComponent{
 					}else{
 						this.toastTab('药品添加成功', '');
 						setTimeout(() => {
-							this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 						}, 2000);
 					}
 				});
@@ -617,7 +617,7 @@ export class DoctorPrescriptComponent{
 					}else{
 						this.toastTab('退药成功', '');
 						setTimeout(() => {
-							this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 						}, 2000);
 					}
 				});

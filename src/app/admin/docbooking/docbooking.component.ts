@@ -5,10 +5,10 @@ import { AdminService }                       from '../admin.service';
 
 @Component({
 	selector: 'admin-doctor-booking',
-	templateUrl: './doctor-booking.component.html',
-	styleUrls: ['./doctor-booking.component.scss'],
+	templateUrl: './docbooking.component.html',
+	styleUrls: ['./docbooking.component.scss'],
 })
-export class DoctorBookingComponent implements OnInit{
+export class DocbookingComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -350,7 +350,7 @@ export class DoctorBookingComponent implements OnInit{
 	}
 
 	goHistory(history) {
-		window.open('./admin/doctorBooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
+		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
 	// 成长记录

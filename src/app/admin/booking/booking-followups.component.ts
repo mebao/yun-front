@@ -158,7 +158,7 @@ export class BookingFollowupsComponent{
 				}else{
 					this.toastTab('随访创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/doctorBooking'], {queryParams: {id: this.bookingId, doctorId: this.doctorId}});
+						this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.bookingId, doctorId: this.doctorId}});
 					}, 2000);
 				}
 			});
