@@ -9,11 +9,11 @@
 			</div>
 			<div class="pure-control-group mr10 flex">
 				<label for="b_time">时间：</label>
-				<select-date title="请选择日期" [showClear]="true" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
+				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.b_time_text" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
 			</div>
 			<div class="pure-control-group mr10 flex">
 				<label for="l_time" class="text-center">至</label>
-				<select-date title="请选择日期" [showClear]="true" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
+				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.l_time_text" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
 			</div>
 			<div class="flex-1"></div>
 		</div>

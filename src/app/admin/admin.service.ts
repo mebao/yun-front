@@ -1227,9 +1227,24 @@ export class AdminService{
 		var exp = new Date();
 		exp.setTime(exp.getTime() - 2*24*60*60*1000);
 		var cval= this.getCookie(name);
-		if(cval!=null)
-		document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=/";
-		document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=/admin";
+		if(cval!=null){
+			var pathList = [
+				'/',
+				'/admin',
+				'/admin/workbench',
+				'/admin/material',
+				'/admin/medical',
+				'/admin/scheduling',
+				'/admin/prescript',
+				'/admin/authorize',
+				'/admin/doctor',
+				'/admin/crmuser',
+				'/admin/docbooking',
+			]
+			for(var i in pathList){
+				document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=" + pathList[i];
+			}
+		}
 	}
 
 	//设置cookie
@@ -1237,7 +1252,7 @@ export class AdminService{
 		var Days = time;
 		var exp = new Date();
 		exp.setTime(exp.getTime() + Days*24*60*60*1000);
-		document.cookie = name + "=" + value + ";expires=" + exp;
+		document.cookie = name + "=" + value + ";expires=" + exp + ";Path=/";
 	}
 
 	//读取cookie

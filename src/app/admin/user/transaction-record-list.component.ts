@@ -23,8 +23,10 @@ export class TransactionRecordListComponent{
 	searchInfo: {
 		user_name: string,
 		b_time: string,
+		b_time_text: string,
 		b_time_num: number,
 		l_time: string,
+		l_time_text: string,
 		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
@@ -53,12 +55,16 @@ export class TransactionRecordListComponent{
 		this.hasData = false;
 		this.recordList = [];
 
+
+		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
 			user_name: '',
-			b_time: '',
-			b_time_num: 0,
-			l_time: '',
-			l_time_num: 0,
+			b_time: todayDate,
+			b_time_text: this.adminService.dateFormat(todayDate),
+			b_time_num: new Date(todayDate).getTime(),
+			l_time: todayDate,
+			l_time_text: this.adminService.dateFormat(todayDate),
+			l_time_num: new Date(todayDate).getTime(),
 			b_amount: '',
 			l_amount: '',
 			type: '',
