@@ -1283,7 +1283,7 @@ export class AdminService{
 		var urlQuery = url.substring(url.indexOf('?') + 1).split('&');
 		var queryString = '{';
 		for(var i = 0; i < urlQuery.length; i++){
-			queryString += '"' + urlQuery[i].split('=')[0] + '":' + '"' + urlQuery[i].split('=')[1] + '",';
+			queryString += '"' + urlQuery[i].split('=')[0] + '":' + '"' + urlQuery[i].split('=')[1].replace('%2F', '/') + '",';
 		}
 		if(queryString.length > 1){
 			queryString = queryString.slice(0, queryString.length -1);

@@ -386,7 +386,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/docbooking/bisit',
+								url: '/admin/docbooking/visit',
 								authority: 'personal',
 								queryType: '',
 								queryParams: '',
