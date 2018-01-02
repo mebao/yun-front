@@ -197,38 +197,38 @@ export class BookingComponent implements OnInit{
 			date: '',
 		}
 		this.timelist = [
-			{key: 0, type: 'overdue', value: '08:00'},
-			{key: 1, type: 'overdue', value: '08:30'},
-			{key: 2, type: 'overdue', value: '09:00'},
-			{key: 3, type: 'overdue', value: '09:30'},
-			{key: 4, type: 'overdue', value: '10:00'},
-			{key: 5, type: 'overdue', value: '10:30'},
-			{key: 6, type: 'overdue', value: '11:00'},
-			{key: 7, type: 'overdue', value: '11:30'},
-			{key: 8, type: 'overdue', value: '12:00'},
-			{key: 9, type: 'overdue', value: '12:30'},
-			{key: 10, type: 'overdue', value: '13:00'},
-			{key: 11, type: 'overdue', value: '13:30'},
-			{key: 12, type: 'overdue', value: '14:00'},
-			{key: 13, type: 'overdue', value: '14:30'},
-			{key: 14, type: 'overdue', value: '15:00'},
-			{key: 15, type: 'overdue', value: '15:30'},
-			{key: 16, type: 'overdue', value: '16:00'},
-			{key: 17, type: 'overdue', value: '16:30'},
-			{key: 18, type: 'overdue', value: '17:00'},
-			{key: 19, type: 'overdue', value: '17:30'},
-			{key: 20, type: 'overdue', value: '18:00'},
-			{key: 21, type: 'overdue', value: '18:30'},
-			{key: 22, type: 'overdue', value: '19:00'},
-			{key: 23, type: 'overdue', value: '19:30'},
-			{key: 24, type: 'overdue', value: '20:00'},
-			{key: 25, type: 'overdue', value: '20:30'},
-			{key: 26, type: 'overdue', value: '21:00'},
-			{key: 27, type: 'overdue', value: '21:30'},
-			{key: 28, type: 'overdue', value: '22:00'},
-			{key: 29, type: 'overdue', value: '22:30'},
-			{key: 30, type: 'overdue', value: '23:00'},
-			{key: 31, type: 'overdue', value: '23:30'},
+			// {key: 0, type: 'overdue', value: '08:00'},
+			// {key: 1, type: 'overdue', value: '08:30'},
+			// {key: 2, type: 'overdue', value: '09:00'},
+			// {key: 3, type: 'overdue', value: '09:30'},
+			// {key: 4, type: 'overdue', value: '10:00'},
+			// {key: 5, type: 'overdue', value: '10:30'},
+			// {key: 6, type: 'overdue', value: '11:00'},
+			// {key: 7, type: 'overdue', value: '11:30'},
+			// {key: 8, type: 'overdue', value: '12:00'},
+			// {key: 9, type: 'overdue', value: '12:30'},
+			// {key: 10, type: 'overdue', value: '13:00'},
+			// {key: 11, type: 'overdue', value: '13:30'},
+			// {key: 12, type: 'overdue', value: '14:00'},
+			// {key: 13, type: 'overdue', value: '14:30'},
+			// {key: 14, type: 'overdue', value: '15:00'},
+			// {key: 15, type: 'overdue', value: '15:30'},
+			// {key: 16, type: 'overdue', value: '16:00'},
+			// {key: 17, type: 'overdue', value: '16:30'},
+			// {key: 18, type: 'overdue', value: '17:00'},
+			// {key: 19, type: 'overdue', value: '17:30'},
+			// {key: 20, type: 'overdue', value: '18:00'},
+			// {key: 21, type: 'overdue', value: '18:30'},
+			// {key: 22, type: 'overdue', value: '19:00'},
+			// {key: 23, type: 'overdue', value: '19:30'},
+			// {key: 24, type: 'overdue', value: '20:00'},
+			// {key: 25, type: 'overdue', value: '20:30'},
+			// {key: 26, type: 'overdue', value: '21:00'},
+			// {key: 27, type: 'overdue', value: '21:30'},
+			// {key: 28, type: 'overdue', value: '22:00'},
+			// {key: 29, type: 'overdue', value: '22:30'},
+			// {key: 30, type: 'overdue', value: '23:00'},
+			// {key: 31, type: 'overdue', value: '23:30'},
 		];
 
 		//修改
@@ -463,7 +463,9 @@ export class BookingComponent implements OnInit{
 				}
 				if(!this.initPage.doctor){
 					this.bookingInfo.user_doctor = '';
+					this.bookingInfo.booking_fee = '';
 					this.bookingInfo.booking_date = '';
+					this.timelist = [];
 					this.bookingInfo.timeInfo = '';
 				}
 				this.initPage.doctor = false;
@@ -500,6 +502,7 @@ export class BookingComponent implements OnInit{
 		}
 		if(!this.initPage.date){
 			this.bookingInfo.booking_date = '';
+			this.timelist = [];
 			this.bookingInfo.timeInfo = '';
 		}
 		this.initPage.date = false;
@@ -512,17 +515,21 @@ export class BookingComponent implements OnInit{
 		this.bookingInfo.bookingDate = date.dutyDate;
 		var list = [];
 		var todayTimeNum = Number((new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours()) + '' + (new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()));
-		for(var i = 0; i < this.timelist.length; i++){
-			// 初始化
-			this.timelist[i].type = 'overdue';
-			// 查询可预约日期
-			if(date.timeList.length > 0){
-				for(var j = 0; j < date.timeList.length; j++){
-					if(this.timelist[i].value == date.timeList[j]){
-						this.timelist[i].type = 'can';
-					}
+
+		this.timelist = [];
+		// 查询可预约日期
+		if(date.timeList.length > 0){
+			for(var i = 0; i < date.timeList.length; i++){
+				var item = {
+					key: i,
+					type: 'can',
+					value: date.timeList[i],
 				}
+				this.timelist.push(item);
 			}
+		}
+
+		for(var i = 0; i < this.timelist.length; i++){
 			// 判断时间段是否已经被预约
 			if(date.selectedList.length > 0){
 				for(var j = 0; j < date.selectedList.length; j++){
@@ -539,6 +546,34 @@ export class BookingComponent implements OnInit{
 				}
 			}
 		}
+
+		// for(var i = 0; i < this.timelist.length; i++){
+		// 	// 初始化
+		// 	this.timelist[i].type = 'overdue';
+		// 	// 查询可预约日期
+		// 	if(date.timeList.length > 0){
+		// 		for(var j = 0; j < date.timeList.length; j++){
+		// 			if(this.timelist[i].value == date.timeList[j]){
+		// 				this.timelist[i].type = 'can';
+		// 			}
+		// 		}
+		// 	}
+		// 	// 判断时间段是否已经被预约
+		// 	if(date.selectedList.length > 0){
+		// 		for(var j = 0; j < date.selectedList.length; j++){
+		// 			if(this.timelist[i].value == date.selectedList[j]){
+		// 				this.timelist[i].type = 'already';
+		// 			}
+		// 		}
+		// 	}
+		// 	//如果是当天日期，判断时间是否已经过去
+		// 	if(this.adminService.getDayByDate(new Date) == date.dutyDate){
+		// 		var timeNum = Number(this.timelist[i].value.replace(':', ''));
+		// 		if(timeNum < todayTimeNum){
+		// 			this.timelist[i].type = 'overdue';
+		// 		}
+		// 	}
+		// }
 		// 是否首次进入
 		if(this.initPage.time){
 			if(this.editType == 'update'){

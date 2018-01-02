@@ -67,7 +67,7 @@
 							<span>预约时间段（请先选择日期）</span>
 							<span class="can">：可预约</span>
 							<span class="can item"></span>
-							<span class="overdue">未开放</span>
+							<span class="overdue">已过期</span>
 							<span class="overdue item"></span>
 							<span class="already">已预约</span>
 							<span class="already item">
@@ -95,6 +95,9 @@
 								</div>
 								<div *ngIf="index % 8 != 7" style="width: calc((100% - 744px) / 7)"></div>
 							</ng-container>
+						</div>
+						<div *ngIf="timelist.length == 0">
+							请先选择预约时间
 						</div>
 						<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
 							<ng-container *ngFor="let time of timelist">
