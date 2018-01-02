@@ -35,6 +35,7 @@ export class SchedulingComponent{
 		realName: string,
 		date: string,
 		title_date: string,
+		interval: string,
 	}
 	//排班配置
 	dutylist: any[];
@@ -43,44 +44,8 @@ export class SchedulingComponent{
 	selector: {
 		text: string,
 	}
-	// 排班间隔
-	interval: string;
 
 	constructor(public adminService: AdminService) {
-		this.dutytime = [
-			{key: '08:00', value: '08:00'},
-			{key: '08:30', value: '08:30'},
-			{key: '09:00', value: '09:00'},
-			{key: '09:30', value: '09:30'},
-			{key: '10:00', value: '10:00'},
-			{key: '10:30', value: '10:30'},
-			{key: '11:00', value: '11:00'},
-			{key: '11:30', value: '11:30'},
-			{key: '12:00', value: '12:00'},
-			{key: '12:30', value: '12:30'},
-			{key: '13:00', value: '13:00'},
-			{key: '13:30', value: '13:30'},
-			{key: '14:00', value: '14:00'},
-			{key: '14:30', value: '14:30'},
-			{key: '15:00', value: '15:00'},
-			{key: '15:30', value: '15:30'},
-			{key: '16:00', value: '16:00'},
-			{key: '16:30', value: '16:30'},
-			{key: '17:00', value: '17:00'},
-			{key: '17:30', value: '17:30'},
-			{key: '18:00', value: '18:00'},
-			{key: '18:30', value: '18:30'},
-			{key: '19:00', value: '19:00'},
-			{key: '19:30', value: '19:30'},
-			{key: '20:00', value: '20:00'},
-			{key: '20:30', value: '20:30'},
-			{key: '21:00', value: '21:00'},
-			{key: '21:30', value: '21:30'},
-			{key: '22:00', value: '22:00'},
-			{key: '22:30', value: '22:30'},
-			{key: '23:00', value: '23:00'},
-			{key: '23:30', value: '23:30'},
-		];
 		this.dutylist = [{id: 1, use: true}];
 	}
 
@@ -105,6 +70,7 @@ export class SchedulingComponent{
 			realName: '',
 			date: '',
 			title_date: '',
+			interval: '',
 		}
 
 		this.modalTab = false;
@@ -117,14 +83,52 @@ export class SchedulingComponent{
 		var urlOptions = this.url + '&weekindex=' + this.weekNum;
 		this.getList(urlOptions);
 
+		this.dutytime = [];
 		this.modalConfirmTab = false;
 		this.selector = {
 			text: '',
 		}
 	}
 
+	initDutytime(type) {
+		this.dutytime = [];
+		var step = Number(type);
+		var len = 60 / step;
+		for(var i = 8; i < 24; i++){
+			for(var j = 0; j< len; j++){
+				var item = {
+					key: (i.toString().length > 1 ? i.toString() : '0' + i.toString()) + ':' + ((j*step).toString().length > 1 ? (j*step).toString() : '0' + (j*step).toString()),
+					value: (i.toString().length > 1 ? i.toString() : '0' + i.toString()) + ':' + ((j*step).toString().length > 1 ? (j*step).toString() : '0' + (j*step).toString()),
+				}
+				this.dutytime.push(item);
+			}
+		}
+		this.dutylist = [{id: 1, use: true}];
+	}
+	initDuty(type) {
+		var duty = [];
+		var step = Number(type);
+		var len = 60 / step;
+		var num = 0;
+		for(var i = 8; i < 24; i++){
+			for(var j = 0; j< len; j++){
+				var item = {
+					key: num,
+					value: (i.toString().length > 1 ? i.toString() : '0' + i.toString()) + ':' + ((j*step).toString().length > 1 ? (j*step).toString() : '0' + (j*step).toString()),
+					use: true,
+				}
+				num++;
+				duty.push(item);
+			}
+		}
+		return duty;
+	}
+
+	changeInterval() {
+		this.initDutytime(this.changeData.interval);
+	}
+
 	getList(urlOptions) {
-		this.interval = '1800';
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -202,40 +206,7 @@ export class SchedulingComponent{
 	}
 
 	create(f: NgForm) {
-		var dutyDemo = [
-			{key: 0, value: '08:00', use: true},
-			{key: 1, value: '08:30', use: true},
-			{key: 2, value: '09:00', use: true},
-			{key: 3, value: '09:30', use: true},
-			{key: 4, value: '10:00', use: true},
-			{key: 5, value: '10:30', use: true},
-			{key: 6, value: '11:00', use: true},
-			{key: 7, value: '11:30', use: true},
-			{key: 8, value: '12:00', use: true},
-			{key: 9, value: '12:30', use: true},
-			{key: 10, value: '13:00', use: true},
-			{key: 11, value: '13:30', use: true},
-			{key: 12, value: '14:00', use: true},
-			{key: 13, value: '14:30', use: true},
-			{key: 14, value: '15:00', use: true},
-			{key: 15, value: '15:30', use: true},
-			{key: 16, value: '16:00', use: true},
-			{key: 17, value: '16:30', use: true},
-			{key: 18, value: '17:00', use: true},
-			{key: 19, value: '17:30', use: true},
-			{key: 20, value: '18:00', use: true},
-			{key: 21, value: '18:30', use: true},
-			{key: 22, value: '19:00', use: true},
-			{key: 23, value: '19:30', use: true},
-			{key: 24, value: '20:00', use: true},
-			{key: 25, value: '20:30', use: true},
-			{key: 26, value: '21:00', use: true},
-			{key: 27, value: '21:30', use: true},
-			{key: 28, value: '22:00', use: true},
-			{key: 29, value: '22:30', use: true},
-			{key: 30, value: '23:00', use: true},
-			{key: 31, value: '23:30', use: true},
-		]
+		var dutyDemo = this.initDuty(this.changeData.interval);
 		//构造时间段
 		var dutylist = [];
 		var dutyText = '';
@@ -314,7 +285,7 @@ export class SchedulingComponent{
 					config_id: results.id,
 					config_name: dateStr,
 					duty_date: this.adminService.dateFormatHasWord(this.changeData.date),
-					interval: Number(this.interval),
+					interval: Number(this.changeData.interval)*60,
 				}
 				if(type == 'add'){
 					this.adminService.adminScheduling(createParams).then((data) => {
@@ -401,45 +372,12 @@ export class SchedulingComponent{
 				realName: scheduling.realName,
 				date: day.dutyDay,
 				title_date: day.dutyDayTitle,
+				interval: this.adminService.isFalse(day.interval) ? '30' : (Number(day.interval)/60).toString(),
 			}
+			this.initDutytime(this.changeData.interval);
 			//判断是否已存在排班,并初始化排班配置信息
 			if(this.changeData.value != ''){
-				this.interval = day.interval;
-				var dutyDemo = [
-					{key: 0, value: '08:00', use: true},
-					{key: 1, value: '08:30', use: true},
-					{key: 2, value: '09:00', use: true},
-					{key: 3, value: '09:30', use: true},
-					{key: 4, value: '10:00', use: true},
-					{key: 5, value: '10:30', use: true},
-					{key: 6, value: '11:00', use: true},
-					{key: 7, value: '11:30', use: true},
-					{key: 8, value: '12:00', use: true},
-					{key: 9, value: '12:30', use: true},
-					{key: 10, value: '13:00', use: true},
-					{key: 11, value: '13:30', use: true},
-					{key: 12, value: '14:00', use: true},
-					{key: 13, value: '14:30', use: true},
-					{key: 14, value: '15:00', use: true},
-					{key: 15, value: '15:30', use: true},
-					{key: 16, value: '16:00', use: true},
-					{key: 17, value: '16:30', use: true},
-					{key: 18, value: '17:00', use: true},
-					{key: 19, value: '17:30', use: true},
-					{key: 20, value: '18:00', use: true},
-					{key: 21, value: '18:30', use: true},
-					{key: 22, value: '19:00', use: true},
-					{key: 23, value: '19:30', use: true},
-					{key: 24, value: '20:00', use: true},
-					{key: 25, value: '20:30', use: true},
-					{key: 26, value: '21:00', use: true},
-					{key: 27, value: '21:30', use: true},
-					{key: 28, value: '22:00', use: true},
-					{key: 29, value: '22:30', use: true},
-					{key: 30, value: '23:00', use: true},
-					{key: 31, value: '23:30', use: true},
-					{key: 32, value: '00:00', use: true},
-				]
+				var dutyDemo = this.initDuty(this.changeData.interval);
 				//清空排班配置
 				this.dutylist = [];
 				//构造已存在排班配置
@@ -475,12 +413,10 @@ export class SchedulingComponent{
 	}
 
 	close() {
-		this.interval = '1800';
 		this.modalTab = false;
 	}
 
 	closeConfirm() {
-		this.interval = '1800';
 		this.modalConfirmTab = false;
 	}
 

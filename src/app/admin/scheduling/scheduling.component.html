@@ -44,9 +44,9 @@
 				<fieldset>
 					<div class="pure-control-group">
 						<label for="interval">排班间隔</label>
-						<select id="interval" name="interval" [(ngModel)]="interval" [disabled]="this.changeData.value != ''">
-							<option value="1800">30分钟</option>
-							<option value="1200">20分钟</option>
+						<select id="interval" name="interval" [(ngModel)]="changeData.interval" (change)="changeInterval()" [disabled]="this.changeData.value != ''">
+							<option value="30">30分钟</option>
+							<option value="20">20分钟</option>
 						</select>
 					</div>
 					<div class="pure-control-group">
