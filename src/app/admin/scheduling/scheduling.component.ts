@@ -43,6 +43,8 @@ export class SchedulingComponent{
 	selector: {
 		text: string,
 	}
+	// 排班间隔
+	interval: string;
 
 	constructor(public adminService: AdminService) {
 		this.dutytime = [
@@ -122,6 +124,7 @@ export class SchedulingComponent{
 	}
 
 	getList(urlOptions) {
+		this.interval = '1800';
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -311,7 +314,7 @@ export class SchedulingComponent{
 					config_id: results.id,
 					config_name: dateStr,
 					duty_date: this.adminService.dateFormatHasWord(this.changeData.date),
-					interval: 30*60,
+					interval: Number(this.interval),
 				}
 				if(type == 'add'){
 					this.adminService.adminScheduling(createParams).then((data) => {
@@ -388,19 +391,20 @@ export class SchedulingComponent{
 		}
 	}
 
-	configChange(use, _id, date, dutyConfig, adminId, adminName, realName, title_date) {
-		if(use){
+	configChange(day, scheduling) {
+		if(day.use){
 			this.changeData = {
-				_id: _id,
-				value: dutyConfig,
-				adminId: adminId,
-				adminName: adminName,
-				realName: realName,
-				date: date,
-				title_date: title_date,
+				_id: day.id,
+				value: day.dutyConfig,
+				adminId: scheduling.adminId,
+				adminName: scheduling.adminName,
+				realName: scheduling.realName,
+				date: day.dutyDay,
+				title_date: day.dutyDayTitle,
 			}
 			//判断是否已存在排班,并初始化排班配置信息
 			if(this.changeData.value != ''){
+				this.interval = day.interval;
 				var dutyDemo = [
 					{key: 0, value: '08:00', use: true},
 					{key: 1, value: '08:30', use: true},
@@ -471,10 +475,12 @@ export class SchedulingComponent{
 	}
 
 	close() {
+		this.interval = '1800';
 		this.modalTab = false;
 	}
 
 	closeConfirm() {
+		this.interval = '1800';
 		this.modalConfirmTab = false;
 	}
 
