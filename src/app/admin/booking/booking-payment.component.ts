@@ -1476,6 +1476,13 @@ export class BookingPaymentComponent{
 			return;
 		}
 
+		// 余额支付，余额是否充足
+		if(this.payInfo.payway_second.way == 'member' && parseFloat(this.payInfo.payway_second.money) > parseFloat(this.userMember.balance)){
+			this.toastTab('会员余额支付金额超出实际会员余额', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+
 		this.modalTabAddPay = false;
 		var urlOptions = this.tranInfo.id + '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
