@@ -60,6 +60,7 @@ import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
 import { InspectResultsPrint }              from './setup/inspect-results-print';
+import { BookingAssistList }                from './booking/booking-assist-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -365,6 +366,11 @@ const adminRoutes: Routes = [
 						path: 'inspectResultsPrint',
 						canActivate: [AuthGuardRole],
 						component: InspectResultsPrint,
+					},
+					{
+						path: 'bookingAssistList',
+						canActivate: [AuthGuardRole],
+						component: BookingAssistList,
 					},
 					{
 						path: 'repage',

@@ -122,6 +122,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 预约辅助治疗
+		bookingAssistList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//随访管理
 		bookingFollowupsList: {
 			use: string,
@@ -282,6 +288,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			inspectResultsList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			bookingAssistList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

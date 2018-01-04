@@ -158,6 +158,13 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
+		// 预约实验室检查
+		bookingAssistList: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		},
 		//随访管理
 		bookingFollowupsList: {
 			use: string,
@@ -361,6 +368,12 @@ export class LoginComponent{
 				use: '',
 				authority: ['see'],
 				url: '/admin/inspectResultsList',
+				infos: [],
+			},
+			bookingAssistList: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/bookingAssistList',
 				infos: [],
 			},
 			bookingFollowupsList: {

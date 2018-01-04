@@ -54,6 +54,12 @@
 				实验室检查
 		</a>
 	  	<a
+			*ngIf="clinicRole.bookingAssistList.use != ''"
+			routerLink="./bookingAssistList"
+			routerLinkActive="active">
+				预约辅助治疗
+		</a>
+	  	<a
 			*ngIf="clinicRole.prescriptList.use != ''"
 			routerLink="./prescript/list"
 			routerLinkActive="active">
