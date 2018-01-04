@@ -1492,6 +1492,7 @@ export class BookingPaymentComponent{
 		this.adminService.addtran(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
+				this.closeAddPay();
 				this.btnCanEdit = false;
 			}else{
 				this.toastTab('支付完成', '');
