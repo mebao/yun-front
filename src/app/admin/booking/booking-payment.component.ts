@@ -289,8 +289,10 @@ export class BookingPaymentComponent{
 									this.toastTab(userData.errorMsg, 'error');
 								}else{
 									var userResults = JSON.parse(JSON.stringify(userData.results));
-									if(userResults.users.length > 0 && userResults.users[0].memberId){
+									if(userResults.users.length > 0){
 										this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+									}
+									if(userResults.users[0].memberId){
 										//获取会员折扣信息
 										var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 											 + '&id=' + userResults.users[0].memberId + '&status=1';
@@ -363,8 +365,10 @@ export class BookingPaymentComponent{
 								this.toastTab(userData.errorMsg, 'error');
 							}else{
 								var userResults = JSON.parse(JSON.stringify(userData.results));
-								if(userResults.users.length > 0 && userResults.users[0].memberId){
+								if(userResults.users.length > 0){
 									this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+								}
+								if(userResults.users[0].memberId){
 									//获取会员折扣信息
 									var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 										 + '&id=' + userResults.users[0].memberId + '&status=1';
@@ -1466,7 +1470,7 @@ export class BookingPaymentComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(this.payInfo.payway_second.money == ''){
+		if(this.payInfo.payway_second.money.toString() == ''){
 			this.toastTab('支付金额不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
