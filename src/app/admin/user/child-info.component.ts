@@ -24,6 +24,8 @@ export class ChildInfoComponent{
 		name: string,
 		mobile: string,
 		gender: string,
+		memberName: string,
+		balance: string,
 	}
 	childInfo: {
 		age: string,
@@ -73,6 +75,8 @@ export class ChildInfoComponent{
 			name: '',
 			mobile: '',
 			gender: '',
+			memberName: '',
+			balance: '',
 		}
 		this.childInfo = {
 			age: '',
@@ -118,6 +122,8 @@ export class ChildInfoComponent{
 						name: results.users[0].name,
 						mobile: results.users[0].mobile,
 						gender: results.users[0].gender,
+						memberName: results.users[0].memberName,
+						balance: results.users[0].balance,
 					}
 					if(results.users[0].childs.length > 0){
 						for(var i = 0; i < results.users[0].childs.length; i++){

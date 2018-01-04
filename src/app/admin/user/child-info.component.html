@@ -12,9 +12,6 @@
 				姓名：{{childInfo.childName}}
 			</div>
 			<div class="info">
-				电话：{{userInfo.mobile}}
-			</div>
-			<div class="info">
 				性别：{{childInfo.gender}}
 			</div>
 			<div class="info">
@@ -30,27 +27,27 @@
 					<div class="title">基本信息</div>
 					<div class="pure-g">
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">姓名：</label>
+							<label class="w110pp">姓名：</label>
 							<div>{{childInfo.childName}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">性别：</label>
+							<label class="w110pp">性别：</label>
 							<div>{{childInfo.gender}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">出生年月：</label>
+							<label class="w110pp">出生年月：</label>
 							<div>{{childInfo.birthday}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">年龄：</label>
+							<label class="w110pp">年龄：</label>
 							<div>{{childInfo.age}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">手机号：</label>
+							<label class="w110pp">手机号：</label>
 							<div>{{userInfo.mobile}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">小名：</label>
+							<label class="w110pp">小名：</label>
 							<div>{{childInfo.nickName}}</div>
 						</div>
 					</div>
@@ -59,31 +56,31 @@
 					<div class="title">其他信息</div>
 					<div class="pure-g">
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">身高（cm）：</label>
+							<label class="w110pp">身高（cm）：</label>
 							<div>{{childInfo.height}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">体重（kg）：</label>
+							<label class="w110pp">体重（kg）：</label>
 							<div>{{childInfo.weight}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">头围（cm）：</label>
+							<label class="w110pp">头围（cm）：</label>
 							<div>{{childInfo.headCircum}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">血型：</label>
+							<label class="w110pp">血型：</label>
 							<div>{{childInfo.bloodTypeText}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">星座：</label>
+							<label class="w110pp">星座：</label>
 							<div>{{childInfo.horoscopeText}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">生肖：</label>
+							<label class="w110pp">生肖：</label>
 							<div>{{childInfo.shengxiaoText}}</div>
 						</div>
 						<div class="pure-u-24-24 info flex">
-							<label class="w110p">备注：</label>
+							<label class="w110pp">备注：</label>
 							<div>{{childInfo.remark}}</div>
 						</div>
 					</div>
@@ -92,16 +89,24 @@
 					<div class="title">家长：</div>
 					<div class="pure-g">
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">姓名：</label>
+							<label class="w110pp">姓名：</label>
 							<div>{{userInfo.name}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">性别：</label>
+							<label class="w110pp">性别：</label>
 							<div>{{userInfo.gender == 'F' ? '男' : '女'}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
-							<label class="w110p">手机号：</label>
+							<label class="w110pp">手机号：</label>
 							<div>{{userInfo.mobile}}</div>
+						</div>
+						<div class="pure-u-12-24 info flex">
+							<label class="w110pp">会员：</label>
+							<div>{{userInfo.memberName}}</div>
+						</div>
+						<div class="pure-u-12-24 info flex">
+							<label class="w110pp">余额：</label>
+							<div>{{userInfo.balance}}</div>
 						</div>
 					</div>
 				</div>
