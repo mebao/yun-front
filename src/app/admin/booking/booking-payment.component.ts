@@ -129,6 +129,10 @@ export class BookingPaymentComponent{
 	dataCode: string;
 	// 错误收费页面
 	pageType: string;
+	// 支付类型
+	paymentType: string;
+	modalTabAddPay: boolean;
+	tranInfo: any;
 
 	constructor(
 		public adminService: AdminService,
@@ -257,7 +261,10 @@ export class BookingPaymentComponent{
 			other: [],
 		}
 
+		this.modalTabAddPay = false;
+
 		this.pageType = '';
+		this.paymentType = '';
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.bookingfee(this.id + this.url).then((data) => {
@@ -445,6 +452,67 @@ export class BookingPaymentComponent{
 	}
 
 	initMemberAndFee(results) {
+		/**
+		 * 支付预约金or支付全额
+		 * 支付全额，用户非会员，不可打折
+		 */
+		if(results.feeinfo['预约金']){
+			// 含有预约金、discount_info、支付预约金
+			this.paymentType = '30';
+			this.noBookingfeeAndHasmember(results);
+		}else{
+			// 含有预约金、discount_info、支付全额（预约金信息删除）
+			this.paymentType = '40';
+			this.tranInfo = results.tranInfo;
+			this.noBookingfee(results);
+		}
+	}
+
+	noBookingfee(results) {
+		if(results.feeinfo['医生服务费用'].length > 0){
+			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
+				results.feeinfo['医生服务费用'][i].serviceDiscount = '100';
+			}
+		}
+		if(results.feeinfo['辅助项目费用'].length > 0){
+			for(var i = 0; i < results.feeinfo['辅助项目费用'].length; i++){
+				results.feeinfo['辅助项目费用'][i].assistDiscount = '100';
+			}
+		}
+		this.fee = {
+			remark: this.fee.remark,
+			canPay: results.canPay,
+			feeInfo: {
+				serviceFeeList: results.feeinfo['医生服务费用'],
+				serviceOriginalFee: '',
+				serviceDiscount: '',
+				serviceFee: '',
+				assistFeeList: results.feeinfo['辅助项目费用'],
+				assistOriginalFee: '',
+				assistDiscount: '',
+				assistFee: '',
+				checkFeeList: results.feeinfo['检查项目费用'],
+				checkOriginalFee: '',
+				checkDiscount: '',
+				checkFee: '',
+				medicalFeeList: results.feeinfo['药方药品费用'],
+				medicalOriginalFee: '',
+				medicalDiscount: '',
+				medicalFee: '',
+				otherFeeList: results.feeinfo['其他费用'],
+				otherOriginalFee: '',
+				otherDiscount: '',
+				otherFee: '',
+				bookingFee: this.adminService.toDecimal2(results.tranInfo.amount),
+			},
+			originalCost: '',
+			fee: '',
+			realFee: '',
+		}
+		this.getFeeInfo();
+	}
+
+	noBookingfeeAndHasmember(results) {
 		if(results.feeinfo['医生服务费用'].length > 0){
 			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
 				var serviceDiscount = '';
@@ -972,6 +1040,29 @@ export class BookingPaymentComponent{
 		this.editMemberType = 'save';
 	}
 
+	// add选择支付方式
+	changeAddPayway(payway, canSelected) {
+		// 判断是否可以选择
+		if(canSelected){
+			if(this.payInfo.payway_second.way == payway.key) {
+				this.payInfo.payway_second.way = '';
+				this.payInfo.payway_second.text = '';
+				this.payInfo.payway_second.money = '';
+				for(var py of this.paywayList){
+					py.use = true;
+				}
+			}else{
+				this.payInfo.payway_second.way = payway.key;
+				this.payInfo.payway_second.text = payway.value;
+				for(var py of this.paywayList){
+					if(py.key != this.payInfo.payway_second.way){
+						py.use = false;
+					}
+				}
+			}
+		}
+	}
+
 	// 选择支付方式
 	changePayway(payway, canSelected) {
 		// 判断是否可以选择
@@ -1163,21 +1254,43 @@ export class BookingPaymentComponent{
 	}
 
 	pay() {
-		// 如果折扣，为修改状态，默认执行取消操作
-		if(this.editMemberType == 'update'){
-			this.cancelMember();
+		if(this.paymentType == '30'){
+			// 如果折扣，为修改状态，默认执行取消操作
+			if(this.editMemberType == 'update'){
+				this.cancelMember();
+			}
+			this.payInfo.payway = {
+				way: '',
+				text: '',
+				money: '',
+			};
+			this.payInfo.payway_second = {
+				way: '',
+				text: '',
+				money: '',
+			};
+			this.modalTab = true;
+		}else if(this.paymentType == '40'){
+			this.payInfo.payway_second = {
+				way: '',
+				text: '',
+				money: '',
+			};
+			this.modalTabAddPay = true;
 		}
-		this.payInfo.payway = {
-			way: '',
-			text: '',
-			money: '',
-		};
+	}
+
+	closeAddPay() {
+		this.modalTabAddPay = false;
 		this.payInfo.payway_second = {
 			way: '',
 			text: '',
 			money: '',
 		};
-		this.modalTab = true;
+		for(var py of this.paywayList){
+			py.use = true;
+		}
+		this.payInfo.stillNeedPay = this.fee.fee;
 	}
 
 	print() {
@@ -1328,6 +1441,44 @@ export class BookingPaymentComponent{
 			discount_info: JSON.stringify(discount_info),
 		}
 		this.adminService.feepay(this.id, params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
+			}else{
+				this.toastTab('支付完成', '');
+				setTimeout(() => {
+					this.router.navigate(['./admin/bookingCharge']);
+				}, 2000);
+			}
+		});
+	}
+
+	confirmAddPay() {
+		this.btnCanEdit = true;
+		this.payInfo.remark = this.adminService.trim(this.payInfo.remark);
+		if(parseFloat(this.fee.fee) < 0){
+			this.toastTab('订单错误，不可支付', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.payInfo.payway_second.way == ''){
+			this.toastTab('未选择支付方式', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.payInfo.payway_second.money == ''){
+			this.toastTab('支付金额不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+
+		this.modalTabAddPay = false;
+		var urlOptions = this.tranInfo.id + '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&need_amount=' + this.fee.originalCost
+			 + '&second_way=' + this.payInfo.payway_second.way
+			 + '&second_amount=' + this.payInfo.payway_second.money;
+		this.adminService.addtran(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 				this.btnCanEdit = false;

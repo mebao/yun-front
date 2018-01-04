@@ -44,9 +44,12 @@ export class PaymentBookingFee{
 		totalFee: string,
 		remark: string,
         bookingFee: string,
+        serviceFee: string,
 	};
     showTab: string;
     paymentInfo: {
+        member: boolean,
+        payType: string,
         type: string,
         balance: string,
         canBalance: boolean,
@@ -104,6 +107,7 @@ export class PaymentBookingFee{
 			totalFee: '',
 			remark: '',
             bookingFee: '0',
+            serviceFee: '',
 		};
 
         var urlOptions = '?username=' + this.adminService.getUser().username
@@ -122,6 +126,9 @@ export class PaymentBookingFee{
                             if(this.booking.fees[i].type == 'booking'){
                                 this.booking.bookingFee = this.booking.fees[i].fee;
                             }
+                            if(this.booking.fees[i].type == 'service'){
+                                this.booking.serviceFee = this.booking.fees[i].fee;
+                            }
                         }
                     }
                     // 预约未支付预约金，开启推送通道
@@ -137,6 +144,8 @@ export class PaymentBookingFee{
         this.showTab = '0';
 
         this.paymentInfo = {
+            member: false,
+            payType: '',
             type: '',
             balance: '',
             canBalance: false,
@@ -164,12 +173,29 @@ export class PaymentBookingFee{
                     if(parseFloat(this.paymentInfo.balance) >= parseFloat(this.booking.bookingFee)){
                         this.paymentInfo.canBalance = true;
                     }
+                    // 判断是否是会员，如果是会员，则不可支付全额
+                    if(this.adminService.isFalse(results.users[0].memberId)){
+                        this.paymentInfo.member = false;
+                    }else{
+                        this.paymentInfo.member = true;
+                        this.paymentInfo.payType = 'yyj';
+                    }
                 }
             }
         });
     }
 
+    changePayType() {
+        if(this.paymentInfo.payType == ''){
+            this.cancel();
+        }
+    }
+
     payment() {
+        if(this.paymentInfo.payType == ''){
+            this.toastTab('请先选择支付类型', 'error');
+            return;
+        }
         this.showTab = '1';
     }
 
@@ -194,7 +220,8 @@ export class PaymentBookingFee{
             // 支付
             var urlOptions = this.id + '?username=' + this.adminService.getUser().username
                  + '&token=' + this.adminService.getUser().token
-                 + '&pay_way=' + this.paymentInfo.type;
+                 + '&pay_way=' + this.paymentInfo.type
+                 + '&type=' + this.paymentInfo.payType;
             this.adminService.memberbooking(urlOptions).then((data) => {
                 if(data.status == 'no'){
                     this.toastTab(data.errorMsg, 'error');
@@ -224,7 +251,7 @@ export class PaymentBookingFee{
                 this.toastTab('服务器数据错误', 'error');
             });
         }else{
-            this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token + '&pay_way=' + this.paymentInfo.type;
+            this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token + '&pay_way=' + this.paymentInfo.type + '&type=' + this.paymentInfo.payType;
             this.paymentInfo.qrcode = true;
         }
     }

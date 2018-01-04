@@ -35,21 +35,36 @@
 			<div class="info">{{booking.remark}}</div>
 		</div>
 		<div class="item flex">
+			<label>会员卡余额：</label>
+		    <div class="info">{{paymentInfo.balance}}</div>
+		</div>
+		<!-- 非会员两种支付类型 -->
+		<div *ngIf="!paymentInfo.member" class="pure-form">
+			<div class="pure-group-control">
+				<label for="payType">支付类型：</label>
+				<select name="payType" [(ngModel)]="paymentInfo.payType" (change)="changePayType()">
+					<option value=""></option>
+					<option value="yyj">支付预约金</option>
+					<option value="service">支付全额</option>
+				</select>
+			</div>
+		</div>
+		<div *ngIf="paymentInfo.member || paymentInfo.payType == 'yyj'" class="item flex">
 			<label>预约金：</label>
 		    <div class="info">{{booking.bookingFee}}</div>
 		</div>
-		<div class="item flex">
-			<label>会员卡余额：</label>
-		    <div class="info">{{paymentInfo.balance}}</div>
+		<div *ngIf="!paymentInfo.member && paymentInfo.payType == 'service'" class="item flex">
+			<label>全额：</label>
+		    <div class="info">{{booking.serviceFee}}</div>
 		</div>
 		<div *ngIf="booking.status != '1' && booking.status != '0'">
 			<button class="pure-button">已支付预约金</button>
 		</div>
 		<div *ngIf="booking.status == '1'">
-			<button *ngIf="showTab == '0'" (click)="payment()" class="pure-button pure-button-primary">支付预约金</button>
+			<button *ngIf="showTab == '0'" (click)="payment()" class="pure-button pure-button-primary">支付</button>
 			<div *ngIf="showTab == '1'">
 				<div class="pure-form">
-					<div class="pure-group-control">
+					<div class="pure-group-control mt10">
 						<label for="type">支付方式：</label>
 						<select name="type" [(ngModel)]="paymentInfo.type">
 							<option value="member" [disabled]="!paymentInfo.canBalance">余额支付{{paymentInfo.canBalance ? '' : '（余额不足）'}}</option>

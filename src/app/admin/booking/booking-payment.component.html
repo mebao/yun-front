@@ -25,7 +25,7 @@
 					<div class="flex-1"></div>
 					<div class="flex-0"><button (click)="print()" target="_blank" class="print-btn pure-button mt10">打印</button></div>
 				</div>
-				<div *ngIf="bookingInfo.status != '5'" class="text-right mt20">
+				<div *ngIf="bookingInfo.status != '5' && paymentType == '30'" class="text-right mt20">
 					<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" class="pure-button">取消</button>
 					<button *ngIf="editMemberType != 'update'" (click)="updateMember()" class="pure-button pure-button-primary">修改折扣</button>
 					<button *ngIf="editMemberType == 'update'" (click)="saveMember()" class="pure-button pure-button-primary">保存</button>
@@ -39,9 +39,12 @@
 									<th>科室</th>
 									<th>总价</th>
 									<th class="width-lg">备注</th>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
 										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
 									</ng-container>
 								</tr>
 							</thead>
@@ -52,7 +55,7 @@
 									<td>
 										<div class="text-lg">{{service.remark}}</div>
 									</td>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<td>
 											<span *ngIf="editMemberType != 'update'">{{service.serviceDiscount}}%</span>
 											<div *ngIf="editMemberType == 'update'" class="flex">
@@ -62,8 +65,11 @@
 										</td>
 										<td>{{service.serviceFee}}</td>
 									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<td>{{service.serviceFee}}</td>
+									</ng-container>
 								</tr>
-								<ng-container *ngIf="dataCode == '1'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
 										<td colspan="5">
 											<div class="flex">
@@ -90,6 +96,32 @@
 									</tr>
 									<tr>
 										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">应收费用：</div>
+												<div class="w100p">{{fee.feeInfo.serviceFee}}</div>
+											</div>
+										</td>
+									</tr>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.serviceOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">已付费用：</div>
+												<div class="w100p">{{fee.feeInfo.bookingFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4">
 											<div class="flex">
 												<div class="flex-1 text-right">应收费用：</div>
 												<div class="w100p">{{fee.feeInfo.serviceFee}}</div>
@@ -146,9 +178,12 @@
 									<th>数量</th>
 									<th>总价</th>
 									<th class="width-lg">备注</th>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
 										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
 									</ng-container>
 								</tr>
 							</thead>
@@ -161,7 +196,7 @@
 									<td>
 										<div class="text-lg">{{assist.remark}}</div>
 									</td>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<td>
 											<span *ngIf="editMemberType != 'update'">{{assist.assistDiscount}}%</span>
 											<div *ngIf="editMemberType == 'update'" class="flex">
@@ -171,8 +206,11 @@
 										</td>
 										<td>{{assist.assistFee}}</td>
 									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<td>{{assist.assistFee}}</td>
+									</ng-container>
 								</tr>
-								<ng-container *ngIf="dataCode == '1'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
 										<td colspan="7">
 											<div class="flex">
@@ -192,6 +230,26 @@
 										</tr>
 										<tr>
 											<td colspan="7">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.assistFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="6">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.assistOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.assistOriginalFee != fee.feeInfo.assistDiscount">
+										<tr>
+											<td colspan="6">
 												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.assistFee}}</div>
@@ -241,9 +299,12 @@
 									<th>检查</th>
 									<th>总价</th>
 									<th class="width-lg">备注</th>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
 										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
 									</ng-container>
 								</tr>
 							</thead>
@@ -254,7 +315,7 @@
 									<td>
 										<div class="text-lg">{{check.remark}}</div>
 									</td>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<td>
 											<span *ngIf="editMemberType != 'update'">{{check.checkDiscount}}%</span>
 											<div *ngIf="editMemberType == 'update'" class="flex">
@@ -264,8 +325,11 @@
 										</td>
 										<td>{{check.checkFee}}</td>
 									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<td>{{check.checkFee}}</td>
+									</ng-container>
 								</tr>
-								<ng-container *ngIf="dataCode == '1'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
 										<td colspan="5">
 											<div class="flex">
@@ -285,6 +349,26 @@
 										</tr>
 										<tr>
 											<td colspan="5">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.checkFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.checkOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.checkOriginalFee != fee.feeInfo.checkDiscount">
+										<tr>
+											<td colspan="4">
 												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.checkFee}}</div>
@@ -337,9 +421,12 @@
 									<th>总价</th>
 									<th>是否优惠</th>
 									<th class="width-lg">备注</th>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
 										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
 									</ng-container>
 								</tr>
 							</thead>
@@ -354,7 +441,7 @@
 										<td>
 											<div class="text-lg">{{info.remark}}</div>
 										</td>
-										<ng-container *ngIf="dataCode == '1'">
+										<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 											<td>
 												<span *ngIf="editMemberType != 'update'">{{info.msDiscount}}%</span>
 												<div *ngIf="editMemberType == 'update'" class="flex">
@@ -364,9 +451,12 @@
 											</td>
 											<td>{{info.msFee}}</td>
 										</ng-container>
+										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<td>{{info.msFee}}</td>
+										</ng-container>
 									</tr>
 								</ng-container>
-								<ng-container *ngIf="dataCode == '1'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
 										<td colspan="8">
 											<div class="flex">
@@ -386,6 +476,26 @@
 										</tr>
 										<tr>
 											<td colspan="8">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="7">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.medicalOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.medicalOriginalFee != fee.feeInfo.medicalDiscount">
+										<tr>
+											<td colspan="7">
 												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
@@ -437,9 +547,12 @@
 									<th>数量</th>
 									<th>总价</th>
 									<th class="width-lg">备注</th>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
 										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
 									</ng-container>
 								</tr>
 							</thead>
@@ -452,7 +565,7 @@
 									<td>
 										<div class="text-lg">{{other.remark}}</div>
 									</td>
-									<ng-container *ngIf="dataCode == '1'">
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<td>
 											<span *ngIf="editMemberType != 'update'">{{other.otherDiscount}}%</span>
 											<div *ngIf="editMemberType == 'update'" class="flex">
@@ -462,8 +575,11 @@
 										</td>
 										<td>{{other.otherFee}}</td>
 									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<td>{{other.otherFee}}</td>
+									</ng-container>
 								</tr>
-								<ng-container *ngIf="dataCode == '1'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
 										<td colspan="7">
 											<div class="flex">
@@ -483,6 +599,26 @@
 										</tr>
 										<tr>
 											<td colspan="7">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.otherFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="6">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.otherOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.otherOriginalFee != fee.feeInfo.otherDiscount">
+										<tr>
+											<td colspan="6">
 												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.otherFee}}</div>
@@ -616,6 +752,56 @@
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">取消</button>
 			<button (click)="confirmPay()" class="pure-button pure-button-primary" [disabled]="btnCanEdit || payInfo.stillNeedPay != '0.00'">确认支付</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTabAddPay">
+	<div class="modal-mask" (click)="closeAddPay()"></div>
+	<div class="container">
+		<div class="title">支付</div>
+		<div class="content pad10 pure-form form-tab">
+			<div class="pure-control-group flex">
+				<label for="user" class="w150p mr20 text-right">用户：</label>
+				<label class="flex-1">{{bookingInfo.creatorName}}</label>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="member" class="w150p mr20 text-right">余额：</label>
+				<label>{{userMember.balance}}</label>
+				<div *ngIf="moduleAuthority.recharge" class="flex-1 ml20">
+					<button (click)="recharge()" class="pure-button pure-button-primary">充值</button>
+				</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="fee" class="w150p mr20 text-right">消费金额：</label>
+				<label class="flex-1">{{fee.fee}}</label>
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="pay_way" class="w150p mr20 text-right">
+					<span>支付方式</span>
+					<span class="required">*</span>：
+				</label>
+				<div class="flex-1">
+					<div class="flex flex-wrap pay-list">
+						<div *ngFor="let payway of paywayList" class="item" (click)="changeAddPayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)" [ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway_second.way == payway.key}">
+							{{payway.value}}{{payway.key == 'member' ? (payInfo.memberBalance ? '' : '（余额不足）') : ''}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="payInfo.payway_second.way != ''" class="pure-control-group flex">
+				<label for="user" class="w150p mr20 text-right">{{payInfo.payway_second.text}}：</label>
+				<div class="flex-1">
+					<input type="number" step="0.01" [(ngModel)]="payInfo.payway_second.money" (keyup)="changeMoney('payway_second')" placeholder="请输入{{payInfo.payway_second.text}}金额">
+				</div>
+			</div>
+			<div class="pure-control-group flex">
+				<label for="user" class="w150p mr20 text-right">还需支付：</label>
+				<label class="flex-1">{{payInfo.stillNeedPay}}</label>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeAddPay()" class="pure-button">取消</button>
+			<button (click)="confirmAddPay()" class="pure-button pure-button-primary" [disabled]="btnCanEdit || payInfo.stillNeedPay != '0.00'">确认支付</button>
 		</div>
 	</div>
 </div>

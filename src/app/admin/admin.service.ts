@@ -1101,6 +1101,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 身高体重成长折线图
+	private childgrowthchartUrl = this.url + '/mebcrm/childgrowthchart';
+	childgrowthchart(urlOptions): Promise<Data>{
+		return this.http.get(this.childgrowthchartUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 追加交易信息(服全款者有新消费项目)
+	private addtranUrl = this.url + '/mebcrm/addtran/';
+	addtran(urlOptions): Promise<Data>{
+		return this.http.get(this.addtranUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
