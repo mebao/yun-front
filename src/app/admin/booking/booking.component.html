@@ -6,6 +6,18 @@
 			<fieldset>
 				<div class="pure-g pure-tab">
 					<div class="pure-u-8-24">
+						<div class="pure-control-group">
+							<label for="referee">
+								<span>推荐人</span>
+							</label>
+							<select id="referee" name="referee" [(ngModel)]="bookingInfo.referee" [disabled]="editType == 'update'">
+								<ng-container *ngFor="let admin of adminList">
+									<option value="{{admin.string}}">{{admin.realName}}</option>
+								</ng-container>
+							</select>
+						</div>
+					</div>
+					<div class="pure-u-8-24">
 						<div *ngIf="editType != 'update' && !listChild.childId" class="pure-control-group">
 							<label for="child">
 								<span>预约宝宝</span>
@@ -44,7 +56,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="pure-u-8-24"></div>
 					<div class="pure-u-8-24">
 						<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
 							<label for="user_doctor">

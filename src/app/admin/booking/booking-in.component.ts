@@ -41,6 +41,7 @@ export class BookingInComponent{
 		userDoctorName: string,
 		remark: string,
 		bookingFee: string,
+		refereeId: string,
 	};
 	bookingInfo: {
 		type: string,
@@ -59,6 +60,7 @@ export class BookingInComponent{
 		birth_date: string,
 		remark: string,
 		booking_fee: string,
+		referee: string,
 	};
 	servicelist: any[];
 	doctorlist: any[];
@@ -82,6 +84,8 @@ export class BookingInComponent{
 	modalTabAgain: boolean;
 	// 加载中
 	loadingShow: boolean;
+	// 推荐人列表
+	adminList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -205,6 +209,7 @@ export class BookingInComponent{
 			// {key: 30, type: 'overdue', value: '23:00'},
 			// {key: 31, type: 'overdue', value: '23:30'},
 		];
+		this.adminList = [];
 
 		this.booking = {
 			age: '',
@@ -223,6 +228,7 @@ export class BookingInComponent{
 			userDoctorName: '',
 			remark: '',
 			bookingFee: '',
+			refereeId: '',
 		};
 
 		this.bookingInfo = {
@@ -241,6 +247,7 @@ export class BookingInComponent{
 			birth_date: '',
 			remark: '',
 			booking_fee: '',
+			referee: '',
 		}
 	}
 
@@ -267,6 +274,27 @@ export class BookingInComponent{
 	}
 
 	getData() {
+		// 获取推荐人信息
+		var adminlistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.adminlist(adminlistUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.adminlist.length > 0){
+					for(var key in results.adminlist){
+						results.adminlist[key].string = JSON.stringify({
+							id: results.adminlist[key].id,
+							name: results.adminlist[key].realName,
+						});
+					}
+				}
+				this.adminList = results.adminlist;
+			}
+		});
+
 		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -315,6 +343,15 @@ export class BookingInComponent{
 			}
 		}
 		this.modalTab = false;
+		// 获取推荐人
+		if(this.adminList.length > 0){
+			for(var key in this.adminList){
+				if(this.booking.refereeId == this.adminList[key].id){
+					this.bookingInfo.referee = this.adminList[key].string;
+				}
+			}
+		}
+
 		//根据选择的预约，初始化页面
 		if(this.servicelist.length > 0){
 			for(var i = 0; i < this.servicelist.length; i++){
@@ -598,6 +635,8 @@ export class BookingInComponent{
 			child_id: JSON.parse(this.bookingInfo.child).childId,
 			remark: this.adminService.trim(this.bookingInfo.remark),
 			booking_fee: this.bookingInfo.booking_fee.toString(),
+			referee_id: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).id,
+			referee_name: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).name,
 		}
 		this.adminService.bookingcreate(param).then((data) => {
 			if(data.status == 'no'){

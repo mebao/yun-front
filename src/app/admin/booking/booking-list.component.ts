@@ -79,6 +79,8 @@ export class BookingListComponent implements OnInit{
 		},
 		// 退还部分预约金
 		backFee: string,
+		refereeId: string,
+		refereeName: string,
 	};
 	hasData: boolean;
 	// 家长
@@ -292,7 +294,9 @@ export class BookingListComponent implements OnInit{
 				amount: '',
 				typeText: '',
 			},
-			backFee: ''
+			backFee: '',
+			refereeId: '',
+			refereeName: '',
 		};
 	}
 

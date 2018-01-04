@@ -8,6 +8,18 @@
 		<fieldset>
 			<div class="pure-g pure-tab">
 				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="referee">
+							<span>推荐人</span>
+						</label>
+						<select id="referee" name="referee" [(ngModel)]="bookingInfo.referee" [disabled]="booking.refNo !=''">
+							<ng-container *ngFor="let admin of adminList">
+								<option value="{{admin.string}}">{{admin.realName}}</option>
+							</ng-container>
+						</select>
+					</div>
+				</div>
+				<div class="pure-u-8-24">
 					<div *ngIf="booking.refNo ==''" class="pure-control-group">
 						<label for="child">预约宝宝</label>
 						<div class="flex">
@@ -32,7 +44,6 @@
 						</select>
 					</div>
 				</div>
-				<div class="pure-u-8-24"></div>
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="user_doctor">预约医生</label>

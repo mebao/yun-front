@@ -37,6 +37,7 @@ export class BookingComponent implements OnInit{
 		remark: string,
 		booking_fee: string,
 		status: string,
+		referee: string,
 	};
 	booking: {
 		age: string;
@@ -56,6 +57,7 @@ export class BookingComponent implements OnInit{
 		mobile: string;
 		remark: string,
 		status: string,
+		refereeId: string,
 	};
 	users: [{}];
 	servicelist: [{}];
@@ -100,6 +102,8 @@ export class BookingComponent implements OnInit{
 	successBookingId: string;
 	// 显示加载中
 	loadingShow: boolean;
+	// 推荐人列表
+	adminList: any[];
 
 	constructor(
 		public adminService: AdminService,
@@ -162,6 +166,7 @@ export class BookingComponent implements OnInit{
 			remark: '',
 			booking_fee: '',
 			status: '',
+			referee: '',
 		}
 
 		this.booking = {
@@ -182,6 +187,7 @@ export class BookingComponent implements OnInit{
 			mobile: '',
 			remark: '',
 			status: '',
+			refereeId: '',
 		};
 
 		this.selectSearchTitle = '请选择宝宝';
@@ -230,6 +236,7 @@ export class BookingComponent implements OnInit{
 			// {key: 30, type: 'overdue', value: '23:00'},
 			// {key: 31, type: 'overdue', value: '23:30'},
 		];
+		this.adminList = [];
 
 		//修改
 		this.route.queryParams.subscribe((params) => {
@@ -326,6 +333,30 @@ export class BookingComponent implements OnInit{
 	}
 
 	getData() {
+		// 获取推荐人信息
+		var adminlistUrl = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.adminlist(adminlistUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.adminlist.length > 0){
+					for(var key in results.adminlist){
+						results.adminlist[key].string = JSON.stringify({
+							id: results.adminlist[key].id,
+							name: results.adminlist[key].realName,
+						});
+						if(this.booking.refereeId == results.adminlist[key].id){
+							this.bookingInfo.referee = results.adminlist[key].string;
+						}
+					}
+				}
+				this.adminList = results.adminlist;
+			}
+		});
+		
 		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -761,6 +792,8 @@ export class BookingComponent implements OnInit{
 			// birth_date: this.childs.length == 0 ? f.value.birth_date : null,
 			remark: this.adminService.trim(this.bookingInfo.remark),
 			booking_fee: (this.editType == 'create' || this.bookingInfo.status == '1') ? this.bookingInfo.booking_fee.toString() : null,
+			referee_id: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).id,
+			referee_name: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).name,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
