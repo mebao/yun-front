@@ -741,6 +741,7 @@ export class DocbookingComponent implements OnInit{
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
 			booking_id: this.id,
 			project_id: JSON.parse(this.addAssistInfo.project).id,
 			project_name: JSON.parse(this.addAssistInfo.project).name,
