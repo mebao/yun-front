@@ -81,6 +81,12 @@ export class BookingListComponent implements OnInit{
 		backFee: string,
 		refereeId: string,
 		refereeName: string,
+		// 用于处理支付全额
+		tranInfo: {
+			id: string,
+			amount: string,
+			wayText: string,
+		}
 	};
 	hasData: boolean;
 	// 家长
@@ -297,6 +303,11 @@ export class BookingListComponent implements OnInit{
 			backFee: '',
 			refereeId: '',
 			refereeName: '',
+			tranInfo: {
+				id: '',
+				amount: '',
+				wayText: '',
+			}
 		};
 	}
 
@@ -634,7 +645,7 @@ export class BookingListComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
+		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.tranInfo.id ? this.booking.tranInfo.amount : this.booking.yyj.amount)){
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
 			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
