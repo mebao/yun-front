@@ -652,7 +652,7 @@ export class BookingListComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		this.modalBackBookingFee = false;
+		this.loadingShow = true;
 		var urlOptions = this.booking.bookingId + this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&refund_fee=' + this.booking.backFee
 		this.adminService.bookingrefund(urlOptions).then((data) => {
@@ -660,10 +660,13 @@ export class BookingListComponent implements OnInit{
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
 				this.btnCanEdit = false;
+				this.loadingShow = false;
 			}else{
 				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约金退还成功', 3000);
 				this.toastService.toast(toastCfg);
+				this.modalBackBookingFee = false;
 				this.modalTab = false;
+				this.loadingShow = false;
 				this.btnCanEdit = false;
 				this.initBooking();
 				this.search();
