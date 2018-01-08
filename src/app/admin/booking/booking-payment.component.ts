@@ -344,6 +344,25 @@ export class BookingPaymentComponent{
 											}
 										});
 									}else{
+										// 不是会员，会员折扣，由100更改为1
+										this.userMember = {
+											name: '',
+											member: false,
+											balance: '0.00',
+											service: '1',
+											service_session: '1',
+											services: [],
+											assist: '1',
+											assist_session: '1',
+											assists: [],
+											check: '1',
+											check_session: '1',
+											prescript: '1',
+											prescript_session: '1',
+											other: '1',
+											other_session: '1',
+										}
+
 										//计算折扣后的费用信息
 										this.getFeeInfoFirst(this.userMember, results);
 									}

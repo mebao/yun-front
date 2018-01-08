@@ -292,6 +292,18 @@ export class PaymentPrintComponent{
 										}
 									});
 								}else{
+									// 不是会员，会员折扣，由100更改为1
+									this.userMember = {
+										member: false,
+										balance: '0.00',
+										service: '1',
+										services: [],
+										assist: '1',
+										assists: [],
+										check: '1',
+										prescript: '1',
+										other: '1',
+									}
 									//计算折扣后的费用信息
 									this.getFeeInfoFirst(this.userMember, results);
 								}

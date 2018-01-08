@@ -60,6 +60,7 @@ export class PaymentBookingFee{
     // 禁止支付按钮连续提交
     btnCanEdit: boolean;
     modalConfirmTab: boolean;
+    loadingShow = false;
 
     constructor(
         public adminService: AdminService,
@@ -109,6 +110,8 @@ export class PaymentBookingFee{
             bookingFee: '0',
             serviceFee: '',
 		};
+
+        this.loadingShow = true;
 
         var urlOptions = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
@@ -165,6 +168,7 @@ export class PaymentBookingFee{
              + '&id=' + id;
         this.adminService.searchuser(urlOptions).then((data) => {
             if(data.status == 'no'){
+                this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
@@ -181,6 +185,7 @@ export class PaymentBookingFee{
                         this.paymentInfo.payType = 'yyj';
                     }
                 }
+                this.loadingShow = false;
             }
         });
     }
