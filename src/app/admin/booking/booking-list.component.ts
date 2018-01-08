@@ -662,7 +662,7 @@ export class BookingListComponent implements OnInit{
 				this.btnCanEdit = false;
 				this.loadingShow = false;
 			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约金退还成功', 3000);
+				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
 				this.toastService.toast(toastCfg);
 				this.modalBackBookingFee = false;
 				this.modalTab = false;

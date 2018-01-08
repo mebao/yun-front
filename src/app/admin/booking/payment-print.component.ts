@@ -115,6 +115,13 @@ export class PaymentPrintComponent{
 	}
 	// 折扣方式
 	dataCode: string;
+	// 支付类型
+	paymentType: string;
+	tranInfo: {
+		amount: string,
+		wayText: string,
+		time: string,
+	};
 
 	constructor(
 		public adminService: AdminService,
@@ -182,13 +189,13 @@ export class PaymentPrintComponent{
 		this.userMember = {
 			member: false,
 			balance: '0.00',
-			service: '1.00',
+			service: '100',
 			services: [],
-			assist: '1.00',
+			assist: '100',
 			assists: [],
-			check: '1.00',
-			prescript: '1.00',
-			other: '1.00',
+			check: '100',
+			prescript: '100',
+			other: '100',
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -211,6 +218,13 @@ export class PaymentPrintComponent{
 			other: [],
 		}
 
+		this.paymentType = '';
+		this.tranInfo = {
+			amount: '',
+			wayText: '',
+			time: '',
+		};
+
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.bookingfee(this.id + this.url).then((data) => {
@@ -229,8 +243,10 @@ export class PaymentPrintComponent{
 								this.toastTab(userData.errorMsg, 'error');
 							}else{
 								var userResults = JSON.parse(JSON.stringify(userData.results));
-								if(userResults.users.length > 0 && userResults.users[0].memberId){
+								if(userResults.users.length > 0){
 									this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+								}
+								if(userResults.users[0].memberId){
 									//获取会员折扣信息
 									var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 										 + '&id=' + userResults.users[0].memberId + '&status=1';
@@ -297,8 +313,10 @@ export class PaymentPrintComponent{
 							this.toastTab(userData.errorMsg, 'error');
 						}else{
 							var userResults = JSON.parse(JSON.stringify(userData.results));
-							if(userResults.users.length > 0 && userResults.users[0].memberId){
+							if(userResults.users.length > 0){
 								this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+							}
+							if(userResults.users[0].memberId){
 								//获取会员折扣信息
 								var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 									 + '&id=' + userResults.users[0].memberId + '&status=1';
@@ -336,12 +354,12 @@ export class PaymentPrintComponent{
 											this.userMember.other = memberResults.list[0].other;
 										}
 										//计算折扣后的费用信息
-										this.getFeeInfo(this.userMember, results);
+										this.initMemberAndFee(this.userMember, results);
 									}
 								});
 							}else{
 								//计算折扣后的费用信息
-								this.getFeeInfo(this.userMember, results);
+								this.initMemberAndFee(this.userMember, results);
 							}
 							sessionStorage.setItem('bookingFee', JSON.stringify(results));
 						}
@@ -369,16 +387,33 @@ export class PaymentPrintComponent{
 
 	}
 
-	getFeeInfo(userMember, results) {
+	initMemberAndFee(userMember, results) {
+		/**
+		 * 支付预约金or支付全额
+		 * 支付全额，用户非会员，不可打折
+		 */
+		if(results.feeinfo['预约金']){
+			// 含有预约金、discount_info、支付预约金
+			this.paymentType = '30';
+			this.noBookingfeeAndHasmember(results);
+		}else{
+			// 含有预约金、discount_info、支付全额（预约金信息删除）
+			this.paymentType = '40';
+			this.tranInfo = results.tranInfo;
+			this.noBookingfee(results);
+		}
+	}
+
+	noBookingfeeAndHasmember(results) {
 		if(results.feeinfo['医生服务费用'].length > 0){
 			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
 				var serviceDiscount = '';
 				// 遍历会员科室折扣
-				if(userMember.services.length > 0){
-					for(var j = 0; j < userMember.services.length; j++){
+				if(this.userMember.services.length > 0){
+					for(var j = 0; j < this.userMember.services.length; j++){
 						// 通过serviceId
-						if(results.feeinfo['医生服务费用'][i].serviceId == userMember.services[j].serviceId){
-							serviceDiscount = userMember.services[j].discount;
+						if(results.feeinfo['医生服务费用'][i].serviceId == this.userMember.services[j].serviceId){
+							serviceDiscount = this.userMember.services[j].discount;
 						}
 					}
 				}
@@ -389,11 +424,11 @@ export class PaymentPrintComponent{
 			for(var i = 0; i < results.feeinfo['辅助项目费用'].length; i++){
 				var assistDiscount = '';
 				// 遍历会员辅助项目折扣
-				if(userMember.assists.length > 0){
-					for(var j = 0; j < userMember.assists.length; j++){
+				if(this.userMember.assists.length > 0){
+					for(var j = 0; j < this.userMember.assists.length; j++){
 						// 通过assistId
-						if(results.feeinfo['辅助项目费用'][i].projectId == userMember.assists[j].assistId){
-							assistDiscount = userMember.assists[j].discount;
+						if(results.feeinfo['辅助项目费用'][i].projectId == this.userMember.assists[j].assistId){
+							assistDiscount = this.userMember.assists[j].discount;
 						}
 					}
 				}
@@ -430,7 +465,54 @@ export class PaymentPrintComponent{
 			originalCost: '',
 		}
 
+		this.getFeeInfo();
+	}
 
+	noBookingfee(results) {
+		if(results.feeinfo['医生服务费用'].length > 0){
+			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
+				results.feeinfo['医生服务费用'][i].serviceDiscount = '100';
+			}
+		}
+		if(results.feeinfo['辅助项目费用'].length > 0){
+			for(var i = 0; i < results.feeinfo['辅助项目费用'].length; i++){
+				results.feeinfo['辅助项目费用'][i].assistDiscount = '100';
+			}
+		}
+		this.fee = {
+			remark: this.fee.remark,
+			canPay: results.canPay,
+			feeInfo: {
+				serviceFeeList: results.feeinfo['医生服务费用'],
+				serviceOriginalFee: '',
+				serviceDiscount: '',
+				serviceFee: '',
+				assistFeeList: results.feeinfo['辅助项目费用'],
+				assistOriginalFee: '',
+				assistDiscount: '',
+				assistFee: '',
+				checkFeeList: results.feeinfo['检查项目费用'],
+				checkOriginalFee: '',
+				checkDiscount: '',
+				checkFee: '',
+				medicalFeeList: results.feeinfo['药方药品费用'],
+				medicalOriginalFee: '',
+				medicalDiscount: '',
+				medicalFee: '',
+				otherFeeList: results.feeinfo['其他费用'],
+				otherOriginalFee: '',
+				otherDiscount: '',
+				otherFee: '',
+				bookingFee: this.adminService.toDecimal2(results.tranInfo.amount),
+			},
+			fee: '',
+			originalCost: '',
+		}
+
+		this.getFeeInfo();
+	}
+
+	getFeeInfo() {
 		// 折扣费用
 		var fee = 0;
 		// 原价

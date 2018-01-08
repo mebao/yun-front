@@ -11,9 +11,9 @@
 			<div class="flex-1 flex"><div class="flex-0">性别：</div><div class="flex-1 fill">{{bookingInfo.genderText}}</div></div>
 		</div>
 		<div class="flex mt20">
-			<div class="flex-1 flex"><div class="flex-0">预约金：</div><div class="flex-1 fill">{{bookingInfo.yyj.amount}}元</div></div>
-			<div class="flex-1 flex"><div class="flex-0">支付方式：</div><div class="flex-1 fill">{{bookingInfo.yyj.wayText}}</div></div>
-			<div class="flex-1 flex"><div class="flex-0">支付日期：</div><div class="flex-1 fill">{{bookingInfo.yyj.time}}</div></div>
+			<div class="flex-1 flex"><div class="flex-0">{{paymentType == '30' ? '预约金' : '服务全额'}}：</div><div class="flex-1 fill">{{(paymentType == '30' ? bookingInfo.yyj.amount : tranInfo.amount) | toDecimal2}}元</div></div>
+			<div class="flex-1 flex"><div class="flex-0">支付方式：</div><div class="flex-1 fill">{{paymentType == '30' ? bookingInfo.yyj.wayText : tranInfo.wayText}}</div></div>
+			<div class="flex-1 flex"><div class="flex-0">支付日期：</div><div class="flex-1 fill">{{paymentType == '30' ? bookingInfo.yyj.time : tranInfo.time}}</div></div>
 		</div>
 		<div class="flex mt20">
 			<div class="flex-1 flex"><div class="flex-0">收费日期：</div><div class="flex-1 fill">{{tran.info.time}}</div></div>
@@ -68,7 +68,7 @@
 						{{service.serviceDiscountFee}}
 					</ng-container>
 				</div>
-				<div class="w20">已支付预约金{{bookingInfo.yyj.amount}}元</div>
+				<div class="w20">已支付{{paymentType == '30' ? '预约金' : '服务全额'}}{{(paymentType == '30' ? bookingInfo.yyj.amount : tranInfo.amount) | toDecimal2}}元</div>
 				<div class="w15">{{fee.feeInfo.serviceFee}}</div>
 			</div>
 			<div class="flex" *ngFor="let assist of fee.feeInfo.assistFeeList">
