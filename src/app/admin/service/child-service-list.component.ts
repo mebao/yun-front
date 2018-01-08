@@ -97,7 +97,7 @@ export class ChildServiceListComponent implements OnInit{
 			token: this.adminService.getUser().token,
 			status: status == 1 ? '0' : '1'
 		}
-		this.adminService.servicelisttatus(_id,param).then((data) => {
+		this.adminService.clinicservicestatus(_id,param).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');

@@ -180,8 +180,8 @@ export class AdminService{
 	}
 
 	//修改宝宝科室状态(停用)
-	private servicelisttatusUrl = this.url + '/mebcrm/servicelisttatus/';
-	servicelisttatus(urlOptions,param): Promise<Data>{
+	private servicelisttatusUrl = this.url + '/mebcrm/clinicservicestatus/';
+	clinicservicestatus(urlOptions,param): Promise<Data>{
 		return this.http.post(this.servicelisttatusUrl + urlOptions, JSON.stringify(param))
 			.toPromise()
 			.then(response => response.json() as Data)
