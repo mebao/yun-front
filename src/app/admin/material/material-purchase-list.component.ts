@@ -31,8 +31,10 @@ export class MaterialPurchaseListComponent{
 	info: {
 		b_date: string,
 		b_date_num: number,
+		b_date_text: string,
 		l_date: string,
 		l_date_num: number,
+		l_date_text: string,
 		type: string,
 	}
 
@@ -76,12 +78,20 @@ export class MaterialPurchaseListComponent{
 		this.hasData = false;
 
 		this.list = [];
-		this.info = {
-			b_date: '',
-			b_date_num: 0,
-			l_date: '',
-			l_date_num: 0,
-			type: '3,4',
+
+		if(JSON.parse(sessionStorage.getItem('search-materialPurchaseList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-materialPurchaseList'));
+			console.log(this.info);
+		}else{
+			this.info = {
+				b_date: '',
+				b_date_num: 0,
+				b_date_text: '',
+				l_date: '',
+				l_date_num: 0,
+				l_date_text: '',
+				type: '3,4',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -112,6 +122,7 @@ export class MaterialPurchaseListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-materialPurchaseList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){
 			urlOptions += '&b_date=' + this.info.b_date;
@@ -129,9 +140,13 @@ export class MaterialPurchaseListComponent{
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
 		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+		this.info[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	goUrl(_url) {
+		sessionStorage.removeItem('search-materialList');
+		sessionStorage.removeItem('search-materialPurchaseList');
+		sessionStorage.removeItem('search-materialHasList');
 		this.router.navigate([_url]);
 	}
 

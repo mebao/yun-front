@@ -129,6 +129,9 @@ export class MaterialLostListComponent{
 	}
 
 	goUrl(_url) {
+		sessionStorage.removeItem('search-materialList');
+		sessionStorage.removeItem('search-materialPurchaseList');
+		sessionStorage.removeItem('search-materialHasList');
 		this.router.navigate([_url]);
 	}
 

@@ -384,6 +384,10 @@ export class LeftNavComponent{
 		}
 	}
 
+	goPage(type) {
+		sessionStorage.removeItem('search-' + type);
+	}
+
 	// changeTab(_value) {
 	// 	this.selectedTab = _value;
 	// 	this.showTab = !this.showTab;

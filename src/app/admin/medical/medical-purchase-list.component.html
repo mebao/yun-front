@@ -14,11 +14,11 @@
 		</div>
 		<div class="pure-control-group mr10 flex">
 			<label for="b_date">入库时间：</label>
-			<select-date title="请选择日期" [showClear]="true" [endDate]="info.l_date_num" (onVoted)="changeDate($event, 'b_date')"></select-date>
+			<select-date title="请选择日期" [showClear]="true" [dateText]="info.b_date_text" [endDate]="info.l_date_num" (onVoted)="changeDate($event, 'b_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
 			<label for="l_date" class="text-center">至</label>
-			<select-date title="请选择日期" [showClear]="true" [startDate]="info.b_date_num" (onVoted)="changeDate($event, 'l_date')"></select-date>
+			<select-date title="请选择日期" [showClear]="true" [dateText]="info.l_date_text" [startDate]="info.b_date_num" (onVoted)="changeDate($event, 'l_date')"></select-date>
 		</div>
 		<div class="pure-control-group mr10">
 			<label for="type">类型：</label>

@@ -72,9 +72,14 @@ export class ChildListComponent{
 
 		this.childList = [];
 		this.hasData = false;
-		this.searchInfo = {
-			name: '',
-			mobile: '',
+
+		if(JSON.parse(sessionStorage.getItem('search-childList'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-childList'));
+		}else{
+			this.searchInfo = {
+				name: '',
+				mobile: '',
+			}
 		}
 
 		//获取宝宝列表
@@ -86,6 +91,7 @@ export class ChildListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-childList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;

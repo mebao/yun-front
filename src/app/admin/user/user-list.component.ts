@@ -105,10 +105,14 @@ export class UserListComponent{
 			pay_way: '',
 		}
 
-		this.searchInfo = {
-			name: '',
-			mobile: '',
-			child_name: '',
+		if(JSON.parse(sessionStorage.getItem('search-userList'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-userList'));
+		}else{
+			this.searchInfo = {
+				name: '',
+				mobile: '',
+				child_name: '',
+			}
 		}
 
 		this.users = [];
@@ -159,6 +163,7 @@ export class UserListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-userList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;

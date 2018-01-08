@@ -88,10 +88,14 @@ export class AssistListComponent{
 			});
 		}
 
-        this.searchInfo = {
-            name: '',
-            type: '',
-            status: '1'
+        if(JSON.parse(sessionStorage.getItem('search-assistList'))){
+            this.searchInfo = JSON.parse(sessionStorage.getItem('search-assistList'));
+        }else{
+            this.searchInfo = {
+                name: '',
+                type: '',
+                status: '1'
+            }
         }
         this.url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
@@ -111,6 +115,7 @@ export class AssistListComponent{
     }
 
     search() {
+        sessionStorage.setItem('search-assistList', JSON.stringify(this.searchInfo));
         var urlOptions = this.url;
         if(!this.adminService.isFalse(this.searchInfo.name)){
             urlOptions += '&name=' + this.searchInfo.name;

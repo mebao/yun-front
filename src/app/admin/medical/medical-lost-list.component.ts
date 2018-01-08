@@ -129,6 +129,9 @@ export class MedicalLostListComponent{
 	}
 
 	goUrl(_url) {
+		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalPurchaseList');
+		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
 	}
 

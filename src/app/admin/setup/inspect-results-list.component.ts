@@ -78,18 +78,22 @@ export class InspectResultsListComponent{
 		this.loadingShow = true;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
-		this.info = {
-			check_name: '',
-			doctor_name: '',
-			child_name: '',
-			ischeck: '0',
-			today: '',
-			b_date: todayDate,
-			b_date_text: this.adminService.dateFormat(todayDate),
-			b_date_num: new Date(todayDate).getTime(),
-			e_date: todayDate,
-			e_date_text: this.adminService.dateFormat(todayDate),
-			e_date_num: new Date(todayDate).getTime(),
+		if(JSON.parse(sessionStorage.getItem('search-inspectResultsList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-inspectResultsList'));
+		}else{
+			this.info = {
+				check_name: '',
+				doctor_name: '',
+				child_name: '',
+				ischeck: '0',
+				today: '',
+				b_date: todayDate,
+				b_date_text: this.adminService.dateFormat(todayDate),
+				b_date_num: new Date(todayDate).getTime(),
+				e_date: todayDate,
+				e_date_text: this.adminService.dateFormat(todayDate),
+				e_date_num: new Date(todayDate).getTime(),
+			}
 		}
 
 		this.hasData = false;
@@ -155,9 +159,11 @@ export class InspectResultsListComponent{
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
 		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+		this.info[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	search() {
+		sessionStorage.setItem('search-inspectResultsList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.check_name != ''){
 			urlOptions += '&check_name=' + this.info.check_name;

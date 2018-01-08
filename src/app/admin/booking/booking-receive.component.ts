@@ -35,8 +35,10 @@ export class BookingReceiveComponent{
 		creator_name: string,
 		cdate_less: string,
 		cdate_less_num: number,
+		cdate_less_text: string,
 		cdate_big: string,
 		cdate_big_num: number,
+		cdate_big_text: string,
 		bdate_less: string,
 		bdate_less_num: number,
 		bdate_less_text: string,
@@ -86,21 +88,27 @@ export class BookingReceiveComponent{
 		this.loadingShow = true;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
-		this.searchInfo = {
-			doctor_id: '',
-			service_id: '',
-			mobile: '',
-			creator_name: '',
-			cdate_less: '',
-			cdate_less_num: 0,
-			cdate_big: '',
-			cdate_big_num: 0,
-			bdate_less: todayDate,
-			bdate_less_num: new Date(todayDate).getTime(),
-			bdate_less_text: this.adminService.dateFormat(todayDate),
-			bdate_big: todayDate,
-			bdate_big_num: new Date(todayDate).getTime(),
-			bdate_big_text: this.adminService.dateFormat(todayDate),
+		if(JSON.parse(sessionStorage.getItem('search-bookingReceive'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-bookingReceive'));
+		}else{
+			this.searchInfo = {
+				doctor_id: '',
+				service_id: '',
+				mobile: '',
+				creator_name: '',
+				cdate_less: '',
+				cdate_less_num: 0,
+				cdate_less_text: '',
+				cdate_big: '',
+				cdate_big_num: 0,
+				cdate_big_text: '',
+				bdate_less: todayDate,
+				bdate_less_num: new Date(todayDate).getTime(),
+				bdate_less_text: this.adminService.dateFormat(todayDate),
+				bdate_big: todayDate,
+				bdate_big_num: new Date(todayDate).getTime(),
+				bdate_big_text: this.adminService.dateFormat(todayDate),
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -168,6 +176,8 @@ export class BookingReceiveComponent{
 
 	//查询
 	search() {
+		// 记录搜索条件
+		sessionStorage.setItem('search-bookingReceive', JSON.stringify(this.searchInfo));
 		//列表
 		var urlOptionsList = this.getUrlOptios();
 		//接诊个人和接诊所有
@@ -193,6 +203,7 @@ export class BookingReceiveComponent{
 	changeDate(_value, key) {
 		this.searchInfo[key] = JSON.parse(_value).value;
 		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+		this.searchInfo[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	//查看

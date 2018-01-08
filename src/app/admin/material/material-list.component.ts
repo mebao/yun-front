@@ -68,9 +68,14 @@ export class MaterialListComponent{
 		this.loadingShow = true;
 
 		this.hasData = false;
-		this.info = {
-			name: '',
-			type: '3,4',
+
+		if(JSON.parse(sessionStorage.getItem('search-materialList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-materialList'));
+		}else{
+			this.info = {
+				name: '',
+				type: '3,4',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -96,6 +101,7 @@ export class MaterialListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-materialList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;
@@ -107,6 +113,9 @@ export class MaterialListComponent{
 	}
 
 	goUrl(_url) {
+		sessionStorage.removeItem('search-materialList');
+		sessionStorage.removeItem('search-materialPurchaseList');
+		sessionStorage.removeItem('search-materialHasList');
 		this.router.navigate([_url]);
 	}
 

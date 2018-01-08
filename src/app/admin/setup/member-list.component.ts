@@ -75,9 +75,13 @@ export class MemberListComponent{
 		this.memberList = [];
 		this.hasData = false;
 
-		this.searchInfo = {
-			name: '',
-			status: '',
+		if(JSON.parse(sessionStorage.getItem('search-memberList'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-memberList'));
+		}else{
+			this.searchInfo = {
+				name: '',
+				status: '',
+			}
 		}
 
 		// 获取诊所科室
@@ -94,6 +98,7 @@ export class MemberListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-memberList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;

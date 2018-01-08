@@ -44,13 +44,15 @@
 	  	<a
 			*ngIf="clinicRole.bookingReceive.use != ''"
 			routerLink="./bookingReceive"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('bookingReceive')">
 				接诊
 		</a>
 	  	<a
 			*ngIf="clinicRole.inspectResultsList.use != ''"
 			routerLink="./inspectResultsList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('inspectResultsList')">
 				实验室检查
 		</a>
 	  	<a
@@ -68,7 +70,8 @@
 	  	<a
 			*ngIf="clinicRole.bookingCharge.use != ''"
 			routerLink="./bookingCharge"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('bookingCharge')">
 				收费
 		</a>
 	  	<a
@@ -80,7 +83,8 @@
 	  	<a
 			*ngIf="clinicRole.bookingFollowupsList.use != ''"
 			routerLink="./bookingFollowupsList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('bookingFollowupsList')">
 				随访管理
 		</a>
 	  	<a
@@ -98,43 +102,50 @@
 	  	<a
 			*ngIf="clinicRole.assistList.use != ''"
 			routerLink="./assistList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('assistList')">
 				辅助治疗
 		</a>
 	  	<a
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
 			routerLink="./medical/supplierList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('supplierList')">
 				供应商管理
 		</a>
 	  	<a
 			*ngIf="clinicRole.materialList.use != ''"
 			routerLink="./material/list"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('materialList')">
 				物资管理
 		</a>
 	  	<a
 			*ngIf="clinicRole.medicalList.use != ''"
 			routerLink="./medical/list"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('medicalList')">
 				药房
 		</a>
 	  	<a
 			*ngIf="clinicRole.memberList.use != ''"
 			routerLink="./memberList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('memberList')">
 				会员管理
 		</a>
 	  	<a
 			*ngIf="clinicRole.userList.use != ''"
 			routerLink="./userList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('userList')">
 				用户管理
 		</a>
 	  	<a
 			*ngIf="clinicRole.childList.use != ''"
 			routerLink="./childList"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('childList')">
 				病人库
 		</a>
 	  	<a
@@ -146,7 +157,8 @@
 	  	<a
 			*ngIf="clinicRole.crmUserList.use != ''"
 			routerLink="./crmuser/list"
-			routerLinkActive="active">
+			routerLinkActive="active"
+			(click)="goPage('crmuserList')">
 				员工管理
 		</a>
 	  	<a

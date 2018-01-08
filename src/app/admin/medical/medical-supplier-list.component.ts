@@ -68,9 +68,14 @@ export class MedicalSupplierListComponent{
 		this.loadingShow = true;
 
 		this.hasData = false;
-		this.info = {
-			name: '',
-			company: '',
+
+		if(JSON.parse(sessionStorage.getItem('search-supplierList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-supplierList'));
+		}else{
+			this.info = {
+				name: '',
+				company: '',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -78,7 +83,7 @@ export class MedicalSupplierListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.list = [];
 
-		this.getData(this.url);
+		this.search();
 	}
 
 	getData(urlOptions) {
@@ -96,6 +101,7 @@ export class MedicalSupplierListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-supplierList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;

@@ -94,11 +94,16 @@ export class CrmUserListComponent{
 			id: '',
 			text: '',
 		}
-		this.searchInfo = {
-			name: '',
-			mobile: '',
-			role: '',
-			clinic_role: '',
+
+		if(JSON.parse(sessionStorage.getItem('search-crmuserList'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-crmuserList'));
+		}else{
+			this.searchInfo = {
+				name: '',
+				mobile: '',
+				role: '',
+				clinic_role: '',
+			}
 		}
 
 		this.search();
@@ -137,6 +142,7 @@ export class CrmUserListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-crmuserList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;

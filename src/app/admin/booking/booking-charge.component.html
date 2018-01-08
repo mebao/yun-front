@@ -27,11 +27,11 @@
 	<div class="flex pure-form search-tab max mt2">
 		<div class="pure-control-group mr10 flex">
 			<label for="cdate_big">创建时间：</label>
-			<select-date title="请选择日期" [showClear]="true" [endDate]="searchInfo.cdate_less_num" (onVoted)="changeDate($event, 'cdate_big')"></select-date>
+			<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.cdate_big_text" [endDate]="searchInfo.cdate_less_num" (onVoted)="changeDate($event, 'cdate_big')"></select-date>
 		</div>
 		<div class="pure-control-group mr10 flex">
 			<label for="cdate_less" class="text-center">至</label>
-			<select-date title="请选择日期" [showClear]="true" [startDate]="searchInfo.cdate_big_num" (onVoted)="changeDate($event, 'cdate_less')"></select-date>
+			<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.cdate_less_text" [startDate]="searchInfo.cdate_big_num" (onVoted)="changeDate($event, 'cdate_less')"></select-date>
 		</div>
 		<div class="pure-control-group">
 			<label for="mobile">手机号码：</label>

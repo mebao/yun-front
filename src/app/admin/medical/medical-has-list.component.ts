@@ -72,11 +72,16 @@ export class MedicalHasListComponent{
 		this.hasData = false;
 
 		this.list = [];
-		this.info = {
-			name: '',
-			type: '1,2',
-			l_stock: '',
-			b_stock: '',
+
+		if(JSON.parse(sessionStorage.getItem('search-medicalHasList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-medicalHasList'));
+		}else{
+			this.info = {
+				name: '',
+				type: '1,2',
+				l_stock: '',
+				b_stock: '',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -110,6 +115,7 @@ export class MedicalHasListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-medicalHasList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;
@@ -145,6 +151,9 @@ export class MedicalHasListComponent{
 	}
 
 	goUrl(_url) {
+		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalPurchaseList');
+		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
 	}
 

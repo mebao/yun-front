@@ -80,11 +80,15 @@ export class BookingFollowupsListComponent{
 		this.followupsList = [];
 		this.hasData = false;
 
-		this.searchInfo = {
-			status: '',
-			child_name: '',
-			up_user_name: '',
-			creator_name: '',
+		if(JSON.parse(sessionStorage.getItem('search-bookingFollowupsList'))){
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-bookingFollowupsList'));
+		}else{
+			this.searchInfo = {
+				status: '',
+				child_name: '',
+				up_user_name: '',
+				creator_name: '',
+			}
 		}
 
 		this.modalConfirmTab = false;
@@ -106,6 +110,7 @@ export class BookingFollowupsListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-bookingFollowupsList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.status != ''){
 			urlOptions += '&status=' + this.searchInfo.status;
