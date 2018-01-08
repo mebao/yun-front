@@ -232,7 +232,7 @@ export class TransactionStatisticsComponent{
 	//科室列表
 	getServiceList() {
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.clinicservices(urlOptions).then((data) => {
+		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');

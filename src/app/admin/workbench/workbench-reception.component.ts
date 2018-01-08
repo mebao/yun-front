@@ -100,7 +100,7 @@ export class WorkbenchReceptionComponent{
 
 		//获取科室列表
 		this.serviceList = [];
-		this.adminService.clinicservices(this.url).then((data) => {
+		this.adminService.servicelist(this.url).then((data) => {
 			if(data.status == 'no'){
 		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 		        this.toastService.toast(toastCfg);

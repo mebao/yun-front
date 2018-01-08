@@ -144,13 +144,13 @@ export class AdminService{
 	}
 
 	//查询诊所科室
-	private clinicservicesUrl = this.url + '/mebcrm/clinicservices';
-	clinicservices(urlOptions): Promise<Data>{
-		return this.http.get(this.clinicservicesUrl + urlOptions)
-			.toPromise()
-			.then(response => response.json() as Data)
-			.catch();
-	}
+	// private servicelistUrl = this.url + '/mebcrm/servicelist';
+	// servicelist(urlOptions): Promise<Data>{
+	// 	return this.http.get(this.servicelistUrl + urlOptions)
+	// 		.toPromise()
+	// 		.then(response => response.json() as Data)
+	// 		.catch();
+	// }
 
 	//根据科室查询医生可预约日期
 	private searchdoctorserviceUrl = this.url + '/mebcrm/searchdoctorservice';
@@ -174,6 +174,15 @@ export class AdminService{
 	private clinicserviceUrl = this.url + '/mebcrm/clinicservice';
 	clinicservice(param): Promise<Data>{
 		return this.http.post(this.clinicserviceUrl, JSON.stringify(param))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	//修改宝宝科室状态(停用)
+	private servicelisttatusUrl = this.url + '/mebcrm/servicelisttatus/';
+	servicelisttatus(urlOptions,param): Promise<Data>{
+		return this.http.post(this.servicelisttatusUrl + urlOptions, JSON.stringify(param))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

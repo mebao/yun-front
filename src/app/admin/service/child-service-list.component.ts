@@ -25,6 +25,7 @@ export class ChildServiceListComponent implements OnInit{
 	loadingShow: boolean;
 	childServiceList: any[];
 	hasData: boolean;
+	status: string;
 
 	constructor(public adminService: AdminService, public router: Router) {}
 
@@ -63,9 +64,16 @@ export class ChildServiceListComponent implements OnInit{
 
 		this.childServiceList = [];
 
+		this.status = '1';
+
+		this.getData();
+	}
+
+	getData(){
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&status=' + this.status;
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -81,6 +89,23 @@ export class ChildServiceListComponent implements OnInit{
 
 	update(_id){
 		this.router.navigate(['./admin/childService'], {queryParams: {id: _id}});
+	}
+
+	updateStatus(_id, status){
+		var param = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			status: status == 1 ? '0' : '1'
+		}
+		this.adminService.servicelisttatus(_id,param).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.toastTab('状态修改成功', '');
+                this.getData();
+			}
+		})
 	}
 
 	goCreate() {

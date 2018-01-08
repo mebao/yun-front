@@ -299,7 +299,7 @@ export class BookingInComponent{
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.clinicservices(urlOptions).then((data) => {
+		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

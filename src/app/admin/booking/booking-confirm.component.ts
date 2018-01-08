@@ -146,7 +146,7 @@ export class BookingConfirmComponent{
 	//科室列表
 	getServiceList() {
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.clinicservices(urlOptions).then((data) => {
+		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{

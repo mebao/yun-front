@@ -54,11 +54,16 @@
 			<ng-container *ngFor="let userCheck of userCheckList">
 				<div class="pure-u-6-24 card-tab pad10">
 					<div class="info pad10 flex max">
-						<div class="img-tab-default mr10">
+						<!-- <div class="img-tab-default mr10">
 							<img (click)="childInfo(userCheck.infoList[0].childId)" src="{{userCheck.infoList[0].imageUrl == '' || userCheck.infoList[0].imageUrl == null ? '../assets/images/img.png' : userCheck.infoList[0].imageUrl}}" class="cursor-p">
-						</div>
+						</div> -->
 						<div class="flex-1">
-							<div>{{userCheck.infoList[0].childName}}</div>
+							<div class="flex">
+								<div class="w90p">宝宝姓名：</div>
+								<div class="flex-1">
+									{{userCheck.infoList[0].childName}}
+								</div>
+							</div>
 							<div *ngFor="let info of userCheck.infoList" class="flex pt10" [ngClass]="{'red': info.checkDoctorId == null}">
 								<div class="flex-1">
 									{{info.checkName}}

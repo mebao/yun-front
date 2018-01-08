@@ -1,8 +1,20 @@
 <header-nav></header-nav>
 <div class="content-section admin-child-service-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div *ngIf="moduleAuthority.edit" class="button-tab">
-		<button (click)="goCreate()" class="pure-button pure-button-primary">新增宝宝科室</button>
+	<div class="flex pure-form max">
+        <div class="flex-1">
+			<div *ngIf="moduleAuthority.edit" class="button-tab">
+				<button (click)="goCreate()" class="pure-button pure-button-primary">新增宝宝科室</button>
+			</div>
+        </div>
+        <div class="pure-control-group mr10">
+            <label for="status">状态：</label>
+            <select id="status" name="status" [(ngModel)]="status">
+				<option value="1">可用</option>
+				<option value="0">停用</option>
+            </select>
+        </div>
+        <button (click)="getData()" class="pure-button pure-button-primary">搜索</button>
 	</div>
 	<div *ngIf="childServiceList.length > 0" class="pure-g">
 		<div class="pure-u-6-24 child-service-tab pad10" *ngFor="let childService of childServiceList">
@@ -20,13 +32,32 @@
 					</div>
 				</div>
 			</div>
-			<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="update(childService.serviceId)">
-				修改
-			</a>
+			<div class="flex">
+				<a *ngIf="moduleAuthority.edit" class="flex-1 edit pad10 text-center" (click)="update(childService.serviceId)">
+					修改
+				</a>
+				<a *ngIf="moduleAuthority.edit" class="flex-1 edit pad10 text-center" (click)="updateStatus(childService.serviceId,childService.status)">
+					<span *ngIf="childService.status==0">停用</span>
+					<span *ngIf="childService.status==1">可用</span>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div *ngIf="hasData && childServiceList.length == 0" class="mt10">
 		<nodata title="未查询到宝宝科室信息"></nodata>
+	</div>
+</div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			{{selector.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
 	</div>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

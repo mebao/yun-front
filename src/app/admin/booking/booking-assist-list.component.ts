@@ -39,7 +39,7 @@ export class BookingAssistList{
 
     ngOnInit() {
         this.topBar = {
-            title: '预约辅助治疗',
+            title: '辅助治疗',
             back: false,
         }
 
