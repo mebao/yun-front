@@ -544,6 +544,34 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	                }
 				}
             }
+			// 若就诊管理中，添加了小孩临时信息，则直接使用
+			if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
+				var childinfoUrl = this.url + '&child_id=' + this.booking.childId;
+				this.adminService.getChildinfo(childinfoUrl).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						if(results.childInfo != null){
+							if(this.info.height != null && results.childInfo.height != null){
+								this.info.height = results.childInfo.height;
+							}
+							if(this.info.weight != null && results.childInfo.weight != null){
+								this.info.weight = results.childInfo.weight;
+							}
+							if(this.info.breathe != null && results.childInfo.breathe != null){
+								this.info.breathe = results.childInfo.breathe;
+							}
+							if(this.info.body_temperature != null && results.childInfo.bodyTemperature != null){
+								this.info.body_temperature = results.childInfo.bodyTemperature;
+							}
+							if(this.info.blood_pressure != null && results.childInfo.bloodPressure != null){
+								this.info.blood_pressure = results.childInfo.bloodPressure;
+							}
+						}
+					}
+				});
+			}
 			// 获取儿保记录，若是身高、体重、头围、体温等信息已存在，则直接使用
 			if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
 				var healthrecordUrl = this.url + '&booking_id=' + this.id;

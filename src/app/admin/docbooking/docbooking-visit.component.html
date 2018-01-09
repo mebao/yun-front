@@ -28,26 +28,28 @@
 						</div>
                     </td>
 					<td>{{visit.doctorName}}</td>
-					<td>{{visit.visitChild}}</td>
+					<td>{{visit.visitChildName}}</td>
 					<td>
-						<button *ngIf="!visit.visitChild" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button pure-button-primary">开始接诊</button>
-						<button *ngIf="visit.visitChild" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button button-error">结束接诊</button>
+						<button *ngIf="!visit.visitChildName" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button pure-button-primary">开始接诊</button>
+						<button *ngIf="visit.visitChildName" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button button-error">结束接诊</button>
 					</td>
 					<td>{{visit.visitTime}}</td>
 					<td>
-						<div *ngIf="visit.visitChild">
+						<div *ngIf="visit.visitChildName">
 							结束就诊后，可接诊下一位。
 						</div>
-						<div class="radio-tab" [ngClass]="{'disabled': visit.visitChild}">
+						<div class="radio-tab" [ngClass]="{'disabled': visit.visitChildName}">
 							<ng-container *ngFor="let child of visit.doctorChilds">
 								<div class="flex">
-									<div class="flex item pt10 pb5" (click)="changeVisit(child.serviceId, index, visit.visitChild)" [ngClass]="{'active': visit.selected == child.serviceId}">
+									<div class="flex item pt10 pb5" (click)="changeVisit(child.serviceId, index, visit.visitChildName)" [ngClass]="{'active': visit.selected == child.serviceId}">
 										<div class="icon"></div>
 										<div class="info pl10">
 											{{child.time}}-{{child.childName}}
 										</div>
 									</div>
-									<div class="flex-1"></div>
+									<div class="flex-1 pl20">
+										<button *ngIf="visit.visitChildName && visit.selected == child.serviceId" (click)="addInfo(visit)" class="pure-button pure-button-primary">完善信息</button>
+									</div>
 								</div>
 							</ng-container>
 						</div>
@@ -73,5 +75,39 @@
 		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<div class="modal" *ngIf="modalAddInfo">
+	<div class="modal-mask" (click)="closeInfo()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			<div class="pure-form">
+				<div class="pure-control-group mt5">
+					<label for="height">身高：</label>
+					<input type="number" name="height" step="0.01" [(ngModel)]="childInfo.height">
+				</div>
+				<div class="pure-control-group mt5">
+					<label for="weight">体重：</label>
+					<input type="number" name="weight" step="0.01" [(ngModel)]="childInfo.weight">
+				</div>
+				<div class="pure-control-group mt5">
+					<label for="body_temperature">体温：</label>
+					<input type="number" name="body_temperature" step="0.01" [(ngModel)]="childInfo.body_temperature">
+				</div>
+				<div class="pure-control-group mt5">
+					<label for="breathe">呼吸：</label>
+					<input type="number" name="breathe" step="0.01" [(ngModel)]="childInfo.breathe">
+				</div>
+				<div class="pure-control-group mt5">
+					<label for="blood_pressure">血压：</label>
+					<input type="number" name="blood_pressure" step="0.01" [(ngModel)]="childInfo.blood_pressure">
+				</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeInfo()" class="pure-button">取消</button>
+			<button (click)="confirmInfo()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
+	</div>
+</div>
+<nll-toast-box></nll-toast-box>
 <loading [show]="loadingShow"></loading>

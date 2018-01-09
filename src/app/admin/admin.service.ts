@@ -1127,6 +1127,24 @@ export class AdminService{
 			.then(response => response.json() as Data)
 			.catch();
 	}
+	
+	// 添加小孩临时信息
+	private childinfoUrl = this.url + '/mebcrm/childinfo/';
+	childinfo(urlOptions, params): Promise<Data>{
+		return this.http.post(this.childinfoUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询小孩临时信息
+	private getChildinfoUrl = this.url + '/mebcrm/childinfo';
+	getChildinfo(urlOptions): Promise<Data>{
+		return this.http.get(this.getChildinfoUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
 
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
