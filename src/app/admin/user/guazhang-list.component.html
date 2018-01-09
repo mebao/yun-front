@@ -82,11 +82,23 @@
 	<div class="container">
 		<div class="title">提示</div>
 		<div class="content pad10">
-			{{selector.text}}
+			<div class="pure-form">
+				<div class="pure-group-control mt10">
+					<label for="second_way">支付方式：</label>
+					<select name="second_way" [(ngModel)]="selector.second_way">
+						<option value="member" [disabled]="!selector.canBalance">余额支付{{selector.canBalance ? '' : '（余额不足）'}}</option>
+						<option value="ali">支付宝支付</option>
+						<option value="wechat">微信支付</option>
+						<option value="wc_zhuan">微信转账</option>
+						<option value="card">刷卡支付</option>
+						<option value="money">现金支付</option>
+					</select>
+				</div>
+			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认支付</button>
 		</div>
 	</div>
 </div>

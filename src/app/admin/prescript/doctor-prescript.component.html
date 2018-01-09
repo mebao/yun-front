@@ -26,6 +26,10 @@
 			<label>预约时间</label>
 			<div class="info">{{bookingInfo.time}}</div>
 		</div>
+		<div class="item flex">
+			<div class="flex-1"></div>
+			<div class="flex-0">提示:删除的药是需要保留的药</div>
+		</div>
 	</div>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<fieldset>
@@ -187,7 +191,8 @@
 			</div>
 		</fieldset>
 		<div class="text-center">
-			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{this.secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? (this.editType == 'create' ? '保存' : '保存') : '退药'}}</button>
+			<button *ngIf="this.secondType != '' && this.secondType != 'continueAdd' && this.secondType != 'update'" (click)="confirmCreate(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">退药</button>
+			<button *ngIf="this.secondType == '' || this.secondType == 'continueAdd' || this.secondType == 'update'" (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
 		</div>
 	</form>
 </div>
@@ -200,6 +205,7 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>
+			<button *ngIf="createTab" (click)="create()" class="pure-button pure-button-primary">确认</button>
 		</div>
 	</div>
 </div>

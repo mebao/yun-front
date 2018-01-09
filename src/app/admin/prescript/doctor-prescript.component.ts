@@ -59,6 +59,8 @@ export class DoctorPrescriptComponent{
 	oneNumList: any[];
 	// 不可连续点击
 	btnCanEdit: boolean;
+	createTab: boolean;
+	form: any;
 
 	constructor(
 		public adminService: AdminService,
@@ -306,6 +308,8 @@ export class DoctorPrescriptComponent{
 		}
 
 		this.btnCanEdit = false;
+		this.createTab = false;
+		this.form = '';
 	}
 
 	showMs(_key) {
@@ -381,7 +385,30 @@ export class DoctorPrescriptComponent{
 		this.plist[index - 1].ms[key] = _value;
 	}
 
-	create(f) {
+	confirmCreate(f){
+		this.createTab = true;
+		var p = '';
+		for(var i = 0;i<this.plist.length;i++){
+			if(this.plist[i].use){
+				p+=this.plist[i].ms.pname+',';
+			}
+		}
+		if(p==''){
+			this.selected = {
+				text: '暂无退药',
+			}
+		}else{
+			this.selected = {
+				text: '将'+p.toString().substring(0,p.length - 1)+'药品退回到药品库',
+			}
+		}
+
+		this.modalConfirmTab = true;
+		this.form = f;
+	}
+
+	create() {
+		var f = this.form;
 		this.btnCanEdit = true;
 		//新增或修改或再次加药
 		if(this.secondType == '' || this.secondType == 'update' || this.secondType == 'continueAdd'){

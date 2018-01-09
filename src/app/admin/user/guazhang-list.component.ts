@@ -37,6 +37,9 @@ export class GuazhangList{
         id: string,
         amount: string,
         text: string,
+        second_way: string,
+        canBalance: boolean,
+        balance: string,
     }
     btnCanEdit: boolean;
 
@@ -81,6 +84,9 @@ export class GuazhangList{
             id: '',
             amount: '',
             text: '',
+            second_way: '',
+            canBalance: false,
+            balance:'',
         }
         this.btnCanEdit = false;
 
@@ -139,12 +145,10 @@ export class GuazhangList{
     }
 
     pay(record) {
-        this.selector = {
-            id: record.id,
-            amount: record.payWay == 'guazhang' ? record.amount : record.secondAmount,
-            text: '确认支付？',
-        }
+        this.selector.id = record.id;
+        this.selector.amount = record.payWay == 'guazhang' ? record.amount : record.secondAmount;
         this.modalConfirmTab = true;
+        this.getUserInfo(record.userId,this.selector.amount);
     }
 
     confirm() {
@@ -154,6 +158,7 @@ export class GuazhangList{
             token: this.adminService.getUser().token,
             id: this.selector.id,
             amount: this.selector.amount,
+            second_way:this.selector.second_way,
         }
         this.adminService.payguazhang(this.selector.id, params).then((data) => {
             if(data.status == 'no'){
@@ -164,6 +169,28 @@ export class GuazhangList{
                 this.modalConfirmTab = false;
                 this.btnCanEdit = false;
                 this.search();
+            }
+        });
+    }
+
+    // 获取家长信息，是否是会员
+    getUserInfo(id,guzhang) {
+        var urlOptions = '?username=' + this.adminService.getUser().username
+             + '&token=' + this.adminService.getUser().token
+             + '&id=' + id;
+        this.adminService.searchuser(urlOptions).then((data) => {
+            if(data.status == 'no'){
+                this.loadingShow = false;
+                this.toastTab(data.errorMsg, 'error');
+            }else{
+                var results = JSON.parse(JSON.stringify(data.results));
+                if(results.users.length > 0){
+                    this.selector.balance = results.users[0].balance;
+                    if(parseFloat(this.selector.balance) >= parseFloat(guzhang)){
+                        this.selector.canBalance = true;
+                    }
+                }
+                this.loadingShow = false;
             }
         });
     }
