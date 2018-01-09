@@ -143,15 +143,6 @@ export class AdminService{
 			.catch();
 	}
 
-	//查询诊所科室
-	// private servicelistUrl = this.url + '/mebcrm/servicelist';
-	// servicelist(urlOptions): Promise<Data>{
-	// 	return this.http.get(this.servicelistUrl + urlOptions)
-	// 		.toPromise()
-	// 		.then(response => response.json() as Data)
-	// 		.catch();
-	// }
-
 	//根据科室查询医生可预约日期
 	private searchdoctorserviceUrl = this.url + '/mebcrm/searchdoctorservice';
 	searchdoctorservice(urlOptions): Promise<Data>{
@@ -1127,7 +1118,7 @@ export class AdminService{
 			.then(response => response.json() as Data)
 			.catch();
 	}
-	
+
 	// 添加小孩临时信息
 	private childinfoUrl = this.url + '/mebcrm/childinfo/';
 	childinfo(urlOptions, params): Promise<Data>{
