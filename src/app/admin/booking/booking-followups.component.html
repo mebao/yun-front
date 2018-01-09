@@ -14,19 +14,26 @@
 						<select-search *ngIf="editType == 'create'" [title]="selectSearchTitle" [selectList]="adminList" (onVoted)="onVoted($event)"></select-search>
 						<input *ngIf="editType == 'update'" type="text" id="up_user" name="up_user" [(ngModel)]="info.up_user" disabled="">
 					</div> -->
+					<div *ngIf="from == 'bookingFollowupsList'" class="pure-control-group">
+						<label for="child">
+							<span>随访宝宝</span>
+							<span class="required">*</span>
+						</label>
+						<select-search [title]="'请选择随访宝宝'" [selectList]="childList" (onVoted)="getChild($event)"></select-search>
+					</div>
 					<div class="pure-control-group">
 						<label for="time">
 							<span>随访日期</span>
 							<span class="required">*</span>
 						</label>
-						<select-date title="{{info.timeText}}" [disabled]="editType == 'update'" (onVoted)="changeDate($event)"></select-date>
+						<select-date title="{{info.timeText}}" [startDate]="info.timeNum" [disabled]="editType == 'update'" (onVoted)="changeDate($event, 'time')"></select-date>
 					</div>
 					<div class="pure-control-group">
 						<label for="account">
 							<span>随访内容和原因（最长200字）</span>
 							<span class="required">*</span>
 						</label>
-						<textarea id="account" maxlength="200" name="account" #account="ngModel" [(ngModel)]="info.account" placeholder="请输入备注说明" required="" [disabled]="editType == 'update'"></textarea>
+						<textarea id="account" maxlength="200" name="account" #account="ngModel" [(ngModel)]="info.account" placeholder="请输入备注说明" required=""></textarea>
 						<div *ngIf="account.errors && (account.dity || account.touched)" class="alert alert-danger">
 							<div [hidden]="!account.errors.required">
 								随访内容和原因不可为空
@@ -35,11 +42,15 @@
 					</div>
 					<div class="pure-control-group">
 						<label for="remarks">备注说明（最长200字）</label>
-						<textarea id="remarks" name="remarks" #remarks="ngModel" [(ngModel)]="info.remarks" placeholder="请输入备注说明"  maxlength="200" [disabled]="editType == 'update'"></textarea>
+						<textarea id="remarks" name="remarks" #remarks="ngModel" [(ngModel)]="info.remarks" placeholder="请输入备注说明"  maxlength="200"></textarea>
 					</div>
 					<div *ngIf="editType == 'update'" class="pure-control-group">
 						<label for="results">随访结果（最长200字）</label>
 						<textarea id="results" name="results" #results="ngModel" [(ngModel)]="info.results" placeholder="请输入随访结果" maxlength="200"></textarea>
+					</div>
+					<div *ngIf="editType == 'update'" class="pure-control-group">
+						<label for="finish">执行随访日期</label>
+						<select-date title="{{info.finishText}}" [startDate]="info.finishNum" (onVoted)="changeDate($event, 'finish')"></select-date>
 					</div>
 				</div>
 				<div class="pure-u-1-5"></div>
@@ -50,4 +61,4 @@
 		</div>
 	</form>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<nll-toast-box></nll-toast-box>

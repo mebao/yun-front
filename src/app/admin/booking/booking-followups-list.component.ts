@@ -187,6 +187,13 @@ export class BookingFollowupsListComponent{
 		window.open('./admin/childInfo?id=' + _id);
 	}
 
+	addFollowups() {
+		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {
+			type: 'create',
+			from: 'bookingFollowupsList',
+		}});
+	}
+
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

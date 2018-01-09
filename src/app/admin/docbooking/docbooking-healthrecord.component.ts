@@ -1254,11 +1254,16 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 this.btnCanEdit = false;
             }else{
                 if(this.editType == 'create'){
-                    this.toastTab('儿保记录创建成功', '');
-					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
-						this.editType = 'view';
-	                }, 2000);
+					if(this.info.review_date == ''){
+	                    this.toastTab('儿保记录创建成功', '');
+						setTimeout(() => {
+							this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
+							this.editType = 'view';
+		                }, 2000);
+					}else{
+						// 新增，并且复查日期不为空时，增加随访
+						this.addFollowups();
+					}
                 }else{
                     this.toastTab('儿保记录修改成功', '');
 					setTimeout(() => {
@@ -1272,6 +1277,31 @@ export class DocbookingHealthrecordComponent implements OnInit{
             }
         });
     }
+
+	addFollowups() {
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			booking_id: this.id,
+			time: this.info.review_date,
+			account: this.info.record,
+			remarks: '',
+			child_id: this.booking.childId,
+		}
+		this.adminService.userfollowup(params).then((data) => {
+			if(data.status == 'no'){
+                this.toastTab(data.errorMsg, 'error');
+                this.btnCanEdit = false;
+			}else{
+				this.toastTab('儿保记录创建成功', '');
+				setTimeout(() => {
+					this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
+					this.editType = 'view';
+				}, 2000);
+			}
+		});
+	}
 
 	toastTab(text, type) {
 		this.toast = {

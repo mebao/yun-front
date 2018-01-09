@@ -872,7 +872,7 @@ export class DocbookingComponent implements OnInit{
 
 	//新增随访
 	addFollowups() {
-		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
+		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create', from: 'docbooking'}});
 	}
 
 	//新增成长记录
