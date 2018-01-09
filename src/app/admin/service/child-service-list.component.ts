@@ -3,6 +3,9 @@ import { Router, ActivatedRoute }                from '@angular/router';
 
 import { AdminService }                          from '../admin.service';
 
+import { ToastService }                          from '../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }                from '../../common/nll-toast/toast-model';
+
 @Component({
 	selector: 'app-child-service-list',
 	templateUrl: './child-service-list.component.html'
@@ -11,11 +14,6 @@ export class ChildServiceListComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -27,18 +25,17 @@ export class ChildServiceListComponent implements OnInit{
 	hasData: boolean;
 	status: string;
 
-	constructor(public adminService: AdminService, public router: Router) {}
+	constructor(
+		public adminService: AdminService,
+		public router: Router,
+		private toastService: ToastService,
+	) {}
 
 	ngOnInit(): void {
 		this.topBar = {
 			title: '宝宝科室列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		//权限
 		this.moduleAuthority = {
@@ -77,7 +74,8 @@ export class ChildServiceListComponent implements OnInit{
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.childServiceList = results.servicelist;
@@ -100,9 +98,11 @@ export class ChildServiceListComponent implements OnInit{
 		this.adminService.clinicservicestatus(_id,param).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
-				this.toastTab('状态修改成功', '');
+				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '状态修改成功', 3000);
+				this.toastService.toast(toastCfg);
                 this.getData();
 			}
 		})
@@ -110,20 +110,5 @@ export class ChildServiceListComponent implements OnInit{
 
 	goCreate() {
 		this.router.navigate(['./admin/childService']);
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -394,6 +394,15 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 			color: #39A99D;
 			display: block;
 		}
+		&.cancel{
+			.info{
+				background-color: #D45D5D;
+			}
+			.edit{
+				border-color: #D45D5D;
+				color: #D45D5D;
+			}
+		}
 	}
 }
 
