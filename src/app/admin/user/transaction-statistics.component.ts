@@ -51,6 +51,13 @@ export class TransactionStatisticsComponent{
 		pay_way: string,
 	}
 	commonList: any[];
+	modalInfoTab: boolean = false;
+	selector: {
+		doctorName: string,
+		serviceName: string,
+		refereeName: string,
+		remark: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -105,6 +112,13 @@ export class TransactionStatisticsComponent{
 			{id: 1},
 			{id: 2},
 		]
+
+		this.selector = {
+			doctorName: '',
+			serviceName: '',
+			refereeName: '',
+			remark: '',
+		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -247,6 +261,26 @@ export class TransactionStatisticsComponent{
 				this.servicelist = results.servicelist;
 			}
 		})
+	}
+
+	info(tran) {
+		this.selector = {
+			doctorName: tran.doctorName,
+			serviceName: tran.serviceName,
+			refereeName: tran.refereeName,
+			remark: tran.remark,
+		}
+		this.modalInfoTab = true;
+	}
+
+	closeInfo() {
+		this.modalInfoTab = false;
+		this.selector = {
+			doctorName: '',
+			serviceName: '',
+			refereeName: '',
+			remark: '',
+		}
 	}
 
 	toastTab(text, type) {
