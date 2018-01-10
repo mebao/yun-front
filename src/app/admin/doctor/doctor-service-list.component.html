@@ -1,39 +1,60 @@
 <header-nav></header-nav>
 <div class="content-section admin-doctor-service-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="button-tab">
-		<button (click)="goCreate()" class="pure-button pure-button-primary">新增医生科室</button>
-	</div>
-	<div *ngIf="doctorServiceList.length > 0" class="pure-g">
-		<div class="pure-u-6-24 doctor-service-tab pad10" *ngFor="let doctorService of doctorServiceList">
-			<div class="info pad10">
-				<div class="flex">
-					<div class="w80p">科室名：</div>
-					<div class="flex-1">
-						{{doctorService.serviceName}}
-					</div>
-				</div>
-				<div class="flex pt10">
-					<div class="w80p">科室费用：</div>
-					<div class="flex-1">
-						{{doctorService.fee}}元
-					</div>
-				</div>
-				<div class="flex pt10">
-					<div class="w80p">预约金：</div>
-					<div class="flex-1">
-						{{doctorService.bookingFee}}元
-					</div>
-				</div>
+	<div class="flex pure-form max">
+        <div class="flex-1">
+			<div class="button-tab">
+				<button (click)="goCreate()" class="pure-button pure-button-primary">新增医生科室</button>
 			</div>
-			<a class="edit pad10 text-center" (click)="update(doctorService.id)">
-				修改
-			</a>
-		</div>
+        </div>
+        <div class="pure-control-group mr10">
+            <label for="status">状态：</label>
+            <select id="status" name="status" [(ngModel)]="searchInfo.status" (change)="search()">
+				<option value="0">可用</option>
+				<option value="1">停用</option>
+            </select>
+        </div>
 	</div>
+	<table *ngIf="doctorServiceList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+		<thead>
+			<tr>
+				<th>科室名</th>
+				<th>科室费用</th>
+				<th>预约金</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let doctorService of doctorServiceList">
+				<td>{{doctorService.serviceName}}</td>
+				<td>{{doctorService.fee}}元</td>
+				<td>{{doctorService.bookingFee}}元</td>
+				<td>{{doctorService.isDeleted == '0' ? '可用' : '停用'}}</td>
+				<td>
+					<button (click)="update(doctorService.id)" class="pure-button pure-button-primary">修改</button>
+					<button (click)="updateStatus(doctorService)" class="pure-button pure-button-primary">{{doctorService.isDeleted == '0' ? '停用' : '可用'}}</button>
+					<button (click)="delete(doctorService)" class="pure-button button-error">删除</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<div *ngIf="hasData && doctorServiceList.length == 0" class="mt10">
 		<nodata title="未查询到医生科室"></nodata>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			{{selector.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
+	</div>
+</div>
 <loading [show]="loadingShow"></loading>
+<nll-toast-box></nll-toast-box>

@@ -1137,6 +1137,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 删除医生服务信息
+	private deletedoctorserviceUrl = this.url + '/mebcrm/deletedoctorservice/';
+	deletedoctorservice(urlOptions): Promise<Data>{
+		return this.http.get(this.deletedoctorserviceUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
