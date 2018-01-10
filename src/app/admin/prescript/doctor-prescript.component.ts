@@ -407,8 +407,13 @@ export class DoctorPrescriptComponent{
 		this.form = f;
 	}
 
-	create() {
+	//确认退药
+	confirmPre(){
 		var f = this.form;
+		this.create(f);
+	}
+
+	create(f) {
 		this.btnCanEdit = true;
 		//新增或修改或再次加药
 		if(this.secondType == '' || this.secondType == 'update' || this.secondType == 'continueAdd'){
