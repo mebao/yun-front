@@ -55,7 +55,7 @@
 					<ng-container *ngFor="let item of commonList">
 						<tr *ngIf="(item.id == 1 && record.payWay == 'guazhang') || (item.id == 2 && record.secondWay == 'guazhang')">
 							<td>{{record.userName}}</td>
-							<td>{{item.id == 1 ? record.amount : record.secondAmount}}</td>
+							<td>{{(item.id == 1 ? record.amount : record.secondAmount) | toDecimal2}}</td>
 							<td>{{item.id == 1 ? record.wayText : record.secondWayText}}</td>
 							<td>{{record.secondType == '1' ? '' : record.secondAdminName}}</td>
 							<td>{{record.secondType == '1' ? '未支付' : '已支付'}}</td>
@@ -83,6 +83,9 @@
 		<div class="title">提示</div>
 		<div class="content pad10">
 			<div class="pure-form">
+				<div class="pure-group-control mt10 flex">
+					<label for="second_way">余额：{{selector.balance}}</label>
+				</div>
 				<div class="pure-group-control mt10">
 					<label for="second_way">支付方式：</label>
 					<select name="second_way" [(ngModel)]="selector.second_way">

@@ -145,14 +145,20 @@ export class GuazhangList{
     }
 
     pay(record) {
+        this.loadingShow = true;
         this.selector.id = record.id;
         this.selector.amount = record.payWay == 'guazhang' ? record.amount : record.secondAmount;
-        this.modalConfirmTab = true;
         this.getUserInfo(record.userId,this.selector.amount);
     }
 
     confirm() {
         this.btnCanEdit = true;
+        if(this.adminService.isFalse(this.selector.second_way)){
+            this.toastTab('支付方式不可为空', 'error');
+            this.btnCanEdit = false;
+            return;
+        }
+        this.modalConfirmTab = false;
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
@@ -166,7 +172,6 @@ export class GuazhangList{
                 this.btnCanEdit = false;
             }else{
                 this.toastTab('支付成功', '');
-                this.modalConfirmTab = false;
                 this.btnCanEdit = false;
                 this.search();
             }
@@ -191,6 +196,7 @@ export class GuazhangList{
                     }
                 }
                 this.loadingShow = false;
+                this.modalConfirmTab = true;
             }
         });
     }
