@@ -51,18 +51,5 @@
 		<nodata title="未查询到宝宝科室信息"></nodata>
 	</div>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{selector.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button pure-button-primary">取消</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
-		</div>
-	</div>
-</div>
 <loading [show]="loadingShow"></loading>
 <nll-toast-box></nll-toast-box>

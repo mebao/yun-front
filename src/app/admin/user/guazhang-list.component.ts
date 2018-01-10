@@ -141,6 +141,14 @@ export class GuazhangList{
 	}
 
     closeConfirm() {
+        this.selector = {
+            id: '',
+            amount: '',
+            text: '',
+            second_way: '',
+            canBalance: false,
+            balance:'',
+        }
         this.modalConfirmTab = false;
     }
 

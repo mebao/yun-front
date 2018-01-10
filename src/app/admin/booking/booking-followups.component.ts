@@ -79,7 +79,6 @@ export class BookingFollowupsComponent{
 			}
 		}else{
 			var followups = JSON.parse(sessionStorage.getItem('followups'));
-			console.log(followups);
 			this.info = {
 				child: '',
 				up_user: followups.upUserName,
@@ -228,7 +227,6 @@ export class BookingFollowupsComponent{
 				this.btnCanEdit = false;
 				return;
 			}
-			console.log(this.info);
 			if(this.adminService.isFalse(this.info.results)){
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', '随访结果不可为空', 3000);
 				this.toastService.toast(toastCfg);

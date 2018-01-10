@@ -81,7 +81,6 @@ export class MaterialPurchaseListComponent{
 
 		if(JSON.parse(sessionStorage.getItem('search-materialPurchaseList'))){
 			this.info = JSON.parse(sessionStorage.getItem('search-materialPurchaseList'));
-			console.log(this.info);
 		}else{
 			this.info = {
 				b_date: '',

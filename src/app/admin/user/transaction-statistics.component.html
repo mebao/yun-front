@@ -76,7 +76,7 @@
 						<td>{{tran.cash}}</td>
 						<td>{{tran.online}}</td>
 						<td>{{tran.balance}}</td>
-						<td>{{tran.gua + (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : ''))}}</td>
+						<td>{{tran.gua + (tran.gua == '0.00' ? '' : (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : '')))}}</td>
 						<td>{{tran.time}}</td>
 						<td>{{tran.total}}</td>
 						<td>
