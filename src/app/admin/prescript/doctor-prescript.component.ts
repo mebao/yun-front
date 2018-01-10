@@ -633,6 +633,9 @@ export class DoctorPrescriptComponent{
 					this.btnCanEdit = false;
 					return;
 				}
+
+				this.modalConfirmTab = false;
+				
 				var backParams = {
 					username: this.adminService.getUser().username,
 					token: this.adminService.getUser().token,
