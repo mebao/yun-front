@@ -425,7 +425,6 @@
 									<th>单价</th>
 									<th>总量</th>
 									<th>总价</th>
-									<th>是否优惠</th>
 									<th class="width-lg">备注</th>
 									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 										<th>折扣</th>
@@ -443,7 +442,6 @@
 										<td>{{info.price}}</td>
 										<td>{{info.num}}</td>
 										<td>{{info.fee}}</td>
-										<td>{{info.canDiscount == '0' ? '不可优惠' : '可以优惠'}}</td>
 										<td>
 											<div class="text-lg">{{info.remark}}</div>
 										</td>
@@ -464,34 +462,6 @@
 								</ng-container>
 								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
 									<tr>
-										<td colspan="8">
-											<div class="flex">
-												<div class="flex-1 text-right">费用合计：</div>
-												<div class="w100p">{{fee.feeInfo.medicalOriginalFee}}</div>
-											</div>
-										</td>
-									</tr>
-									<ng-container *ngIf="fee.feeInfo.medicalOriginalFee != fee.feeInfo.medicalDiscount">
-										<tr>
-											<td colspan="8">
-												<div class="flex">
-													<div class="flex-1 text-right">折扣金额：</div>
-													<div class="w100p">{{fee.feeInfo.medicalDiscount}}</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td colspan="8">
-												<div class="flex">
-													<div class="flex-1 text-right">应收费用：</div>
-													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
-												</div>
-											</td>
-										</tr>
-									</ng-container>
-								</ng-container>
-								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
-									<tr>
 										<td colspan="7">
 											<div class="flex">
 												<div class="flex-1 text-right">费用合计：</div>
@@ -503,6 +473,14 @@
 										<tr>
 											<td colspan="7">
 												<div class="flex">
+													<div class="flex-1 text-right">折扣金额：</div>
+													<div class="w100p">{{fee.feeInfo.medicalDiscount}}</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="7">
+												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
 												</div>
@@ -510,7 +488,7 @@
 										</tr>
 									</ng-container>
 								</ng-container>
-								<ng-container *ngIf="dataCode == '0'">
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
 									<tr>
 										<td colspan="6">
 											<div class="flex">
@@ -523,13 +501,33 @@
 										<tr>
 											<td colspan="6">
 												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '0'">
+									<tr>
+										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.medicalOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.medicalOriginalFee != fee.feeInfo.medicalDiscount">
+										<tr>
+											<td colspan="5">
+												<div class="flex">
 													<div class="flex-1 text-right">折扣金额：</div>
 													<div class="w100p">{{fee.feeInfo.medicalDiscount}}</div>
 												</div>
 											</td>
 										</tr>
 										<tr>
-											<td colspan="6">
+											<td colspan="5">
 												<div class="flex">
 													<div class="flex-1 text-right">应收费用：</div>
 													<div class="w100p">{{fee.feeInfo.medicalFee}}</div>
