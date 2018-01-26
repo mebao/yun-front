@@ -220,7 +220,7 @@
 								<div *ngIf="moduleAuthority.add && showBooking.status == '1' && use" class="mt10">
 									<button (click)="paymentBookingFee(showBooking)" class="pure-button pure-button-primary">支付</button>
 								</div>
-								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2')" class="mt10">
+								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2' || showBooking.status == '3')" class="mt10">
 									<button class="pure-button button-error" (click)="cancel(showBooking)">
 										取消
 									</button>
