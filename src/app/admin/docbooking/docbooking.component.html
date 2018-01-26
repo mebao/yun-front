@@ -42,7 +42,7 @@
 			<div *ngIf="pageType != 'history'" class="mt20">
 				<button (click)="showHistory()" class="pure-button pure-button-primary">就诊记录</button>
 			</div>
-			<div class="pure-control-group mt20">
+			<div *ngIf="actualOperator.use" class="pure-control-group mt20">
 				<label for="operator">实际操作人</label>
 				<select id="operator" class="w100" name="operator" [(ngModel)]="operator" (change)="selectOperator()">
 					<ng-container *ngFor="let admin of adminList">

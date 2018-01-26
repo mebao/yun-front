@@ -100,7 +100,7 @@ export class BookingFollowupsComponent{
 
 		// 若是登录账号为'嘉宝体检'，则需要选定操作人
 		this.actualOperator = {
-			use: this.adminService.getUser().realname == '新心',
+			use: this.adminService.getUser().realname == '嘉宝体检',
 			name: sessionStorage.getItem('actualOperator'),
 		}
 
