@@ -1,35 +1,28 @@
 <header-nav [title]="'kkk'"></header-nav>
 <div class="content-section admin-doctor-prescript">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="info-tab">
-		<div class="item flex">
-			<label>家长姓名</label>
-			<div class="info">{{bookingInfo.creatorName}}</div>
-		</div>
-		<div class="item flex">
+	<div class="info-tab flex">
+		<div class="item flex-1">
 			<label>宝宝姓名</label>
-			<div class="info">{{bookingInfo.childName}}</div>
+			<span class="info">{{bookingInfo.childName}}</span>
 		</div>
-		<div class="item flex">
+		<div class="item flex-1">
 			<label>年龄</label>
-			<div class="info">{{bookingInfo.age}}</div>
+			<span class="info">{{bookingInfo.age}}</span>
 		</div>
 		<!-- <div class="item flex">
 			<label>预约类型</label>
 			<div class="info">{{bookingInfo.type == 'PT' ? '普通号' : '专家号'}}</div>
 		</div> -->
-		<div class="item flex">
-			<label>预约日期</label>
-			<div class="info">{{bookingInfo.bookingDate}}</div>
-		</div>
-		<div class="item flex">
+		<div class="item flex-1">
 			<label>预约时间</label>
-			<div class="info">{{bookingInfo.time}}</div>
+			<span class="info">{{bookingInfo.bookingDate}}</span>
+			<span class="info">{{bookingInfo.time}}</span>
 		</div>
-		<div class="item flex">
-			<div class="flex-1"></div>
-			<div class="flex-0">提示:删除的药是需要保留的药</div>
-		</div>
+	</div>
+	<div class="item flex mt30">
+		<div class="flex-1"></div>
+		<div class="flex-0">提示:删除的药是需要保留的药</div>
 	</div>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<fieldset>

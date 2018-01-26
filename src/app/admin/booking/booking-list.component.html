@@ -159,7 +159,7 @@
 						</ng-container>
 					</div>
 					<div class="flex">
-						<a *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2')" class="edit flex-1 pad10 text-center" (click)="cancel(booking)">
+						<a *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3')" class="edit flex-1 pad10 text-center" (click)="cancel(booking)">
 							取消
 						</a>
 						<a *ngIf="moduleAuthority.info" class="edit flex-1 pad10 text-center" (click)="info(booking)">
