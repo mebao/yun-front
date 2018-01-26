@@ -802,6 +802,10 @@ export class DocbookingCasehistoryComponent implements OnInit{
 
 	// 修改病历
 	updateCaseHistory(casehistory) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		//判断是否有药方
 		if(this.prescriptList.length > 0){
 			sessionStorage.setItem('prescript', JSON.stringify(this.prescriptList[0]));
@@ -1013,8 +1017,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			diagnosis: this.info.diagnosis,
 			advise: this.info.advise,
 			time: this.info.time == '' ? this.adminService.dateFormatHasWord(this.booking.bookingDate) : this.adminService.dateFormatHasWord(this.info.time),
-			true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
-			true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
+			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
+			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
 		}
 		if(this.editType == 'create'){
 			this.adminService.casehistory('', params).then((data) => {

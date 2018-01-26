@@ -1043,6 +1043,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 
 	// 修改儿保记录
 	updateHealthrecord(healthrecord) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		sessionStorage.setItem('healthrecord', JSON.stringify(healthrecord));
 		//this.router.navigate(['./admin/bookingHealthrecord'], {queryParams: {id: this.id, doctor: this.doctorId, childId: this.booking.childId, type: 'update'}});
@@ -1309,8 +1313,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
             answering_questions: this.info.answering_questions,
             record: this.info.record,
             review_date: this.info.review_date == '' ? null : this.info.review_date,
-			true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
-			true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
+			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
+			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
         }
 
         var urlOptions = '';

@@ -883,12 +883,20 @@ export class DocbookingComponent implements OnInit{
 
 	//修改药方
 	updatePrescript(info) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		sessionStorage.setItem('prescript', JSON.stringify(info));
 		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'update'}});
 	}
 
 	//删除药方
 	deletePrescript(_id) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.selector = {
 			id: _id,
 			text: '确认删除该药方',
@@ -899,12 +907,20 @@ export class DocbookingComponent implements OnInit{
 
 	// 出药后，可继续加药
 	continueAdd(info) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		sessionStorage.setItem('prescript', JSON.stringify(info));
 		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'continueAdd'}});
 	}
 
 	//退药
 	backdrug(info) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		sessionStorage.setItem('prescript', JSON.stringify(info));
 		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, prescriptId: info.id, type: 'back'}});
 	}
