@@ -61,6 +61,10 @@ export class DoctorPrescriptComponent{
 	btnCanEdit: boolean;
 	createTab: boolean;
 	form: any;
+	actualOperator: {
+		use: boolean,
+		name: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -302,6 +306,12 @@ export class DoctorPrescriptComponent{
 			}
 		});
 
+		// 若是登录账号为'嘉宝体检'，则需要选定操作人
+		this.actualOperator = {
+			use: this.adminService.getUser().realname == '新心',
+			name: sessionStorage.getItem('actualOperator'),
+		}
+
 		this.modalConfirmTab = false;
 		this.selected = {
 			text: '',
@@ -414,6 +424,10 @@ export class DoctorPrescriptComponent{
 	}
 
 	create(f) {
+		if(this.actualOperator.use && this.adminService.isFalse(this.actualOperator.name)){
+			this.toastTab('请先选择实际操作人', 'error');
+			return;
+		}
 		this.btnCanEdit = true;
 		//新增或修改或再次加药
 		if(this.secondType == '' || this.secondType == 'update' || this.secondType == 'continueAdd'){
@@ -423,7 +437,7 @@ export class DoctorPrescriptComponent{
 			if(this.plist.length > 0){
 				for(var i = 0; i < this.plist.length; i++){
 					//判断可用或未出药
-					if(this.plist[i].use && (this.plist[i].ms.isOut == '' || (this.plist[i].ms.isOut == '0' && this.secondType == 'update'))){
+					if(this.plist[i].use && (this.adminService.isFalse(this.plist[i].ms.isOut) || (this.plist[i].ms.isOut == '0' && this.secondType == 'update'))){
 						num++;
 						var p = {
 							sinfo_id: '',
@@ -538,6 +552,8 @@ export class DoctorPrescriptComponent{
 						plist: JSON.stringify(plist),
 						remark: this.adminService.trim(f.value.remark),
 						fee: feeAll.toString(),
+						true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+						true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 					}
 
 					this.adminService.doctorprescript(params).then((data) => {
@@ -559,6 +575,8 @@ export class DoctorPrescriptComponent{
 						plist: JSON.stringify(plist),
 						remark: f.value.remark,
 						fee: feeAll,
+						true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+						true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 					}
 					this.adminService.updateprescript(this.prescriptId, updateParams).then((data) => {
 						if(data.status == 'no'){
@@ -578,6 +596,8 @@ export class DoctorPrescriptComponent{
 					token: this.adminService.getUser().token,
 					fee: feeAll,
 					plist: JSON.stringify(plist),
+					true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+					true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 				}
 				this.adminService.adddrug(this.prescriptId, addParams).then((data) => {
 					if(data.status == 'no'){
@@ -635,7 +655,7 @@ export class DoctorPrescriptComponent{
 				}
 
 				this.modalConfirmTab = false;
-				
+
 				var backParams = {
 					username: this.adminService.getUser().username,
 					token: this.adminService.getUser().token,
@@ -643,6 +663,8 @@ export class DoctorPrescriptComponent{
 					plist: JSON.stringify(backPlist),
 					fee: feeAll.toString(),
 					remark: f.value.remark,
+					true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+					true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 				}
 
 				this.adminService.doctorback(this.prescriptId, backParams).then((data) => {

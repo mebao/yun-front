@@ -20,7 +20,7 @@
 			<span class="info">{{bookingInfo.time}}</span>
 		</div>
 	</div>
-	<div class="item flex mt30">
+	<div *ngIf="this.secondType == 'back'" class="item flex mt30">
 		<div class="flex-1"></div>
 		<div class="flex-0">提示:删除的药是需要保留的药</div>
 	</div>

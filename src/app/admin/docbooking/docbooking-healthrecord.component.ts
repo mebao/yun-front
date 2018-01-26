@@ -38,6 +38,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	booking: {
 		age: string,
 		birthDate: string,
+		bookingAge: string,
 		bookingDate: string,
 		bookingId: string,
 		childId: string,
@@ -194,6 +195,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
     editType: string;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	// 实际操作人
+	actualOperator: {
+		use: boolean,
+		name: string,
+	}
+	adminList: any[];
+	operator: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -341,6 +349,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.booking = {
 			age: '',
 			birthDate: '',
+			bookingAge: '',
 			bookingDate: '',
 			bookingId: '',
 			childId: '',
@@ -456,6 +465,37 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			}
 		});
 
+		// 若是登录账号为'嘉宝体检'，则需要选定操作人
+		this.actualOperator = {
+			use: this.adminService.getUser().realname == '新心',
+			name: sessionStorage.getItem('actualOperator'),
+		}
+		this.adminList = [];
+		this.operator = this.adminService.isFalse(this.actualOperator.name) ? '' : this.actualOperator.name;
+		if(this.actualOperator.use){
+			// 获取护士列表
+			var adminlistUrl = this.url + '&role=3';
+			this.adminService.adminlist(adminlistUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.adminlist.length > 0){
+						for(var i = 0; i < results.adminlist.length; i++){
+							var admin = {
+								key: JSON.stringify({
+									id: results.adminlist[i].id,
+									realName: results.adminlist[i].realName,
+								}),
+								value: results.adminlist[i].realName,
+							}
+							this.adminList.push(admin);
+						}
+					}
+				}
+			});
+		}
+
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
@@ -467,8 +507,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
         });
 
         this.btnCanEdit = false;
-
-
 	}
 
 	initEdit(){
@@ -903,6 +941,15 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
 	}
 
+	// 选择实际操作人
+	selectOperator() {
+		if(this.operator == ''){
+			this.toastTab('请先选择实际操作人', 'error');
+			return;
+		}
+		sessionStorage.setItem('actualOperator', this.operator);
+	}
+
 	// 历史记录
 	showHistory() {
 		this.modalTab = true;
@@ -935,22 +982,38 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
-					this.canEdit = false;
-				}else{
-					this.canEdit = true;
-				}
-				this.booking = results.weekbooks[0];
-				var fees = results.weekbooks[0].fees;
-				var total = 0;
-				if(fees.length > 0){
-					for(var i = 0; i < fees.length; i++){
-						total += Number(fees[i].fee);
+				if(results.weekbooks.length > 0){
+					if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
+						this.canEdit = false;
+					}else{
+						this.canEdit = true;
 					}
+					if(results.weekbooks[0].services.length > 0){
+						for(var i = 0; i < results.weekbooks[0].services.length; i++){
+							if(!this.adminService.isFalse(results.weekbooks[0].services[i].begin)){
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '年');
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '月');
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace(' ', '日 ');
+							}
+							if(!this.adminService.isFalse(results.weekbooks[0].services[i].end)){
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '年');
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '月');
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace(' ', '日 ');
+							}
+						}
+					}
+					this.booking = results.weekbooks[0];
+					var fees = results.weekbooks[0].fees;
+					var total = 0;
+					if(fees.length > 0){
+						for(var i = 0; i < fees.length; i++){
+							total += Number(fees[i].fee);
+						}
+					}
+					this.booking.totalFee = this.adminService.toDecimal2(total.toString());
+					sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+					this.initEdit();
 				}
-				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
-				sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-				this.initEdit();
 			}
 		});
 	}
@@ -1052,6 +1115,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	}
 
     create(f) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
         this.btnCanEdit = true;
         this.info.skin = this.adminService.trim(this.info.skin);
         this.info.skin_other = this.adminService.trim(this.info.skin_other);
@@ -1242,6 +1309,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
             answering_questions: this.info.answering_questions,
             record: this.info.record,
             review_date: this.info.review_date == '' ? null : this.info.review_date,
+			true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+			true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
         }
 
         var urlOptions = '';

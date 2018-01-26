@@ -39,6 +39,10 @@ export class BookingFollowupsComponent{
 	selectUser: string;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	actualOperator: {
+		use: boolean,
+		name: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -94,6 +98,11 @@ export class BookingFollowupsComponent{
 			}
 		}
 
+		// 若是登录账号为'嘉宝体检'，则需要选定操作人
+		this.actualOperator = {
+			use: this.adminService.getUser().realname == '新心',
+			name: sessionStorage.getItem('actualOperator'),
+		}
 
 		this.adminList = [];
 		this.selectSearchTitle = '请选择随访人员';
@@ -163,6 +172,11 @@ export class BookingFollowupsComponent{
 	}
 
 	create(f) {
+		if(this.from == 'docbooking' && this.actualOperator.use && this.adminService.isFalse(this.actualOperator.name)){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '请先选择实际操作人', 3000);
+			this.toastService.toast(toastCfg);
+			return;
+		}
 		this.btnCanEdit = true;
 		f.value.account = this.adminService.trim(f.value.account);
 		f.value.remarks = this.adminService.trim(f.value.remarks);

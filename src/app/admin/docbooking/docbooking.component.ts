@@ -70,6 +70,7 @@ export class DocbookingComponent implements OnInit{
 	booking: {
 		age: string,
 		birthDate: string,
+		bookingAge: string,
 		bookingDate: string,
 		bookingId: string,
 		childId: string,
@@ -123,6 +124,13 @@ export class DocbookingComponent implements OnInit{
 	historyList: any[];
 	hasHistoryData: boolean;
 	modalTab: boolean;
+	// 实际操作人
+	actualOperator: {
+		use: boolean,
+		name: string,
+	}
+	adminList: any[];
+	operator: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -161,6 +169,7 @@ export class DocbookingComponent implements OnInit{
 		this.booking = {
 			age: '',
 			birthDate: '',
+			bookingAge: '',
 			bookingDate: '',
 			bookingId: '',
 			childId: '',
@@ -322,6 +331,37 @@ export class DocbookingComponent implements OnInit{
 			}
 		});
 
+		// 若是登录账号为'嘉宝体检'，则需要选定操作人
+		this.actualOperator = {
+			use: this.adminService.getUser().realname == '新心',
+			name: sessionStorage.getItem('actualOperator'),
+		}
+		this.adminList = [];
+		this.operator = this.adminService.isFalse(this.actualOperator.name) ? '' : this.actualOperator.name;
+		if(this.actualOperator.use){
+			// 获取护士列表
+			var adminlistUrl = this.url + '&role=3';
+			this.adminService.adminlist(adminlistUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.adminlist.length > 0){
+						for(var i = 0; i < results.adminlist.length; i++){
+							var admin = {
+								key: JSON.stringify({
+									id: results.adminlist[i].id,
+									realName: results.adminlist[i].realName,
+								}),
+								value: results.adminlist[i].realName,
+							}
+							this.adminList.push(admin);
+						}
+					}
+				}
+			});
+		}
+
 		this.btnCanEdit = false;
 
 		this.historyList = [];
@@ -353,6 +393,15 @@ export class DocbookingComponent implements OnInit{
 		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
 	}
 
+	// 选择实际操作人
+	selectOperator() {
+		if(this.operator == ''){
+			this.toastTab('请先选择实际操作人', 'error');
+			return;
+		}
+		sessionStorage.setItem('actualOperator', this.operator);
+	}
+
 	// 成长记录
 	goSection(url) {
 		// pageType 空为医生， history为查看
@@ -371,34 +420,50 @@ export class DocbookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
-					this.canEdit = false;
-				}else{
-					this.canEdit = true;
-				}
-				this.booking = results.weekbooks[0];
-				var fees = results.weekbooks[0].fees;
-				var total = 0;
-				if(fees.length > 0){
-					for(var i = 0; i < fees.length; i++){
-						if(fees[i].type != 'booking'){
-							total += Number(fees[i].fee);
+				if(results.weekbooks.length > 0){
+					if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
+						this.canEdit = false;
+					}else{
+						this.canEdit = true;
+					}
+					if(results.weekbooks[0].services.length > 0){
+						for(var i = 0; i < results.weekbooks[0].services.length; i++){
+							if(!this.adminService.isFalse(results.weekbooks[0].services[i].begin)){
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '年');
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '月');
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace(' ', '日 ');
+							}
+							if(!this.adminService.isFalse(results.weekbooks[0].services[i].end)){
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '年');
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '月');
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace(' ', '日 ');
+							}
 						}
 					}
-				}
-				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
-
-				//中等值身高体重
-				var childcontrastUrl = '?child_id=' + this.booking.childId;
-				 this.adminService.childcontrast(childcontrastUrl).then((data) => {
-					if(data.status == 'no'){
-						this.loadingShow = false;
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
-						this.loadingShow = false;
+					this.booking = results.weekbooks[0];
+					var fees = results.weekbooks[0].fees;
+					var total = 0;
+					if(fees.length > 0){
+						for(var i = 0; i < fees.length; i++){
+							if(fees[i].type != 'booking'){
+								total += Number(fees[i].fee);
+							}
+						}
 					}
-				});
+					this.booking.totalFee = this.adminService.toDecimal2(total.toString());
+
+					//中等值身高体重
+					var childcontrastUrl = '?child_id=' + this.booking.childId;
+					 this.adminService.childcontrast(childcontrastUrl).then((data) => {
+						if(data.status == 'no'){
+							this.loadingShow = false;
+							this.toastTab(data.errorMsg, 'error');
+						}else{
+							sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
+							this.loadingShow = false;
+						}
+					});
+				}
 			}
 		});
 	}
@@ -458,6 +523,10 @@ export class DocbookingComponent implements OnInit{
 
 	//开方
 	prescript() {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.router.navigate(['./admin/doctorPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 	}
 
@@ -501,11 +570,19 @@ export class DocbookingComponent implements OnInit{
 
 	//追加费用
 	addfee() {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.addFeeInfo.editType = 'create';
 	}
 
 	//修改费用
 	updateFee(fee) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.addFeeInfo.project_name = fee.projectName;
 		this.addFeeInfo.price = fee.price;
 		this.addFeeInfo.number = fee.number;
@@ -591,11 +668,19 @@ export class DocbookingComponent implements OnInit{
 	}
 
 	addCheck() {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.addCheckInfo.editType = 'create';
 	}
 
 	// 删除检查
 	deleteCheck(check) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.selector = {
 			id: check.id,
 			text: '确认删除该检查',
@@ -616,6 +701,10 @@ export class DocbookingComponent implements OnInit{
 	}
 
 	editCheck(f) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.btnCanEdit = true;
 		if(f.value.check == ''){
 			this.toastTab('检查不可为空', 'error');
@@ -664,6 +753,10 @@ export class DocbookingComponent implements OnInit{
 		});
 	}
 	addAssist() {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.addAssistInfo.editType = 'add';
 		this.addAssistInfo.editProjectId = '';
 		this.addAssistInfo.project = '';
@@ -701,6 +794,10 @@ export class DocbookingComponent implements OnInit{
 	}
 
 	updateAddAssist(assist) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.addAssistInfo.editType = 'update';
 		this.addAssistInfo.editProjectId = assist.id;
 		this.addAssistInfo.project = assist.name;
@@ -772,6 +869,10 @@ export class DocbookingComponent implements OnInit{
 
 	//删除辅助治疗
 	deleteAssist(_id) {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.selector = {
 			id: _id,
 			text: '确认删除该辅助治疗',
@@ -872,6 +973,10 @@ export class DocbookingComponent implements OnInit{
 
 	//新增随访
 	addFollowups() {
+		if(this.actualOperator.use && this.operator == ''){
+			this.toastTab('请选择实际操作人', 'error');
+			return;
+		}
 		this.router.navigate(['./admin/bookingFollowups'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create', from: 'docbooking'}});
 	}
 
