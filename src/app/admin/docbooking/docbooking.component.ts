@@ -1,5 +1,6 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
+import { DomSanitizer }                       from '@angular/platform-browser';
 
 import { AdminService }                       from '../admin.service';
 
@@ -136,6 +137,7 @@ export class DocbookingComponent implements OnInit{
 		private adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private sanitizer: DomSanitizer,
 	) {}
 
 	ngOnInit(): void{
@@ -495,6 +497,11 @@ export class DocbookingComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					this.selectedCheckTab = results.list[0].id;
+					for(var i = 0; i < results.list.length; i++){
+						if(!this.adminService.isFalse(results.list[i].remark)){
+							results.list[i].remark = this.sanitizer.bypassSecurityTrustHtml(results.list[i].remark.replace(/;/g, '<br/>'));
+						}
+					}
 				}
 				this.checkDataList = results.list;
 				this.hasCheckData = true;

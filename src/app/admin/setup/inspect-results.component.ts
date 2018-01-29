@@ -122,8 +122,20 @@ export class InspectResultsComponent{
 							}
 							if(hasValues){
 								results.list[i].editType = 'update';
+								if(!this.adminService.isFalse(results.list[i].remark)){
+									results.list[i].remark = results.list[i].remark.replace(/;/g, '\n');
+								}
 							}else{
 								results.list[i].editType = 'create';
+								// 创建时，如果检查项目是
+								if(results.list[i].checkName == '过敏源点刺检测 （粉尘螨）'){
+									results.list[i].remark = '皮肤指数（SI)=粉尘螨过敏原面积/阳性组胺面积\n'
+										+ '阳性\n'
+										+ '一级：“＋”=0.25＜SI＜0.5\n'
+										+ '二级：“＋＋”=0.5≤SI＜1.0\n'
+										+ '三级：“＋＋＋”=1.0≤SI＜2.0\n'
+										+ '四级：“＋＋＋＋”=2.0≤SI';
+								}
 							}
 						}
 
@@ -313,7 +325,7 @@ export class InspectResultsComponent{
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
 				values: resultList,
-				remark: this.checkProjectList[indexCheck].remark,
+				remark: this.checkProjectList[indexCheck].remark.replace(/[\r\n]/g,";"),
 			}
 			if(this.checkProjectList[indexCheck].editType == 'create'){
 				this.adminService.usercheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
