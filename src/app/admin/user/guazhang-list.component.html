@@ -4,8 +4,8 @@
 	<div class="mt10">
 		<div class="flex pure-form search-tab max">
 			<div class="pure-control-group mr10">
-				<label for="user_name">用户：</label>
-				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入用户名">
+				<label for="user_name">家长姓名：</label>
+				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入家长姓名">
 			</div>
 			<div class="pure-control-group mr10 flex">
 				<label for="b_time">时间：</label>
@@ -39,7 +39,7 @@
 		<table *ngIf="recordList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>
-					<th>用户名</th>
+					<th>家长姓名</th>
 					<th>金额</th>
 					<th>支付方式</th>
 					<th>操作人</th>

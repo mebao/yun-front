@@ -1,0 +1,24 @@
+<div class="nll-upload-tab" *ngIf="uploadStatus == ''">
+    <a class="upload-button-tab">
+        <button>选择文件</button>
+        <input class="upload" type="file" [multiple]="multiple" (change)="selectedFile($event)" accept="{{acceptType}}" [(ngModel)]="uploadValue">
+    </a>
+</div>
+<div class="nll-file-tab">
+    <div class="file-item" *ngFor="let file of fileList">
+        <div class="show-tab">
+            <img *ngIf="file.isImg" src="{{file.src}}">
+            <div *ngIf="!file.isImg" class="info">{{file.name}}</div>
+        </div>
+        <div class="info-bar flex">
+            <div class="flex-1" [ngClass]="{'no': file.uploadStatus == 'no', 'success': file.uploadStatus == 'success'}">
+                {{file.uploadStatus == 'success' ? '成功' : (file.uploadStatus == 'no' ? '失败' : '')}}
+            </div>
+            <div class="clear" *ngIf="file.uploadStatus == ''" (click)="remove(file)"><div>删除</div></div>
+        </div>
+    </div>
+</div>
+<div *ngIf="uploadStatus == 'hasFailed'">
+    <button (click)="_upload()" [disabled]="uploadStatus == 'upload'">重新上传失败图片</button>
+    <button (click)="confirmUpload()" [disabled]="uploadStatus == 'comfirm'">完成图片上传</button>
+</div>

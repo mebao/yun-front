@@ -1146,6 +1146,42 @@ export class AdminService{
 			.catch();
 	}
 
+	// 保存病历图片信息
+	private uploadcasehistoryUrl = this.url + '/mebcrm/uploadcasehistory';
+	uploadcasehistory(params): Promise<Data>{
+		return this.http.post(this.uploadcasehistoryUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 删除病历图片
+	private deletechfileUrl = this.url + '/mebcrm/deletechfile/';
+	deletechfile(urlOptions): Promise<Data>{
+		return this.http.get(this.deletechfileUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 保存儿保图片信息
+	private uploadhealthrecordUrl = this.url + '/mebcrm/uploadhealthrecord';
+	uploadhealthrecord(params): Promise<Data>{
+		return this.http.post(this.uploadhealthrecordUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 删除儿保图片
+	private deletehrfileUrl = this.url + '/mebcrm/deletehrfile/';
+	deletehrfile(urlOptions): Promise<Data>{
+		return this.http.get(this.deletehrfileUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

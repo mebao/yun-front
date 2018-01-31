@@ -80,15 +80,15 @@
 									<div *ngIf="casehistory.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高：</label>
 										<div class="flex-1">
-											<span>{{casehistory.height}}</span>
-											<span class="pl5">cm</span>
+											<span>{{casehistory.height == '0.00' ? '' : casehistory.height}}</span>
+											<span *ngIf="casehistory.height != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.midHeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
 										<div class="flex-1">
-											{{casehistory.midHeight}}
-											<span class="pl5">cm</span>
+											{{casehistory.midHeight == '0.00' ? '' : casehistory.midHeight}}
+											<span *ngIf="casehistory.midHeight != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.midHeight != null && casehistory.height != null" class="pure-u-8-24 bt info flex">
@@ -98,15 +98,15 @@
 									<div *ngIf="casehistory.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重：</label>
 										<div class="flex-1">
-											{{casehistory.weight}}
-											<span class="pl5">Kg</span>
+											{{casehistory.weight == '0.00' ? '' : casehistory.weight}}
+											<span *ngIf="casehistory.weight != '0.00'" class="pl5">Kg</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.midWeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
 										<div class="flex-1">
-											{{casehistory.midWeight}}
-											<span class="pl5">Kg</span>
+											{{casehistory.midWeight == '0.00' ? '' : casehistory.midWeight}}
+											<span *ngIf="casehistory.midWeight != '0.00'" class="pl5">Kg</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.midWeight != null && casehistory.weight != null" class="pure-u-8-24 bt info flex">
@@ -116,27 +116,27 @@
 									<div *ngIf="casehistory.bodyTemperature != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体温：</label>
 										<div class="flex-1">
-											{{casehistory.bodyTemperature}}
-											<span class="pl5">°C</span>
+											{{casehistory.bodyTemperature == '0' ? '' : casehistory.bodyTemperature}}
+											<span *ngIf="casehistory.bodyTemperature != '0'" class="pl5">°C</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.headCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">头围：</label>
 										<div class="flex-1">
-											{{casehistory.headCircum}}
-											<span class="pl5">cm</span>
+											{{casehistory.headCircum == '0.00' ? '' : casehistory.headCircum}}
+											<span *ngIf="casehistory.headCircum != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.breastCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">胸围：</label>
 										<div class="flex-1">
-											{{casehistory.breastCircum}}
-											<span class="pl5">cm</span>
+											{{casehistory.breastCircum == '0.00' ? '' : casehistory.breastCircum}}
+											<span *ngIf="casehistory.breastCircum != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.teeth != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">出牙数：</label>
-										<div class="flex-1">{{casehistory.teeth}}</div>
+										<div class="flex-1">{{casehistory.teeth == '0' ? '' : casehistory.teeth}}</div>
 									</div>
 									<div *ngIf="casehistory.topicComment != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">主诉：</label>
@@ -192,15 +192,15 @@
 									<div *ngIf="casehistory.breathe != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">呼吸：</label>
 										<div class="flex-1">
-											{{casehistory.breathe}}
-											<span class="pl5">次/分</span>
+											{{casehistory.breathe == '0' ? '' : casehistory.breathe}}
+											<span *ngIf="casehistory.breathe != '0'" class="pl5">次/分</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.bloodPressure != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">血压：</label>
 										<div class="flex-1">
-											{{casehistory.bloodPressure}}
-											<span class="pl5">mmHg</span>
+											{{casehistory.bloodPressure == '0' ? '' : casehistory.bloodPressure}}
+											<span *ngIf="casehistory.bloodPressure != '0'" class="pl5">mmHg</span>
 										</div>
 									</div>
 									<div *ngIf="casehistory.faceNeck != null" class="pure-u-24-24 bt info flex">
@@ -236,6 +236,18 @@
 							<div class="section">
 								<div class="title">诊疗记录</div>
 								<div class="pure-g">
+									<div class="pure-u-24-24 bt info flex">
+										<label class="w60p">文件：</label>
+										<div class="flex-1 flex">
+											<div *ngIf="casehistory.files.length == 0">暂无文件</div>
+											<div class="file-item" *ngFor="let file of casehistory.files">
+										        <div class="show-tab cursor-pointer" (click)="showFile(file)">
+										            <img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+													<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+										        </div>
+										    </div>
+										</div>
+									</div>
 									<div *ngIf="casehistory.diagnosis != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">诊断：</label>
 										<div class="flex-1">{{casehistory.diagnosis}}</div>
@@ -541,6 +553,26 @@
 					</ng-container>
 					<div class="bg-title mt10 mb20">诊疗记录</div>
 					<div class="pure-g">
+						<div class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label class="w210p">文件(支持图片、pdf文件)：</label>
+								<div class="flex-1">
+									<div class="flex">
+										<div class="file-item" *ngFor="let file of info.files">
+											<div class="show-tab">
+												<img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+												<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+											</div>
+											<div class="info-bar flex">
+												<div class="flex-1"></div>
+												<div class="clear" (click)="delete(file)"><div>删除</div></div>
+											</div>
+										</div>
+									</div>
+									<nll-upload [qiniuToken]="qiniuToken" [multiple]="upload_multiple" [acceptType]="acceptType" (overUpload)="successUpload($event)" (errorUpload)="errorUpload($event)"></nll-upload>
+								</div>
+							</div>
+						</div>
 						<div *ngIf="info.diagnosis != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
 								<label for="diagnosis" class="w150pp text-right">诊断：</label>
@@ -636,5 +668,19 @@
 		</div>
 	</div>
 </div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			确认删除该文件
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
+			<button (click)="confirmDelete()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<modal-img url="{{selectFile.url}}" showImg="{{selectFile.showImg}}" (onVoted)="closeImg()"></modal-img>
 <loading [show]="loadingShow"></loading>

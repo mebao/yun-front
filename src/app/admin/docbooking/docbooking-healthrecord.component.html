@@ -82,15 +82,15 @@
 									<div *ngIf="healthrecord.height != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">身高：</label>
 										<div class="flex-1">
-											{{healthrecord.height}}
-											<span class="pl5">cm</span>
+											{{healthrecord.height == '0.00' ? '' : healthrecord.height}}
+											<span *ngIf="healthrecord.height != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
 										<div class="flex-1">
-											{{healthrecord.mediumHeight}}
-											<span class="pl5">cm</span>
+											{{healthrecord.mediumHeight == '0.00' ? '' : healthrecord.mediumHeight}}
+											<span *ngIf="healthrecord.mediumHeight != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.height != null || healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
@@ -100,15 +100,15 @@
 									<div *ngIf="healthrecord.weight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体重：</label>
 										<div class="flex-1">
-											{{healthrecord.weight}}
-											<span class="pl5">kg</span>
+											{{healthrecord.weight == '0.00' ? '' : healthrecord.weight}}
+											<span *ngIf="healthrecord.weight != '0.00'" class="pl5">kg</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">中等值：</label>
 										<div class="flex-1">
-											{{healthrecord.mediumWeight}}
-											<span class="pl5">kg</span>
+											{{healthrecord.mediumWeight == '0.00' ? '' : healthrecord.mediumWeight}}
+											<span *ngIf="healthrecord.mediumWeight != '0.00'" class="pl5">kg</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.weight != null || healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
@@ -118,15 +118,15 @@
 									<div *ngIf="healthrecord.headCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">头围：</label>
 										<div class="flex-1">
-											{{healthrecord.headCircum}}
-											<span class="pl5">cm</span>
+											{{healthrecord.headCircum == '0.00' ? '' : healthrecord.headCircum}}
+											<span *ngIf="healthrecord.headCircum != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.breastCircum != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">胸围：</label>
 										<div class="flex-1">
-											{{healthrecord.breastCircum}}
-											<span class="pl5">cm</span>
+											{{healthrecord.breastCircum == '0.00' ? '' : healthrecord.breastCircum}}
+											<span *ngIf="healthrecord.breastCircum != '0.00'" class="pl5">cm</span>
 										</div>
 									</div>
 								</div>
@@ -139,29 +139,29 @@
 									<div *ngIf="healthrecord.bodyTemperature != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">体温：</label>
 										<div class="flex-1">
-											{{healthrecord.bodyTemperature}}
-											<span *ngIf="healthrecord.bodyTemperature != ''" class="pl5">°C</span>
+											{{healthrecord.bodyTemperature == '0' ? '' : healthrecord.bodyTemperature}}
+											<span *ngIf="healthrecord.bodyTemperature != '' && healthrecord.bodyTemperature != '0'" class="pl5">°C</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.pulse != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">脉搏：</label>
 										<div class="flex-1">
-											{{healthrecord.pulse}}
-											<span *ngIf="healthrecord.pulse != ''" class="pl5">次/分钟</span>
+											{{healthrecord.pulse == '0' ? '' : healthrecord.pulse}}
+											<span *ngIf="healthrecord.pulse != '' && healthrecord.pulse != '0'" class="pl5">次/分钟</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.breathe != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">呼吸：</label>
 										<div class="flex-1">
-											{{healthrecord.breathe}}
-											<span *ngIf="healthrecord.breathe != ''" class="pl5">次/分钟</span>
+											{{healthrecord.breathe == '0' ? '' : healthrecord.breathe}}
+											<span *ngIf="healthrecord.breathe != '' && healthrecord.breathe != '0'" class="pl5">次/分钟</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.bloodPressure != null" class="pure-u-8-24 bt info flex">
 										<label class="w150pp">血压：</label>
 										<div class="flex-1">
-											{{healthrecord.bloodPressure}}
-											<span *ngIf="healthrecord.bloodPressure != ''" class="pl5">mmHg</span>
+											{{healthrecord.bloodPressure == '0' ? '' : healthrecord.bloodPressure}}
+											<span *ngIf="healthrecord.bloodPressure != '' && healthrecord.bloodPressure != '0'" class="pl5">mmHg</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.spirit != null" class="pure-u-24-24 bt info flex">
@@ -267,8 +267,8 @@
 									<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">出牙数：</label>
 										<div class="flex-1">
-											{{healthrecord.teeth_num}}
-											<span *ngIf="healthrecord.teeth_num != ''" class="pl5">颗</span>
+											{{healthrecord.teeth_num == '0' ? '' : healthrecord.teeth_num}}
+											<span *ngIf="healthrecord.teeth_num != '' && healthrecord.teeth_num != '0'" class="pl5">颗</span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
@@ -450,6 +450,18 @@
 							<div class="section">
 								<div class="title">诊疗记录</div>
 								<div class="pure-g">
+									<div class="pure-u-24-24 bt info flex">
+										<label class="w60p">文件：</label>
+										<div class="flex-1 flex">
+											<div *ngIf="healthrecord.files.length == 0">暂无文件</div>
+											<div class="file-item" *ngFor="let file of healthrecord.files">
+										        <div class="show-tab cursor-pointer" (click)="showFile(file)">
+										            <img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+													<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+										        </div>
+										    </div>
+										</div>
+									</div>
 									<div *ngIf="healthrecord.record != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">诊疗记录：</label>
 										<div class="flex-1">{{healthrecord.record}}</div>
@@ -499,7 +511,7 @@
 						</div>
 					</div>
 					<div
-						*ngIf="info.height != null || info.medium_height != null || info.weight != null || info.medium_weight != null || info.head_circum != null || info.breast_circum != null"
+						*ngIf="baseInfo.height != null || baseInfo.medium_height != null || baseInfo.weight != null || baseInfo.medium_weight != null || baseInfo.head_circum != null || baseInfo.breast_circum != null"
 						class="bg-title mt10 mb20">
 						基础体检 （根据孩子年龄测量基础指标，了解体格发育是否正常）
 					</div>
@@ -1207,6 +1219,26 @@
 					</div>
 					<div class="bg-title mt10">诊疗记录</div>
 					<div class="pure-g">
+						<div class="pure-u-24-24 mt10">
+							<div class="pure-control-group flex">
+								<label class="w210p">文件(支持图片、pdf文件)：</label>
+								<div class="flex-1">
+									<div class="flex">
+										<div class="file-item" *ngFor="let file of info.files">
+											<div class="show-tab">
+												<img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+												<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+											</div>
+											<div class="info-bar flex">
+												<div class="flex-1"></div>
+												<div class="clear" (click)="delete(file)"><div>删除</div></div>
+											</div>
+										</div>
+									</div>
+									<nll-upload [qiniuToken]="qiniuToken" [multiple]="upload_multiple" [acceptType]="acceptType" (overUpload)="successUpload($event)" (errorUpload)="errorUpload($event)"></nll-upload>
+								</div>
+							</div>
+						</div>
 						<div *ngIf="info.record != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
 								<textarea id="record" maxlength="200" rows="1" name="record" [(ngModel)]="info.record" class="auto flex-1"></textarea>
@@ -1277,5 +1309,19 @@
 		</div>
 	</div>
 </div>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			确认删除该文件
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button">关闭</button>
+			<button (click)="confirmDelete()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<modal-img url="{{selectFile.url}}" showImg="{{selectFile.showImg}}" (onVoted)="closeImg()"></modal-img>
 <loading [show]="loadingShow"></loading>

@@ -4,9 +4,12 @@ import { Router, ActivatedRoute }             from '@angular/router';
 import { AdminService }                       from '../admin.service';
 import { DoctorService }                      from '../doctor/doctor.service';
 
+import { UploadService }                      from '../../common/nll-upload/upload.service';
+
 @Component({
 	selector: 'admin-doctor-booking-healthrecord',
-	templateUrl: './docbooking-healthrecord.component.html'
+	templateUrl: './docbooking-healthrecord.component.html',
+	styleUrls: ['./docbooking-casehistory.component.scss'],
 })
 export class DocbookingHealthrecordComponent implements OnInit{
 	topBar: {
@@ -177,6 +180,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
         review_date: string,
 		review_date_num: number,
         review_date_text: string,
+		files: any[],
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
     baseInfo: {
@@ -202,12 +206,23 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	}
 	adminList: any[];
 	operator: string;
+	healthrecord_id: string;
+	qiniuToken: string;
+	upload_multiple: boolean;
+	acceptType: string;
+	selectFile: {
+		file: string,
+		url: string,
+		showImg: number,
+	}
+	modalConfirmTab: boolean;
 
 	constructor(
 		private adminService: AdminService,
 		private doctorService: DoctorService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private uploadService: UploadService,
 	) {}
 
 	ngOnInit(): void{
@@ -325,6 +340,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			review_date: '',
 			review_date_num: 0,
 			review_date_text: '',
+			files: [],
 		}
 		this.baseInfo = {
 			height: '',
@@ -507,6 +523,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
         });
 
         this.btnCanEdit = false;
+
+		this.healthrecord_id = '';
+		this.qiniuToken = '';
+		this.upload_multiple = true;
+		this.acceptType = 'image/*, application/pdf';
+		this.selectFile = {
+			file: '',
+			url: '',
+			showImg: 0,
+		}
+		this.modalConfirmTab = false;
+		this.getQiniuToken();
 	}
 
 	initEdit(){
@@ -527,18 +555,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				name: doctorBooking.childName,
 				age: doctorBooking.age,
 				check_date: healthrecord.checkDate,
-				height: healthrecord.height,
-				medium_height: healthrecord.mediumHeight,
+				height: healthrecord.height == '0.00' ? '' : healthrecord.height,
+				medium_height: healthrecord.mediumHeight == '0.00' ? '' : healthrecord.mediumHeight,
 				compare_height: healthrecord.compareHeight,
-				weight: healthrecord.weight,
-				medium_weight: healthrecord.mediumWeight,
+				weight: healthrecord.weight == '0.00' ? '' : healthrecord.weight,
+				medium_weight: healthrecord.mediumWeight == '0.00' ? '' : healthrecord.mediumWeight,
 				compare_weight: healthrecord.compareWeight,
-				head_circum: healthrecord.headCircum,
-				breast_circum: healthrecord.breastCircum,
-				body_temperature: healthrecord.bodyTemperature,
-				pulse: healthrecord.pulse,
-				breathe: healthrecord.breathe,
-				blood_pressure: healthrecord.bloodPressure,
+				head_circum: healthrecord.headCircum == '0.00' ? '' : healthrecord.headCircum,
+				breast_circum: healthrecord.breastCircum == '0.00' ? '' : healthrecord.breastCircum,
+				body_temperature: healthrecord.bodyTemperature == '0' ? '' : healthrecord.bodyTemperature,
+				pulse: healthrecord.pulse == '0' ? '' : healthrecord.pulse,
+				breathe: healthrecord.breathe == '0' ? '' : healthrecord.breathe,
+				blood_pressure: healthrecord.bloodPressure == '0' ? '' : healthrecord.bloodPressure,
 				spirit: healthrecord.spirit,
 				nutritional_status: healthrecord.nutritionalStatus,
 				skin: healthrecord.skin,
@@ -581,7 +609,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				teeth_pit_other: healthrecord.teeth_pit == '未见异常' ? '' : healthrecord.teeth_pit,
 				plaque: healthrecord.plaque,
 				plaque_other: healthrecord.plaque == '未见异常' ? '' : healthrecord.plaque,
-				teeth_num: healthrecord.teeth_num,
+				teeth_num: healthrecord.teeth_num == '0' ? '' : healthrecord.teeth_num,
 				dental_caries: healthrecord.dental_caries,
 				dental_caries_other: healthrecord.dental_caries == '未见异常' ? '' : healthrecord.dental_caries,
 				limb: healthrecord.limb,
@@ -624,6 +652,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				review_date: healthrecord.reviewDate ? this.adminService.dateFormatHasWord(healthrecord.reviewDate) : healthrecord.reviewDate,
 				review_date_num: new Date(todayDate).getTime(),
 				review_date_text: healthrecord.reviewDate,
+				files: healthrecord.files,
 			}
 			this.baseInfo = {
 				height: healthrecord.height,
@@ -743,6 +772,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				review_date: '',
 				review_date_num: new Date(todayDate).getTime(),
 				review_date_text: '',
+				files: [],
 			}
 			this.baseInfo = {
 				height: null,
@@ -1246,6 +1276,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             this.btnCanEdit = false;
 			return false;
 		}
+		this.loadingShow = true;
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
@@ -1253,18 +1284,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
             child_id: this.info.child_id,
             booking_id: this.info.booking_id,
             check_date: this.adminService.dateFormatHasWord(this.booking.bookingDate),
-            height: this.info.height == '' ? '0' : this.info.height,
-            medium_height: this.info.medium_height == '' ? '0' : this.info.medium_height,
+            height: this.info.height == '' ? '0' : (this.info.height == null ? (this.baseInfo.height == null ? null : '0') : this.info.height),
+            medium_height: this.info.medium_height == '' ? '0' : (this.info.medium_height == null ? (this.baseInfo.medium_height == null ? null : '0') : this.info.medium_height),
             compare_height: this.info.compare_height,
-            weight: this.info.weight == '' ? '0' : this.info.weight,
-            medium_weight: this.info.medium_weight == '' ? '0' : this.info.medium_weight,
+            weight: this.info.weight == '' ? '0' : (this.info.weight == null ? (this.baseInfo.weight == null ? null : '0') : this.info.weight),
+            medium_weight: this.info.medium_weight == '' ? '0' : (this.info.medium_weight == null ? (this.baseInfo.medium_weight == null ? null : '0') : this.info.medium_weight),
             compare_weight: this.info.compare_weight,
-            head_circum: this.info.head_circum == '' ? '0' : this.info.head_circum,
-            breast_circum: this.info.breast_circum == '' ? '0' : this.info.breast_circum,
-            body_temperature: this.info.body_temperature,
-            pulse: this.info.pulse,
-            breathe: this.info.breathe,
-            blood_pressure: this.info.blood_pressure,
+            head_circum: this.info.head_circum == '' ? '0' : (this.info.head_circum == null ? (this.baseInfo.head_circum == null ? null : '0') : this.info.head_circum),
+            breast_circum: this.info.breast_circum == '' ? '0' : (this.info.breast_circum == null ? (this.baseInfo.breast_circum == null ? null : '0') : this.info.breast_circum),
+            body_temperature: this.info.body_temperature == '' ? '0' : (this.info.body_temperature == null ? (this.baseInfo.body_temperature == null ? null : '0') : this.info.body_temperature),
+            pulse: this.info.pulse == '' ? '0' : (this.info.pulse == null ? (this.baseInfo.pulse == null ? null : '0') : this.info.pulse),
+            breathe: this.info.breathe == '' ? '0' : (this.info.breathe == null ? (this.baseInfo.breathe == null ? null : '0') : this.info.breathe),
+            blood_pressure: this.info.blood_pressure == '' ? '0' : (this.info.blood_pressure == null ? (this.baseInfo.blood_pressure == null ? null : '0') : this.info.blood_pressure),
             spirit: this.info.spirit,
             nutritional_status: this.info.nutritional_status,
             skin: this.info.skin != '' ? this.info.skin : this.info.skin_other,
@@ -1287,7 +1318,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             tongue_tie: this.info.tongue_tie != '' ? this.info.tongue_tie : this.info.tongue_tie_other,
             teeth_pit: this.info.teeth_pit != '' ? this.info.teeth_pit : this.info.teeth_pit_other,
             plaque: this.info.plaque != '' ? this.info.plaque : this.info.plaque_other,
-			teeth_num: this.info.teeth_num,
+			teeth_num: this.info.teeth_num == '' ? '0' : (this.info.teeth_num == null ? (this.baseInfo.teeth_num == null ? null : '0') : this.info.teeth_num),
             dental_caries: this.info.dental_caries != '' ? this.info.dental_caries : this.info.dental_caries_other,
             limb: this.info.limb != '' ? this.info.limb : this.info.limb_other,
             ribs: this.info.ribs != '' ? this.info.ribs : this.info.ribs_other,
@@ -1323,30 +1354,20 @@ export class DocbookingHealthrecordComponent implements OnInit{
         }
         this.adminService.healthrecord(urlOptions, params).then((data) => {
             if(data.status == 'no'){
+				this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
             }else{
                 if(this.editType == 'create'){
 					if(this.info.review_date == ''){
-	                    this.toastTab('儿保记录创建成功', '');
-						setTimeout(() => {
-							this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
-							this.editType = 'view';
-		                }, 2000);
+						this.uploadService.startUpload();
 					}else{
 						// 新增，并且复查日期不为空时，增加随访
 						this.addFollowups();
 					}
                 }else{
-                    this.toastTab('儿保记录修改成功', '');
-					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
-						this.editType = 'view';
-	                }, 2000);
+					this.uploadService.startUpload();
                 }
-                // setTimeout(() => {
-                //     this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
-                // }, 2000);
             }
         });
     }
@@ -1364,16 +1385,130 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
 		this.adminService.userfollowup(params).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
 			}else{
-				this.toastTab('儿保记录创建成功', '');
-				setTimeout(() => {
-					this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
-					this.editType = 'view';
-				}, 2000);
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.healthrecord_id = results.id;
+				this.uploadService.startUpload();
 			}
 		});
+	}
+
+	showFile(file) {
+		if(file.mimeType == 'image'){
+			this.selectFile.url = file.fileUrl;
+			this.selectFile.showImg = 1;
+		}else{
+			window.open(file.fileUrl);
+		}
+	}
+
+	closeImg() {
+		this.selectFile = {
+			file: '',
+			url: '',
+			showImg: 0,
+		}
+	}
+
+	delete(file) {
+		this.selectFile = {
+			file: JSON.stringify(file),
+			url: '',
+			showImg: 0,
+		}
+		this.modalConfirmTab = true;
+	}
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	confirmDelete() {
+		var urlOptions = JSON.parse(this.selectFile.file).fileId + '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token;
+		this.adminService.deletehrfile(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.modalConfirmTab = false;
+				this.toastTab('文件删除成功', '');
+				for(var i = 0; i < this.info.files.length; i++){
+					if(JSON.parse(this.selectFile.file).fileId == this.info.files[i].fileId){
+						if(this.healthrecordList.length > 0){
+							this.healthrecordList[0].files.splice(i, 1);
+						}
+						this.info.files.splice(i, 1);
+					}
+				}
+			}
+		});
+	}
+
+	getQiniuToken() {
+		//获取头像上传token
+		var tokenUrl  = '?type=childCircle';
+		this.adminService.qiniutoken(tokenUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.qiniuToken = JSON.parse(JSON.stringify(data)).uptoken;
+			}
+		});
+	}
+
+	errorUpload($event) {
+		this.toastTab($event.errorMsg, 'error');
+	}
+
+	successUpload($event) {
+		var fileList = $event.fileList;
+		if(fileList.length > 0){
+			var flist = [];
+			for(var i = 0; i < fileList.length; i++){
+				if(fileList[i].uploadStatus == 'success'){
+					var fileInfo = {
+						record_id: this.editType == 'create' ? this.healthrecord_id : JSON.parse(sessionStorage.getItem('healthrecord')).id,
+						file_ext: fileList[i].name.substr(fileList[i].name.lastIndexOf('.')+1),
+						file_size: fileList[i].file.size,
+						file_name: fileList[i].name,
+						remote_domain: 'http://bcircle.meb.meb168.com',
+						remote_file_key: fileList[i].key,
+						mime_type: fileList[i].isImg ? 'image' : '',
+					}
+					flist.push(fileInfo);
+				}
+			}
+			if(flist.length > 0){
+				var params = {
+					flist: flist,
+				}
+				this.adminService.uploadhealthrecord(params).then((data) => {
+					if(data.errorMsg == 'no'){
+						this.loadingShow = false;
+						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
+					}else{
+						this.complete();
+					}
+				});
+			}else{
+				this.complete();
+			}
+		}else{
+			this.complete();
+		}
+	}
+
+	complete() {
+		this.loadingShow = false;
+		this.toastTab(this.editType == 'create' ? '儿保创建成功' : '儿保修改成功', '');
+		setTimeout(() => {
+			this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/healthrecord', id: this.id, doctorId: this.doctorId}});
+			this.editType = 'view';
+		}, 2000);
 	}
 
 	toastTab(text, type) {

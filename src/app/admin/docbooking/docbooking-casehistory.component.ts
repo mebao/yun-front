@@ -4,9 +4,12 @@ import { Router, ActivatedRoute }             from '@angular/router';
 import { AdminService }                       from '../admin.service';
 import { DoctorService }                      from '../doctor/doctor.service';
 
+import { UploadService }                      from '../../common/nll-upload/upload.service';
+
 @Component({
 	selector: 'admin-doctor-booking-casehistory',
 	templateUrl: './docbooking-casehistory.component.html',
+	styleUrls: ['./docbooking-casehistory.component.scss'],
 })
 export class DocbookingCasehistoryComponent implements OnInit{
 	topBar: {
@@ -104,6 +107,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		blood_pressure: string,
 		face_neck: string,
 		face_neck_other: string,
+		files: any[],
 		heart_lung: string,
 		heart_lung_other: string,
 		abdomen: string,
@@ -158,12 +162,23 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	}
 	adminList: any[];
 	operator: string;
+	casehistory_id: string;
+	qiniuToken: string;
+	upload_multiple: boolean;
+	acceptType: string;
+	selectFile: {
+		file: string,
+		url: string,
+		showImg: number,
+	}
+	modalConfirmTab: boolean;
 
 	constructor(
 		private adminService: AdminService,
 		private doctorService: DoctorService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private uploadService: UploadService,
 	) {}
 
 	ngOnInit(): void{
@@ -203,6 +218,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			blood_pressure: '',
 			face_neck: '',
 			face_neck_other: '',
+			files: [],
 			heart_lung: '',
 			heart_lung_other: '',
 			abdomen: '',
@@ -406,6 +422,18 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
+
+		this.casehistory_id = '';
+		this.qiniuToken = '';
+		this.upload_multiple = true;
+		this.acceptType = 'image/*, application/pdf';
+		this.selectFile = {
+			file: '',
+			url: '',
+			showImg: 0,
+		}
+		this.modalConfirmTab = false;
+		this.getQiniuToken();
 	}
 
 	initEdit() {
@@ -420,15 +448,15 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			this.info = {
 				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
 				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
-				weight: casehistory.weight,
-				mid_weight: casehistory.midWeight,
+				weight: casehistory.weight == '0.00' ? '' : casehistory.weight,
+				mid_weight: casehistory.midWeight == '0.00' ? '' : casehistory.midWeight,
 				compare_weight: casehistory.compareWeight,
-				height: casehistory.height,
-				mid_height: casehistory.midHeight,
+				height: casehistory.height == '0.00' ? '' : casehistory.height,
+				mid_height: casehistory.midHeight == '0.00' ? '' : casehistory.midHeight,
 				compare_height: casehistory.compareHeight,
-				head_circum: casehistory.headCircum,
-				breast_circum: casehistory.breastCircum,
-				teeth: casehistory.teeth,
+				head_circum: casehistory.headCircum == '0.00' ? '' : casehistory.headCircum,
+				breast_circum: casehistory.breastCircum == '0.00' ? '' : casehistory.breastCircum,
+				teeth: casehistory.teeth == '0' ? '' : casehistory.teeth,
 				topic_comment: casehistory.topicComment,
 				check_result: casehistory.checkResult,
 				present_illness: casehistory.presentIllness,
@@ -438,11 +466,12 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				breed_history: casehistory.breedHistory,
 				growth_history: casehistory.growthHistory,
 				physical_check: casehistory.physicalCheck,
-				body_temperature: casehistory.bodyTemperature,
-				breathe: casehistory.breathe,
-				blood_pressure: casehistory.bloodPressure,
+				body_temperature: casehistory.bodyTemperature == '0' ? '' : casehistory.bodyTemperature,
+				breathe: casehistory.breathe == '0' ? '' : casehistory.breathe,
+				blood_pressure: casehistory.bloodPressure == '0' ? '' : casehistory.bloodPressure,
 				face_neck: casehistory.faceNeck,
 				face_neck_other: casehistory.faceNeck == '未见异常' ? '' : casehistory.faceNeck,
+				files: casehistory.files,
 				heart_lung: casehistory.heartLung,
 				heart_lung_other: casehistory.heartLung == '未见异常' ? '' : casehistory.heartLung,
 				abdomen: casehistory.abdomen,
@@ -506,6 +535,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				blood_pressure: null,
 				face_neck: null,
 				face_neck_other: '',
+				files: [],
 				heart_lung: null,
 				heart_lung_other: '',
 				abdomen: null,
@@ -977,21 +1007,22 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
+		this.loadingShow = true;
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			child_id: JSON.parse(sessionStorage.getItem('doctorBooking')).childId,
 			booking_id: JSON.parse(sessionStorage.getItem('doctorBooking')).bookingId,
-			weight: this.info.weight == '' ? '0' : this.info.weight,
-			mid_weight: this.info.mid_weight == '' ? '0' : this.info.mid_weight,
+			weight: this.info.weight == '' ? '0' : (this.info.weight == null ? (this.baseInfo.weight == null ? null : '0') : this.info.weight),
+			mid_weight: this.info.mid_weight == '' ? '0' : (this.info.mid_weight == null ? (this.baseInfo.mid_weight == null ? null : '0') : this.info.mid_weight),
 			compare_weight: this.info.compare_weight,
-			height: this.info.height == '' ? '0' : this.info.height,
-			mid_height: this.info.mid_height == '' ? '0' : this.info.mid_height,
+			height: this.info.height == '' ? '0' : (this.info.height == null ? (this.baseInfo.height == null ? null : '0') : this.info.height),
+			mid_height: this.info.mid_height == '' ? '0' : (this.info.mid_height == null ? (this.baseInfo.mid_height == null ? null : '0') : this.info.mid_height),
 			compare_height: this.info.compare_height,
-			head_circum: this.info.head_circum == '' ? '0' : this.info.head_circum,
-			breast_circum: this.info.breast_circum == '' ? '0' : this.info.breast_circum,
-			teeth: this.info.teeth == '' ? '0' : this.info.teeth,
+			head_circum: this.info.head_circum == '' ? '0' : (this.info.head_circum == null ? (this.baseInfo.head_circum == null ? null : '0') : this.info.head_circum),
+			breast_circum: this.info.breast_circum == '' ? '0' : (this.info.breast_circum == null ? (this.baseInfo.breast_circum == null ? null : '0') : this.info.breast_circum),
+			teeth: this.info.teeth == '' ? '0' : (this.info.teeth == null ? (this.baseInfo.teeth == null ? null : '0') : this.info.teeth),
 			topic_comment: this.info.topic_comment,
 			check_result: this.info.check_result,
 			present_illness: this.info.present_illness,
@@ -1001,9 +1032,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			breed_history: this.info.breed_history,
 			growth_history: this.info.growth_history,
 			physical_check: this.info.physical_check,
-			body_temperature: this.info.body_temperature == '' ? '0' : this.info.body_temperature,
-			breathe: this.info.breathe == '' ? '0' : this.info.breathe,
-			blood_pressure: this.info.blood_pressure == '' ? '0' : this.info.blood_pressure,
+			body_temperature: this.info.body_temperature == '' ? '0' : (this.info.body_temperature == null ? (this.baseInfo.body_temperature == null ? null : '0') : this.info.body_temperature),
+			breathe: this.info.breathe == '' ? '0' : (this.info.breathe == null ? (this.baseInfo.breathe == null ? null : '0') : this.info.breathe),
+			blood_pressure: this.info.blood_pressure == '' ? '0' : (this.info.blood_pressure == null ? (this.baseInfo.blood_pressure == null ? null : '0') : this.info.blood_pressure),
 			face_neck: this.info.face_neck != '' ? this.info.face_neck : this.info.face_neck_other,
 			heart_lung: this.info.heart_lung != '' ? this.info.heart_lung : this.info.heart_lung_other,
 			abdomen: this.info.abdomen != '' ? this.info.abdomen : this.info.abdomen_other,
@@ -1020,33 +1051,139 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
 			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
 		}
+
+		var urlOptions = '';
 		if(this.editType == 'create'){
-			this.adminService.casehistory('', params).then((data) => {
-				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
-					this.btnCanEdit = false;
-				}else{
-					this.toastTab('病历创建成功', '');
-					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
-						this.editType = 'view';
-					}, 2000);
-				}
-			});
+			urlOptions = '';
 		}else{
-			this.adminService.casehistory('/' + JSON.parse(sessionStorage.getItem('casehistory')).id, params).then((data) => {
-				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
-					this.btnCanEdit = false;
-				}else{
-					this.toastTab('病历修改成功', '');
-					setTimeout(() => {
-						this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
-						this.editType = 'view';
-					}, 2000);
-				}
-			});
+			urlOptions = '/' + JSON.parse(sessionStorage.getItem('casehistory')).id;
 		}
+		this.adminService.casehistory(urlOptions, params).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.casehistory_id = results.id;
+				this.uploadService.startUpload();
+			}
+		});
+	}
+
+	showFile(file) {
+		if(file.mimeType == 'image'){
+			this.selectFile.url = file.fileUrl;
+			this.selectFile.showImg = 1;
+		}else{
+			window.open(file.fileUrl);
+		}
+	}
+
+	closeImg() {
+		this.selectFile = {
+			file: '',
+			url: '',
+			showImg: 0,
+		}
+	}
+
+	delete(file) {
+		this.selectFile = {
+			file: JSON.stringify(file),
+			url: '',
+			showImg: 0,
+		}
+		this.modalConfirmTab = true;
+	}
+
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	confirmDelete() {
+		var urlOptions = JSON.parse(this.selectFile.file).fileId + '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token;
+		this.adminService.deletechfile(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.modalConfirmTab = false;
+				this.toastTab('文件删除成功', '');
+				for(var i = 0; i < this.info.files.length; i++){
+					if(JSON.parse(this.selectFile.file).fileId == this.info.files[i].fileId){
+						if(this.casehistoryList.length > 0){
+							this.casehistoryList[0].files.splice(i, 1);
+						}
+						this.info.files.splice(i, 1);
+					}
+				}
+			}
+		});
+	}
+
+	getQiniuToken() {
+		//获取头像上传token
+		var tokenUrl  = '?type=childCircle';
+		this.adminService.qiniutoken(tokenUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				this.qiniuToken = JSON.parse(JSON.stringify(data)).uptoken;
+			}
+		});
+	}
+
+	errorUpload($event) {
+		this.toastTab($event.errorMsg, 'error');
+	}
+
+	successUpload($event) {
+		var fileList = $event.fileList;
+		if(fileList.length > 0){
+			var flist = [];
+			for(var i = 0; i < fileList.length; i++){
+				if(fileList[i].uploadStatus == 'success'){
+					var fileInfo = {
+						case_id: this.editType == 'create' ? this.casehistory_id : JSON.parse(sessionStorage.getItem('casehistory')).id,
+						file_ext: fileList[i].name.substr(fileList[i].name.lastIndexOf('.')+1),
+						file_size: fileList[i].file.size,
+						file_name: fileList[i].name,
+						remote_domain: 'http://bcircle.meb.meb168.com',
+						remote_file_key: fileList[i].key,
+						mime_type: fileList[i].isImg ? 'image' : '',
+					}
+					flist.push(fileInfo);
+				}
+			}
+			if(flist.length > 0){
+				var params = {
+					flist: flist,
+				}
+				this.adminService.uploadcasehistory(params).then((data) => {
+					if(data.errorMsg == 'no'){
+						this.loadingShow = false;
+						this.toastTab(data.errorMsg, 'error');
+						this.btnCanEdit = false;
+					}else{
+						this.complete();
+					}
+				});
+			}else{
+				this.complete();
+			}
+		}else{
+			this.complete();
+		}
+	}
+
+	complete() {
+		this.loadingShow = false;
+		this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');
+		setTimeout(() => {
+			this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
+			this.editType = 'view';
+		}, 2000);
 	}
 
 	toastTab(text, type) {

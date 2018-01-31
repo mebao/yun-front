@@ -5,6 +5,7 @@ import { ModalModule }           from './modal/modal.module';
 import { NodataModule }          from './nodata/nodata.module';
 import { QRCodeModule }          from './qrcode.module';
 import { ToastModule }           from './nll-toast/toast.module';
+import { UploadModule }          from './nll-upload/upload.module';
 
 @NgModule({
     exports: [
@@ -13,6 +14,7 @@ import { ToastModule }           from './nll-toast/toast.module';
         NodataModule,
         QRCodeModule,
         ToastModule,
+        UploadModule,
     ]
 })
 
