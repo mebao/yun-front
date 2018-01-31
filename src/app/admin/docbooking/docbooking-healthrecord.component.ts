@@ -1358,6 +1358,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
             }else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.healthrecord_id = results.id;
                 if(this.editType == 'create'){
 					if(this.info.review_date == ''){
 						this.uploadService.startUpload();
@@ -1389,8 +1391,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 this.toastTab(data.errorMsg, 'error');
                 this.btnCanEdit = false;
 			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.healthrecord_id = results.id;
 				this.uploadService.startUpload();
 			}
 		});
