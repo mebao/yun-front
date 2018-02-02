@@ -27,18 +27,20 @@
 				<span>接诊医生：</span>
 				<span>{{doctorInfo.realName}}</span>
 			</div>
-			<div class="item">
-				<span>就诊时宝宝年龄：</span>
-				<span>{{booking.bookingAge}}</span>
-			</div>
-			<div class="item">
-				<span>接诊开始时间：</span>
-				<span>{{booking.services.length > 0 ? booking.services[0].begin : ''}}</span>
-			</div>
-			<div class="item">
-				<span>接诊结束时间：</span>
-				<span>{{booking.services.length > 0 ? booking.services[0].end : ''}}</span>
-			</div>
+			<ng-container *ngIf="pageType == 'history'">
+				<div class="item">
+					<span>就诊时宝宝年龄：</span>
+					<span>{{booking.bookingAge}}</span>
+				</div>
+				<div class="item">
+					<span>接诊开始时间：</span>
+					<span>{{booking.services.length > 0 ? booking.services[0].begin : ''}}</span>
+				</div>
+				<div class="item">
+					<span>接诊结束时间：</span>
+					<span>{{booking.services.length > 0 ? booking.services[0].end : ''}}</span>
+				</div>
+			</ng-container>
 			<div *ngIf="pageType != 'history'" class="mt20">
 				<button (click)="showHistory()" class="pure-button pure-button-primary">就诊记录</button>
 			</div>
