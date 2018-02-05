@@ -33,6 +33,7 @@ export class BookingReceiveComponent{
 		service_id: string;
 		mobile: string,
 		creator_name: string,
+		child_name: string,
 		cdate_less: string,
 		cdate_less_num: number,
 		cdate_less_text: string,
@@ -96,6 +97,7 @@ export class BookingReceiveComponent{
 				service_id: '',
 				mobile: '',
 				creator_name: '',
+				child_name: '',
 				cdate_less: '',
 				cdate_less_num: 0,
 				cdate_less_text: '',
@@ -228,6 +230,9 @@ export class BookingReceiveComponent{
 		}
 		if(this.searchInfo.creator_name && this.searchInfo.creator_name != ''){
 			urlOptions += '&creator_name=' + this.searchInfo.creator_name;
+		}
+		if(this.searchInfo.child_name && this.searchInfo.child_name != ''){
+			urlOptions += '&child_name=' + this.searchInfo.child_name;
 		}
 		return urlOptions;
 	}

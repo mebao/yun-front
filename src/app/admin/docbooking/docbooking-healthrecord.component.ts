@@ -1024,11 +1024,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '年');
 								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '月');
 								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace(' ', '日 ');
+								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.slice(0, results.weekbooks[0].services[i].begin.indexOf(' '));
 							}
 							if(!this.adminService.isFalse(results.weekbooks[0].services[i].end)){
 								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '年');
 								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '月');
 								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace(' ', '日 ');
+								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.slice(0, results.weekbooks[0].services[i].end.indexOf(' '));
 							}
 						}
 					}
