@@ -80,9 +80,9 @@
 									</label>
 									<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
 										<ng-container *ngFor="let batch of ms.batchList">
-											<ng-container *ngIf="batch.isPrescribed == '0'">
+											<!-- <ng-container *ngIf="batch.isPrescribed == '0'"> -->
 												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-											</ng-container>
+											<!-- </ng-container> -->
 										</ng-container>
 									</select>
 								</div>
