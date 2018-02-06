@@ -326,31 +326,30 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.prescriptList = [];
 				this.prescription = [];
 				//this.initEdit();
-				this.loadingShow = false;
-			}
-		});
-		// 病历模板
-		this.casetempletList = [];
-		this.selectedTemplet = '';
-		var searchcasetempletUrl = this.url + '&doctor_id=' + this.doctorId
-			 + '&status=1';
-		this.doctorService.searchcasetemplet(searchcasetempletUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].string = JSON.stringify(results.list[i]);
+				// 病历模板
+				this.casetempletList = [];
+				this.selectedTemplet = '';
+				var searchcasetempletUrl = this.url + '&doctor_id=' + this.doctorId
+					 + '&status=1';
+				this.doctorService.searchcasetemplet(searchcasetempletUrl).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						if(results.list.length > 0){
+							for(var i = 0; i < results.list.length; i++){
+								results.list[i].string = JSON.stringify(results.list[i]);
+							}
+						}
+						this.casetempletList = results.list;
+						if(this.casetempletList.length > 0){
+							this.selectedTemplet = this.casetempletList[0].string;
+							sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
+						}
+						//获取预约信息
+						this.getBookingData();
 					}
-				}
-				this.casetempletList = results.list;
-				if(this.casetempletList.length > 0){
-					this.selectedTemplet = this.casetempletList[0].string;
-					sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
-				}
-				//获取预约信息
-				this.getBookingData();
+				});
 			}
 		});
 

@@ -425,32 +425,30 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					this.editType = 'view';
 				}
 				this.initEdit();
-				this.loadingShow = false;
-			}
-		});
-
-		// 儿保记录模板
-		this.recordtempletList = [];
-		this.selectedTemplet = '';
-		var searchrecordtempletUrl = this.url + '&doctor_id=' + this.doctorId
-			 + '&status=1';
-		this.doctorService.searchrecordtemplet(searchrecordtempletUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].string = JSON.stringify(results.list[i]);
+				// 儿保记录模板
+				this.recordtempletList = [];
+				this.selectedTemplet = '';
+				var searchrecordtempletUrl = this.url + '&doctor_id=' + this.doctorId
+					 + '&status=1';
+				this.doctorService.searchrecordtemplet(searchrecordtempletUrl).then((data) => {
+					if(data.status == 'no'){
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						if(results.list.length > 0){
+							for(var i = 0; i < results.list.length; i++){
+								results.list[i].string = JSON.stringify(results.list[i]);
+							}
+						}
+						this.recordtempletList = results.list;
+						if(this.recordtempletList.length > 0){
+							this.selectedTemplet = this.recordtempletList[0].string;
+							sessionStorage.setItem('doctorBookingRecordTemplet', JSON.stringify(this.recordtempletList[0]));
+							this.initEdit();
+						}
+						this.loadingShow = false;
 					}
-				}
-				this.recordtempletList = results.list;
-				if(this.recordtempletList.length > 0){
-					this.selectedTemplet = this.recordtempletList[0].string;
-					sessionStorage.setItem('doctorBookingRecordTemplet', JSON.stringify(this.recordtempletList[0]));
-					this.initEdit();
-				}
-
+				});
 			}
 		});
 
