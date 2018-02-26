@@ -265,7 +265,7 @@ export class PaymentBookingFee{
 		let that = this;
 		// 接受授权推送
 		var goEasy = new GoEasy({
-			appkey: 'BC-ddb7b873cab7467a82e7555677a667a1'
+			appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
 		});
 
 		goEasy.subscribe({

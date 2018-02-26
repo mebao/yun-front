@@ -26,11 +26,11 @@
 		</div>
 		<div class="w64p"></div>
 	</div>
-	<div class="flex pure-form mt5">
+	<div class="flex pure-form search-tab mt5">
 		<div class="flex-1"></div>
 		<div class="pure-control-group mr10 flex">
-			<label for="creator_name">家长姓名或手机号码：</label>
-			<select-search [title]="'请选择家长姓名或手机号码'" [selectList]="userList" [showClear]="true" (onVoted)="selectUser($event)"></select-search>
+			<label for="creator_name">宝宝姓名：</label>
+			<select-search [title]="'请选择宝宝'" [selectList]="childList" [showClear]="true" (onVoted)="selectChild($event)"></select-search>
 		</div>
 		<div class="pure-control-group search-tab max mr10">
 			<label for="doctor_id">医生：</label>

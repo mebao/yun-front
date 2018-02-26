@@ -53,6 +53,7 @@ export class TransactionStatisticsComponent{
 	commonList: any[];
 	modalInfoTab: boolean = false;
 	selector: {
+		bookingDate: string,
 		doctorName: string,
 		serviceName: string,
 		refereeName: string,
@@ -114,6 +115,7 @@ export class TransactionStatisticsComponent{
 		]
 
 		this.selector = {
+			bookingDate: '',
 			doctorName: '',
 			serviceName: '',
 			refereeName: '',
@@ -265,6 +267,7 @@ export class TransactionStatisticsComponent{
 
 	info(tran) {
 		this.selector = {
+			bookingDate: tran.bookingDate,
 			doctorName: tran.doctorName,
 			serviceName: tran.serviceName,
 			refereeName: tran.refereeName,
@@ -276,6 +279,7 @@ export class TransactionStatisticsComponent{
 	closeInfo() {
 		this.modalInfoTab = false;
 		this.selector = {
+			bookingDate: '',
 			doctorName: '',
 			serviceName: '',
 			refereeName: '',

@@ -31,6 +31,7 @@ export class BookingListComponent implements OnInit{
 		doctor_id: string;
 		service_id: string;
 		mobile: string,
+		child_id: string,
 		creator_name: string,
 		cdate_less: string,
 		cdate_less_num: number,
@@ -91,6 +92,8 @@ export class BookingListComponent implements OnInit{
 	hasData: boolean;
 	// 家长
 	userList: any[];
+	// 宝宝
+	childList: any[];
 	// 详情
 	modalTabInfo: boolean;
 	selectorBooking: {
@@ -147,6 +150,7 @@ export class BookingListComponent implements OnInit{
 			doctor_id: '',
 			service_id: '',
 			mobile: '',
+			child_id: '',
 			creator_name: '',
 			cdate_less: '',
 			cdate_less_num: 0,
@@ -245,20 +249,42 @@ export class BookingListComponent implements OnInit{
 
 		// 获取家长信息
 		this.userList = [];
-		this.adminService.searchuser(this.url).then((data) => {
+		// this.adminService.searchuser(this.url).then((data) => {
+		// 	if(data.status == 'no'){
+		// 		const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+		// 		this.toastService.toast(toastCfg);
+		// 	}else{
+		// 		var results = JSON.parse(JSON.stringify(data.results));
+		// 		if(results.users.length > 0){
+		// 			for(var i = 0; i < results.users.length; i++){
+		// 				results.users[i].string = JSON.stringify(results.users[i]);
+		// 				results.users[i].key = JSON.stringify(results.users[i]);
+		// 				results.users[i].value = results.users[i].name + '(' + results.users[i].mobile + ')';
+		// 			}
+		// 		}
+		// 		this.userList = results.users;
+		// 	}
+		// }).catch((err) => {
+		// 	const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+		// 	this.toastService.toast(toastCfg);
+		// });
+
+		// 宝宝
+		this.childList = [];
+		this.adminService.searchchild(this.url).then((data) => {
 			if(data.status == 'no'){
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.users.length > 0){
-					for(var i = 0; i < results.users.length; i++){
-						results.users[i].string = JSON.stringify(results.users[i]);
-						results.users[i].key = JSON.stringify(results.users[i]);
-						results.users[i].value = results.users[i].name + '(' + results.users[i].mobile + ')';
+				if(results.child.length > 0){
+					for(var i = 0; i < results.child.length; i++){
+						results.child[i].string = JSON.stringify(results.child[i]);
+						results.child[i].key = JSON.stringify(results.child[i]);
+						results.child[i].value = results.child[i].childName;
 					}
 				}
-				this.userList = results.users;
+				this.childList = results.child;
 			}
 		}).catch((err) => {
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
@@ -537,11 +563,19 @@ export class BookingListComponent implements OnInit{
 		this.getList(urlOptions, 'week');
 	}
 
-	selectUser(_value) {
+	// selectUser(_value) {
+	// 	if(_value != ''){
+	// 		this.searchInfo.mobile = JSON.parse(_value).mobile;
+	// 	}else{
+	// 		this.searchInfo.mobile = '';
+	// 	}
+	// }
+
+	selectChild(_value) {
 		if(_value != ''){
-			this.searchInfo.mobile = JSON.parse(_value).mobile;
+			this.searchInfo.child_id = JSON.parse(_value).childId;
 		}else{
-			this.searchInfo.mobile = '';
+			this.searchInfo.child_id = '';
 		}
 	}
 
@@ -691,6 +725,9 @@ export class BookingListComponent implements OnInit{
 		}
 		if(this.searchInfo.mobile && this.searchInfo.mobile != ''){
 			urlOptions += '&mobile=' + this.searchInfo.mobile;
+		}
+		if(this.searchInfo.child_id && this.searchInfo.child_id != ''){
+			urlOptions += '&child_id=' + this.searchInfo.child_id;
 		}
 		if(this.searchInfo.creator_name && this.searchInfo.creator_name != ''){
 			urlOptions += '&creator_name=' + this.searchInfo.creator_name;
