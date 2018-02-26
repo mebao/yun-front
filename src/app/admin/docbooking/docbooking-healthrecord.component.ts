@@ -1276,6 +1276,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
             this.btnCanEdit = false;
 			return false;
 		}
+		// 当复查日期存在是，诊疗记录不可为空
+		if(this.editType == 'create' && this.info.review_date != '' && this.info.record == ''){
+			this.toastTab('复查日期存在时，诊疗记录不可为空', 'error');
+            this.btnCanEdit = false;
+			return false;
+		}
 		this.loadingShow = true;
         var params = {
             username: this.adminService.getUser().username,
