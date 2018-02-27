@@ -4,19 +4,27 @@
 	<div class="mt10">
 		<div class="info-tab">
 			<div class="item flex">
-				<label>姓名</label>
+				<label>姓名：</label>
 				<div class="info w150p">{{olduserInfo.name}}</div>
 				<div *ngIf="editType != 'updateuser'">
 					<button (click)="updateuser()" class="pure-button pure-button-primary">修改</button>
 				</div>
 			</div>
 			<div class="item flex">
-				<label>手机号码</label>
+				<label>手机号码：</label>
 				<div class="info">{{olduserInfo.mobile}}</div>
 			</div>
 			<div class="item flex">
-				<label>性别</label>
+				<label>性别：</label>
 				<div class="info">{{olduserInfo.gender == 'M' ? '男' : '女'}}</div>
+			</div>
+			<div class="item flex">
+				<label>余额：</label>
+				<div class="info">{{olduserInfo.balance}}</div>
+			</div>
+			<div class="item flex">
+				<label>会员类型：</label>
+				<div class="info">{{olduserInfo.memberName}}</div>
 			</div>
 		</div>
 		<form #userf="ngForm" class="pure-form pure-form-stacked mt10 form-tab">
