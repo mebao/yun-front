@@ -350,17 +350,21 @@
 		<div class="title">提示</div>
 		<div class="content pad10">
 			<div class="pure-form">
-				<div class="pure-control-group">
-					<label>{{booking.tranInfo.id ? '已支付全额' : '已支付预约金'}}：</label>
+				<div class="pure-control-group flex">
+					<label class="w120p">{{booking.tranInfo.id ? '已支付全额' : '已支付预约金'}}：</label>
 					<label>{{(booking.tranInfo.id ? booking.tranInfo.amount : booking.yyj.amount) | toDecimal2}}</label>
 				</div>
-				<div class="pure-control-group mt5">
-					<label>支付方式：</label>
+				<div class="pure-control-group flex mt5">
+					<label class="w120p">支付方式：</label>
 					<label>{{booking.tranInfo.id ? booking.tranInfo.wayText : booking.yyj.typeText}}</label>
 				</div>
-				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group mt5">
-					<label for="backFee">{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
+				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
+					<label for="backFee" class="w120p">{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
 					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee">
+				</div>
+				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
+					<label for="backRemark" class="w120p">失约原因：</label>
+					<textarea name="backRemark" [(ngModel)]="booking.backRemark" placeholder="请输入失约原因"></textarea>
 				</div>
 				<div *ngIf="booking.yyj.amount == '0.00'" class="mt5">不可退款</div>
 			</div>

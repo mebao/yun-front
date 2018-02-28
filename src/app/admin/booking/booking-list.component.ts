@@ -80,6 +80,7 @@ export class BookingListComponent implements OnInit{
 		},
 		// 退还部分预约金
 		backFee: string,
+		backRemark: string,
 		refereeId: string,
 		refereeName: string,
 		// 用于处理支付全额
@@ -327,6 +328,7 @@ export class BookingListComponent implements OnInit{
 				typeText: '',
 			},
 			backFee: '',
+			backRemark: '',
 			refereeId: '',
 			refereeName: '',
 			tranInfo: {
@@ -686,9 +688,15 @@ export class BookingListComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(this.adminService.isFalse(this.booking.backRemark) || this.booking.backRemark == ''){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '失约原因不可为空', 3000);
+			this.toastService.toast(toastCfg);
+			this.btnCanEdit = false;
+			return;
+		}
 		this.loadingShow = true;
 		var urlOptions = this.booking.bookingId + this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&refund_fee=' + this.booking.backFee
+			 + '&refund_fee=' + this.booking.backFee + '&remark=' + this.booking.backRemark;
 		this.adminService.bookingrefund(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
