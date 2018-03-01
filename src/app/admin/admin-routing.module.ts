@@ -61,6 +61,7 @@ import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
 import { InspectResultsPrint }              from './setup/inspect-results-print';
 import { BookingAssistList }                from './booking/booking-assist-list.component';
+// import { SetupMessage }                     from './setup/message.component';
 
 const adminRoutes: Routes = [
 	{
@@ -380,6 +381,10 @@ const adminRoutes: Routes = [
 						path: 'updatepwd',
 						component: UpdatepwdComponent,
 					},
+					// {
+					// 	path: 'setupMessage',
+					// 	component: SetupMessage,
+					// },
 					{
 						path: '**',
 						component: PageNotFoundComponent

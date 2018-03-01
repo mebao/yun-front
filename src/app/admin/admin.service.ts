@@ -1182,6 +1182,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询所有消息类型
+	private messagetypesUrl = this.url + '/mebcrm/messagetypes';
+	messagetypes(urlOptions): Promise<Data>{
+		return this.http.get(this.messagetypesUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 修改订阅消息类型
+	private messagejoinUrl = this.url + '/mebcrm/messagejoin';
+	messagejoin(params): Promise<Data>{
+		return this.http.post(this.messagejoinUrl, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

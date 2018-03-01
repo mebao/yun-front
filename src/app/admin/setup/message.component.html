@@ -1,0 +1,22 @@
+<!-- <header-nav></header-nav>
+<div class="content-section admin-setup-message">
+	<div class="list">
+		<div *ngFor="let message of messageList; let index=index;" class="mb20">
+			<div class="flex">
+				<div (click)="selectType(message, index)" class="item flex" [ngClass]="{'info': type == 'info'}">
+					<div class="select" [ngClass]="{'active': message.choosed == 1}">
+						<div class="icon"></div>
+					</div>
+					<div>{{message.typeName}}</div>
+				</div>
+				<div class="flex-1"></div>
+			</div>
+		</div>
+	</div>
+	<div class="text-center">
+		<button *ngIf="type == 'update'" (click)="cancel()" class="pure-button button-max">取消</button>
+		<button (click)="save()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{type == 'info' ? '修改' : '保存'}}</button>
+	</div>
+</div>
+<loading [show]="loadingShow"></loading>
+<nll-toast-box></nll-toast-box> -->

@@ -20,5 +20,51 @@
                 border-left: none;
             }
         }
+        // .setup-tab{
+        //     position: relative;
+        //     left: 5px;
+        //     font-size: 1em;
+        //     cursor: pointer;
+        //     .tab-title{
+        //         font-size: 1.3em;
+        //     }
+        //     &:hover{
+        //         .setup-list{
+        //             display: block;
+        //         }
+        //     }
+        //     .setup-list{
+        //         display: none;
+        //         position: absolute;
+        //         left: 0;
+        //         right: 0;
+        //         text-align: center;
+        //         background-color: #ededed;
+        //         border: 1px solid #c2c2c2;
+        //     }
+        // }
+        // .message-tab{
+        //     position: relative;
+        //     left: 5px;
+        //     font-size: 1em;
+        //     cursor: pointer;
+        //     .tab-title{
+        //         font-size: 1.3em;
+        //     }
+        //     &:hover{
+        //         .message-list{
+        //             display: block;
+        //         }
+        //     }
+        //     .message-list{
+        //         display: none;
+        //         position: absolute;
+        //         right: -7px;
+        //         width: 240px;
+        //         text-align: center;
+        //         background-color: #ededed;
+        //         border: 1px solid #c2c2c2;
+        //     }
+        // }
     }
 }

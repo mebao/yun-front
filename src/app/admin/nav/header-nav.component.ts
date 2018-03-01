@@ -31,4 +31,8 @@ export class HeaderNavComponent{
 		sessionStorage.removeItem('userClinicRolesInfos');
 		this.router.navigate(['./login']);
 	}
+
+	// goUrl(_url) {
+	// 	this.router.navigate(['./admin/' + _url]);
+	// }
 }

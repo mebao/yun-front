@@ -2,6 +2,18 @@
 	<div class="title">{{clinicName}}</div>
 	<div class="flex-1 right-tab text-right">
 		<div class="item">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
+		<!-- <div class="item message-tab">
+			<div class="tab-title">消息</div>
+			<div class="message-list">
+				<div (click)="goUrl('setupMessage')">消息订阅</div>
+			</div>
+		</div>
+		<div class="item setup-tab">
+			<div class="tab-title">设置</div>
+			<div class="setup-list">
+				<div (click)="goUrl('setupMessage')">消息订阅</div>
+			</div>
+		</div> -->
 		<div (click)="logout()" class="item cursor-p">退出</div>
 	</div>
 </div>
