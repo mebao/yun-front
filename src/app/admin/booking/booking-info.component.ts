@@ -44,6 +44,7 @@ export class BookingInfoComponent{
 		services: any[],
 		fees: any[],
 		status: string,
+		statusText: string,
 		totalFee: string,
 		remark: string,
 	};
@@ -104,6 +105,7 @@ export class BookingInfoComponent{
 			services: [],
 			fees: [],
 			status: '',
+			statusText: '',
 			totalFee: '',
 			remark: '',
 		};
