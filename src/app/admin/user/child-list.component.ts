@@ -92,7 +92,7 @@ export class ChildListComponent{
 
 	search() {
 		sessionStorage.setItem('search-childList', JSON.stringify(this.searchInfo));
-		var urlOptions = this.url;
+		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		if(this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;
 		}

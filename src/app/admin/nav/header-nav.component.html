@@ -1,19 +1,57 @@
 <div class="header-nav flex">
 	<div class="title">{{clinicName}}</div>
 	<div class="flex-1 right-tab text-right">
-		<div class="item">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
-		<!-- <div class="item message-tab">
-			<div class="tab-title">消息</div>
-			<div class="message-list">
-				<div (click)="goUrl('setupMessage')">消息订阅</div>
+		<div class="item pl20 pr20">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
+		<div mouseIn class="item message-tab" [ngClass]="{'show': showPayMessage}" (mouseHandler)="handlerTab($event, 'showPayMessage')">
+			<div class="tab-title pl20 pr20" (click)="showTab('showPayMessage')">
+				支付消息
+				<span *ngIf="payMessageList.length > 0" class="num">{{payMessageList.length}}</span>
+			</div>
+			<div *ngIf="payMessageList.length > 0" class="message-list pay">
+				<div class="message-item flex" *ngFor="let message of payMessageList; let index=index;">
+					<ng-container *ngIf="!message.complate">
+						<div class="flex-1 w50 pl20">
+							<div [ngClass]="{'animate': message.message.length > 10}">{{message.message}}</div>
+						</div>
+						<button (click)="bookingInfo(message)" class="pure-button pure-button-primary m10" [disabled]="messageBtn">详情</button>
+						<button (click)="complate(message, index, 'pay')" class="pure-button pure-button-primary mt10 mb10 mr10" [disabled]="messageBtn">完成</button>
+					</ng-container>
+				</div>
+			</div>
+			<div *ngIf="payMessageList.length == 0" class="message-list">
+				<div class="text-center">
+					暂无消息
+				</div>
 			</div>
 		</div>
-		<div class="item setup-tab">
-			<div class="tab-title">设置</div>
-			<div class="setup-list">
-				<div (click)="goUrl('setupMessage')">消息订阅</div>
+		<div mouseIn class="item message-tab" [ngClass]="{'show': showMessage}" (mouseHandler)="handlerTab($event, 'showMessage')">
+			<div class="tab-title pl20 pr20" (click)="showTab('showMessage')">消息</div>
+			<div *ngIf="messageLoading" class="message-list text-center">
+				加载中...
 			</div>
-		</div> -->
-		<div (click)="logout()" class="item cursor-p">退出</div>
+			<div *ngIf="!messageLoading && messageList.length > 0" class="message-list">
+				<div class="message-item flex" *ngFor="let message of messageList; let index=index;">
+					<ng-container *ngIf="!message.complate">
+						<div class="flex-1 w50 pl20">
+							<div [ngClass]="{'animate': message.message.length > 10}">{{message.message}}</div>
+						</div>
+						<button (click)="complate(message, index, '')" class="pure-button pure-button-primary m10" [disabled]="messageBtn">完成</button>
+					</ng-container>
+				</div>
+			</div>
+			<div *ngIf="!messageLoading && messageList.length == 0" class="message-list">
+				<div class="text-center">
+					暂无消息
+				</div>
+			</div>
+		</div>
+		<div mouseIn class="item setup-tab" [ngClass]="{'show': showSetup}" (mouseHandler)="handlerTab($event, 'showSetup')">
+			<div class="tab-title pl20 pr20" (click)="showTab('showSetup')">设置</div>
+			<div class="setup-list">
+				<div (click)="goUrl('setup/message')">消息订阅</div>
+			</div>
+		</div>
+		<div (click)="logout()" class="item cursor-p pl20 pr20">退出</div>
 	</div>
 </div>
+<nll-toast-box></nll-toast-box>

@@ -24,6 +24,7 @@ export class LoginComponent{
 		uid: string,
 		username: string,
 		realname: string,
+		messageTypes: string,
 	}
 	clinicRole: {
 		//前台工作台
@@ -253,6 +254,7 @@ export class LoginComponent{
 			uid: '',
 			username: '',
 			realname: '',
+			messageTypes: '',
 		}
 
 		this.clinicRole = {
@@ -464,6 +466,7 @@ export class LoginComponent{
 					uid: results.admininfo.uid,
 					username: results.admininfo.username,
 					realname: results.admininfo.realname,
+					messageTypes: results.admininfo.messageTypes,
 				}
 				this.adminService.delCookie('user');
 				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 1);

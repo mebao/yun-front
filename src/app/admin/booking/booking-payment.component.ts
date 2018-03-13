@@ -133,6 +133,8 @@ export class BookingPaymentComponent{
 	paymentType: string;
 	modalTabAddPay: boolean;
 	tranInfo: any;
+	// 药方弹窗，用于判断是否含有未出药
+	prescriptTabShow: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -283,7 +285,8 @@ export class BookingPaymentComponent{
 					// 第一种discount_info解析方式
 					if(results.dataCode == '0'){
 						if(results.discountInfo == '' || !results.discountInfo){
-							var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
+							var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
+								+ '&clinic_id=' + this.adminService.getUser().clinicId;
 							this.adminService.searchuser(userUrl).then((userData) => {
 								if(userData.status == 'no'){
 									this.toastTab(userData.errorMsg, 'error');
@@ -378,7 +381,8 @@ export class BookingPaymentComponent{
 						if(!this.adminService.isFalse(results.discountInfo)){
 							this.discount_info = results.discountInfo;
 						}
-						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
+						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
+							+ '&clinic_id=' + this.adminService.getUser().clinicId;
 						this.adminService.searchuser(userUrl).then((userData) => {
 							if(userData.status == 'no'){
 								this.toastTab(userData.errorMsg, 'error');
@@ -467,6 +471,8 @@ export class BookingPaymentComponent{
 		this.btnCanEdit = false;
 
 		this.editMemberType = 'save';
+
+		this.prescriptTabShow = false;
 	}
 
 	// 去充值
@@ -1301,6 +1307,51 @@ export class BookingPaymentComponent{
 			};
 			this.modalTabAddPay = true;
 		}
+	}
+
+	getPrescript() {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&booking_id=' + this.id + '&isout=1';
+		this.adminService.searchprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.loadingShow = false;
+				if(results.list.length > 0){
+					var hasPrescript = false;
+					for(var i = 0; i < results.list.length; i++){
+						if(results.list[i].outCode != 0){
+							hasPrescript = true;
+						}
+					}
+					if(hasPrescript){
+						this.prescriptTabShow = true;
+					}else{
+						// 支付
+						this.pay();
+					}
+				}else{
+					// 支付
+					this.pay();
+				}
+			}
+		}).catch((error) => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
+		});
+	}
+
+	closePrescriptTab() {
+		this.prescriptTabShow = false;
+	}
+
+	goPrescript() {
+		this.router.navigate(['./admin/prescript/list']);
 	}
 
 	closeAddPay() {

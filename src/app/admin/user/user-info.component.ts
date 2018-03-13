@@ -150,6 +150,7 @@ export class UserInfoComponent{
 	getUserInfo() {
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
 			 + '&id=' + this.id
 			 + '&childs=1';
 		this.adminService.searchuser(urlOptions).then((data) => {

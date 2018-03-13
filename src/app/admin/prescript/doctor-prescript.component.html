@@ -71,7 +71,7 @@
 								</label>
 								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let batch of ms.batchList">
-										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
+										<option value="{{batch.string}}">{{batch.batch}}（规格：{{batch.format}}，库存：{{batch.stock}}{{ms.ms.unit}}）</option>
 									</ng-container>
 								</select>
 							</div>

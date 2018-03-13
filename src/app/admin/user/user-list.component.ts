@@ -119,7 +119,8 @@ export class UserListComponent{
 		this.role = this.adminService.getUser().role;
 
 		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.memberList = [];
 
@@ -129,8 +130,7 @@ export class UserListComponent{
 		this.search();
 
 		//获取会员列表
-		var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&status=1';
+		var memberUrl = this.url + '&status=1';
 		this.adminService.memberlist(memberUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

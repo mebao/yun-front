@@ -190,6 +190,7 @@ export class GuazhangList{
     getUserInfo(id,guzhang) {
         var urlOptions = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
+             + '&clinic_id=' + this.adminService.getUser().clinicId
              + '&id=' + id;
         this.adminService.searchuser(urlOptions).then((data) => {
             if(data.status == 'no'){

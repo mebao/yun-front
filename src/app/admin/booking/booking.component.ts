@@ -356,7 +356,7 @@ export class BookingComponent implements OnInit{
 				this.adminList = results.adminlist;
 			}
 		});
-		
+
 		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -394,6 +394,7 @@ export class BookingComponent implements OnInit{
 		//查询宝宝列表
 		var searchchildUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.searchchild(searchchildUrl).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');

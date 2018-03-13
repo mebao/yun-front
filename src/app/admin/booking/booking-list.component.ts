@@ -242,7 +242,8 @@ export class BookingListComponent implements OnInit{
 		];
 		this.selectedTab = 0;
 		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.getDoctorList();
 		this.servicelist = [];
@@ -347,8 +348,7 @@ export class BookingListComponent implements OnInit{
 
 	//医生列表
 	getDoctorList(){
-		var adminlistUrl = this.url + '&clinic_id='
-			 + this.adminService.getUser().clinicId + '&role=2';
+		var adminlistUrl = this.url + '&role=2';
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
@@ -366,8 +366,7 @@ export class BookingListComponent implements OnInit{
 
 	//科室列表
 	getServiceList() {
-		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.servicelist(urlOptions).then((data) => {
+		this.adminService.servicelist(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
@@ -384,9 +383,9 @@ export class BookingListComponent implements OnInit{
 
 				// 根据科室获取科室颜色
 				// //week列表
-				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&weekindex=0', 'week');
+				// this.getList(this.url + '&weekindex=0', 'week');
 				// //booking列表
-				// this.getList(this.url + '&clinic_id=' + this.adminService.getUser().clinicId, 'list');
+				// this.getList(this.url, 'list');
 				this.search();
 			}
 		}).catch((err) => {
@@ -695,7 +694,7 @@ export class BookingListComponent implements OnInit{
 			return;
 		}
 		this.loadingShow = true;
-		var urlOptions = this.booking.bookingId + this.url + '&clinic_id=' + this.adminService.getUser().clinicId
+		var urlOptions = this.booking.bookingId + this.url
 			 + '&refund_fee=' + this.booking.backFee + '&remark=' + this.booking.backRemark;
 		this.adminService.bookingrefund(urlOptions).then((data) => {
 			if(data.status == 'no'){
@@ -721,7 +720,6 @@ export class BookingListComponent implements OnInit{
 
 	getUrlOptios() {
 		var urlOptions = this.url;
-		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId;
 		if(this.searchInfo.statuslist && this.searchInfo.statuslist != ''){
 			urlOptions += '&statuslist=' + this.searchInfo.statuslist;
 		}

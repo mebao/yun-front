@@ -79,7 +79,8 @@ export class PrescriptSaleComponent{
 		this.batchList = [];
 
 		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		// 初始化数据
 		this.initData();
@@ -102,8 +103,7 @@ export class PrescriptSaleComponent{
 		});
 
 		//查看库存
-		var searchsuppliesUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.searchsupplies(searchsuppliesUrl).then((data) => {
+		this.adminService.searchsupplies(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.toastTab(data.errorMsg, 'error');
 			}else{
@@ -188,8 +188,7 @@ export class PrescriptSaleComponent{
 		this.sale.user = JSON.parse(value);
 		// 获取用户会员信息
 		if(this.sale.user.memberId && this.sale.user.memberId != ''){
-			var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-				 + '&id=' + this.sale.user.memberId + '&status=1';
+			var urlOptions = this.url + '&id=' + this.sale.user.memberId + '&status=1';
 			this.adminService.memberlist(urlOptions).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');

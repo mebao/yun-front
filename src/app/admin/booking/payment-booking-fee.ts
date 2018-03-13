@@ -3,7 +3,7 @@ import { ActivatedRoute, Router }        from '@angular/router';
 import { Location }                      from '@angular/common';
 
 import { AdminService }                  from '../admin.service';
-///<reference path="../../common/goeasy/goeasy.d.ts">
+//<reference path="../../common/goeasy/goeasy.d.ts">
 
 @Component({
     selector: 'admin-payment-booking-fee',
@@ -136,7 +136,7 @@ export class PaymentBookingFee{
                     }
                     // 预约未支付预约金，开启推送通道
                     if(this.booking.status == '1'){
-                        this.getMessage(this.id);
+                        // this.getMessage(this.id);
                     }
                     // 获取家长信息
                     this.getUserInfo(this.booking.creatorId);
@@ -165,6 +165,7 @@ export class PaymentBookingFee{
     getUserInfo(id) {
         var urlOptions = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
+             + '&clinic_id=' + this.adminService.getUser().clinicId
              + '&id=' + id;
         this.adminService.searchuser(urlOptions).then((data) => {
             if(data.status == 'no'){

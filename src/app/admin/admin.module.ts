@@ -72,7 +72,6 @@ import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { GuazhangList }                    from './user/guazhang-list.component';
 import { InspectResultsPrint }             from './setup/inspect-results-print';
 import { BookingAssistList }               from './booking/booking-assist-list.component';
-// import { SetupMessage }                    from './setup/message.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -144,7 +143,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		ToDecimal2Pipe,
 		InspectResultsPrint,
 		BookingAssistList,
-		// SetupMessage,
 	],
 	providers: [
 		AdminService,

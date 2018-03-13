@@ -1200,6 +1200,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询诊所消息接口
+	private searchmessageUrl = this.url + '/mebcrm/searchmessage';
+	searchmessage(urlOptions): Promise<Data>{
+		return this.http.get(this.searchmessageUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 完成此消息
+	private finishmessageUrl = this.url + '/mebcrm/finishmessage/';
+	finishmessage(urlOptions, params): Promise<Data>{
+		return this.http.post(this.finishmessageUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

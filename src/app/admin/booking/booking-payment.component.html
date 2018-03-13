@@ -688,7 +688,7 @@
 				</div>
 				<div class="mt10 text-right">
 					<button *ngIf="bookingInfo.status == '5'" class="pure-button">订单已完成</button>
-					<button *ngIf="bookingInfo.status != '5' && fee.canPay == '1'" (click)="pay()" class="pure-button pure-button-primary">支付</button>
+					<button *ngIf="bookingInfo.status != '5' && fee.canPay == '1'" (click)="getPrescript()" class="pure-button pure-button-primary">支付</button>
 					<button *ngIf="bookingInfo.status != '5' && fee.canPay == '0'" class="pure-button">操作未完成，不能完成支付(退药操作未完成)</button>
 				</div>
 			</div>
@@ -810,6 +810,18 @@
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeAddPay()" class="pure-button">取消</button>
 			<button (click)="confirmAddPay()" class="pure-button pure-button-primary" [disabled]="btnCanEdit || payInfo.stillNeedPay != '0.00'">确认支付</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="prescriptTabShow">
+	<div class="modal-mask" (click)="closePrescriptTab()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			尚有药品未出药，请出药后再支付
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="goPrescript()" class="pure-button pure-button-primary">去出药</button>
 		</div>
 	</div>
 </div>

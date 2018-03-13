@@ -237,7 +237,8 @@ export class PaymentPrintComponent{
 				// 第一种discount_info解析方式
 				if(results.dataCode == 0){
 					if(results.discountInfo == '' || !results.discountInfo){
-						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
+						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
+							+ '&clinic_id=' + this.adminService.getUser().clinicId;
 						this.adminService.searchuser(userUrl).then((userData) => {
 							if(userData.status == 'no'){
 								this.toastTab(userData.errorMsg, 'error');
@@ -319,7 +320,8 @@ export class PaymentPrintComponent{
 					if(!this.adminService.isFalse(results.discountInfo)){
 						this.discount_info = results.discountInfo;
 					}
-					var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
+					var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
+						+ '&clinic_id=' + this.adminService.getUser().clinicId;
 					this.adminService.searchuser(userUrl).then((userData) => {
 						if(userData.status == 'no'){
 							this.toastTab(userData.errorMsg, 'error');
