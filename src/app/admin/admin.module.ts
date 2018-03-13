@@ -51,8 +51,6 @@ import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.
 import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
 import { ChildListComponent }              from './user/child-list.component';
 import { ChildInfoComponent }              from './user/child-info.component';
-import { MemberComponent }                 from './setup/member.component';
-import { MemberListComponent }             from './setup/member-list.component';
 import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
 import { TransactionStatisticsComponent }  from './user/transaction-statistics.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
@@ -121,8 +119,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		BookingCasehistoryComponent,
 		ChildListComponent,
 		ChildInfoComponent,
-		MemberComponent,
-		MemberListComponent,
 		TransactionRecordListComponent,
 		TransactionStatisticsComponent,
 		BookingPaymentComponent,

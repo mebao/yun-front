@@ -40,8 +40,6 @@ import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord
 import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
 import { ChildListComponent }               from './user/child-list.component';
 import { ChildInfoComponent }               from './user/child-info.component';
-import { MemberComponent }                  from './setup/member.component';
-import { MemberListComponent }              from './setup/member-list.component';
 import { TransactionRecordListComponent }   from './user/transaction-record-list.component';
 import { TransactionStatisticsComponent }   from './user/transaction-statistics.component';
 import { BookingPaymentComponent }          from './booking/booking-payment.component';
@@ -125,7 +123,7 @@ const adminRoutes: Routes = [
 					{
 						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
-						data: {preload: true},
+						// data: {preload: true},
 					},
 					{
 						path: 'material',
@@ -166,6 +164,14 @@ const adminRoutes: Routes = [
 						path: 'docbooking',
 						loadChildren: './docbooking/docbooking.module#DocbookingModule',
 						data: {preload: true},
+					},
+					{
+						path: 'memberList',
+						loadChildren: './member-list/member-list.module#MemberListModule',
+					},
+					{
+						path: 'member',
+						loadChildren: './member/member.module#MemberModule',
 					},
 					{
 						path: 'bookingIn',
@@ -276,16 +282,6 @@ const adminRoutes: Routes = [
 						path: 'childInfo',
 						canActivate: [AuthGuardRole],
 						component: ChildInfoComponent,
-					},
-					{
-						path: 'member',
-						canActivate: [AuthGuardRole],
-						component: MemberComponent,
-					},
-					{
-						path: 'memberList',
-						canActivate: [AuthGuardRole],
-						component: MemberListComponent,
 					},
 					{
 						path: 'transactionRecordList',
