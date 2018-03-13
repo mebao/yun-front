@@ -62,8 +62,6 @@ import { BookingReceiveComponent }         from './booking/booking-receive.compo
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
-import { AssistListComponent }             from './setup/assist-list.component';
-import { AssistComponent }                 from './setup/assist.component';
 import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
@@ -130,8 +128,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		BookingHealthrecordComponent,
 		BookingHistoryComponent,
 		GivefeeListComponent,
-		AssistListComponent,
-		AssistComponent,
 		PaymentBookingFee,
 		Repage,
 		UpdatepwdComponent,

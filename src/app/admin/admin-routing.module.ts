@@ -51,8 +51,6 @@ import { BookingReceiveComponent }          from './booking/booking-receive.comp
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
 import { BookingHistoryComponent }          from './booking/booking-history.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
-import { AssistListComponent }              from './setup/assist-list.component';
-import { AssistComponent }                  from './setup/assist.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
@@ -172,6 +170,14 @@ const adminRoutes: Routes = [
 					{
 						path: 'member',
 						loadChildren: './member/member.module#MemberModule',
+					},
+					{
+						path: 'assistList',
+						loadChildren: './assist-list/assist-list.module#AssistListModule',
+					},
+					{
+						path: 'assist',
+						loadChildren: './assist/assist.module#AssistModule',
 					},
 					{
 						path: 'bookingIn',
@@ -337,16 +343,6 @@ const adminRoutes: Routes = [
 						path: 'givefeeList',
 						canActivate: [AuthGuardRole],
 						component: GivefeeListComponent,
-					},
-					{
-						path: 'assistList',
-						canActivate: [AuthGuardRole],
-						component: AssistListComponent,
-					},
-					{
-						path: 'assist',
-						canActivate: [AuthGuardRole],
-						component: AssistComponent,
 					},
 					{
 						path: 'paymentBookingFee',
