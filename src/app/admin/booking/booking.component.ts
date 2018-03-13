@@ -737,7 +737,7 @@ export class BookingComponent implements OnInit{
 					 + '&clinic_id=' + this.adminService.getUser().clinicId
 					 + '&child_id=' + JSON.parse(this.bookingInfo.child).childId
 					 + '&creator_id=' + JSON.parse(this.bookingInfo.creator).id
-					 + '&booking_date=' + todayDate;
+					 + '&booking_date=' + this.bookingInfo.booking_date;
 				this.adminService.checkbooking(url).then((data) => {
 					if(data.status == 'no'){
 						this.loadingShow = false;

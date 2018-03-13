@@ -365,6 +365,7 @@ export class UserInfoComponent{
 					var child = {};
 					child['username'] = this.adminService.getUser().username;
 					child['token'] = this.adminService.getUser().token;
+					child['clinic_id'] = this.adminService.getUser().clinicId;
 					child['user_id'] = this.id;
 					child['id'] = f.value['id_' + this.childlist[i].key];
 					f.value['name_' + this.childlist[i].key] = this.adminService.trim(f.value['name_' + this.childlist[i].key]);
