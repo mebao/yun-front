@@ -132,6 +132,18 @@ export class DocbookingComponent implements OnInit{
 	}
 	adminList: any[];
 	operator: string;
+	searchInfo: {
+		doctor_id: string;
+		service_id: string;
+		bdate_less: string,
+		bdate_less_num: number,
+		bdate_less_text: string,
+		bdate_big: string,
+		bdate_big_num: number,
+		bdate_big_text: string,
+	};
+	doctorlist: any[];
+	servicelist: [{}];
 
 	constructor(
 		private adminService: AdminService,
@@ -193,6 +205,16 @@ export class DocbookingComponent implements OnInit{
 			remark: '',
 			genderText: '',
 		};
+		this.searchInfo = {
+			doctor_id: '',
+			service_id: '',
+			bdate_less: '',
+			bdate_less_num: 0,
+			bdate_less_text: '',
+			bdate_big: '',
+			bdate_big_num: 0,
+			bdate_big_text: '',
+		}
 		//判断sessionStorage中是否已经缓存
 		if(sessionStorage.getItem('doctorBookingTab')){
 			this.selectedTab = sessionStorage.getItem('doctorBookingTab');
@@ -369,6 +391,38 @@ export class DocbookingComponent implements OnInit{
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
+
+		this.getDoctorList();
+		this.getServiceList();
+	}
+
+	//医生列表
+	getDoctorList(){
+		var adminlistUrl = this.url + '&clinic_id='
+			 + this.adminService.getUser().clinicId + '&role=2';
+		this.adminService.adminlist(adminlistUrl).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.doctorlist = results.adminlist;
+				this.doctorlist.unshift({id: '', realName: '请选择医生'});
+			}
+		})
+	}
+
+	//科室列表
+	getServiceList() {
+		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.adminService.servicelist(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.servicelist = results.servicelist;
+				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
+			}
+		})
 	}
 
 	// 历史记录
@@ -385,6 +439,40 @@ export class DocbookingComponent implements OnInit{
 				this.hasHistoryData = true;
 			}
 		});
+	}
+
+	// 搜索历史记录
+	searhShowHistory(urlOptions) {
+		this.modalTab = true;
+		this.hasHistoryData = false;
+		this.adminService.searchbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.historyList = results.weekbooks;
+				this.hasHistoryData = true;
+			}
+		});
+	}
+
+	//查询
+	search() {
+		//列表
+		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';;
+		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
+			urlOptionsList += '&doctor_id=' + this.searchInfo.doctor_id;
+		}
+		if(this.searchInfo.service_id && this.searchInfo.service_id != ''){
+			urlOptionsList += '&service_id=' + this.searchInfo.service_id;
+		}
+		if(this.searchInfo.bdate_less && this.searchInfo.bdate_less != ''){
+			urlOptionsList += '&bdate_less=' + this.searchInfo.bdate_less;
+		}
+		if(this.searchInfo.bdate_big && this.searchInfo.bdate_big != ''){
+			urlOptionsList += '&bdate_big=' + this.searchInfo.bdate_big;
+		}
+		this.searhShowHistory(urlOptionsList);
 	}
 
 	close() {
@@ -487,6 +575,13 @@ export class DocbookingComponent implements OnInit{
 
 	closeImg() {
 		this.modalImg.showImg = 0;
+	}
+
+	// 选择日期
+	changeDate(_value, key) {
+		this.searchInfo[key] = JSON.parse(_value).value;
+		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+		this.searchInfo[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	getCheckData() {

@@ -627,6 +627,38 @@
 	<div class="modal-mask" (click)="close()"></div>
 	<div class="container">
 		<div class="title">就诊记录</div>
+		<div class="pad10">
+			<div class="flex pure-form search-tab max">
+				<div class="pure-control-group mr10">
+					<label for="doctor_id">医生：</label>
+					<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
+						<ng-container *ngFor="let doctor of doctorlist">
+							<option value="{{doctor.id}}">{{doctor.realName}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="pure-control-group mr10">
+					<label for="service_id">科室：</label>
+					<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
+						<ng-container *ngFor="let service of servicelist">
+							<option value="{{service.serviceId}}">{{service.serviceName}}</option>
+						</ng-container>
+					</select>
+				</div>
+			</div>
+			<div class="flex pure-form search-tab max mt2">
+				<div class="pure-control-group mr10 flex">
+					<label for="bdate_big">就诊时间：</label>
+					<select-date title="请选择日期" [dateText]="searchInfo.bdate_big_text" [endDate]="searchInfo.bdate_less_num" [showClear]="true" (onVoted)="changeDates($event, 'bdate_big')"></select-date>
+				</div>
+				<div class="pure-control-group mr10 flex">
+					<label for="bdate_less" class="text-center">至</label>
+					<select-date title="请选择日期" [dateText]="searchInfo.bdate_less_text" [startDate]="searchInfo.bdate_big_num" [showClear]="true" (onVoted)="changeDates($event, 'bdate_less')"></select-date>
+				</div>
+				<div class="flex-1"></div>
+				<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			</div>
+		</div>
 		<div class="content pad10">
 			<div class="mt10">
 				<table *ngIf="historyList.length > 0" class="pure-table pure-table-horizontal w100">
