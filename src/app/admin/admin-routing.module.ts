@@ -21,9 +21,6 @@ import { NoPermissionsComponent }             from '../error/no-permissions.comp
 import { UploadComponent }                  from './user/upload.component';
 import { BookingAddServiceComponent }       from './booking/booking-add-service.component';
 import { BookingAddFeeComponent }           from './booking/booking-add-fee.component';
-import { ClinicroomComponent }              from './clinicroom/clinicroom.component';
-import { ClinicroomListComponent }          from './clinicroom/clinicroom-list.component';
-import { ClinicroomRecordsComponent }       from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
 import { BookingFollowupsComponent }        from './booking/booking-followups.component';
@@ -187,6 +184,18 @@ const adminRoutes: Routes = [
 						loadChildren: './clinic-service/clinic-service.module#ClinicServiceModule',
 					},
 					{
+						path: 'clinicroomList',
+						loadChildren: './clinicroom-list/clinicroom-list.module#ClinicroomListModule',
+					},
+					{
+						path: 'clinicroomRecords',
+						loadChildren: './clinicroom-records/clinicroom-records.module#ClinicroomRecordsModule',
+					},
+					{
+						path: 'clinicroom',
+						loadChildren: './clinicroom/clinicroom.module#ClinicroomModule',
+					},
+					{
 						path: 'bookingIn',
 						canActivate: [AuthGuardRole],
 						component: BookingInComponent
@@ -215,21 +224,6 @@ const adminRoutes: Routes = [
 						path: 'bookingAddFee',
 						canActivate: [AuthGuardRole],
 						component: BookingAddFeeComponent
-					},
-					{
-						path: 'clinicroom',
-						canActivate: [AuthGuardRole],
-						component: ClinicroomComponent
-					},
-					{
-						path: 'clinicroomList',
-						canActivate: [AuthGuardRole],
-						component: ClinicroomListComponent
-					},
-					{
-						path: 'clinicroomRecords',
-						canActivate: [AuthGuardRole],
-						component: ClinicroomRecordsComponent
 					},
 					{
 						path: 'doctorPrescript',

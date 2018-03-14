@@ -32,9 +32,6 @@ import { BookingConfirmComponent }         from './booking/booking-confirm.compo
 import { UploadComponent }                 from './user/upload.component';
 import { BookingAddServiceComponent }      from './booking/booking-add-service.component';
 import { BookingAddFeeComponent }          from './booking/booking-add-fee.component';
-import { ClinicroomComponent }             from './clinicroom/clinicroom.component';
-import { ClinicroomListComponent }         from './clinicroom/clinicroom-list.component';
-import { ClinicroomRecordsComponent }      from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }          from './booking/booking-charge.component';
 import { BookingFollowupsComponent }       from './booking/booking-followups.component';
@@ -89,9 +86,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		UploadComponent,
 		BookingAddServiceComponent,
 		BookingAddFeeComponent,
-		ClinicroomComponent,
-		ClinicroomListComponent,
-		ClinicroomRecordsComponent,
 		DoctorPrescriptComponent,
 		BookingChargeComponent,
 		BookingFollowupsComponent,

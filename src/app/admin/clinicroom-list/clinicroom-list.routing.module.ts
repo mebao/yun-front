@@ -3,7 +3,7 @@ import { RouterModule }                 from '@angular/router';
 
 import { AuthGuardRole }                from './../auth-guard-role.service';
 
-import { ChildServiceComponent }        from './child-service.component';
+import { ClinicroomListComponent }      from './clinicroom-list.component';
 
 @NgModule({
     exports: [
@@ -12,12 +12,12 @@ import { ChildServiceComponent }        from './child-service.component';
     imports: [RouterModule.forChild([
         {
             path: '',
-            canActivate: [AuthGuardRole],
-            component: ChildServiceComponent
+            // canActivate: [AuthGuardRole],
+            component: ClinicroomListComponent
         }
     ])]
 })
 
-export class ChildServiceRoutingModule{
+export class ClinicroomListRoutingModule{
 
 }
