@@ -2,32 +2,30 @@ import { NgModule }                             from '@angular/core';
 import { CommonModule }                         from '@angular/common';
 import { FormsModule }                          from '@angular/forms';
 
-//nav
 import { NavModule }                            from '../nav/nav.module';
 
-//common
 import { AngCommonModule }                      from '../../common/ang-common.module';
 
-import { SchedulingRoutingModule }              from './scheduling.routing.module';
+import { TransactionStatisticsRoutingModule }   from './transaction-statistics.routing.module';
 
-import { SchedulingComponent }                  from './scheduling.component';
+import { TransactionStatisticsComponent }       from './transaction-statistics.component';
 
 @NgModule({
     declarations: [
-        SchedulingComponent,
+        TransactionStatisticsComponent,
     ],
     exports: [
-        SchedulingComponent,
+        TransactionStatisticsComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
         NavModule,
         AngCommonModule,
-        SchedulingRoutingModule,
+        TransactionStatisticsRoutingModule,
     ]
 })
 
-export class SchedulingModule{
+export class TransactionStatisticsModule{
 
 }

@@ -24,8 +24,6 @@ import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
 import { BookingListComponent }            from './booking/booking-list.component';
-import { UserListComponent }               from './user/user-list.component';
-import { UserInfoComponent }               from './user/user-info.component';
 import { BookingInComponent }              from './booking/booking-in.component';
 import { BookingInfoComponent }            from './booking/booking-info.component';
 import { BookingConfirmComponent }         from './booking/booking-confirm.component';
@@ -38,10 +36,6 @@ import { BookingFollowupsComponent }       from './booking/booking-followups.com
 import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
 import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.component';
 import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
-import { ChildListComponent }              from './user/child-list.component';
-import { ChildInfoComponent }              from './user/child-info.component';
-import { TransactionRecordListComponent }  from './user/transaction-record-list.component';
-import { TransactionStatisticsComponent }  from './user/transaction-statistics.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
 import { PaymentPrintComponent }           from './booking/payment-print.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
@@ -78,8 +72,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		BookingListComponent,
 		BookingInComponent,
 		BookingInfoComponent,
-		UserListComponent,
-		UserInfoComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
@@ -92,10 +84,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		BookingFollowupsListComponent,
 		BookingGrowthrecordComponent,
 		BookingCasehistoryComponent,
-		ChildListComponent,
-		ChildInfoComponent,
-		TransactionRecordListComponent,
-		TransactionStatisticsComponent,
 		BookingPaymentComponent,
 		PaymentPrintComponent,
 		CrmRoleComponent,

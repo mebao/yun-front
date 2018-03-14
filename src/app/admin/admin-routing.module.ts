@@ -11,8 +11,6 @@ import { HomeComponent }                    from './home/home.component';
 import { CreateUserComponent }              from './user/create-user.component';
 import { BookingComponent }                 from './booking/booking.component';
 import { BookingListComponent }             from './booking/booking-list.component';
-import { UserListComponent }                from './user/user-list.component';
-import { UserInfoComponent }                from './user/user-info.component';
 import { BookingInComponent }               from './booking/booking-in.component';
 import { BookingInfoComponent }             from './booking/booking-info.component';
 import { BookingConfirmComponent }          from './booking/booking-confirm.component';
@@ -27,10 +25,6 @@ import { BookingFollowupsComponent }        from './booking/booking-followups.co
 import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
 import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord.component';
 import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
-import { ChildListComponent }               from './user/child-list.component';
-import { ChildInfoComponent }               from './user/child-info.component';
-import { TransactionRecordListComponent }   from './user/transaction-record-list.component';
-import { TransactionStatisticsComponent }   from './user/transaction-statistics.component';
 import { BookingPaymentComponent }          from './booking/booking-payment.component';
 import { PaymentPrintComponent }            from './booking/payment-print.component';
 import { CrmRoleComponent }                 from './user/crm-role.component';
@@ -77,16 +71,6 @@ const adminRoutes: Routes = [
 						component: BookingListComponent
 					},
 					{
-						path: 'userList',
-						canActivate: [AuthGuardRole],
-						component: UserListComponent
-					},
-					{
-						path: 'userInfo',
-						canActivate: [AuthGuardRole],
-						component: UserInfoComponent
-					},
-					{
 						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
 						// data: {preload: true},
@@ -102,9 +86,16 @@ const adminRoutes: Routes = [
 						data: {preload: true},
 					},
 					{
-						path: 'scheduling',
+						path: 'schedulingIndex',
 						loadChildren: './scheduling/scheduling.module#SchedulingModule',
-						data: {preload: true},
+					},
+					{
+						path: 'schedulingConfigList',
+						loadChildren: './scheduling-config-list/scheduling-config-list.module#SchedulingConfigListModule',
+					},
+					{
+						path: 'schedulingConfig',
+						loadChildren: './scheduling-config/scheduling-config.module#SchedulingConfigModule',
 					},
 					{
 						path: 'prescript',
@@ -196,6 +187,30 @@ const adminRoutes: Routes = [
 						loadChildren: './clinicroom/clinicroom.module#ClinicroomModule',
 					},
 					{
+						path: 'childList',
+						loadChildren: './child-list/child-list.module#ChildListModule',
+					},
+					{
+						path: 'childInfo',
+						loadChildren: './child-info/child-info.module#ChildInfoModule',
+					},
+					{
+						path: 'userList',
+						loadChildren: './user-list/user-list.module#UserListModule',
+					},
+					{
+						path: 'userInfo',
+						loadChildren: './user-info/user-info.module#UserInfoModule',
+					},
+					{
+						path: 'transactionRecordList',
+						loadChildren: './transaction-record-list/transaction-record-list.module#TransactionRecordListModule'
+					},
+					{
+						path: 'transactionStatistics',
+						loadChildren: './transaction-statistics/transaction-statistics.module#TransactionStatisticsModule',
+					},
+					{
 						path: 'bookingIn',
 						canActivate: [AuthGuardRole],
 						component: BookingInComponent
@@ -259,26 +274,6 @@ const adminRoutes: Routes = [
 						path: 'bookingCasehistory',
 						canActivate: [AuthGuardRole],
 						component: BookingCasehistoryComponent,
-					},
-					{
-						path: 'childList',
-						canActivate: [AuthGuardRole],
-						component: ChildListComponent,
-					},
-					{
-						path: 'childInfo',
-						canActivate: [AuthGuardRole],
-						component: ChildInfoComponent,
-					},
-					{
-						path: 'transactionRecordList',
-						canActivate: [AuthGuardRole],
-						component: TransactionRecordListComponent,
-					},
-					{
-						path: 'transactionStatistics',
-						canActivate: [AuthGuardRole],
-						component: TransactionStatisticsComponent,
 					},
 					{
 						path: 'bookingPayment',

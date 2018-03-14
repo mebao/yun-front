@@ -115,11 +115,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'scheduling',
-						firstUrl: '/admin/scheduling/index',
+						firstUrl: '/admin/schedulingIndex',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/scheduling/index',
+								url: '/admin/schedulingIndex',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

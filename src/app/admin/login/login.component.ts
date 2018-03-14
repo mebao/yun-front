@@ -267,7 +267,7 @@ export class LoginComponent{
 			scheduling: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/scheduling/index',
+				url: '/admin/schedulingIndex',
 				infos: [],
 			},
 			bookingList: {

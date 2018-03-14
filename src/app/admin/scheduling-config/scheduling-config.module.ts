@@ -8,26 +8,26 @@ import { NavModule }                            from '../nav/nav.module';
 //common
 import { AngCommonModule }                      from '../../common/ang-common.module';
 
-import { SchedulingRoutingModule }              from './scheduling.routing.module';
+import { SchedulingConfigRoutingModule }        from './scheduling-config.routing.module';
 
-import { SchedulingComponent }                  from './scheduling.component';
+import { SchedulingConfigComponent }            from './scheduling-config.component';
 
 @NgModule({
     declarations: [
-        SchedulingComponent,
+        SchedulingConfigComponent,
     ],
     exports: [
-        SchedulingComponent,
+        SchedulingConfigComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
         NavModule,
         AngCommonModule,
-        SchedulingRoutingModule,
+        SchedulingConfigRoutingModule,
     ]
 })
 
-export class SchedulingModule{
+export class SchedulingConfigModule{
 
 }
