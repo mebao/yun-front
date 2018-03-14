@@ -24,10 +24,6 @@ import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
 import { BookingListComponent }            from './booking/booking-list.component';
-import { ChildServiceComponent }           from './service/child-service.component';
-import { ChildServiceListComponent }       from './service/child-service-list.component';
-import { ClinicServiceComponent }          from './service/clinic-service.component';
-import { ClinicServiceListComponent }      from './service/clinic-service-list.component';
 import { UserListComponent }               from './user/user-list.component';
 import { UserInfoComponent }               from './user/user-info.component';
 import { BookingInComponent }              from './booking/booking-in.component';
@@ -85,10 +81,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		BookingListComponent,
 		BookingInComponent,
 		BookingInfoComponent,
-		ChildServiceComponent,
-		ChildServiceListComponent,
-		ClinicServiceComponent,
-		ClinicServiceListComponent,
 		UserListComponent,
 		UserInfoComponent,
 		BookingConfirmComponent,

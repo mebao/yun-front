@@ -11,10 +11,6 @@ import { HomeComponent }                    from './home/home.component';
 import { CreateUserComponent }              from './user/create-user.component';
 import { BookingComponent }                 from './booking/booking.component';
 import { BookingListComponent }             from './booking/booking-list.component';
-import { ChildServiceComponent }            from './service/child-service.component';
-import { ChildServiceListComponent }        from './service/child-service-list.component';
-import { ClinicServiceComponent }           from './service/clinic-service.component';
-import { ClinicServiceListComponent }       from './service/clinic-service-list.component';
 import { UserListComponent }                from './user/user-list.component';
 import { UserInfoComponent }                from './user/user-info.component';
 import { BookingInComponent }               from './booking/booking-in.component';
@@ -82,26 +78,6 @@ const adminRoutes: Routes = [
 						path: 'bookingList',
 						canActivate: [AuthGuardRole],
 						component: BookingListComponent
-					},
-					{
-						path: 'childService',
-						canActivate: [AuthGuardRole],
-						component: ChildServiceComponent
-					},
-					{
-						path: 'childServiceList',
-						canActivate: [AuthGuardRole],
-						component: ChildServiceListComponent
-					},
-					{
-						path: 'clinicService',
-						canActivate: [AuthGuardRole],
-						component: ClinicServiceComponent
-					},
-					{
-						path: 'clinicServiceList',
-						canActivate: [AuthGuardRole],
-						component: ClinicServiceListComponent
 					},
 					{
 						path: 'userList',
@@ -193,6 +169,22 @@ const adminRoutes: Routes = [
 					{
 						path: 'inspectResultsPrint',
 						loadChildren: './inspect-results-print/inspect-results-print.module#InspectResultsPrintModule',
+					},
+					{
+						path: 'childServiceList',
+						loadChildren: './child-service-list/child-service-list.module#ChildServiceListModule',
+					},
+					{
+						path: 'childService',
+						loadChildren: './child-service/child-service.module#ChildServiceModule',
+					},
+					{
+						path: 'clinicServiceList',
+						loadChildren: './clinic-service-list/clinic-service-list.module#ClinicServiceListModule',
+					},
+					{
+						path: 'clinicService',
+						loadChildren: './clinic-service/clinic-service.module#ClinicServiceModule',
 					},
 					{
 						path: 'bookingIn',
