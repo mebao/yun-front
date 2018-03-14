@@ -97,6 +97,7 @@ export class BookingComponent implements OnInit{
 	canEdit: boolean;
 	hasBookingList: any[];
 	modalTabAgain: boolean;
+	bookingAgainText: string;
 	modalTabType: boolean;
 	// 预约成功后的id
 	successBookingId: string;
@@ -320,6 +321,7 @@ export class BookingComponent implements OnInit{
 
 		this.hasBookingList = [];
 		this.modalTabAgain = false;
+		this.bookingAgainText = '';
 		this.successBookingId = '';
 
 		this.canEdit = false;
@@ -737,7 +739,7 @@ export class BookingComponent implements OnInit{
 					 + '&clinic_id=' + this.adminService.getUser().clinicId
 					 + '&child_id=' + JSON.parse(this.bookingInfo.child).childId
 					 + '&creator_id=' + JSON.parse(this.bookingInfo.creator).id
-					 + '&booking_date=' + this.bookingInfo.booking_date;
+					 + '&booking_date=' + JSON.parse(this.bookingInfo.booking_date).dutyDate;
 				this.adminService.checkbooking(url).then((data) => {
 					if(data.status == 'no'){
 						this.loadingShow = false;
@@ -747,6 +749,7 @@ export class BookingComponent implements OnInit{
 						var results = JSON.parse(JSON.stringify(data.results));
 						if(results.id != ''){
 							this.loadingShow = false;
+							this.bookingAgainText = JSON.parse(this.bookingInfo.child).childName + ' ' + this.adminService.dateFormat(JSON.parse(this.bookingInfo.booking_date).dutyDate) + ' 已存在预约，是否继续预约？';
 							this.modalTabAgain = true;
 						}else{
 							this.confirmBooking();
