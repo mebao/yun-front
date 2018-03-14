@@ -30,10 +30,6 @@ import { ClinicroomListComponent }          from './clinicroom/clinicroom-list.c
 import { ClinicroomRecordsComponent }       from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }           from './booking/booking-charge.component';
-import { SetupInspectComponent }            from './setup/inspect.component';
-import { SetupInspectListComponent }        from './setup/inspect-list.component';
-import { InspectResultsListComponent }      from './setup/inspect-results-list.component';
-import { InspectResultsComponent }          from './setup/inspect-results.component';
 import { BookingFollowupsComponent }        from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
 import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord.component';
@@ -55,7 +51,6 @@ import { PaymentBookingFee }                from './booking/payment-booking-fee'
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
-import { InspectResultsPrint }              from './setup/inspect-results-print';
 import { BookingAssistList }                from './booking/booking-assist-list.component';
 
 const adminRoutes: Routes = [
@@ -180,6 +175,26 @@ const adminRoutes: Routes = [
 						loadChildren: './assist/assist.module#AssistModule',
 					},
 					{
+						path: 'setupInspectList',
+						loadChildren: './inspect-list/inspect-list.module#InspectListModule',
+					},
+					{
+						path: 'setupInspect',
+						loadChildren: './inspect/inspect.module#InspectModule',
+					},
+					{
+						path: 'inspectResultsList',
+						loadChildren: './inspect-results-list/inspect-results-list.module#InspectResultsListModule',
+					},
+					{
+						path: 'inspectResults',
+						loadChildren: './inspect-results/inspect-results.module#InspectResultsModule',
+					},
+					{
+						path: 'inspectResultsPrint',
+						loadChildren: './inspect-results-print/inspect-results-print.module#InspectResultsPrintModule',
+					},
+					{
 						path: 'bookingIn',
 						canActivate: [AuthGuardRole],
 						component: BookingInComponent
@@ -238,26 +253,6 @@ const adminRoutes: Routes = [
 						path: 'bookingCharge',
 						canActivate: [AuthGuardRole],
 						component: BookingChargeComponent,
-					},
-					{
-						path: 'setupInspect',
-						canActivate: [AuthGuardRole],
-						component: SetupInspectComponent,
-					},
-					{
-						path: 'setupInspectList',
-						canActivate: [AuthGuardRole],
-						component: SetupInspectListComponent,
-					},
-					{
-						path: 'inspectResultsList',
-						canActivate: [AuthGuardRole],
-						component: InspectResultsListComponent,
-					},
-					{
-						path: 'inspectResults',
-						canActivate: [AuthGuardRole],
-						component: InspectResultsComponent,
 					},
 					{
 						path: 'bookingFollowups',
@@ -353,11 +348,6 @@ const adminRoutes: Routes = [
 						path: 'guazhangList',
 						canActivate: [AuthGuardRole],
 						component: GuazhangList,
-					},
-					{
-						path: 'inspectResultsPrint',
-						canActivate: [AuthGuardRole],
-						component: InspectResultsPrint,
 					},
 					{
 						path: 'bookingAssistList',

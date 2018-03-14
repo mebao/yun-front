@@ -41,10 +41,6 @@ import { ClinicroomListComponent }         from './clinicroom/clinicroom-list.co
 import { ClinicroomRecordsComponent }      from './clinicroom/clinicroom-records.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { BookingChargeComponent }          from './booking/booking-charge.component';
-import { SetupInspectComponent }           from './setup/inspect.component';
-import { SetupInspectListComponent }       from './setup/inspect-list.component';
-import { InspectResultsListComponent }     from './setup/inspect-results-list.component';
-import { InspectResultsComponent }         from './setup/inspect-results.component';
 import { BookingFollowupsComponent }       from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
 import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.component';
@@ -66,7 +62,6 @@ import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { GuazhangList }                    from './user/guazhang-list.component';
-import { InspectResultsPrint }             from './setup/inspect-results-print';
 import { BookingAssistList }               from './booking/booking-assist-list.component';
 
 import { AdminService }                    from './admin.service';
@@ -107,10 +102,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		ClinicroomRecordsComponent,
 		DoctorPrescriptComponent,
 		BookingChargeComponent,
-		SetupInspectComponent,
-		SetupInspectListComponent,
-		InspectResultsListComponent,
-		InspectResultsComponent,
 		BookingFollowupsComponent,
 		BookingFollowupsListComponent,
 		BookingGrowthrecordComponent,
@@ -133,7 +124,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		UpdatepwdComponent,
 		GuazhangList,
 		ToDecimal2Pipe,
-		InspectResultsPrint,
 		BookingAssistList,
 	],
 	providers: [
