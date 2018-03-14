@@ -73,6 +73,11 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	// pageType 空为医生接诊, history为查看
 	pageType: string;
 	// 就诊记录
+	historyHealthRList: any[];
+	historyHealthR: any[];
+	historyHealthRBookingFirst: any[];
+	historyHealthRBookingLast: any[];
+	selectedHistoryHealthRTab: string;
 	historyList: any[];
 	hasHistoryData: boolean;
 	modalTab: boolean;
@@ -470,8 +475,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 						}
 						this.loadingShow = false;
 					}
+				}).catch(() => {
+					this.toastTab('服务器错误', 'error');
 				});
 			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
 		});
 
 		this.doctorInfo = {
@@ -499,6 +509,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					this.doctorInfo = results.adminlist[0];
 				}
 			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
 		});
 
 		// 若是登录账号为'嘉宝体检'，则需要选定操作人
@@ -529,12 +541,20 @@ export class DocbookingHealthrecordComponent implements OnInit{
 						}
 					}
 				}
+			}).catch(() => {
+				this.toastTab('服务器错误', 'error');
 			});
 		}
 
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
+
+		this.historyHealthRList = [];
+		this.historyHealthR = [];
+		this.historyHealthRBookingFirst = [];
+		this.historyHealthRBookingLast = [];
+		this.selectedHistoryHealthRTab = '1';
 
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
@@ -963,6 +983,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							}
 						}
 					}
+				}).catch(() => {
+					this.toastTab('服务器错误', 'error');
 				});
 			}
 			// 获取病例，若是身高、体重、头围、体温等信息已存在，则直接使用
@@ -988,6 +1010,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							}
 						}
 					}
+				}).catch(() => {
+					this.toastTab('服务器错误', 'error');
 				});
 			}
 		}
@@ -1002,22 +1026,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		sessionStorage.setItem('actualOperator', this.operator);
 	}
 
-	// 历史记录
-	showHistory() {
-		this.modalTab = true;
-		this.hasHistoryData = false;
-		var urlOptions = this.url + '&child_id=' + this.booking.childId;
-		this.adminService.searchbooking(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.historyList = results.weekbooks;
-				this.hasHistoryData = true;
-			}
-		});
-	}
-
 	//医生列表
 	getDoctorList(){
 		var adminlistUrl = this.url + '&clinic_id='
@@ -1030,7 +1038,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
-		})
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
+		});
 	}
 
 	//科室列表
@@ -1044,7 +1054,29 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				this.servicelist = results.servicelist;
 				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
-		})
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
+		});
+	}
+
+	getHistoryHealthRList() {
+		var urlOptions = this.url + '&child_id=' + this.booking.childId + '&latestEarliest=1';
+		this.adminService.searchhealthrecord(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
+					}
+					this.historyHealthR.push(results.list[0]);
+				}
+				this.historyHealthRList = results.list;
+			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
+		});
 	}
 
 	// 搜索历史记录
@@ -1059,11 +1091,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				this.historyList = results.weekbooks;
 				this.hasHistoryData = true;
 			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
 		});
 	}
 
 	//查询
-	search() {
+	showHistory() {
 		//列表
 		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';;
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
@@ -1137,8 +1171,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					this.booking.totalFee = this.adminService.toDecimal2(total.toString());
 					sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 					this.initEdit();
+
+					// 获取小孩儿保记录
+					this.getHistoryHealthRList();
 				}
 			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
 		});
 	}
 
@@ -1150,6 +1189,20 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}else{
 			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
 		}
+	}
+
+	changeHistoryHealthRTab(_value) {
+		this.historyHealthR = [];
+		if(_value == '1'){
+			if(this.historyHealthRList.length > 0){
+				this.historyHealthR.push(this.historyHealthRList[0]);
+			}
+		}else{
+			if(this.historyHealthRList.length > 0){
+				this.historyHealthR.push(this.historyHealthRList[this.historyHealthRList.length - 1]);
+			}
+		}
+		this.selectedHistoryHealthRTab = _value;
 	}
 
 	// 新增儿保记录
@@ -1471,7 +1524,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					this.uploadService.startUpload();
                 }
             }
-        });
+        }).catch(() => {
+			this.toastTab('服务器错误', 'error');
+		});
     }
 
 	addFollowups() {
@@ -1493,6 +1548,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			}else{
 				this.uploadService.startUpload();
 			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
 		});
 	}
 
@@ -1544,6 +1603,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}
 				}
 			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
 		});
 	}
 
@@ -1556,6 +1617,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			}else{
 				this.qiniuToken = JSON.parse(JSON.stringify(data)).uptoken;
 			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
 		});
 	}
 
@@ -1593,6 +1656,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}else{
 						this.complete();
 					}
+				}).catch(() => {
+					this.loadingShow = false;
+					this.toastTab('服务器错误', 'error');
+					this.btnCanEdit = false;
 				});
 			}else{
 				this.complete();
