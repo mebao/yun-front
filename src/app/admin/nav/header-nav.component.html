@@ -2,7 +2,7 @@
 	<div class="title">{{clinicName}}</div>
 	<div class="flex-1 right-tab text-right">
 		<div class="item pl20 pr20">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
-		<div mouseIn class="item message-tab" [ngClass]="{'show': showPayMessage}" (mouseHandler)="handlerTab($event, 'showPayMessage')">
+		<div *ngIf="hasShowPayMessage" mouseIn class="item message-tab" [ngClass]="{'show': showPayMessage}" (mouseHandler)="handlerTab($event, 'showPayMessage')">
 			<div class="tab-title pl20 pr20" (click)="showTab('showPayMessage')">
 				支付消息
 				<span *ngIf="payMessageList.length > 0" class="num">{{payMessageList.length}}</span>

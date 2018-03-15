@@ -25,6 +25,8 @@ export class HeaderNavComponent {
 	showPayMessage: boolean;
 	payMessageList: any[];
 	showSetup: boolean;
+	// 支付消息权限
+	hasShowPayMessage: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -48,6 +50,39 @@ export class HeaderNavComponent {
 		this.showSetup = false;
 		this.getPayMessage();
 		this.getPushPayMessage();
+
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+			this.hasShowPayMessage = true;
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+			var hasBookingInfo = false;
+			var hasTransactionStatistics = false;
+			if(authority.length > 0){
+				for(var i = 0; i < authority.length; i++){
+					if(authority[i].keyName == 'bookingList'){
+						if(authority[i].infos.length > 0){
+							for(var j = 0; j < authority[i].infos.length; j++){
+								if(authority[i].infos[j].keyName == 'info'){
+									hasBookingInfo = true;
+								}
+							}
+						}
+					}
+					if(authority[i].keyName == 'transactionStatistics'){
+						if(authority[i].infos.length > 0){
+							for(var j = 0; j < authority[i].infos.length; j++){
+								if(authority[i].infos[j].keyName == 'see'){
+									hasTransactionStatistics = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			this.hasShowPayMessage = hasBookingInfo && hasTransactionStatistics;
+		}
 	}
 
 	logout() {
