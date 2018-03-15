@@ -10,9 +10,6 @@ import { SelectivePreloadingStrategy }      from '../selective-preloading-strate
 import { HomeComponent }                    from './home/home.component';
 import { CreateUserComponent }              from './user/create-user.component';
 import { BookingComponent }                 from './booking/booking.component';
-import { BookingListComponent }             from './booking/booking-list.component';
-import { BookingInComponent }               from './booking/booking-in.component';
-import { BookingInfoComponent }             from './booking/booking-info.component';
 import { BookingConfirmComponent }          from './booking/booking-confirm.component';
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
 import { NoPermissionsComponent }             from '../error/no-permissions.component';
@@ -30,7 +27,6 @@ import { PaymentPrintComponent }            from './booking/payment-print.compon
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
-import { BookingReceiveComponent }          from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
 import { BookingHistoryComponent }          from './booking/booking-history.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
@@ -64,11 +60,6 @@ const adminRoutes: Routes = [
 						path: 'booking',
 						canActivate: [AuthGuardRole],
 						component: BookingComponent
-					},
-					{
-						path: 'bookingList',
-						canActivate: [AuthGuardRole],
-						component: BookingListComponent
 					},
 					{
 						path: 'workbench',
@@ -211,14 +202,20 @@ const adminRoutes: Routes = [
 						loadChildren: './transaction-statistics/transaction-statistics.module#TransactionStatisticsModule',
 					},
 					{
+						path: 'bookingList',
+						loadChildren: './booking/list/booking-list.module#BookingListModule',
+					},
+					{
 						path: 'bookingIn',
-						canActivate: [AuthGuardRole],
-						component: BookingInComponent
+						loadChildren: './booking/in/booking-in.module#BookingInModule',
 					},
 					{
 						path: 'bookingInfo',
-						canActivate: [AuthGuardRole],
-						component: BookingInfoComponent
+						loadChildren: './booking/info/booking-info.module#BookingInfoModule',
+					},
+					{
+						path: 'bookingReceive',
+						loadChildren: './booking/receive/booking-receive.module#BookingReceiveModule',
 					},
 					{
 						path: 'bookingConfirm',
@@ -299,11 +296,6 @@ const adminRoutes: Routes = [
 						path: 'roleAuthorityList',
 						canActivate: [AuthGuardRole],
 						component: RoleAuthorityListComponent,
-					},
-					{
-						path: 'bookingReceive',
-						canActivate: [AuthGuardRole],
-						component: BookingReceiveComponent,
 					},
 					{
 						path: 'bookingHealthrecord',

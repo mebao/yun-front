@@ -14,6 +14,9 @@ import { NavModule }                       from './nav/nav.module';
 //common
 import { AngCommonModule }                 from '../common/ang-common.module';
 
+// pipe
+import { PipeModule }                      from '../pipe/pipe.module';
+
 //error
 import { PageNotFoundComponent }           from '../error/page-not-found.component';
 import { NoPermissionsComponent }          from '../error/no-permissions.component';
@@ -23,9 +26,6 @@ import {SelectivePreloadingStrategy}       from '../selective-preloading-strateg
 import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
-import { BookingListComponent }            from './booking/booking-list.component';
-import { BookingInComponent }              from './booking/booking-in.component';
-import { BookingInfoComponent }            from './booking/booking-info.component';
 import { BookingConfirmComponent }         from './booking/booking-confirm.component';
 import { UploadComponent }                 from './user/upload.component';
 import { BookingAddServiceComponent }      from './booking/booking-add-service.component';
@@ -41,7 +41,6 @@ import { PaymentPrintComponent }           from './booking/payment-print.compone
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
-import { BookingReceiveComponent }         from './booking/booking-receive.component';
 import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
 import { BookingHistoryComponent }         from './booking/booking-history.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
@@ -54,8 +53,6 @@ import { BookingAssistList }               from './booking/booking-assist-list.c
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
 
-import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
-
 @NgModule({
 	imports: [
 		CommonModule,
@@ -63,15 +60,13 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		FormsModule,
 		AngCommonModule,
 		NavModule,
+		PipeModule,
 	],
 	declarations: [
 		AdminComponent,
 		HomeComponent,
 		CreateUserComponent,
 		BookingComponent,
-		BookingListComponent,
-		BookingInComponent,
-		BookingInfoComponent,
 		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
@@ -89,7 +84,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		CrmRoleComponent,
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
-		BookingReceiveComponent,
 		BookingHealthrecordComponent,
 		BookingHistoryComponent,
 		GivefeeListComponent,
@@ -97,7 +91,6 @@ import { ToDecimal2Pipe }                  from '../pipe/toDecimal2.pipe';
 		Repage,
 		UpdatepwdComponent,
 		GuazhangList,
-		ToDecimal2Pipe,
 		BookingAssistList,
 	],
 	providers: [
