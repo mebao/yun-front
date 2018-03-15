@@ -87,6 +87,12 @@
 			(click)="goPage('bookingFollowupsList')">
 				随访管理
 		</a>
+	  	<!-- <a
+			routerLink="./bookingExamineCase"
+			routerLinkActive="active"
+			(click)="goPage('bookingExamineCase')">
+				病例审核
+		</a> -->
 	  	<a
 			*ngIf="clinicRole.childServiceList.use != ''"
 			[routerLink]="['./childServiceList']"
@@ -182,7 +188,7 @@
 		<a
 			routerLink="./updatepwd"
 			routerLinkActive="active">
-			忘记密码
+			修改密码
 		</a>
 	  	<!-- <a
 			*ngIf="clinicRole.givefeeList.use != ''"

@@ -19,6 +19,10 @@ export class MedicalCheckListComponent{
 	};
 	// 权限
 	moduleAuthority: {
+		see: boolean,
+		seePut: boolean,
+		seeHas: boolean,
+		seeLost: boolean,
 		seeCheck: boolean,
 		addCheck: boolean,
 	}
@@ -52,6 +56,10 @@ export class MedicalCheckListComponent{
 		}
 
 		this.moduleAuthority = {
+			see: false,
+			seePut: false,
+			seeHas: false,
+			seeLost: false,
 			seeCheck: false,
 			addCheck: false,
 		}

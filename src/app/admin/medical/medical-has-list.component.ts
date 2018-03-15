@@ -20,8 +20,12 @@ export class MedicalHasListComponent{
 	};
 	// 权限
 	moduleAuthority: {
+		see: boolean,
+		seePut: boolean,
 		seeHas: boolean,
 		editHas: boolean,
+		seeLost: boolean,
+		seeCheck: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
@@ -51,8 +55,12 @@ export class MedicalHasListComponent{
 		}
 
 		this.moduleAuthority = {
+			see: false,
+			seePut: false,
 			seeHas: false,
 			editHas: false,
+			seeLost: false,
+			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
