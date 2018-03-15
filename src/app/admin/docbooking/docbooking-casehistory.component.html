@@ -369,7 +369,7 @@
 						<div *ngIf="pageType != 'history'">
 							<div class="text-right">
 								<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
-								<button *ngIf="editType != 'update'" (click)="updateCaseHistory(casehistory)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && info.checkId == null)" (click)="updateCaseHistory(casehistory)" class="pure-button pure-button-primary">修改</button>
 							</div>
 						</div>
 						<div class="" *ngIf="editType == 'view'">
@@ -585,6 +585,12 @@
 							</div>
 					  	</div>
 					</div>
+					<div *ngIf="pageType == 'examine' && info.checkId == null" class="text-center mt20">
+						<button (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">审核通过</button>
+					</div>
+				</div>
+				<div *ngIf="casehistoryList.length == 0 && editType == 'view'">
+					<nodata title="未查询到病例信息"></nodata>
 				</div>
 				<!-- <div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt10">
 					<nodata title="未查询到病历"></nodata>
@@ -912,9 +918,10 @@
 						</div>
 					</div>
 					<div class="text-center mt10">
-						<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+						<button (click)="create('')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+						<button *ngIf="pageType == 'examine' && info.checkId == null" (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存并审核通过</button>
 					</div>
-					<button (click)="create()" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+					<button (click)="create('')" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 				</div>
 			</div>
 		</div>

@@ -222,6 +222,10 @@ const adminRoutes: Routes = [
 						loadChildren: './docbooking-growth-chart/docbooking-growth-chart.module#DocbookingGrowthChartModule',
 					},
 					{
+						path: 'bookingExamineCase',
+						loadChildren: './booking/examine-case/booking-examine-case.module#BookingExamineCaseModule',
+					},
+					{
 						path: 'bookingConfirm',
 						canActivate: [AuthGuardRole],
 						component: BookingConfirmComponent

@@ -1,0 +1,57 @@
+<header-nav></header-nav>
+<div class="content-section admin-inspect-results-list">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="flex pure-form search-tab max">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
+			<label for="doctor_name">医生姓名：</label>
+			<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" placeholder="请输入医生名">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="child_name">宝宝姓名：</label>
+			<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝姓名">
+		</div>
+		<div class="pure-control-group mr10">
+			<label for="check">是否检查：</label>
+			<select id="check" name="check" [(ngModel)]="searchInfo.check">
+				<option value="1">未审核</option>
+				<option value="">已审核</option>
+			</select>
+		</div>
+		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+	</div>
+	<div>
+		<table *ngIf="caseList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+			<thead>
+				<tr>
+					<th>就诊医生</th>
+					<th>宝宝姓名</th>
+					<th>就诊日期</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let case of caseList">
+					<td>{{case.bookingDoctorName}}</td>
+					<td>{{case.childName}}</td>
+					<td>{{case.time}}</td>
+					<td>{{case.checkId == null ? '未审核' : '已审核'}}</td>
+					<td>
+						<ng-container *ngIf="case.checkId == null">
+							<button (click)="examine(case)" class="pure-button pure-button-primary">审核</button>
+						</ng-container>
+						<ng-container *ngIf="case.checkId != null">
+							-
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div *ngIf="hasData && caseList.length == 0" class="mt10">
+			<nodata title="未查询到病例"></nodata>
+		</div>
+	</div>
+</div>
+<nll-toast-box></nll-toast-box>
+<loading [show]="loadingShow"></loading>

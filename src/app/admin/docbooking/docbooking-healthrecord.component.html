@@ -774,6 +774,9 @@
 						</div>
 					</div>
 				</div>
+				<div *ngIf="healthrecordList.length == 0 && editType == 'view'">
+					<nodata title="未查询到儿保记录信息"></nodata>
+				</div>
 				<!-- <div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt10">
 					<nodata title="未查询到儿保记录"></nodata>
 				</div> -->

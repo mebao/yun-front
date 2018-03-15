@@ -87,12 +87,12 @@
 			(click)="goPage('bookingFollowupsList')">
 				随访管理
 		</a>
-	  	<!-- <a
+	  	<a
 			routerLink="./bookingExamineCase"
 			routerLinkActive="active"
 			(click)="goPage('bookingExamineCase')">
 				病例审核
-		</a> -->
+		</a>
 	  	<a
 			*ngIf="clinicRole.childServiceList.use != ''"
 			[routerLink]="['./childServiceList']"

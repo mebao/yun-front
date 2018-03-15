@@ -1218,6 +1218,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 审核完成病例
+	private checkcasehistoryUrl = this.url + '/mebcrm/checkcasehistory';
+	checkcasehistory(urlOptions, params): Promise<Data>{
+		return this.http.post(this.checkcasehistoryUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

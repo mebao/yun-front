@@ -136,6 +136,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		time: string,
 		timeText: string,
 		checkList: any[],
+		checkId: string,
 	};
 	// 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
 	baseInfo: {
@@ -189,6 +190,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	};
 	doctorlist: any[];
 	servicelist: [{}];
+	createType: string;
 
 	constructor(
 		private adminService: AdminService,
@@ -259,6 +261,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			time: '',
 			timeText: '',
 			checkList: [],
+			checkId: '',
 		}
 		this.baseInfo = {
 			height: '',
@@ -330,7 +333,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		//病例
 		this.casehistoryList = [];
 		this.hasCasehistoryData = false;
-		var casehistoryUrl = this.url + '&booking_id=' + this.id;
+		var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -341,12 +344,17 @@ export class DocbookingCasehistoryComponent implements OnInit{
 					for(var i = 0; i < results.list.length; i++){
 						results.list[i].time = results.list[i].time ? this.adminService.dateFormat(results.list[i].time) : results.list[i].time;
 					}
+					sessionStorage.setItem('casehistory', JSON.stringify(results.list[0]));
 				}
 				this.casehistoryList = results.list;
 				this.hasCasehistoryData = true;
 				if(this.hasCasehistoryData && this.casehistoryList.length == 0){
 					this.editType = 'create';
 				}else{
+					this.editType = 'view';
+				}
+				// 若是查看历史记录
+				if(this.pageType == 'history'){
 					this.editType = 'view';
 				}
 				//获取开方信息
@@ -475,16 +483,15 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}
 		this.modalConfirmTab = false;
 		this.getQiniuToken();
+		this.createType = '';
 	}
 
 	initEdit() {
-		var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
-
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		if(this.editType == 'update'){
+		if(this.editType == 'update' || this.pageType == 'examine'){
 			var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
 			this.info = {
 				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
@@ -536,6 +543,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				time: casehistory.time,
 				timeText: casehistory.time,
 				checkList: casehistory.checkList,
+				checkId: casehistory.checkId,
 			}
 			this.baseInfo = {
                 height: casehistory.height,
@@ -600,6 +608,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				time: '',
 				timeText: '',
 				checkList: [],
+				checkId: '',
 			}
 			this.baseInfo = {
                 height: null,
@@ -1100,7 +1109,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}
 	}
 
-	create() {
+	create(type) {
+		this.createType = type;
 		if(this.actualOperator.use && this.operator == ''){
 			this.toastTab('请选择实际操作人', 'error');
 			return;
@@ -1205,6 +1215,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			time: this.info.time == '' ? this.adminService.dateFormatHasWord(this.booking.bookingDate) : this.adminService.dateFormatHasWord(this.info.time),
 			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
 			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
+			is_check: type == '' ? null : '1',
 		}
 
 		var urlOptions = '';
@@ -1213,21 +1224,44 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}else{
 			urlOptions = '/' + JSON.parse(sessionStorage.getItem('casehistory')).id;
 		}
-		this.adminService.casehistory(urlOptions, params).then((data) => {
-			if(data.status == 'no'){
+		if(type == ''){
+			this.adminService.casehistory(urlOptions, params).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.casehistory_id = results.id;
+					this.uploadService.startUpload();
+				}
+			}).catch(() => {
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this.toastTab('服务器错误', 'error');
 				this.btnCanEdit = false;
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.casehistory_id = results.id;
-				this.uploadService.startUpload();
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-			this.toastTab('服务器错误', 'error');
-			this.btnCanEdit = false;
-		});
+			});
+		}else{
+			this.adminService.checkcasehistory(urlOptions, params).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this.toastTab(data.errorMsg, 'error');
+					this.btnCanEdit = false;
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.casehistory_id = results.id;
+					// 查看状态，无需再次上传文件
+					if(this.editType == 'view'){
+						this.complete();
+					}else{
+						this.uploadService.startUpload();
+					}
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+			});
+		}
 	}
 
 	showFile(file) {
@@ -1302,6 +1336,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	}
 
 	successUpload($event) {
+		console.log(0);
 		var fileList = $event.fileList;
 		if(fileList.length > 0){
 			var flist = [];
@@ -1346,11 +1381,18 @@ export class DocbookingCasehistoryComponent implements OnInit{
 
 	complete() {
 		this.loadingShow = false;
-		this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');
-		setTimeout(() => {
-			this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
-			this.editType = 'view';
-		}, 2000);
+		if(this.createType == 'examine'){
+			this.toastTab('审核通过', '');
+			setTimeout(() => {
+				this.router.navigate(['./admin/bookingExamineCase']);
+			}, 2000);
+		}else{
+			this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');
+			setTimeout(() => {
+				this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId}});
+				this.editType = 'view';
+			}, 2000);
+		}
 	}
 
 	toastTab(text, type) {

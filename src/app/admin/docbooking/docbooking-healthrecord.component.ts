@@ -451,6 +451,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				}else{
 					this.editType = 'view';
 				}
+				// 若是查看历史记录
+				if(this.pageType == 'history'){
+					this.editType = 'view';
+				}
 				this.initEdit();
 				// 儿保记录模板
 				this.recordtempletList = [];
@@ -989,7 +993,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			}
 			// 获取病例，若是身高、体重、头围、体温等信息已存在，则直接使用
 			if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
-				var casehistoryUrl = this.url + '&booking_id=' + this.id;
+				var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 				this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
 					if(data.status == 'no'){
 						this.toastTab(data.errorMsg, 'error');
