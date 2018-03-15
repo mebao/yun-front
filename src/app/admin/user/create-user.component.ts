@@ -185,6 +185,7 @@ export class CreateUserComponent{
 					var child = {};
 					child['username'] = this.adminService.getUser().username;
 					child['token'] = this.adminService.getUser().token;
+					child['clinic_id'] = this.adminService.getUser().clinicId;
 					child['user_id'] = '';
 					f.value['name_' + this.childlist[i].key] = this.adminService.trim(f.value['name_' + this.childlist[i].key]);
 					f.value['nickname_' + this.childlist[i].key] = this.adminService.trim(f.value['nickname_' + this.childlist[i].key]);

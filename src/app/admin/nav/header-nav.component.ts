@@ -6,6 +6,8 @@ import { AdminService }                         from '../admin.service';
 import { ToastService }                         from '../../common/nll-toast/toast.service';
 import { ToastConfig, ToastType }               from '../../common/nll-toast/toast-model';
 
+import { config }                               from '../../config';
+
 ///<reference path="../../common/goeasy/goeasy.d.ts">
 
 @Component({
@@ -144,7 +146,7 @@ export class HeaderNavComponent {
 				}
 				this.payMessageList = results.messages;
 				// this.changeDetectorRef.markForCheck();
-          //  		this.changeDetectorRef.detectChanges();
+          		// this.changeDetectorRef.detectChanges();
 			}
 		}).catch(() => {
 			this.messageLoading = false;
@@ -159,9 +161,14 @@ export class HeaderNavComponent {
 		var goEasy = new GoEasy({
 			appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
 		});
+		
+		// 开启通道前，先关闭通道
+		goEasy.unsubscribe({
+			channel: config.message_tran,
+		});
 
 		goEasy.subscribe({
-			channel: 'message_tran',
+			channel: config.message_tran,
 			onMessage: function (message) {
 				var tran = JSON.parse(message.content);
 				that._ngZone.run(() =>

@@ -585,7 +585,7 @@
 							</div>
 					  	</div>
 					</div>
-					<div *ngIf="pageType == 'examine' && info.checkId == null" class="text-center mt20">
+					<div *ngIf="editType == 'view' && pageType == 'examine' && info.checkId == null" class="text-center mt20">
 						<button (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">审核通过</button>
 					</div>
 				</div>
