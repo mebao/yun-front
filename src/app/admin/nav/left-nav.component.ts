@@ -188,6 +188,11 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		bookingExamineCase: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		}
 	}
 
 	constructor(
@@ -347,6 +352,11 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
+			bookingExamineCase: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			}
 		}
 
 		// 那段角色，是超级管理员0还是普通角色

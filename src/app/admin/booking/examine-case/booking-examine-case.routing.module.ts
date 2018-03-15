@@ -12,7 +12,7 @@ import { BookingExamineCase }       from './booking-examine-case';
     imports: [RouterModule.forChild([
         {
             path: '',
-            // canActivate: [AuthGuardRole],
+            canActivate: [AuthGuardRole],
             component: BookingExamineCase,
         }
     ])]

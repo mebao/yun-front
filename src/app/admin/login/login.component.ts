@@ -229,6 +229,13 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
+		// 病例审核
+		bookingExamineCase: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		}
 	}
 
 	constructor(
@@ -432,6 +439,12 @@ export class LoginComponent{
 				url: '/admin/givefeeList',
 				infos: [],
 			},
+			bookingExamineCase: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/bookingExamineCase',
+				infos: [],
+			}
 		}
 	}
 
