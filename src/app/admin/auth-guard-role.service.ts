@@ -281,6 +281,12 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							{
+								url: '/admin/docbooking/growthChart',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{
