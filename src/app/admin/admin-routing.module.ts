@@ -218,10 +218,6 @@ const adminRoutes: Routes = [
 						loadChildren: './booking/receive/booking-receive.module#BookingReceiveModule',
 					},
 					{
-						path: 'docbooking',
-						loadChildren: './docbooking-growth-chart/docbooking-growth-chart.module#DocbookingGrowthChartModule',
-					},
-					{
 						path: 'bookingExamineCase',
 						loadChildren: './booking/examine-case/booking-examine-case.module#BookingExamineCaseModule',
 					},

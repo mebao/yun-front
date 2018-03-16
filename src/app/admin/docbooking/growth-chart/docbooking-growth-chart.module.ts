@@ -5,9 +5,9 @@ import { FormsModule }                           from '@angular/forms';
 // 最新升级后，修改引入名称
 import { NgxEchartsModule }                      from 'ngx-echarts';
 
-import { NavModule }                             from '../nav/nav.module';
+import { NavModule }                             from '../../nav/nav.module';
 
-import { AngCommonModule }                       from '../../common/ang-common.module';
+import { AngCommonModule }                       from '../../../common/ang-common.module';
 
 import { DocbookingGrowthChartRoutingModule }    from './docbooking-growth-chart.routing.module';
 

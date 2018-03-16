@@ -1,7 +1,7 @@
 import { NgModule }              from '@angular/core';
 import { RouterModule }          from '@angular/router';
 
-import { AuthGuardRole }         from './../auth-guard-role.service';
+import { AuthGuardRole }         from './../../auth-guard-role.service';
 
 import { DocbookingGrowthChart } from './docbooking-growth-chart';
 
@@ -11,7 +11,7 @@ import { DocbookingGrowthChart } from './docbooking-growth-chart';
     ],
     imports: [RouterModule.forChild([
         {
-            path: 'growthChart',
+            path: '',
             canActivate: [AuthGuardRole],
             component: DocbookingGrowthChart,
         }

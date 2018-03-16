@@ -1,15 +1,15 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
-import { AdminService }                       from '../admin.service';
-import { DoctorService }                      from '../doctor/doctor.service';
+import { AdminService }                       from '../../admin.service';
+import { DoctorService }                      from '../../doctor/doctor.service';
 
-import { UploadService }                      from '../../common/nll-upload/upload.service';
+import { UploadService }                      from '../../../common/nll-upload/upload.service';
 
 @Component({
 	selector: 'admin-docbooking-growth-chart',
 	templateUrl: './docbooking-growth-chart.html',
-	styleUrls: ['../docbooking/docbooking-casehistory.component.scss'],
+	styleUrls: ['../docbooking-casehistory.component.scss'],
 })
 export class DocbookingGrowthChart implements OnInit{
 	topBar: {

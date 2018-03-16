@@ -36,6 +36,14 @@ import { DocbookingHealthrecordComponent }  from './docbooking-healthrecord.comp
             canActivate: [AuthGuardRole],
             component: DocbookingHealthrecordComponent,
         },
+        {
+            path: 'growthChart',
+            loadChildren: './growth-chart/docbooking-growth-chart.module#DocbookingGrowthChartModule',
+        },
+        // {
+        //     path: 'growthEvaluation',
+        //     loadChildren: './growth-evaluation/docbooking-growth-evaluation.module#DocbookingGrowthEvaluationModule',
+        // },
     ])]
 })
 
