@@ -1336,7 +1336,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	}
 
 	successUpload($event) {
-		console.log(0);
 		var fileList = $event.fileList;
 		if(fileList.length > 0){
 			var flist = [];

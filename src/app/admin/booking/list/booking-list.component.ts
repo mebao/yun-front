@@ -375,7 +375,7 @@ export class BookingListComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
 					for(var i = 0; i < results.servicelist.length; i++){
-						results.servicelist[i].color = this.adminService.colorList()[i % 10];
+						results.servicelist[i].color = this.adminService.colorList()[i % 15];
 						results.servicelist[i].infoList = [];
 					}
 				}
