@@ -48,10 +48,9 @@ export class HeaderNavComponent {
 		this.messageBtn = false;
 
 		this.showPayMessage = false;
-		this.payMessageList = [];
 		this.showSetup = false;
 		this.getPayMessage();
-		this.getPushPayMessage();
+		// this.getPushPayMessage();
 
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -96,8 +95,8 @@ export class HeaderNavComponent {
 
 	showTab(_key) {
 		this[_key] = !this[_key];
+		this.messageLoading = true;
 		if(_key == 'showMessage'){
-			this.messageLoading = true;
 			this.messageList = [];
 			var urlOptions = '?username=' + this.adminService.getUser().username
 				+ '&token=' + this.adminService.getUser().token
@@ -121,6 +120,8 @@ export class HeaderNavComponent {
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 				this.toastService.toast(toastCfg);
 			});
+		}else{
+			this.getPayMessage();
 		}
 	}
 
@@ -131,15 +132,18 @@ export class HeaderNavComponent {
 	}
 
 	getPayMessage() {
+		this.payMessageList = [];
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			+ '&token=' + this.adminService.getUser().token
 			+ '&clinic_id=' + this.adminService.getUser().clinicId
 			+ '&type=pay';
 		this.adminService.searchmessage(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.messageLoading = false;
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
 			}else{
+				this.messageLoading = false;
 				var results = JSON.parse(JSON.stringify(data.results));
 				for(var i = 0; i < results.messages.length; i++){
 					results.messages[i].complate = false;
@@ -161,7 +165,7 @@ export class HeaderNavComponent {
 		var goEasy = new GoEasy({
 			appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
 		});
-		
+
 		// 开启通道前，先关闭通道
 		goEasy.unsubscribe({
 			channel: config.message_tran,

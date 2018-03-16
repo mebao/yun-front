@@ -7,7 +7,10 @@
 				支付消息
 				<span *ngIf="payMessageList.length > 0" class="num">{{payMessageList.length}}</span>
 			</div>
-			<div *ngIf="payMessageList.length > 0" class="message-list pay">
+			<div *ngIf="messageLoading" class="message-list text-center">
+				加载中...
+			</div>
+			<div *ngIf="messageLoading && payMessageList.length > 0" class="message-list pay">
 				<div class="message-item flex" *ngFor="let message of payMessageList; let index=index;">
 					<ng-container *ngIf="!message.complate">
 						<div class="flex-1 w50 pl20">
