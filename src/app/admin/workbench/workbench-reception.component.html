@@ -98,7 +98,12 @@
 <div class="modal" *ngIf="modalTab">
 	<div class="modal-mask" (click)="close()"></div>
 	<div class="container">
-		<div class="title">{{selected.doctor}}信息</div>
+		<div class="title">
+			{{selected.doctor}}
+			<ng-container *ngIf="selected.doctorService.length > 0">
+				（<span *ngFor="let service of selected.doctorService; let last=last;">{{service.serviceName}}<span *ngIf="!last">，</span></span>）
+			</ng-container>
+		</div>
 		<div class="content pad10">
 			<div *ngIf="selected.type == 'all'" class="second-bar-tab flex">
 				<div (click)="changeSelected('1')" class="item" [ngClass]="{'active': selected.tab == '1'}">本周预约</div>

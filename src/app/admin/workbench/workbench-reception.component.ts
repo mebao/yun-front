@@ -43,6 +43,7 @@ export class WorkbenchReceptionComponent{
 		doctor: string,
 		tab: string,
 		type: string,
+		doctorService: any[],
 	}
 	modalConfirmTab: boolean;
 	modalConfirm: {
@@ -123,6 +124,7 @@ export class WorkbenchReceptionComponent{
 			doctor: '',
 			tab: '1',
 			type: '',
+			doctorService: [],
 		};
 		this.modalConfirmTab = false;
 		this.modalConfirm = {
@@ -216,6 +218,7 @@ export class WorkbenchReceptionComponent{
 							doctorName: results.list[i].doctorName,
 							avatarUrl: results.list[i].avatarUrl,
 							bookingWeekList: [],
+							doctorService: results.list[i].doctorService,
 						}
 						for(var j = 0; j < weekArray.length; j++){
 							var title = {
@@ -287,6 +290,7 @@ export class WorkbenchReceptionComponent{
 			doctor: booking.doctorName,
 			tab: type == 'all' ? '1' : '2',
 			type: type,
+			doctorService: booking.doctorService,
 		};
 		this.showBookinglist = JSON.parse(day.string);
 		this.modalTab = true;
