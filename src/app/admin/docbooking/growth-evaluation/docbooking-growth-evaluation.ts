@@ -131,6 +131,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 		answerList: any[],
 	}
 	questionInfo: {
+		showInfo: boolean,
 		modalQuestionTab: boolean,
 		text: string,
 		okText: string,
@@ -290,6 +291,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 			answerList: [],
 		}
 		this.questionInfo = {
+			showInfo: true,
 			modalQuestionTab: false,
 			text: '',
 			okText: '',
@@ -729,18 +731,17 @@ export class DocbookingGrowthEvaluation implements OnInit{
         }
 		// 如果不确定的题目超过5个，添加提醒
 		var i = 0;
-		var showInfo = true;
 		for(var x in this.growthQst.answerList){
 			if(this.growthQst.answerList[x].answer == '0'){
 				i++;
 			}
-			if(showInfo && i>=5){
+			if(this.questionInfo.showInfo && i>=5){
 				this.questionInfo = {
+					showInfo: false,
 					modalQuestionTab: true,
 					text: '如果不确定的题很多，测评结果就不准确了，请认真答题哦。',
 					okText: '知道了',
 				}
-				showInfo = false;
 			}
 		}
 	}
@@ -749,6 +750,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 		this.growthQst.answerNum -= 1;
 		if(this.growthQst.first == 0 && this.growthQst.second == 0){
 			this.questionInfo = {
+				showInfo: this.questionInfo.showInfo,
 				modalQuestionTab: true,
 				text: '关闭后所有选项不会保留，确定关闭吗？',
 				okText: '确定',
@@ -776,6 +778,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 
 	confirmQuestion() {
 		this.questionInfo.modalQuestionTab = false;
+		this.questionInfo.showInfo = true;
 		if(this.questionInfo.okText == '知道了'){
 		}else{
 			this.growthQst = {
@@ -794,6 +797,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 
 	closeQuestionTab() {
 		this.questionInfo = {
+			showInfo: this.questionInfo.showInfo,
 			modalQuestionTab: true,
 			text: '关闭后所有选项不会保留，确定关闭吗？',
 			okText: '确定',
