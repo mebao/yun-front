@@ -45,6 +45,7 @@ export class DocbookingVisitComponent{
         body_temperature: string,
         breathe: string,
         blood_pressure: string,
+        head_circum: string,
     }
 
     constructor(
@@ -122,6 +123,7 @@ export class DocbookingVisitComponent{
             body_temperature: '',
             breathe: '',
             blood_pressure: '',
+            head_circum:'',
         }
     }
 
@@ -286,20 +288,16 @@ export class DocbookingVisitComponent{
 	}
 
     // 完善信息
-    addInfo(visit) {
-        if(visit.doctorChilds.length > 0){
-            for(var item of visit.doctorChilds){
-                if(visit.visitChildId == item.childId){
-                    this.childInfo = {
-                        child_id: visit.visitChildId,
-                        height: item.height,
-                        weight: item.weight,
-                        body_temperature: item.bodyTemperature,
-                        breathe: item.breathe,
-                        blood_pressure: item.bloodPressure,
-                    }
-                }
-            }
+    addInfo(child) {
+        console.log(child);
+        this.childInfo = {
+            child_id: child.childId,
+            height: child.height,
+            weight: child.weight,
+            body_temperature: child.bodyTemperature,
+            breathe: child.breathe,
+            blood_pressure: child.bloodPressure,
+            head_circum:child.headCircum,
         }
         this.modalAddInfo = true;
     }
@@ -329,6 +327,10 @@ export class DocbookingVisitComponent{
             const toastCfg = new ToastConfig(ToastType.ERROR, '', '血压应大于0', 3000);
             this.toastService.toast(toastCfg);
         }
+        if(!this.adminService.isFalse(this.childInfo.head_circum) && (parseFloat(this.childInfo.head_circum) <= 0)){
+            const toastCfg = new ToastConfig(ToastType.ERROR, '', '头围应大于0', 3000);
+            this.toastService.toast(toastCfg);
+        }
         this.modalAddInfo = false;
         var params = {
             username: this.adminService.getUser().username,
@@ -339,6 +341,7 @@ export class DocbookingVisitComponent{
             body_temperature: this.adminService.isFalse(this.childInfo.body_temperature) ? null: this.childInfo.body_temperature.toString(),
             breathe: this.adminService.isFalse(this.childInfo.breathe) ? null: this.childInfo.breathe.toString(),
             blood_pressure: this.adminService.isFalse(this.childInfo.blood_pressure) ? null: this.childInfo.blood_pressure.toString(),
+            head_circum: this.adminService.isFalse(this.childInfo.head_circum) ? null: this.childInfo.head_circum.toString(),
         }
         this.adminService.childinfo(this.childInfo.child_id, params).then((data) => {
             if(data.status == 'no'){

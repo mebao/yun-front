@@ -64,7 +64,13 @@ export class BookingInComponent{
 	};
 	servicelist: any[];
 	doctorlist: any[];
-	doctorDutys: any[];
+	doctorDutys: {
+		dutyDate: string,
+		string: string,
+		weekDay: string,
+		timeList:any[],
+		selectedList:any[],
+	};
 	timelist: any[];
 	childlist: any[];
 	selectSearchTitle: string;
@@ -102,6 +108,13 @@ export class BookingInComponent{
 			show: 0,
 			text: '',
 			type: '',
+		};
+		this.doctorDutys = {
+			dutyDate: '',
+			string: '',
+			weekDay: '',
+			timeList:[],
+			selectedList:[],
 		};
 
 		// 获取用户是否含有充值权限
@@ -418,6 +431,10 @@ export class BookingInComponent{
 		if(doctor.doctorDutys.length > 0){
 			for(var i = 0; i < doctor.doctorDutys.length; i++){
 				doctor.doctorDutys[i].string = JSON.stringify(doctor.doctorDutys[i]);
+				var nowDate = this.adminService.getDayByDate(new Date);
+				if(doctor.doctorDutys[i].dutyDate == nowDate){
+					this.doctorDutys = doctor.doctorDutys[i];
+				}
 				// 是否首次进入
 				if(this.initPage.date){
 					if(doctor.doctorDutys[i].dutyDate == this.booking.bookingDate){
@@ -433,7 +450,6 @@ export class BookingInComponent{
 			this.bookingInfo.timeInfo = '';
 		}
 		this.initPage.date = false;
-		this.doctorDutys = doctor.doctorDutys;
 	}
 
 	//切换时间

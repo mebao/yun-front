@@ -688,6 +688,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 							if(this.info.blood_pressure != null && results.childInfo.bloodPressure != null){
 								this.info.blood_pressure = results.childInfo.bloodPressure;
 							}
+							if(this.info.head_circum != null && results.childInfo.headCircum != null){
+								this.info.head_circum = results.childInfo.headCircum;
+							}
 						}
 					}
 				}).catch(() => {

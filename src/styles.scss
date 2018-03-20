@@ -27,6 +27,17 @@
 //     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 //     background-color: rgba(0,0,0,.3);
 // }
+.mt8{
+	margin-top:8px;
+}
+
+.button-xsmall{
+	font-size: 70%;
+}
+
+.button-small{
+	font-size: 85%;
+}
 
 .cursor-p{
 	cursor: pointer;
@@ -83,7 +94,7 @@ select:focus, input:focus, textarea:focus{
 		overflow-x: auto;
 		overflow-y: auto;
 		.content-section{
-			margin: 20px 20px 40px;
+			margin: 50px 20px 40px;
 			background-color: #fff;
 			border: 1px solid #E6E9ED;
 			padding: 10px 15px;
@@ -165,6 +176,9 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
             border-radius: 50%;
             width: 20px;
         }
+		.info{
+			width: 150px;
+		}
         &.active{
             .icon{
                 background-color: #173267;

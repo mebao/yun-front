@@ -66,8 +66,8 @@
 					<div class="pure-control-group">
 						<label for="booking_date">预约日期</label>
 						<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()">
-							<ng-container *ngFor="let date of doctorDutys">
-								<option value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
+							<ng-container>
+								<option value="{{doctorDutys.string}}">{{doctorDutys.dutyDate}}{{doctorDutys.weekDay}}</option>
 							</ng-container>
 						</select>
 					</div>

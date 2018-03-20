@@ -40,7 +40,7 @@
 						</div>
 						<div class="radio-tab" [ngClass]="{'disabled': visit.visitChildName}">
 							<ng-container *ngFor="let child of visit.doctorChilds">
-								<div class="flex">
+								<div class="flex mb5">
 									<div class="flex item pt10 pb5" (click)="changeVisit(child.serviceId, index, visit.visitChildName)" [ngClass]="{'active': visit.selected == child.serviceId}">
 										<div class="icon"></div>
 										<div class="info pl10">
@@ -48,7 +48,7 @@
 										</div>
 									</div>
 									<div class="flex-1 pl20">
-										<button *ngIf="visit.visitChildName && visit.selected == child.serviceId" (click)="addInfo(visit)" class="pure-button pure-button-primary">完善信息</button>
+										<button (click)="addInfo(child)" class="pure-button pure-button-primary button-xsmall mt8">完善信息</button>
 									</div>
 								</div>
 							</ng-container>
@@ -83,24 +83,28 @@
 			<div class="pure-form">
 				<div class="pure-control-group mt5">
 					<label for="height">身高：</label>
-					<input type="number" name="height" step="0.01" [(ngModel)]="childInfo.height">
+					<input type="number" name="height" step="0.01" [(ngModel)]="childInfo.height"> cm
 				</div>
 				<div class="pure-control-group mt5">
 					<label for="weight">体重：</label>
-					<input type="number" name="weight" step="0.01" [(ngModel)]="childInfo.weight">
+					<input type="number" name="weight" step="0.01" [(ngModel)]="childInfo.weight"> kg
 				</div>
 				<div class="pure-control-group mt5">
 					<label for="body_temperature">体温：</label>
-					<input type="number" name="body_temperature" step="0.01" [(ngModel)]="childInfo.body_temperature">
+					<input type="number" name="body_temperature" step="0.01" [(ngModel)]="childInfo.body_temperature"> ℃
 				</div>
 				<div class="pure-control-group mt5">
+					<label for="head_circum">头围：</label>
+					<input type="number" name="head_circum" step="0.01" [(ngModel)]="childInfo.head_circum"> cm
+				</div>
+				<!-- <div class="pure-control-group mt5">
 					<label for="breathe">呼吸：</label>
 					<input type="number" name="breathe" step="0.01" [(ngModel)]="childInfo.breathe">
 				</div>
 				<div class="pure-control-group mt5">
 					<label for="blood_pressure">血压：</label>
 					<input type="number" name="blood_pressure" step="0.01" [(ngModel)]="childInfo.blood_pressure">
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
