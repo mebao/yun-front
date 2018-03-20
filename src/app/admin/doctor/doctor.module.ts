@@ -10,10 +10,8 @@ import { AngCommonModule }                       from '../../common/ang-common.m
 
 import { DoctorRoutingModule }                   from './doctor.routing.module';
 
-import { DoctorListComponent }                   from './doctor-list.component';
 import { DoctorServiceListComponent }            from './doctor-service-list.component';
 import { DoctorServiceComponent }                from './doctor-service.component';
-import { DoctorInfoComponent }                   from './doctor-info.component';
 import { DoctorRecordTempletListComponent }      from './doctor-record-templet-list.component';
 import { DoctorRecordTempletComponent }          from './doctor-record-templet.component';
 import { DoctorCaseTempletListComponent }        from './doctor-case-templet-list.component';
@@ -21,20 +19,16 @@ import { DoctorCaseTempletComponent }            from './doctor-case-templet.com
 
 @NgModule({
     declarations: [
-        DoctorListComponent,
         DoctorServiceListComponent,
         DoctorServiceComponent,
-        DoctorInfoComponent,
         DoctorRecordTempletListComponent,
         DoctorRecordTempletComponent,
         DoctorCaseTempletListComponent,
         DoctorCaseTempletComponent,
     ],
     exports: [
-        DoctorListComponent,
         DoctorServiceListComponent,
         DoctorServiceComponent,
-        DoctorInfoComponent,
         DoctorRecordTempletListComponent,
         DoctorRecordTempletComponent,
         DoctorCaseTempletListComponent,

@@ -3,10 +3,8 @@ import { RouterModule }                          from '@angular/router';
 
 import { AuthGuardRole }                         from '../auth-guard-role.service';
 
-import { DoctorListComponent }                   from './doctor-list.component';
 import { DoctorServiceListComponent }            from './doctor-service-list.component';
 import { DoctorServiceComponent }                from './doctor-service.component';
-import { DoctorInfoComponent }                   from './doctor-info.component';
 import { DoctorRecordTempletListComponent }      from './doctor-record-templet-list.component';
 import { DoctorRecordTempletComponent }          from './doctor-record-templet.component';
 import { DoctorCaseTempletListComponent }        from './doctor-case-templet-list.component';
@@ -16,8 +14,7 @@ import { DoctorCaseTempletComponent }            from './doctor-case-templet.com
     imports: [RouterModule.forChild([
         {
             path: 'list',
-            canActivate: [AuthGuardRole],
-            component: DoctorListComponent,
+            loadChildren: './list/doctor-list.module#DoctorListModule',
         },
         {
             path: 'serviceList',
@@ -31,8 +28,7 @@ import { DoctorCaseTempletComponent }            from './doctor-case-templet.com
         },
         {
             path: 'info',
-            canActivate: [AuthGuardRole],
-            component: DoctorInfoComponent,
+            loadChildren: './info/doctor-info.module#DoctorInfoModule',
         },
         {
             path: 'recordTemplet',
