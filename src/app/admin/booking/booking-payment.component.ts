@@ -452,7 +452,28 @@ export class BookingPaymentComponent{
 
 		// 获取支付方式
 		this.paywayList = [];
-		var clinicdata = this.adminService.getClinicdata();
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.getPaywayList(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					return 'error';
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.getPaywayList(results);
+				}
+			});
+		}
+
+		this.btnCanEdit = false;
+
+		this.editMemberType = 'save';
+
+		this.prescriptTabShow = false;
+	}
+
+	getPaywayList(clinicdata) {
 		if(clinicdata == 'error'){
 			this.toastTab('服务器错误', 'error');
 		}else{
@@ -467,12 +488,6 @@ export class BookingPaymentComponent{
 			}
 			this.paywayList = list;
 		}
-
-		this.btnCanEdit = false;
-
-		this.editMemberType = 'save';
-
-		this.prescriptTabShow = false;
 	}
 
 	// 去充值
