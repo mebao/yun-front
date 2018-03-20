@@ -1,7 +1,7 @@
 import { Component }                          from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
-import { AdminService }                       from '../admin.service';
+import { AdminService }                       from '../../admin.service';
 
 @Component({
     selector: 'admin-booking-history',

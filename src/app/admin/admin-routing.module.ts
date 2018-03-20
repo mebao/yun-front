@@ -14,27 +14,19 @@ import { BookingConfirmComponent }          from './booking/booking-confirm.comp
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
 import { NoPermissionsComponent }             from '../error/no-permissions.component';
 import { UploadComponent }                  from './user/upload.component';
-import { BookingAddServiceComponent }       from './booking/booking-add-service.component';
-import { BookingAddFeeComponent }           from './booking/booking-add-fee.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
-import { BookingChargeComponent }           from './booking/booking-charge.component';
 import { BookingFollowupsComponent }        from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
-import { BookingGrowthrecordComponent }     from './booking/booking-growthrecord.component';
-import { BookingCasehistoryComponent }      from './booking/booking-casehistory.component';
 import { BookingPaymentComponent }          from './booking/booking-payment.component';
 import { PaymentPrintComponent }            from './booking/payment-print.component';
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
-import { BookingHealthrecordComponent }     from './booking/booking-healthrecord.component';
-import { BookingHistoryComponent }          from './booking/booking-history.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
 import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
-import { BookingAssistList }                from './booking/booking-assist-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -222,6 +214,38 @@ const adminRoutes: Routes = [
 						loadChildren: './booking/examine-case/booking-examine-case.module#BookingExamineCaseModule',
 					},
 					{
+						path: 'bookingAssistList',
+						loadChildren: './booking/assist-list/booking-assist-list.module#BookingAssistListModule',
+					},
+					{
+						path: 'bookingCharge',
+						loadChildren: './booking/charge/booking-charge.module#BookingChargeModule',
+					},
+					{
+						path: 'bookingAddFee',
+						loadChildren: './booking/add-fee/booking-add-fee.module#BookingAddFeeModule',
+					},
+					{
+						path: 'bookingAddService',
+						loadChildren: './booking/add-service/booking-add-service.module#BookingAddServiceModule',
+					},
+					{
+						path: 'bookingCasehistory',
+						loadChildren: './booking/casehistory/booking-casehistory.module#BookingCasehistoryModule',
+					},
+					{
+						path: 'bookingHistory',
+						loadChildren: './booking/history/booking-history.module#BookingHistoryModule',
+					},
+					{
+						path: 'bookingHealthrecord',
+						loadChildren: './booking/healthrecord/booking-healthrecord.module#BookingHealthrecordModule',
+					},
+					{
+						path: 'bookingGrowthrecord',
+						loadChildren: './booking/growthrecord/booking-growthrecord.module#BookingGrowthrecordModule',
+					},
+					{
 						path: 'bookingConfirm',
 						canActivate: [AuthGuardRole],
 						component: BookingConfirmComponent
@@ -230,16 +254,6 @@ const adminRoutes: Routes = [
 						path: 'upload',
 						canActivate: [AuthGuardRole],
 						component: UploadComponent
-					},
-					{
-						path: 'bookingAddService',
-						canActivate: [AuthGuardRole],
-						component: BookingAddServiceComponent
-					},
-					{
-						path: 'bookingAddFee',
-						canActivate: [AuthGuardRole],
-						component: BookingAddFeeComponent
 					},
 					{
 						path: 'doctorPrescript',
@@ -252,11 +266,6 @@ const adminRoutes: Routes = [
 						component: NoPermissionsComponent
 					},
 					{
-						path: 'bookingCharge',
-						canActivate: [AuthGuardRole],
-						component: BookingChargeComponent,
-					},
-					{
 						path: 'bookingFollowups',
 						canActivate: [AuthGuardRole],
 						component: BookingFollowupsComponent,
@@ -265,16 +274,6 @@ const adminRoutes: Routes = [
 						path: 'bookingFollowupsList',
 						canActivate: [AuthGuardRole],
 						component: BookingFollowupsListComponent,
-					},
-					{
-						path: 'bookingGrowthrecord',
-						canActivate: [AuthGuardRole],
-						component: BookingGrowthrecordComponent,
-					},
-					{
-						path: 'bookingCasehistory',
-						canActivate: [AuthGuardRole],
-						component: BookingCasehistoryComponent,
 					},
 					{
 						path: 'bookingPayment',
@@ -302,16 +301,6 @@ const adminRoutes: Routes = [
 						component: RoleAuthorityListComponent,
 					},
 					{
-						path: 'bookingHealthrecord',
-						canActivate: [AuthGuardRole],
-						component: BookingHealthrecordComponent,
-					},
-					{
-						path: 'bookingHistory',
-						canActivate: [AuthGuardRole],
-						component: BookingHistoryComponent,
-					},
-					{
 						path: 'givefeeList',
 						canActivate: [AuthGuardRole],
 						component: GivefeeListComponent,
@@ -325,11 +314,6 @@ const adminRoutes: Routes = [
 						path: 'guazhangList',
 						canActivate: [AuthGuardRole],
 						component: GuazhangList,
-					},
-					{
-						path: 'bookingAssistList',
-						canActivate: [AuthGuardRole],
-						component: BookingAssistList,
 					},
 					{
 						path: 'repage',

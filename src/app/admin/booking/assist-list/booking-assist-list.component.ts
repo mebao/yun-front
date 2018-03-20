@@ -1,9 +1,9 @@
 import { Component }                   from '@angular/core';
 
-import { AdminService }                from '../admin.service';
+import { AdminService }                from '../../admin.service';
 
-import { ToastService }                from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }      from '../../common/nll-toast/toast-model';
+import { ToastService }                from '../../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
 
 @Component({
     selector: 'admin-booking-assist-list',

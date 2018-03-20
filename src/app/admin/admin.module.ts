@@ -28,27 +28,19 @@ import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
 import { BookingConfirmComponent }         from './booking/booking-confirm.component';
 import { UploadComponent }                 from './user/upload.component';
-import { BookingAddServiceComponent }      from './booking/booking-add-service.component';
-import { BookingAddFeeComponent }          from './booking/booking-add-fee.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
-import { BookingChargeComponent }          from './booking/booking-charge.component';
 import { BookingFollowupsComponent }       from './booking/booking-followups.component';
 import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
-import { BookingGrowthrecordComponent }    from './booking/booking-growthrecord.component';
-import { BookingCasehistoryComponent }     from './booking/booking-casehistory.component';
 import { BookingPaymentComponent }         from './booking/booking-payment.component';
 import { PaymentPrintComponent }           from './booking/payment-print.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
-import { BookingHealthrecordComponent }    from './booking/booking-healthrecord.component';
-import { BookingHistoryComponent }         from './booking/booking-history.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
 import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { GuazhangList }                    from './user/guazhang-list.component';
-import { BookingAssistList }               from './booking/booking-assist-list.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -71,27 +63,19 @@ import { DoctorService }                   from './doctor/doctor.service';
 		PageNotFoundComponent,
 		NoPermissionsComponent,
 		UploadComponent,
-		BookingAddServiceComponent,
-		BookingAddFeeComponent,
 		DoctorPrescriptComponent,
-		BookingChargeComponent,
 		BookingFollowupsComponent,
 		BookingFollowupsListComponent,
-		BookingGrowthrecordComponent,
-		BookingCasehistoryComponent,
 		BookingPaymentComponent,
 		PaymentPrintComponent,
 		CrmRoleComponent,
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
-		BookingHealthrecordComponent,
-		BookingHistoryComponent,
 		GivefeeListComponent,
 		PaymentBookingFee,
 		Repage,
 		UpdatepwdComponent,
 		GuazhangList,
-		BookingAssistList,
 	],
 	providers: [
 		AdminService,

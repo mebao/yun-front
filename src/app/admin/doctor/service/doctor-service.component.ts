@@ -131,8 +131,8 @@ export class DoctorServiceComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(Number(f.value.fee) <= 0){
-			this.toastTab('费用应大于0', 'error');
+		if(Number(f.value.fee) < 0){
+			this.toastTab('费用应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -153,7 +153,7 @@ export class DoctorServiceComponent{
 			service_name: JSON.parse(this.serviceModel.service).serviceName,
 			clinic_id: this.adminService.getUser().clinicId,
 			user_doctor_id: this.serviceModel.doctor_id,
-			fee: f.value.fee,
+			fee: f.value.fee.toString(),
 			booking_fee: f.value.booking_fee.toString(),
 			id: this.type == 'update' ? this.doctorService_id : null,
 		}
