@@ -171,7 +171,10 @@
 				</div>
 				<div *ngIf="historyHealthR[0].bregmatic != null && historyHealthR[0].bregmatic != ''" class="flex item">
 					<label>前囟：</label>
-					<label class="flex-1">{{historyHealthR[0].bregmatic}}</label>
+					<label class="flex-1">
+						{{historyHealthR[0].bregmatic}}
+						<span *ngIf="historyHealthR[0].bregmatic != '0.00'" class="pl5">cm^2</span>
+					</label>
 				</div>
 				<div *ngIf="historyHealthR[0].ear != null && historyHealthR[0].ear != '未见明显畸形'" class="flex item">
 					<label>耳：</label>
@@ -194,7 +197,7 @@
 					<label class="flex-1">{{historyHealthR[0].eyes}}</label>
 				</div>
 				<div *ngIf="historyHealthR[0].vision != null && historyHealthR[0].vision != '未做'" class="flex item">
-					<label>视力筛查：</label>
+					<label>外眼部检查：</label>
 					<label class="flex-1">{{historyHealthR[0].vision}}</label>
 				</div>
 				<div *ngIf="historyHealthR[0].gums != null && historyHealthR[0].gums != '未见异常'" class="flex item">
@@ -361,6 +364,7 @@
 				<div (click)="changeTab('7', 'docbooking/casehistory')" class="item">病历</div>
 				<div class="item active">儿保记录</div>
 				<div (click)="changeTab('9', 'docbooking/growthChart')" class="item">成长曲线</div>
+				<div (click)="changeTab('10', 'docbooking/growthEvaluation')" class="item">成长测评</div>
 			</div>
 			<div class="tab pure-tab">
 				<div *ngIf="healthrecordList.length > 0">
@@ -500,7 +504,10 @@
 									</div>
 									<div *ngIf="healthrecord.bregmatic != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">前囟：</label>
-										<div class="flex-1">{{healthrecord.bregmatic}}</div>
+										<div class="flex-1">
+											{{healthrecord.bregmatic}}
+											<span *ngIf="historyHealthR[0].bregmatic != '0.00'" class="pl5">cm^2</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -537,7 +544,7 @@
 										<div class="flex-1">{{healthrecord.eyes}}</div>
 									</div>
 									<div *ngIf="healthrecord.vision != null" class="pure-u-24-24 bt info flex">
-										<label class="w150pp">视力筛查：</label>
+										<label class="w150pp">外眼部检查：</label>
 										<div class="flex-1">{{healthrecord.vision}}</div>
 									</div>
 								</div>
@@ -977,7 +984,7 @@
 						</div>
 						<div *ngIf="info.bregmatic != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
-								<label for="bregmatic" class="w150pp">前囟：</label>
+								<label for="bregmatic" class="w150pp">前囟（cm^2）：</label>
 								<textarea id="bregmatic" maxlength="200" rows="1" name="bregmatic" [(ngModel)]="info.bregmatic" class="auto flex-1"></textarea>
 							</div>
 						</div>
@@ -1063,7 +1070,7 @@
 						</div>
 						<div *ngIf="info.vision != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
-								<label for="vision" class="w150pp">视力筛查(收费)：</label>
+								<label for="vision" class="w150pp">外眼部检查(收费)：</label>
 		                        <div class="flex-1 flex pt10">
 									<div class="radio mr10 flex" (click)="changeRedio('未做', 'vision')" [ngClass]="{'active': info.vision == '未做'}">
 										<div class="radioTab mr10"></div>

@@ -40,10 +40,10 @@ import { DocbookingHealthrecordComponent }  from './docbooking-healthrecord.comp
             path: 'growthChart',
             loadChildren: './growth-chart/docbooking-growth-chart.module#DocbookingGrowthChartModule',
         },
-        // {
-        //     path: 'growthEvaluation',
-        //     loadChildren: './growth-evaluation/docbooking-growth-evaluation.module#DocbookingGrowthEvaluationModule',
-        // },
+        {
+            path: 'growthEvaluation',
+            loadChildren: './growth-evaluation/docbooking-growth-evaluation.module#DocbookingGrowthEvaluationModule',
+        },
     ])]
 })
 

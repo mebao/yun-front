@@ -1,5 +1,5 @@
 <header-nav></header-nav>
-<div class="content-section admin-doctor-booking">
+<div class="content-section admin-docbooking-growth-evaluation">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="pure-g left-right-tab">
 		<div class="pure-u-1-5 left-tab pr20 pure-form pure-form-stacked">
@@ -355,12 +355,87 @@
 				<!-- <div (click)="changeTab('6', 'docbooking/growthrecords')" class="item">成长记录</div> -->
 				<div (click)="changeTab('7', 'docbooking/casehistory')" class="item">病历</div>
 				<div (click)="changeTab('8', 'docbooking/healthrecord')" class="item">儿保记录</div>
-				<div class="item active">成长曲线</div>
-				<div (click)="changeTab('10', 'docbooking/growthEvaluation')" class="item">成长测评</div>
+				<div (click)="changeTab('9', 'docbooking/growthChart')" class="item">成长曲线</div>
+				<div class="item active">成长测评</div>
 			</div>
 			<div class="tab pure-tab">
-				<div echarts [options]="heightGrowth"></div>
-				<div echarts [options]="weightGrowth"></div>
+				<ng-container *ngIf="hasData && hasGrowthEvaluation">
+					<div *ngIf="!growthQst.show">
+						<ng-container *ngIf="hasEvaluationResults">
+							<div class="flex">
+								<div class="w210p growthResultTab mr20">
+									<div (click)="selectedResults(results)" *ngFor="let results of growthResult.list" class="item" [ngClass]="{'active': growthResult.selected.id == results.id}">
+										{{results.time}}
+									</div>
+								</div>
+								<div class="flex-1">
+									<div class="flex">
+										<div class="flex-1">
+											<button (click)="selectedTypeAnswer('')" class="pure-button mr20" [ngClass]="{'pure-button-primary': !growthResult.typeAnswer.type_id}">综合</button>
+											<button (click)="selectedTypeAnswer(type)" *ngFor="let type of growthResult.selected.typeAnswer" class="pure-button mr10" [ngClass]="{'pure-button-primary': growthResult.typeAnswer.type_id == type.type_id}">{{type.type_name}}</button>
+										</div>
+										<button (click)="getGrowthEvaluationQst()" class="pure-button pure-button-primary">重新测评</button>
+									</div>
+									<div echarts [options]="growthResult.echart"></div>
+									<div>测评于：{{growthResult.selected.time}}</div>
+									<!-- 综合描述 -->
+									<div *ngIf="!growthResult.typeAnswer.type_id">
+										<div class="mt10">本年龄段能力描述：</div>
+										<div class="mt10">{{growthResult.selected.sumUp}}</div>
+									</div>
+									<!-- 详情描述 -->
+									<div *ngIf="growthResult.typeAnswer.type_id">
+										<div class="mt10">{{growthResult.typeAnswer.type_name}}：</div>
+										<div class="mt10">{{growthResult.typeAnswer.outstanding_des}}</div>
+										<div *ngIf="growthResult.typeAnswer.canList && growthResult.typeAnswer.canList.length > 0">
+											<div class="first-title mt10">宝宝能做到：</div>
+											<div *ngFor="let can of growthResult.typeAnswer.canList">
+												<div class="second-title mt10">{{can.title}}</div>
+												<div *ngFor="let description of can.descriptions;" class="mt10">
+													{{description}}
+												</div>
+												<div class="mt10">{{can.game}}</div>
+											</div>
+										</div>
+										<div *ngIf="growthResult.typeAnswer.notList && growthResult.typeAnswer.notList.length > 0">
+											<div class="first-title mt10">宝宝还不能做到：</div>
+											<div *ngFor="let not of growthResult.typeAnswer.notList">
+												<div class="second-title mt10">{{not.title}}</div>
+												<div *ngFor="let description of not.descriptions;" class="mt10">
+													{{description}}
+												</div>
+												<div class="mt10">{{not.game}}</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="!hasEvaluationResults">
+							<nodata title="还未测评,请点击按钮开始测评"></nodata>
+							<div class="mt20 text-center">
+								<button (click)="getGrowthEvaluationQst()" class="pure-button pure-button-primary">开始测评</button>
+							</div>
+						</ng-container>
+					</div>
+					<!-- 开始测评 -->
+					<div *ngIf="growthQst.show" class="question-tab">
+						<div class="mb20">宝宝成长测评，共{{growthQst.total}}题。</div>
+						<div class="mb20">
+							<button (click)="lastQuestion()" class="pure-button">返回上一题</button>
+							<button (click)="closeQuestionTab()" class="pure-button button-error">关闭测评</button>
+						</div>
+						<div class="mb20">
+							{{growthQst.answerNum + '：' + growthQst.answerQestion.question}}{{growthQst.answer}}
+						</div>
+						<button (click)="nextQuestion(growthQst.answerQestion, '1')" class="pure-button hasChange" [ngClass]="{'pure-button-primary':growthQst.answer == '1' }">A 能</button>
+						<button (click)="nextQuestion(growthQst.answerQestion, '-1')" class="pure-button hasChange" [ngClass]="{'pure-button-primary':growthQst.answer == '-1' }">B 不能</button>
+						<button (click)="nextQuestion(growthQst.answerQestion, '0')" class="pure-button hasChange" [ngClass]="{'pure-button-primary':growthQst.answer == '0' }">C 不确定</button>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="hasData && !hasGrowthEvaluation">
+					<nodata title="暂无成长测评信息"></nodata>
+				</ng-container>
 			</div>
 		</div>
 	</div>
@@ -409,7 +484,7 @@
 							<th>预约科室</th>
 							<th>接诊医生</th>
 							<th>宝宝姓名</th>
-							<!-- <th>手机号码</th> -->
+							<th>手机号码</th>
 							<th>预约时间</th>
 							<th class="th-width">备注</th>
 							<th>操作</th>
@@ -420,7 +495,7 @@
 							<td>{{history.services.length > 0 ? history.services[0].serviceName : ''}}</td>
 							<td>{{history.services.length > 0 ? history.services[0].userDoctorName : ''}}</td>
 							<td>{{history.childName}}</td>
-							<!-- <td>{{history.mobile}}</td> -->
+							<td>{{history.mobile}}</td>
 							<td>
 								<span>{{history.bookingDate}}</span>
 								<span>{{history.time}}</span>
@@ -441,6 +516,20 @@
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">关闭</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal" *ngIf="questionInfo.modalQuestionTab">
+	<div class="modal-mask" (click)="closeQuestion()"></div>
+	<div class="container">
+		<div class="title">成长测评</div>
+		<div class="content pad10">
+			{{questionInfo.text}}
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeQuestion()" class="pure-button">关闭</button>
+			<button (click)="confirmQuestion()" class="pure-button pure-button-primary">{{questionInfo.okText}}</button>
 		</div>
 	</div>
 </div>

@@ -9,6 +9,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class AdminService{
 	url = config.baseHTTP;
+	yebkUrl = config.yebkHttp;
 
 	constructor(
 		private http: Http,
@@ -1222,6 +1223,42 @@ export class AdminService{
 	private checkcasehistoryUrl = this.url + '/mebcrm/checkcasehistory';
 	checkcasehistory(urlOptions, params): Promise<Data>{
 		return this.http.post(this.checkcasehistoryUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 根据嘉宝云child_id，获取育儿宝库child_id
+	private gtchildUrl = this.yebkUrl + '/mebapi/gtchild';
+	gtchild(urlOptions): Promise<Data>{
+		return this.http.get(this.gtchildUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询小孩回答结果
+	private childreviewUrl = this.yebkUrl + '/mebapi/childreview';
+	childreview(urlOptions): Promise<Data>{
+		return this.http.get(this.childreviewUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 根据小孩id查询他需要回答的问题
+	private growthquestionsUrl = this.yebkUrl + '/mebapi/growthquestions';
+	growthquestions(urlOptions): Promise<Data>{
+		return this.http.get(this.growthquestionsUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 保存成长测评结果
+	private gtanswerUrl = this.yebkUrl + '/mebapi/gtanswer';
+	gtanswer(params): Promise<Data>{
+		return this.http.post(this.gtanswerUrl, JSON.stringify(params))
 			.toPromise()
 			.then(response => response.json() as Data)
 			.catch();

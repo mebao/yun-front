@@ -1,0 +1,28 @@
+.admin-docbooking-growth-evaluation{
+    .question-tab{
+        .hasChange:active{
+            background-color: #0078e7;
+            color: #fff;
+        }
+    }
+    .growthResultTab{
+        border: 1px solid #efefef;
+        height: 500px;
+        overflow-y: auto;
+        .item{
+            border-bottom: 1px solid #efefef;
+            padding: 10px;
+            cursor: pointer;
+            &.active{
+                background-color: #173267;
+                color: #fff;
+            }
+        }
+    }
+    .first-title{
+        font-weight: 600;
+    }
+    .second-title{
+        color: #EE7E91;
+    }
+}
