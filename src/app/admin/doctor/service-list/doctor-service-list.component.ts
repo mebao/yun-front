@@ -1,9 +1,9 @@
 import { Component, OnInit }                    from '@angular/core';
 import { Router, ActivatedRoute }               from '@angular/router';
 
-import { AdminService }                         from '../admin.service';
-import { ToastService }                         from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }               from '../../common/nll-toast/toast-model';
+import { AdminService }                         from '../../admin.service';
+import { ToastService }                         from '../../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }               from '../../../common/nll-toast/toast-model';
 
 @Component({
 	selector:'app-doctor-service-list',

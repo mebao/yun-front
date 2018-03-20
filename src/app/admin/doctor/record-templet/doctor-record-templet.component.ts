@@ -1,8 +1,8 @@
 import { Component }                         from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
 
-import { AdminService }                      from '../admin.service';
-import { DoctorService }                     from './doctor.service';
+import { AdminService }                      from '../../admin.service';
+import { DoctorService }                     from './../doctor.service';
 
 @Component({
     selector: 'doctor-record-templet',

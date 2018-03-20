@@ -3,13 +3,6 @@ import { RouterModule }                          from '@angular/router';
 
 import { AuthGuardRole }                         from '../auth-guard-role.service';
 
-import { DoctorServiceListComponent }            from './doctor-service-list.component';
-import { DoctorServiceComponent }                from './doctor-service.component';
-import { DoctorRecordTempletListComponent }      from './doctor-record-templet-list.component';
-import { DoctorRecordTempletComponent }          from './doctor-record-templet.component';
-import { DoctorCaseTempletListComponent }        from './doctor-case-templet-list.component';
-import { DoctorCaseTempletComponent }            from './doctor-case-templet.component';
-
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -18,13 +11,11 @@ import { DoctorCaseTempletComponent }            from './doctor-case-templet.com
         },
         {
             path: 'serviceList',
-            canActivate: [AuthGuardRole],
-            component: DoctorServiceListComponent,
+            loadChildren: './service-list/doctor-service-list.module#DoctorServiceListModule',
         },
         {
             path: 'service',
-            canActivate: [AuthGuardRole],
-            component: DoctorServiceComponent,
+            loadChildren: './service/doctor-service.module#DoctorServiceModule',
         },
         {
             path: 'info',
@@ -32,23 +23,21 @@ import { DoctorCaseTempletComponent }            from './doctor-case-templet.com
         },
         {
             path: 'recordTemplet',
-            canActivate: [AuthGuardRole],
-            component: DoctorRecordTempletComponent,
+            loadChildren: './record-templet/doctor-record-templet.module#DoctorRecordTempletModule',
         },
         {
             path: 'recordTempletList',
-            canActivate: [AuthGuardRole],
-            component: DoctorRecordTempletListComponent,
+            loadChildren: './record-templet-list/doctor-record-templet-list.module#DoctorRecordTempletListModule',
         },
         {
             path: 'caseTemplet',
             //canActivate: [AuthGuardRole],
-            component: DoctorCaseTempletComponent,
+            loadChildren: './case-templet/doctor-case-templet.module#DoctorCaseTempletModule',
         },
         {
             path: 'caseTempletList',
             //canActivate: [AuthGuardRole],
-            component: DoctorCaseTempletListComponent,
+            loadChildren: './case-templet-list/doctor-case-templet-list.module#DoctorCaseTempletListModule',
         },
     ])]
 })
