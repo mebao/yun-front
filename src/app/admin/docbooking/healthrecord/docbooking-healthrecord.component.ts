@@ -1,15 +1,15 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
-import { AdminService }                       from '../admin.service';
-import { DoctorService }                      from '../doctor/doctor.service';
+import { AdminService }                       from '../../admin.service';
+import { DoctorService }                      from '../../doctor/doctor.service';
 
-import { UploadService }                      from '../../common/nll-upload/upload.service';
+import { UploadService }                      from '../../../common/nll-upload/upload.service';
 
 @Component({
 	selector: 'admin-doctor-booking-healthrecord',
 	templateUrl: './docbooking-healthrecord.component.html',
-	styleUrls: ['./docbooking-casehistory.component.scss'],
+	styleUrls: ['../casehistory/docbooking-casehistory.component.scss'],
 })
 export class DocbookingHealthrecordComponent implements OnInit{
 	topBar: {

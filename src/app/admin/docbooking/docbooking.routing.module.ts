@@ -5,9 +5,6 @@ import { AuthGuardRole }                    from '../auth-guard-role.service';
 
 import { DocbookingVisitComponent }         from './docbooking-visit.component';
 import { DocbookingComponent }              from './docbooking.component';
-import { DocbookingCasehistoryComponent }   from './docbooking-casehistory.component';
-import { DocbookingGrowthrecordsComponent } from './docbooking-growthrecords.component';
-import { DocbookingHealthrecordComponent }  from './docbooking-healthrecord.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -23,18 +20,15 @@ import { DocbookingHealthrecordComponent }  from './docbooking-healthrecord.comp
         },
         {
             path: 'growthrecords',
-            canActivate: [AuthGuardRole],
-            component: DocbookingGrowthrecordsComponent,
+            loadChildren: './growthrecords/docbooking-growthrecords.module#DocbookingGrowthrecordsModule',
         },
         {
             path: 'casehistory',
-            canActivate: [AuthGuardRole],
-            component: DocbookingCasehistoryComponent,
+            loadChildren: './casehistory/docbooking-casehistory.module#DocbookingCasehistoryModule',
         },
         {
             path: 'healthrecord',
-            canActivate: [AuthGuardRole],
-            component: DocbookingHealthrecordComponent,
+            loadChildren: './healthrecord/docbooking-healthrecord.module#DocbookingHealthrecordModule',
         },
         {
             path: 'growthChart',

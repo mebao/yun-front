@@ -9,7 +9,7 @@ import { UploadService }                      from '../../../common/nll-upload/u
 @Component({
 	selector: 'admin-docbooking-growth-chart',
 	templateUrl: './docbooking-growth-chart.html',
-	styleUrls: ['../docbooking-casehistory.component.scss'],
+	styleUrls: ['../casehistory/docbooking-casehistory.component.scss'],
 })
 export class DocbookingGrowthChart implements OnInit{
 	topBar: {

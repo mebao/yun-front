@@ -12,24 +12,15 @@ import { DocbookingRoutingModule }          from './docbooking.routing.module';
 
 import { DocbookingVisitComponent }         from './docbooking-visit.component';
 import { DocbookingComponent }              from './docbooking.component';
-import { DocbookingCasehistoryComponent }   from './docbooking-casehistory.component';
-import { DocbookingGrowthrecordsComponent } from './docbooking-growthrecords.component';
-import { DocbookingHealthrecordComponent }  from './docbooking-healthrecord.component';
 
 @NgModule({
     declarations: [
         DocbookingVisitComponent,
         DocbookingComponent,
-        DocbookingCasehistoryComponent,
-        DocbookingGrowthrecordsComponent,
-        DocbookingHealthrecordComponent,
     ],
     exports: [
         DocbookingVisitComponent,
         DocbookingComponent,
-        DocbookingCasehistoryComponent,
-        DocbookingGrowthrecordsComponent,
-        DocbookingHealthrecordComponent,
     ],
     imports: [
         CommonModule,

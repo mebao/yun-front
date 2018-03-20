@@ -1,10 +1,10 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
-import { AdminService }                       from '../admin.service';
-import { DoctorService }                      from '../doctor/doctor.service';
+import { AdminService }                       from '../../admin.service';
+import { DoctorService }                      from '../../doctor/doctor.service';
 
-import { UploadService }                      from '../../common/nll-upload/upload.service';
+import { UploadService }                      from '../../../common/nll-upload/upload.service';
 
 @Component({
 	selector: 'admin-doctor-booking-casehistory',
