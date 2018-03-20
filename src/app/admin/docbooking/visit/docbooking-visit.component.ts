@@ -1,11 +1,11 @@
 import { Component }                         from '@angular/core';
-
-import { DoctorService }                     from '../doctor/doctor.service';
-import { AdminService }                      from '../admin.service';
 import { Router }                            from '@angular/router';
 
-import { ToastService }                      from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }            from '../../common/nll-toast/toast-model';
+import { DoctorService }                     from '../../doctor/doctor.service';
+import { AdminService }                      from '../../admin.service';
+
+import { ToastService }                      from '../../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }            from '../../../common/nll-toast/toast-model';
 
 @Component({
     selector: 'admin-doctor-visit',

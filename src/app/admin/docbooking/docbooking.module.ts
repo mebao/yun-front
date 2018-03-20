@@ -10,16 +10,13 @@ import { AngCommonModule }                  from '../../common/ang-common.module
 
 import { DocbookingRoutingModule }          from './docbooking.routing.module';
 
-import { DocbookingVisitComponent }         from './docbooking-visit.component';
 import { DocbookingComponent }              from './docbooking.component';
 
 @NgModule({
     declarations: [
-        DocbookingVisitComponent,
         DocbookingComponent,
     ],
     exports: [
-        DocbookingVisitComponent,
         DocbookingComponent,
     ],
     imports: [
