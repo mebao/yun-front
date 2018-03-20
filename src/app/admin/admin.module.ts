@@ -26,18 +26,12 @@ import {SelectivePreloadingStrategy}       from '../selective-preloading-strateg
 import { HomeComponent }                   from './home/home.component';
 import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
-import { BookingConfirmComponent }         from './booking/booking-confirm.component';
 import { UploadComponent }                 from './user/upload.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
-import { BookingFollowupsComponent }       from './booking/booking-followups.component';
-import { BookingFollowupsListComponent }   from './booking/booking-followups-list.component';
-import { BookingPaymentComponent }         from './booking/booking-payment.component';
-import { PaymentPrintComponent }           from './booking/payment-print.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 import { GivefeeListComponent }            from './user/givefee-list.component';
-import { PaymentBookingFee }               from './booking/payment-booking-fee';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { GuazhangList }                    from './user/guazhang-list.component';
@@ -59,20 +53,14 @@ import { DoctorService }                   from './doctor/doctor.service';
 		HomeComponent,
 		CreateUserComponent,
 		BookingComponent,
-		BookingConfirmComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
 		UploadComponent,
 		DoctorPrescriptComponent,
-		BookingFollowupsComponent,
-		BookingFollowupsListComponent,
-		BookingPaymentComponent,
-		PaymentPrintComponent,
 		CrmRoleComponent,
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
 		GivefeeListComponent,
-		PaymentBookingFee,
 		Repage,
 		UpdatepwdComponent,
 		GuazhangList,

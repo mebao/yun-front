@@ -2,7 +2,7 @@ import { Component }                     from '@angular/core';
 import { ActivatedRoute, Router }        from '@angular/router';
 import { Location }                      from '@angular/common';
 
-import { AdminService }                  from '../admin.service';
+import { AdminService }                  from '../../admin.service';
 //<reference path="../../common/goeasy/goeasy.d.ts">
 
 @Component({

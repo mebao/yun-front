@@ -10,20 +10,14 @@ import { SelectivePreloadingStrategy }      from '../selective-preloading-strate
 import { HomeComponent }                    from './home/home.component';
 import { CreateUserComponent }              from './user/create-user.component';
 import { BookingComponent }                 from './booking/booking.component';
-import { BookingConfirmComponent }          from './booking/booking-confirm.component';
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
 import { NoPermissionsComponent }             from '../error/no-permissions.component';
 import { UploadComponent }                  from './user/upload.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
-import { BookingFollowupsComponent }        from './booking/booking-followups.component';
-import { BookingFollowupsListComponent }    from './booking/booking-followups-list.component';
-import { BookingPaymentComponent }          from './booking/booking-payment.component';
-import { PaymentPrintComponent }            from './booking/payment-print.component';
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 import { GivefeeListComponent }             from './user/givefee-list.component';
-import { PaymentBookingFee }                from './booking/payment-booking-fee';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { GuazhangList }                     from './user/guazhang-list.component';
@@ -247,8 +241,27 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'bookingConfirm',
-						canActivate: [AuthGuardRole],
-						component: BookingConfirmComponent
+						loadChildren: './booking/confirm/booking-confirm.module#BookingConfirmModule',
+					},
+					{
+						path: 'bookingFollowups',
+						loadChildren: './booking/followups/booking-followups.module#BookingFollowupsModule',
+					},
+					{
+						path: 'bookingFollowupsList',
+						loadChildren: './booking/followups-list/booking-followups-list.module#BookingFollowupsListModule',
+					},
+					{
+						path: 'bookingPayment',
+						loadChildren: './booking/payment/booking-payment.module#BookingPaymentModule',
+					},
+					{
+						path: 'paymentBookingFee',
+						loadChildren: './booking/payment-booking-fee/payment-booking-fee.module#PaymentBookingFeeModule',
+					},
+					{
+						path: 'paymentPrint',
+						loadChildren: './booking/payment-print/payment-print.module#PaymentPrintModule',
 					},
 					{
 						path: 'upload',
@@ -264,26 +277,6 @@ const adminRoutes: Routes = [
 						path: 'noPermissions',
 						canActivate: [AuthGuardRole],
 						component: NoPermissionsComponent
-					},
-					{
-						path: 'bookingFollowups',
-						canActivate: [AuthGuardRole],
-						component: BookingFollowupsComponent,
-					},
-					{
-						path: 'bookingFollowupsList',
-						canActivate: [AuthGuardRole],
-						component: BookingFollowupsListComponent,
-					},
-					{
-						path: 'bookingPayment',
-						canActivate: [AuthGuardRole],
-						component: BookingPaymentComponent,
-					},
-					{
-						path: 'paymentPrint',
-						canActivate: [AuthGuardRole],
-						component: PaymentPrintComponent,
 					},
 					{
 						path: 'crmRole',
@@ -304,11 +297,6 @@ const adminRoutes: Routes = [
 						path: 'givefeeList',
 						canActivate: [AuthGuardRole],
 						component: GivefeeListComponent,
-					},
-					{
-						path: 'paymentBookingFee',
-						canActivate: [AuthGuardRole],
-						component: PaymentBookingFee,
 					},
 					{
 						path: 'guazhangList',
