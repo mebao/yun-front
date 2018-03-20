@@ -547,6 +547,7 @@ export class DocbookingGrowthEvaluation implements OnInit{
 			}else{
 				var resultsChildreview = JSON.parse(JSON.stringify(dataChildreview.results));
 				if(resultsChildreview.length == 0){
+					this.hasData = true;
 					this.hasEvaluationResults = false;
 				}else{
 					this.growthResult.list = resultsChildreview;
