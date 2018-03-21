@@ -289,7 +289,6 @@ export class DocbookingVisitComponent{
 
     // 完善信息
     addInfo(child) {
-        console.log(child);
         this.childInfo = {
             child_id: child.childId,
             height: child.height,
