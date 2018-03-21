@@ -50,7 +50,7 @@ export class HeaderNavComponent {
 		this.loadingShow = false;
 		this.messageTabType = '';
 		this.getPayMessage('');
-		// this.getPushPayMessage();
+		this.getPushPayMessage();
 
 		this.modalTabMessage = false;
 		// 那段角色，是超级管理员0还是普通角色
@@ -156,13 +156,14 @@ export class HeaderNavComponent {
 		let that = this;
 		// 接受授权推送
 		var goEasy = new GoEasy({
-			appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
+			// appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
+			appkey: 'BS-d413e9f485094b26b4158b18655dfca4'
 		});
 
 		// 开启通道前，先关闭通道
-		goEasy.unsubscribe({
-			channel: config.message_tran,
-		});
+		// goEasy.unsubscribe({
+		// 	channel: config.message_tran,
+		// });
 
 		goEasy.subscribe({
 			channel: config.message_tran,

@@ -1092,7 +1092,7 @@ export class AuthGuardRole implements CanActivate{
 				//根据一级权限筛选路由
 				//没有该模块权限，重定向到无权限页面
 				if(authority.firstKey == ''){
-					this.router.navigate(['./admin/noPermissions'], {queryParams: {layout: 'all'}});
+					this.router.navigate(['./admin/noPermissions']);
 					return false;
 				}else{
 					sessionStorage.setItem('userClinicRolesInfos', JSON.stringify(authority));

@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 			<div class="container flex">
 				<left-nav></left-nav>
 				<div class="right-content flex-1">
+					<header-nav></header-nav>
 					<router-outlet></router-outlet>
 				</div>
 			</div>
