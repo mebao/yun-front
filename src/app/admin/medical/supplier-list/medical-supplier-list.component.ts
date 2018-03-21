@@ -1,13 +1,13 @@
-import { Component, OnInit }                   from '@angular/core';
-import { Router }                              from '@angular/router';
+import { Component, OnInit }                      from '@angular/core';
+import { Router, ActivatedRoute }                 from '@angular/router';
 
-import { AdminService }                        from '../admin.service';
+import { AdminService }                           from '../../admin.service';
 
 @Component({
-	selector: 'app-medicalsupplies-list',
-	templateUrl: './medical-list.component.html',
+	selector: 'app-medical-supplier-list',
+	templateUrl: './medical-supplier-list.component.html',
 })
-export class MedicalListComponent{
+export class MedicalSupplierListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -21,18 +21,14 @@ export class MedicalListComponent{
 	moduleAuthority: {
 		see: boolean,
 		edit: boolean,
-		seePut: boolean,
-		seeHas: boolean,
-		seeLost: boolean,
-		seeCheck: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
 	url: string;
-	medicalSupplies: any[];
+	list: any[];
 	info: {
 		name: string,
-		type: string,
+		company: string,
 	}
 
 	constructor(
@@ -42,7 +38,7 @@ export class MedicalListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '药房管理',
+			title: '供应商管理',
 			back: false,
 		}
 		this.toast = {
@@ -51,13 +47,10 @@ export class MedicalListComponent{
 			type: '',
 		}
 
+		// 权限
 		this.moduleAuthority = {
 			see: false,
 			edit: false,
-			seePut: false,
-			seeHas: false,
-			seeLost: false,
-			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -76,31 +69,31 @@ export class MedicalListComponent{
 
 		this.hasData = false;
 
-		if(JSON.parse(sessionStorage.getItem('search-medicalList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-medicalList'));
+		if(JSON.parse(sessionStorage.getItem('search-supplierList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-supplierList'));
 		}else{
 			this.info = {
 				name: '',
-				type: '1,2',
+				company: '',
 			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.medicalSupplies = [];
+		this.list = [];
 
 		this.search();
 	}
 
 	getData(urlOptions) {
-		this.adminService.medicalsupplieslist(urlOptions).then((data) => {
+		this.adminService.supplierlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.medicalSupplies = results.medicalSupplies;
+				this.list = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
@@ -108,30 +101,27 @@ export class MedicalListComponent{
 	}
 
 	search() {
-		sessionStorage.setItem('search-medicalList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-supplierList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;
 		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
+		if(this.info.company != ''){
+			urlOptions += '&company=' + this.info.company;
 		}
 		this.getData(urlOptions);
 	}
 
 	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList')
-		sessionStorage.removeItem('search-medicalPurchaseList');
-		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/medical/index']);
+		this.router.navigate(['./admin/medical/supplier']);
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/medical/index'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/supplier'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

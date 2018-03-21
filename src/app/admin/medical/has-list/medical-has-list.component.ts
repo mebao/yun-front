@@ -1,14 +1,14 @@
-import { Component, OnInit }                      from '@angular/core';
-import { Router }                                 from '@angular/router';
+import { Component, OnInit }                     from '@angular/core';
+import { Router }                                from '@angular/router';
 
-import { AdminService }                           from '../admin.service';
+import { AdminService }                          from '../../admin.service';
+import { config }                                from '../../../config';
 
 @Component({
-	selector: 'app-medical-lost-list',
-	templateUrl: './medical-lost-list.component.html',
-	styleUrls: ['./medical-lost-list.component.scss'],
+	selector: 'app-medical-has-list',
+	templateUrl: './medical-has-list.component.html',
 })
-export class MedicalLostListComponent{
+export class MedicalHasListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -23,8 +23,8 @@ export class MedicalLostListComponent{
 		see: boolean,
 		seePut: boolean,
 		seeHas: boolean,
+		editHas: boolean,
 		seeLost: boolean,
-		editLost: boolean,
 		seeCheck: boolean,
 	}
 	loadingShow: boolean;
@@ -32,11 +32,10 @@ export class MedicalLostListComponent{
 	list: any[];
 	url: string;
 	info: {
-		b_date: string,
-		b_date_num: number,
-		l_date: string,
-		l_date_num: number,
+		name: string,
 		type: string,
+		l_stock: string,
+		b_stock: string,
 	}
 
 	constructor(
@@ -59,8 +58,8 @@ export class MedicalLostListComponent{
 			see: false,
 			seePut: false,
 			seeHas: false,
+			editHas: false,
 			seeLost: false,
-			editLost: false,
 			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
@@ -81,12 +80,16 @@ export class MedicalLostListComponent{
 		this.hasData = false;
 
 		this.list = [];
-		this.info = {
-			b_date: '',
-			b_date_num: 0,
-			l_date: '',
-			l_date_num: 0,
-			type: '1,2',
+
+		if(JSON.parse(sessionStorage.getItem('search-medicalHasList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-medicalHasList'));
+		}else{
+			this.info = {
+				name: '',
+				type: '1,2',
+				l_stock: '',
+				b_stock: '',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -94,11 +97,10 @@ export class MedicalLostListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.search();
-
 	}
 
 	getData(urlOptions) {
-		this.adminService.searchmslost(urlOptions).then((data) => {
+		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
@@ -106,7 +108,11 @@ export class MedicalLostListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].infoLength = results.list[i].info.length;
+						if(results.list[i].others.length){
+							for(var j = 0; j < results.list[i].others.length; j++){
+								results.list[i].others[j].expiringDate = results.list[i].others[j].expiringDate ? this.adminService.dateFormat(results.list[i].others[j].expiringDate) : '';
+							}
+						}
 					}
 				}
 				this.list = results.list;
@@ -117,23 +123,39 @@ export class MedicalLostListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-medicalHasList', JSON.stringify(this.info));
 		var urlOptions = this.url;
-		if(this.info.b_date != ''){
-			urlOptions += '&b_date=' + this.info.b_date;
-		}
-		if(this.info.l_date != ''){
-			urlOptions += '&l_date=' + this.info.l_date;
+		if(this.info.name != ''){
+			urlOptions += '&name=' + this.info.name;
 		}
 		if(this.info.type != ''){
 			urlOptions += '&type=' + this.info.type;
 		}
+		if(this.info.l_stock && this.info.l_stock != ''){
+			urlOptions += '&l_stock=' + this.info.l_stock;
+		}
+		if(this.info.b_stock && this.info.b_stock != ''){
+			urlOptions += '&b_stock=' + this.info.b_stock;
+		}
 		this.getData(urlOptions);
 	}
 
-	// 选择日期
-	changeDate(_value, key) {
-		this.info[key] = JSON.parse(_value).value;
-		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+	export() {
+		var urlOptions=this.url;
+		urlOptions += '&stockType=1';
+		if(this.info.name != ''){
+			urlOptions += '&name=' + this.info.name;
+		}
+		if(this.info.type != ''){
+			urlOptions += '&type=' + this.info.type;
+		}
+		if(this.info.l_stock && this.info.l_stock != ''){
+			urlOptions += '&l_stock=' + this.info.l_stock;
+		}
+		if(this.info.b_stock && this.info.b_stock != ''){
+			urlOptions += '&b_stock=' + this.info.b_stock;
+		}
+		window.location.href = config.baseHTTP + '/mebcrm/stockexport'+ urlOptions;
 	}
 
 	goUrl(_url) {
@@ -141,6 +163,10 @@ export class MedicalLostListComponent{
 		sessionStorage.removeItem('search-medicalPurchaseList');
 		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
+	}
+
+	update(_id) {
+		this.router.navigate(['./admin/medical/has'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

@@ -6,7 +6,7 @@ import { AdminService }                      from '../admin.service';
 @Component({
 	selector: 'admin-material-check',
 	templateUrl: './material-check.component.html',
-	styleUrls: ['../medical/medical-check.component.scss'],
+	styleUrls: ['../medical/check/medical-check.component.scss'],
 })
 export class MaterialCheckComponent{
 	topBar: {

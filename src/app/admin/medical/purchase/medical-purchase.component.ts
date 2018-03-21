@@ -1,7 +1,7 @@
 import { Component, OnInit }                     from '@angular/core';
 import { Router, ActivatedRoute }                from '@angular/router';
 
-import { AdminService }                          from '../admin.service';
+import { AdminService }                          from '../../admin.service';
 
 @Component({
 	selector: 'app-medical-purchase',

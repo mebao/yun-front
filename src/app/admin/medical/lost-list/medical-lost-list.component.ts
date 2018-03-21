@@ -1,13 +1,14 @@
 import { Component, OnInit }                      from '@angular/core';
-import { Router, ActivatedRoute }                 from '@angular/router';
+import { Router }                                 from '@angular/router';
 
-import { AdminService }                           from '../admin.service';
+import { AdminService }                           from '../../admin.service';
 
 @Component({
-	selector: 'app-medical-supplier-list',
-	templateUrl: './medical-supplier-list.component.html',
+	selector: 'app-medical-lost-list',
+	templateUrl: './medical-lost-list.component.html',
+	styleUrls: ['./medical-lost-list.component.scss'],
 })
-export class MedicalSupplierListComponent{
+export class MedicalLostListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -20,15 +21,22 @@ export class MedicalSupplierListComponent{
 	// 权限
 	moduleAuthority: {
 		see: boolean,
-		edit: boolean,
+		seePut: boolean,
+		seeHas: boolean,
+		seeLost: boolean,
+		editLost: boolean,
+		seeCheck: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
-	url: string;
 	list: any[];
+	url: string;
 	info: {
-		name: string,
-		company: string,
+		b_date: string,
+		b_date_num: number,
+		l_date: string,
+		l_date_num: number,
+		type: string,
 	}
 
 	constructor(
@@ -38,8 +46,8 @@ export class MedicalSupplierListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '供应商管理',
-			back: false,
+			title: '药房管理',
+			back: true,
 		}
 		this.toast = {
 			show: 0,
@@ -47,10 +55,13 @@ export class MedicalSupplierListComponent{
 			type: '',
 		}
 
-		// 权限
 		this.moduleAuthority = {
 			see: false,
-			edit: false,
+			seePut: false,
+			seeHas: false,
+			seeLost: false,
+			editLost: false,
+			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -69,30 +80,35 @@ export class MedicalSupplierListComponent{
 
 		this.hasData = false;
 
-		if(JSON.parse(sessionStorage.getItem('search-supplierList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-supplierList'));
-		}else{
-			this.info = {
-				name: '',
-				company: '',
-			}
+		this.list = [];
+		this.info = {
+			b_date: '',
+			b_date_num: 0,
+			l_date: '',
+			l_date_num: 0,
+			type: '1,2',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.list = [];
 
 		this.search();
+
 	}
 
 	getData(urlOptions) {
-		this.adminService.supplierlist(urlOptions).then((data) => {
+		this.adminService.searchmslost(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].infoLength = results.list[i].info.length;
+					}
+				}
 				this.list = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
@@ -101,27 +117,30 @@ export class MedicalSupplierListComponent{
 	}
 
 	search() {
-		sessionStorage.setItem('search-supplierList', JSON.stringify(this.info));
 		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.info.b_date != ''){
+			urlOptions += '&b_date=' + this.info.b_date;
 		}
-		if(this.info.company != ''){
-			urlOptions += '&company=' + this.info.company;
+		if(this.info.l_date != ''){
+			urlOptions += '&l_date=' + this.info.l_date;
+		}
+		if(this.info.type != ''){
+			urlOptions += '&type=' + this.info.type;
 		}
 		this.getData(urlOptions);
 	}
 
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
+		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+	}
+
 	goUrl(_url) {
+		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalPurchaseList');
+		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
-	}
-
-	goCreate() {
-		this.router.navigate(['./admin/medical/supplier']);
-	}
-
-	update(_id) {
-		this.router.navigate(['./admin/medical/supplier'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

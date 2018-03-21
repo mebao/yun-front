@@ -3,81 +3,57 @@ import { RouterModule }                           from '@angular/router';
 
 import { AuthGuardRole }                          from '../auth-guard-role.service';
 
-import { MedicalCheckListComponent }              from './medical-check-list.component';
-import { MedicalCheckComponent }                  from './medical-check.component';
-import { MedicalHasListComponent }                from './medical-has-list.component';
-import { MedicalHasComponent }                    from './medical-has.component';
-import { MedicalListComponent }                   from './medical-list.component';
-import { MedicalLostListComponent }               from './medical-lost-list.component';
-import { MedicalLostComponent }                   from './medical-lost.component';
-import { MedicalPurchaseInfoComponent }           from './medical-purchase-info.component';
-import { MedicalPurchaseListComponent }           from './medical-purchase-list.component';
-import { MedicalPurchaseComponent }               from './medical-purchase.component';
-import { MedicalSupplierListComponent }           from './medical-supplier-list.component';
-import { MedicalSupplierComponent }               from './medical-supplier.component';
 import { MedicalComponent }                       from './medical.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: 'checkList',
-            canActivate: [AuthGuardRole],
-            component: MedicalCheckListComponent,
+            loadChildren: './check-list/medical-check-list.module#MedicalCheckListModule',
         },
         {
             path: 'check',
-            canActivate: [AuthGuardRole],
-            component: MedicalCheckComponent,
+            loadChildren: './check/medical-check.module#MedicalCheckModule',
         },
         {
             path: 'hasList',
-            canActivate: [AuthGuardRole],
-            component: MedicalHasListComponent,
+            loadChildren: './has-list/medical-has-list.module#MedicalHasListModule',
         },
         {
             path: 'has',
-            canActivate: [AuthGuardRole],
-            component: MedicalHasComponent,
+            loadChildren: './has/medical-has.module#MedicalHasModule',
         },
         {
             path: 'list',
-            canActivate: [AuthGuardRole],
-            component: MedicalListComponent,
+            loadChildren: './list/medical-list.module#MedicalListModule',
         },
         {
             path: 'lostList',
-            canActivate: [AuthGuardRole],
-            component: MedicalLostListComponent,
+            loadChildren: './lost-list/medical-lost-list.module#MedicalLostListModule',
         },
         {
             path: 'lost',
-            canActivate: [AuthGuardRole],
-            component: MedicalLostComponent,
+            loadChildren: './lost/medical-lost.module#MedicalLostModule',
         },
         {
             path: 'purchaseInfo',
-            canActivate: [AuthGuardRole],
-            component: MedicalPurchaseInfoComponent,
+            loadChildren: './purchase-info/medical-purchase-info.module#MedicalPurchaseInfoModule',
         },
         {
             path: 'purchaseList',
-            canActivate: [AuthGuardRole],
-            component: MedicalPurchaseListComponent,
+            loadChildren: './purchase-list/medical-purchase-list.module#MedicalPurchaseListModule',
         },
         {
             path: 'purchase',
-            canActivate: [AuthGuardRole],
-            component: MedicalPurchaseComponent,
+            loadChildren: './purchase/medical-purchase.module#MedicalPurchaseModule',
         },
         {
             path: 'supplierList',
-            canActivate: [AuthGuardRole],
-            component: MedicalSupplierListComponent,
+            loadChildren: './supplier-list/medical-supplier-list.module#MedicalSupplierListModule',
         },
         {
             path: 'supplier',
-            canActivate: [AuthGuardRole],
-            component: MedicalSupplierComponent,
+            loadChildren: './supplier/medical-supplier.module#MedicalSupplierModule',
         },
         {
             path: 'index',
