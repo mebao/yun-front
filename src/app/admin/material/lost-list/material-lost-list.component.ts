@@ -1,14 +1,14 @@
-import { Component, OnInit }                     from '@angular/core';
-import { Router }                                from '@angular/router';
+import { Component, OnInit }                      from '@angular/core';
+import { Router }                                 from '@angular/router';
 
-import { AdminService }                          from '../admin.service';
-import { config }                                 from '../../config';
+import { AdminService }                           from '../../admin.service';
 
 @Component({
-	selector: 'app-material-has-list',
-	templateUrl: './material-has-list.component.html',
+	selector: 'app-material-lost-list',
+	templateUrl: './material-lost-list.component.html',
+	styleUrls: ['./material-lost-list.component.scss'],
 })
-export class MaterialHasListComponent{
+export class MaterialLostListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -23,8 +23,8 @@ export class MaterialHasListComponent{
 		see: boolean,
 		seePut: boolean,
 		seeHas: boolean,
-		editHas: boolean,
 		seeLost: boolean,
+		editLost: boolean,
 		seeCheck: boolean,
 	}
 	loadingShow: boolean;
@@ -32,10 +32,11 @@ export class MaterialHasListComponent{
 	list: any[];
 	url: string;
 	info: {
-		name: string,
+		b_date: string,
+		b_date_num: number,
+		l_date: string,
+		l_date_num: number,
 		type: string,
-		l_stock: string,
-		b_stock: string,
 	}
 
 	constructor(
@@ -58,8 +59,8 @@ export class MaterialHasListComponent{
 			see: false,
 			seePut: false,
 			seeHas: false,
-			editHas: false,
 			seeLost: false,
+			editLost: false,
 			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
@@ -80,16 +81,12 @@ export class MaterialHasListComponent{
 		this.hasData = false;
 
 		this.list = [];
-
-		if(JSON.parse(sessionStorage.getItem('search-materialHasList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-materialHasList'));
-		}else{
-			this.info = {
-				name: '',
-				type: '3,4',
-				l_stock: '',
-				b_stock: '',
-			}
+		this.info = {
+			b_date: '',
+			b_date_num: 0,
+			l_date: '',
+			l_date_num: 0,
+			type: '3,4',
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -97,10 +94,11 @@ export class MaterialHasListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.search();
+
 	}
 
 	getData(urlOptions) {
-		this.adminService.searchsupplies(urlOptions).then((data) => {
+		this.adminService.searchmslost(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
@@ -108,11 +106,7 @@ export class MaterialHasListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						if(results.list[i].others.length){
-							for(var j = 0; j < results.list[i].others.length; j++){
-								results.list[i].others[j].expiringDate = results.list[i].others[j].expiringDate ? this.adminService.dateFormat(results.list[i].others[j].expiringDate) : '';
-							}
-						}
+						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
 				this.list = results.list;
@@ -123,39 +117,23 @@ export class MaterialHasListComponent{
 	}
 
 	search() {
-		sessionStorage.setItem('search-materialHasList', JSON.stringify(this.info));
 		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.info.b_date != ''){
+			urlOptions += '&b_date=' + this.info.b_date;
+		}
+		if(this.info.l_date != ''){
+			urlOptions += '&l_date=' + this.info.l_date;
 		}
 		if(this.info.type != ''){
 			urlOptions += '&type=' + this.info.type;
-		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
-		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
 		}
 		this.getData(urlOptions);
 	}
 
-	export() {
-		var urlOptions=this.url;
-		urlOptions += '&stockType=2';
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
-		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
-		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
-		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
-		}
-		window.location.href = config.baseHTTP + '/mebcrm/stockexport'+ urlOptions;
+	// 选择日期
+	changeDate(_value, key) {
+		this.info[key] = JSON.parse(_value).value;
+		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	goUrl(_url) {
@@ -163,10 +141,6 @@ export class MaterialHasListComponent{
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialHasList');
 		this.router.navigate([_url]);
-	}
-
-	update(_id) {
-		this.router.navigate(['./admin/material/has'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

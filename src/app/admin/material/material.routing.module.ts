@@ -3,69 +3,49 @@ import { RouterModule }                   from '@angular/router';
 
 import { AuthGuardRole }                  from '../auth-guard-role.service';
 
-import { MaterialCheckListComponent }     from './material-check-list.component';
-import { MaterialCheckComponent }         from './material-check.component';
-import { MaterialHasListComponent }       from './material-has-list.component';
-import { MaterialHasComponent }           from './material-has.component';
-import { MaterialListComponent }          from './material-list.component';
-import { MaterialLostListComponent }      from './material-lost-list.component';
-import { MaterialLostComponent }          from './material-lost.component';
-import { MaterialPurchaseInfoComponent }  from './material-purchase-info.component';
-import { MaterialPurchaseListComponent }  from './material-purchase-list.component';
-import { MaterialPurchaseComponent }      from './material-purchase.component';
 import { MaterialComponent }              from './material.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: 'checkList',
-            canActivate: [AuthGuardRole],
-            component: MaterialCheckListComponent,
+            loadChildren: './check-list/material-check-list.module#MaterialCheckListModule',
         },
         {
             path: 'check',
-            canActivate: [AuthGuardRole],
-            component: MaterialCheckComponent,
+            loadChildren: './check/material-check.module#MaterialCheckModule',
         },
         {
             path: 'hasList',
-            canActivate: [AuthGuardRole],
-            component: MaterialHasListComponent,
+            loadChildren: './has-list/material-has-list.module#MaterialHasListModule',
         },
         {
             path: 'has',
-            canActivate: [AuthGuardRole],
-            component: MaterialHasComponent,
+            loadChildren: './has/material-has.module#MaterialHasModule',
         },
         {
             path: 'list',
-            canActivate: [AuthGuardRole],
-            component: MaterialListComponent,
+            loadChildren: './list/material-list.module#MaterialListModule',
         },
         {
             path: 'lostList',
-            canActivate: [AuthGuardRole],
-            component: MaterialLostListComponent,
+            loadChildren: './lost-list/material-lost-list.module#MaterialLostListModule',
         },
         {
             path: 'lost',
-            canActivate: [AuthGuardRole],
-            component: MaterialLostComponent,
+            loadChildren: './lost/material-lost.module#MaterialLostModule',
         },
         {
             path: 'purchaseInfo',
-            canActivate: [AuthGuardRole],
-            component: MaterialPurchaseInfoComponent,
+            loadChildren: './purchase-info/material-purchase-info.module#MaterialPurchaseInfoModule',
         },
         {
             path: 'purchaseList',
-            canActivate: [AuthGuardRole],
-            component: MaterialPurchaseListComponent,
+            loadChildren: './purchase-list/material-purchase-list.module#MaterialPurchaseListModule',
         },
         {
             path: 'purchase',
-            canActivate: [AuthGuardRole],
-            component: MaterialPurchaseComponent,
+            loadChildren: './purchase/material-purchase.module#MaterialPurchaseModule',
         },
         {
             path: 'index',

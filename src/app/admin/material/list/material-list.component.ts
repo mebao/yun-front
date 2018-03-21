@@ -1,14 +1,13 @@
-import { Component, OnInit }                     from '@angular/core';
-import { Router }                                from '@angular/router';
+import { Component, OnInit }                   from '@angular/core';
+import { Router }                              from '@angular/router';
 
-import { AdminService }                          from '../admin.service';
+import { AdminService }                        from '../../admin.service';
 
 @Component({
-	selector: 'app-material-purchase-list',
-	templateUrl: './material-purchase-list.component.html',
-	styleUrls: ['./material-purchase-list.component.scss'],
+	selector: 'app-material-list',
+	templateUrl: './material-list.component.html',
 })
-export class MaterialPurchaseListComponent{
+export class MaterialListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -21,24 +20,18 @@ export class MaterialPurchaseListComponent{
 	// 权限
 	moduleAuthority: {
 		see: boolean,
+		edit: boolean,
 		seePut: boolean,
-		editPut: boolean,
-		infoPut: boolean,
 		seeHas: boolean,
 		seeLost: boolean,
 		seeCheck: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
-	list: any[];
 	url: string;
+	materialSupplies: any[];
 	info: {
-		b_date: string,
-		b_date_num: number,
-		b_date_text: string,
-		l_date: string,
-		l_date_num: number,
-		l_date_text: string,
+		name: string,
 		type: string,
 	}
 
@@ -50,7 +43,7 @@ export class MaterialPurchaseListComponent{
 	ngOnInit() {
 		this.topBar = {
 			title: '物资管理',
-			back: true,
+			back: false,
 		}
 		this.toast = {
 			show: 0,
@@ -61,9 +54,8 @@ export class MaterialPurchaseListComponent{
 		// 权限
 		this.moduleAuthority = {
 			see: false,
+			edit: false,
 			seePut: false,
-			editPut: false,
-			infoPut: false,
 			seeHas: false,
 			seeLost: false,
 			seeCheck: false,
@@ -85,18 +77,11 @@ export class MaterialPurchaseListComponent{
 
 		this.hasData = false;
 
-		this.list = [];
-
-		if(JSON.parse(sessionStorage.getItem('search-materialPurchaseList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-materialPurchaseList'));
+		if(JSON.parse(sessionStorage.getItem('search-materialList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-materialList'));
 		}else{
 			this.info = {
-				b_date: '',
-				b_date_num: 0,
-				b_date_text: '',
-				l_date: '',
-				l_date_num: 0,
-				l_date_text: '',
+				name: '',
 				type: '3,4',
 			}
 		}
@@ -104,24 +89,19 @@ export class MaterialPurchaseListComponent{
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+		this.materialSupplies = [];
 
 		this.search();
 	}
 
 	getData(urlOptions) {
-		this.adminService.purchaserecords(urlOptions).then((data) => {
+		this.adminService.medicalsupplieslist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].aboutTime = !this.adminService.isFalse(results.list[i].aboutTime) ? this.adminService.dateFormat(results.list[i].aboutTime) : '';
-						results.list[i].infoLength = results.list[i].info.length;
-					}
-				}
-				this.list = results.list;
+				this.materialSupplies = results.medicalSupplies;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
@@ -129,25 +109,15 @@ export class MaterialPurchaseListComponent{
 	}
 
 	search() {
-		sessionStorage.setItem('search-materialPurchaseList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-materialList', JSON.stringify(this.info));
 		var urlOptions = this.url;
-		if(this.info.b_date != ''){
-			urlOptions += '&b_date=' + this.info.b_date;
-		}
-		if(this.info.l_date != ''){
-			urlOptions += '&l_date=' + this.info.l_date;
+		if(this.info.name != ''){
+			urlOptions += '&name=' + this.info.name;
 		}
 		if(this.info.type != ''){
 			urlOptions += '&type=' + this.info.type;
 		}
 		this.getData(urlOptions);
-	}
-
-	// 选择日期
-	changeDate(_value, key) {
-		this.info[key] = JSON.parse(_value).value;
-		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-		this.info[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	goUrl(_url) {
@@ -157,12 +127,12 @@ export class MaterialPurchaseListComponent{
 		this.router.navigate([_url]);
 	}
 
-	update(_id) {
-		this.router.navigate(['./admin/material/purchase'], {queryParams: {id: _id}});
+	goCreate() {
+		this.router.navigate(['./admin/material/index']);
 	}
 
-	showInfo(_id) {
-		this.router.navigate(['./admin/material/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
+	update(_id) {
+		this.router.navigate(['./admin/material/index'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

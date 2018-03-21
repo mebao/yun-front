@@ -1,14 +1,14 @@
-import { Component, OnInit }                      from '@angular/core';
-import { Router }                                 from '@angular/router';
+import { Component, OnInit }                     from '@angular/core';
+import { Router }                                from '@angular/router';
 
-import { AdminService }                           from '../admin.service';
+import { AdminService }                          from '../../admin.service';
 
 @Component({
-	selector: 'app-material-lost-list',
-	templateUrl: './material-lost-list.component.html',
-	styleUrls: ['./material-lost-list.component.scss'],
+	selector: 'app-material-purchase-list',
+	templateUrl: './material-purchase-list.component.html',
+	styleUrls: ['./material-purchase-list.component.scss'],
 })
-export class MaterialLostListComponent{
+export class MaterialPurchaseListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -22,9 +22,10 @@ export class MaterialLostListComponent{
 	moduleAuthority: {
 		see: boolean,
 		seePut: boolean,
+		editPut: boolean,
+		infoPut: boolean,
 		seeHas: boolean,
 		seeLost: boolean,
-		editLost: boolean,
 		seeCheck: boolean,
 	}
 	loadingShow: boolean;
@@ -34,8 +35,10 @@ export class MaterialLostListComponent{
 	info: {
 		b_date: string,
 		b_date_num: number,
+		b_date_text: string,
 		l_date: string,
 		l_date_num: number,
+		l_date_text: string,
 		type: string,
 	}
 
@@ -55,12 +58,14 @@ export class MaterialLostListComponent{
 			type: '',
 		}
 
+		// 权限
 		this.moduleAuthority = {
 			see: false,
 			seePut: false,
+			editPut: false,
+			infoPut: false,
 			seeHas: false,
 			seeLost: false,
-			editLost: false,
 			seeCheck: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
@@ -81,12 +86,19 @@ export class MaterialLostListComponent{
 		this.hasData = false;
 
 		this.list = [];
-		this.info = {
-			b_date: '',
-			b_date_num: 0,
-			l_date: '',
-			l_date_num: 0,
-			type: '3,4',
+
+		if(JSON.parse(sessionStorage.getItem('search-materialPurchaseList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-materialPurchaseList'));
+		}else{
+			this.info = {
+				b_date: '',
+				b_date_num: 0,
+				b_date_text: '',
+				l_date: '',
+				l_date_num: 0,
+				l_date_text: '',
+				type: '3,4',
+			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -94,11 +106,10 @@ export class MaterialLostListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.search();
-
 	}
 
 	getData(urlOptions) {
-		this.adminService.searchmslost(urlOptions).then((data) => {
+		this.adminService.purchaserecords(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
@@ -106,6 +117,7 @@ export class MaterialLostListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
+						results.list[i].aboutTime = !this.adminService.isFalse(results.list[i].aboutTime) ? this.adminService.dateFormat(results.list[i].aboutTime) : '';
 						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
@@ -117,6 +129,7 @@ export class MaterialLostListComponent{
 	}
 
 	search() {
+		sessionStorage.setItem('search-materialPurchaseList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){
 			urlOptions += '&b_date=' + this.info.b_date;
@@ -134,6 +147,7 @@ export class MaterialLostListComponent{
 	changeDate(_value, key) {
 		this.info[key] = JSON.parse(_value).value;
 		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
+		this.info[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	goUrl(_url) {
@@ -141,6 +155,14 @@ export class MaterialLostListComponent{
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialHasList');
 		this.router.navigate([_url]);
+	}
+
+	update(_id) {
+		this.router.navigate(['./admin/material/purchase'], {queryParams: {id: _id}});
+	}
+
+	showInfo(_id) {
+		this.router.navigate(['./admin/material/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {

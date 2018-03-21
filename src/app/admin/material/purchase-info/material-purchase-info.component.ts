@@ -1,7 +1,7 @@
 import { Component }                       from '@angular/core';
 import { ActivatedRoute }                  from '@angular/router';
 
-import { AdminService }                    from '../admin.service';
+import { AdminService }                    from '../../admin.service';
 
 @Component({
     selector: 'admin-material-purchase-info',

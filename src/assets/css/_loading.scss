@@ -28,6 +28,7 @@
 	background-color: #fff;
 	overflow-x: hidden;
 	overflow-y: auto;
+	z-index: 99999;
 	&.mobile{
 		width: 80%;
 		margin-left: -40%;

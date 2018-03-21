@@ -1,12 +1,12 @@
 import { Component }                         from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
 
-import { AdminService }                      from '../admin.service';
+import { AdminService }                      from '../../admin.service';
 
 @Component({
 	selector: 'admin-material-check',
 	templateUrl: './material-check.component.html',
-	styleUrls: ['../medical/check/medical-check.component.scss'],
+	styleUrls: ['../../medical/check/medical-check.component.scss'],
 })
 export class MaterialCheckComponent{
 	topBar: {
