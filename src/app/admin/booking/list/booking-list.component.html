@@ -254,7 +254,7 @@
 	<div class="container">
 		<div class="title">预约详情</div>
 		<div class="content pad10 admin-booking-info">
-			<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2') && use">
+			<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && use">
 				<button (click)="updateBooking()" class="pure-button pure-button-primary">修改</button>
 			</div>
 			<div class="tab">

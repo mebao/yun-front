@@ -29,6 +29,8 @@ export class HeaderNavComponent {
 	showSetup: boolean;
 	// 支付消息权限
 	hasShowPayMessage: boolean;
+	modalTabMessage: boolean;
+	loadingShow: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -49,6 +51,8 @@ export class HeaderNavComponent {
 
 		this.showPayMessage = false;
 		this.showSetup = false;
+		this.modalTabMessage = false;
+		this.loadingShow = false;
 		this.getPayMessage();
 		// this.getPushPayMessage();
 
@@ -95,8 +99,8 @@ export class HeaderNavComponent {
 
 	showTab(_key) {
 		this[_key] = !this[_key];
-		this.messageLoading = true;
 		if(_key == 'showMessage'){
+			this.loadingShow = true;
 			this.messageList = [];
 			var urlOptions = '?username=' + this.adminService.getUser().username
 				+ '&token=' + this.adminService.getUser().token
@@ -104,23 +108,25 @@ export class HeaderNavComponent {
 				+ '&mtlist=' + this.adminService.getUser().messageTypes;
 			this.adminService.searchmessage(urlOptions).then((data) => {
 				if(data.status == 'no'){
-					this.messageLoading = false;
+					this.loadingShow = false;
 					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 					this.toastService.toast(toastCfg);
 				}else{
-					this.messageLoading = false;
 					var results = JSON.parse(JSON.stringify(data.results));
 					for(var i = 0; i < results.messages.length; i++){
 						results.messages[i].complate = false;
 					}
 					this.messageList = results.messages;
+					this.loadingShow = false;
+					this.modalTabMessage = true;
 				}
 			}).catch(() => {
-				this.messageLoading = false;
+				this.loadingShow = false;
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 				this.toastService.toast(toastCfg);
 			});
 		}else{
+			this.messageLoading = true;
 			this.getPayMessage();
 		}
 	}
@@ -219,6 +225,20 @@ export class HeaderNavComponent {
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误123', 3000);
 			this.toastService.toast(toastCfg);
 		});
+	}
+
+	closeMessage() {
+		this.modalTabMessage = false;
+	}
+
+	goDetail(message) {
+		if(message.typeId == '2'){
+			//会员余额提醒
+			this.router.navigate(['./admin/userInfo'], {queryParams: {id: message.messageUrl}});
+		}else if(message.typeId == '3'){
+			// 预约就诊提醒
+			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
+		}
 	}
 
 	goUrl(_url) {
