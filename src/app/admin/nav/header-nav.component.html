@@ -2,32 +2,13 @@
 	<div class="title">{{clinicName}}</div>
 	<div class="flex-1 right-tab text-right">
 		<div class="item pl20 pr20">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
-		<div *ngIf="hasShowPayMessage" mouseIn class="item message-tab" [ngClass]="{'show': showPayMessage}" (mouseHandler)="handlerTab($event, 'showPayMessage')">
+		<div *ngIf="hasShowPayMessage" class="item message-tab">
 			<div class="tab-title pl20 pr20" (click)="showTab('showPayMessage')">
 				支付消息
 				<span *ngIf="payMessageList.length > 0" class="num">{{payMessageList.length}}</span>
 			</div>
-			<div *ngIf="messageLoading" class="message-list text-center">
-				加载中...
-			</div>
-			<div *ngIf="messageLoading && payMessageList.length > 0" class="message-list pay">
-				<div class="message-item flex" *ngFor="let message of payMessageList; let index=index;">
-					<ng-container *ngIf="!message.complate">
-						<div class="flex-1 w50 pl20">
-							<div [ngClass]="{'animate': message.message.length > 10}">{{message.message}}</div>
-						</div>
-						<button (click)="bookingInfo(message)" class="pure-button pure-button-primary m10" [disabled]="messageBtn">详情</button>
-						<button (click)="complate(message, index, 'pay')" class="pure-button pure-button-primary mt10 mb10 mr10" [disabled]="messageBtn">完成</button>
-					</ng-container>
-				</div>
-			</div>
-			<div *ngIf="payMessageList.length == 0" class="message-list">
-				<div class="text-center">
-					暂无消息
-				</div>
-			</div>
 		</div>
-		<div mouseIn class="item message-tab">
+		<div class="item message-tab">
 			<div class="tab-title pl20 pr20" (click)="showTab('showMessage')">消息</div>
 		</div>
 		<div mouseIn class="item setup-tab" [ngClass]="{'show': showSetup}" (mouseHandler)="handlerTab($event, 'showSetup')">
@@ -44,34 +25,61 @@
 	<div class="container">
 		<div class="title">消息</div>
 		<div class="content pad10 admin-booking-info">
-			<table *ngIf="messageList.length > 0" class="pure-table w100">
-				<thead>
-					<tr>
-						<th>消息内容</th>
-						<th>查看</th>
-						<th>完成</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let message of messageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-						<td>{{message.message}}</td>
-						<td>
-							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3'">
+			<ng-container *ngIf="messageTabType == 'showMessage'">
+				<table *ngIf="messageList.length > 0" class="pure-table w100">
+					<thead>
+						<tr>
+							<th>消息内容</th>
+							<th>查看</th>
+							<th>完成</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let message of messageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+							<td>{{message.message}}</td>
+							<td>
+								<ng-container *ngIf="message.typeId == '2' || message.typeId == '3'">
+									<button (click)="goDetail(message)" class="pure-button pure-button-primary" [disabled]="messageBtn">查看</button>
+								</ng-container>
+								<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">
+									-
+								</ng-container>
+							</td>
+							<td>
+								<button (click)="complate(message, index, '')" class="pure-button pure-button-primary" [disabled]="messageBtn">完成</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="messageList.length == 0">
+					<nodata title="暂无消息"></nodata>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="messageTabType == 'showPayMessage'">
+				<table *ngIf="payMessageList.length > 0" class="pure-table w100">
+					<thead>
+						<tr>
+							<th>消息内容</th>
+							<th>查看</th>
+							<th>完成</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let message of payMessageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+							<td>{{message.message}}</td>
+							<td>
 								<button (click)="goDetail(message)" class="pure-button pure-button-primary" [disabled]="messageBtn">查看</button>
-							</ng-container>
-							<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">
-								-
-							</ng-container>
-						</td>
-						<td>
-							<button (click)="complate(message, index, '')" class="pure-button pure-button-primary" [disabled]="messageBtn">完成</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div *ngIf="messageList.length == 0">
-				<nodata title="暂无消息"></nodata>
-			</div>
+							</td>
+							<td>
+								<button (click)="complate(message, index, '')" class="pure-button pure-button-primary" [disabled]="messageBtn">完成</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div *ngIf="payMessageList.length == 0">
+					<nodata title="暂无消息"></nodata>
+				</div>
+			</ng-container>
 		</div>
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeMessage()" class="pure-button pure-button">关闭</button>

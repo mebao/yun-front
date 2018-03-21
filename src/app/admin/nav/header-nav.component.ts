@@ -20,17 +20,15 @@ export class HeaderNavComponent {
 	@Input() username: string;
 	clinicRole: string;
 	clinicName: string;
-	showMessage: boolean;
-	messageLoading: boolean;
 	messageList: any[];
 	messageBtn: boolean;
-	showPayMessage: boolean;
 	payMessageList: any[];
 	showSetup: boolean;
 	// 支付消息权限
 	hasShowPayMessage: boolean;
 	modalTabMessage: boolean;
 	loadingShow: boolean;
+	messageTabType: string;
 
 	constructor(
 		public adminService: AdminService,
@@ -44,49 +42,36 @@ export class HeaderNavComponent {
 		this.username = this.adminService.getUser().realname;
 		this.clinicRole = this.adminService.getUser().clinicRoleName;
 		this.clinicName = this.adminService.getUser().clinicName;
-		this.showMessage = false;
-		this.messageLoading = false;
 		this.messageList = [];
 		this.messageBtn = false;
 
-		this.showPayMessage = false;
 		this.showSetup = false;
 		this.modalTabMessage = false;
 		this.loadingShow = false;
-		this.getPayMessage();
+		this.messageTabType = '';
+		this.getPayMessage('');
 		// this.getPushPayMessage();
 
+		this.modalTabMessage = false;
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
 		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
 			this.hasShowPayMessage = true;
 		}else{
 			var authority = JSON.parse(sessionStorage.getItem('userClinicRoles'));
-			var hasBookingInfo = false;
-			var hasTransactionStatistics = false;
 			if(authority.length > 0){
 				for(var i = 0; i < authority.length; i++){
-					if(authority[i].keyName == 'bookingList'){
+					if(authority[i].keyName == 'message'){
 						if(authority[i].infos.length > 0){
 							for(var j = 0; j < authority[i].infos.length; j++){
-								if(authority[i].infos[j].keyName == 'info'){
-									hasBookingInfo = true;
-								}
-							}
-						}
-					}
-					if(authority[i].keyName == 'transactionStatistics'){
-						if(authority[i].infos.length > 0){
-							for(var j = 0; j < authority[i].infos.length; j++){
-								if(authority[i].infos[j].keyName == 'see'){
-									hasTransactionStatistics = true;
+								if(authority[i].infos[j].keyName == 'pay'){
+									this.hasShowPayMessage = true;
 								}
 							}
 						}
 					}
 				}
 			}
-			this.hasShowPayMessage = hasBookingInfo && hasTransactionStatistics;
 		}
 	}
 
@@ -97,11 +82,11 @@ export class HeaderNavComponent {
 		this.router.navigate(['./login']);
 	}
 
-	showTab(_key) {
-		this[_key] = !this[_key];
-		if(_key == 'showMessage'){
-			this.loadingShow = true;
-			this.messageList = [];
+	showTab(_type) {
+		this.messageTabType = _type;
+		this.loadingShow = true;
+		this.messageList = [];
+		if(_type == 'showMessage'){
 			var urlOptions = '?username=' + this.adminService.getUser().username
 				+ '&token=' + this.adminService.getUser().token
 				+ '&clinic_id=' + this.adminService.getUser().clinicId
@@ -126,8 +111,7 @@ export class HeaderNavComponent {
 				this.toastService.toast(toastCfg);
 			});
 		}else{
-			this.messageLoading = true;
-			this.getPayMessage();
+			this.getPayMessage('modalTabMessage');
 		}
 	}
 
@@ -137,7 +121,7 @@ export class HeaderNavComponent {
 		}
 	}
 
-	getPayMessage() {
+	getPayMessage(_type) {
 		this.payMessageList = [];
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			+ '&token=' + this.adminService.getUser().token
@@ -145,21 +129,24 @@ export class HeaderNavComponent {
 			+ '&type=pay';
 		this.adminService.searchmessage(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.messageLoading = false;
+				this.loadingShow = false;
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
 			}else{
-				this.messageLoading = false;
 				var results = JSON.parse(JSON.stringify(data.results));
 				for(var i = 0; i < results.messages.length; i++){
 					results.messages[i].complate = false;
 				}
 				this.payMessageList = results.messages;
+				this.loadingShow = false;
+				if(_type != ''){
+					this.modalTabMessage = true;
+				}
 				// this.changeDetectorRef.markForCheck();
           		// this.changeDetectorRef.detectChanges();
 			}
 		}).catch(() => {
-			this.messageLoading = false;
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});
@@ -195,10 +182,6 @@ export class HeaderNavComponent {
 		});
 	}
 
-	bookingInfo(message) {
-		this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
-	}
-
 	complate(message, index, type) {
 		this.messageBtn = true;
 		var params = {
@@ -232,7 +215,10 @@ export class HeaderNavComponent {
 	}
 
 	goDetail(message) {
-		if(message.typeId == '2'){
+		if(message.typeId == '0'){
+			// 支付提醒
+			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
+		}else if(message.typeId == '2'){
 			//会员余额提醒
 			this.router.navigate(['./admin/userInfo'], {queryParams: {id: message.messageUrl}});
 		}else if(message.typeId == '3'){
