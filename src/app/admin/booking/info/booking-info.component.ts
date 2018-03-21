@@ -3,6 +3,9 @@ import { Router, ActivatedRoute }           from '@angular/router';
 
 import { AdminService }                     from '../../admin.service';
 
+import { ToastService }                     from '../../../common/nll-toast/toast.service';
+import { ToastConfig, ToastType }           from '../../../common/nll-toast/toast-model';
+
 @Component({
 	selector: 'app-booking-info',
 	templateUrl: './booking-info.component.html',
@@ -12,11 +15,6 @@ export class BookingInfoComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	//权限
 	moduleAuthority: {
 		see: boolean,
@@ -25,6 +23,7 @@ export class BookingInfoComponent{
 		update: boolean,
 	}
 	loadingShow: boolean;
+	url: string;
 	id: string;
 	booking: {
 		age: string,
@@ -47,13 +46,28 @@ export class BookingInfoComponent{
 		statusText: string,
 		totalFee: string,
 		remark: string,
+		tranInfo: any,
+		yyj: any;
+		backFee: string,
+		backRemark: string,
 	};
 	canEdit: boolean;
+	selectorBooking: {
+		bookingId: string,
+		text: string,
+		cancel_cause: string,
+		type: string,
+	}
+	modalConfirmTab: boolean;
+	// 退还预约金
+	modalBackBookingFee: boolean;
+	btnCanEdit: boolean;
 
 	constructor(
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
+        private toastService: ToastService,
 	) {}
 
 	ngOnInit(): void {
@@ -61,11 +75,6 @@ export class BookingInfoComponent{
 			title: '预约详情',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type:  '',
-		};
 
 		//权限
 		this.moduleAuthority = {
@@ -108,7 +117,14 @@ export class BookingInfoComponent{
 			statusText: '',
 			totalFee: '',
 			remark: '',
+			tranInfo: {},
+			yyj: {},
+			backFee: '',
+			backRemark: '',
 		};
+		this.url = '?username=' + this.adminService.getUser().username
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
@@ -116,14 +132,25 @@ export class BookingInfoComponent{
 
 		this.loadingShow = true;
 
-		var urlOptions = '?username=' + this.adminService.getUser().username
-				 + '&token=' + this.adminService.getUser().token
-				 + '&clinic_id=' + this.adminService.getUser().clinicId
-				 + '&id=' + this.id;
+		this.getBooking('');
+
+		this.selectorBooking = {
+			bookingId: '',
+			text: '',
+			cancel_cause: '',
+			type: '',
+		}
+		this.modalConfirmTab = false;
+		this.btnCanEdit = false;
+	}
+
+	getBooking(type) {
+		var urlOptions = this.url + '&id=' + this.id;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
@@ -141,27 +168,154 @@ export class BookingInfoComponent{
 				}
 				this.booking.totalFee = total.toString();
 				this.loadingShow = false;
+				if(type == 'booking'){
+					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
+					this.toastService.toast(toastCfg);
+				}else if(type == 'status'){
+					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '取消登记成功', 3000);
+					this.toastService.toast(toastCfg);
+				}else if(type == 'backBookingFee'){
+					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
+					this.toastService.toast(toastCfg);
+				}
 			}
-		})
+		}).catch(() => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
+		});
 	}
 
 	updateBooking() {
 		this.router.navigate(['./admin/booking'], {queryParams: {id: this.id, type: 'update'}});
 	}
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
+	cancel(_type) {
+		this.selectorBooking = {
+			bookingId: this.booking.bookingId,
+			text: '确认取消该预约',
+			cancel_cause: '',
+			type: _type,
 		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
+		this.modalConfirmTab = true;
 	}
 
+	// 取消预约
+	closeConfirm() {
+		this.modalConfirmTab = false;
+	}
+
+	// 确认取消
+	confirm(){
+		if(this.adminService.trim(this.selectorBooking.cancel_cause) == ''){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '取消原因不可为空', 3000);
+			this.toastService.toast(toastCfg);
+			return false;
+		}
+		this.btnCanEdit = true;
+		this.loadingShow = true;
+		this.modalConfirmTab = false;
+		if(this.selectorBooking.type == 'booking'){
+			// 取消预约
+			var urlOptions = this.selectorBooking.bookingId + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token + '&cancel_cause=' + this.selectorBooking.cancel_cause;
+			this.adminService.bookingcancelled(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					this.btnCanEdit = false;
+					this.loadingShow = false;
+					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+					this.toastService.toast(toastCfg);
+				}else{
+					this.btnCanEdit = false;
+					this.getBooking(this.selectorBooking.type);
+				}
+			}).catch((err) => {
+				this.btnCanEdit = false;
+				this.loadingShow = false;
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+			});
+		}else{
+			// 取消登记
+			var params = {
+				username: this.adminService.getUser().username,
+				token: this.adminService.getUser().token,
+				status: '2',
+				cancel_cause: this.selectorBooking.cancel_cause,
+			}
+			this.adminService.updatebookstatus(this.booking.bookingId, params).then((data) => {
+				if(data.status == 'no'){
+					this.btnCanEdit = false;
+					this.loadingShow = false;
+					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+					this.toastService.toast(toastCfg);
+				}else{
+					this.btnCanEdit = false;
+					this.getBooking(this.selectorBooking.type);
+				}
+			}).catch(() => {
+				this.btnCanEdit = false;
+				this.loadingShow = false;
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+			});
+		}
+	}
+
+	// 退还部分预约金
+	backBookingFee() {
+		this.modalBackBookingFee = true;
+	}
+
+	closeBack() {
+		this.modalBackBookingFee = false;
+	}
+
+	confirmBack() {
+		this.btnCanEdit = true;
+		if(this.adminService.isFalse(this.booking.backFee)){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可为空', 3000);
+			this.toastService.toast(toastCfg);
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(this.booking.backFee) <= 0){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于等于0', 3000);
+			this.toastService.toast(toastCfg);
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.tranInfo.id ? this.booking.tranInfo.amount : this.booking.yyj.amount)){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
+			this.toastService.toast(toastCfg);
+			this.booking.backFee = '';
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.adminService.isFalse(this.booking.backRemark) || this.booking.backRemark == ''){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '失约原因不可为空', 3000);
+			this.toastService.toast(toastCfg);
+			this.btnCanEdit = false;
+			return;
+		}
+		this.modalBackBookingFee = false;
+		this.loadingShow = true;
+		var urlOptions = this.booking.bookingId + this.url
+			 + '&refund_fee=' + this.booking.backFee + '&remark=' + this.booking.backRemark;
+		this.adminService.bookingrefund(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.btnCanEdit = false;
+				this.loadingShow = false;
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+				this.toastService.toast(toastCfg);
+			}else{
+				this.btnCanEdit = false;
+				this.getBooking('backBookingFee');
+			}
+		}).catch((err) => {
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+			this.toastService.toast(toastCfg);
+		});
+	}
 }

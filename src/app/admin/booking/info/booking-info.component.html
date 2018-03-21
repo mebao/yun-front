@@ -1,8 +1,11 @@
 <header-nav></header-nav>
 <div class="content-section admin-booking-info">
 	<top-bar [data]="topBar"></top-bar>
-	<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2') && canEdit">
-		<button (click)="updateBooking()" class="pure-button pure-button-primary">修改</button>
+	<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && canEdit">
+		<button (click)="updateBooking()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">修改</button>
+		<button (click)="cancel('booking')" class="pure-button button-error" [disabled]="btnCanEdit">取消</button>
+		<button (click)="backBookingFee()" *ngIf="booking.status == '2'" class="pure-button button-error" [disabled]="btnCanEdit">{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}</button>
+		<button (click)="cancel('status')" *ngIf="booking.status == '3'" class="pure-button button-error" [disabled]="btnCanEdit">取消登记</button>
 	</div>
 	<div class="tab">
 		<div class="item flex">
@@ -69,5 +72,50 @@
 		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<div class="modal" *ngIf="modalConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			<div class="pure-form">
+				<textarea id="cancel_cause" class="w100" name="cancel_cause" [(ngModel)]="selectorBooking.cancel_cause" placeholder="请输入取消原因"></textarea>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeConfirm()" class="pure-button" [disabled]="btnCanEdit">关闭</button>
+			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalBackBookingFee">
+	<div class="modal-mask" (click)="closeBack()"></div>
+	<div class="container">
+		<div class="title">提示</div>
+		<div class="content pad10">
+			<div class="pure-form">
+				<div class="pure-control-group flex">
+					<label class="w120p">{{booking.tranInfo.id ? '已支付全额' : '已支付预约金'}}：</label>
+					<label>{{(booking.tranInfo.id ? booking.tranInfo.amount : booking.yyj.amount) | toDecimal2}}</label>
+				</div>
+				<div class="pure-control-group flex mt5">
+					<label class="w120p">支付方式：</label>
+					<label>{{booking.tranInfo.id ? booking.tranInfo.wayText : booking.yyj.typeText}}</label>
+				</div>
+				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
+					<label for="backFee" class="w120p">{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
+					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee">
+				</div>
+				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
+					<label for="backRemark" class="w120p">失约原因：</label>
+					<textarea name="backRemark" [(ngModel)]="booking.backRemark" placeholder="请输入失约原因"></textarea>
+				</div>
+				<div *ngIf="booking.yyj.amount == '0.00'" class="mt5">不可退款</div>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeBack()" class="pure-button" [disabled]="btnCanEdit">取消</button>
+			<button *ngIf="booking.yyj.amount != '0.00'" (click)="confirmBack()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
+	</div>
+</div>
 <loading [show]="loadingShow"></loading>

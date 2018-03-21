@@ -100,7 +100,8 @@ export class BookingListComponent implements OnInit{
 	selectorBooking: {
 		text: string,
 		bookingId: string,
-		remark: string,
+		cancel_cause: string,
+		type: string,
 	}
 	// 退还部分预约金
 	modalBackBookingFee: boolean;
@@ -296,7 +297,8 @@ export class BookingListComponent implements OnInit{
 		this.selectorBooking = {
 			text: '',
 			bookingId: '',
-			remark: '',
+			cancel_cause: '',
+			type: '',
 		}
 
 		this.modalBackBookingFee = false;
@@ -698,16 +700,16 @@ export class BookingListComponent implements OnInit{
 			 + '&refund_fee=' + this.booking.backFee + '&remark=' + this.booking.backRemark;
 		this.adminService.bookingrefund(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
 				this.btnCanEdit = false;
 				this.loadingShow = false;
-			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
+			}else{
 				this.modalBackBookingFee = false;
 				this.modalTab = false;
 				this.loadingShow = false;
+				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
+				this.toastService.toast(toastCfg);
 				this.btnCanEdit = false;
 				this.initBooking();
 				this.search();
@@ -757,12 +759,13 @@ export class BookingListComponent implements OnInit{
 		this.modalTab = false;
 	}
 
-	cancel(booking) {
+	cancel(booking, _type) {
 		this.modalTab = false;
 		this.selectorBooking = {
 			bookingId: booking.bookingId,
 			text: '确认取消该预约',
-			remark: '',
+			cancel_cause: '',
+			type: _type,
 		}
 		this.modalConfirmTab = true;
 	}
@@ -774,26 +777,50 @@ export class BookingListComponent implements OnInit{
 
 	// 确认取消
 	confirm(){
-		if(this.adminService.trim(this.selectorBooking.remark) == ''){
+		if(this.adminService.trim(this.selectorBooking.cancel_cause) == ''){
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '取消原因不可为空', 3000);
 			this.toastService.toast(toastCfg);
 			return false;
 		}
 		this.modalConfirmTab = false;
-		var urlOptions = this.selectorBooking.bookingId + '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token + '&remark=' + this.selectorBooking.remark;
-		this.adminService.bookingcancelled(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+		if(this.selectorBooking.type == 'booking'){
+			// 取消预约
+			var urlOptions = this.selectorBooking.bookingId + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token + '&cancel_cause=' + this.selectorBooking.cancel_cause;
+			this.adminService.bookingcancelled(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+					this.toastService.toast(toastCfg);
+				}else{
+					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
+					this.toastService.toast(toastCfg);
+					this.search();
+				}
+			}).catch((err) => {
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 				this.toastService.toast(toastCfg);
-			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
-				this.toastService.toast(toastCfg);
-				this.search();
+			});
+		}else{
+			// 取消登记
+			var params = {
+				username: this.adminService.getUser().username,
+				token: this.adminService.getUser().token,
+				status: '2',
+				cancel_cause: this.selectorBooking.cancel_cause,
 			}
-		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
-		});
+			this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
+				if(data.status == 'no'){
+					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+					this.toastService.toast(toastCfg);
+				}else{
+					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '取消登记成功', 3000);
+					this.toastService.toast(toastCfg);
+					this.search();
+				}
+			}).catch(() => {
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+			});
+		}
 	}
 }

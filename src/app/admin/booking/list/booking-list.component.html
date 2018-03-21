@@ -159,7 +159,7 @@
 						</ng-container>
 					</div>
 					<div class="flex">
-						<a *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3')" class="edit flex-1 pad10 text-center" (click)="cancel(booking)">
+						<a *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3')" class="edit flex-1 pad10 text-center" (click)="cancel(booking, 'booking')">
 							取消
 						</a>
 						<a *ngIf="moduleAuthority.info" class="edit flex-1 pad10 text-center" (click)="info(booking)">
@@ -170,6 +170,9 @@
 						</a>
 						<a *ngIf="moduleAuthority.update && booking.status == '2'" class="edit flex-1 pt10 text-center" (click)="backBookingFee(booking)">
 							{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}
+						</a>
+						<a *ngIf="moduleAuthority.update && booking.status == '3'" class="edit flex-1 pad10 text-center" (click)="cancel(booking, 'status')">
+							取消登记
 						</a>
 					</div>
 				</div>
@@ -221,13 +224,18 @@
 									<button (click)="paymentBookingFee(showBooking)" class="pure-button pure-button-primary">支付</button>
 								</div>
 								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2' || showBooking.status == '3')" class="mt10">
-									<button class="pure-button button-error" (click)="cancel(showBooking)">
+									<button class="pure-button button-error" (click)="cancel(showBooking, 'booking')">
 										取消
 									</button>
 								</div>
 								<div *ngIf="moduleAuthority.update && showBooking.status == '2'" class="mt10">
 									<button (click)="backBookingFee(showBooking)" class="pure-button button-error">
 										{{showBooking.tranInfo.id ? '退还金额' : '退还预约金'}}
+									</button>
+								</div>
+								<div *ngIf="moduleAuthority.update && (showBooking.status == '3')" class="mt10">
+									<button class="pure-button button-error" (click)="cancel(showBooking, 'status')">
+										取消登记
 									</button>
 								</div>
 							</td>
@@ -240,7 +248,8 @@
 			<button (click)="close()" class="pure-button pure-button">关闭</button>
 		</div>
 	</div>
-</div><div class="modal" *ngIf="modalTabInfo">
+</div>
+<div class="modal" *ngIf="modalTabInfo">
 	<div class="modal-mask" (click)="closeInfo()"></div>
 	<div class="container">
 		<div class="title">预约详情</div>
@@ -335,7 +344,7 @@
 		<div class="title">提示</div>
 		<div class="content pad10">
 			<div class="pure-form">
-				<textarea id="remark" class="w100" name="remark" [(ngModel)]="selectorBooking.remark" placeholder="请输入取消原因"></textarea>
+				<textarea id="cancel_cause" class="w100" name="cancel_cause" [(ngModel)]="selectorBooking.cancel_cause" placeholder="请输入取消原因"></textarea>
 			</div>
 		</div>
 		<div class="button-tab pad10 text-right">
