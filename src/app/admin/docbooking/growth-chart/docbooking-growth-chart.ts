@@ -450,22 +450,38 @@ export class DocbookingGrowthChart implements OnInit{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var heightDataList = [];
-				var heightStandardDataList = [];
+				var heightNinetySevenDataList = [];
+				var heightEightyFiveDataList = [];
+				var heightFiftyDataList = [];
+				var heightFifteenDataList = [];
+				var heightThreeDataList = [];
 				var heightActualDataList = [];
 				if(results.height.length > 0){
 					for(var i = 0; i < results.height.length; i++){
 						heightDataList.push(results.height[i].age);
-						heightStandardDataList.push(results.height[i].height);
+						heightNinetySevenDataList.push(results.height[i].ninetySeven);
+						heightEightyFiveDataList.push(results.height[i].eightyFive);
+						heightFiftyDataList.push(results.height[i].fifty);
+						heightFifteenDataList.push(results.height[i].fifteen);
+						heightThreeDataList.push(results.height[i].three);
 						heightActualDataList.push(results.height[i].childHeight);
 					}
 				}
 				var weightDataList = [];
-				var weightStandardDataList = [];
+				var weightNinetySevenDataList = [];
+				var weightEightyFiveDataList = [];
+				var weightFiftyDataList = [];
+				var weightFifteenDataList = [];
+				var weightThreeDataList = [];
 				var weightActualDataList = [];
 				if(results.weight.length > 0){
 					for(var i = 0; i < results.weight.length; i++){
 						weightDataList.push(results.weight[i].age);
-						weightStandardDataList.push(results.weight[i].weight);
+						weightNinetySevenDataList.push(results.weight[i].ninetySeven);
+						weightEightyFiveDataList.push(results.weight[i].eightyFive);
+						weightFiftyDataList.push(results.weight[i].fifty);
+						weightFifteenDataList.push(results.weight[i].fifteen);
+						weightThreeDataList.push(results.weight[i].three);
 						weightActualDataList.push(results.weight[i].childWeight);
 					}
 				}
@@ -474,65 +490,23 @@ export class DocbookingGrowthChart implements OnInit{
 					title: {
 						text: '宝宝身高成长曲线',
 					},
-				    color: ['blue', 'black'],
+				    color: ['red', 'green', '#66FFFF', 'blue','#FF7F50','black'],
 
 				    tooltip: {
-				        trigger: 'none',
-				        axisPointer: {
-				            type: 'cross'
-				        }
+				        trigger: 'axis',
 				    },
 				    legend: {
-				        data:['标准身高', '宝宝身高']
+				        data:['97th', '85th', '50th', '15th', '3rd', '宝宝身高']
 				    },
 				    grid: {
 				        top: 70,
 				        bottom: 50
 				    },
-				    xAxis: [
-				        {
-				            type: 'category',
-				            axisTick: {
-				                alignWithLabel: true
-				            },
-				            axisLine: {
-				                onZero: false,
-				                lineStyle: {
-				                    color: 'black'
-				                }
-				            },
-				            axisPointer: {
-				                label: {
-				                    formatter: function (params) {
-				                        return '宝宝身高  ' + params.value
-				                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-				                    }
-				                }
-				            },
-				            data: heightDataList
-				        },
-				        {
-				            type: 'category',
-				            axisTick: {
-				                alignWithLabel: true
-				            },
-				            axisLine: {
-				                onZero: false,
-				                lineStyle: {
-				                    color: 'blue'
-				                }
-				            },
-				            axisPointer: {
-				                label: {
-				                    formatter: function (params) {
-				                        return '标准身高  ' + params.value
-				                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-				                    }
-				                }
-				            },
-				            data: heightDataList
-				        }
-				    ],
+				    xAxis:{
+			            type: 'category',
+			            boundaryGap: true,
+			            data: heightDataList
+			        },
 				    yAxis: [
 				        {
 							name: '身高(cm)',
@@ -541,11 +515,34 @@ export class DocbookingGrowthChart implements OnInit{
 				    ],
 				    series: [
 				        {
-				            name:'标准身高',
+				            name:'97th',
 				            type:'line',
-				            xAxisIndex: 1,
 				            smooth: true,
-				            data: heightStandardDataList
+				            data: heightNinetySevenDataList
+				        },
+						{
+				            name:'85th',
+				            type:'line',
+				            smooth: true,
+				            data: heightEightyFiveDataList
+				        },
+						{
+				            name:'50th',
+				            type:'line',
+				            smooth: true,
+				            data: heightFiftyDataList
+				        },
+						{
+				            name:'15th',
+				            type:'line',
+				            smooth: true,
+				            data: heightFifteenDataList
+				        },
+						{
+				            name:'3rd',
+				            type:'line',
+				            smooth: true,
+				            data: heightThreeDataList
 				        },
 				        {
 				            name:'宝宝身高',
@@ -560,65 +557,23 @@ export class DocbookingGrowthChart implements OnInit{
 					title: {
 						text: '宝宝体重成长曲线',
 					},
-				    color: ['blue', 'black'],
+				    color: ['red', 'green', '#66FFFF', 'blue','#FF7F50','black'],
 
 				    tooltip: {
-				        trigger: 'none',
-				        axisPointer: {
-				            type: 'cross'
-				        }
+				        trigger: 'axis',
 				    },
 				    legend: {
-				        data:['标准体重', '宝宝体重']
+				        data:['97th', '85th', '50th', '15th', '3rd', '宝宝体重']
 				    },
 				    grid: {
 				        top: 70,
 				        bottom: 50
 				    },
-				    xAxis: [
-				        {
-				            type: 'category',
-				            axisTick: {
-				                alignWithLabel: true
-				            },
-				            axisLine: {
-				                onZero: false,
-				                lineStyle: {
-				                    color: 'black'
-				                }
-				            },
-				            axisPointer: {
-				                label: {
-				                    formatter: function (params) {
-				                        return '宝宝体重  ' + params.value
-				                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-				                    }
-				                }
-				            },
-				            data: weightDataList
-				        },
-				        {
-				            type: 'category',
-				            axisTick: {
-				                alignWithLabel: true
-				            },
-				            axisLine: {
-				                onZero: false,
-				                lineStyle: {
-				                    color: 'blue'
-				                }
-				            },
-				            axisPointer: {
-				                label: {
-				                    formatter: function (params) {
-				                        return '标准体重  ' + params.value
-				                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-				                    }
-				                }
-				            },
-				            data: weightDataList
-				        }
-				    ],
+				    xAxis:{
+			            type: 'category',
+			            boundaryGap: true,
+			            data: weightDataList
+				    },
 				    yAxis: [
 				        {
 							name: '体重(kg)',
@@ -626,12 +581,35 @@ export class DocbookingGrowthChart implements OnInit{
 				        }
 				    ],
 				    series: [
-				        {
-				            name:'标准体重',
+						{
+				            name:'97th',
 				            type:'line',
-				            xAxisIndex: 1,
 				            smooth: true,
-				            data: weightStandardDataList
+				            data: weightNinetySevenDataList
+				        },
+						{
+				            name:'85th',
+				            type:'line',
+				            smooth: true,
+				            data: weightEightyFiveDataList
+				        },
+						{
+				            name:'50th',
+				            type:'line',
+				            smooth: true,
+				            data: weightFiftyDataList
+				        },
+						{
+				            name:'15th',
+				            type:'line',
+				            smooth: true,
+				            data: weightFifteenDataList
+				        },
+						{
+				            name:'3rd',
+				            type:'line',
+				            smooth: true,
+				            data: weightThreeDataList
 				        },
 				        {
 				            name:'宝宝体重',
