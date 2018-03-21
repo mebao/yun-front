@@ -50,7 +50,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'workbench',
 						loadChildren: './workbench/workbench.module#WorkbenchModule',
-						// data: {preload: true},
 					},
 					{
 						path: 'material',
@@ -82,7 +81,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'authorize',
 						loadChildren: './authorize/authorize.module#AuthorizeModule',
-						data: {preload: true},
 					},
 					{
 						path: 'doctor',
