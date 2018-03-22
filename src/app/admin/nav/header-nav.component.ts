@@ -50,7 +50,6 @@ export class HeaderNavComponent {
 		this.loadingShow = false;
 		this.messageTabType = '';
 		this.getPayMessage('');
-		this.getPushPayMessage();
 
 		this.modalTabMessage = false;
 		// 那段角色，是超级管理员0还是普通角色
@@ -72,6 +71,9 @@ export class HeaderNavComponent {
 					}
 				}
 			}
+			if(this.hasShowPayMessage){
+				this.getPushPayMessage();
+			}
 		}
 	}
 
@@ -83,35 +85,39 @@ export class HeaderNavComponent {
 	}
 
 	showTab(_type) {
-		this.messageTabType = _type;
-		this.loadingShow = true;
-		this.messageList = [];
-		if(_type == 'showMessage'){
-			var urlOptions = '?username=' + this.adminService.getUser().username
-				+ '&token=' + this.adminService.getUser().token
-				+ '&clinic_id=' + this.adminService.getUser().clinicId
-				+ '&mtlist=' + this.adminService.getUser().messageTypes;
-			this.adminService.searchmessage(urlOptions).then((data) => {
-				if(data.status == 'no'){
-					this.loadingShow = false;
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-					this.toastService.toast(toastCfg);
-				}else{
-					var results = JSON.parse(JSON.stringify(data.results));
-					for(var i = 0; i < results.messages.length; i++){
-						results.messages[i].complate = false;
-					}
-					this.messageList = results.messages;
-					this.loadingShow = false;
-					this.modalTabMessage = true;
-				}
-			}).catch(() => {
-				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
-			});
+		if(_type == 'showSetup'){
+			this.showSetup = !this.showSetup;
 		}else{
-			this.getPayMessage('modalTabMessage');
+			this.messageTabType = _type;
+			this.loadingShow = true;
+			this.messageList = [];
+			if(_type == 'showMessage'){
+				var urlOptions = '?username=' + this.adminService.getUser().username
+					+ '&token=' + this.adminService.getUser().token
+					+ '&clinic_id=' + this.adminService.getUser().clinicId
+					+ '&mtlist=' + this.adminService.getUser().messageTypes;
+				this.adminService.searchmessage(urlOptions).then((data) => {
+					if(data.status == 'no'){
+						this.loadingShow = false;
+						const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
+						this.toastService.toast(toastCfg);
+					}else{
+						var results = JSON.parse(JSON.stringify(data.results));
+						for(var i = 0; i < results.messages.length; i++){
+							results.messages[i].complate = false;
+						}
+						this.messageList = results.messages;
+						this.loadingShow = false;
+						this.modalTabMessage = true;
+					}
+				}).catch(() => {
+					this.loadingShow = false;
+					const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+					this.toastService.toast(toastCfg);
+				});
+			}else{
+				this.getPayMessage('modalTabMessage');
+			}
 		}
 	}
 
@@ -216,6 +222,7 @@ export class HeaderNavComponent {
 	}
 
 	goDetail(message) {
+		this.modalTabMessage = false;
 		if(message.typeId == '0'){
 			// 支付提醒
 			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});

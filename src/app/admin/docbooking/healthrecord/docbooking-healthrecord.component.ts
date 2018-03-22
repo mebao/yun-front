@@ -15,6 +15,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
+		back_url: string,
 	};
 	toast: {
 		show: number,
@@ -246,6 +247,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.topBar = {
 			title: '接诊',
 			back: true,
+			back_url: './admin/bookingReceive',
 		}
 		this.toast = {
 			show: 0,

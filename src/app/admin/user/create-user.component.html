@@ -94,6 +94,10 @@
 										<select-date title="请选择出生日期" (onVoted)="changeDate($event, child.key)"></select-date>
 									</div>
 									<div class="pure-control-group pure-u-8-24 pr10">
+										<label for="nickname_{{child.key}}">昵称</label>
+										<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" ngModel>
+									</div>
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
 										<label for="blood_type_{{child.key}}">血型</label>
 										<select id="blood_type_{{child.key}}" name="blood_type_{{child.key}}" ngModel>
 											<ng-container *ngFor="let bloodType of bloodTypeList">
@@ -101,7 +105,7 @@
 											</ng-container>
 										</select>
 									</div>
-									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<div class="pure-control-group pure-u-8-24 pl10">
 										<label for="horoscope_{{child.key}}">星座</label>
 										<select id="horoscope_{{child.key}}" name="horoscope_{{child.key}}" ngModel>
 											<ng-container *ngFor="let horoscope of horoscopeList">
@@ -109,7 +113,7 @@
 											</ng-container>
 										</select>
 									</div>
-									<div class="pure-control-group pure-u-8-24 pl10">
+									<div class="pure-control-group pure-u-8-24 pr10">
 										<label for="shengxiao_{{child.key}}">生肖</label>
 										<select id="shengxiao_{{child.key}}" name="shengxiao_{{child.key}}" ngModel>
 											<ng-container *ngFor="let shengxiao of shengxiaoList">
@@ -117,17 +121,13 @@
 											</ng-container>
 										</select>
 									</div>
-									<div class="pure-control-group pure-u-8-24 pr10">
+									<div class="pure-control-group pure-u-8-24 pl5 pr5">
 										<label for="height_{{child.key}}">身高（cm）</label>
 										<input type="number" id="height_{{child.key}}" step="0.01" name="height_{{child.key}}" placeholder="请输入身高" ngModel>
 									</div>
-									<div class="pure-control-group pure-u-8-24 pl5 pr5">
+									<div class="pure-control-group pure-u-8-24 pl10">
 										<label for="weight_{{child.key}}">体重（kg）</label>
 										<input type="number" id="weight_{{child.key}}" step="0.01" name="weight_{{child.key}}" placeholder="请输入体重" ngModel>
-									</div>
-									<div class="pure-control-group pure-u-8-24 pl10">
-										<label for="nickname_{{child.key}}">昵称</label>
-										<input type="text" id="nickname_{{child.key}}" name="nickname_{{child.key}}" placeholder="请输入昵称" ngModel>
 									</div>
 									<div class="pure-control-group pure-u-8-24 pr10">
 										<label for="head_circum_{{child.key}}">头围（cm）</label>

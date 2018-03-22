@@ -15,6 +15,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
+		back_url: string,
 	};
 	toast: {
 		show: number,
@@ -204,6 +205,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.topBar = {
 			title: '接诊',
 			back: true,
+			back_url: './admin/bookingReceive',
 		}
 		this.toast = {
 			show: 0,
