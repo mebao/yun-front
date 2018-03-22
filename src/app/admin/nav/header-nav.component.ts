@@ -49,6 +49,7 @@ export class HeaderNavComponent {
 		this.modalTabMessage = false;
 		this.loadingShow = false;
 		this.messageTabType = '';
+		this.payMessageList = [];
 		this.getPayMessage('');
 
 		this.modalTabMessage = false;
@@ -128,7 +129,6 @@ export class HeaderNavComponent {
 	}
 
 	getPayMessage(_type) {
-		this.payMessageList = [];
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			+ '&token=' + this.adminService.getUser().token
 			+ '&clinic_id=' + this.adminService.getUser().clinicId
@@ -162,8 +162,8 @@ export class HeaderNavComponent {
 		let that = this;
 		// 接受授权推送
 		var goEasy = new GoEasy({
-			// appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
-			appkey: 'BS-d413e9f485094b26b4158b18655dfca4'
+			appkey: 'BS-7bc92c359e3c48399dc20be67c1013a4'
+			// appkey: 'BS-d413e9f485094b26b4158b18655dfca4'
 		});
 
 		// 开启通道前，先关闭通道
@@ -190,6 +190,8 @@ export class HeaderNavComponent {
 	}
 
 	complate(message, index, type) {
+		this.modalTabMessage = false;
+		this.loadingShow = true;
 		this.messageBtn = true;
 		var params = {
 			username: this.adminService.getUser().username,
@@ -198,12 +200,15 @@ export class HeaderNavComponent {
 		}
 		this.adminService.finishmessage(message.id, params).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
 				this.toastService.toast(toastCfg);
 			}else{
 				if(type == 'pay'){
 					this.payMessageList.splice(index, 1);
+					this.getPayMessage('');
 				}else{
+					this.loadingShow = false;
 					this.messageList.splice(index, 1);
 				}
 				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '消息已完成', 3000);
@@ -211,8 +216,9 @@ export class HeaderNavComponent {
 			}
 			this.messageBtn = false;
 		}).catch(() => {
+			this.loadingShow = false;
 			this.messageBtn = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误123', 3000);
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});
 	}
