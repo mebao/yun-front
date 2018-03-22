@@ -648,7 +648,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				eyes: healthrecord.eyes,
 				eyes_other: healthrecord.eyes == '未见明显畸形' ? '' : healthrecord.eyes,
 				vision: healthrecord.vision,
-				vision_other: healthrecord.vision == '未做' ? '' : healthrecord.vision,
+				vision_other: healthrecord.vision == '未见异常' ? '' : healthrecord.vision,
 				gums: healthrecord.gums,
 				gums_other: healthrecord.gums == '未见异常' ? '' : healthrecord.gums,
 				tongue_tie: healthrecord.tongue_tie,
@@ -901,7 +901,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 								this.info.eyes = '未见明显畸形';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='vision'){
-								this.info.vision = '未做';
+								this.info.vision = '未见异常';
 						}
 						if(doctorBookingRecordTemplet.recordkeys[i].key=='gums'){
 								this.info.gums = '未见异常';
