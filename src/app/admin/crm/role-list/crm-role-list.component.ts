@@ -1,7 +1,7 @@
 import { Component }                         from '@angular/core';
 import { Router }                            from '@angular/router';
 
-import { AdminService }                      from '../admin.service';
+import { AdminService }                      from '../../admin.service';
 
 @Component({
 	selector: 'admin-crm-role-list',

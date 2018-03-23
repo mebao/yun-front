@@ -27,9 +27,6 @@ import { HomeComponent }                   from './home/home.component';
 import { BookingComponent }                from './booking/booking.component';
 import { UploadComponent }                 from './user/upload.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
-import { CrmRoleComponent }                from './user/crm-role.component';
-import { CrmRoleListComponent }            from './user/crm-role-list.component';
-import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 
@@ -53,9 +50,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 		NoPermissionsComponent,
 		UploadComponent,
 		DoctorPrescriptComponent,
-		CrmRoleComponent,
-		CrmRoleListComponent,
-		RoleAuthorityListComponent,
 		Repage,
 		UpdatepwdComponent,
 	],

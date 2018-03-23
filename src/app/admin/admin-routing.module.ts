@@ -13,9 +13,6 @@ import { PageNotFoundComponent }            from '../error/page-not-found.compon
 import { NoPermissionsComponent }             from '../error/no-permissions.component';
 import { UploadComponent }                  from './user/upload.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
-import { CrmRoleComponent }                 from './user/crm-role.component';
-import { CrmRoleListComponent }             from './user/crm-role-list.component';
-import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 
@@ -269,18 +266,15 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'crmRole',
-						canActivate: [AuthGuardRole],
-						component: CrmRoleComponent,
+						loadChildren: './crm/role/crm-role.module#CrmRoleModule',
 					},
 					{
 						path: 'crmRoleList',
-						canActivate: [AuthGuardRole],
-						component: CrmRoleListComponent,
+						loadChildren: './crm/role-list/crm-role-list.module#CrmRoleListModule',
 					},
 					{
 						path: 'roleAuthorityList',
-						canActivate: [AuthGuardRole],
-						component: RoleAuthorityListComponent,
+						loadChildren: './crm/role-authority-list/role-authority-list.module#RoleAuthorityListModule',
 					},
 					{
 						path: 'givefeeList',
