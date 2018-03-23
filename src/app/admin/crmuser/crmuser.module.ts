@@ -10,16 +10,13 @@ import { AngCommonModule }                from '../../common/ang-common.module';
 
 import { CrmuserRoutingModule }           from './crmuser.routing.module';
 
-import { CrmUserListComponent }           from './crm-user-list.component';
 import { CrmUserComponent }               from './crm-user.component';
 
 @NgModule({
     declarations: [
-        CrmUserListComponent,
         CrmUserComponent,
     ],
     exports: [
-        CrmUserListComponent,
         CrmUserComponent,
     ],
     imports: [

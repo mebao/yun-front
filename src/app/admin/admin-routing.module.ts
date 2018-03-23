@@ -54,12 +54,10 @@ const adminRoutes: Routes = [
 					{
 						path: 'material',
 						loadChildren: './material/material.module#MaterialModule',
-						data: {preload: true},
 					},
 					{
 						path: 'medical',
 						loadChildren: './medical/medical.module#MedicalModule',
-						data: {preload: true},
 					},
 					{
 						path: 'schedulingIndex',
@@ -76,7 +74,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'prescript',
 						loadChildren: './prescript/prescript.module#PrescriptModule',
-						data: {preload: true},
 					},
 					{
 						path: 'authorize',
@@ -90,12 +87,10 @@ const adminRoutes: Routes = [
 					{
 						path: 'crmuser',
 						loadChildren: './crmuser/crmuser.module#CrmuserModule',
-						data: {preload: true},
 					},
 					{
 						path: 'docbooking',
 						loadChildren: './docbooking/docbooking.module#DocbookingModule',
-						data: {preload: true},
 					},
 					{
 						path: 'memberList',
