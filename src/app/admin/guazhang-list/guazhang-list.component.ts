@@ -99,22 +99,22 @@ export class GuazhangList{
 
 	search() {
 		var urlOptions = this.url;
-		if(this.searchInfo.user_name != ''){
+		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-		if(this.searchInfo.b_time != ''){
+		if(this.searchInfo.b_time && this.searchInfo.b_time != ''){
 			urlOptions += '&b_time=' + this.searchInfo.b_time;
 		}
-		if(this.searchInfo.l_time != ''){
+		if(this.searchInfo.l_time && this.searchInfo.l_time != ''){
 			urlOptions += '&l_time=' + this.searchInfo.l_time;
 		}
-		if(this.searchInfo.b_amount != ''){
+		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
 		}
-		if(this.searchInfo.l_amount != ''){
+		if(this.searchInfo.l_amount && this.searchInfo.l_amount != ''){
 			urlOptions += '&l_amount=' + this.searchInfo.l_amount;
 		}
-		if(this.searchInfo.second_type != ''){
+		if(this.searchInfo.second_type && this.searchInfo.second_type != ''){
 			urlOptions += '&second_type=' + this.searchInfo.second_type;
 		}
 		this.getData(urlOptions);

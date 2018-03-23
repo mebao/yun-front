@@ -8,7 +8,6 @@ import { AuthGuardRole }                    from './auth-guard-role.service';
 import { SelectivePreloadingStrategy }      from '../selective-preloading-strategy';
 
 import { HomeComponent }                    from './home/home.component';
-import { CreateUserComponent }              from './user/create-user.component';
 import { BookingComponent }                 from './booking/booking.component';
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
 import { NoPermissionsComponent }             from '../error/no-permissions.component';
@@ -17,10 +16,8 @@ import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.c
 import { CrmRoleComponent }                 from './user/crm-role.component';
 import { CrmRoleListComponent }             from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }       from './user/role-authority-list.component';
-import { GivefeeListComponent }             from './user/givefee-list.component';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
-import { GuazhangList }                     from './user/guazhang-list.component';
 
 const adminRoutes: Routes = [
 	{
@@ -39,8 +36,7 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'createUser',
-						canActivate: [AuthGuardRole],
-						component: CreateUserComponent
+						loadChildren: './user/create/user-create.module#UserCreateModule',
 					},
 					{
 						path: 'booking',
@@ -288,13 +284,11 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'givefeeList',
-						canActivate: [AuthGuardRole],
-						component: GivefeeListComponent,
+						loadChildren: './givefee-list/givefee-list.module#GivefeeListModule',
 					},
 					{
 						path: 'guazhangList',
-						canActivate: [AuthGuardRole],
-						component: GuazhangList,
+						loadChildren: './guazhang-list/guazhang-list.module#GuazhangListModule',
 					},
 					{
 						path: 'repage',

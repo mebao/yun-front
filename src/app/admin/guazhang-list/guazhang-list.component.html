@@ -25,14 +25,14 @@
 					<option value="2">挂账已支付</option>
 				</select>
 			</div>
-			<div class="pure-control-group mr10">
+			<!-- <div class="pure-control-group mr10">
 				<label for="b_amount">金额：</label>
 				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
 			</div>
 			<div class="pure-control-group mr10">
 				<label for="l_amount" class="text-center">至</label>
 				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
-			</div>
+			</div> -->
 			<div class="flex-1"></div>
 			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 		</div>
@@ -73,7 +73,7 @@
 			</tbody>
 		</table>
 		<div *ngIf="hasData && recordList.length == 0" class="mt10">
-			<nodata title="未查询到病人交易记录"></nodata>
+			<nodata title="未查询到挂账收费记录"></nodata>
 		</div>
 	</div>
 </div>

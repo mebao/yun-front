@@ -24,17 +24,14 @@ import { NoPermissionsComponent }          from '../error/no-permissions.compone
 import {SelectivePreloadingStrategy}       from '../selective-preloading-strategy';
 
 import { HomeComponent }                   from './home/home.component';
-import { CreateUserComponent }             from './user/create-user.component';
 import { BookingComponent }                from './booking/booking.component';
 import { UploadComponent }                 from './user/upload.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { CrmRoleComponent }                from './user/crm-role.component';
 import { CrmRoleListComponent }            from './user/crm-role-list.component';
 import { RoleAuthorityListComponent }      from './user/role-authority-list.component';
-import { GivefeeListComponent }            from './user/givefee-list.component';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
-import { GuazhangList }                    from './user/guazhang-list.component';
 
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
@@ -51,7 +48,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 	declarations: [
 		AdminComponent,
 		HomeComponent,
-		CreateUserComponent,
 		BookingComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
@@ -60,10 +56,8 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CrmRoleComponent,
 		CrmRoleListComponent,
 		RoleAuthorityListComponent,
-		GivefeeListComponent,
 		Repage,
 		UpdatepwdComponent,
-		GuazhangList,
 	],
 	providers: [
 		AdminService,
