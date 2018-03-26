@@ -241,8 +241,8 @@ export class MedicalPurchaseComponent{
 						this.btnCanEdit = false;
 						return;
 					}
-					if(Number(f.value['bid_' + key]) <= 0){
-						this.toastTab('第' + num + '条药品进价应大于0', 'error');
+					if(Number(f.value['bid_' + key]) < 0){
+						this.toastTab('第' + num + '条药品进价应大于等于0', 'error');
 						this.btnCanEdit = false;
 						return;
 					}

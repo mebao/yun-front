@@ -156,8 +156,8 @@ export class MaterialHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(Number(f.value.price) <= 0){
-			this.toastTab('售价应大于0', 'error');
+		if(Number(f.value.price) < 0){
+			this.toastTab('售价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -176,7 +176,7 @@ export class MaterialHasComponent{
 			one_unit: f.value.one_unit,
 			type: f.value.type,
 			usage: f.value.usage,
-			price: f.value.price,
+			price: f.value.price.toString(),
 			can_discount: f.value.canDiscount,
 			expiring_date: this.info.expiring_date,
 		}

@@ -152,7 +152,7 @@ export class MaterialComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(f.value.price) <= 0){
+		if(parseFloat(f.value.price) < 0){
 			this.toastTab('售价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
@@ -179,7 +179,7 @@ export class MaterialComponent{
 			unit: f.value.unit,
 			usage: f.value.usage,
 			one_unit: f.value.one_unit,
-			price: f.value.price,
+			price: f.value.price.toString(),
 			can_discount: f.value.can_discount,
 		}
 

@@ -279,8 +279,8 @@ export class BookingInfoComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(this.booking.backFee) <= 0){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于等于0', 3000);
+		if(parseFloat(this.booking.backFee) < 0){
+			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于0', 3000);
 			this.toastService.toast(toastCfg);
 			this.booking.backFee = '';
 			this.btnCanEdit = false;

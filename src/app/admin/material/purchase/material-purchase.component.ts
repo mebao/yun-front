@@ -238,8 +238,8 @@ export class MaterialPurchaseComponent{
 						this.btnCanEdit = false;
 						return;
 					}
-					if(parseFloat(f.value['bid_' + key]) <= 0){
-						this.toastTab('第' + num + '条物资进价应大于0', 'error');
+					if(parseFloat(f.value['bid_' + key]) < 0){
+						this.toastTab('第' + num + '条物资进价应大于等于0', 'error');
 						this.btnCanEdit = false;
 						return;
 					}

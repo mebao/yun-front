@@ -901,55 +901,6 @@ export class PaymentPrintComponent{
 		this.modalTab = true;
 	}
 
-	confirmPay() {
-		if(this.payInfo.payWay == ''){
-			this.toastTab('请选择支付方式', 'error');
-			return;
-		}
-		if(!this.adminService.isFalse(this.payInfo.give_amount) && Number(this.payInfo.give_amount) <= 0){
-			this.toastTab('减免金额应大于0', 'error');
-			return;
-		}
-		if(!this.adminService.isFalse(this.payInfo.give_amount) && this.adminService.isFalse(this.payInfo.remark)){
-			this.toastTab('减免金额存在时，备注不可为空', 'error');
-			return;
-		}
-		var amountFee = '';
-		if(!this.adminService.isFalse(this.payInfo.give_amount)){
-			amountFee = this.adminService.toDecimal2(Number(this.fee.fee) - Number(this.payInfo.give_amount));
-			if(Number(amountFee) < 0){
-				this.toastTab('减免金额不可大于应付金额', 'error');
-				return;
-			}
-		}else{
-			amountFee = this.fee.fee;
-		}
-
-		this.modalTab = false;
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			clinic_id: this.adminService.getUser().clinicId,
-			user_id: this.bookingInfo.creatorId,
-			user_name: this.bookingInfo.creatorName,
-			amount: amountFee,
-			need_amount: this.fee.originalCost,
-			pay_way: this.payInfo.payWay,
-			give_amount: this.adminService.isFalse(this.payInfo.give_amount) ? null : this.payInfo.give_amount,
-			remark: this.payInfo.remark,
-		}
-		this.adminService.feepay(this.id, params).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				this.toastTab('支付完成', '');
-				setTimeout(() => {
-					this.router.navigate(['./admin/bookingCharge']);
-				}, 2000);
-			}
-		});
-	}
-
 	toastTab(text, type) {
 		this.toast = {
 			show: 1,

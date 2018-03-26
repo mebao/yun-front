@@ -98,8 +98,8 @@ export class SetupInspectComponent{
 				this.btnCanEdit = false;
 				return;
 			}
-			if(parseFloat(f.value.price) <= 0){
-				this.toastTab('项目价格不可小于等于0', 'error');
+			if(parseFloat(f.value.price) < 0){
+				this.toastTab('项目价格不可小于0', 'error');
 				this.btnCanEdit = false;
 				return;
 			}
@@ -108,7 +108,7 @@ export class SetupInspectComponent{
 				token: this.adminService.getUser().token,
 				clinic_id: this.adminService.getUser().clinicId,
 				project_id: f.value.project_id,
-				price: f.value.price,
+				price: f.value.price.toString(),
 				can_discount: f.value.can_discount,
 			}
 			this.adminService.cliniccheckproject(params).then((data) => {
@@ -128,15 +128,15 @@ export class SetupInspectComponent{
 				this.btnCanEdit = false;
 				return;
 			}
-			if(parseFloat(f.value.price) <= 0){
-				this.toastTab('项目价格不可小于等于0', 'error');
+			if(parseFloat(f.value.price) < 0){
+				this.toastTab('项目价格不可小于0', 'error');
 				this.btnCanEdit = false;
 				return;
 			}
 			var updateParams = {
 				username: this.adminService.getUser().username,
 				token: this.adminService.getUser().token,
-				price: f.value.price,
+				price: f.value.price.toString(),
 				can_use: f.value.can_use,
 			}
 			this.adminService.updateclinicproject(this.id, updateParams).then((data) => {

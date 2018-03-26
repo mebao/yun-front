@@ -218,8 +218,8 @@ export class MedicalHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(f.value.price) <= 0){
-			this.toastTab('售价应大于0', 'error');
+		if(parseFloat(f.value.price) < 0){
+			this.toastTab('售价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -238,7 +238,7 @@ export class MedicalHasComponent{
 			otc: f.value.otc,
 			code: f.value.code,
 			usage: f.value.usage,
-			price: f.value.price,
+			price: f.value.price.toString(),
 			can_discount: f.value.canDiscount,
 			is_prescribed: f.value.is_prescribed,
 			expiring_date: this.info.expiring_date,

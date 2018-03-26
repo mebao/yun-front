@@ -702,15 +702,15 @@ export class DocbookingComponent implements OnInit{
 	changeFee() {
 		var price = false;
 		if(!this.adminService.isFalse(this.addFeeInfo.price)){
-			if(Number(this.addFeeInfo.price) <= 0){
-				this.toastTab('单价费用应大于0', 'error');
+			if(Number(this.addFeeInfo.price) < 0){
+				this.toastTab('单价费用应大于等于0', 'error');
 			}
 			price = true;
 		}
 		var number = false;
 		if(!this.adminService.isFalse(this.addFeeInfo.number)){
 			if(Number(this.addFeeInfo.number) <= 0 || Number(this.addFeeInfo.number) % 1 != 0){
-				this.toastTab('单价费用应为大于0的整数', 'error');
+				this.toastTab('单价数量应为大于0的整数', 'error');
 			}
 			number = true;
 		}
@@ -758,8 +758,8 @@ export class DocbookingComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(this.addFeeInfo.price) <= 0){
-			this.toastTab('消费项目单价应大于0', 'error');
+		if(parseFloat(this.addFeeInfo.price) < 0){
+			this.toastTab('消费项目单价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -769,7 +769,7 @@ export class DocbookingComponent implements OnInit{
 			return;
 		}
 		if(Number(this.addFeeInfo.number) <= 0 || Number(this.addFeeInfo.number) % 1 != 0){
-			this.toastTab('消费项目单价应为大于0的整数', 'error');
+			this.toastTab('消费项目数量应为大于0的整数', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -778,8 +778,8 @@ export class DocbookingComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(parseFloat(this.addFeeInfo.fee) <= 0){
-			this.toastTab('消费项目单价应大于0', 'error');
+		if(parseFloat(this.addFeeInfo.fee) < 0){
+			this.toastTab('消费项目单价应大于等于0', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
