@@ -607,10 +607,14 @@ export class DocbookingComponent implements OnInit{
 	}
 
 	// 放大图片
-	enlargeImg(ele) {
-		this.modalImg = {
-			url: ele.src,
-			showImg: this.modalImg.showImg == 0 ? 1 : 0,
+	enlargeImg(ele, type, values) {
+		if(type == 'image'){
+			this.modalImg = {
+				url: ele.src,
+				showImg: this.modalImg.showImg == 0 ? 1 : 0,
+			}
+		}else{
+			window.open(values);
 		}
 	}
 

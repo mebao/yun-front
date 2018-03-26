@@ -431,7 +431,7 @@
 										<td>{{result.checkInfoName}}</td>
 										<!-- 检查结果为文字还是图片 -->
 										<ng-container *ngIf="result.isUpload == '0'">
-										<td>{{result.code}}</td>
+											<td>{{result.code}}</td>
 											<td>{{result.values}}</td>
 											<td>
 												<div class="length-text">{{result.references}}</div>
@@ -443,9 +443,11 @@
 											</td>
 										</ng-container>
 										<ng-container *ngIf="result.isUpload == '1'">
-											<td colspan="6">
+											<td></td>
+											<td colspan="5">
 												<div *ngIf="result.values && result.values != ''" class="upload-button-tab img">
-													<img (click)="enlargeImg($event.target)" src="{{result.values}}" />
+													<img *ngIf="result.values.lastIndexOf('.pdf') == -1" (click)="enlargeImg($event.target, 'image', result.values)" src="{{result.values}}" />
+						                            <div *ngIf="result.values.lastIndexOf('.pdf') != -1" (click)="enlargeImg($event.target, 'file', result.values)"  class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
 												</div>
 											</td>
 										</ng-container>

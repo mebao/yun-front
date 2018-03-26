@@ -119,6 +119,11 @@ export class InspectResultsComponent{
 								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
 									hasValues = true;
 								}
+								// 用于判断上传为图片，还是pdf文件
+								results.list[i].resultList[j].isImg = true;
+								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values.indexOf('pdf') != -1){
+									results.list[i].resultList[j].isImg = false;
+								}
 							}
 							if(hasValues){
 								results.list[i].editType = 'update';
@@ -173,9 +178,18 @@ export class InspectResultsComponent{
 
 		        var reader = new FileReader();
 		        var imgEle = document.getElementById('imgEle_' + checkId);
+		        var fileEle = document.getElementById('fileEle_' + checkId);
 		        reader.readAsDataURL(file);
 		        reader.onload = function(f) {
-		        	imgEle.setAttribute('src', reader.result);
+					if(file.type.indexOf('image') != -1){
+		        		imgEle.setAttribute('src', reader.result);
+						fileEle.setAttribute('style', 'display: none');
+						imgEle.removeAttribute('style');
+					}else{
+		        		fileEle.setAttribute('src', reader.result);
+						imgEle.setAttribute('style', 'display: none');
+						fileEle.removeAttribute('style');
+					}
 		        }
 
 		        var xhr = new XMLHttpRequest();
@@ -258,10 +272,16 @@ export class InspectResultsComponent{
 	}
 
 	// 放大图片
-	enlargeImg(ele) {
-		this.modalImg = {
-			url: ele.src,
-			showImg: this.modalImg.showImg == 0 ? 1 : 0,
+	enlargeImg(ele, type, values) {
+		if(type == 'image'){
+			this.modalImg = {
+				url: ele.src,
+				showImg: this.modalImg.showImg == 0 ? 1 : 0,
+			}
+		}else{
+			if(this.buttonType == 'update'){
+				window.open(values);
+			}
 		}
 	}
 
