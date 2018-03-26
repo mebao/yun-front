@@ -1,10 +1,275 @@
 <div class="left-nav">
-	<nav>
-		<!-- <a
-			routerLink="./home"
-			routerLinkActive="active">
-				首页
-		</a> -->
+	<ul nz-menu [nzMode]="'inline'" nzTheme='dark'>
+		<li nz-menu-item
+			*ngIf="clinicRole.workbenchReception.use != ''"
+			routerLink="./workbench/reception"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>前台工作台</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.scheduling.use != ''"
+			routerLink="./schedulingIndex"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>排班</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingList.use != ''"
+			routerLink="./bookingList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>预约列表</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingIn.use != ''"
+			routerLink="./bookingIn"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>登记</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.doctorVisit.use != ''"
+			routerLink="./docbooking/visit"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>就诊管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingReceive.use != ''"
+			routerLink="./bookingReceive"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>接诊</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.inspectResultsList.use != ''"
+			routerLink="./inspectResultsList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>实验室检查</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingAssistList.use != ''"
+			routerLink="./bookingAssistList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>辅助治疗</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.prescriptList.use != ''"
+			routerLink="./prescript/list"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>发药</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingCharge.use != ''"
+			routerLink="./bookingCharge"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>收费</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.guazhangList.use != ''"
+			routerLink="./guazhangList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>挂账收费</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingFollowupsList.use != ''"
+			routerLink="./bookingFollowupsList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>随访管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingExamineCase.use != ''"
+			routerLink="./bookingExamineCase"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>病例审核</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.childServiceList.use != ''"
+			[routerLink]="['./childServiceList']"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>科室项目</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.setupInspectList.use != ''"
+			routerLink="./setupInspectList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>检查项目</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.assistList.use != ''"
+			routerLink="./assistList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>辅助治疗列表</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.medicalSupplierList.use != ''"
+			routerLink="./medical/supplierList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>供应商管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.materialList.use != ''"
+			routerLink="./material/list"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>物资管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.medicalList.use != ''"
+			routerLink="./medical/list"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>药房</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.memberList.use != ''"
+			routerLink="./memberList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>会员管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.userList.use != ''"
+			routerLink="./userList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>用户管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.childList.use != ''"
+			routerLink="./childList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>病人库</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.crmRoleList.use != ''"
+			routerLink="./crmRoleList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>角色管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.crmUserList.use != ''"
+			routerLink="./crmuser/list"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>员工管理</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.doctorList.use != ''"
+			routerLink="./doctor/list"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>医生列表</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.transactionRecordList.use != ''"
+			routerLink="./transactionRecordList"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>交易记录</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.transactionStatistics.use != ''"
+			routerLink="./transactionStatistics"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>交易统计</span>
+			</span>
+		</li>
+		<li nz-menu-item
+			routerLink="./updatepwd"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>修改密码</span>
+			</span>
+		</li>
+		<!-- <li nz-submenu>
+			<span title>
+				<i class="anticon anticon-appstore"></i>
+				<span>Navigation Two</span>
+			</span>
+			<ul>
+				<li nz-menu-item>Option 5</li>
+				<li nz-menu-item>Option 6</li>
+				<li nz-submenu>
+					<span title>Submenu</span>
+					<ul>
+						<li nz-menu-item>Option 7</li>
+						<li nz-menu-item>Option 8</li>
+					</ul>
+				</li>
+			</ul>
+		</li> -->
+	</ul>
+	<!-- <nav>
 		<a
 			*ngIf="clinicRole.workbenchReception.use != ''"
 			routerLink="./workbench/reception"
@@ -23,12 +288,6 @@
 			routerLinkActive="active">
 				预约列表
 		</a>
-		<!-- <a
-			*ngIf="clinicRole.bookingConfirm.use != ''"
-			routerLink="./bookingConfirm"
-			routerLinkActive="active">
-				预约金支付
-		</a> -->
 	  	<a
 			*ngIf="clinicRole.bookingIn.use != ''"
 			routerLink="./bookingIn"
@@ -191,11 +450,5 @@
 			routerLinkActive="active">
 			修改密码
 		</a>
-	  	<!-- <a
-			*ngIf="clinicRole.givefeeList.use != ''"
-			routerLink="../givefeeList"
-			routerLinkActive="active">
-				减免金额记录
-		</a> -->
-	</nav>
+	</nav> -->
 </div>
