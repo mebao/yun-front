@@ -2,7 +2,8 @@
 <div class="content-section admin-booking-receive">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="flex pure-form search-tab max">
-		<div class="pure-control-group mr10">
+		<!-- 接诊所有，才可以筛选医生 -->
+		<div *ngIf="moduleAuthority.receiveAll" class="pure-control-group mr10">
 			<label for="doctor_id">医生：</label>
 			<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
 				<ng-container *ngFor="let doctor of doctorlist">
@@ -22,6 +23,10 @@
 			<label for="child_name">宝宝姓名：</label>
 			<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝姓名">
 		</div>
+		<div *ngIf="!moduleAuthority.receiveAll" class="pure-control-group">
+			<label for="mobile">手机号码：</label>
+			<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" placeholder="请输入手机号码">
+		</div>
 		<div class="flex-1"></div>
 	</div>
 	<div class="flex pure-form search-tab max mt2">
@@ -33,7 +38,7 @@
 			<label for="cdate_less" class="text-center">至</label>
 			<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.cdate_less_text" [startDate]="searchInfo.cdate_big_num" (onVoted)="changeDate($event, 'cdate_less')"></select-date>
 		</div>
-		<div class="pure-control-group">
+		<div *ngIf="moduleAuthority.receiveAll" class="pure-control-group">
 			<label for="mobile">手机号码：</label>
 			<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" maxlength="11" placeholder="请输入手机号码">
 		</div>
