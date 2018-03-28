@@ -1,6 +1,15 @@
 <div class="left-nav">
 	<ul nz-menu [nzMode]="'inline'" nzTheme='dark'>
 		<li nz-menu-item
+			*ngIf="adminRole.bookingUpdate"
+			routerLink="./bookingUpdate"
+			routerLinkActive="ant-menu-item-selected">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>预约修改</span>
+			</span>
+		</li>
+		<li nz-menu-item
 			*ngIf="clinicRole.workbenchReception.use != ''"
 			routerLink="./workbench/reception"
 			routerLinkActive="ant-menu-item-selected">

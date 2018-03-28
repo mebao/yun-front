@@ -1,0 +1,370 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section admin-booking-update-info">
+	<top-bar [data]="topBar"></top-bar>
+    <div nz-row [nzGutter]="40">
+        <div nz-col [nzSpan]="8">
+            <nz-card class="w100">
+                <ng-template #title>
+                    预约详情
+                </ng-template>
+                <ng-template #extra>
+                    <button *ngIf="showBookingInfo" (click)="changeShowBookingInfo()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+                    <button *ngIf="!showBookingInfo" (click)="changeShowBookingInfo()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+                </ng-template>
+                <ng-template #body>
+                    <div *ngIf="showBookingInfo">
+                        <div nz-row class="mb10">
+                            <div nz-col [nzSpan]="8" class="text-right">宝宝姓名：</div>
+                            <div nz-col [nzSpan]="16">{{booking.childName}}</div>
+                        </div>
+                        <div nz-row class="mb10">
+                            <div nz-col [nzSpan]="8" class="text-right">预约科室：</div>
+                            <div nz-col [nzSpan]="16">{{(booking.services && booking.services.length > 0) ? booking.services[0].serviceName : ''}}</div>
+                        </div>
+                        <div nz-row class="mb10">
+                            <div nz-col [nzSpan]="8" class="text-right">预约医生：</div>
+                            <div nz-col [nzSpan]="16">{{(booking.services && booking.services.length > 0) ? booking.services[0].userDoctorName : ''}}</div>
+                        </div>
+                        <div nz-row class="mb10">
+                            <div nz-col [nzSpan]="8" class="text-right">预约日期：</div>
+                            <div nz-col [nzSpan]="16">{{(booking.services && booking.services.length > 0) ? booking.services[0].serviceDate : ''}}</div>
+                        </div>
+                        <div nz-row class="mb10">
+                            <div nz-col [nzSpan]="8" class="text-right">预约时间：</div>
+                            <div nz-col [nzSpan]="16">{{(booking.services && booking.services.length > 0) ? booking.services[0].serviceTime : ''}}</div>
+                        </div>
+                        <div nz-row>
+                            <div nz-col [nzSpan]="8" class="text-right">状态：</div>
+                            <div nz-col [nzSpan]="16">{{booking.statusText}}</div>
+                        </div>
+                    </div>
+                    <div *ngIf="!showBookingInfo">
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">宝宝：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+            					<nz-select
+            						class="w100"
+            						(ngModelChange)="bookingInfo.child=$event"
+            						[nzSize]="'large'"
+            						[nzPlaceHolder]="'请选择宝宝'"
+            						[ngModel]="bookingInfo.child"
+                                    [nzDisabled]="true"
+            						nzShowSearch>
+            						<nz-option
+            							*ngFor="let child of childList"
+            							[nzLabel]="child.childName"
+            							[nzValue]="child">
+            						</nz-option>
+            					</nz-select>
+            				</div>
+            			</div>
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">科室：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+            					<nz-select
+            						class="w100"
+            						(ngModelChange)="bookingInfo.service=$event"
+            						[nzSize]="'large'"
+            						[nzPlaceHolder]="'请选择科室'"
+            						[ngModel]="bookingInfo.service"
+            						nzShowSearch>
+            						<nz-option
+            							*ngFor="let service of serviceList"
+            							[nzLabel]="service.serviceName"
+            							[nzValue]="service">
+            						</nz-option>
+            					</nz-select>
+            				</div>
+            			</div>
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">医生：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+            					<nz-select
+            						class="w100"
+            						(ngModelChange)="bookingInfo.doctor=$event"
+            						[nzSize]="'large'"
+            						[nzPlaceHolder]="'请选择医生'"
+            						[ngModel]="bookingInfo.doctor"
+            						nzShowSearch>
+            						<nz-option
+            							*ngFor="let doctor of doctorList"
+            							[nzLabel]="doctor.doctorName"
+            							[nzValue]="doctor">
+            						</nz-option>
+            					</nz-select>
+            				</div>
+            			</div>
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">日期：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+                                <nz-datepicker (ngModelChange)="booking_date=$event" [nzAllowClear]="false"
+                					[nzSize]="'large'" class="w100" [ngModel]="booking_date" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择日期'"></nz-datepicker>
+            				</div>
+            			</div>
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">时间：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+            					<nz-select
+            						class="w100"
+            						(ngModelChange)="bookingInfo.time=$event"
+            						[nzSize]="'large'"
+            						[nzPlaceHolder]="'请选择时间'"
+            						[ngModel]="bookingInfo.time"
+            						nzShowSearch>
+            						<nz-option
+            							*ngFor="let time of timeList"
+            							[nzLabel]="time.name"
+            							[nzValue]="time.id">
+            						</nz-option>
+            					</nz-select>
+            				</div>
+            			</div>
+                        <div nz-form-item nz-row class="mb10">
+            				<div nz-form-label nz-col [nzSpan]="6" class="text-right">
+            					<label for="status">状态：</label>
+            				</div>
+            				<div nz-form-control nz-col [nzSpan]="18">
+            					<nz-select
+            						class="w100"
+            						(ngModelChange)="bookingInfo.status=$event"
+            						[nzSize]="'large'"
+            						[nzPlaceHolder]="'请选择状态'"
+            						[ngModel]="bookingInfo.status"
+            						>
+            						<nz-option
+            							*ngFor="let status of statusList"
+            							[nzLabel]="status.text"
+            							[nzValue]="status.id">
+            						</nz-option>
+            					</nz-select>
+            				</div>
+            			</div>
+                        <div class="text-center">
+                            <button (click)="saveInfo()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="16">
+            <nz-card class="w100">
+                <ng-template #title>
+                    费用详情
+                </ng-template>
+                <ng-template #body>
+					<nz-table #nzTable [nzDataSource]="booking.fees" [nzBordered]="true" [nzIsPagination]="false">
+						<thead nz-thead>
+							<tr>
+								<th nz-th class="w20">费用名称</th>
+								<th nz-th class="w20">费用单价</th>
+								<th nz-th class="w10">消费数量</th>
+								<th nz-th class="w20">费用合计</th>
+								<th nz-th class="w30">操作</th>
+							</tr>
+						</thead>
+						<tbody nz-tbody>
+							<tr nz-tbody-tr *ngFor="let fee of nzTable.data">
+								<td nz-td>
+									{{fee.projectName}}
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateFee.feeId == '' || updateFee.feeId != fee.feeId">
+										{{fee.price}}
+									</ng-container>
+									<ng-container *ngIf="updateFee.feeId == fee.feeId">
+										<nz-input-number [(ngModel)]="updateFee.price" [nzSize]="'large'" [nzStep]="0.01" (nzBlur)="changeFee()"></nz-input-number>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateFee.feeId == '' || updateFee.feeId != fee.feeId">
+										{{fee.number}}
+									</ng-container>
+									<ng-container *ngIf="updateFee.feeId == fee.feeId">
+										<nz-input-number [(ngModel)]="updateFee.number" [nzSize]="'large'" [nzStep]="1" (nzBlur)="changeFee()"></nz-input-number>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateFee.feeId == '' || updateFee.feeId != fee.feeId">
+										{{fee.fee}}
+									</ng-container>
+									<ng-container *ngIf="updateFee.feeId == fee.feeId">
+										<nz-input-number [(ngModel)]="updateFee.fee" [nzSize]="'large'" [nzStep]="0.01" [nzDisabled]="true"></nz-input-number>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container  *ngIf="updateFee.feeId == ''">
+										<button (click)="selectUpdateFee(fee)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+										<button (click)="deleteFee(fee)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+									</ng-container>
+									<ng-container  *ngIf="updateFee.feeId == fee.feeId">
+										<button (click)="saveFee()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
+										<button (click)="cancelFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									</ng-container>
+								</td>
+							</tr>
+						</tbody>
+					</nz-table>
+                </ng-template>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="24" class="mt20">
+            <nz-card class="w100">
+                <ng-template #title>
+                    交易详情
+                </ng-template>
+                <ng-template #body>
+					<nz-table #nzTable [nzDataSource]="booking.tranList" [nzBordered]="true" [nzIsPagination]="false">
+						<thead nz-thead>
+							<tr>
+								<th nz-th>支付类型</th>
+								<th nz-th>所需费用</th>
+								<th nz-th>实际支付</th>
+								<th nz-th>赠送金额</th>
+								<th nz-th>支付方式</th>
+								<th nz-th>第二支付方式</th>
+								<th nz-th>第二支付金额</th>
+								<th nz-th>备注</th>
+								<th nz-th>操作</th>
+							</tr>
+						</thead>
+						<tbody nz-tbody>
+							<tr nz-tbody-tr *ngFor="let tran of nzTable.data">
+								<td nz-td>{{tran.typeText}}</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.type == '3' ? '-' : tran.need_amount}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<ng-container *ngIf="tran.type == '3'">
+											-
+										</ng-container>
+										<ng-container *ngIf="tran.type != '3'">
+											<nz-input-number [(ngModel)]="updateTran.need_amount" [nzSize]="'large'" [nzStep]="0.01" (nzBlur)="changeTran()"></nz-input-number>
+										</ng-container>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.amount}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<nz-input-number [(ngModel)]="updateTran.amount" [nzSize]="'large'" [nzStep]="0.01" (nzBlur)="changeTran()"></nz-input-number>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.type == '3' ? '-' : tran.give_amount}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<ng-container *ngIf="tran.type == '3'">
+											-
+										</ng-container>
+										<ng-container *ngIf="tran.type != '3'">
+											<nz-input-number [(ngModel)]="updateTran.give_amount" [nzSize]="'large'" [nzStep]="0.01" (nzBlur)="changeTran()"></nz-input-number>
+										</ng-container>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.pay_way_text}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<nz-select
+		            						class="w100"
+		            						(ngModelChange)="updateTran.pay_way=$event"
+		            						[nzSize]="'large'"
+		            						[nzPlaceHolder]="'请选择支付方式'"
+		            						[ngModel]="updateTran.pay_way"
+		            						>
+		            						<nz-option
+		            							*ngFor="let pay of payList"
+		            							[nzLabel]="pay.name"
+		            							[nzValue]="pay.id">
+		            						</nz-option>
+		            					</nz-select>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.type == '3' ? '-' : tran.second_way_text}}
+									</ng-container>
+									<ng-container  *ngIf="updateTran.id == tran.id">
+										<ng-container *ngIf="tran.type == '3'">
+											-
+										</ng-container>
+										<ng-container *ngIf="tran.type != '3'">
+											<nz-select
+			            						class="w100"
+												nzAllowClear
+			            						(ngModelChange)="updateTran.second_way=$event"
+			            						[nzSize]="'large'"
+			            						[nzPlaceHolder]="'请选择支付方式'"
+			            						[ngModel]="updateTran.second_way"
+			            						>
+			            						<nz-option
+			            							*ngFor="let pay of payList"
+			            							[nzLabel]="pay.name"
+			            							[nzValue]="pay.id">
+			            						</nz-option>
+			            					</nz-select>
+										</ng-container>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.type == '3' ? '-' : tran.second_amount}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<ng-container *ngIf="tran.type == '3'">
+											-
+										</ng-container>
+										<ng-container *ngIf="tran.type != '3'">
+											<nz-input-number [(ngModel)]="updateTran.second_amount" [nzSize]="'large'" [nzStep]="0.01" (nzBlur)="changeTran()"></nz-input-number>
+										</ng-container>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
+										{{tran.type == '3' ? '-' : tran.remark}}
+									</ng-container>
+									<ng-container *ngIf="updateTran.id == tran.id">
+										<ng-container *ngIf="tran.type == '3'">
+											-
+										</ng-container>
+										<ng-container *ngIf="tran.type != '3'">
+											<nz-input [(ngModel)]="updateTran.remark" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+										</ng-container>
+									</ng-container>
+								</td>
+								<td nz-td>
+									<ng-container  *ngIf="updateTran.id == ''">
+										<button (click)="selectUpdateTran(tran)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+									</ng-container>
+									<ng-container  *ngIf="updateTran.id == tran.id">
+										<button (click)="saveTran()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
+										<button (click)="cancelTran()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									</ng-container>
+								</td>
+							</tr>
+						</tbody>
+					</nz-table>
+				</ng-template>
+			</nz-card>
+		</div>
+    </div>
+</div>
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzConfirmLoading]="isConfirmLoading">
+  	<ng-template #modalContent>
+    	<p>确认删除该费用</p>
+  	</ng-template>
+</nz-modal>

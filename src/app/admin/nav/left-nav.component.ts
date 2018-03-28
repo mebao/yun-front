@@ -13,6 +13,9 @@ export class LeftNavComponent{
 	userRole: string;
 	selectedTab: string;
 	showTab: boolean;
+	adminRole: {
+		bookingUpdate: boolean,
+	}
 	clinicRole: {
 		//前台工作台
 		workbenchReception: {
@@ -369,6 +372,10 @@ export class LeftNavComponent{
 			}
 		}
 
+		this.adminRole = {
+			bookingUpdate: false,
+		}
+
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
 		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
@@ -378,6 +385,10 @@ export class LeftNavComponent{
 					authority: [],
 					infos: [],
 				}
+			}
+			// 只有管理员才有的权限
+			this.adminRole = {
+				bookingUpdate: true,
 			}
 		}else{
 			var clinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));

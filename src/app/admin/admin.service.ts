@@ -1264,6 +1264,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 删除预约费用
+	deletebkfee(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/deletebkfee/' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 修改交易信息
+	updatetran(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/updatetran/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

@@ -250,6 +250,14 @@ const adminRoutes: Routes = [
 						loadChildren: './booking/payment-print/payment-print.module#PaymentPrintModule',
 					},
 					{
+						path: 'bookingUpdate',
+						loadChildren: './booking/update/booking-update.module#BookingUpdateModule',
+					},
+					{
+						path: 'bookingUpdateInfo',
+						loadChildren: './booking/update-info/booking-update-info.module#BookingUpdateInfoModule',
+					},
+					{
 						path: 'upload',
 						canActivate: [AuthGuardRole],
 						component: UploadComponent
