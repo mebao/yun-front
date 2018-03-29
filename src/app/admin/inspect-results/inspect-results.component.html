@@ -65,7 +65,7 @@
 											<td colspan="4">
 												<div class="upload-button-tab img">
 													<img *ngIf="buttonType == 'update' && result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'image', result.values)" id="imgEle_{{result.checkInfoId}}" src="{{result.values ? result.values : '../assets/images/result.png'}}" [ngStyle]="{'display': buttonType != 'update' && !result.isImg ? 'none' : 'inline'}" />
-													<div *ngIf="buttonType == 'update' && !result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'pdf', result.values)" id="fileEle_{{result.checkInfoId}}" class="info" [ngStyle]="{'display': buttonType != 'update' && result.isImg ? 'none' : 'inline'}">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
+													<div *ngIf="buttonType == 'update' && !result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'pdf', result.values)" id="fileEle_{{result.checkInfoId}}" class="info" [ngStyle]="{'display': buttonType != 'update' && result.isImg ? 'none' : 'inline'}">{{result.values ? result.values.substr(result.values.lastIndexOf('/') + 1) : ''}}</div>
 												</div>
 											</td>
 										</ng-container>
