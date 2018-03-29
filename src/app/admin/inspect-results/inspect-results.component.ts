@@ -121,7 +121,7 @@ export class InspectResultsComponent{
 								}
 								// 用于判断上传为图片，还是pdf文件
 								results.list[i].resultList[j].isImg = true;
-								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values.indexOf('pdf') != -1){
+								if(results.list[i].resultList[j].values && results.list[i].resultList[j].values.indexOf('pdf') != -1){
 									results.list[i].resultList[j].isImg = false;
 								}
 							}
