@@ -185,10 +185,6 @@ export class InspectResultsComponent{
 		        		imgEle.setAttribute('src', reader.result);
 						fileEle.setAttribute('style', 'display: none');
 						imgEle.removeAttribute('style');
-					}else{
-		        		fileEle.setAttribute('src', reader.result);
-						imgEle.setAttribute('style', 'display: none');
-						fileEle.removeAttribute('style');
 					}
 		        }
 
@@ -197,8 +193,13 @@ export class InspectResultsComponent{
 		        xhr.onreadystatechange = function () {
 		            if (xhr.readyState == 4) {
 		                if (xhr.status == 200) {
-		                    var fileEle = document.getElementById('file_' + checkId);
-		                    fileEle.setAttribute('value', JSON.parse(xhr.responseText).key);
+		                    var fileValueEle = document.getElementById('file_' + checkId);
+		                    fileValueEle.setAttribute('value', JSON.parse(xhr.responseText).key);
+							if(JSON.parse(xhr.responseText).key.indexOf('pdf') != -1){
+								fileEle.innerHTML = JSON.parse(xhr.responseText).key;
+								imgEle.setAttribute('style', 'display: none');
+								fileEle.removeAttribute('style');
+							}
 		                } else {
 
 		                }
