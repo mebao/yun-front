@@ -1115,7 +1115,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	}
 
 	create(type) {
-		this.createType = type;
+		// 审核状态下，只保存，不审核，完成操作后，仍属于审核状态
+		this.createType = (type == '' && this.pageType != 'examine') ? '' : 'examine';
 		if(this.actualOperator.use && this.operator == ''){
 			this.toastTab('请选择实际操作人', 'error');
 			return;
