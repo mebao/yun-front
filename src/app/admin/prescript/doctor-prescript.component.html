@@ -58,7 +58,7 @@
 								</label>
 								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-										<option value="{{medicalSupplie.string}}" [disabled]="medicalSupplie.others.length == 0">{{medicalSupplie.name}}{{medicalSupplie.others.length == 0 ? '（库存为0）' : ''}}</option>
+										<option value="{{medicalSupplie.string}}" [disabled]="medicalSupplie.others.length == 0">{{medicalSupplie.name}}{{medicalSupplie.others.length == 0 ? '（库存为0）' : ''}}（规格：{{medicalSupplie.format}}）</option>
 									</ng-container>
 								</select>
 							</div>
@@ -71,7 +71,7 @@
 								</label>
 								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
 									<ng-container *ngFor="let batch of ms.batchList">
-										<option value="{{batch.string}}">{{batch.batch}}（规格：{{batch.format}}，库存：{{batch.stock}}{{ms.ms.unit}}）</option>
+										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
 									</ng-container>
 								</select>
 							</div>
