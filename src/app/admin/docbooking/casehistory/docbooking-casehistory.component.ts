@@ -1229,7 +1229,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}else{
 			urlOptions = '/' + JSON.parse(sessionStorage.getItem('casehistory')).id;
 		}
-		if(type == ''){
+		if(type == '' && this.pageType != 'examine'){
 			this.adminService.casehistory(urlOptions, params).then((data) => {
 				if(data.status == 'no'){
 					this.loadingShow = false;
