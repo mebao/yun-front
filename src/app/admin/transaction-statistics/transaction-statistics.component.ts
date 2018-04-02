@@ -75,7 +75,7 @@ export class TransactionStatisticsComponent{
 			type: '',
 		};
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 		this.tranList = [];
@@ -139,6 +139,7 @@ export class TransactionStatisticsComponent{
 	}
 
 	search(type) {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;

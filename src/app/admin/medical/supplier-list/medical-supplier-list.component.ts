@@ -65,7 +65,7 @@ export class MedicalSupplierListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -101,6 +101,7 @@ export class MedicalSupplierListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-supplierList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){

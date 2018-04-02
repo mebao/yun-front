@@ -68,7 +68,7 @@ export class ChildListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.childList = [];
 		this.hasData = false;
@@ -91,6 +91,7 @@ export class ChildListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-childList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		if(this.searchInfo.name != ''){

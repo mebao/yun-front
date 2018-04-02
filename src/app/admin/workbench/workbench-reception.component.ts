@@ -62,7 +62,7 @@ export class WorkbenchReceptionComponent{
 			title: '前台工作台',
 			back: false,
 		}
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasDoctorBookingData = false;
 		this.doctorBookingList = [];
@@ -136,6 +136,7 @@ export class WorkbenchReceptionComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var dutyUrl = this.url + '&weekindex=' + this.weekNumConfig;
 		var bookingUrl = this.url + '&weekindex=' + this.weekNumConfig;
 		if(this.searchInfo.doctor != ''){

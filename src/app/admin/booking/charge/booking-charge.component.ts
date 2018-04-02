@@ -110,7 +110,7 @@ export class BookingChargeComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
@@ -177,6 +177,7 @@ export class BookingChargeComponent{
 
 	//查询
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-bookingCharge', JSON.stringify(this.searchInfo));
 		//列表
 		var urlOptionsList = this.getUrlOptios();

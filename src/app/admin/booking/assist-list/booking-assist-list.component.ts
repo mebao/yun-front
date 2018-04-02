@@ -43,7 +43,7 @@ export class BookingAssistList{
             back: false,
         }
 
-        this.loadingShow = true;
+        this.loadingShow = false;
 
         var todayDate = this.adminService.getDayByDate(new Date());
         this.info = {
@@ -69,13 +69,11 @@ export class BookingAssistList{
         var searchassistUrl = this.url + '&status=1'
         this.adminService.searchassist(searchassistUrl).then((data) => {
             if(data.status == 'no'){
-                this.loadingShow = false;
         		const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
         		this.toastService.toast(toastCfg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.assistList = results.list;
-                this.loadingShow = false;
             }
         }).catch((data) => {
     		const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
@@ -87,6 +85,7 @@ export class BookingAssistList{
     getData(urlOptions) {
         this.adminService.bookingassist(urlOptions).then((data) => {
             if(data.status == 'no'){
+                this.loadingShow = false;
                 const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
                 this.toastService.toast(toastCfg);
             }else{
@@ -120,6 +119,7 @@ export class BookingAssistList{
                 }
                 this.bookingAssistList = newList;
                 this.hasData = true;
+                this.loadingShow = false;
             }
         });
     }
@@ -131,6 +131,7 @@ export class BookingAssistList{
     }
 
     search() {
+        this.loadingShow = true;
         var urlOptions = this.url;
         if(this.info.assist_id != ''){
             urlOptions += '&assist_id=' + this.info.assist_id;

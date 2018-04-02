@@ -67,7 +67,7 @@ export class AssistListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
         this.assistList = [];
         this.hasData = false;
@@ -115,6 +115,7 @@ export class AssistListComponent{
     }
 
     search() {
+        this.loadingShow = true;
         sessionStorage.setItem('search-assistList', JSON.stringify(this.searchInfo));
         var urlOptions = this.url;
         if(!this.adminService.isFalse(this.searchInfo.name)){

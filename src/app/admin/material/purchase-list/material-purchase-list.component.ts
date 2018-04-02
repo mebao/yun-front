@@ -81,7 +81,7 @@ export class MaterialPurchaseListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -129,6 +129,7 @@ export class MaterialPurchaseListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-materialPurchaseList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){

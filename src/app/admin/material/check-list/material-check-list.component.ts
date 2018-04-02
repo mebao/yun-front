@@ -76,7 +76,7 @@ export class MaterialCheckListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -108,6 +108,7 @@ export class MaterialCheckListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;

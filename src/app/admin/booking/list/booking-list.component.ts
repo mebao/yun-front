@@ -140,7 +140,7 @@ export class BookingListComponent implements OnInit{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 		this.bookinglist = [];
@@ -398,6 +398,7 @@ export class BookingListComponent implements OnInit{
 
 	//预约列表
 	getList(urlOptions, type) {
+		this.loadingShow = true;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;

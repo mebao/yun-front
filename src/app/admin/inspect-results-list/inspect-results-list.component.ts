@@ -75,7 +75,7 @@ export class InspectResultsListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
 		if(JSON.parse(sessionStorage.getItem('search-inspectResultsList'))){
@@ -106,12 +106,10 @@ export class InspectResultsListComponent{
 
 		this.adminService.checkprojects(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.checkProjestList = results.list;
-				this.loadingShow = false;
 			}
 		});
 		this.search();
@@ -120,6 +118,7 @@ export class InspectResultsListComponent{
 	getData(urlOptions) {
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -151,6 +150,7 @@ export class InspectResultsListComponent{
 				}
 				this.userCheckList = newList;
 				this.hasData = true;
+				this.loadingShow = false;
 			}
 		});
 	}
@@ -163,6 +163,7 @@ export class InspectResultsListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-inspectResultsList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.check_name != ''){

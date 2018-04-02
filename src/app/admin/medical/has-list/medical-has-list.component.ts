@@ -75,7 +75,7 @@ export class MedicalHasListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -123,6 +123,7 @@ export class MedicalHasListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-medicalHasList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){

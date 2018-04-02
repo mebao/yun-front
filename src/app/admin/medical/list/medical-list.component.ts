@@ -72,7 +72,7 @@ export class MedicalListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -108,6 +108,7 @@ export class MedicalListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-medicalList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){

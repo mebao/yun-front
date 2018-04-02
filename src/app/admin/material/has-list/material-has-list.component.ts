@@ -75,7 +75,7 @@ export class MaterialHasListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -123,6 +123,7 @@ export class MaterialHasListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-materialHasList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){

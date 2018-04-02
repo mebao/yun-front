@@ -69,7 +69,7 @@ export class PrescriptSaleListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
         this.hasData = false;
         this.list = [];
@@ -87,6 +87,7 @@ export class PrescriptSaleListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.searchInfo.mobile != ''){
 			urlOptions += ('&mobile=' + this.searchInfo.mobile);

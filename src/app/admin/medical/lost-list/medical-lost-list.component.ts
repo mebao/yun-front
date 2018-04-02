@@ -76,7 +76,7 @@ export class MedicalLostListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -117,6 +117,7 @@ export class MedicalLostListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){
 			urlOptions += '&b_date=' + this.info.b_date;

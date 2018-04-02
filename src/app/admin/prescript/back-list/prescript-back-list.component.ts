@@ -77,7 +77,7 @@ export class PrescriptBackListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -100,8 +100,7 @@ export class PrescriptBackListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.searchUrl = this.url;
 
-		var urlOptions = this.url;
-		this.getData(urlOptions);
+		this.search();
 	}
 
 	getData(urlOptions) {
@@ -124,6 +123,7 @@ export class PrescriptBackListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.searchInfo.is_back != ''){
 			urlOptions += ('&is_back=' + this.searchInfo.is_back);

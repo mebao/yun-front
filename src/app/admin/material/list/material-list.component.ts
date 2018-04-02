@@ -73,7 +73,7 @@ export class MaterialListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -109,6 +109,7 @@ export class MaterialListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-materialList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){

@@ -65,7 +65,7 @@ export class CrmRoleListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.roleList = [];
 		this.hasData = false;
@@ -82,6 +82,7 @@ export class CrmRoleListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		if(this.searchInfo.status != ''){
 			urlOptions += '&status=' + this.searchInfo.status;

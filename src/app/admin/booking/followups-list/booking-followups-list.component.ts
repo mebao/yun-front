@@ -97,7 +97,7 @@ export class BookingFollowupsListComponent{
 			text: '',
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.search();
 
@@ -110,6 +110,7 @@ export class BookingFollowupsListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-bookingFollowupsList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.status != ''){

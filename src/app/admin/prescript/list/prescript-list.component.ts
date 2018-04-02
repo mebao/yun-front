@@ -78,7 +78,7 @@ export class PrescriptListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 
@@ -134,6 +134,7 @@ export class PrescriptListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		var urlOptions = this.url;
 		// if(this.searchInfo.isout != ''){
 		// 	urlOptions += ('&isout=' + this.searchInfo.isout);

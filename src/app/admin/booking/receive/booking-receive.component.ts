@@ -86,7 +86,7 @@ export class BookingReceiveComponent{
 		}
 
 		this.hasData = false;
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
 		if(JSON.parse(sessionStorage.getItem('search-bookingReceive'))){
@@ -178,6 +178,7 @@ export class BookingReceiveComponent{
 
 	//查询
 	search() {
+		this.loadingShow = true;
 		// 记录搜索条件
 		sessionStorage.setItem('search-bookingReceive', JSON.stringify(this.searchInfo));
 		//列表
