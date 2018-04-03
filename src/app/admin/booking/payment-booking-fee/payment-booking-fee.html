@@ -1,4 +1,4 @@
-<!-- <header-nav></header-nav> -->
+	<!-- <header-nav></header-nav> -->
 <div class="content-section admin-payment-booking-fee">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="flex flex-wrap info-tab">
@@ -34,9 +34,19 @@
 			<label>备注：</label>
 			<div class="info">{{booking.remark}}</div>
 		</div>
-		<div class="tab-item flex">
-			<label>会员卡余额：</label>
-		    <div class="info">{{paymentInfo.balance}}</div>
+		<div *ngIf="paymentInfo.members.length == 0" class="tab-item flex">
+			<label>余额：</label>
+		    <div class="info">{{paymentInfo.userBalance ? paymentInfo.userBalance : '0.00'}}</div>
+		</div>
+		<div *ngIf="paymentInfo.members.length > 0" class="tab-item flex">
+			<label>余额：</label>
+			<div class="info">
+				<div *ngFor="let member of paymentInfo.members">
+					<ng-container *ngIf="member.canUse == '1'">
+						{{member.memberName}}（{{member.balance ? member.balance : '0.00'}}）
+					</ng-container>
+				</div>
+			</div>
 		</div>
 	</div>
     <div class="pay-tab">
@@ -69,7 +79,11 @@
 					<div class="pure-group-control mt10">
 						<label for="type">支付方式：</label>
 						<select name="type" [(ngModel)]="paymentInfo.type">
-							<option value="member" [disabled]="!paymentInfo.canBalance">余额支付{{paymentInfo.canBalance ? '' : '（余额不足）'}}</option>
+							<ng-container *ngFor="let member of paymentInfo.members">
+								<ng-container *ngIf="member.canUse == '1'">
+									<option value="member_{{member.umId}}" [disabled]="!member.canBalance">{{member.memberName}}支付{{member.canBalance ? '' : '（余额不足）'}}</option>
+								</ng-container>
+							</ng-container>
 							<option value="ali">支付宝支付</option>
 							<option value="wechat">微信支付</option>
 							<option value="wc_zhuan">微信转账</option>

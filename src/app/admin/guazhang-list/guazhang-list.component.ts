@@ -38,8 +38,8 @@ export class GuazhangList{
         amount: string,
         text: string,
         second_way: string,
-        canBalance: boolean,
-        balance: string,
+        userBalance: string,
+        members: any[],
     }
     btnCanEdit: boolean;
 
@@ -85,8 +85,8 @@ export class GuazhangList{
             amount: '',
             text: '',
             second_way: '',
-            canBalance: false,
-            balance:'',
+            userBalance: '',
+            members: [],
         }
         this.btnCanEdit = false;
 
@@ -147,8 +147,8 @@ export class GuazhangList{
             amount: '',
             text: '',
             second_way: '',
-            canBalance: false,
-            balance:'',
+            userBalance: '',
+            members: [],
         }
         this.modalConfirmTab = false;
     }
@@ -173,7 +173,8 @@ export class GuazhangList{
             token: this.adminService.getUser().token,
             id: this.selector.id,
             amount: this.selector.amount,
-            second_way:this.selector.second_way,
+            second_way: this.selector.second_way.indexOf('member_') == -1 ? this.selector.second_way : 'member',
+            um_id: this.selector.second_way.indexOf('member_') == -1 ? null : this.selector.second_way.split('_')[1],
         }
         this.adminService.payguazhang(this.selector.id, params).then((data) => {
             if(data.status == 'no'){
@@ -200,10 +201,15 @@ export class GuazhangList{
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
-                    this.selector.balance = results.users[0].balance;
-                    if(parseFloat(this.selector.balance) >= parseFloat(guzhang)){
-                        this.selector.canBalance = true;
+                    this.selector.userBalance = results.users[0].userBalance;
+                    for(var i = 0; i < results.users[0].members.length; i++){
+                        if(parseFloat(results.users[0].members[i].balance) >= parseFloat(guzhang)){
+                            results.users[0].members[i].canBalance = true;
+                        }else{
+                            results.users[0].members[i].canBalance = false;
+                        }
                     }
+                    this.selector.members = results.users[0].members;
                 }
                 this.loadingShow = false;
                 this.modalConfirmTab = true;

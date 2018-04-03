@@ -37,15 +37,16 @@ export class PrescriptSaleComponent{
 		user: {
 			id: string,
 			name: string,
-			memberId: string,
-			memberName: string,
-			balance: string,
+			userBalance: string,
+			members: any[],
 		},
 		member: {
 			id: string,
 			name: string,
 			prescript: string,
 		},
+		selectedMember: string,
+		selectedMemberJson: any,
 		mobile: string,
 		idcard: string,
 		pay_way: string,
@@ -154,15 +155,16 @@ export class PrescriptSaleComponent{
 			user: {
 				id: '',
 				name: '',
-				memberId: '',
-				memberName: '',
-				balance: '',
+				userBalance: '',
+				members: [],
 			},
 			member: {
 				id: '',
 				name: '',
 				prescript: '',
 			},
+			selectedMember: '',
+			selectedMemberJson: {},
 			mobile: '',
 			idcard: '',
 			pay_way: '',
@@ -184,11 +186,22 @@ export class PrescriptSaleComponent{
 
 	// 选择用户
 	changeUser(value) {
-		this.sale.mobile = JSON.parse(value).mobile;
-		this.sale.user = JSON.parse(value);
+		var user = JSON.parse(value);
+		if(user.members.length > 0){
+			for(var i = 0; i < user.members.length; i++){
+				user.members[i].string = JSON.stringify(user.members[i]);
+			}
+		}
+		this.sale.mobile = user.mobile;
+		this.sale.user = user;
+	}
+
+	// 选择会员卡
+	changeMember() {
 		// 获取用户会员信息
-		if(this.sale.user.memberId && this.sale.user.memberId != ''){
-			var urlOptions = this.url + '&id=' + this.sale.user.memberId + '&status=1';
+		if(this.sale.selectedMember != ''){
+			this.sale.selectedMemberJson = JSON.parse(this.sale.selectedMember);
+			var urlOptions = this.url + '&id=' + this.sale.selectedMemberJson.memberId + '&status=1';
 			this.adminService.memberlist(urlOptions).then((data) => {
 				if(data.status == 'no'){
 					this.toastTab(data.errorMsg, 'error');
@@ -203,6 +216,13 @@ export class PrescriptSaleComponent{
 					}
 				}
 			});
+		}else{
+			this.sale.selectedMemberJson = {};
+			this.sale.member = {
+				id: '',
+				name: '',
+				prescript: '',
+			}
 		}
 	}
 
@@ -251,9 +271,14 @@ export class PrescriptSaleComponent{
 	}
 
 	msChange(key, _value) {
+		console.log(JSON.parse(_value));
+		console.log(this.plist);
+		console.log(key);
 		for(var i = 0; i < this.plist.length; i++){
 			if(this.plist[i].key == key){
+				var batch = this.plist[i].ms.batch;
 				this.plist[i].ms = JSON.parse(_value);
+				this.plist[i].ms.batch = (batch == null ? '' : null);
 				this.plist[i].ms.oneNum = '';
 				this.plist[i].ms.usage = '';
 				this.plist[i].ms.frequency = '';
@@ -347,7 +372,7 @@ export class PrescriptSaleComponent{
 		}
 		// 是否是诊所用户
 		if(this.sale.user.id != ''){
-			if(parseFloat(this.sale.user.balance) < saleFee){
+			if(parseFloat(this.sale.selectedMemberJson.balance) < saleFee){
 				this.sale.balanceUse = '余额不足';
 			}else{
 				this.sale.balanceUse = '';
@@ -381,7 +406,8 @@ export class PrescriptSaleComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			pay_way: this.sale.pay_way,
+			pay_way: this.sale.pay_way.indexOf('member_') == -1 ? this.sale.pay_way : 'member',
+			um_id: this.sale.pay_way.split('_')[1],
 			need_amount: this.selected.feeAll,
 			amount: this.selected.saleFee,
 			give_amount: 0,

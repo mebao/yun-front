@@ -31,8 +31,8 @@ export class UserInfoComponent{
 		name: string,
 		mobile: string,
 		gender: string,
-		balance: string,
-		memberName: string,
+		userBalance: string,
+		members: any[],
 	}
 	childs: any[];
 	bloodTypeList: any[];
@@ -87,8 +87,8 @@ export class UserInfoComponent{
 			name: '',
 			mobile: '',
 			gender: '',
-			balance: '',
-			memberName: '',
+			userBalance: '',
+			members: [],
 		}
 
 		this.modalConfirmTab = false;

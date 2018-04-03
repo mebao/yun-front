@@ -34,9 +34,11 @@ export class UserListComponent{
 	modalConfirmTab: boolean;
 	selector: {
 		id: string,
+		members: any[],
 		member: string,
+		member_id: string,
 		text: string,
-		balance: string,
+		userBalance: string,
 		amount: string,
 		give_amount: string,
 		pay_way: string,
@@ -48,10 +50,13 @@ export class UserListComponent{
 	}
 	url: string;
 	memberList: any[];
+	uMemberList: any[];
 	//充值
 	modalTabCharge: boolean;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	modalTabMember: boolean;
+	showAddMember: boolean;
 
 	constructor(
 		public adminService: AdminService,
@@ -91,15 +96,17 @@ export class UserListComponent{
 			}
 		}
 
-		this.loadingShow = true;
+		this.loadingShow = false;
 
 		this.hasData = false;
 		this.modalConfirmTab = false;
 		this.selector = {
 			id: '',
+			members: [],
 			member: '',
+			member_id: '',
 			text: '',
-			balance: '',
+			userBalance: '',
 			amount: '',
 			give_amount: '',
 			pay_way: '',
@@ -123,6 +130,7 @@ export class UserListComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		this.memberList = [];
+		this.uMemberList = [];
 
 		//充值
 		this.modalTabCharge = false;
@@ -146,6 +154,8 @@ export class UserListComponent{
 		});
 
 		this.btnCanEdit = false;
+		this.modalTabMember = false;
+		this.showAddMember = false;
 	}
 
 	getData(urlOptions) {
@@ -155,6 +165,16 @@ export class UserListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.users.length > 0){
+					for(var i = 0; i < results.users.length; i++){
+						results.users[i].membersLength = results.users[i].members.length;
+						if(results.users[i].members.length > 0){
+							for(var j = 0; j < results.users[i].members.length; j++){
+								results.users[i].members[j].use = results.users[i].members[j].canUse == '0' ? false : true;
+							}
+						}
+					}
+				}
 				this.users = results.users;
 				this.hasData = true;
 				this.loadingShow = false;
@@ -163,6 +183,7 @@ export class UserListComponent{
 	}
 
 	search() {
+		this.loadingShow = true;
 		sessionStorage.setItem('search-userList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.name != ''){
@@ -190,9 +211,11 @@ export class UserListComponent{
 	delete(_id) {
 		this.selector = {
 			id: _id,
+			members: [],
 			member: '',
+			member_id: '',
 			text: '确认删除该用户？',
-			balance: '',
+			userBalance: '',
 			amount: '',
 			give_amount: '',
 			pay_way: '',
@@ -224,118 +247,224 @@ export class UserListComponent{
 	//充值
 	closeCharge() {
 		this.modalTabCharge = false;
+		this.selector = {
+			id: '',
+			members: [],
+			member: '',
+			member_id: '',
+			text: '',
+			userBalance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+		}
 	}
 
 	charge(user) {
 		this.modalTabCharge = true;
 		this.selector = {
 			id: user.id,
+			members: user.members,
 			member: '',
+			member_id: '',
 			text: user.name,
-			balance: user.balance ? user.balance : 0,
+			userBalance: user.userBalance ? user.userBalance : 0,
 			amount: '',
 			give_amount: '',
 			pay_way: '',
-		}
-		if(this.memberList.length > 0){
-			for(var i = 0; i < this.memberList.length; i++){
-				if(this.memberList[i].id == user.memberId){
-					this.selector.member = this.memberList[i].string;
-				}
-			}
 		}
 	}
 
 	confirmCharge() {
 		this.btnCanEdit = true;
 		// 若是会员存在，则修改
-		if(!this.adminService.isFalse(this.selector.member)){
-			if(!this.validate()){
-				this.btnCanEdit = false;
-				return;
-			}
-			var params = {
-				username: this.adminService.getUser().username,
-				token: this.adminService.getUser().token,
-				member_id: JSON.parse(this.selector.member).id,
-				member_name: JSON.parse(this.selector.member).name,
-			}
-			this.adminService.setmember(this.selector.id, params).then((data) => {
-				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
-					this.btnCanEdit = false;
-				}else{
-					this.doCharge();
-				}
-			});
-		}else{
+		// if(!this.adminService.isFalse(this.selector.member)){
+		//
+		// }else{
 			this.doCharge();
-		}
+		// }
 	}
 
 	validate() {
-		if(!this.adminService.isFalse(this.selector.amount)){
-			if(parseFloat(this.selector.amount) < 0){
-				this.toastTab('支付金额不可为负数', 'error');
-				this.btnCanEdit = false;
-				return false;
-			}
-			if(this.adminService.isFalse(this.selector.give_amount)){
-				this.selector.give_amount = '0';
-			}
-			if(parseFloat(this.selector.give_amount) < 0){
-				this.toastTab('赠送金额不可为负数', 'error');
-				this.btnCanEdit = false;
-				return false;
-			}
-			if(this.selector.pay_way == ''){
-				this.toastTab('支付方式不可为空', 'error');
-				this.btnCanEdit = false;
-				return false;
-			}
-			return true;
-		}else{
-			return true;
+		if(this.adminService.isFalse(this.selector.member)){
+			this.toastTab('会员类型不可为空', 'error');
+			this.btnCanEdit = false;
+			return false;
 		}
+		if(this.adminService.isFalse(this.selector.amount)){
+			this.toastTab('支付金额不可为空', 'error');
+			this.btnCanEdit = false;
+			return false;
+		}
+		if(parseFloat(this.selector.amount) < 0){
+			this.toastTab('支付金额不可为负数', 'error');
+			this.btnCanEdit = false;
+			return false;
+		}
+		if(this.adminService.isFalse(this.selector.give_amount)){
+			this.selector.give_amount = '0';
+		}
+		if(parseFloat(this.selector.give_amount) < 0){
+			this.toastTab('赠送金额不可为负数', 'error');
+			this.btnCanEdit = false;
+			return false;
+		}
+		if(this.adminService.isFalse(this.selector.pay_way) || this.selector.pay_way == ''){
+			this.toastTab('支付方式不可为空', 'error');
+			this.btnCanEdit = false;
+			return false;
+		}
+		console.log(this.selector);
+		return true;
 	}
 
 	doCharge() {
-		if(!this.adminService.isFalse(this.selector.amount)){
-			if(!this.validate()){
-				this.btnCanEdit = false;
-				return;
-			}
-
-			this.modalTabCharge = false;
-			var params = {
-				username: this.adminService.getUser().username,
-				token: this.adminService.getUser().token,
-				clinic_id: this.adminService.getUser().clinicId,
-				user_id: this.selector.id,
-				user_name: this.selector.text,
-				amount: this.selector.amount,
-				give_amount: this.selector.give_amount.toString(),
-				pay_way: this.selector.pay_way,
-				type: '2',
-			}
-
-			this.adminService.userrecharge(params).then((data) => {
-				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
-					this.btnCanEdit = false;
-				}else{
-					this.toastTab('充值成功', '');
-					this.search();
-					this.btnCanEdit = false;
-				}
-			});
-		}else{
-			if(!this.adminService.isFalse(this.selector.member)){
-				this.toastTab('充值成功', '');
-			}
-			this.modalTabCharge = false;
-			this.search();
+		if(!this.validate()){
 			this.btnCanEdit = false;
+			return;
+		}
+		this.modalTabCharge = false;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			user_id: this.selector.id,
+			user_name: this.selector.text,
+			amount: this.selector.amount,
+			give_amount: this.selector.give_amount.toString(),
+			pay_way: this.selector.pay_way.indexOf('member_') != -1 ? 'member' : this.selector.pay_way,
+			// 为会员充值
+			um_id: this.selector.member,
+			// 选择会员支付方式
+			pay_umid: this.selector.pay_way.indexOf('member_') != -1 ? this.selector.pay_way.split('_')[1] : null,
+			type: '2',
+		}
+
+		this.adminService.userrecharge(params).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
+			}else{
+				this.toastTab('充值成功', '');
+				this.closeCharge();
+				this.search();
+				this.btnCanEdit = false;
+			}
+		});
+	}
+
+	// 设置会员
+	setUpMember(user) {
+		this.selector = {
+			id: user.id,
+			members: user.members,
+			member: '',
+			member_id: '',
+			text: user.name,
+			userBalance: user.userBalance ? user.userBalance : 0,
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+		}
+		this.uMemberList = [];
+		if(this.memberList.length > 0){
+			for(var i = 0; i < this.memberList.length; i++){
+				if(user.members.length > 0){
+					var userHas = false;
+					for(var j = 0; j < user.members.length; j++){
+						if(this.memberList[i].id == user.members[j].memberId){
+							userHas = true;
+						}
+					}
+					if(!userHas){
+						this.uMemberList.push(this.memberList[i]);
+					}
+				}else{
+					this.uMemberList = JSON.parse(JSON.stringify(this.memberList));
+				}
+			}
+		}
+		if(user.members.length > 0){
+			this.showAddMember = false;
+		}else{
+			this.showAddMember = true;
+		}
+		this.modalTabMember = true;
+	}
+
+	closeMember() {
+		this.modalTabMember = false;
+		this.closeCharge();
+	}
+
+	addMember() {
+		this.showAddMember = true;
+	}
+
+	confirmMember() {
+		this.btnCanEdit = true;
+		if(this.adminService.isFalse(this.selector.member)){
+			this.toastTab('会员类型不可为空', 'error');
+			this.btnCanEdit = false;
+			return false;
+		}
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			member_id: JSON.parse(this.selector.member).id,
+			member_name: JSON.parse(this.selector.member).name,
+		}
+		this.setmember(this.selector.id, params, 'add', '');
+	}
+
+	updateMember(uMember) {
+		this.loadingShow = true;
+		this.btnCanEdit = true;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			member_id: uMember.memberId,
+			member_name: uMember.memberName,
+			um_id: uMember.umId,
+			can_use: uMember.canUse == '1' ? '0' : '1',
+		}
+		this.setmember(this.selector.id, params, 'update', uMember);
+	}
+
+	setmember(userId, params, type, uMember) {
+		this.adminService.setmember(userId, params).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				if(type == 'update'){
+					this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
+				}
+				this.toastTab(data.errorMsg, 'error');
+				this.btnCanEdit = false;
+			}else{
+				this.search();
+				if(type == 'add'){
+					this.closeMember();
+				}else{
+					this.toastTab('会员状态修改成功', '');
+				}
+				this.btnCanEdit = false;
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			if(type == 'update'){
+				this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
+			}
+			this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+		});
+	}
+
+	changeMember() {
+		// 切换购买的会员类型
+		if(!this.adminService.isFalse(this.selector.member)){
+			this.selector.member_id = this.selector.member;
+			this.selector.pay_way = null;
 		}
 	}
 

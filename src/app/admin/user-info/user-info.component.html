@@ -20,11 +20,15 @@
 			</div>
 			<div class="item flex">
 				<label>余额：</label>
-				<div class="info">{{olduserInfo.balance}}</div>
+				<div class="info">{{olduserInfo.userBalance ? olduserInfo.userBalance : '0.00'}}</div>
 			</div>
 			<div class="item flex">
 				<label>会员类型：</label>
-				<div class="info">{{olduserInfo.memberName}}</div>
+				<div class="info">
+					<div *ngFor="let member of olduserInfo.members">
+						{{member.memberName}}（余额：{{member.balance ? member.balance : '0.00'}}）
+					</div>
+				</div>
 			</div>
 		</div>
 		<form #userf="ngForm" class="pure-form pure-form-stacked mt10 form-tab">

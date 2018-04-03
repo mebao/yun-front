@@ -12,11 +12,14 @@
 			<div class="info">
 				家长：{{bookingInfo.creatorName}}
 			</div>
-			<div class="info">
-				会员：{{userMember.name}}
+			<div class="info flex">
+				<div>会员：</div>
+				<div class="flex-1">
+					<div *ngFor="let member of userMember.memberList">{{member.memberName}}（余额：{{member.balance ? member.balance : '0.00'}}）</div>
+				</div>
 			</div>
 			<div class="info">
-				余额：{{userMember.balance}}
+				余额：{{userMember.userBalance}}
 			</div>
 		</div>
 		<div class="pure-u-4-5 pure-form">
@@ -31,12 +34,21 @@
 					<div class="flex-1"></div>
 					<div class="flex-0"><button (click)="print()" target="_blank" class="print-btn pure-button mt10">打印</button></div>
 				</div>
-				<div *ngIf="bookingInfo.status != '5' && paymentType == '30'" class="text-right mt20">
-					<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" class="pure-button">取消</button>
-					<button *ngIf="editMemberType != 'update'" (click)="updateMember()" class="pure-button pure-button-primary">修改折扣</button>
-					<button *ngIf="editMemberType == 'update'" (click)="saveMember()" class="pure-button pure-button-primary">保存</button>
+				<div *ngIf="bookingInfo.status != '5' && paymentType == '30'" class="flex mt20">
+					<div class="flex-1 pure-control-group">
+						<select [(ngModel)]="userMember.selectedMember" (change)="selectMember()">
+							<ng-container *ngFor="let member of userMember.memberList">
+								<option value="{{member.string}}">{{member.memberName}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<div>
+						<button *ngIf="editMemberType != 'update'" (click)="updateMember()" class="pure-button pure-button-primary">修改折扣</button>
+						<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" class="pure-button">取消</button>
+						<button *ngIf="editMemberType == 'update'" (click)="saveMember()" class="pure-button pure-button-primary">保存</button>
+					</div>
 				</div>
-				<div class="section">
+				<div *ngIf="fee.feeInfo.serviceFeeList.length > 0" class="section">
 					<div class="title">医生科室费用</div>
 					<div class="pad10">
 						<table class="pure-table pure-table-horizontal table-tab w100">
@@ -706,8 +718,8 @@
 					<label class="flex-1">{{bookingInfo.creatorName}}</label>
 				</div>
 				<div class="pure-control-group flex-1 flex">
-					<label for="member" class="w150p mr20 text-right">余额：</label>
-					<label>{{userMember.balance}}</label>
+					<label for="member" class="w150p mr20 text-right">{{userMember.selectedMemberJson.memberName}}余额：</label>
+					<label>{{userMember.selectedMemberJson.balance}}</label>
 					<div *ngIf="moduleAuthority.recharge" class="flex-1 ml20">
 						<button (click)="recharge()" class="pure-button pure-button-primary">充值</button>
 					</div>
@@ -728,9 +740,21 @@
 				</label>
 				<div class="flex-1">
 					<div class="flex flex-wrap pay-list">
-						<div *ngFor="let payway of paywayList" class="item" (click)="changePayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)"  [ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway.way == payway.key || payInfo.payway_second.way == payway.key}">
-							{{payway.value}}{{payway.key == 'member' ? (payInfo.memberBalance ? '' : '（余额不足）') : ''}}
-						</div>
+						<div
+							*ngIf="userMember.selectedMemberJson.memberId"
+							class="item"
+							(click)="changePayway(userMember.selectedMemberJson, userMember.selectedMemberJson.use)"
+							[ngClass]="{'disabled': !payInfo.memberBalance || !userMember.selectedMemberJson.use, 'active': payInfo.payway.way == 'member_' + userMember.selectedMemberJson.umId || payInfo.payway_second.way == 'member_' + userMember.selectedMemberJson.umId}"
+							>{{userMember.selectedMemberJson.memberName}}{{userMember.selectedMemberJson.balance ? '' : '（余额不足）'}}</div>
+						<ng-container *ngFor="let payway of paywayList">
+							<div
+								*ngIf="payway.key != 'member'"
+								class="item"
+								(click)="changePayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)"
+								[ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway.way == payway.key || payInfo.payway_second.way == payway.key}"
+								>{{payway.value}}{{payway.key == 'member' ? (payInfo.memberBalance ? '' : '（余额不足）') : ''}}
+							</div>
+						</ng-container>
 					</div>
 				</div>
 			</div>
@@ -773,7 +797,7 @@
 				</div>
 				<div class="pure-control-group flex-1 flex">
 					<label for="member" class="w150p mr20 text-right">余额：</label>
-					<label>{{userMember.balance}}</label>
+					<label>{{userMember.userBalance}}</label>
 					<div *ngIf="moduleAuthority.recharge" class="flex-1 ml20">
 						<button (click)="recharge()" class="pure-button pure-button-primary">充值</button>
 					</div>
@@ -790,9 +814,21 @@
 				</label>
 				<div class="flex-1">
 					<div class="flex flex-wrap pay-list">
-						<div *ngFor="let payway of paywayList" class="item" (click)="changeAddPayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)" [ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway_second.way == payway.key}">
-							{{payway.value}}{{payway.key == 'member' ? (payInfo.memberBalance ? '' : '（余额不足）') : ''}}
-						</div>
+						<!-- <div
+							*ngIf="userMember.selectedMemberJson.memberId"
+							class="item"
+							(click)="changeAddPayway(userMember.selectedMemberJson, userMember.selectedMemberJson.use)"
+							[ngClass]="{'disabled': !payInfo.memberBalance || !userMember.selectedMemberJson.use, 'active': payInfo.payway.way == 'member_' + userMember.selectedMemberJson.umId || payInfo.payway_second.way == 'member_' + userMember.selectedMemberJson.umId}"
+							>{{userMember.selectedMemberJson.memberName}}{{userMember.selectedMemberJson.balance ? '' : '（余额不足）'}}</div> -->
+						<ng-container *ngFor="let payway of paywayList">
+							<div
+								*ngIf="payway.key != 'member'"
+								class="item"
+								(click)="changeAddPayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)"
+								[ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway.way == payway.key || payInfo.payway_second.way == payway.key}"
+								>{{payway.value}}{{payway.key == 'member' ? (payInfo.memberBalance ? '' : '（余额不足）') : ''}}
+							</div>
+						</ng-container>
 					</div>
 				</div>
 			</div>

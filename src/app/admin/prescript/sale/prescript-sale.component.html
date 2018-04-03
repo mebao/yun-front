@@ -7,107 +7,120 @@
 		<div class="item active" (click)="goUrl('./admin/prescript/saleList')">药品零售</div>
 	</div>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-		<fieldset>
-			<div class="pure-g">
-				<div class="pure-u-8-24 pr10">
-					<div class="pure-control-group">
-						<label for="type">用户类型</label>
-						<select id="type" name="type" #type="ngModel" [(ngModel)]="sale.type">
-							<option value="1">诊所用户</option>
-							<option value="2">外来用户</option>
-						</select>
-					</div>
+		<div class="pure-g">
+			<div class="pure-u-8-24 pr10">
+				<div class="pure-control-group">
+					<label for="type">用户类型</label>
+					<select id="type" name="type" #type="ngModel" [(ngModel)]="sale.type">
+						<option value="1">诊所用户</option>
+						<option value="2">外来用户</option>
+					</select>
 				</div>
 			</div>
-			<div *ngIf="sale.type != ''" class="pure-g">
-				<div *ngIf="sale.type == '1'" class="pure-u-8-24 pr10">
-					<div class="pure-control-group">
-						<label for="user">用户</label>
-						<select-search [title]="'请选择用户'" [selectList]="userList" (onVoted)="changeUser($event)"></select-search>
-					</div>
-				</div>
-				<div *ngIf="sale.type == '2'" class="pure-u-8-24 pr10">
-					<div class="pure-control-group">
-						<label for="mobile">手机号码</label>
-						<input type="tel" id="mobile" name="mobile" maxlength="11" minlength="11" [(ngModel)]="sale.mobile" placeholder="请输入手机号码">
-					</div>
-				</div>
-				<div class="pure-u-8-24 pl5 pr5">
-					<div class="pure-control-group">
-						<label for="idcard">身份证号</label>
-						<input type="tel" id="idcard" name="idcard" [(ngModel)]="sale.idcard" placeholder="请输入身份证号">
-					</div>
+		</div>
+		<div *ngIf="sale.type != ''" class="pure-g">
+			<div *ngIf="sale.type == '1'" class="pure-u-8-24 pr10">
+				<div class="pure-control-group">
+					<label for="user">用户</label>
+					<select-search [title]="'请选择用户'" [selectList]="userList" (onVoted)="changeUser($event)"></select-search>
 				</div>
 			</div>
-			<div *ngFor="let ms of plist" class="ms-tab mt5">
-				<div *ngIf="ms.use">
-					<div (click)="showMs(ms.key)" class="ms-bar flex">
-						<div class="flex-1 pt5">
-							<ng-container *ngIf="ms.show">
-								<span>隐藏</span>
-								<i class="anticon anticon-right"></i>
+			<div *ngIf="sale.type == '2'" class="pure-u-8-24 pr10">
+				<div class="pure-control-group">
+					<label for="mobile">手机号码</label>
+					<input type="tel" id="mobile" name="mobile" maxlength="11" minlength="11" [(ngModel)]="sale.mobile" placeholder="请输入手机号码">
+				</div>
+			</div>
+			<div class="pure-u-8-24 pl5 pr5">
+				<div class="pure-control-group">
+					<label for="idcard">身份证号</label>
+					<input type="tel" id="idcard" name="idcard" [(ngModel)]="sale.idcard" placeholder="请输入身份证号">
+				</div>
+			</div>
+			<div *ngIf="sale.type == '1'" class="pure-u-8-24 pl10">
+				<div class="pure-control-group">
+					<label for="member">会员卡</label>
+					<select name="member" [(ngModel)]="sale.selectedMember" (change)="changeMember()">
+						<option value=""></option>
+						<ng-container *ngFor="let member of sale.user.members">
+							<ng-container *ngIf="member.canUse == '1'">
+								<option value="{{member.string}}">{{member.memberName}}</option>
 							</ng-container>
-							<ng-container *ngIf="!ms.show">
-								<span>展开</span>
-								<i class="anticon anticon-down"></i>
-							</ng-container>
-						</div>
-						<div *ngIf="ms.key != 1">
-							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
+						</ng-container>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div *ngFor="let ms of plist" class="ms-tab mt5">
+			<div *ngIf="ms.use">
+				<div (click)="showMs(ms.key)" class="ms-bar flex">
+					<div class="flex-1 pt5">
+						<ng-container *ngIf="ms.show">
+							<span>隐藏</span>
+							<i class="anticon anticon-right"></i>
+						</ng-container>
+						<ng-container *ngIf="!ms.show">
+							<span>展开</span>
+							<i class="anticon anticon-down"></i>
+						</ng-container>
+					</div>
+					<div *ngIf="ms.key != 1">
+						<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
+					</div>
+				</div>
+				<div [ngClass]="{'hide': !ms.show}" class="pure-g">
+					<div class="pure-u-8-24 pr10">
+						<div class="pure-control-group">
+							<label for="ms_{{ms.key}}">
+								<span>药品名</span>
+								<span class="required">*</span>
+							</label>
+							<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
+								<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+									<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+										<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
+									</ng-container>
+								</ng-container>
+							</select>
 						</div>
 					</div>
-					<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-						<div class="pure-u-8-24 pr10">
+						<div class="pure-u-3-24 pl5 pr5">
 							<div class="pure-control-group">
-								<label for="ms_{{ms.key}}">
-									<span>药品名</span>
+								<label for="batch_{{ms.key}}">
+									<span>批次</span>
 									<span class="required">*</span>
 								</label>
-								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
-									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-											<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
+								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
+									<ng-container *ngFor="let batch of ms.batchList">
+										<ng-container *ngIf="batch.stock != '0'">
+										<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
+											<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
+										<!-- </ng-container> -->
 										</ng-container>
 									</ng-container>
 								</select>
 							</div>
 						</div>
-							<div class="pure-u-3-24 pl5 pr5">
-								<div class="pure-control-group">
-									<label for="batch_{{ms.key}}">
-										<span>批次</span>
-										<span class="required">*</span>
-									</label>
-									<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
-										<ng-container *ngFor="let batch of ms.batchList">
-											<!-- <ng-container *ngIf="batch.isPrescribed == '0'"> -->
-												<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-											<!-- </ng-container> -->
-										</ng-container>
-									</select>
-								</div>
-							</div>
-						<div class="pure-u-3-24 pl10">
-							<div class="pure-control-group">
-								<label for="num_{{ms.key}}">
-									<span>总量</span>
-									<span class="required">*</span>
-								</label>
-								<div class="flex flex-tab">
-									<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
-									<select disabled="">
-										<option>{{ms.ms.unit}}</option>
-									</select>
-								</div>
+					<div class="pure-u-3-24 pl10">
+						<div class="pure-control-group">
+							<label for="num_{{ms.key}}">
+								<span>总量</span>
+								<span class="required">*</span>
+							</label>
+							<div class="flex flex-tab">
+								<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
+								<select disabled="">
+									<option>{{ms.ms.unit}}</option>
+								</select>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="mt10">
-				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="anticon anticon-plus mr5"></i>添加药品</button>
-			</div>
-		</fieldset>
+		</div>
+		<div class="mt10">
+			<button (click)="addMs()" class="pure-button pure-button-primary"><i class="anticon anticon-plus mr5"></i>添加药品</button>
+		</div>
 		<div class="text-center">
 			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">出售</button>
 		</div>
@@ -124,15 +137,15 @@
 					<div class="flex-1 p-group">{{sale.user.name}}</div>
 				</div>
 				<div class="pure-control-group flex mt10">
-					<label for="balance" class="w100p">余额：</label>
-					<div class="flex-1 p-group">{{sale.user.balance}}</div>
+					<label for="userBalance" class="w100p">余额：</label>
+					<div class="flex-1 p-group">{{sale.user.userBalance}}</div>
 				</div>
 				<div class="pure-control-group flex mt10">
-					<label for="balance" class="w100p">会员类型：</label>
-					<div class="flex-1 p-group">{{sale.user.memberName}}</div>
+					<label for="member" class="w100p">会员类型：</label>
+					<div class="flex-1 p-group">{{sale.member.name}}</div>
 				</div>
 				<div class="pure-control-group flex mt10">
-					<label for="balance" class="w100p">药品折扣：</label>
+					<label for="prescript" class="w100p">药品折扣：</label>
 					<div class="flex-1 p-group">{{sale.member.prescript}}</div>
 				</div>
 			</ng-container>
@@ -173,11 +186,11 @@
 			<div class="pure-control-group flex mt10">
 				<label for="pay_way" class="w100p">支付方式：</label>
 				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="sale.pay_way">
+					<option *ngIf="sale.user.id != '' && sale.selectedMemberJson.umId" value="member_{{sale.selectedMemberJson.umId}}" [disabled]="sale.balanceUse != ''">{{sale.member.name}}支付{{ sale.balanceUse == '' ? ('（' + sale.selectedMemberJson.balance + '）') : ('（' + sale.balanceUse + '）')}}</option>
 					<option value="ali">支付宝支付</option>
 					<option value="wechat">微信支付</option>
 					<option value="card">刷卡支付</option>
 					<option value="money">现金支付</option>
-					<option *ngIf="sale.user.id != ''" value="member" [disabled]="sale.balanceUse != ''">余额支付{{ sale.balanceUse == '' ? '' : ('（' + sale.balanceUse + '）')}}</option>
 				</select>
 			</div>
 		</div>

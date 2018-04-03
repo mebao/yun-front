@@ -49,10 +49,10 @@ export class PaymentBookingFee{
     showTab: string;
     paymentInfo: {
         member: boolean,
+        members: any[],
         payType: string,
         type: string,
-        balance: string,
-        canBalance: boolean,
+        userBalance: string,
         qrcode: boolean,
         qrcodeUrl: string,
         result: string,
@@ -148,10 +148,10 @@ export class PaymentBookingFee{
 
         this.paymentInfo = {
             member: false,
+            members: [],
             payType: '',
             type: '',
-            balance: '',
-            canBalance: false,
+            userBalance: '',
             qrcode: false,
             qrcodeUrl: '',
             result: '',
@@ -174,12 +174,18 @@ export class PaymentBookingFee{
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
-                    this.paymentInfo.balance = results.users[0].balance;
-                    if(parseFloat(this.paymentInfo.balance) >= parseFloat(this.booking.bookingFee)){
-                        this.paymentInfo.canBalance = true;
+                    this.paymentInfo.userBalance = results.users[0].userBalance;
+                    // 判断会员余额是否足够支付
+                    for(var i = 0; i < results.users[0].members.length; i++){
+                        if(parseFloat(results.users[0].members[i].balance) >= parseFloat(this.booking.bookingFee)){
+                            results.users[0].members[i].canBalance = true;
+                        }else{
+                            results.users[0].members[i].canBalance = false;
+                        }
                     }
+                    this.paymentInfo.members = results.users[0].members;
                     // 判断是否是会员，如果是会员，则不可支付全额
-                    if(this.adminService.isFalse(results.users[0].memberId)){
+                    if(results.users[0].members.length == 0){
                         this.paymentInfo.member = false;
                     }else{
                         this.paymentInfo.member = true;
@@ -222,11 +228,12 @@ export class PaymentBookingFee{
             this.btnCanEdit = false;
             return;
         }
-        if(this.paymentInfo.type == 'member' || this.paymentInfo.type == 'card' || this.paymentInfo.type == 'money' || this.paymentInfo.type == 'wc_zhuan'){
+        if(this.paymentInfo.type.indexOf('member_') != -1 || this.paymentInfo.type == 'card' || this.paymentInfo.type == 'money' || this.paymentInfo.type == 'wc_zhuan'){
             // 支付
             var urlOptions = this.id + '?username=' + this.adminService.getUser().username
                  + '&token=' + this.adminService.getUser().token
-                 + '&pay_way=' + this.paymentInfo.type
+                 + '&pay_way=' + (this.paymentInfo.type.indexOf('member_') == -1 ? this.paymentInfo.type : 'member')
+                 + ('&um_id=' + (this.paymentInfo.type.indexOf('member_') == -1 ? null : this.paymentInfo.type.split('_')[1]))
                  + '&type=' + this.paymentInfo.payType;
             this.adminService.memberbooking(urlOptions).then((data) => {
                 if(data.status == 'no'){

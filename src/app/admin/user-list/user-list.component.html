@@ -28,24 +28,52 @@
 					<th>手机号码</th>
 					<th>性别</th>
 					<th>会员</th>
+					<th>会员状态</th>
+					<!-- <th>会员操作</th> -->
 					<th>余额</th>
 					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let user of users; let index=index;">
-					<td>{{index + 1}}</td>
-					<td>{{user.name}}</td>
-					<td>{{user.mobile}}</td>
-					<td>{{user.gender == 'M' ? '男' : '女'}}</td>
-					<td>{{user.memberName}}</td>
-					<td>{{user.balance ? user.balance : 0}}</td>
-					<td>
-						<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
-						<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
-						<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
-					</td>
-				</tr>
+				<ng-container *ngFor="let user of users; let index=index;">
+					<tr *ngIf="user.members.length == 0">
+						<td>{{index + 1}}</td>
+						<td>{{user.name}}</td>
+						<td>{{user.mobile}}</td>
+						<td>{{user.gender == 'M' ? '男' : '女'}}</td>
+						<td></td>
+						<td></td>
+						<!-- <td></td> -->
+						<td>{{user.userBalance ? user.userBalance : 0}}</td>
+						<td>
+							<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
+							<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
+							<button (click)="setUpMember(user)" class="pure-button pure-button-primary">设置会员</button>
+							<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
+						</td>
+					</tr>
+					<ng-container *ngIf="user.members.length > 0">
+						<tr *ngFor="let member of user.members; let indexMember=index;">
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{index + 1}}</td>
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.name}}</td>
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.mobile}}</td>
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.gender == 'M' ? '男' : '女'}}</td>
+							<td>{{member.memberName + '（' + (member.balance ? member.balance : '0.00') + '）'}}</td>
+							<td>{{member.canUse == '1' ? '可用' : '停用'}}</td>
+							<!-- <td>
+								<button (click)="updateMember(user, member)" class="pure-button" [ngClass]="{'pure-button-primary': member.canUse == '0', 'button-error': member.canUse == '1'}" [disabled]="btnCanEdit">{{member.canUse == '1' ? '停用' : '可用'}}</button>
+							</td> -->
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.userBalance ? user.userBalance : 0}}</td>
+							<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">
+								<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" class="pure-button pure-button-primary">详情</button>
+								<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" class="pure-button pure-button-primary">充值</button>
+								<!-- 添加会员种类 -->
+								<button (click)="setUpMember(user)" class="pure-button pure-button-primary">设置会员</button>
+								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" class="pure-button button-error">删除</button>
+							</td>
+						</tr>
+					</ng-container>
+				</ng-container>
 			</tbody>
 		</table>
 		<div *ngIf="hasData && users.length == 0" class="mt10">
@@ -63,14 +91,16 @@
 				<div class="flex-1 p-group">{{selector.text}}</div>
 			</div>
 			<div class="pure-control-group flex mt10">
-				<label for="balance" class="w100p">余额：</label>
-				<div class="flex-1 p-group">{{selector.balance}}</div>
+				<label for="userBalance" class="w100p">余额：</label>
+				<div class="flex-1 p-group">{{selector.userBalance}}</div>
 			</div>
 			<div class="pure-control-group flex">
 				<label for="member" class="w100p">会员类型：</label>
-				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
-					<ng-container *ngFor="let member of memberList">
-						<option value="{{member.string}}">{{member.name}}</option>
+				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1" (change)="changeMember()">
+					<ng-container *ngFor="let uMember of selector.members">
+						<ng-container *ngIf="uMember.canUse == '1'">
+							<option value="{{uMember.umId}}">{{uMember.memberName}}</option>
+						</ng-container>
 					</ng-container>
 				</select>
 			</div>
@@ -85,6 +115,11 @@
 			<div class="pure-control-group flex mt10">
 				<label for="pay_way" class="w100p">支付方式：</label>
 				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="selector.pay_way">
+					<ng-container *ngFor="let uMember of selector.members">
+						<ng-container *ngIf="selector.member_id != uMember.umId">
+							<option value="member_{{uMember.umId}}">{{uMember.memberName}}支付（余额：{{uMember.balance ? uMember.balance : '0.00'}}）</option>
+						</ng-container>
+					</ng-container>
 					<option value="ali">支付宝支付</option>
 					<option value="wechat">微信支付</option>
 					<option value="card">刷卡支付</option>
@@ -95,6 +130,61 @@
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeCharge()" class="pure-button">关闭</button>
 			<button (click)="confirmCharge()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalTabMember">
+	<div class="modal-mask" (click)="closeMember()"></div>
+	<div class="container">
+		<div class="title">会员</div>
+		<div class="content pad10 pure-form">
+			<div class="pure-control-group flex">
+				<label for="text" class="w100p">用户：</label>
+				<div class="flex-1 p-group">{{selector.text}}</div>
+			</div>
+			<div class="pure-control-group flex mt10">
+				<label for="userBalance" class="w100p">余额：</label>
+				<div class="flex-1 p-group">{{selector.userBalance}}</div>
+			</div>
+			<div *ngIf="selector.members.length > 0" class="pure-control-group flex mt10">
+				<label for="userBalance" class="w100p">已有会员：</label>
+				<div class="flex-1 p-group">
+					<table class="pure-table pure-table-horizontal w100">
+						<thead>
+							<tr>
+								<th>会员名称</th>
+								<th>状态</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let uMember of selector.members">
+								<td>{{uMember.memberName}}</td>
+								<td>
+									<nz-switch [(ngModel)]="uMember.use" (click)="updateMember(uMember)">
+										<span checked>可用</span>
+        								<span unchecked>停用</span>
+									</nz-switch>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div *ngIf="showAddMember" class="pure-control-group flex">
+				<label for="member" class="w100p">会员类型：</label>
+				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
+					<ng-container *ngFor="let member of uMemberList">
+						<option value="{{member.string}}">{{member.name}}</option>
+					</ng-container>
+				</select>
+			</div>
+			<div *ngIf="!showAddMember" class="mt10">
+				<button (click)="addMember()" class="pure-button pure-button-primary">新增会员</button>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closeMember()" class="pure-button">关闭</button>
+			<button (click)="confirmMember()" *ngIf="showAddMember" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
 		</div>
 	</div>
 </div>
