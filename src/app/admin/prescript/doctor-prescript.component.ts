@@ -376,14 +376,15 @@ export class DoctorPrescriptComponent{
 				var oneNum = this.plist[i].ms.oneNum;
 				var days = this.plist[i].ms.days;
 				var num = this.plist[i].ms.num;
+				var batch = this.plist[i].ms.batch;
 				this.plist[i].ms = JSON.parse(_value);
-				this.plist[i].ms.batch = '';
+				this.plist[i].ms.batch = batch == null ? '' : null;
 				this.plist[i].ms.oneNum = oneNum;
 				this.plist[i].ms.usage = '';
 				this.plist[i].ms.frequency = '';
 				this.plist[i].ms.days = days;
 				this.plist[i].ms.num = num;
-				this.plist[i].ms.remark = '';
+				// this.plist[i].ms.remark = '';
 				this.plist[i].ms.ms_usage = JSON.parse(_value).usage;
 				this.plist[i].ms.isOut = '';
 				this.plist[i].batchList = JSON.parse(_value).others;

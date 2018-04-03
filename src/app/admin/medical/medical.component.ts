@@ -32,6 +32,7 @@ export class MedicalComponent{
 		is_prescribed: string,
 		usage: string,
 		price: string,
+		remark: string,
 	};
 	editType: string;
 	drugUnits: any[];
@@ -71,6 +72,7 @@ export class MedicalComponent{
 			is_prescribed: '',
 			usage: '',
 			price: '',
+			remark: '',
 		}
 
 		this.OneUnits = [];
@@ -138,47 +140,47 @@ export class MedicalComponent{
 		f.value.otc = this.adminService.trim(f.value.otc);
 		f.value.code = this.adminService.trim(f.value.code);
 		f.value.usage = this.adminService.trim(f.value.usage);
-		if(f.value.name == ''){
+		if(this.adminService.isFalse(f.value.name) || f.value.name == ''){
 			this.toastTab('药品名不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.trade_name == ''){
+		if(this.adminService.isFalse(f.value.trade_name) || f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.manufacturer == ''){
+		if(this.adminService.isFalse(f.value.manufacturer) || f.value.manufacturer == ''){
 			this.toastTab('生产厂家不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.format == ''){
+		if(this.adminService.isFalse(f.value.format) || f.value.format == ''){
 			this.toastTab('规格不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.type == ''){
+		if(this.adminService.isFalse(f.value.type) || f.value.type == ''){
 			this.toastTab('药品类型不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.unit == ''){
+		if(this.adminService.isFalse(f.value.unit) || f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.one_unit == ''){
+		if(this.adminService.isFalse(f.value.one_unit) || f.value.one_unit == ''){
 			this.toastTab('剂量单位不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.otc == ''){
+		if(this.adminService.isFalse(f.value.otc) || f.value.otc == ''){
 			this.toastTab('国药准字不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.code == ''){
+		if(this.adminService.isFalse(f.value.code) || f.value.code == ''){
 			this.toastTab('条形码不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
@@ -193,18 +195,23 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.can_discount == ''){
+		if(this.adminService.isFalse(f.value.can_discount) || f.value.can_discount == ''){
 			this.toastTab('能否优惠不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.is_prescribed == ''){
+		if(this.adminService.isFalse(f.value.is_prescribed) || f.value.is_prescribed == ''){
 			this.toastTab('是否处方药不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.usage == ''){
+		if(this.adminService.isFalse(f.value.usage) || f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.adminService.isFalse(f.value.remark) || f.value.remark == ''){
+			this.toastTab('注意事项不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -225,6 +232,7 @@ export class MedicalComponent{
 			can_discount: f.value.can_discount,
 			is_prescribed: f.value.is_prescribed,
 			one_unit: f.value.one_unit,
+			remark: f.value.remark,
 		}
 
 		var urlOptions = '';

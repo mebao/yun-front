@@ -196,6 +196,19 @@
 						</div>
 					</div>
 				</div>
+				<div class="pure-u-8-24">
+					<div class="pure-control-group">
+						<label for="remark">
+							<span>注意事项（最多20字）</span>
+						</label>
+						<textarea id="remark" name="remark" maxlength="20" #remark="ngModel" [(ngModel)]="info.remark" placeholder="请输入注意事项" required=""></textarea>
+						<div *ngIf="remark.errors && (remark.dity || remark.touched)" class="alert alert-danger">
+							<div [hidden]="!remark.errors.required">
+								注意事项不可为空
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</fieldset>
 		<div class="text-center">

@@ -26,6 +26,7 @@ export class MedicalHasComponent{
 		type: string,
 		typeText: string,
 		usage: string,
+		remark: string,
 		stock: string,
 		bid: string,
 		isPrescribed: string,
@@ -69,6 +70,7 @@ export class MedicalHasComponent{
 			type: '',
 			typeText: '',
 			usage: '',
+			remark: '',
 			stock: '',
 			bid: '',
 			isPrescribed: '',
@@ -106,6 +108,7 @@ export class MedicalHasComponent{
 							type: results.list[0].type,
 							typeText: results.list[0].typeText,
 							usage: results.list[0].usage,
+							remark: results.list[0].others[0].remark,
 							stock: results.list[0].others[0].stock,
 							bid: results.list[0].others[0].bid,
 							isPrescribed: results.list[0].others[0].isPrescribed,
@@ -158,22 +161,22 @@ export class MedicalHasComponent{
 		f.value.otc = this.adminService.trim(f.value.otc);
 		f.value.code = this.adminService.trim(f.value.code);
 		f.value.usage = this.adminService.trim(f.value.usage);
-		if(f.value.trade_name == ''){
+		if(this.adminService.isFalse(f.value.trade_name) || f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.manufacturer == ''){
+		if(this.adminService.isFalse(f.value.manufacturer) || f.value.manufacturer == ''){
 			this.toastTab('生产厂家不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.format == ''){
+		if(this.adminService.isFalse(f.value.format) || f.value.format == ''){
 			this.toastTab('规格不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.unit == ''){
+		if(this.adminService.isFalse(f.value.unit) || f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
@@ -183,11 +186,11 @@ export class MedicalHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.type == ''){
-			this.toastTab('类型不可为空', 'error');
-			this.btnCanEdit = false;
-			return;
-		}
+		// if(this.adminService.isFalse(f.value.type) || f.value.type == ''){
+		// 	this.toastTab('类型不可为空', 'error');
+		// 	this.btnCanEdit = false;
+		// 	return;
+		// }
 		if(this.adminService.isFalse(f.value.otc)){
 			this.toastTab('国药准字不可为空', 'error');
 			this.btnCanEdit = false;
@@ -198,8 +201,13 @@ export class MedicalHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.usage == ''){
+		if(this.adminService.isFalse(f.value.usage) || f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
+		if(this.adminService.isFalse(f.value.remark) || f.value.remark == ''){
+			this.toastTab('注意事项不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -208,7 +216,7 @@ export class MedicalHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.canDiscount == ''){
+		if(this.adminService.isFalse(f.value.canDiscount) || f.value.canDiscount == ''){
 			this.toastTab('是否优惠不可为空', 'error');
 			this.btnCanEdit = false;
 			return;
@@ -238,6 +246,7 @@ export class MedicalHasComponent{
 			otc: f.value.otc,
 			code: f.value.code,
 			usage: f.value.usage,
+			remark: f.value.remark,
 			price: f.value.price.toString(),
 			can_discount: f.value.canDiscount,
 			is_prescribed: f.value.is_prescribed,

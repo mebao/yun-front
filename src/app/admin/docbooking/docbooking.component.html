@@ -611,6 +611,7 @@
 							<th>药品单位</th>
 							<th>药品数量</th>
 							<th class="th-width">用法说明</th>
+							<th class="th-width">注意事项</th>
 							<th class="th-width">备注</th>
 							<th>日期</th>
 							<th>操作</th>
@@ -629,6 +630,9 @@
 								<td>{{info.num}}</td>
 								<td>
 									<div class="length-text">{{info.msExplain}}</div>
+								</td>
+								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+									<div class="length-text">{{info.remark}}</div>
 								</td>
 								<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 									<div class="length-text">{{item.remark}}</div>

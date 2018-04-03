@@ -199,6 +199,7 @@ export class MedicalPurchaseComponent{
 						bid: '',
 						type: '',
 						usage: '',
+						remark: '',
 						one_unit: '',
 						price: '',
 						can_discount: '',
@@ -223,6 +224,7 @@ export class MedicalPurchaseComponent{
 					msParams.unit = JSON.parse(f.value['ms_' + key]).unit;
 					msParams.type = JSON.parse(f.value['ms_' + key]).type;
 					msParams.usage = JSON.parse(f.value['ms_' + key]).usage;
+					msParams.remark = JSON.parse(f.value['ms_' + key]).remark;
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
 					msParams.price = JSON.parse(f.value['ms_' + key]).price;
 					if(this.adminService.isFalse(f.value['num_' + key])){

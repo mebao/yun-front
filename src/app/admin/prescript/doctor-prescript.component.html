@@ -165,9 +165,9 @@
 						<div class="pure-u-6-24 pl5 pr5">
 							<div class="pure-control-group">
 								<label for="remark_{{ms.key}}">
-									<span>说明（最多200字）</span>
+									<span>注意事项（最多20字）</span>
 								</label>
-								<textarea maxlength="200" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')"></textarea>
+								<textarea maxlength="20" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')"></textarea>
 							</div>
 						</div>
 					</div>

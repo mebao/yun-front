@@ -101,6 +101,15 @@
 						</div>
 					</div>
 					<div class="pure-control-group">
+						<label for="remark">注意事项（最多20字）</label>
+						<textarea id="remark" name="remark" maxlength="20" #remark="ngModel" [(ngModel)]="info.remark" placeholder="请输入注意事项" required=""></textarea>
+						<div *ngIf="remark.errors && (remark.dity || remark.touched)" class="alert alert-danger">
+							<div [hidden]="!remark.errors.required">
+								注意事项不可为空
+							</div>
+						</div>
+					</div>
+					<div class="pure-control-group">
 						<label for="is_prescribed">是否处方药</label>
 						<select id="is_prescribed" name="is_prescribed" #is_prescribed="ngModel" [(ngModel)]="info.isPrescribed" required="">
 							<option value="0">非处方</option>
