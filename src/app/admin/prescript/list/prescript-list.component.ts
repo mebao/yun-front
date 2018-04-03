@@ -287,15 +287,15 @@ export class PrescriptListComponent{
 			for(var i = 0; i < this.modalList.length; i++){
 				var priscript = {};
 				priscript = JSON.parse(JSON.stringify(this.modalList[i]));
-				priscript.info = [];
+				priscript['info'] = [];
 				if(this.modalList[i].info.length > 0){
 					for(var j = 0; j < this.modalList[i].info.length; j++){
 						if(this.modalList[i].info[j].isOut != '0'){
-							priscript.info.push(this.modalList[i].info[j]);
+							priscript['info'].push(this.modalList[i].info[j]);
 						}
 					}
 				}
-				if(priscript.info.length>0){
+				if(priscript['info'].length>0){
 					pList.push(priscript);
 				}
 			}
@@ -311,15 +311,17 @@ export class PrescriptListComponent{
 			for(var i = 0; i < this.printList.length; i++){
 				var print = {};
 				print = JSON.parse(JSON.stringify(this.printList[i]));
-				print.info = [];
+				print['info'] = [];
 				if(this.printList[i].info.length > 0){
 					for(var j = 0; j < this.printList[i].info.length; j++){
 						if(this.printList[i].info[j].isCheck){
-							print.info.push(this.printList[i].info[j]);
+							print['info'].push(this.printList[i].info[j]);
 						}
 					}
 				}
-				pList.push(print);
+				if(pList['info'].length>0){
+					pList.push(print);
+				}
 			}
 		}
 		this.printList = pList;
