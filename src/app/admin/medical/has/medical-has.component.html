@@ -51,7 +51,7 @@
 					<div class="pure-control-group">
 						<label for="type">类型</label>
 						<select id="type" name="type" #type="ngModel" [(ngModel)]="info.type" required="" disabled>
-							<option value="1">中药</option>
+							<option value="1">中成药</option>
 							<option value="2">西药</option>
 						</select>
 						<div *ngIf="type.errors && (type.dity || type.touched)" class="alert alert-danger">
