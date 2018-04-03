@@ -109,6 +109,40 @@
 	<div class="bookinglist" *ngIf="selectedTab == 1">
 		<div class="pure-g">
 			<div class="pure-u-6-24 booking-tab pad10" *ngFor="let booking of bookinglist">
+				<div style="display:none;">
+					<div id="print_div" #print_div>
+						<div class="container" id="container">
+							<div class="flex">
+								<div class="flex-1 font-bold">
+								姓名：{{booking.childName}}
+								</div>
+								<div>
+								性别：{{booking.genderText}}
+								</div>
+							</div>
+							<div class="font-bold">
+							年龄：{{booking.age}}
+							</div>
+							<div>
+							出生日期：{{booking.birthDate}}
+							</div>
+							<div  class="font-bold">
+							预约日期：{{booking.bookingDate}} {{booking.time}}
+							</div>
+							<ng-container *ngFor="let service of booking.services">
+								<div class="font-bold">
+								预约医生：{{service.userDoctorName}}
+								</div>
+								<div>
+								科室：{{service.serviceName}}
+								</div>
+							</ng-container>
+							<div>
+								预约编号：{{booking.refNo}}
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="tab" [ngClass]="{'cancel': booking.status == '0' || booking.status == '-1', 'in': (booking.status != '0' && booking.status != '-1' && booking.status != '1' && booking.status != '2')}">
 					<div *ngIf="booking.memberId != null" class="vip-tip-text">{{booking.memberName}}（{{booking.balance}}元）<div class="arrow"></div></div>
 					<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
@@ -173,6 +207,24 @@
 						</a>
 						<a *ngIf="moduleAuthority.update && booking.status == '3'" class="edit flex-1 pad10 text-center" (click)="cancel(booking, 'status')">
 							取消登记
+						</a>
+						<a class="edit flex-1 pad10 text-center">
+							<!-- 打印
+						    <e-ngx-print #print1
+			                       [showBtn]="false"
+			                       [printHTML]="print_div"
+			                       [printStyle]="printStyle"
+			                       [printCSS]="printCSS"
+			                       (printComplete)="printComplete()">
+						    </e-ngx-print> -->
+							<e-ngx-print
+						        [btnText]="'打印'"
+						        [btnClass]="{'btn': true, 'btn-success': true}"
+						        [printHTML]="print_div"
+						        [printStyle]="printStyle"
+						        [printCSS]="printCSS"
+						        (printComplete)="printComplete()">
+    						</e-ngx-print>
 						</a>
 					</div>
 				</div>

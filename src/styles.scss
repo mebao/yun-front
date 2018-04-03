@@ -511,6 +511,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 					border-color: #D45D5D;
 					color: #D45D5D;
 					display: block;
+					.btn-success{
+						background-color: transparent;
+						border: none;
+						height: 100%;
+						width: 100%;
+					}
 				}
 				&.cancel{
 					.info{
@@ -960,3 +966,10 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 .bg-gray{
 	background-color: #eee;
 }
+
+// .admin-booking-list{
+// 	.img{
+// 		height:20px;
+// 		margin-top:10px;
+// 	}
+// }

@@ -29,7 +29,7 @@
 				<label for="doctor_name">医生名：</label>
 				<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" placeholder="请输入医生名">
 			</div>
-			<div class="w64p"></div>
+			<div class="" style="width:138px;"></div>
 		</div>
 		<div class="flex">
 			<div class="flex-1"></div>
@@ -45,7 +45,8 @@
 				<label for="child_name">宝宝名：</label>
 				<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝名">
 			</div>
-			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
+			<button (click)="search()" class="pure-button pure-button-primary mr10">搜索</button>
+			<button (click)="selectPrint()" class="pure-button pure-button-primary">打印</button>
 		</div>
 	</form>
 	<div class="">
@@ -70,10 +71,10 @@
 			<tbody>
 				<ng-container *ngFor="let item of list;">
 					<tr *ngFor="let info of item.info; let indexInfo=index;">
-						<!-- <td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td> -->
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
-						<!-- <td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td> -->
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
+						<!-- <td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.name}}</td> -->
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
+						<!-- <td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.userName}}</td> -->
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.childName}}</td>
 						<td>{{info.pname}}</td>
 						<td>{{info.batch}}</td>
 						<td>{{info.num}}{{info.unit}}</td>
@@ -81,12 +82,13 @@
 							<div class="length-text">{{info.msExplain}}</div>
 						</td>
 						<td class="text-center" [ngClass]="{'canEdit': info.isOut == '0'}">{{info.isOut == '0' ? '未出药' : '已出药'}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+						<!-- <td class="text-center" *ngIf="info.isOut == '0'">-</td> -->
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">
 							<div class="length-text">{{item.remark}}</div>
 						</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.date}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">
 							<span *ngIf="item.outCode == 0">-</span>
 							<button *ngIf="moduleAuthority.edit && (item.outCode == 1 || item.outCode == 2)" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">出药</button>
 						</td>
@@ -109,6 +111,133 @@
 		<div class="button-tab pad10 text-right">
 			<button (click)="closeConfirm()" class="pure-button">关闭</button>
 			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
+		</div>
+	</div>
+</div>
+<div class="modal" *ngIf="modalPrintConfirmTab">
+	<div class="modal-mask" (click)="closeConfirm()"></div>
+	<div class="container mobile">
+		<div class="title">选择打印</div>
+		<div class="content pad10">
+			<div class="">
+				<table *ngIf="modalList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+					<thead>
+						<tr>
+							<!-- <th>药方名</th> -->
+							<th>就诊医生</th>
+							<!-- <th>家长姓名</th> -->
+							<th>宝宝名</th>
+							<th>药品名</th>
+							<th>批次</th>
+							<th>药品数量</th>
+							<th>打印数量</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let item of modalList;">
+							<tr *ngFor="let info of item.info; let indexInfo=index;">
+								<!-- <td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.name}}</td> -->
+								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
+								<!-- <td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.userName}}</td> -->
+								<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.childName}}</td>
+								<td>{{info.pname}}</td>
+								<td>{{info.batch}}</td>
+								<td>{{info.num}}{{info.unit}}</td>
+								<td>
+									<nz-input-number [(ngModel)]="info.printNum" [nzMin]="1" [nzStep]="1"></nz-input-number>
+								</td>
+								<td>
+	      							<!-- <input type="checkbox" name="prescriptInfo" value="{{info.pid}}"> -->
+									<label nz-checkbox [(ngModel)]="info.isCheck" (ngModelChange)="selectChange(info.pid,$event)">
+    								</label>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
+				<div *ngIf="hasPrintData && modalList.length == 0" class="mt10">
+					<nodata title="未查询到打印信息"></nodata>
+				</div>
+			</div>
+		</div>
+		<div style="display:none;">
+			<div id="printInfo_div" #printInfo_div>
+				<ng-container *ngFor="let item of printList;">
+					<div *ngFor="let info of item.info; let indexInfo=index;" >
+						<div class="main-container" *ngFor="let num of range(info.printNum);">
+							<div class="print-content">
+								<div class="header">
+									<div class="head">
+										<div class="flex font-mid">
+											<div class="flex-1">
+												{{info.tradeName}}
+											</div>
+											<div class="font-mid">
+												{{info.format}}
+											</div>
+										</div>
+										<div class="">
+											{{info.pname}}
+										</div>
+									</div>
+									<div class="main-content">
+										<div class="flex">
+											<div class="flex-1">
+												<div class="font-big">{{info.frequency}}</div>
+												<div>{{info.msExplainPrint}}</div>
+												<div class="">{{info.remark}}</div>
+											</div>
+											<div class="">
+												<img class="img-code" src="/assets/images/qrcode.jpg" />
+											</div>
+										</div>
+									</div>
+									<div class="mt10 main-content-footer">
+										<div class="flex">
+											<div class="flex-1">
+												{{item.childName}} {{item.mobile}}
+											</div>
+											<div class="">
+												有效期 {{info.expiringDate}}
+											</div>
+										</div>
+										<div class="flex">
+											<div class="flex-1">
+												<div>{{item.doctorName}} {{item.datePrint}}</div>
+											</div>
+											<div class="max210">
+												远离儿童放置
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--底部-->
+								<div class="footer">
+									<div class="flex">
+										<div class="flex-1 logo-text">
+											嘉宝康乐
+										</div>
+										<div class="color-white">
+											{{item.clinicTel}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+		<div class="button-tab pad10 text-right">
+			<button (click)="closePrintConfirm()" class="pure-button">关闭</button>
+			<e-ngx-print #print1
+			[printHTML]="printInfo_div"
+			[printStyle]="printStyle"
+			[printCSS]="printCSS"
+			[showBtn]="false"  (printComplete)="printComplete()">
+			</e-ngx-print>
+			<button class="pure-button pure-button-primary" (click)="customPrint()">打印</button>
 		</div>
 	</div>
 </div>

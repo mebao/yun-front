@@ -12,6 +12,8 @@ import { BookingListRoutingModule }  from './booking-list.routing.module';
 
 import { BookingListComponent }      from './booking-list.component';
 
+import { ENgxPrintModule }          from "e-ngx-print";
+
 @NgModule({
     declarations: [
         BookingListComponent,
@@ -26,6 +28,7 @@ import { BookingListComponent }      from './booking-list.component';
         PipeModule,
         AngCommonModule,
         BookingListRoutingModule,
+        ENgxPrintModule,
     ]
 })
 

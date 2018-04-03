@@ -1,4 +1,4 @@
-import { Component, OnInit }           from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef }           from '@angular/core';
 import { Router, ActivatedRoute }      from '@angular/router';
 
 import { AdminService }                from '../../admin.service';
@@ -6,11 +6,14 @@ import { AdminService }                from '../../admin.service';
 import { ToastService }                from '../../../common/nll-toast/toast.service';
 import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
 
+import { ENgxPrintComponent }          from "e-ngx-print";
+
 @Component({
 	selector: 'app-booking-list',
 	templateUrl: './booking-list.component.html'
 })
 export class BookingListComponent implements OnInit{
+	//@ViewChild('print1') printComponent1: ENgxPrintComponent;
 	topBar: {
 		title: string,
 		back: boolean,
@@ -107,12 +110,43 @@ export class BookingListComponent implements OnInit{
 	modalBackBookingFee: boolean;
     // 禁止支付按钮连续提交
     btnCanEdit: boolean;
+	printStyle: string;
 
 	constructor(
 		public adminService: AdminService,
 		public router: Router,
-        private toastService: ToastService
-	) {}
+        private toastService: ToastService,
+		private elRef: ElementRef,
+	) {
+		this.printStyle =
+	        `
+			body{
+				margin:0px;
+				font-size:12px;
+				font-family:"黑体";
+				color:#333;
+			}
+	        .img{
+	            height:20px;
+				margin-top: 10px;
+	        }
+			#print_div{
+				width:200px;
+				line-height:1.8em;
+				page-break-before: always;
+				padding:5px 10px;
+			}
+			.flex{
+				display:flex;
+			}
+			.flex-1{
+				flex:1;
+			}
+			.font-bold{
+				color:#000;
+			}
+	        `;
+	}
 
 	ngOnInit(): void {
 		this.topBar = {
@@ -304,6 +338,14 @@ export class BookingListComponent implements OnInit{
 		this.modalBackBookingFee = false;
 		this.btnCanEdit = false;
 	}
+
+	printComplete() {
+
+	}
+
+	// customPrint(print: string) {
+	//     this.printComponent1.print();
+	// }
 
 	initBooking() {
 		this.booking = {
