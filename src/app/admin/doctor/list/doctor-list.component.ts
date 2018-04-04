@@ -1,6 +1,8 @@
 import { Component, OnInit }                    from '@angular/core';
 import { Router, ActivatedRoute }               from '@angular/router';
 
+import { NzMessageService }                     from 'ng-zorro-antd';
+
 import { AdminService }                         from '../../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class DoctorListComponent implements OnInit{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -30,6 +27,7 @@ export class DoctorListComponent implements OnInit{
 	hasData: boolean;
 
 	constructor(
+        private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -39,11 +37,6 @@ export class DoctorListComponent implements OnInit{
 			title: '医生列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		// 权限
 		this.moduleAuthority = {
@@ -80,16 +73,19 @@ export class DoctorListComponent implements OnInit{
 			adminServiceUrl += '&myself=1';
 		}
 		this.adminService.adminlist(adminServiceUrl).then((data) => {
-			 if(data.status == 'no'){
-				 this.loadingShow = false;
-			 	this.toastTab(data.errorMsg, 'error');
-			 }else{
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
 			 	var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 			 	this.hasData = true;
 				this.loadingShow = false;
-			 }
-		})
+			}
+		}).catch((error) => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
 	showService(_id) {
@@ -108,20 +104,5 @@ export class DoctorListComponent implements OnInit{
 	// 病历模板
 	showCaseTempletList(_id) {
 		this.router.navigate(['./admin/doctor/caseTempletList'], {queryParams: {'id': _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -145,16 +145,16 @@ export class CrmUserListComponent{
 		this.loadingShow = true;
 		sessionStorage.setItem('search-crmuserList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
-		if(this.searchInfo.name != ''){
+		if(this.searchInfo.name && this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;
 		}
-		if(this.searchInfo.mobile != ''){
+		if(this.searchInfo.mobile && this.searchInfo.mobile != ''){
 			urlOptions += '&mobile=' + this.searchInfo.mobile;
 		}
-		if(this.searchInfo.role != ''){
+		if(this.searchInfo.role && this.searchInfo.role != ''){
 			urlOptions += '&role=' + this.searchInfo.role;
 		}
-		if(this.searchInfo.clinic_role != ''){
+		if(this.searchInfo.clinic_role && this.searchInfo.clinic_role != ''){
 			urlOptions += '&clinic_role_id=' + this.searchInfo.clinic_role;
 		}
 		this.getData(urlOptions);
