@@ -116,8 +116,8 @@
 				<label for="pay_way" class="w100p">支付方式：</label>
 				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="selector.pay_way">
 					<ng-container *ngFor="let uMember of selector.members">
-						<ng-container *ngIf="selector.member_id != uMember.umId">
-							<option value="member_{{uMember.umId}}">{{uMember.memberName}}支付（余额：{{uMember.balance ? uMember.balance : '0.00'}}）</option>
+						<ng-container *ngIf="uMember.canUse == '1' && selector.member_id != uMember.umId">
+							<option value="member_{{uMember.umId}}" [disabled]="uMember.balance == null || uMember.balance == '0.00'">{{uMember.memberName}}支付（余额：{{uMember.balance ? uMember.balance : '0.00'}}）</option>
 						</ng-container>
 					</ng-container>
 					<option value="ali">支付宝支付</option>

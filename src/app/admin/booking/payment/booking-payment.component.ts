@@ -476,7 +476,6 @@ export class BookingPaymentComponent{
 	}
 
 	getMemberDiscount(memberInfo) {
-		console.log(this.userMember);
 		if(memberInfo.memberId){
 			//获取会员折扣信息
 			var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
@@ -709,7 +708,6 @@ export class BookingPaymentComponent{
 				this.fee.feeInfo.serviceFeeList[i].serviceFee = this.adminService.toDecimal2(fee_service);
 				serviceFee += fee_service;
 				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price);
-				console.log(this.fee.feeInfo.serviceFeeList[i]);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.serviceFeeList[i].id,
@@ -749,7 +747,6 @@ export class BookingPaymentComponent{
 				this.fee.feeInfo.assistFeeList[i].assistFee = this.adminService.toDecimal2(fee_assist);
 				assistFee += fee_assist;
 				originalAssistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].number) * parseFloat(this.fee.feeInfo.assistFeeList[i].price);
-				console.log(this.fee.feeInfo.assistFeeList[i]);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.assistFeeList[i].id,
@@ -786,7 +783,6 @@ export class BookingPaymentComponent{
 				this.fee.feeInfo.checkFeeList[i].checkFee = this.adminService.toDecimal2(fee_check);
 				checkFee += fee_check;
 				originalCheckFee += parseFloat(this.fee.feeInfo.checkFeeList[i].number) * parseFloat(this.fee.feeInfo.checkFeeList[i].price);
-				console.log(this.fee.feeInfo.checkFeeList[i]);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.checkFeeList[i].id,
@@ -837,7 +833,6 @@ export class BookingPaymentComponent{
 						originalMedicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
 					}
 				}
-				console.log(this.fee.feeInfo.medicalFeeList[i]);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.medicalFeeList[i].id,
@@ -874,7 +869,6 @@ export class BookingPaymentComponent{
 				this.fee.feeInfo.otherFeeList[i].otherFee = this.adminService.toDecimal2(fee_other);
 				otherFee += fee_other;
 				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].number) * parseFloat(this.fee.feeInfo.otherFeeList[i].price);
-				console.log(this.fee.feeInfo.otherFeeList[i]);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.otherFeeList[i].id,
@@ -904,8 +898,6 @@ export class BookingPaymentComponent{
 		this.payInfo.stillNeedPay = this.fee.fee;
 
 		this.loadingShow = false;
-
-		console.log(this.fee.resultsList);
 	}
 
 	getFeeInfoFirst(userMember, results) {
@@ -1368,8 +1360,8 @@ export class BookingPaymentComponent{
 
 	// 实时更新stillNeedPay
 	changeMoney(type) {
-		var stillNeedPay = parseFloat(this.fee.fee) - parseFloat(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount) - parseFloat(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money) - parseFloat(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money);
-		if(stillNeedPay < 0){
+		var stillNeedPay = (parseFloat(this.fee.fee) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money) * 100);
+		if(stillNeedPay / 100 < 0){
 			this.toastTab('金额输入错误，请重新输入', 'error');
 			if(type == 'give_amount'){
 				this.payInfo.give_amount = '';
@@ -1383,7 +1375,7 @@ export class BookingPaymentComponent{
 			this.changeMoney(type);
 			return;
 		}
-		this.payInfo.stillNeedPay = this.adminService.toDecimal2(stillNeedPay.toString());
+		this.payInfo.stillNeedPay = this.adminService.toDecimal2((stillNeedPay / 100).toString());
 	}
 
 	close() {

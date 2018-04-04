@@ -137,12 +137,8 @@
 					<div class="flex-1 p-group">{{sale.user.name}}</div>
 				</div>
 				<div class="pure-control-group flex mt10">
-					<label for="userBalance" class="w100p">余额：</label>
-					<div class="flex-1 p-group">{{sale.user.userBalance}}</div>
-				</div>
-				<div class="pure-control-group flex mt10">
 					<label for="member" class="w100p">会员类型：</label>
-					<div class="flex-1 p-group">{{sale.member.name}}</div>
+					<div class="flex-1 p-group">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
 				</div>
 				<div class="pure-control-group flex mt10">
 					<label for="prescript" class="w100p">药品折扣：</label>
@@ -186,7 +182,7 @@
 			<div class="pure-control-group flex mt10">
 				<label for="pay_way" class="w100p">支付方式：</label>
 				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="sale.pay_way">
-					<option *ngIf="sale.user.id != '' && sale.selectedMemberJson.umId" value="member_{{sale.selectedMemberJson.umId}}" [disabled]="sale.balanceUse != ''">{{sale.member.name}}支付{{ sale.balanceUse == '' ? ('（' + sale.selectedMemberJson.balance + '）') : ('（' + sale.balanceUse + '）')}}</option>
+					<option *ngIf="sale.user.id != '' && sale.selectedMemberJson.umId" value="member_{{sale.selectedMemberJson.umId}}" [disabled]="sale.balanceUse != ''">{{sale.member.name}}支付{{ sale.balanceUse == '' ? ('（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）') : ('（' + sale.balanceUse + '）')}}</option>
 					<option value="ali">支付宝支付</option>
 					<option value="wechat">微信支付</option>
 					<option value="card">刷卡支付</option>

@@ -314,7 +314,22 @@ export class UserListComponent{
 			this.btnCanEdit = false;
 			return false;
 		}
-		console.log(this.selector);
+		// 会员支付时，判断会员余额是否充足
+		if(this.selector.pay_way.indexOf('member') != 1){
+			if(this.selector.members.length > 0){
+				var selectedPayMember = {};
+				for(var i = 0; i < this.selector.members.length; i++){
+					if(this.selector.members[i].umId == this.selector.pay_way.split('_')[1]){
+						selectedPayMember = this.selector.members[i];
+					}
+				}
+				if(parseFloat(this.selector.amount) > parseFloat(selectedPayMember['balance'])){
+					this.toastTab(selectedPayMember['memberName'] + '余额不足', 'error');
+					this.btnCanEdit = false;
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -464,7 +479,7 @@ export class UserListComponent{
 		// 切换购买的会员类型
 		if(!this.adminService.isFalse(this.selector.member)){
 			this.selector.member_id = this.selector.member;
-			this.selector.pay_way = null;
+			this.selector.pay_way = this.selector.pay_way == null ? '' : null;
 		}
 	}
 

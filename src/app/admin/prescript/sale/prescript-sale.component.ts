@@ -271,9 +271,6 @@ export class PrescriptSaleComponent{
 	}
 
 	msChange(key, _value) {
-		console.log(JSON.parse(_value));
-		console.log(this.plist);
-		console.log(key);
 		for(var i = 0; i < this.plist.length; i++){
 			if(this.plist[i].key == key){
 				var batch = this.plist[i].ms.batch;
@@ -372,7 +369,7 @@ export class PrescriptSaleComponent{
 		}
 		// 是否是诊所用户
 		if(this.sale.user.id != ''){
-			if(parseFloat(this.sale.selectedMemberJson.balance) < saleFee){
+			if(parseFloat(this.sale.selectedMemberJson.balance ? this.sale.selectedMemberJson.balance : '0.00') < saleFee){
 				this.sale.balanceUse = '余额不足';
 			}else{
 				this.sale.balanceUse = '';
