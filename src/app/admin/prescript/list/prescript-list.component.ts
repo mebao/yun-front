@@ -85,14 +85,14 @@ export class PrescriptListComponent{
 			margin-top: 2px;
         }
 		.img-code{
-			height:72px;
+			height:90px;
 			margin-right:4px;
 		}
 		.main-content{
 			padding:4px 0;
 			border-top: 1px solid #333;
 			border-bottom: 1px solid #333;
-			min-height:95px;
+			min-height:94px;
 		}
 		.header{
 			padding:4px 10px 4px 20px;
@@ -319,7 +319,7 @@ export class PrescriptListComponent{
 						}
 					}
 				}
-				if(pList['info'].length>0){
+				if(print['info'].length>0){
 					pList.push(print);
 				}
 			}
