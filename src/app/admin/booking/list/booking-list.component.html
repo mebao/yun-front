@@ -108,7 +108,7 @@
 	</div>
 	<div class="bookinglist" *ngIf="selectedTab == 1">
 		<div class="pure-g">
-			<div class="pure-u-8-24 booking-tab pad10" *ngFor="let booking of bookinglist">
+			<div class="pure-u-6-24 booking-tab pad10" *ngFor="let booking of bookinglist">
 				<div style="display:none;">
 					<div id="print_div" #print_div>
 						<div class="container" id="container">
@@ -256,6 +256,38 @@
 				<tbody>
 					<ng-container *ngFor="let showBooking of showBookinglist" class="cursor-p">
 						<tr *ngFor="let service of showBooking.services; let indexService=index;">
+							<div style="display:none;">
+								<div id="print_div" #print_div>
+									<div class="container" id="container">
+										<div class="flex">
+											<div class="flex-1 font-bold">
+											姓名：{{showBooking.childName}}
+											</div>
+											<div>
+											性别：{{showBooking.genderText}}
+											</div>
+										</div>
+										<div class="font-bold">
+										年龄：{{showBooking.age}}
+										</div>
+										<div>
+										出生日期：{{showBooking.birthDate}}
+										</div>
+										<div  class="font-bold">
+										预约日期：{{showBooking.bookingDate}} {{showBooking.time}}
+										</div>
+										<div class="font-bold">
+										预约医生：{{service.userDoctorName}}
+										</div>
+										<div>
+										科室：{{service.serviceName}}
+										</div>
+										<div>
+											预约编号：{{showBooking.refNo}}
+										</div>
+									</div>
+								</div>
+							</div>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
 							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
 							<td>{{service.userDoctorName}}</td>
@@ -289,6 +321,16 @@
 									<button class="pure-button button-error" (click)="cancel(showBooking, 'status')">
 										取消登记
 									</button>
+								</div>
+								<div class="mt10">
+									<e-ngx-print
+								        [btnText]="'打印'"
+								        [btnClass]="{'pure-button': true, 'pure-button-primary': true}"
+								        [printHTML]="print_div"
+								        [printStyle]="printStyle"
+								        [printCSS]="printCSS"
+								        (printComplete)="printComplete()">
+		    						</e-ngx-print>
 								</div>
 							</td>
 						</tr>
