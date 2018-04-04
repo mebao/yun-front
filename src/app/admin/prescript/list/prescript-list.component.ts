@@ -114,6 +114,7 @@ export class PrescriptListComponent{
 		}
 		.footer .tel{
 			font-size:18px;
+			font-weight:bold;
 		}
 		.color-white{
 			color:#fff;
@@ -133,8 +134,10 @@ export class PrescriptListComponent{
 			max-width:210px;
 		}
 		.logo-text{
-			font-family:'汉仪细圆';
+			font-family:'黑体';
 			color:#fff;
+			font-size:18px;
+			font-weight:bold;
 		}
         `;
 }
