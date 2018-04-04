@@ -496,9 +496,9 @@ export class BookingComponent implements OnInit{
 					}
 				}
 				if(!this.initPage.doctor){
-					this.bookingInfo.user_doctor = '';
+					this.bookingInfo.user_doctor = (this.bookingInfo.user_doctor == null ? '' : null);
 					this.bookingInfo.booking_fee = '';
-					this.bookingInfo.booking_date = '';
+					this.bookingInfo.booking_date = (this.bookingInfo.booking_date == null ? '' : null);
 					this.timelist = [];
 					this.bookingInfo.timeInfo = '';
 				}
@@ -535,7 +535,7 @@ export class BookingComponent implements OnInit{
 			}
 		}
 		if(!this.initPage.date){
-			this.bookingInfo.booking_date = '';
+			this.bookingInfo.booking_date = (this.bookingInfo.booking_date == null ? '' : null);
 			this.timelist = [];
 			this.bookingInfo.timeInfo = '';
 		}
