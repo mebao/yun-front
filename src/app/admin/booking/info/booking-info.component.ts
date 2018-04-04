@@ -50,6 +50,8 @@ export class BookingInfoComponent{
 		yyj: any;
 		backFee: string,
 		backRemark: string,
+		refereeId: string,
+		refereeName: string,
 	};
 	canEdit: boolean;
 	selectorBooking: {
@@ -121,6 +123,8 @@ export class BookingInfoComponent{
 			yyj: {},
 			backFee: '',
 			backRemark: '',
+			refereeId: '',
+			refereeName: '',
 		};
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
