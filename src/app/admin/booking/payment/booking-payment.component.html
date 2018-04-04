@@ -36,7 +36,7 @@
 				</div>
 				<div *ngIf="bookingInfo.status != '5' && paymentType == '30'" class="flex mt20">
 					<div class="flex-1 pure-control-group">
-						<select [(ngModel)]="userMember.selectedMember" (change)="selectMember()">
+						<select *ngIf="userMember.memberList.length > 0" [(ngModel)]="userMember.selectedMember" (change)="selectMember()">
 							<ng-container *ngFor="let member of userMember.memberList">
 								<option value="{{member.string}}">{{member.memberName}}</option>
 							</ng-container>

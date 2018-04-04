@@ -136,11 +136,11 @@
 					<label for="text" class="w100p">用户：</label>
 					<div class="flex-1 p-group">{{sale.user.name}}</div>
 				</div>
-				<div class="pure-control-group flex mt10">
+				<div *ngIf="sale.member.id != ''" class="pure-control-group flex mt10">
 					<label for="member" class="w100p">会员类型：</label>
 					<div class="flex-1 p-group">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
 				</div>
-				<div class="pure-control-group flex mt10">
+				<div *ngIf="sale.member.id != ''" class="pure-control-group flex mt10">
 					<label for="prescript" class="w100p">药品折扣：</label>
 					<div class="flex-1 p-group">{{sale.member.prescript}}</div>
 				</div>
