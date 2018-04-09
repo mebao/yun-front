@@ -1,6 +1,8 @@
 import { Component, OnInit }                      from '@angular/core';
 import { Router, ActivatedRoute }                 from '@angular/router';
 
+import { NzMessageService }                       from 'ng-zorro-antd';
+
 import { AdminService }                           from '../../admin.service';
 
 @Component({
@@ -11,11 +13,6 @@ export class MedicalSupplierListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -32,6 +29,7 @@ export class MedicalSupplierListComponent{
 	}
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -40,11 +38,6 @@ export class MedicalSupplierListComponent{
 		this.topBar = {
 			title: '供应商管理',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		// 权限
@@ -90,7 +83,7 @@ export class MedicalSupplierListComponent{
 		this.adminService.supplierlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.list = results.list;
@@ -123,20 +116,5 @@ export class MedicalSupplierListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/medical/supplier'], {queryParams: {id: _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

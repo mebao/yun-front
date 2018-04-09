@@ -1,6 +1,8 @@
 import { Component, OnInit }               from '@angular/core';
 import { Router }                          from '@angular/router';
 
+import { NzMessageService }                from 'ng-zorro-antd';
+
 import { AdminService }                    from '../admin.service';
 
 @Component({
@@ -11,11 +13,6 @@ export class MemberListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -33,6 +30,7 @@ export class MemberListComponent{
 	serviceList: any[];
 
 	constructor(
+		private _message: NzMessageService,
 		private adminService: AdminService,
 		private router: Router,
 	) {}
@@ -41,12 +39,6 @@ export class MemberListComponent{
 		this.topBar = {
 			title: '会员管理',
 			back: false,
-		}
-
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -88,7 +80,7 @@ export class MemberListComponent{
 		this.serviceList = [];
 		this.adminService.servicelist(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.serviceList = results.servicelist;
@@ -101,10 +93,10 @@ export class MemberListComponent{
 		this.loadingShow = true;
 		sessionStorage.setItem('search-memberList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
-		if(this.searchInfo.name != ''){
+		if(this.searchInfo.name && this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;
 		}
-		if(this.searchInfo.status != ''){
+		if(this.searchInfo.status && this.searchInfo.status != ''){
 			urlOptions += '&status=' + this.searchInfo.status;
 		}
 		this.getData(urlOptions);
@@ -114,7 +106,7 @@ export class MemberListComponent{
 		this.adminService.memberlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				// 通过诊所科室构造会员折扣
@@ -183,20 +175,5 @@ export class MemberListComponent{
 	update(member) {
 		sessionStorage.setItem('memberInfo', JSON.stringify(member));
 		this.router.navigate(['./admin/member'], {queryParams: {id: member.id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -1,6 +1,8 @@
 import { Component }                         from '@angular/core';
 import { Router }                            from '@angular/router';
 
+import { NzMessageService }                  from 'ng-zorro-antd';
+
 import { AdminService }                      from '../../admin.service';
 
 @Component({
@@ -11,11 +13,6 @@ export class CrmRoleListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -32,6 +29,7 @@ export class CrmRoleListComponent{
 	}
 
 	constructor(
+        private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -41,11 +39,6 @@ export class CrmRoleListComponent{
 			title: '角色管理',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.moduleAuthority = {
 			see: false,
@@ -84,7 +77,7 @@ export class CrmRoleListComponent{
 	search() {
 		this.loadingShow = true;
 		var urlOptions = this.url;
-		if(this.searchInfo.status != ''){
+		if(this.searchInfo.status !== null && this.searchInfo.status !== ''){
 			urlOptions += '&status=' + this.searchInfo.status;
 		}
 		this.getData(urlOptions);
@@ -100,9 +93,9 @@ export class CrmRoleListComponent{
 
 		this.adminService.clinicrole('/' + role.id, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
-				this.toastTab('状态修改成功', '');
+				this._message.success('状态修改成功');
 				this.search();
 			}
 		});
@@ -112,7 +105,7 @@ export class CrmRoleListComponent{
 		this.adminService.clinicrolelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.roleList = results.list;
@@ -129,20 +122,5 @@ export class CrmRoleListComponent{
 	updateAuthority(role) {
 		sessionStorage.setItem('role', role.name);
 		this.router.navigate(['./admin/roleAuthorityList'], {queryParams: {id: role.id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -1,61 +1,66 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-user-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="mt10">
-		<div class="flex pure-form">
-			<div class="flex-1"></div>
-			<div class="pure-control-group mr10">
-				<label for="name">姓名：</label>
-				<input type="text" id="name" name="name" [(ngModel)]="searchInfo.name" placeholder="请输入姓名">
+	<div nz-row class="mt10">
+		<div nz-col [nzSpan]="6" [nzOffset]="12">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="name">姓名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.name" [nzPlaceHolder]="'请输入姓名'" [nzSize]="'large'"></nz-input>
+				</div>
 			</div>
-			<div class="pure-control-group mr10">
-				<label for="mobile">手机号码：</label>
-				<input type="text" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入手机号码">
-			</div>
-			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 		</div>
-		<table *ngIf="childList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th class="w70p"></th>
-					<th>姓名</th>
-					<!-- <th>电话号码</th> -->
-					<th>性别</th>
-					<th>年龄</th>
-					<th>生日</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let child of childList; let index=index;">
-					<td>
-						<div class="img-tab-default">
-							<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
-						</div>
-					</td>
-					<td>{{child.childName}}</td>
-					<!-- <td>{{child.mobile}}</td> -->
-					<td>{{child.gender}}</td>
-					<td>{{child.age}}</td>
-					<td>{{child.birthday}}</td>
-					<td>
-						<div *ngIf="moduleAuthority.info">
-							<button (click)="goInfo(child)" class="pure-button pure-button-primary">详情</button>
-						</div>
-						<div *ngIf="moduleAuthority.booking" class="mt10">
-							<button (click)="goBooking(child)" class="pure-button pure-button-primary">预约</button>
-						</div>
-						<div *ngIf="moduleAuthority.bookingHistory" class="mt10">
-							<button (click)="goBookingHistory(child)" class="pure-button pure-button-primary">预约记录</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && childList.length == 0" class="mt10">
-			<nodata title="未查询到病人信息"></nodata>
+		<div nz-col [nzSpan]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="mobile">手机号码：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.mobile" [nzPlaceHolder]="'请输入手机号码'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="childList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th nz-th class="w70p"></th>
+				<th nz-th>姓名</th>
+				<th nz-th>性别</th>
+				<th nz-th>年龄</th>
+				<th nz-th>生日</th>
+				<th nz-th>操作</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<tr nz-tbody-tr *ngFor="let child of childList; let index=index;">
+				<td nz-td>
+					<div class="img-tab-default">
+						<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
+					</div>
+				</td>
+				<td nz-td>{{child.childName}}</td>
+				<td nz-td>{{child.gender}}</td>
+				<td nz-td>{{child.age}}</td>
+				<td nz-td>{{child.birthday}}</td>
+				<td nz-td>
+					<div *ngIf="moduleAuthority.info">
+						<button (click)="goInfo(child)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+					</div>
+					<div *ngIf="moduleAuthority.booking" class="mt10">
+						<button (click)="goBooking(child)" nz-button [nzType]="'primary'" [nzSize]="'large'">预约</button>
+					</div>
+					<div *ngIf="moduleAuthority.bookingHistory" class="mt10">
+						<button (click)="goBookingHistory(child)" nz-button [nzType]="'primary'" [nzSize]="'large'">预约记录</button>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</nz-table>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

@@ -1,6 +1,8 @@
 import { Component }                           from '@angular/core';
 import { Router }                              from '@angular/router';
 
+import { NzMessageService }                    from 'ng-zorro-antd';
+
 import { AdminService }                        from '../admin.service';
 
 @Component({
@@ -11,11 +13,6 @@ export class ChildListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -34,6 +31,7 @@ export class ChildListComponent{
 	url: string;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -43,11 +41,6 @@ export class ChildListComponent{
 			title: '病人库',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.moduleAuthority = {
 			see: false,
@@ -108,7 +101,7 @@ export class ChildListComponent{
 		this.adminService.searchchild(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.child.length > 0){
@@ -143,20 +136,5 @@ export class ChildListComponent{
 	// 预约记录
 	goBookingHistory(child) {
 		this.router.navigate(['./admin/bookingHistory'], {queryParams: {childId: child.childId}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

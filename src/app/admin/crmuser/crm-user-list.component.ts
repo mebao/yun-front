@@ -1,6 +1,8 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router }                             from '@angular/router';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { AdminService }                       from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class CrmUserListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -45,6 +42,7 @@ export class CrmUserListComponent{
 	btnCanEdit: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -54,11 +52,6 @@ export class CrmUserListComponent{
 			title: '员工列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -113,7 +106,7 @@ export class CrmUserListComponent{
 		var clinicroleUrl = this.url + '&status=1';
 		this.adminService.clinicrolelist(clinicroleUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.clinicRoleList = results.list;
@@ -127,7 +120,7 @@ export class CrmUserListComponent{
 		this.adminService.adminlist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.adminlist = results.adminlist;
@@ -178,10 +171,10 @@ export class CrmUserListComponent{
 			 + '&token=' + this.adminService.getUser().token
 		this.adminService.deleteadmin(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('删除成功', '');
+				this._message.success('删除成功');
 				this.search();
 				this.btnCanEdit = false;
 			}
@@ -194,20 +187,5 @@ export class CrmUserListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/crmuser'], {queryParams: {id: _id, type: 'update'}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }
