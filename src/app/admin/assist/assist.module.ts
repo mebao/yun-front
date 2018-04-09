@@ -9,13 +9,16 @@ import { AngCommonModule }      from '../../common/ang-common.module';
 import { AssistRoutingModule }  from './assist.routing.module';
 
 import { AssistComponent }      from './assist.component';
+import { AssistListComponent }  from './assist-list.component';
 
 @NgModule({
     declarations: [
         AssistComponent,
+        AssistListComponent,
     ],
     exports: [
         AssistComponent,
+        AssistListComponent,
     ],
     imports: [
         CommonModule,

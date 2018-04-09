@@ -94,10 +94,6 @@ const adminRoutes: Routes = [
 						loadChildren: './member/member.module#MemberModule',
 					},
 					{
-						path: 'assistList',
-						loadChildren: './assist-list/assist-list.module#AssistListModule',
-					},
-					{
 						path: 'assist',
 						loadChildren: './assist/assist.module#AssistModule',
 					},

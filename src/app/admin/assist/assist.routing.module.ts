@@ -4,6 +4,7 @@ import { RouterModule }         from '@angular/router';
 import { AuthGuardRole }        from './../auth-guard-role.service';
 
 import { AssistComponent }      from './assist.component';
+import { AssistListComponent }  from './assist-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { AssistComponent }      from './assist.component';
             path: '',
             canActivate: [AuthGuardRole],
             component: AssistComponent,
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: AssistListComponent,
         }
     ])]
 })

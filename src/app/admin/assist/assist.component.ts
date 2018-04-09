@@ -151,7 +151,7 @@ export class AssistComponent{
             }else{
                 this.toastTab(this.editType == 'update' ? '辅助治疗修改成功' : '辅助治疗创建成功', '');
                 setTimeout(() => {
-                    this.router.navigate(['./admin/assistList']);
+                    this.router.navigate(['./admin/assist/list']);
                 }, 2000);
             }
         });

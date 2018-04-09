@@ -146,7 +146,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.assistList.use != ''"
-			routerLink="./assistList"
+			routerLink="./assist/list"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -376,7 +376,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.assistList.use != ''"
-			routerLink="./assistList"
+			routerLink="./assist/list"
 			routerLinkActive="active"
 			(click)="goPage('assistList')">
 				辅助治疗列表

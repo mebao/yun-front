@@ -6,7 +6,9 @@ import { HttpModule }                     from '@angular/http';
 
 import { AppComponent }                   from './app.component';
 
+// 第三方插件
 import { NgZorroAntdModule }              from 'ng-zorro-antd';
+import { LoadingBarRouterModule }         from '@ngx-loading-bar/router';
 
 import { AppRoutingModule }               from './app-routing.module';
 import { AdminModule }                    from './admin/admin.module';
@@ -32,6 +34,7 @@ import { ForgetpwdComponent }             from './admin/login/forgetpwd.componen
 		AdminModule,
 		LoginRoutingModule,
 		NgZorroAntdModule.forRoot(),
+		LoadingBarRouterModule,
 	],
 	providers: [
 		AuthGuard,

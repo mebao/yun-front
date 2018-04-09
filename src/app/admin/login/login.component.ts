@@ -364,7 +364,7 @@ export class LoginComponent{
 			assistList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/assistList',
+				url: '/admin/assist/list',
 				infos: [],
 			},
 			setupInspectList: {

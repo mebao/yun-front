@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 		<nz-root>
 	   		<router-outlet></router-outlet>
 		</nz-root>
+		<ngx-loading-bar></ngx-loading-bar>
 	`
 })
 export class AppComponent {
