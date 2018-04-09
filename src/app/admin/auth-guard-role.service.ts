@@ -353,13 +353,13 @@ export class AuthGuardRole implements CanActivate{
 					// 	firstUrl: '',
 					// 	second: [
 					// 		{
-					// 			url: '/admin/clinicroomList',
+					// 			url: '/admin/clinicroom/list',
 					// 			authority: 'see',
 					// 			queryType: '',
 					// 			queryParams: '',
 					// 		},
 					// 		{
-					// 			url: '/admin/clinicroomList',
+					// 			url: '/admin/clinicroom/list',
 					// 			authority: 'personal',
 					// 			queryType: '',
 					// 			queryParams: '',
@@ -373,7 +373,7 @@ export class AuthGuardRole implements CanActivate{
 					// 		},
 					// 		// 诊室使用记录
 					// 		{
-					// 			url: '/admin/clinicroomRecords',
+					// 			url: '/admin/clinicroom/records',
 					// 			authority: 'records',
 					// 			queryType: '',
 					// 			queryParams: '',
@@ -799,17 +799,17 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'childList',
-						firstUrl: '/admin/childList',
+						firstUrl: '/admin/child/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/childList',
+								url: '/admin/child/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/childInfo',
+								url: '/admin/child/info',
 								authority: 'info',
 								queryType: '',
 								queryParams: '',
@@ -889,11 +889,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'memberList',
-						firstUrl: '/admin/memberList',
+						firstUrl: '/admin/member/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/memberList',
+								url: '/admin/member/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

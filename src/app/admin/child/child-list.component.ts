@@ -126,12 +126,12 @@ export class ChildListComponent{
 	}
 
 	goInfo(child) {
-		this.router.navigate(['./admin/childInfo'], {queryParams: {id: child.childId}});
+		this.router.navigate(['./admin/child/info'], {queryParams: {id: child.childId}});
 	}
 
 	//宝宝详情
 	childInfo(_id) {
-		window.open('./admin/childInfo?id=' + _id);
+		window.open('./admin/child/info?id=' + _id);
 	}
 
 	//预约

@@ -114,7 +114,7 @@ export class ClinicroomComponent{
 				}else{
 					this.toastTab('诊室创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/clinicroomList']);
+						this.router.navigate(['./admin/clinicroom/list']);
 					}, 2000);
 				}
 			})
@@ -133,7 +133,7 @@ export class ClinicroomComponent{
 				}else{
 					this.toastTab('诊室信息修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/clinicroomList']);
+						this.router.navigate(['./admin/clinicroom/list']);
 					}, 2000);
 				}
 			})

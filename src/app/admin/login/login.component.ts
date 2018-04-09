@@ -394,7 +394,7 @@ export class LoginComponent{
 			childList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/childList',
+				url: '/admin/child/list',
 				infos: [],
 			},
 			userList: {
@@ -406,7 +406,7 @@ export class LoginComponent{
 			memberList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/memberList',
+				url: '/admin/member/list',
 				infos: [],
 			},
 			crmRoleList: {

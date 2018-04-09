@@ -4,6 +4,7 @@ import { RouterModule }           from '@angular/router';
 import { AuthGuardRole }          from './../auth-guard-role.service';
 
 import { MemberComponent }        from './member.component';
+import { MemberListComponent }    from './member-list.component';
 
 @NgModule({
     exports: [
@@ -14,10 +15,15 @@ import { MemberComponent }        from './member.component';
             path: '',
             canActivate: [AuthGuardRole],
             component: MemberComponent,
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: MemberListComponent,
         }
     ])]
 })
 
 export class MemberRoutingModule{
-    
+
 }

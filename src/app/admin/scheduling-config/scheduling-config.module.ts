@@ -11,13 +11,16 @@ import { AngCommonModule }                      from '../../common/ang-common.mo
 import { SchedulingConfigRoutingModule }        from './scheduling-config.routing.module';
 
 import { SchedulingConfigComponent }            from './scheduling-config.component';
+import { SchedulingConfigListComponent }        from './scheduling-config-list.component';
 
 @NgModule({
     declarations: [
         SchedulingConfigComponent,
+        SchedulingConfigListComponent,
     ],
     exports: [
         SchedulingConfigComponent,
+        SchedulingConfigListComponent,
     ],
     imports: [
         CommonModule,

@@ -6,16 +6,22 @@ import { NavModule }                         from '../nav/nav.module';
 
 import { AngCommonModule }                   from '../../common/ang-common.module';
 
-import { ClinicroomRoutingModule }       from './clinicroom.routing.module';
+import { ClinicroomRoutingModule }           from './clinicroom.routing.module';
 
-import { ClinicroomComponent }           from './clinicroom.component';
+import { ClinicroomComponent }               from './clinicroom.component';
+import { ClinicroomListComponent }           from './clinicroom-list.component';
+import { ClinicroomRecordsComponent }        from './clinicroom-records.component';
 
 @NgModule({
     declarations: [
         ClinicroomComponent,
+        ClinicroomListComponent,
+        ClinicroomRecordsComponent,
     ],
     exports: [
         ClinicroomComponent,
+        ClinicroomListComponent,
+        ClinicroomRecordsComponent,
     ],
     imports: [
         CommonModule,

@@ -189,7 +189,7 @@ export class SchedulingConfigComponent implements OnInit{
 			}else{
 				this.toastTab('创建成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/schedulingConfigList']);
+					this.router.navigate(['./admin/schedulingConfig/list']);
 				}, 2000);
 			}
 		})

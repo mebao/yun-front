@@ -4,6 +4,7 @@ import { RouterModule }                         from '@angular/router';
 import { AuthGuardRole }                        from '../auth-guard-role.service';
 
 import { SchedulingConfigComponent }            from './scheduling-config.component';
+import { SchedulingConfigListComponent }        from './scheduling-config-list.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -11,6 +12,11 @@ import { SchedulingConfigComponent }            from './scheduling-config.compon
             path: '',
             // canActivate: [AuthGuardRole],
             component: SchedulingConfigComponent,
+        },
+        {
+            path: 'list',
+            // canActivate: [AuthGuardRole],
+            component: SchedulingConfigListComponent,
         },
     ])],
     exports: [RouterModule]

@@ -182,7 +182,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.memberList.use != ''"
-			routerLink="./memberList"
+			routerLink="./member/list"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -200,7 +200,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.childList.use != ''"
-			routerLink="./childList"
+			routerLink="./child/list"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -404,7 +404,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.memberList.use != ''"
-			routerLink="./memberList"
+			routerLink="./member/list"
 			routerLinkActive="active"
 			(click)="goPage('memberList')">
 				会员管理
@@ -418,7 +418,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.childList.use != ''"
-			routerLink="./childList"
+			routerLink="./child/list"
 			routerLinkActive="active"
 			(click)="goPage('childList')">
 				病人库

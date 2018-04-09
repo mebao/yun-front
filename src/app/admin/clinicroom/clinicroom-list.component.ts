@@ -188,7 +188,7 @@ export class ClinicroomListComponent{
 	}
 
 	goRecords() {
-		this.router.navigate(['./admin/clinicroomRecords']);
+		this.router.navigate(['./admin/clinicroom/records']);
 	}
 
 	doctorChange(doctor, _id) {

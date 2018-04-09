@@ -6,26 +6,29 @@ import { NavModule }                         from '../nav/nav.module';
 
 import { AngCommonModule }                   from '../../common/ang-common.module';
 
-import { ClinicroomRecordsRoutingModule }    from './clinicroom-records.routing.module';
+import { ChildRoutingModule }                from './child.routing.module';
 
-import { ClinicroomRecordsComponent }        from './clinicroom-records.component';
+import { ChildListComponent }                from './child-list.component';
+import { ChildInfoComponent }                from './child-info.component';
 
 @NgModule({
     declarations: [
-        ClinicroomRecordsComponent,
+        ChildListComponent,
+        ChildInfoComponent,
     ],
     exports: [
-        ClinicroomRecordsComponent,
+        ChildListComponent,
+        ChildInfoComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
         NavModule,
         AngCommonModule,
-        ClinicroomRecordsRoutingModule,
+        ChildRoutingModule,
     ]
 })
 
-export class ClinicroomRecordsModule{
+export class ChildModule{
 
 }

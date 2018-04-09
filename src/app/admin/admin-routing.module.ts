@@ -57,10 +57,6 @@ const adminRoutes: Routes = [
 						loadChildren: './scheduling/scheduling.module#SchedulingModule',
 					},
 					{
-						path: 'schedulingConfigList',
-						loadChildren: './scheduling-config-list/scheduling-config-list.module#SchedulingConfigListModule',
-					},
-					{
 						path: 'schedulingConfig',
 						loadChildren: './scheduling-config/scheduling-config.module#SchedulingConfigModule',
 					},
@@ -84,10 +80,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'docbooking',
 						loadChildren: './docbooking/docbooking.module#DocbookingModule',
-					},
-					{
-						path: 'memberList',
-						loadChildren: './member-list/member-list.module#MemberListModule',
 					},
 					{
 						path: 'member',
@@ -134,24 +126,12 @@ const adminRoutes: Routes = [
 						loadChildren: './clinic-service/clinic-service.module#ClinicServiceModule',
 					},
 					{
-						path: 'clinicroomList',
-						loadChildren: './clinicroom-list/clinicroom-list.module#ClinicroomListModule',
-					},
-					{
-						path: 'clinicroomRecords',
-						loadChildren: './clinicroom-records/clinicroom-records.module#ClinicroomRecordsModule',
-					},
-					{
 						path: 'clinicroom',
 						loadChildren: './clinicroom/clinicroom.module#ClinicroomModule',
 					},
 					{
-						path: 'childList',
-						loadChildren: './child-list/child-list.module#ChildListModule',
-					},
-					{
-						path: 'childInfo',
-						loadChildren: './child-info/child-info.module#ChildInfoModule',
+						path: 'child',
+						loadChildren: './child/child.module#ChildModule',
 					},
 					{
 						path: 'userList',

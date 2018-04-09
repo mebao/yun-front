@@ -9,13 +9,16 @@ import { AngCommonModule }         from '../../common/ang-common.module';
 import { MemberRoutingModule }     from './member.routing.module';
 
 import { MemberComponent }         from './member.component';
+import { MemberListComponent }     from './member-list.component';
 
 @NgModule({
     declarations: [
         MemberComponent,
+        MemberListComponent,
     ],
     exports: [
         MemberComponent,
+        MemberListComponent,
     ],
     imports: [
         CommonModule,

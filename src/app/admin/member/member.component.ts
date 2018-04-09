@@ -279,7 +279,7 @@ export class MemberComponent{
 				}else{
 					this.toastTab('会员创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/memberList']);
+						this.router.navigate(['./admin/member/list']);
 					}, 2000);
 				}
 			});
@@ -305,7 +305,7 @@ export class MemberComponent{
 				}else{
 					this.toastTab('会员修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/memberList']);
+						this.router.navigate(['./admin/member/list']);
 					}, 2000);
 				}
 			});

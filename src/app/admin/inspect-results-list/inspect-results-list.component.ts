@@ -196,7 +196,7 @@ export class InspectResultsListComponent{
 
 	//宝宝详情
 	childInfo(_id) {
-		window.open('./admin/childInfo?id=' + _id);
+		window.open('./admin/child/info?id=' + _id);
 	}
 
 	toastTab(text, type) {
