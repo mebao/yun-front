@@ -57,7 +57,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.bookingReceive.use != ''"
 			routerLink="./bookingReceive"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingReceive')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>接诊</span>
@@ -66,7 +67,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.inspectResultsList.use != ''"
 			routerLink="./inspectResultsList"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('inspectResultsList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>实验室检查</span>
@@ -93,7 +95,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.bookingCharge.use != ''"
 			routerLink="./bookingCharge"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingCharge')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>收费</span>
@@ -110,8 +113,9 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.bookingFollowupsList.use != ''"
-			routerLink="./bookingFollowupsList"
-			routerLinkActive="ant-menu-item-selected">
+			routerLink="./bookingFollowups/list"
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingFollowupsList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>随访管理</span>
@@ -120,7 +124,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.bookingExamineCase.use != ''"
 			routerLink="./bookingExamineCase"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingExamineCase')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>病例审核</span>
@@ -137,7 +142,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.setupInspectList.use != ''"
-			routerLink="./setupInspectList"
+			routerLink="./setupInspect/list"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -147,7 +152,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.assistList.use != ''"
 			routerLink="./assist/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('assistList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>辅助治疗列表</span>
@@ -156,7 +162,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
 			routerLink="./medical/supplier/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('supplierList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>供应商管理</span>
@@ -165,7 +172,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.materialList.use != ''"
 			routerLink="./material/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('materialList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>物资管理</span>
@@ -174,7 +182,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.medicalList.use != ''"
 			routerLink="./medical/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('medicalList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>药房</span>
@@ -183,7 +192,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.memberList.use != ''"
 			routerLink="./member/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('memberList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>会员管理</span>
@@ -192,7 +202,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.userList.use != ''"
 			routerLink="./userList"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('userList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>用户管理</span>
@@ -201,7 +212,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.childList.use != ''"
 			routerLink="./child/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('childList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>病人库</span>
@@ -219,7 +231,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.crmUserList.use != ''"
 			routerLink="./crmuser/list"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('crmuserList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>员工管理</span>
@@ -350,7 +363,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.bookingFollowupsList.use != ''"
-			routerLink="./bookingFollowupsList"
+			routerLink="./bookingFollowups/list"
 			routerLinkActive="active"
 			(click)="goPage('bookingFollowupsList')">
 				随访管理
@@ -370,7 +383,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.setupInspectList.use != ''"
-			routerLink="./setupInspectList"
+			routerLink="./setupInspect/list"
 			routerLinkActive="active">
 				检查项目
 		</a>

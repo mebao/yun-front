@@ -227,7 +227,7 @@ export class BookingFollowupsComponent{
 					this.toastService.toast(toastCfg);
 					setTimeout(() => {
 						if(this.from == 'bookingFollowupsList'){
-							this.router.navigate(['./admin/bookingFollowupsList']);
+							this.router.navigate(['./admin/bookingFollowups/list']);
 						}else{
 							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.bookingId, doctorId: this.doctorId}});
 						}
@@ -263,7 +263,7 @@ export class BookingFollowupsComponent{
 					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '随访修改成功', 3000);
 					this.toastService.toast(toastCfg);
 					setTimeout(() => {
-						this.router.navigate(['./admin/bookingFollowupsList']);
+						this.router.navigate(['./admin/bookingFollowups/list']);
 					}, 2000);
 				}
 			});

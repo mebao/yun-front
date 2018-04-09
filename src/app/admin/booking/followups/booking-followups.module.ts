@@ -11,13 +11,16 @@ import { AngCommonModule }                from '../../../common/ang-common.modul
 import { BookingFollowupsRoutingModule }  from './booking-followups.routing.module';
 
 import { BookingFollowupsComponent }      from './booking-followups.component';
+import { BookingFollowupsListComponent }  from './booking-followups-list.component';
 
 @NgModule({
     declarations: [
         BookingFollowupsComponent,
+        BookingFollowupsListComponent,
     ],
     exports: [
         BookingFollowupsComponent,
+        BookingFollowupsListComponent,
     ],
     imports: [
         CommonModule,

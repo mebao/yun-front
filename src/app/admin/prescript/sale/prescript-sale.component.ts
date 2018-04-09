@@ -424,7 +424,7 @@ export class PrescriptSaleComponent{
 			}else{
 				this.toastTab('支付成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/prescript/saleList']);
+					this.router.navigate(['./admin/prescript/sale/list']);
 				}, 2000);
 			}
 		});

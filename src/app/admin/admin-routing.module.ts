@@ -90,10 +90,6 @@ const adminRoutes: Routes = [
 						loadChildren: './assist/assist.module#AssistModule',
 					},
 					{
-						path: 'setupInspectList',
-						loadChildren: './inspect-list/inspect-list.module#InspectListModule',
-					},
-					{
 						path: 'setupInspect',
 						loadChildren: './inspect/inspect.module#InspectModule',
 					},
@@ -200,10 +196,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'bookingFollowups',
 						loadChildren: './booking/followups/booking-followups.module#BookingFollowupsModule',
-					},
-					{
-						path: 'bookingFollowupsList',
-						loadChildren: './booking/followups-list/booking-followups-list.module#BookingFollowupsListModule',
 					},
 					{
 						path: 'bookingPayment',

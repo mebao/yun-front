@@ -3,7 +3,7 @@ import { Router }                                    from '@angular/router';
 
 import { ENgxPrintComponent }                        from 'e-ngx-print';
 
-import { AdminService }                              from '../../admin.service';
+import { AdminService }                              from '../admin.service';
 
 @Component({
 	selector: 'app-prescript-list',

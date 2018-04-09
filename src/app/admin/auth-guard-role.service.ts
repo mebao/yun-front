@@ -689,7 +689,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/prescript/saleList',
+								url: '/admin/prescript/sale/list',
 								authority: 'seeSale',
 								queryType: '',
 								queryParams: '',
@@ -723,11 +723,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'setupInspectList',
-						firstUrl: '/admin/setupInspectList',
+						firstUrl: '/admin/setupInspect/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/setupInspectList',
+								url: '/admin/setupInspect/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
@@ -780,11 +780,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'bookingFollowupsList',
-						firstUrl: '/admin/bookingFollowupsList',
+						firstUrl: '/admin/bookingFollowups/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/bookingFollowupsList',
+								url: '/admin/bookingFollowups/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

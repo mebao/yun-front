@@ -370,7 +370,7 @@ export class LoginComponent{
 			setupInspectList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/setupInspectList',
+				url: '/admin/setupInspect/list',
 				infos: [],
 			},
 			inspectResultsList: {
@@ -388,7 +388,7 @@ export class LoginComponent{
 			bookingFollowupsList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/bookingFollowupsList',
+				url: '/admin/bookingFollowups/list',
 				infos: [],
 			},
 			childList: {

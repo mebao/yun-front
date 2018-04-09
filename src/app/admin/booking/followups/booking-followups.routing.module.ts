@@ -4,6 +4,7 @@ import { RouterModule }                  from '@angular/router';
 import { AuthGuardRole }                 from './../../auth-guard-role.service';
 
 import { BookingFollowupsComponent }     from './booking-followups.component';
+import { BookingFollowupsListComponent } from './booking-followups-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { BookingFollowupsComponent }     from './booking-followups.component';
             path: '',
             canActivate: [AuthGuardRole],
             component: BookingFollowupsComponent,
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: BookingFollowupsListComponent,
         }
     ])]
 })

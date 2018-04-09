@@ -5,6 +5,7 @@ import { AuthGuardRole }                        from '../../auth-guard-role.serv
 
 
 import { PrescriptSaleComponent }               from './prescript-sale.component';
+import { PrescriptSaleListComponent }           from './prescript-sale-list.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -12,6 +13,11 @@ import { PrescriptSaleComponent }               from './prescript-sale.component
             path: '',
             canActivate: [AuthGuardRole],
             component: PrescriptSaleComponent,
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: PrescriptSaleListComponent,
         },
     ])],
     exports: [RouterModule]

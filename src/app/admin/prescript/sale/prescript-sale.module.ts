@@ -11,13 +11,16 @@ import { AngCommonModule }                      from '../../../common/ang-common
 import { PrescriptSaleRoutingModule }           from './prescript-sale.routing.module';
 
 import { PrescriptSaleComponent }               from './prescript-sale.component';
+import { PrescriptSaleListComponent }           from './prescript-sale-list.component';
 
 @NgModule({
     declarations: [
         PrescriptSaleComponent,
+        PrescriptSaleListComponent,
     ],
     exports: [
         PrescriptSaleComponent,
+        PrescriptSaleListComponent,
     ],
     imports: [
         CommonModule,

@@ -118,7 +118,7 @@ export class SetupInspectComponent{
 				}else{
 					this.toastTab('检查项目创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/setupInspectList']);
+						this.router.navigate(['./admin/setupInspect/list']);
 					}, 2000);
 				}
 			});
@@ -146,7 +146,7 @@ export class SetupInspectComponent{
 				}else{
 					this.toastTab('检查项目修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/setupInspectList']);
+						this.router.navigate(['./admin/setupInspect/list']);
 					}, 2000);
 				}
 			});
