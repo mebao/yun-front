@@ -11,13 +11,16 @@ import { AngCommonModule }                from '../../../common/ang-common.modul
 import { CrmRoleRoutingModule }           from './crm-role.routing.module';
 
 import { CrmRoleComponent }               from './crm-role.component';
+import { CrmRoleListComponent }           from './crm-role-list.component';
 
 @NgModule({
     declarations: [
         CrmRoleComponent,
+        CrmRoleListComponent,
     ],
     exports: [
         CrmRoleComponent,
+        CrmRoleListComponent,
     ],
     imports: [
         CommonModule,

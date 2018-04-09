@@ -9,13 +9,16 @@ import { AngCommonModule }                   from '../../../common/ang-common.mo
 import { DoctorServiceRoutingModule }        from './doctor-service.routing.module';
 
 import { DoctorServiceComponent }            from './doctor-service.component';
+import { DoctorServiceListComponent }        from './doctor-service-list.component';
 
 @NgModule({
     declarations: [
         DoctorServiceComponent,
+        DoctorServiceListComponent,
     ],
     exports: [
         DoctorServiceComponent,
+        DoctorServiceListComponent,
     ],
     imports: [
         CommonModule,

@@ -6,16 +6,19 @@ import { NavModule }                                from '../../nav/nav.module';
 
 import { AngCommonModule }                          from '../../../common/ang-common.module';
 
-import { DoctorRecordTempletRoutingModule }     from './doctor-record-templet.routing.module';
+import { DoctorRecordTempletRoutingModule }         from './doctor-record-templet.routing.module';
 
-import { DoctorRecordTempletComponent }         from './doctor-record-templet.component';
+import { DoctorRecordTempletComponent }             from './doctor-record-templet.component';
+import { DoctorRecordTempletListComponent }         from './doctor-record-templet-list.component';
 
 @NgModule({
     declarations: [
         DoctorRecordTempletComponent,
+        DoctorRecordTempletListComponent,
     ],
     exports: [
         DoctorRecordTempletComponent,
+        DoctorRecordTempletListComponent,
     ],
     imports: [
         CommonModule,

@@ -169,7 +169,7 @@ export class DoctorServiceComponent{
 					this.toastTab('创建成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/doctor/serviceList'], {queryParams: {'id': this.serviceModel.doctor_id}});
+					this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': this.serviceModel.doctor_id}});
 				}, 2000);
 			}
 		})

@@ -412,7 +412,7 @@ export class LoginComponent{
 			crmRoleList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/crmRoleList',
+				url: '/admin/crmRole/list',
 				infos: [],
 			},
 			crmUserList: {

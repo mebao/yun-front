@@ -68,7 +68,7 @@ export class CrmRoleComponent{
 			}else{
 				this.toastTab('角色创建成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/crmRoleList']);
+					this.router.navigate(['./admin/crmRole/list']);
 				}, 2000);
 			}
 		});

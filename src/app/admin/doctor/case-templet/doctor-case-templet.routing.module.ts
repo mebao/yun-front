@@ -4,6 +4,7 @@ import { RouterModule }                       from '@angular/router';
 import { AuthGuardRole }                      from './../../auth-guard-role.service';
 
 import { DoctorCaseTempletComponent }         from './doctor-case-templet.component';
+import { DoctorCaseTempletListComponent }     from './doctor-case-templet-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { DoctorCaseTempletComponent }         from './doctor-case-templet.compon
             path: '',
             // canActivate: [AuthGuardRole],
             component: DoctorCaseTempletComponent
+        },
+        {
+            path: 'list',
+            // canActivate: [AuthGuardRole],
+            component: DoctorCaseTempletListComponent
         }
     ])]
 })

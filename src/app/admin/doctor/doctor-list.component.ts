@@ -89,7 +89,7 @@ export class DoctorListComponent implements OnInit{
 	}
 
 	showService(_id) {
-		this.router.navigate(['./admin/doctor/serviceList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': _id}});
 	}
 
 	showInfo(_id){
@@ -98,11 +98,11 @@ export class DoctorListComponent implements OnInit{
 
 	// 儿保记录模板
 	showRecordTempletList(_id) {
-		this.router.navigate(['./admin/doctor/recordTempletList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/recordTemplet/list'], {queryParams: {'id': _id}});
 	}
 
 	// 病历模板
 	showCaseTempletList(_id) {
-		this.router.navigate(['./admin/doctor/caseTempletList'], {queryParams: {'id': _id}});
+		this.router.navigate(['./admin/doctor/caseTemplet/list'], {queryParams: {'id': _id}});
 	}
 }

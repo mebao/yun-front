@@ -245,10 +245,6 @@ const adminRoutes: Routes = [
 						loadChildren: './crm/role/crm-role.module#CrmRoleModule',
 					},
 					{
-						path: 'crmRoleList',
-						loadChildren: './crm/role-list/crm-role-list.module#CrmRoleListModule',
-					},
-					{
 						path: 'roleAuthorityList',
 						loadChildren: './crm/role-authority-list/role-authority-list.module#RoleAuthorityListModule',
 					},

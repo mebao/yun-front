@@ -9,13 +9,16 @@ import { AngCommonModule }                          from '../../../common/ang-co
 import { DoctorCaseTempletRoutingModule }           from './doctor-case-templet.routing.module';
 
 import { DoctorCaseTempletComponent }               from './doctor-case-templet.component';
+import { DoctorCaseTempletListComponent }           from './doctor-case-templet-list.component';
 
 @NgModule({
     declarations: [
         DoctorCaseTempletComponent,
+        DoctorCaseTempletListComponent,
     ],
     exports: [
         DoctorCaseTempletComponent,
+        DoctorCaseTempletListComponent,
     ],
     imports: [
         CommonModule,

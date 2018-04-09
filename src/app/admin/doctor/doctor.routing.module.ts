@@ -19,10 +19,6 @@ import { DoctorInfoComponent }               from './doctor-info.component';
             component: DoctorInfoComponent
         },
         {
-            path: 'serviceList',
-            loadChildren: './service-list/doctor-service-list.module#DoctorServiceListModule',
-        },
-        {
             path: 'service',
             loadChildren: './service/doctor-service.module#DoctorServiceModule',
         },
@@ -31,18 +27,9 @@ import { DoctorInfoComponent }               from './doctor-info.component';
             loadChildren: './record-templet/doctor-record-templet.module#DoctorRecordTempletModule',
         },
         {
-            path: 'recordTempletList',
-            loadChildren: './record-templet-list/doctor-record-templet-list.module#DoctorRecordTempletListModule',
-        },
-        {
             path: 'caseTemplet',
             //canActivate: [AuthGuardRole],
             loadChildren: './case-templet/doctor-case-templet.module#DoctorCaseTempletModule',
-        },
-        {
-            path: 'caseTempletList',
-            //canActivate: [AuthGuardRole],
-            loadChildren: './case-templet-list/doctor-case-templet-list.module#DoctorCaseTempletListModule',
         },
     ])]
 })

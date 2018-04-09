@@ -417,7 +417,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctor/serviceList',
+								url: '/admin/doctor/service/list',
 								authority: 'service',
 								queryType: '',
 								queryParams: '',
@@ -435,7 +435,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctor/recordTempletList',
+								url: '/admin/doctor/recordTemplet/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
@@ -447,7 +447,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctor/recordTempletList',
+								url: '/admin/doctor/recordTemplet/list',
 								authority: 'personal',
 								queryType: '',
 								queryParams: '',
@@ -459,7 +459,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctor/caseTempletList',
+								url: '/admin/doctor/caseTemplet/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
@@ -471,7 +471,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/doctor/caseTempletList',
+								url: '/admin/doctor/caseTemplet/list',
 								authority: 'personal',
 								queryType: '',
 								queryParams: '',
@@ -908,11 +908,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'crmRoleList',
-						firstUrl: '/admin/crmRoleList',
+						firstUrl: '/admin/crmRole/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/crmRoleList',
+								url: '/admin/crmRole/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

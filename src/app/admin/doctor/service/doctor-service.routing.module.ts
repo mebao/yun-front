@@ -4,6 +4,7 @@ import { RouterModule }                 from '@angular/router';
 import { AuthGuardRole }                from './../../auth-guard-role.service';
 
 import { DoctorServiceComponent }       from './doctor-service.component';
+import { DoctorServiceListComponent }   from './doctor-service-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { DoctorServiceComponent }       from './doctor-service.component';
             path: '',
             canActivate: [AuthGuardRole],
             component: DoctorServiceComponent
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: DoctorServiceListComponent
         }
     ])]
 })

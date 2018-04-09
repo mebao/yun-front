@@ -147,8 +147,8 @@ export class RoleAuthorityListComponent{
                 sessionStorage.removeItem('userClinicRoles');
                 this.toastTab('权限保存成功', '');
                 setTimeout(() => {
-                    window.location.href = 'admin/crmRoleList';
-                    // this.router.navigate(['./admin/crmRoleList']);
+                    window.location.href = 'admin/crmRole/list';
+                    // this.router.navigate(['./admin/crmRole/list']);
                 }, 2000);
             }
         });
