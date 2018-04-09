@@ -128,7 +128,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.childServiceList.use != ''"
-			[routerLink]="['./childServiceList']"
+			[routerLink]="['./childService/list']"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -364,7 +364,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.childServiceList.use != ''"
-			[routerLink]="['./childServiceList']"
+			[routerLink]="['./childService/list']"
 			routerLinkActive="active">
 				科室项目
 		</a>

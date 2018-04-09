@@ -3,7 +3,7 @@ import { Router, ActivatedRoute }               from '@angular/router';
 
 import { NzMessageService }                     from 'ng-zorro-antd';
 
-import { AdminService }                         from '../../admin.service';
+import { AdminService }                         from '../admin.service';
 
 @Component({
 	selector:'app-doctor-list',

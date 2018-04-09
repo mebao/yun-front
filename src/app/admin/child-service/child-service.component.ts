@@ -103,7 +103,7 @@ export class ChildServiceComponent{
 					this.toastTab('创建成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/childServiceList']);
+					this.router.navigate(['./admin/childService/list']);
 				}, 2000);
 			}
 		})

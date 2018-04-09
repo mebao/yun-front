@@ -322,7 +322,7 @@ export class LoginComponent{
 			childServiceList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/childServiceList',
+				url: '/admin/childService/list',
 				infos: [],
 			},
 			clinicroomList: {

@@ -110,16 +110,8 @@ const adminRoutes: Routes = [
 						loadChildren: './inspect-results-print/inspect-results-print.module#InspectResultsPrintModule',
 					},
 					{
-						path: 'childServiceList',
-						loadChildren: './child-service-list/child-service-list.module#ChildServiceListModule',
-					},
-					{
 						path: 'childService',
 						loadChildren: './child-service/child-service.module#ChildServiceModule',
-					},
-					{
-						path: 'clinicServiceList',
-						loadChildren: './clinic-service-list/clinic-service-list.module#ClinicServiceListModule',
 					},
 					{
 						path: 'clinicService',

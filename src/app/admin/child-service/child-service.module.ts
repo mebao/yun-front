@@ -9,13 +9,16 @@ import { AngCommonModule }                   from '../../common/ang-common.modul
 import { ChildServiceRoutingModule }         from './child-service.routing.module';
 
 import { ChildServiceComponent }             from './child-service.component';
+import { ChildServiceListComponent }         from './child-service-list.component';
 
 @NgModule({
     declarations: [
         ChildServiceComponent,
+        ChildServiceListComponent,
     ],
     exports: [
         ChildServiceComponent,
+        ChildServiceListComponent,
     ],
     imports: [
         CommonModule,

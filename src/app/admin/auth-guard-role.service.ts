@@ -331,11 +331,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'childServiceList',
-						firstUrl: '/admin/childServiceList',
+						firstUrl: '/admin/childService/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/childServiceList',
+								url: '/admin/childService/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

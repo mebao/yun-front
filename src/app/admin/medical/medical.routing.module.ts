@@ -4,6 +4,7 @@ import { RouterModule }                           from '@angular/router';
 import { AuthGuardRole }                          from '../auth-guard-role.service';
 
 import { MedicalComponent }                       from './medical.component';
+import { MedicalListComponent }                   from './medical-list.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -25,7 +26,8 @@ import { MedicalComponent }                       from './medical.component';
         },
         {
             path: 'list',
-            loadChildren: './list/medical-list.module#MedicalListModule',
+            canActivate: [AuthGuardRole],
+            component: MedicalListComponent,
         },
         {
             path: 'lostList',

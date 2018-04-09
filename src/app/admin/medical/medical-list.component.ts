@@ -1,13 +1,13 @@
 import { Component, OnInit }                   from '@angular/core';
 import { Router }                              from '@angular/router';
 
-import { AdminService }                        from '../../admin.service';
+import { AdminService }                        from '../admin.service';
 
 @Component({
-	selector: 'app-material-list',
-	templateUrl: './material-list.component.html',
+	selector: 'app-medicalsupplies-list',
+	templateUrl: './medical-list.component.html',
 })
-export class MaterialListComponent{
+export class MedicalListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
@@ -29,7 +29,7 @@ export class MaterialListComponent{
 	loadingShow: boolean;
 	hasData: boolean;
 	url: string;
-	materialSupplies: any[];
+	medicalSupplies: any[];
 	info: {
 		name: string,
 		type: string,
@@ -42,7 +42,7 @@ export class MaterialListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '物资管理',
+			title: '药房管理',
 			back: false,
 		}
 		this.toast = {
@@ -51,7 +51,6 @@ export class MaterialListComponent{
 			type: '',
 		}
 
-		// 权限
 		this.moduleAuthority = {
 			see: false,
 			edit: false,
@@ -77,19 +76,19 @@ export class MaterialListComponent{
 
 		this.hasData = false;
 
-		if(JSON.parse(sessionStorage.getItem('search-materialList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-materialList'));
+		if(JSON.parse(sessionStorage.getItem('search-medicalList'))){
+			this.info = JSON.parse(sessionStorage.getItem('search-medicalList'));
 		}else{
 			this.info = {
 				name: '',
-				type: '3,4',
+				type: '1,2',
 			}
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.materialSupplies = [];
+		this.medicalSupplies = [];
 
 		this.search();
 	}
@@ -101,7 +100,7 @@ export class MaterialListComponent{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.materialSupplies = results.medicalSupplies;
+				this.medicalSupplies = results.medicalSupplies;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
@@ -110,7 +109,7 @@ export class MaterialListComponent{
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-materialList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-medicalList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;
@@ -122,18 +121,18 @@ export class MaterialListComponent{
 	}
 
 	goUrl(_url) {
-		sessionStorage.removeItem('search-materialList');
-		sessionStorage.removeItem('search-materialPurchaseList');
-		sessionStorage.removeItem('search-materialHasList');
+		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalPurchaseList');
+		sessionStorage.removeItem('search-medicalHasList');
 		this.router.navigate([_url]);
 	}
 
 	goCreate() {
-		this.router.navigate(['./admin/material/index']);
+		this.router.navigate(['./admin/medical/index']);
 	}
 
 	update(_id) {
-		this.router.navigate(['./admin/material/index'], {queryParams: {id: _id}});
+		this.router.navigate(['./admin/medical/index'], {queryParams: {id: _id}});
 	}
 
 	toastTab(text, type) {

@@ -9,13 +9,16 @@ import { AngCommonModule }                   from '../../common/ang-common.modul
 import { ClinicServiceRoutingModule }        from './clinic-service.routing.module';
 
 import { ClinicServiceComponent }            from './clinic-service.component';
+import { ClinicServiceListComponent }        from './clinic-service-list.component';
 
 @NgModule({
     declarations: [
         ClinicServiceComponent,
+        ClinicServiceListComponent,
     ],
     exports: [
         ClinicServiceComponent,
+        ClinicServiceListComponent,
     ],
     imports: [
         CommonModule,

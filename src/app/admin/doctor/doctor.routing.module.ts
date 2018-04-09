@@ -1,13 +1,22 @@
-import { NgModule }                              from '@angular/core';
-import { RouterModule }                          from '@angular/router';
+import { NgModule }                          from '@angular/core';
+import { RouterModule }                      from '@angular/router';
 
-import { AuthGuardRole }                         from '../auth-guard-role.service';
+import { AuthGuardRole }                     from '../auth-guard-role.service';
+
+import { DoctorListComponent }               from './doctor-list.component';
+import { DoctorInfoComponent }               from './doctor-info.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: 'list',
-            loadChildren: './list/doctor-list.module#DoctorListModule',
+            canActivate: [AuthGuardRole],
+            component: DoctorListComponent
+        },
+        {
+            path: 'info',
+            canActivate: [AuthGuardRole],
+            component: DoctorInfoComponent
         },
         {
             path: 'serviceList',
@@ -16,10 +25,6 @@ import { AuthGuardRole }                         from '../auth-guard-role.servic
         {
             path: 'service',
             loadChildren: './service/doctor-service.module#DoctorServiceModule',
-        },
-        {
-            path: 'info',
-            loadChildren: './info/doctor-info.module#DoctorInfoModule',
         },
         {
             path: 'recordTemplet',

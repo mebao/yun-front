@@ -4,6 +4,7 @@ import { RouterModule }                 from '@angular/router';
 import { AuthGuardRole }                from './../auth-guard-role.service';
 
 import { ChildServiceComponent }        from './child-service.component';
+import { ChildServiceListComponent }    from './child-service-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { ChildServiceComponent }        from './child-service.component';
             path: '',
             canActivate: [AuthGuardRole],
             component: ChildServiceComponent
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: ChildServiceListComponent
         }
     ])]
 })

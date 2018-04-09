@@ -133,7 +133,7 @@ export class ClinicServiceComponent implements OnInit{
 					this.toastTab('创建成功', '');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/clinicServiceList']);
+					this.router.navigate(['./admin/clinicService/list']);
 				}, 2000)
 			}
 		})

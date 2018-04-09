@@ -1,6 +1,8 @@
 import { NgModule }           from '@angular/core';
 import { RouterModule }       from '@angular/router';
 
+import { Message }              from './message.component';
+
 @NgModule({
     exports: [
         RouterModule
@@ -8,7 +10,7 @@ import { RouterModule }       from '@angular/router';
     imports: [RouterModule.forChild([
         {
             path: 'message',
-            loadChildren: './message/message.module#MessageModule',
+            component: Message,
         }
     ])]
 })

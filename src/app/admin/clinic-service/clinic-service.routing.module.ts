@@ -3,7 +3,8 @@ import { RouterModule }                 from '@angular/router';
 
 import { AuthGuardRole }                from './../auth-guard-role.service';
 
-import { ClinicServiceComponent }       from './clinic-service.component'
+import { ClinicServiceComponent }       from './clinic-service.component';
+import { ClinicServiceListComponent }   from './clinic-service-list.component';
 
 @NgModule({
     exports: [
@@ -14,6 +15,11 @@ import { ClinicServiceComponent }       from './clinic-service.component'
             path: '',
             // canActivate: [AuthGuardRole],
             component: ClinicServiceComponent
+        },
+        {
+            path: 'list',
+            // canActivate: [AuthGuardRole],
+            component: ClinicServiceListComponent
         }
     ])]
 })
