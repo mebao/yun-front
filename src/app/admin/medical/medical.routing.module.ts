@@ -9,16 +9,8 @@ import { MedicalListComponent }                   from './medical-list.component
 @NgModule({
     imports: [RouterModule.forChild([
         {
-            path: 'checkList',
-            loadChildren: './check-list/medical-check-list.module#MedicalCheckListModule',
-        },
-        {
             path: 'check',
             loadChildren: './check/medical-check.module#MedicalCheckModule',
-        },
-        {
-            path: 'hasList',
-            loadChildren: './has-list/medical-has-list.module#MedicalHasListModule',
         },
         {
             path: 'has',
@@ -28,10 +20,6 @@ import { MedicalListComponent }                   from './medical-list.component
             path: 'list',
             canActivate: [AuthGuardRole],
             component: MedicalListComponent,
-        },
-        {
-            path: 'lostList',
-            loadChildren: './lost-list/medical-lost-list.module#MedicalLostListModule',
         },
         {
             path: 'lost',
@@ -48,10 +36,6 @@ import { MedicalListComponent }                   from './medical-list.component
         {
             path: 'purchase',
             loadChildren: './purchase/medical-purchase.module#MedicalPurchaseModule',
-        },
-        {
-            path: 'supplierList',
-            loadChildren: './supplier-list/medical-supplier-list.module#MedicalSupplierListModule',
         },
         {
             path: 'supplier',

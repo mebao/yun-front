@@ -158,7 +158,7 @@ export class MaterialLostComponent{
 			}else{
 				this.toastTab('报损成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/material/lostList'])
+					this.router.navigate(['./admin/material/lost/list'])
 				}, 2000);
 			}
 		})

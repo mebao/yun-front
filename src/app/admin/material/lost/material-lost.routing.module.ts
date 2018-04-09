@@ -4,6 +4,7 @@ import { RouterModule }                           from '@angular/router';
 import { AuthGuardRole }                          from '../../auth-guard-role.service';
 
 import { MaterialLostComponent }                  from './material-lost.component';
+import { MaterialLostListComponent }              from './material-lost-list.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -11,6 +12,11 @@ import { MaterialLostComponent }                  from './material-lost.componen
             path: '',
             canActivate: [AuthGuardRole],
             component: MaterialLostComponent,
+        },
+        {
+            path: 'list',
+            canActivate: [AuthGuardRole],
+            component: MaterialLostListComponent,
         },
     ])],
     exports: [RouterModule]

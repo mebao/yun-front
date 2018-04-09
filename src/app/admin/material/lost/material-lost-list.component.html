@@ -4,9 +4,9 @@
 	<div class="second-bar-tab flex">
 		<div class="item" *ngIf="moduleAuthority.see" (click)="goUrl('./admin/material/list')">物资管理</div>
 		<div class="item" *ngIf="moduleAuthority.seePut" (click)="goUrl('./admin/material/purchaseList')">入库管理</div>
-		<div class="item" *ngIf="moduleAuthority.seeHas" (click)="goUrl('./admin/material/hasList')">库存管理</div>
+		<div class="item" *ngIf="moduleAuthority.seeHas" (click)="goUrl('./admin/material/has/list')">库存管理</div>
 		<div class="item active">报损管理</div>
-		<div class="item" *ngIf="moduleAuthority.seeCheck" (click)="goUrl('./admin/material/checkList')">盘点管理</div>
+		<div class="item" *ngIf="moduleAuthority.seeCheck" (click)="goUrl('./admin/material/check/list')">盘点管理</div>
 	</div>
 	<div class="flex pure-form search-tab mt10">
 		<div class="flex-1">

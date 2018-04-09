@@ -9,16 +9,8 @@ import { MaterialListComponent }          from './material-list.component';
 @NgModule({
     imports: [RouterModule.forChild([
         {
-            path: 'checkList',
-            loadChildren: './check-list/material-check-list.module#MaterialCheckListModule',
-        },
-        {
             path: 'check',
             loadChildren: './check/material-check.module#MaterialCheckModule',
-        },
-        {
-            path: 'hasList',
-            loadChildren: './has-list/material-has-list.module#MaterialHasListModule',
         },
         {
             path: 'has',
@@ -28,10 +20,6 @@ import { MaterialListComponent }          from './material-list.component';
             path: 'list',
             canActivate: [AuthGuardRole],
             component: MaterialListComponent,
-        },
-        {
-            path: 'lostList',
-            loadChildren: './lost-list/material-lost-list.module#MaterialLostListModule',
         },
         {
             path: 'lost',

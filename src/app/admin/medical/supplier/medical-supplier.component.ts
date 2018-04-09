@@ -133,7 +133,7 @@ export class MedicalSupplierComponent{
 				}else{
 					this.toastTab('医疗用品供应商创建成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/medical/supplierList']);
+						this.router.navigate(['./admin/medical/supplier/list']);
 					}, 2000);
 				}
 			})
@@ -155,7 +155,7 @@ export class MedicalSupplierComponent{
 				}else{
 					this.toastTab('医疗用品供应商修改成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/medical/supplierList']);
+						this.router.navigate(['./admin/medical/supplier/list']);
 					}, 2000);
 				}
 			})

@@ -189,7 +189,7 @@ export class MedicalCheckComponent{
 				}else{
 					this.toastTab('盘点添加成功', '');
 					setTimeout(() => {
-						this.router.navigate(['./admin/medical/checkList']);
+						this.router.navigate(['./admin/medical/check/list']);
 					}, 2000);
 				}
 			});

@@ -11,13 +11,16 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MaterialCheckRoutingModule }             from './material-check.routing.module';
 
 import { MaterialCheckComponent }                 from './material-check.component';
+import { MaterialCheckListComponent }             from './material-check-list.component';
 
 @NgModule({
     declarations: [
         MaterialCheckComponent,
+        MaterialCheckListComponent,
     ],
     exports: [
         MaterialCheckComponent,
+        MaterialCheckListComponent,
     ],
     imports: [
         CommonModule,

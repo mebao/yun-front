@@ -260,7 +260,7 @@ export class MedicalHasComponent{
 			}else{
 				this.toastTab('药品库存信息修改成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/medical/hasList']);
+					this.router.navigate(['./admin/medical/has/list']);
 				}, 2000);
 			}
 		})

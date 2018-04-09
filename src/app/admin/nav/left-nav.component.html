@@ -155,7 +155,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
-			routerLink="./medical/supplierList"
+			routerLink="./medical/supplier/list"
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -383,7 +383,7 @@
 		</a>
 	  	<a
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
-			routerLink="./medical/supplierList"
+			routerLink="./medical/supplier/list"
 			routerLinkActive="active"
 			(click)="goPage('supplierList')">
 				供应商管理

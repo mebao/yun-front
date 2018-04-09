@@ -11,13 +11,16 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MaterialLostRoutingModule }              from './material-lost.routing.module';
 
 import { MaterialLostComponent }                  from './material-lost.component';
+import { MaterialLostListComponent }              from './material-lost-list.component';
 
 @NgModule({
     declarations: [
         MaterialLostComponent,
+        MaterialLostListComponent,
     ],
     exports: [
         MaterialLostComponent,
+        MaterialLostListComponent,
     ],
     imports: [
         CommonModule,

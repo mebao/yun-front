@@ -11,13 +11,16 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MedicalHasRoutingModule }                from './medical-has.routing.module';
 
 import { MedicalHasComponent }                    from './medical-has.component';
+import { MedicalHasListComponent }                from './medical-has-list.component';
 
 @NgModule({
     declarations: [
         MedicalHasComponent,
+        MedicalHasListComponent,
     ],
     exports: [
         MedicalHasComponent,
+        MedicalHasListComponent,
     ],
     imports: [
         CommonModule,

@@ -486,11 +486,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'medicalSupplierList',
-						firstUrl: '/admin/medical/supplierList',
+						firstUrl: '/admin/medical/supplier/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/medical/supplierList',
+								url: '/admin/medical/supplier/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
@@ -545,7 +545,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 库存管理
 							{
-								url: '/admin/material/hasList',
+								url: '/admin/material/has/list',
 								authority: 'seeHas',
 								queryType: '',
 								queryParams: '',
@@ -559,7 +559,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 报损管理
 							{
-								url: '/admin/material/lostList',
+								url: '/admin/material/lost/list',
 								authority: 'seeLost',
 								queryType: '',
 								queryParams: '',
@@ -573,7 +573,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 盘点管理
 							{
-								url: '/admin/material/checkList',
+								url: '/admin/material/check/list',
 								authority: 'seeCheck',
 								queryType: '',
 								queryParams: '',
@@ -629,7 +629,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 库存管理
 							{
-								url: '/admin/medical/hasList',
+								url: '/admin/medical/has/list',
 								authority: 'seeHas',
 								queryType: '',
 								queryParams: '',
@@ -643,7 +643,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 报损管理
 							{
-								url: '/admin/medical/lostList',
+								url: '/admin/medical/lost/list',
 								authority: 'seeLost',
 								queryType: '',
 								queryParams: '',
@@ -657,7 +657,7 @@ export class AuthGuardRole implements CanActivate{
 							},
 							// 盘点管理
 							{
-								url: '/admin/medical/checkList',
+								url: '/admin/medical/check/list',
 								authority: 'seeCheck',
 								queryType: '',
 								queryParams: '',

@@ -11,13 +11,16 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MaterialHasRoutingModule }               from './material-has.routing.module';
 
 import { MaterialHasComponent }                   from './material-has.component';
+import { MaterialHasListComponent }               from './material-has-list.component';
 
 @NgModule({
     declarations: [
         MaterialHasComponent,
+        MaterialHasListComponent,
     ],
     exports: [
         MaterialHasComponent,
+        MaterialHasListComponent,
     ],
     imports: [
         CommonModule,

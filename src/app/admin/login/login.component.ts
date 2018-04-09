@@ -340,7 +340,7 @@ export class LoginComponent{
 			medicalSupplierList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/medical/supplierList',
+				url: '/admin/medical/supplier/list',
 				infos: [],
 			},
 			materialList: {

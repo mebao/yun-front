@@ -1,11 +1,11 @@
 <!-- <header-nav></header-nav> -->
-<div class="content-section admin-medical-has-list">
+<div class="content-section admin-material-has-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
-		<div class="item" *ngIf="moduleAuthority.see" (click)="goUrl('./admin/medical/list')">药品管理</div>
-		<div class="item" *ngIf="moduleAuthority.seePut" (click)="goUrl('./admin/medical/purchaseList')">入库管理</div>
-		<div class="item" *ngIf="moduleAuthority.seeHas" (click)="goUrl('./admin/medical/hasList')">库存管理</div>
-		<div class="item" *ngIf="moduleAuthority.seeLost" (click)="goUrl('./admin/medical/lostList')">报损管理</div>
+		<div class="item" *ngIf="moduleAuthority.see" (click)="goUrl('./admin/material/list')">物资管理</div>
+		<div class="item" *ngIf="moduleAuthority.seePut" (click)="goUrl('./admin/material/purchaseList')">入库管理</div>
+		<div class="item" *ngIf="moduleAuthority.seeHas" (click)="goUrl('./admin/material/has/list')">库存管理</div>
+		<div class="item" *ngIf="moduleAuthority.seeLost" (click)="goUrl('./admin/material/lost/list')">报损管理</div>
 		<div class="item active">盘点管理</div>
 	</div>
 	<div class="flex pure-form mt10 search-tab max">
@@ -13,15 +13,15 @@
 			<button *ngIf="moduleAuthority.addCheck" (click)="add()" class="pure-button pure-button-primary">新增盘点</button>
 		</div>
 		<div class="pure-control-group mr10">
-			<label for="name">药品名:</label>
+			<label for="name">物资名：</label>
 			<input type="text" id="name" name="name" [(ngModel)]="info.name">
 		</div>
 		<div class="pure-control-group mr10">
 			<label for="type">物资类型：</label>
 			<select id="type" name="type" [(ngModel)]="info.type">
-				<option value="1,2">全部</option>
-				<option value="1">中成药</option>
-				<option value="2">西药</option>
+				<option value="3,4">全部</option>
+				<option value="3">医用耗材</option>
+				<option value="4">其他</option>
 			</select>
 		</div>
 		<div class="w64p"></div>
@@ -42,32 +42,26 @@
 		<table *ngIf="stockList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>
-					<th>药品</th>
-					<th>批次</th>
+					<th>物资</th>
 					<th>账面库存</th>
 					<th>实际库存</th>
-					<th>盈亏</th>
-					<th class="th-width">备注</th>
+					<th>偏差值</th>
 					<th>检查时间</th>
+					<th class="th-width">备注</th>
 					<th>盘点人</th>
-					<!-- <th>操作</th> -->
 				</tr>
 			</thead>
 			<tbody>
 				<tr *ngFor="let item of stockList">
 					<td>{{item.name}}</td>
-					<td>{{item.batch}}</td>
 					<td>{{item.stock}}</td>
 					<td>{{item.realityStock}}</td>
 					<td>{{item.deviation}}</td>
+					<td>{{item.checkTime}}</td>
 					<td>
 						<div class="length-text">{{item.remark}}</div>
 					</td>
-					<td>{{item.checkTime}}</td>
 					<td>{{item.checkerName}}</td>
-					<!-- <td>
-						<button *ngIf="moduleAuthority.addCheck" (click)="update(item)" class="pure-button pure-button-primary">修改</button>
-					</td> -->
 				</tr>
 			</tbody>
 		</table>
