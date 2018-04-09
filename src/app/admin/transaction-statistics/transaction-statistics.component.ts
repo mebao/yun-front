@@ -177,6 +177,7 @@ export class TransactionStatisticsComponent{
 			this.getData(urlOptions);
 		}else{
 			window.location.href = config.baseHTTP + '/mebcrm/transtatisticsexport'+ urlOptions;
+			this.loadingShow = false;
 		}
 	}
 
