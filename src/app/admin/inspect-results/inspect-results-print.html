@@ -38,8 +38,8 @@
                     </ng-container>
                     <ng-container *ngIf="result.isUpload == '1'">
                         <td colspan="4">
-                            <img *ngIf="result.values.lastIndexOf('.pdf') == -1" src="{{result.values ? result.values : '../assets/images/result.png'}}" class="w100">
-                            <div *ngIf="result.values.lastIndexOf('.pdf') != -1" class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
+                            <img *ngIf="result.values && result.values.lastIndexOf('.pdf') == -1" src="{{result.values ? result.values : '../assets/images/result.png'}}" class="w100">
+                            <div *ngIf="result.values && result.values.lastIndexOf('.pdf') != -1" class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
                         </td>
                     </ng-container>
                 </tr>

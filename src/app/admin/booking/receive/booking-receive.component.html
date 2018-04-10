@@ -61,9 +61,16 @@
 			<ng-container *ngFor="let booking of bookinglist">
 				<div class="pure-u-6-24 booking-tab pad10" *ngFor="let service of booking.services">
 					<div class="tab" [ngClass]="{'in': booking.status == '4', 'complete': booking.status == '5'}">
-						<div *ngIf="booking.memberId != null" class="vip-tip-text">{{booking.memberName}}（{{booking.balance}}元）<div class="arrow"></div></div>
-						<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
-							<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/vip.png" />
+						<div *ngIf="booking.members.length > 0" class="vip-tip-text">
+							<ng-container *ngFor="let member of booking.members">
+								<ng-container *ngIf="member.canUse == '1'">
+									{{member.memberName}}（{{member.balance ? member.balance : '0.00'}}元）
+								</ng-container>
+							</ng-container>
+							<div class="arrow"></div>
+						</div>
+						<div class="info pad10" [ngClass]="{'active': booking.members.length > 0}">
+							<img *ngIf="booking.members.length > 0" class="vip-icon" src="../assets/images/vip.png" />
 							<div class="flex">
 								<div class="flex-1"></div>
 								<div class="status">

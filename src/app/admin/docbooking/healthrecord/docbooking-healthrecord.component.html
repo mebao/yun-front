@@ -1626,7 +1626,7 @@
 						<tr *ngFor="let history of historyList">
 							<td>{{history.services.length > 0 ? history.services[0].serviceName : ''}}</td>
 							<td>{{history.services.length > 0 ? history.services[0].userDoctorName : ''}}</td>
-							<td>{{history.childName}}</td>
+							<td class="vip-icon-text">{{history.childName}}<img *ngIf="history.members.length > 0" class="vip-icon" src="../assets/images/vip.png" /></td>
 							<!-- <td>{{history.mobile}}</td> -->
 							<td>
 								<span>{{history.bookingDate}}</span>
