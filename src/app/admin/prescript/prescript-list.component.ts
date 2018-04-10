@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef }  from '@angular/core';
 import { Router }                                    from '@angular/router';
 
+import { NzMessageService }                          from 'ng-zorro-antd';
 import { ENgxPrintComponent }                        from 'e-ngx-print';
 
 import { AdminService }                              from '../admin.service';
@@ -15,11 +16,6 @@ export class PrescriptListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -49,9 +45,12 @@ export class PrescriptListComponent{
 		user_name: string,
 		child_name: string,
 	};
+	_startDate = null;
+	_endDate = null;
 	printStyle:string;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 		private elRef: ElementRef,
@@ -147,11 +146,6 @@ export class PrescriptListComponent{
 			title: '药方列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
 
 		this.moduleAuthority = {
 			see: false,
@@ -193,12 +187,14 @@ export class PrescriptListComponent{
 			 + '&isout=1';
 
  		this.searchInfo = {
- 			isout: '',
+ 			isout: '1',
  			today: '',
  			doctor_name: '',
  			user_name: '',
  			child_name: '',
  		}
+        this._startDate = new Date();
+        this._endDate = new Date();
 
 		this.search();
 	}
@@ -211,13 +207,13 @@ export class PrescriptListComponent{
 		this.adminService.searchprescript(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var prescriptList = [];
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						if(this.searchInfo.isout == '1' || (this.searchInfo.isout == '' && results.list[i].outCode != 0)){
+						if(this.searchInfo.isout == '1' || this.searchInfo.isout == null || (this.searchInfo.isout == '' && results.list[i].outCode != 0)){
 							results.list[i].infoLength = results.list[i].info.length;
 							if(results.list[i].info.length > 0){
 								for(var j = 0; j < results.list[i].info.length; j++){
@@ -249,9 +245,12 @@ export class PrescriptListComponent{
 		if(this.searchInfo.today != ''){
 			urlOptions += ('&today=' + this.searchInfo.today);
 		}
-		// if(f.value.name != ''){
-		// 	urlOptions += ('&name=' + f.value.name);
-		// }
+        if(this._startDate){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        }
+        if(this._endDate){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+        }
 		if(this.searchInfo.doctor_name != ''){
 			urlOptions += ('&doctor_name=' + this.searchInfo.doctor_name);
 		}
@@ -265,12 +264,26 @@ export class PrescriptListComponent{
 		this.getData(urlOptions);
 	}
 
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
+
 	goUrl(_url) {
 		this.router.navigate([_url]);
 	}
 
 	closeConfirm() {
-		this.modalPrintConfirmTab = false;
+		this.modalConfirmTab = false;
 	}
 
 	selectPrescript(_id) {
@@ -345,27 +358,12 @@ export class PrescriptListComponent{
 
 		this.adminService.outmedicine(this.select.id, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
-				this.toastTab('药品出库成功', '');
+				this._message.success('药品出库成功');
 				this.getData(this.searchUrl);
 			}
 		})
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 
 	range(num){
