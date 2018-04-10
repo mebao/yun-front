@@ -9,13 +9,16 @@ import { AngCommonModule }                   from '../../common/ang-common.modul
 import { InspectResultsRoutingModule }       from './inspect-results.routing.module';
 
 import { InspectResultsComponent }           from './inspect-results.component';
+import { InspectResultsPrint }               from './inspect-results-print';
 
 @NgModule({
     declarations: [
         InspectResultsComponent,
+        InspectResultsPrint,
     ],
     exports: [
         InspectResultsComponent,
+        InspectResultsPrint,
     ],
     imports: [
         CommonModule,

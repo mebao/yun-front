@@ -376,7 +376,7 @@ export class InspectResultsComponent{
 	}
 
 	print(check) {
-		window.open('./admin/inspectResultsPrint?id=' + check.id + '&layout=all');
+		window.open('./admin/inspectResults/print?id=' + check.id + '&layout=all');
 	}
 
 	toastTab(text, type) {

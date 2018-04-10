@@ -64,10 +64,10 @@ const adminRoutes: Routes = [
 						path: 'prescript',
 						loadChildren: './prescript/prescript.module#PrescriptModule',
 					},
-					{
-						path: 'authorize',
-						loadChildren: './authorize/authorize.module#AuthorizeModule',
-					},
+					// {
+					// 	path: 'authorize',
+					// 	loadChildren: './authorize/authorize.module#AuthorizeModule',
+					// },
 					{
 						path: 'doctor',
 						loadChildren: './doctor/doctor.module#DoctorModule',
@@ -100,10 +100,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'inspectResults',
 						loadChildren: './inspect-results/inspect-results.module#InspectResultsModule',
-					},
-					{
-						path: 'inspectResultsPrint',
-						loadChildren: './inspect-results-print/inspect-results-print.module#InspectResultsPrintModule',
 					},
 					{
 						path: 'childService',
@@ -165,34 +161,34 @@ const adminRoutes: Routes = [
 						path: 'bookingCharge',
 						loadChildren: './booking/charge/booking-charge.module#BookingChargeModule',
 					},
-					{
-						path: 'bookingAddFee',
-						loadChildren: './booking/add-fee/booking-add-fee.module#BookingAddFeeModule',
-					},
-					{
-						path: 'bookingAddService',
-						loadChildren: './booking/add-service/booking-add-service.module#BookingAddServiceModule',
-					},
-					{
-						path: 'bookingCasehistory',
-						loadChildren: './booking/casehistory/booking-casehistory.module#BookingCasehistoryModule',
-					},
+					// {
+					// 	path: 'bookingAddFee',
+					// 	loadChildren: './booking/add-fee/booking-add-fee.module#BookingAddFeeModule',
+					// },
+					// {
+					// 	path: 'bookingAddService',
+					// 	loadChildren: './booking/add-service/booking-add-service.module#BookingAddServiceModule',
+					// },
+					// {
+					// 	path: 'bookingCasehistory',
+					// 	loadChildren: './booking/casehistory/booking-casehistory.module#BookingCasehistoryModule',
+					// },
 					{
 						path: 'bookingHistory',
 						loadChildren: './booking/history/booking-history.module#BookingHistoryModule',
 					},
-					{
-						path: 'bookingHealthrecord',
-						loadChildren: './booking/healthrecord/booking-healthrecord.module#BookingHealthrecordModule',
-					},
-					{
-						path: 'bookingGrowthrecord',
-						loadChildren: './booking/growthrecord/booking-growthrecord.module#BookingGrowthrecordModule',
-					},
-					{
-						path: 'bookingConfirm',
-						loadChildren: './booking/confirm/booking-confirm.module#BookingConfirmModule',
-					},
+					// {
+					// 	path: 'bookingHealthrecord',
+					// 	loadChildren: './booking/healthrecord/booking-healthrecord.module#BookingHealthrecordModule',
+					// },
+					// {
+					// 	path: 'bookingGrowthrecord',
+					// 	loadChildren: './booking/growthrecord/booking-growthrecord.module#BookingGrowthrecordModule',
+					// },
+					// {
+					// 	path: 'bookingConfirm',
+					// 	loadChildren: './booking/confirm/booking-confirm.module#BookingConfirmModule',
+					// },
 					{
 						path: 'bookingFollowups',
 						loadChildren: './booking/followups/booking-followups.module#BookingFollowupsModule',
