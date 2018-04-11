@@ -26,14 +26,6 @@ import { MedicalListComponent }                   from './medical-list.component
             loadChildren: './lost/medical-lost.module#MedicalLostModule',
         },
         {
-            path: 'purchaseInfo',
-            loadChildren: './purchase-info/medical-purchase-info.module#MedicalPurchaseInfoModule',
-        },
-        {
-            path: 'purchaseList',
-            loadChildren: './purchase-list/medical-purchase-list.module#MedicalPurchaseListModule',
-        },
-        {
             path: 'purchase',
             loadChildren: './purchase/medical-purchase.module#MedicalPurchaseModule',
         },
@@ -45,7 +37,11 @@ import { MedicalListComponent }                   from './medical-list.component
             path: 'index',
             canActivate: [AuthGuardRole],
             component: MedicalComponent,
-        }
+        },
+        // {
+        //     path: 'tcm',
+        //     loadChildren: './tcm/tcm.module#TcmModule',
+        // }
     ])],
     exports: [RouterModule]
 })

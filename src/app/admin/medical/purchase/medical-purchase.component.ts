@@ -287,7 +287,7 @@ export class MedicalPurchaseComponent{
 			}else{
 				this.toastTab('药品入库创建成功', '');
 				setTimeout(() => {
-					this.router.navigate(['./admin/medical/purchaseList']);
+					this.router.navigate(['./admin/medical/purchase/list']);
 				}, 2000);
 			}
 		})

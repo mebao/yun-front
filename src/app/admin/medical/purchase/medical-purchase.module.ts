@@ -11,13 +11,19 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MedicalPurchaseRoutingModule }           from './medical-purchase.routing.module';
 
 import { MedicalPurchaseComponent }               from './medical-purchase.component';
+import { MedicalPurchaseListComponent }           from './medical-purchase-list.component';
+import { MedicalPurchaseInfoComponent }           from './medical-purchase-info.component';
 
 @NgModule({
     declarations: [
         MedicalPurchaseComponent,
+        MedicalPurchaseListComponent,
+        MedicalPurchaseInfoComponent,
     ],
     exports: [
         MedicalPurchaseComponent,
+        MedicalPurchaseListComponent,
+        MedicalPurchaseInfoComponent,
     ],
     imports: [
         CommonModule,

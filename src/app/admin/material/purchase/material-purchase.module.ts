@@ -11,13 +11,19 @@ import { AngCommonModule }                        from '../../../common/ang-comm
 import { MaterialPurchaseRoutingModule }          from './material-purchase.routing.module';
 
 import { MaterialPurchaseComponent }              from './material-purchase.component';
+import { MaterialPurchaseListComponent }          from './material-purchase-list.component';
+import { MaterialPurchaseInfoComponent }          from './material-purchase-info.component';
 
 @NgModule({
     declarations: [
         MaterialPurchaseComponent,
+        MaterialPurchaseListComponent,
+        MaterialPurchaseInfoComponent,
     ],
     exports: [
         MaterialPurchaseComponent,
+        MaterialPurchaseListComponent,
+        MaterialPurchaseInfoComponent,
     ],
     imports: [
         CommonModule,

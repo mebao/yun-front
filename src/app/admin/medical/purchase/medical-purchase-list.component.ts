@@ -163,7 +163,7 @@ export class MedicalPurchaseListComponent{
 
 	// 详情
 	showInfo(_id) {
-		this.router.navigate(['./admin/medical/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
+		this.router.navigate(['./admin/medical/purchase/info'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {

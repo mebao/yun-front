@@ -3,7 +3,7 @@
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
 		<div class="item" *ngIf="moduleAuthority.see" (click)="goUrl('./admin/material/list')">物资管理</div>
-		<div class="item" *ngIf="moduleAuthority.seePut" (click)="goUrl('./admin/material/purchaseList')">入库管理</div>
+		<div class="item" *ngIf="moduleAuthority.seePut" (click)="goUrl('./admin/material/purchase/list')">入库管理</div>
 		<div class="item" *ngIf="moduleAuthority.seeHas" (click)="goUrl('./admin/material/has/list')">库存管理</div>
 		<div class="item" *ngIf="moduleAuthority.seeLost" (click)="goUrl('./admin/material/lost/list')">报损管理</div>
 		<div class="item active">盘点管理</div>

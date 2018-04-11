@@ -26,14 +26,6 @@ import { MaterialListComponent }          from './material-list.component';
             loadChildren: './lost/material-lost.module#MaterialLostModule',
         },
         {
-            path: 'purchaseInfo',
-            loadChildren: './purchase-info/material-purchase-info.module#MaterialPurchaseInfoModule',
-        },
-        {
-            path: 'purchaseList',
-            loadChildren: './purchase-list/material-purchase-list.module#MaterialPurchaseListModule',
-        },
-        {
             path: 'purchase',
             loadChildren: './purchase/material-purchase.module#MaterialPurchaseModule',
         },

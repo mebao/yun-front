@@ -809,6 +809,12 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
     }
 }
 
+.td-text{
+	max-height: 100px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
 .pure-tab{
 	.pure-u-8-24{
         &.bt{

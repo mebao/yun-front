@@ -163,7 +163,7 @@ export class MaterialPurchaseListComponent{
 	}
 
 	showInfo(_id) {
-		this.router.navigate(['./admin/material/purchaseInfo'], {queryParams: {id: _id, type: this.info.type}});
+		this.router.navigate(['./admin/material/purchase/info'], {queryParams: {id: _id, type: this.info.type}});
 	}
 
 	toastTab(text, type) {
