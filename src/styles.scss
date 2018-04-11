@@ -966,6 +966,25 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	background-color: #eee;
 }
 
+.prescript-list-modal{
+	 /deep/ .ant-checkbox-inner{
+		width:18px!important;
+		height:18px!important;
+		&:after{
+			top:3px;
+			left: 5px;
+		}
+	}
+	/deep/ .ant-checkbox-indeterminate{
+		.ant-checkbox-inner{
+			&:after{
+				top:7px;
+				left: 4px;
+			}
+		}
+	}
+}
+
 // .admin-booking-list{
 // 	.img{
 // 		height:20px;

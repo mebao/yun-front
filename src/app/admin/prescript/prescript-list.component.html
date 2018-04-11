@@ -164,7 +164,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="modalPrintConfirmTab">
+<div class="modal prescript-list-modal" *ngIf="modalPrintConfirmTab">
 	<div class="modal-mask" (click)="closePrintConfirm()"></div>
 	<div class="container mobile">
 		<div class="title">选择打印</div>
@@ -178,7 +178,11 @@
 						<th nz-th>批次</th>
 						<th nz-th>药品数量</th>
 						<th nz-th>打印数量</th>
-						<th nz-th></th>
+						<th nz-th>
+						   <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
+						     <span>全选/取消</span>
+						   </label>
+						</th>
 					</tr>
 				</thead>
 				<tbody nz-tbody>

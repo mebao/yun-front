@@ -114,31 +114,31 @@
 						<div class="container" id="container">
 							<div class="flex">
 								<div class="flex-1 font-bold">
-								姓名：{{booking.childName}}
+								Name：{{booking.childName}}
 								</div>
 								<div>
-								性别：{{booking.genderText}}
+								Gender：{{booking.genderText}}
 								</div>
 							</div>
 							<div class="font-bold">
-							年龄：{{booking.age}}
+							Age：{{booking.age}}
 							</div>
 							<div>
-							出生日期：{{booking.birthDate}}
+							DOB：{{booking.birthDate}}
 							</div>
 							<div  class="font-bold">
-							预约日期：{{booking.bookingDate}} {{booking.time}}
+							Date：{{booking.bookingDate}} {{booking.time}}
 							</div>
 							<ng-container *ngFor="let service of booking.services">
 								<div class="font-bold">
-								预约医生：{{service.userDoctorName}}
+								Dr：{{service.userDoctorName}}
 								</div>
 								<div>
-								科室：{{service.serviceName}}
+								Dept：{{service.serviceName}}
 								</div>
 							</ng-container>
 							<div>
-								预约编号：{{booking.refNo}}
+								Ref No：{{booking.refNo}}
 							</div>
 						</div>
 					</div>
@@ -268,29 +268,29 @@
 									<div class="container" id="container">
 										<div class="flex">
 											<div class="flex-1 font-bold">
-											姓名：{{showBooking.childName}}
+											Name：{{showBooking.childName}}
 											</div>
 											<div>
-											性别：{{showBooking.genderText}}
+											Gender：{{showBooking.genderText}}
 											</div>
 										</div>
 										<div class="font-bold">
-										年龄：{{showBooking.age}}
+										Age：{{showBooking.age}}
 										</div>
 										<div>
-										出生日期：{{showBooking.birthDate}}
+										DOB：{{showBooking.birthDate}}
 										</div>
 										<div  class="font-bold">
-										预约日期：{{showBooking.bookingDate}} {{showBooking.time}}
+										Date：{{showBooking.bookingDate}} {{showBooking.time}}
 										</div>
 										<div class="font-bold">
-										预约医生：{{service.userDoctorName}}
+										Dr：{{service.userDoctorName}}
 										</div>
 										<div>
-										科室：{{service.serviceName}}
+										Dept：{{service.serviceName}}
 										</div>
 										<div>
-											预约编号：{{showBooking.refNo}}
+											Ref No：{{showBooking.refNo}}
 										</div>
 									</div>
 								</div>

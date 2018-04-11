@@ -120,7 +120,7 @@ export class BookingListComponent implements OnInit{
 	        `
 			body{
 				margin:0px;
-				font-size:12px;
+				font-size:18px;
 				font-family:"黑体";
 				color:#333;
 			}
@@ -129,10 +129,13 @@ export class BookingListComponent implements OnInit{
 				margin-top: 10px;
 	        }
 			#print_div{
-				width:200px;
-				line-height:1.8em;
+				width:400px;
+				line-height:2em;
 				page-break-before: always;
-				padding:5px 10px;
+
+			}
+			.container{
+				padding:10px 20px;
 			}
 			.flex{
 				display:flex;

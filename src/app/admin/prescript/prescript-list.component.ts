@@ -48,6 +48,8 @@ export class PrescriptListComponent{
 	_startDate = null;
 	_endDate = null;
 	printStyle:string;
+	allChecked: boolean;
+	indeterminate: boolean;
 
 	constructor(
 		private _message: NzMessageService,
@@ -197,6 +199,8 @@ export class PrescriptListComponent{
         this._endDate = new Date();
 
 		this.search();
+		this.allChecked = true;
+  		this.indeterminate = false;
 	}
 
 	printComplete() {
@@ -345,7 +349,62 @@ export class PrescriptListComponent{
 	}
 
 	selectChange(pid,event){
+		var checkAll = true;
+		var unCheckAll = true;
+		this.modalList.forEach(function(info){
+			if(info.info){
+			   info.info.forEach(function(item){
+				   if(item.isCheck === false){
+					   checkAll = false;
+				   }
+				   if(item.isCheck === true){
+					   unCheckAll = false;
+				   }
+			   });
+			}
+		});
+		if(checkAll){
+			this.allChecked = true;
+			this.indeterminate = false;
+		}else{
+			this.indeterminate = true;
+		}
+		if(unCheckAll){
+			this.allChecked = false;
+			this.indeterminate = false;
+		}else{
+			this.indeterminate = true;
+		}
+		// if (this.modalList.every(item => item.checked === false)) {
+		// 	this.allChecked = false;
+		// 	this.indeterminate = false;
+		// } else if (this.modalList.every(item => item.checked === true)) {
+		// 	this.allChecked = true;
+		// 	this.indeterminate = false;
+		// } else {
+		// 	this.indeterminate = true;
+		// }
+	}
 
+	updateAllChecked() {
+		this.indeterminate = false;
+		if (this.allChecked) {
+		  this.modalList.forEach(function(info){
+			  if(info.info){
+				 info.info.forEach(function(item){
+					 item.isCheck = true;
+				 });
+			  }
+		  });
+		} else {
+			this.modalList.forEach(function(info){
+			  if(info.info){
+				 info.info.forEach(function(item){
+					 item.isCheck = false;
+				 });
+			  }
+		  });
+		}
 	}
 
 	confirm() {
