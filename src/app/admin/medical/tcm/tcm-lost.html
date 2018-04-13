@@ -1,0 +1,50 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section">
+	<top-bar [data]="topBar"></top-bar>
+    <form nz-form [formGroup]="validateForm">
+		<ng-container *ngFor="let tcmLost of tcmLostList; let index=index;">
+	        <div nz-form-item nz-row>
+	            <div nz-form-label nz-col [nzSpan]="7">
+	                <label>药材-{{tcmLost.id + 1}}：</label>
+	            </div>
+	            <div nz-col [nzSpan]="12" nz-form-control>
+					<nz-input-group [nzSize]="'large'">
+			      		<nz-select [formControlName]="tcmLost.tcm" [nzPlaceHolder]="'请选择药材'" class="w50" (nzOpenChange)="changeTcm(index)" nzShowSearch>
+							<ng-container *ngFor="let tcm of tcmList">
+				        		<nz-option [nzLabel]="tcm.name" [nzValue]="tcm"></nz-option>
+							</ng-container>
+			      		</nz-select>
+		                <nz-input-number class="w30 mr0" [formControlName]="tcmLost.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>
+			      		<nz-select [formControlName]="tcmLost.unit" [nzPlaceHolder]="'请选择单位'" class="w20" [nzDisabled]="true">
+							<nz-option [nzLabel]="tcmLost.selectedUnit" [nzValue]="tcmLost.selectedUnit"></nz-option>
+			      		</nz-select>
+			    	</nz-input-group>
+	            </div>
+				<i *ngIf="tcmLost.id != 0" class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(tcmLost, $event)"></i>
+	        </div>
+		</ng-container>
+		<div nz-form-item nz-row>
+      		<div nz-form-control nz-col [nzSpan]="12" [nzOffset]="7">
+        		<button nz-button [nzType]="'dashed'" [nzSize]="'large'" class="w100" (click)="addField(null, $event)">
+          			<i class="anticon anticon-plus"></i>
+          			<span> 添加药材</span>
+        		</button>
+      		</div>
+    	</div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>报损原因：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input class="w100" formControlName="remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入报损原因'" [nzSize]="'large'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('remark').dirty && getFormControl('remark').hasError('required')">报损原因不可为空</div>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
+                <button (click)="save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave" [disabled]="!validateForm.valid">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<loading [show]="loadingShow"></loading>

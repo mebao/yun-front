@@ -150,6 +150,9 @@ export class DocbookingComponent implements OnInit{
 	};
 	doctorlist: any[];
 	servicelist: [{}];
+	// 中药处方
+	hasDocTcmData: boolean;
+	docTcmList: any[];
 
 	constructor(
 		private adminService: AdminService,
@@ -321,6 +324,11 @@ export class DocbookingComponent implements OnInit{
 			remarks: '',
 		}
 		this.getBookingAssistData();
+
+		// 中药处方
+		this.hasDocTcmData = false;
+		this.docTcmList = [];
+		this.getDocTcmList();
 
 		this.doctorInfo = {
 			avatarUrl: '',
@@ -1045,6 +1053,34 @@ export class DocbookingComponent implements OnInit{
 			type: 'assist',
 		}
 		this.modalConfirmTab = true;
+	}
+
+	// 中药处方
+	getDocTcmList() {
+		var urlOptions = this.url + '&booking_id=' + this.id + '&isout=1';
+		this.adminService.searchtcmprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.docTcmList = results.list;
+				this.hasDocTcmData = true;
+			}
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
+		});
+	}
+
+	// 开中药处方
+	tcmPrescript() {
+		sessionStorage.setItem('docBookingDocName', this.booking.services.length > 0 ? this.booking.services[0].userDoctorName : '');
+		this.router.navigate(['./admin/doctorTcmPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, creatorId: this.booking.creatorId, childId: this.booking.childId}});
+	}
+
+	// 修改中药处方
+	updateDocTcm(docTcm) {
+		sessionStorage.setItem('docBookingDocName', this.booking.services.length > 0 ? this.booking.services[0].userDoctorName : '');
+		this.router.navigate(['./admin/doctorTcmPrescript'], {queryParams: {id: this.id, doctorId: this.doctorId, creatorId: this.booking.creatorId, childId: this.booking.childId, tcmPreId: docTcm.id}});
 	}
 
 	//修改药方

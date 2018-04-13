@@ -10,9 +10,10 @@ import { SelectivePreloadingStrategy }      from '../selective-preloading-strate
 import { HomeComponent }                    from './home/home.component';
 import { BookingComponent }                 from './booking/booking.component';
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
-import { NoPermissionsComponent }             from '../error/no-permissions.component';
+import { NoPermissionsComponent }           from '../error/no-permissions.component';
 import { UploadComponent }                  from './user/upload.component';
 import { DoctorPrescriptComponent }         from './prescript/doctor-prescript.component';
+import { DoctorTcmPrescript }               from './prescript/doctor-tcm-prescript';
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 
@@ -222,6 +223,11 @@ const adminRoutes: Routes = [
 						path: 'doctorPrescript',
 						canActivate: [AuthGuardRole],
 						component: DoctorPrescriptComponent
+					},
+					{
+						path: 'doctorTcmPrescript',
+						canActivate: [AuthGuardRole],
+						component: DoctorTcmPrescript
 					},
 					{
 						path: 'noPermissions',

@@ -1,0 +1,84 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section">
+	<top-bar [data]="topBar"></top-bar>
+	<nz-tabset [nzSelectedIndex]="selectedIndex" [nzSize]="'large'">
+        <nz-tab *ngIf="moduleAuthority.see" (nzClick)="goUrl('./admin/medical/tcm/list')">
+            <ng-template #nzTabHeading>
+                中药管理
+            </ng-template>
+        </nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seePut" (nzClick)="goUrl('./admin/medical/tcm/purchaseList')">
+        	<ng-template #nzTabHeading>
+                入库管理
+        	</ng-template>
+      	</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeHas">
+        	<ng-template #nzTabHeading>
+          		库存管理
+        	</ng-template>
+			<div class="mt10 mb10">
+				<button (click)="export()" nz-button [nzType]="'primary'" [nzSize]="'large'">导出</button>
+			</div>
+			<div nz-row class="mt10 mb10">
+				<div nz-col [nzSpan]="6" [nzOffset]="12">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label for="name">药材名：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-input [(ngModel)]="searchInfo.name" [nzPlaceHolder]="'请输入药材名'" [nzSize]="'large'"></nz-input>
+						</div>
+					</div>
+				</div>
+				<div nz-col [nzSpan]="6">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label for="name_code">药材名简拼：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-input [(ngModel)]="searchInfo.name_code" [nzPlaceHolder]="'请输入药材名简拼'" [nzSize]="'large'"></nz-input>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-right mt10 mb10">
+				<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+			</div>
+			<nz-table *ngIf="hasData" #nzTable [nzDataSource]="tcmPurchaseList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
+					<tr>
+						<th nz-th>药材名</th>
+						<th nz-th>药材名简拼</th>
+						<th nz-th>单价</th>
+						<th nz-th>单位</th>
+						<th nz-th>库存</th>
+						<th nz-th>操作</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr nz-tbody-tr *ngFor="let tcmPurchase of tcmPurchaseList;">
+						<td nz-td>{{tcmPurchase.name}}</td>
+						<td nz-td>{{tcmPurchase.nameCode}}</td>
+						<td nz-td>{{tcmPurchase.price}}</td>
+						<td nz-td>{{tcmPurchase.unit}}</td>
+						<td nz-td>{{tcmPurchase.stock}}</td>
+						<td nz-td>
+							<button *ngIf="moduleAuthority.editHas" (click)="update(tcmPurchase.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+						</td>
+					</tr>
+				</tbody>
+			</nz-table>
+		</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeLost" (nzClick)="goUrl('./admin/medical/tcm/lostList')">
+        	<ng-template #nzTabHeading>
+          		报损管理
+        	</ng-template>
+		</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeCheck" (nzClick)="goUrl('./admin/medical/tcm/checkList')">
+        	<ng-template #nzTabHeading>
+          		盘点管理
+        	</ng-template>
+		</nz-tab>
+    </nz-tabset>
+</div>
+<loading [show]="loadingShow"></loading>

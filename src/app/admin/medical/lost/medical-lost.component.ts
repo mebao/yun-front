@@ -16,7 +16,7 @@ export class MedicalLostComponent{
 	toast: {
 		show: number,
 		text: string,
-		type:  string,
+		type: string,
 	};
 	lostlist: any[];
 	// 药品列表
@@ -122,7 +122,8 @@ export class MedicalLostComponent{
 				if(this.lostlist[i].use){
 					num++;
 					var lost = {
-						sinfo_id: '',
+						project_id: '',
+						project_type: 'supplies',
 						num: '',
 					};
 					if(f.value['ms_' + this.lostlist[i].key] == ''){
@@ -135,7 +136,7 @@ export class MedicalLostComponent{
 						this.btnCanEdit = false;
 						return;
 					}
-					lost.sinfo_id = JSON.parse(f.value['batch_' + this.lostlist[i].key]).id;
+					lost.project_id = JSON.parse(f.value['batch_' + this.lostlist[i].key]).id;
 					if(this.adminService.isFalse(f.value['num_' + this.lostlist[i].key])){
 						this.toastTab('第' + num + '条药单数量不可为空', 'error');
 						this.btnCanEdit = false;

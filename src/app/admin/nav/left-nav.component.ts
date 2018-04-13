@@ -95,12 +95,20 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
-		//药房
+		// 西/中成药-药房
 		medicalList: {
 			use: string,
 			authority: any[],
 			infos: any[],
 		},
+		// 中药
+		tcm: {
+			use: string,
+			authority: any[],
+			infos: any[],
+			hasTwoLevel: boolean,
+			twoLevel: any,
+		}
 		//药方
 		prescriptList: {
 			use: string,
@@ -285,6 +293,29 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
+			tcm: {
+				use: '',
+				authority: ['see', 'seePut', 'seeHas', 'seeLost', 'seeCheck'],
+				infos: [],
+				hasTwoLevel: true,
+				twoLevel: {
+					see: {
+						use: '',
+					},
+					seePut: {
+						use: '',
+					},
+					seeHas: {
+						use: '',
+					},
+					seeLost: {
+						use: '',
+					},
+					seeCheck: {
+						use: '',
+					},
+				},
+			},
 			prescriptList: {
 				use: '',
 				authority: ['see'],
@@ -380,10 +411,24 @@ export class LeftNavComponent{
 		// 如果是超级管理员，获取所有权限
 		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
 			for(var key in this.clinicRole){
-				this.clinicRole[key] = {
-					use: key,
-					authority: [],
-					infos: [],
+				// 是否有二级目录
+				if(this.clinicRole[key].hasTwoLevel){
+					this.clinicRole[key] = {
+						use: key,
+						authority: [],
+						infos: [],
+						hasTwoLevel: true,
+						twoLevel: this.clinicRole[key].twoLevel,
+					}
+					for(var twoLevelKey in this.clinicRole[key].twoLevel){
+						this.clinicRole[key].twoLevel[twoLevelKey].use = twoLevelKey;
+					}
+				}else{
+					this.clinicRole[key] = {
+						use: key,
+						authority: [],
+						infos: [],
+					}
 				}
 			}
 			// 只有管理员才有的权限
@@ -404,11 +449,31 @@ export class LeftNavComponent{
 						}
 					}
 					if(hasAuthority){
-						this.clinicRole[clinicRoles[i].keyName] = {
-							use: clinicRoles[i].keyName,
-							authority: [],
-							infos: clinicRoles[i].infos,
-						};
+						// 是否有二级目录
+						if(this.clinicRole[clinicRoles[i].keyName].hasTwoLevel){
+							this.clinicRole[clinicRoles[i].keyName] = {
+								use: '',
+								authority: [],
+								infos: clinicRoles[i].infos,
+								hasTwoLevel: true,
+								twoLevel: this.clinicRole[clinicRoles[i].keyName].twoLevel,
+							};
+							if(clinicRoles[i].infos.length > 0){
+								for(var twoLevel of clinicRoles[i].infos){
+									if(this.clinicRole[clinicRoles[i].keyName].twoLevel[twoLevel.keyName]){
+										this.clinicRole[clinicRoles[i].keyName].twoLevel[twoLevel.keyName].use = twoLevel.keyName;
+										// 含有二级目录权限，一级目录同时存在
+										this.clinicRole[clinicRoles[i].keyName].use = clinicRoles[i].keyName;
+									}
+								}
+							}
+						}else{
+							this.clinicRole[clinicRoles[i].keyName] = {
+								use: clinicRoles[i].keyName,
+								authority: [],
+								infos: clinicRoles[i].infos,
+							};
+						}
 					}
 				}
 			}

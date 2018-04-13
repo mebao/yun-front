@@ -356,7 +356,8 @@
 			<div class="second-bar-tab flex mb10">
 				<div (click)="changeTab('3')" [ngClass]="{'active': selectedTab == '3'}" class="item">实验室检查</div>
 				<div (click)="changeTab('6')" [ngClass]="{'active': selectedTab == '6'}" class="item">辅助治疗</div>
-				<div (click)="changeTab('4')" [ngClass]="{'active': selectedTab == '4'}" class="item">处方</div>
+				<div (click)="changeTab('4')" [ngClass]="{'active': selectedTab == '4'}" class="item">西/中成药处方</div>
+				<div (click)="changeTab('7')" [ngClass]="{'active': selectedTab == '7'}" class="item">中药处方</div>
 				<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">科室列表</div> -->
 				<div (click)="changeTab('2')" [ngClass]="{'active': selectedTab == '2'}" class="item">费用列表</div>
 				<div (click)="changeTab('5')" [ngClass]="{'active': selectedTab == '5'}" class="item">随访</div>
@@ -672,6 +673,48 @@
 						<div *ngIf="hasPrescriptData && prescriptList.length == 0" class="mt10 flex">
 							<div *ngIf="canEdit" class="flex-1">
 								<button (click)="prescript()" class="pure-button pure-button-primary">开方</button>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div [ngClass]="{'hidden': selectedTab != '7'}" class="tab">
+				<nz-table #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+					<thead nz-thead>
+						<tr>
+							<th nz-th>药材名</th>
+							<th nz-th>总服数</th>
+							<th nz-th>用法</th>
+							<th nz-th>频率</th>
+							<th nz-th class="w15">备注</th>
+							<th nz-th>操作</th>
+						</tr>
+					</thead>
+					<tbody nz-tbody>
+						<ng-container *ngFor="let docTcm of docTcmList;">
+							<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
+								<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
+								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.num}}</td>
+								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.usage}}</td>
+								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.frequency}}</td>
+								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+									<div class="td-text">{{docTcm.remark}}</div>
+								</td>
+								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+									<button (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
+					<span noResult>暂无中药处方信息</span>
+				</nz-table>
+				<!-- pageType 空为医生接诊， history为查看 -->
+				<div *ngIf="pageType != 'history'">
+					<!-- 订单未完成，可操作 -->
+					<ng-container *ngIf="booking.status != '5'">
+						<div *ngIf="hasDocTcmData && docTcmList.length == 0" class="mt10 flex">
+							<div *ngIf="canEdit" class="flex-1">
+								<button (click)="tcmPrescript()" class="pure-button pure-button-primary">开中药处方</button>
 							</div>
 						</div>
 					</ng-container>

@@ -31,6 +31,10 @@ import { DoctorInfoComponent }               from './doctor-info.component';
             //canActivate: [AuthGuardRole],
             loadChildren: './case-templet/doctor-case-templet.module#DoctorCaseTempletModule',
         },
+        {
+            path: 'tcm',
+            loadChildren: './tcm/doctor-tcm.module#DoctorTcmModule',
+        }
     ])]
 })
 

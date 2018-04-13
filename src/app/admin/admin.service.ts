@@ -1282,6 +1282,78 @@ export class AdminService{
 			.catch();
 	}
 
+	// 创建修改中药药材
+	clinictcm(params): Promise<Data>{
+		var url = this.url + '/mebcrm/clinictcm';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询中药药材
+	searchtcm(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchtcm' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询中药处方
+	searchpotcm(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchpotcm' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 创建修改中药处方
+	clinicpotcm(params): Promise<Data>{
+		var url = this.url + '/mebcrm/clinicpotcm';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询中药药方
+	searchtcmprescript(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchtcmprescript' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 医生创建/修改中药药方
+	tcmprescript(params): Promise<Data>{
+		var url = this.url + '/mebcrm/tcmprescript';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 中药药方出药
+	outtcmp(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/outtcmp/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 中药进货
+	tcmpurchase(params): Promise<Data>{
+		var url = this.url + '/mebcrm/tcmpurchase';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

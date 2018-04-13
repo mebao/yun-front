@@ -1,6 +1,8 @@
 import { NgModule }                        from '@angular/core';
 import { CommonModule }                    from '@angular/common';
-import { FormsModule }                     from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { NgZorroAntdModule }               from 'ng-zorro-antd';
 
 import { AdminComponent }                  from './admin.component';
 
@@ -27,6 +29,7 @@ import { HomeComponent }                   from './home/home.component';
 import { BookingComponent }                from './booking/booking.component';
 import { UploadComponent }                 from './user/upload.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
+import { DoctorTcmPrescript }              from './prescript/doctor-tcm-prescript';
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 
@@ -38,6 +41,8 @@ import { DoctorService }                   from './doctor/doctor.service';
 		CommonModule,
 		AdminRoutingModule,
 		FormsModule,
+		ReactiveFormsModule,
+		NgZorroAntdModule,
 		AngCommonModule,
 		NavModule,
 		PipeModule,
@@ -50,6 +55,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		NoPermissionsComponent,
 		UploadComponent,
 		DoctorPrescriptComponent,
+		DoctorTcmPrescript,
 		Repage,
 		UpdatepwdComponent,
 	],

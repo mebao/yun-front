@@ -134,9 +134,11 @@ export class MaterialCheckComponent{
 			for(var i = 0; i < this.checkList.length; i++){
 				if(this.checkList[i].use){
 					var c = {
-						sinfo_id: this.checkList[i].sinfo_id,
+						project_id: this.checkList[i].sinfo_id,
+						project_type: 'supplies',
 						name: this.checkList[i].name,
 						type: this.checkList[i].type,
+						stock: this.checkList[i].stock,
 						reality_stock: this.checkList[i].reality_stock,
 						remark: this.checkList[i].remark,
 					}

@@ -1,0 +1,55 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="mt10">
+		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增处方</button>
+	</div>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="6" [nzOffset]="18">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="name">处方名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.name" [nzPlaceHolder]="'请输入处方名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th nz-th>处方名</th>
+				<th nz-th>药材</th>
+				<th nz-th>总服数</th>
+				<th nz-th>用法</th>
+				<th nz-th>频率</th>
+				<th nz-th>总天数</th>
+				<th nz-th class="w15">备注</th>
+				<th nz-th>操作</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<ng-container *ngFor="let docTcm of docTcmList">
+				<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.name}}</td>
+					<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.total_num}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.usage}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.frequency}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.days}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+						<div class="td-text">{{docTcm.remark}}</div>
+					</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+						<button (click)="update(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+					</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</nz-table>
+</div>
+<loading [show]="loadingShow"></loading>

@@ -1,0 +1,94 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section">
+	<top-bar [data]="topBar"></top-bar>
+	<nz-tabset [nzSelectedIndex]="selectedIndex" [nzSize]="'large'">
+        <nz-tab *ngIf="moduleAuthority.see" (nzClick)="goUrl('./admin/medical/tcm/list')">
+            <ng-template #nzTabHeading>
+                中药管理
+            </ng-template>
+        </nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seePut">
+        	<ng-template #nzTabHeading>
+                入库管理
+        	</ng-template>
+			<div class="mt10">
+				<button *ngIf="moduleAuthority.editPut" (click)="addPurchase()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增入库</button>
+			</div>
+			<div nz-row class="mt10 mb10">
+		    	<div nz-col [nzSpan]="6" [nzOffset]="12">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="9" class="text-right">
+							<label for="_startDate">预约时间：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="15">
+							<nz-datepicker (ngModelChange)="_startDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+		    	<div nz-col [nzSpan]="6">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="9" class="text-right">
+							<label for="_endDate">至：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="15">
+							<nz-datepicker (ngModelChange)="_endDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-right mt10 mb10">
+				<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+			</div>
+			<nz-table *ngIf="hasData" #nzTable [nzDataSource]="tcmPurchaseList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
+					<tr>
+						<th nz-th>供应商</th>
+						<th nz-th>发货时间</th>
+						<th nz-th>药材名</th>
+						<th nz-th>入库数量</th>
+						<ng-container *ngIf="moduleAuthority.infoPut">
+							<th nz-th>入库单价</th>
+							<th nz-th>入库费用</th>
+						</ng-container>
+						<th nz-th>入库时间</th>
+						<th nz-th>制单人</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<ng-container *ngFor="let tcmPurchase of tcmPurchaseList;">
+						<tr nz-tbody-tr *ngFor="let info of tcmPurchase.info; let indexInfo=index;">
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.supplierName}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.aboutTime}}</td>
+							<td nz-td>{{info.name}}</td>
+							<td nz-td>{{info.num}}</td>
+							<ng-container *ngIf="moduleAuthority.infoPut">
+								<td nz-td>{{info.bid}}</td>
+								<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.fee}}</td>
+							</ng-container>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.purshaseTime}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.adminName}}</td>
+						</tr>
+					</ng-container>
+				</tbody>
+			</nz-table>
+      	</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeHas" (nzClick)="goUrl('./admin/medical/tcm/hasList')">
+        	<ng-template #nzTabHeading>
+          		库存管理
+        	</ng-template>
+		</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeLost" (nzClick)="goUrl('./admin/medical/tcm/lostList')">
+        	<ng-template #nzTabHeading>
+          		报损管理
+        	</ng-template>
+		</nz-tab>
+      	<nz-tab *ngIf="moduleAuthority.seeCheck" (nzClick)="goUrl('./admin/medical/tcm/checkList')">
+        	<ng-template #nzTabHeading>
+          		盘点管理
+        	</ng-template>
+		</nz-tab>
+    </nz-tabset>
+</div>
+<loading [show]="loadingShow"></loading>

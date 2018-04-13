@@ -82,6 +82,21 @@ select:focus, input:focus, textarea:focus{
 	}
 }
 
+label {
+    font-size: 16px!important;
+}
+/deep/ .ant-input {
+    font-size: 16px!important;
+}
+.dynamic-delete-button {
+    cursor: pointer;
+    position: relative;
+    top: 4px;
+    font-size: 24px;
+    color: #999;
+    transition: all .3s;
+}
+
 /*左右布局*/
 .container{
 	height: 100%;

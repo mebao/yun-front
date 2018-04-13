@@ -287,6 +287,12 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							{
+								url: '/admin/doctorTcmPrescript',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{
@@ -482,6 +488,18 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
+							{
+								url: '/admin/doctor/tcm/list',
+								authority: 'tcm',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/doctor/tcm',
+								authority: 'tcm',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 					{
@@ -672,6 +690,83 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'tcm',
+						firstUrl: '/admin/medical/tcm/list',
+						authority: ['see'],
+						second: [
+							// 药材管理
+							{
+								url: '/admin/medical/tcm/list',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							// 编辑物资
+							{
+								url: '/admin/medical/tcm',
+								authority: 'edit',
+								queryType: 'from',
+								queryParams: 'list',
+							},
+							// 入库管理
+							{
+								url: '/admin/medical/tcm/purchaseList',
+								authority: 'seePut',
+								queryType: '',
+								queryParams: '',
+							},
+							// 新增入库
+							{
+								url: '/admin/medical/tcm/purchase',
+								authority: 'editPut',
+								queryType: '',
+								queryParams: '',
+							},
+							// 库存管理
+							{
+								url: '/admin/medical/tcm/hasList',
+								authority: 'seeHas',
+								queryType: '',
+								queryParams: '',
+							},
+							// 编辑库存
+							{
+								url: '/admin/medical/tcm',
+								authority: 'editHas',
+								queryType: 'from',
+								queryParams: 'hasList',
+							},
+							// 报损管理
+							{
+								url: '/admin/medical/tcm/lostList',
+								authority: 'seeLost',
+								queryType: '',
+								queryParams: '',
+							},
+							// 编辑报损
+							{
+								url: '/admin/medical/tcm/lost',
+								authority: 'editLost',
+								queryType: '',
+								queryParams: '',
+							},
+							// 盘点管理
+							{
+								url: '/admin/medical/tcm/checkList',
+								authority: 'seeCheck',
+								queryType: '',
+								queryParams: '',
+							},
+							// 编辑盘点
+							{
+								url: '/admin/medical/tcm/check',
+								authority: 'addCheck',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
 						firstKey: 'prescriptList',
 						firstUrl: '/admin/prescript/list',
 						authority: ['see'],
@@ -697,6 +792,12 @@ export class AuthGuardRole implements CanActivate{
 							{
 								url: '/admin/prescript/sale',
 								authority: 'editSale',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/prescript/tcmList',
+								authority: 'seeTcm',
 								queryType: '',
 								queryParams: '',
 							}

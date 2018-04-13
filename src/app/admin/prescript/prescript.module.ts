@@ -1,6 +1,6 @@
 import { NgModule }                             from '@angular/core';
 import { CommonModule }                         from '@angular/common';
-import { FormsModule }                          from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }     from '@angular/forms';
 
 import { NgZorroAntdModule }                    from 'ng-zorro-antd';
 import { ENgxPrintModule }                      from 'e-ngx-print';
@@ -14,17 +14,21 @@ import { AngCommonModule }                      from '../../common/ang-common.mo
 import { PrescriptRoutingModule }               from './prescript.routing.module';
 
 import { PrescriptListComponent }               from './prescript-list.component';
+import { PrescriptTcmList }                     from './prescript-tcm-list';
 
 @NgModule({
     declarations: [
         PrescriptListComponent,
+        PrescriptTcmList,
     ],
     exports: [
         PrescriptListComponent,
+        PrescriptTcmList,
     ],
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         NgZorroAntdModule,
         ENgxPrintModule,
         NavModule,

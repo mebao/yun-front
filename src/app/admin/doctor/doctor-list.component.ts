@@ -21,6 +21,7 @@ export class DoctorListComponent implements OnInit{
 		service: boolean,
 		scheduling: boolean,
 		personal: boolean,
+		tcm: boolean,
 	};
 	loadingShow: boolean;
 	doctorlist: any[];
@@ -44,6 +45,7 @@ export class DoctorListComponent implements OnInit{
 			service: false,
 			scheduling: false,
 			personal: false,
+			tcm: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -104,5 +106,10 @@ export class DoctorListComponent implements OnInit{
 	// 病历模板
 	showCaseTempletList(_id) {
 		this.router.navigate(['./admin/doctor/caseTemplet/list'], {queryParams: {'id': _id}});
+	}
+
+	// 处方
+	showTcmList(_id) {
+		this.router.navigate(['./admin/doctor/tcm/list'], {queryParams: {id: _id}});
 	}
 }

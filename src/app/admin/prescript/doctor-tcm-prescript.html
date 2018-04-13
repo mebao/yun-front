@@ -1,0 +1,129 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section">
+	<top-bar [data]="topBar"></top-bar>
+	<div class="text-right mt10 mb10">
+		<button (click)="selectDocTcm()" nz-button [nzType]="'primary'" [nzSize]="'large'">中药处方</button>
+	</div>
+    <form nz-form [formGroup]="validateForm">
+		<ng-container *ngFor="let docPreTcm of docPreTcmList; let index=index;">
+	        <div nz-form-item nz-row>
+	            <div nz-form-label nz-col [nzSpan]="7">
+	                <label>药材-{{docPreTcm.id + 1}}：</label>
+	            </div>
+	            <div nz-col [nzSpan]="12" nz-form-control>
+					<nz-input-group [nzSize]="'large'">
+			      		<nz-select [formControlName]="docPreTcm.tcm" [nzPlaceHolder]="'请选择药材'" class="w50" (nzOpenChange)="changeTcm(index)" nzShowSearch>
+							<ng-container *ngFor="let tcm of tcmList">
+				        		<nz-option [nzLabel]="tcm.name" [nzValue]="tcm"></nz-option>
+							</ng-container>
+			      		</nz-select>
+		                <nz-input-number class="w30 mr0" [formControlName]="docPreTcm.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>
+			      		<nz-select [formControlName]="docPreTcm.unit" [nzPlaceHolder]="'请选择单位'" class="w20" [nzDisabled]="true">
+							<nz-option [nzLabel]="docPreTcm.selectedUnit" [nzValue]="docPreTcm.selectedUnit"></nz-option>
+			      		</nz-select>
+			    	</nz-input-group>
+	            </div>
+				<i *ngIf="docPreTcm.id != 0" class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(docPreTcm, $event)"></i>
+	        </div>
+		</ng-container>
+		<div nz-form-item nz-row>
+      		<div nz-form-control nz-col [nzSpan]="12" [nzOffset]="7">
+        		<button nz-button [nzType]="'dashed'" [nzSize]="'large'" class="w100" (click)="addField(null, $event)">
+          			<i class="anticon anticon-plus"></i>
+          			<span> 添加药材</span>
+        		</button>
+      		</div>
+    	</div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>总服数：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input-number class="w100" formControlName="num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入总服数'"></nz-input-number>
+                <div nz-form-explain *ngIf="getFormControl('num').dirty && getFormControl('num').hasError('required')">总服数不可为空</div>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>用法：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-select
+					class="w100"
+                    formControlName="usage"
+					[nzSize]="'large'"
+					[nzPlaceHolder]="'请选择用法'">
+					<nz-option [nzLabel]="'温水冲服'" [nzValue]="'温水冲服'"></nz-option>
+				</nz-select>
+                <div nz-form-explain *ngIf="getFormControl('usage').dirty && getFormControl('usage').hasError('required')">用法不可为空</div>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>频率：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-select
+					class="w100"
+                    formControlName="frequency"
+					[nzSize]="'large'"
+					[nzPlaceHolder]="'请选择频率'">
+					<nz-option [nzLabel]="'每天一次'" [nzValue]="'每天一次'"></nz-option>
+					<nz-option [nzLabel]="'每天两次'" [nzValue]="'每天两次'"></nz-option>
+					<nz-option [nzLabel]="'每天三次'" [nzValue]="'每天三次'"></nz-option>
+					<nz-option [nzLabel]="'两天一次'" [nzValue]="'两天一次'"></nz-option>
+				</nz-select>
+                <div nz-form-explain *ngIf="getFormControl('frequency').dirty && getFormControl('frequency').hasError('required')">频率不可为空</div>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label>备注：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input formControlName="remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
+                <button (click)="save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave" [disabled]="!validateForm.valid">保存</button>
+            </div>
+        </div>
+    </form>
+	<nz-modal [nzVisible]="docPreTcmTab" [nzWidth]="900" [nzTitle]="'中药处方列表'" [nzContent]="modalDocTcmTab" [nzFooter]="footerDocTcmTab" (nzOnCancel)="cancelDocTcmTab($event)">
+      	<ng-template #modalDocTcmTab>
+			<nz-table #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
+					<tr>
+						<th nz-th>处方名</th>
+						<th nz-th>药材</th>
+						<th nz-th>总服数</th>
+						<th nz-th>用法</th>
+						<th nz-th>频率</th>
+						<th nz-th class="w15">备注</th>
+						<th nz-th>操作</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<ng-container *ngFor="let docTcm of docTcmList">
+						<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.name}}</td>
+							<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.total_num}}</td>
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.usage}}</td>
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.frequency}}</td>
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+								<div class="td-text">{{docTcm.remark}}</div>
+							</td>
+							<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+								<button (click)="selectedDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">选定</button>
+							</td>
+						</tr>
+					</ng-container>
+				</tbody>
+			</nz-table>
+      	</ng-template>
+		<ng-template #footerDocTcmTab></ng-template>
+    </nz-modal>
+</div>
+<loading [show]="loadingShow"></loading>

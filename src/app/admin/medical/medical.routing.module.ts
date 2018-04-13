@@ -38,10 +38,10 @@ import { MedicalListComponent }                   from './medical-list.component
             canActivate: [AuthGuardRole],
             component: MedicalComponent,
         },
-        // {
-        //     path: 'tcm',
-        //     loadChildren: './tcm/tcm.module#TcmModule',
-        // }
+        {
+            path: 'tcm',
+            loadChildren: './tcm/tcm.module#TcmModule',
+        }
     ])],
     exports: [RouterModule]
 })

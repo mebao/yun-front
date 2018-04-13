@@ -40,6 +40,9 @@
 					<div class="pt10">
 						<button (click)="showCaseTempletList(doctor.id)" nz-button [nzType]="'primary'" [nzSize]="'large'"><span>病历模板</span></button>
 					</div>
+					<div *ngIf="moduleAuthority.tcm" class="pt10">
+						<button (click)="showTcmList(doctor.id)" nz-button [nzType]="'primary'" [nzSize]="'large'"><span>中药处方</span></button>
+					</div>
 				</td>
 			</tr>
 		</tbody>

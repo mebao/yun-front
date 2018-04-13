@@ -23,6 +23,7 @@ export class PrescriptListComponent{
 		edit: boolean,
 		seeBack: boolean,
 		seeSale: boolean,
+		seeTcm: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
@@ -154,6 +155,7 @@ export class PrescriptListComponent{
 			edit: false,
 			seeBack: false,
 			seeSale: false,
+			seeTcm: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限

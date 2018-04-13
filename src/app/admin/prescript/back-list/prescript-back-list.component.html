@@ -2,8 +2,9 @@
 <div class="content-section admin-prescript-back-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
-		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescript/list')">出药</div>
-		<div class="item active">退药</div>
+		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescript/list')">西/中成药-出药</div>
+		<div class="item active">西/中成药-退药</div>
+		<div *ngIf="moduleAuthority.seeTcm" class="item" (click)="goUrl('./admin/prescript/tcmList')">中药-出药</div>
 		<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescript/sale/list')">药品零售</div>
 	</div>
 	<div class="pure-form flex mt10 search-tab max">
