@@ -1128,6 +1128,19 @@ export class AuthGuardRole implements CanActivate{
 							}
 						]
 					},
+					{
+						firstKey: 'bookingExamineRecord',
+						firstUrl: '',
+						authority: [],
+						second: [
+							{
+								url: '/admin/bookingExamineRecord',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
 				];
 
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));

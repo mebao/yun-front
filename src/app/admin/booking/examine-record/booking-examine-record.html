@@ -59,7 +59,7 @@
 						<ng-container *ngIf="record.checkId == null">
 							<button (click)="examine(record)" class="pure-button pure-button-primary">审核</button>
 						</ng-container>
-						<ng-container *ngIf="record.checkId != null">
+						<ng-container *ngIf="record.checkId != null && moduleAuthority.editAgain">
 							<button (click)="examine(record)" class="pure-button pure-button-primary">查看</button>
 						</ng-container>
 					</td>
