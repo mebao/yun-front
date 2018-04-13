@@ -799,7 +799,9 @@ export class BookingListComponent implements OnInit{
 			for(var i = 0; i < value.length; i++){
 				for(var j = 0; j < value[i].members.length; j++){
 					if(value[i].members[j].memberName == '推拿会员卡'){
-						value[i].tuina = Math.floor(value[i].members[j].balance/100);
+						if(value[i].members[j].canUse == '1'){
+							value[i].tuina = Math.floor(value[i].members[j].balance/100);
+						}
 					}
 				}
 			}

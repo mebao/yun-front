@@ -43,7 +43,7 @@ export class BookingExamineRecord{
 
     ngOnInit() {
         this.topBar = {
-    		title: '病例审核',
+    		title: '儿保记录审核',
     		back: false,
     	};
         var todayDate = this.adminService.getDayByDate(new Date());
