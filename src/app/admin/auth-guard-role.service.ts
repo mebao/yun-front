@@ -760,7 +760,7 @@ export class AuthGuardRole implements CanActivate{
 							// 编辑盘点
 							{
 								url: '/admin/medical/tcm/check',
-								authority: 'addCheck',
+								authority: 'editCheck',
 								queryType: '',
 								queryParams: '',
 							},
