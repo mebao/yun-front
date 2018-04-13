@@ -23,7 +23,7 @@
 				        		<nz-option [nzLabel]="tcm.name + '（' + tcm.nameCode + '）'" [nzValue]="tcm"></nz-option>
 							</ng-container>
 			      		</nz-select>
-		                <nz-input-number class="w30 mr0" [formControlName]="docTcm.num" [nzMin]="1" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>
+		                <nz-input-number class="w30 mr0" [formControlName]="docTcm.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>
 			      		<nz-select [formControlName]="docTcm.unit" [nzPlaceHolder]="'请选择单位'" class="w20" [nzDisabled]="true">
 							<nz-option [nzLabel]="docTcm.selectedUnit" [nzValue]="docTcm.selectedUnit"></nz-option>
 			      		</nz-select>

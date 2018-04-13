@@ -137,7 +137,7 @@ export class DoctorTcmPrescript{
         this.docPreTcmTab = true;
     }
 
-    cancelDocTcmTab() {
+    cancelDocTcmTab(event) {
         this.docPreTcmTab = false;
     }
 

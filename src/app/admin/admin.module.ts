@@ -36,8 +36,6 @@ import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { AdminService }                    from './admin.service';
 import { DoctorService }                   from './doctor/doctor.service';
 
-import { NgZorroAntdModule }               from 'ng-zorro-antd';
-
 @NgModule({
 	imports: [
 		CommonModule,
