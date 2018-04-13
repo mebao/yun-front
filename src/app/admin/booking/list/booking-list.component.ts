@@ -796,6 +796,13 @@ export class BookingListComponent implements OnInit{
 
 	show(value, use) {
 		if(value.length > 0){
+			for(var i = 0; i < value.length; i++){
+				for(var j = 0; j < value[i].members.length; j++){
+					if(value[i].members[j].memberName == '推拿会员卡'){
+						value[i].tuina = Math.floor(value[i].members[j].balance/100);
+					}
+				}
+			}
 			this.showBookinglist = value;
 			this.use = use;
 			this.modalTab = true;
