@@ -93,10 +93,12 @@
 				<th nz-th>宝宝名</th>
 				<th nz-th>药材名</th>
 				<th nz-th>药材数量</th>
+				<th nz-th>用法</th>
 				<th nz-th class="text-center">状态</th>
 				<th nz-th class="w10">备注</th>
 				<th nz-th>日期</th>
 				<th nz-th>出药人</th>
+				<th nz-th>出药信息</th>
 				<th nz-th>操作</th>
 			</tr>
 		</thead>
@@ -108,12 +110,19 @@
 						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">{{prescriptTcm.childName}}</td>
 						<td>{{info.tcmName}}</td>
 						<td>{{info.num}}{{info.unit}}</td>
+						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">{{prescriptTcm.usage}}</td>
 						<td class="text-center" [ngClass]="{'canEdit': prescriptTcm.apotId == null}" [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">{{prescriptTcm.apotId == null ? '未出药' : '已出药'}}</td>
 						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">
 							<div class="td-text">{{prescriptTcm.remark}}</div>
 						</td>
 						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">{{prescriptTcm.date}}</td>
 						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">{{prescriptTcm.apotName}}</td>
+						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">
+							<ng-container *ngIf="prescriptTcm.apotId">
+								<div>单次计量：{{prescriptTcm.oneNum + prescriptTcm.oneUnit}}</div>
+								<div>用法：{{prescriptTcm.frequency}}</div>
+							</ng-container>
+						</td>
 						<td [attr.rowspan]="prescriptTcm.infos.length" *ngIf="indexInfo == '0'">
 							<span *ngIf="prescriptTcm.outCode == 0">-</span>
 							<button *ngIf="moduleAuthority.editTcm && prescriptTcm.apotId == null" (click)="selectPrescript(prescriptTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">出药</button>
