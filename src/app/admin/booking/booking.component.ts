@@ -573,12 +573,12 @@ export class BookingComponent implements OnInit{
 				}
 			}
 			//如果是当天日期，判断时间是否已经过去
-			if(this.adminService.getDayByDate(new Date) == date.dutyDate){
-				var timeNum = Number(this.timelist[i].value.replace(':', ''));
-				if(timeNum < todayTimeNum){
-					this.timelist[i].type = 'overdue';
-				}
-			}
+			// if(this.adminService.getDayByDate(new Date) == date.dutyDate){
+			// 	var timeNum = Number(this.timelist[i].value.replace(':', ''));
+			// 	if(timeNum < todayTimeNum){
+			// 		this.timelist[i].type = 'overdue';
+			// 	}
+			// }
 		}
 
 		// for(var i = 0; i < this.timelist.length; i++){
