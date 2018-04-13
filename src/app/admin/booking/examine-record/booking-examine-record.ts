@@ -7,11 +7,11 @@ import { ToastService }                from '../../../common/nll-toast/toast.ser
 import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
 
 @Component({
-    selector: 'admin-booking-examine-case',
-    templateUrl: './booking-examine-case.html',
+    selector: 'admin-booking-examine-record',
+    templateUrl: './booking-examine-record.html',
 })
 
-export class BookingExamineCase{
+export class BookingExamineRecord{
     topBar: {
         title: string,
         back: boolean,
@@ -29,7 +29,7 @@ export class BookingExamineCase{
 		l_time_text: string,
 		l_time_num: number,
     }
-    caseList: any[];
+    recordList: any[];
     hasData: boolean;
 
     constructor(
@@ -56,7 +56,7 @@ export class BookingExamineCase{
 			l_time_text: this.adminService.dateFormat(todayDate),
 			l_time_num: new Date(todayDate).getTime(),
         }
-        this.caseList = [];
+        this.recordList = [];
         this.hasData = false;
         this.search();
     }
@@ -94,7 +94,7 @@ export class BookingExamineCase{
 
     getData(urlOptions) {
         this.loadingShow = true;
-        this.adminService.searchcasehistory(urlOptions).then((data) => {
+        this.adminService.searchhealthrecord(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.loadingShow = false;
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
@@ -103,10 +103,10 @@ export class BookingExamineCase{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.list.length > 0){
                     for(var i = 0; i < results.list.length; i++){
-                        results.list[i].time = this.adminService.isFalse(results.list[i].time) ? '' : this.adminService.dateFormat(results.list[i].time);
+                        results.list[i].checkDate = this.adminService.isFalse(results.list[i].checkDate) ? '' : this.adminService.dateFormat(results.list[i].checkDate);
                     }
                 }
-                this.caseList = results.list;
+                this.recordList = results.list;
                 this.hasData = true;
                 this.loadingShow = false;
             }
@@ -118,6 +118,6 @@ export class BookingExamineCase{
     }
 
     examine(value) {
-        this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: value.bookingId, doctorId: value.bookingDoctorId, pageType: 'examine'}});
+        this.router.navigate(['./admin/docbooking/healthrecord'], {queryParams: {id: value.bookingId, doctorId: value.bookingDoctorId, pageType: 'examine'}});
     }
 }

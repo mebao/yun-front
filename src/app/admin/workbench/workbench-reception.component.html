@@ -110,6 +110,48 @@
 				<div (click)="changeSelected('2')" class="item" [ngClass]="{'active': selected.tab == '2'}">排班</div>
 			</div>
 			<div class="mt10">
+				<div style="display:none;">
+					<div id="print_div_workbench" #print_div_workbench>
+						<ng-container *ngFor="let showBooking of showBookinglist">
+							<div class="print-container" id="print-container">
+								<div class="">
+									<div class="flex">
+										<div class="flex-1 font-bold">
+										Name：{{showBooking.childName}}
+										</div>
+										<div>
+										Gender：{{showBooking.genderText}}
+										</div>
+									</div>
+									<div class="font-bold">
+									Age：{{showBooking.age}}
+									</div>
+									<div>
+									DOB：{{showBooking.birthDate}}
+									</div>
+									<div  class="font-bold">
+									Date：{{showBooking.bookingDateText}} {{showBooking.time}}
+									</div>
+									<div class="font-bold">
+									Dr：{{showBooking.userDoctorName}}
+									</div>
+									<div>
+									Dept：{{showBooking.serviceName}}
+									</div>
+									<div>
+										Ref No：{{showBooking.refNo}}
+									</div>
+									<div>
+										Bal：{{showBooking.userBalance}}元
+									</div>
+									<div *ngIf="showBooking.tuina != null">
+										M：{{showBooking.tuina}}次
+									</div>
+							</div>
+						</div>
+						</ng-container>
+					</div>
+				</div>
 				<div *ngIf="selected.tab == '1'">
 					<table class="pure-table pure-table-horizontal w100">
 						<thead>
@@ -164,8 +206,19 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="button-tab pad10 text-right">
 			<button (click)="close()" class="pure-button">关闭</button>
+			<span class="ml10">
+				<e-ngx-print
+					[btnText]="'打印'"
+					[btnClass]="{'pure-button': true, 'pure-button-primary': true}"
+					[printHTML]="print_div_workbench"
+					[printStyle]="printStyle"
+					[printCSS]="printCSS"
+					(printComplete)="printComplete()">
+				</e-ngx-print>
+			</span>
 		</div>
 	</div>
 </div>

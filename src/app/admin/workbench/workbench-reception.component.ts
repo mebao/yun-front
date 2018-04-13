@@ -7,6 +7,8 @@ import { AdminService }                               from '../admin.service';
 import { ToastService }                               from '../../common/nll-toast/toast.service';
 import { ToastConfig, ToastType }                     from '../../common/nll-toast/toast-model';
 
+import { ENgxPrintComponent }          				  from "e-ngx-print";
+
 @Component({
 	selector: 'app-scheduling',
 	templateUrl: './workbench-reception.component.html',
@@ -50,12 +52,44 @@ export class WorkbenchReceptionComponent{
 		text: string,
 	}
 	hasDutyData: boolean;
+	printStyle: string;
 
 	constructor(
 		public adminService: AdminService,
 		private router: Router,
         private toastService: ToastService
-	) {}
+	) {
+		this.printStyle =
+	        `
+			body{
+				margin:0px;
+				font-size:16px;
+				font-family:"黑体";
+				color:#333;
+			}
+	        .img{
+	            height:20px;
+				margin-top: 10px;
+	        }
+			#print_div_workbench{
+				width:400px;
+				line-height:1.8em;
+			}
+			.print-container{
+				padding:13px 20px;
+				page-break-before: always;
+			}
+			.flex{
+				display:flex;
+			}
+			.flex-1{
+				flex:1;
+			}
+			.font-bold{
+				color:#000;
+			}
+	        `;
+	}
 
 	ngOnInit(): void{
 		this.topBar = {
@@ -294,6 +328,14 @@ export class WorkbenchReceptionComponent{
 			doctorService: booking.doctorService,
 		};
 		this.showBookinglist = JSON.parse(day.string);
+		for(var i=0;i<this.showBookinglist.length;i++){
+			for(var j=0;j<this.showBookinglist[i].members.length;j++){
+				if(this.showBookinglist[i].members[j].memberName == '推拿会员卡'){
+					this.showBookinglist[i].tuina = Math.floor(this.showBookinglist[i].members[j].balance/100);
+				}
+			}
+
+		}
 		this.modalTab = true;
 
 		// 获取排班信息，如果日期为过期日期，查看排班则为当天排班，否则为未来排班
@@ -327,6 +369,10 @@ export class WorkbenchReceptionComponent{
 				this.toastService.toast(toastCfg);
 			});
 		}
+	}
+
+	printComplete(){
+
 	}
 
 	// 构造排班信息

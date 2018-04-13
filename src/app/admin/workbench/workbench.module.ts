@@ -11,6 +11,8 @@ import { AngCommonModule }                from '../../common/ang-common.module';
 import { WorkbenchRoutingModule }         from './workbench.routing.module';
 import { WorkbenchReceptionComponent }    from './workbench-reception.component';
 
+import { ENgxPrintModule }                from "e-ngx-print";
+
 @NgModule({
     declarations: [
         WorkbenchReceptionComponent,
@@ -24,6 +26,7 @@ import { WorkbenchReceptionComponent }    from './workbench-reception.component'
         WorkbenchRoutingModule,
         NavModule,
         AngCommonModule,
+        ENgxPrintModule,
     ]
 })
 

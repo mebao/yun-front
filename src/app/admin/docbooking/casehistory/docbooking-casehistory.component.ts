@@ -624,48 +624,27 @@ export class DocbookingCasehistoryComponent implements OnInit{
                 blood_pressure: null,
 				teeth:null,
             }
-			var doctorBookingCaseTemplet = JSON.parse(sessionStorage.getItem('doctorBookingCaseTemplet'));
 			var childcontrast = JSON.parse(sessionStorage.getItem('childcontrast'));
-			if(doctorBookingCaseTemplet != null){
-	            if(doctorBookingCaseTemplet.casekeys.length > 0){
-	                for(var i = 0; i < doctorBookingCaseTemplet.casekeys.length; i++){
-	                    this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
-	                    this.baseInfo[doctorBookingCaseTemplet.casekeys[i].key] = '';
-	                    if(doctorBookingCaseTemplet.casekeys[i].key=='mid_height'){
-							if(childcontrast.info){
-	                            this.info.mid_height = childcontrast.info.height;
-	                        }else{
-	                            this.info.mid_height = '';
-	                        }
-	                    }
-	                    if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
-							if(childcontrast.info){
-	                            this.info.mid_weight = childcontrast.info.weight;
-	                        }else{
-	                            this.info.mid_weight = '';
-	                        }
-	                    }
-						if(doctorBookingCaseTemplet.casekeys[i].key == 'previous_history'){
-							this.info.previous_history = '否认肝炎、结核病史及接触史，无药物过敏史';
-						}
-						if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck'){
-	                            this.info.face_neck = '未见异常';
-	                    }
-						if(doctorBookingCaseTemplet.casekeys[i].key=='heart_lung'){
-	                            this.info.heart_lung = '未见异常';
-	                    }
-						if(doctorBookingCaseTemplet.casekeys[i].key=='abdomen'){
-	                            this.info.abdomen = '未见异常';
-	                    }
-						if(doctorBookingCaseTemplet.casekeys[i].key=='limbs'){
-	                            this.info.limbs = '未见异常';
-	                    }
-						if(doctorBookingCaseTemplet.casekeys[i].key=='nervous_system'){
-	                            this.info.nervous_system = '未见异常';
-	                    }
-	                }
-				}
-            }
+			if(childcontrast == null){
+				//中等值身高体重
+				var childcontrastUrl = '?child_id=' + JSON.parse(sessionStorage.getItem('doctorBooking')).childId;
+				 this.adminService.childcontrast(childcontrastUrl).then((data) => {
+					if(data.status == 'no'){
+						this.loadingShow = false;
+						this.toastTab(data.errorMsg, 'error');
+					}else{
+						sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
+						childcontrast = JSON.stringify(data.results);
+						this.initTemplet(childcontrast);
+						this.loadingShow = false;
+					}
+				}).catch(() => {
+					this.loadingShow = false;
+					this.toastTab('服务器错误', 'error');
+				});
+			}else{
+				this.initTemplet(childcontrast);
+			}
 			// 若就诊管理中，添加了小孩临时信息，则直接使用
 			if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
 				var childinfoUrl = this.url + '&child_id=' + this.booking.childId;
@@ -758,6 +737,50 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.btnCanEdit = false;
 		this.getDoctorList();
 		this.getServiceList();
+	}
+
+	initTemplet(childcontrast){
+		var doctorBookingCaseTemplet = JSON.parse(sessionStorage.getItem('doctorBookingCaseTemplet'));
+		if(doctorBookingCaseTemplet != null){
+			if(doctorBookingCaseTemplet.casekeys.length > 0){
+				for(var i = 0; i < doctorBookingCaseTemplet.casekeys.length; i++){
+					this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
+					this.baseInfo[doctorBookingCaseTemplet.casekeys[i].key] = '';
+					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_height'){
+						if(childcontrast.info){
+							this.info.mid_height = childcontrast.info.height;
+						}else{
+							this.info.mid_height = '';
+						}
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
+						if(childcontrast.info){
+							this.info.mid_weight = childcontrast.info.weight;
+						}else{
+							this.info.mid_weight = '';
+						}
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key == 'previous_history'){
+						this.info.previous_history = '否认肝炎、结核病史及接触史，无药物过敏史';
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck'){
+							this.info.face_neck = '未见异常';
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='heart_lung'){
+							this.info.heart_lung = '未见异常';
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='abdomen'){
+							this.info.abdomen = '未见异常';
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='limbs'){
+							this.info.limbs = '未见异常';
+					}
+					if(doctorBookingCaseTemplet.casekeys[i].key=='nervous_system'){
+							this.info.nervous_system = '未见异常';
+					}
+				}
+			}
+		}
 	}
 
 	// 选择实际操作人
@@ -1392,9 +1415,17 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			}else{
 				this.toastTab('审核通过', '');
 			}
-			setTimeout(() => {
-				this.router.navigate(['./admin/bookingExamineCase']);
-			}, 2000);
+			if(this.casehistoryList[0].checkId == null){
+				setTimeout(() => {
+					this.router.navigate(['./admin/bookingExamineCase']);
+				}, 2000);
+			}else{
+				this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');
+				setTimeout(() => {
+					this.router.navigate(['./admin/repage'], {queryParams: {from:'docbooking/casehistory', id: this.id, doctorId: this.doctorId, pageType:'examine'}});
+					this.editType = 'view';
+				}, 2000);
+			}
 		}else{
 			this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');
 			setTimeout(() => {

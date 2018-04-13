@@ -140,6 +140,12 @@
 							<div>
 								Ref No：{{booking.refNo}}
 							</div>
+							<div>
+								Bal：{{booking.userBalance}}元
+							</div>
+							<div *ngIf="booking.tuina != null">
+								M：{{booking.tuina}}次
+							</div>
 						</div>
 					</div>
 				</div>
@@ -291,6 +297,12 @@
 										</div>
 										<div>
 											Ref No：{{showBooking.refNo}}
+										</div>
+										<div>
+											Bal：{{booking.userBalance}}元
+										</div>
+										<div *ngIf="booking.tuina != null">
+											M：{{booking.tuina}}次
 										</div>
 									</div>
 								</div>

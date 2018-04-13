@@ -120,7 +120,7 @@ export class BookingListComponent implements OnInit{
 	        `
 			body{
 				margin:0px;
-				font-size:18px;
+				font-size:16px;
 				font-family:"黑体";
 				color:#333;
 			}
@@ -130,7 +130,7 @@ export class BookingListComponent implements OnInit{
 	        }
 			#print_div{
 				width:400px;
-				line-height:2em;
+				line-height:1.8em;
 				page-break-before: always;
 
 			}
@@ -570,6 +570,11 @@ export class BookingListComponent implements OnInit{
 								results.weekbooks[i].use = false;
 							}else{
 								results.weekbooks[i].use = true;
+							}
+							for(var j = 0; j < results.weekbooks[i].members.length; j++){
+								if(results.weekbooks[i].members[j].memberName == '推拿会员卡'){
+									results.weekbooks[i].tuina = Math.floor(results.weekbooks[i].members[j].balance/100);
+								}
 							}
 						}
 					}

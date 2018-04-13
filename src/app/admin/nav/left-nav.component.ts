@@ -204,6 +204,11 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		bookingExamineRecord: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		message: {
 			use: string,
 			authority: any[],
@@ -392,6 +397,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			bookingExamineCase: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			bookingExamineRecord: {
 				use: '',
 				authority: ['see'],
 				infos: [],

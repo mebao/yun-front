@@ -1,5 +1,5 @@
 <!-- <header-nav></header-nav> -->
-<div class="content-section admin-inspect-results-list">
+<div class="content-section admin-examine-record-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="flex pure-form search-tab max mb10">
 		<div class="flex-1"></div>
@@ -37,7 +37,7 @@
 		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 	</div>
 	<div>
-		<table *ngIf="caseList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
+		<table *ngIf="recordList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
 			<thead>
 				<tr>
 					<th>就诊医生</th>
@@ -49,24 +49,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let case of caseList">
-					<td>{{case.bookingDoctorName}}</td>
-					<td>{{case.serviceName}}</td>
-					<td>{{case.childName}}</td>
-					<td>{{case.time}}</td>
-					<td>{{case.checkId == null ? '未审核' : '已审核'}}</td>
+				<tr *ngFor="let record of recordList">
+					<td>{{record.bookingDoctorName}}</td>
+					<td>{{record.serviceName}}</td>
+					<td>{{record.childName}}</td>
+					<td>{{record.checkDate}}</td>
+					<td>{{record.checkId == null ? '未审核' : '已审核'}}</td>
 					<td>
-						<ng-container *ngIf="case.checkId == null">
-							<button (click)="examine(case)" class="pure-button pure-button-primary">审核</button>
+						<ng-container *ngIf="record.checkId == null">
+							<button (click)="examine(record)" class="pure-button pure-button-primary">审核</button>
 						</ng-container>
-						<ng-container *ngIf="case.checkId != null">
-							<button (click)="examine(case)" class="pure-button pure-button-primary">查看</button>
+						<ng-container *ngIf="record.checkId != null">
+							<button (click)="examine(record)" class="pure-button pure-button-primary">查看</button>
 						</ng-container>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<div *ngIf="hasData && caseList.length == 0" class="mt10">
+		<div *ngIf="hasData && recordList.length == 0" class="mt10">
 			<nodata title="未查询到病例"></nodata>
 		</div>
 	</div>

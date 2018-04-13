@@ -1228,6 +1228,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 审核完成病例
+	private checkhealthrecordUrl = this.url + '/mebcrm/checkhealthrecord';
+	checkhealthrecord(urlOptions, params): Promise<Data>{
+		return this.http.post(this.checkhealthrecordUrl + urlOptions, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	// 根据嘉宝云child_id，获取育儿宝库child_id
 	private gtchildUrl = this.yebkUrl + '/mebapi/gtchild';
 	gtchild(urlOptions): Promise<Data>{

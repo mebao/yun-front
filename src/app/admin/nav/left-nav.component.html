@@ -132,6 +132,16 @@
 			</span>
 		</li>
 		<li nz-menu-item
+			*ngIf="clinicRole.bookingExamineRecord.use != ''"
+			routerLink="./bookingExamineRecord"
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingExamineRecord')">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>儿保记录审核</span>
+			</span>
+		</li>
+		<li nz-menu-item
 			*ngIf="clinicRole.childServiceList.use != ''"
 			[routerLink]="['./childService/list']"
 			routerLinkActive="ant-menu-item-selected">
