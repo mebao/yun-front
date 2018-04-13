@@ -20,7 +20,7 @@
 					<nz-input-group [nzSize]="'large'">
 			      		<nz-select [formControlName]="docTcm.tcm" [nzPlaceHolder]="'请选择药材'" class="w50" (nzOpenChange)="changeTcm(index)" nzShowSearch>
 							<ng-container *ngFor="let tcm of tcmList">
-				        		<nz-option [nzLabel]="tcm.name" [nzValue]="tcm"></nz-option>
+				        		<nz-option [nzLabel]="tcm.name + '（' + tcm.nameCode + '）'" [nzValue]="tcm"></nz-option>
 							</ng-container>
 			      		</nz-select>
 		                <nz-input-number class="w30 mr0" [formControlName]="docTcm.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>

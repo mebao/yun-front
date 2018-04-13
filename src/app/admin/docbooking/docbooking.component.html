@@ -701,7 +701,7 @@
 									<div class="td-text">{{docTcm.remark}}</div>
 								</td>
 								<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
-									<button (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+									<button *ngIf="!docTcm.apotId" (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 								</td>
 							</tr>
 						</ng-container>
