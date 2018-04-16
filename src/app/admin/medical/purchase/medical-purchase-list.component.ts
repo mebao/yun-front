@@ -151,9 +151,10 @@ export class MedicalPurchaseListComponent{
 	}
 
 	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList')
-		sessionStorage.removeItem('search-medicalPurchaseList');
+		sessionStorage.removeItem('search-medicalList');
 		sessionStorage.removeItem('search-medicalHasList');
+		sessionStorage.removeItem('search-medicalLostList');
+		sessionStorage.removeItem('search-medicalCheckList');
 		this.router.navigate([_url]);
 	}
 

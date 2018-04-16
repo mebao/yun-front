@@ -118,6 +118,7 @@ export class MedicalLostListComponent{
 
 	search() {
 		this.loadingShow = true;
+		sessionStorage.setItem('search-medicalLostList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){
 			urlOptions += '&b_date=' + this.info.b_date;
@@ -138,9 +139,10 @@ export class MedicalLostListComponent{
 	}
 
 	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalList');
 		sessionStorage.removeItem('search-medicalPurchaseList');
 		sessionStorage.removeItem('search-medicalHasList');
+		sessionStorage.removeItem('search-medicalCheckList');
 		this.router.navigate([_url]);
 	}
 

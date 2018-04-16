@@ -100,6 +100,7 @@ export class MaterialCheckListComponent{
 		sessionStorage.removeItem('search-materialList');
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialHasList');
+		sessionStorage.removeItem('search-materialLostList');
 		this.router.navigate([_url]);
 	}
 
@@ -109,6 +110,7 @@ export class MaterialCheckListComponent{
 
 	search() {
 		this.loadingShow = true;
+		sessionStorage.setItem('search-materialCheckList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;

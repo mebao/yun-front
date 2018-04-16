@@ -118,6 +118,7 @@ export class MaterialLostListComponent{
 
 	search() {
 		this.loadingShow = true;
+		sessionStorage.setItem('search-materialLostList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.b_date != ''){
 			urlOptions += '&b_date=' + this.info.b_date;
@@ -141,6 +142,7 @@ export class MaterialLostListComponent{
 		sessionStorage.removeItem('search-materialList');
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialHasList');
+		sessionStorage.removeItem('search-materialCheckList');
 		this.router.navigate([_url]);
 	}
 

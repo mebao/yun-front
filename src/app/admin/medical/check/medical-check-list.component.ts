@@ -97,9 +97,10 @@ export class MedicalCheckListComponent{
 	}
 
 	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList')
+		sessionStorage.removeItem('search-medicalList');
 		sessionStorage.removeItem('search-medicalPurchaseList');
 		sessionStorage.removeItem('search-medicalHasList');
+		sessionStorage.removeItem('search-medicalLostList');
 		this.router.navigate([_url]);
 	}
 
@@ -109,6 +110,7 @@ export class MedicalCheckListComponent{
 
 	search() {
 		this.loadingShow = true;
+		sessionStorage.setItem('search-medicalCheckList', JSON.stringify(this.info));
 		var urlOptions = this.url;
 		if(this.info.name != ''){
 			urlOptions += '&name=' + this.info.name;

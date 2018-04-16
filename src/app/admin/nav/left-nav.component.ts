@@ -94,12 +94,16 @@ export class LeftNavComponent{
 			use: string,
 			authority: any[],
 			infos: any[],
+			hasTwoLevel: boolean,
+			twoLevel: any,
 		},
 		// 西/中成药-药房
 		medicalList: {
 			use: string,
 			authority: any[],
 			infos: any[],
+			hasTwoLevel: boolean,
+			twoLevel: any,
 		},
 		// 中药
 		tcm: {
@@ -114,6 +118,8 @@ export class LeftNavComponent{
 			use: string,
 			authority: any[],
 			infos: any[],
+			hasTwoLevel: boolean,
+			twoLevel: any,
 		},
 		// 辅助项目
 		assistList: {
@@ -290,13 +296,49 @@ export class LeftNavComponent{
 			},
 			materialList: {
 				use: '',
-				authority: ['see'],
+				authority: ['see', 'seePut', 'seeHas', 'seeLost', 'seeCheck'],
 				infos: [],
+				hasTwoLevel: true,
+				twoLevel: {
+					see: {
+						use: '',
+					},
+					seePut: {
+						use: '',
+					},
+					seeHas: {
+						use: '',
+					},
+					seeLost: {
+						use: '',
+					},
+					seeCheck: {
+						use: '',
+					},
+				}
 			},
 			medicalList: {
 				use: '',
-				authority: ['see'],
+				authority: ['see', 'seePut', 'seeHas', 'seeLost', 'seeCheck'],
 				infos: [],
+				hasTwoLevel: true,
+				twoLevel: {
+					see: {
+						use: '',
+					},
+					seePut: {
+						use: '',
+					},
+					seeHas: {
+						use: '',
+					},
+					seeLost: {
+						use: '',
+					},
+					seeCheck: {
+						use: '',
+					},
+				}
 			},
 			tcm: {
 				use: '',
@@ -323,8 +365,23 @@ export class LeftNavComponent{
 			},
 			prescriptList: {
 				use: '',
-				authority: ['see'],
+				authority: ['see', 'seeBack', 'seeTcm', 'seeSale'],
 				infos: [],
+				hasTwoLevel: true,
+				twoLevel: {
+					see: {
+						use: '',
+					},
+					seeBack: {
+						use: '',
+					},
+					seeTcm: {
+						use: '',
+					},
+					seeSale: {
+						use: '',
+					},
+				}
 			},
 			assistList: {
 				use: '',

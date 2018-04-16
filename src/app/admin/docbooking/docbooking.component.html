@@ -779,7 +779,7 @@
 							<ng-container *ngIf="fee.type != 'booking'">
 								<td>
 									<!-- 展示 -->
-									<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.typeText}}</div>
+									<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.projectName}}</div>
 									<!-- 编辑 -->
 									<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 										<input type="text" name="project_name" #project_name="ngModel" [(ngModel)]="addFeeInfo.project_name" required="" [disabled]="addFeeInfo.editType == 'update'" placeholder="请输入消费项目名" class="w100">
