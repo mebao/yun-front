@@ -136,6 +136,25 @@ export class TcmPurchase{
         this.tcmPurchaseList[_index].selectedUnit = selectedUnit;
         this.validateForm.controls['unit' + _index].setValue(selectedUnit);
         this.validateForm.controls['bid' + _index].setValue(selectedBid);
+        this.changeFee();
+    }
+
+    changeFee() {
+        var fee = 0;
+        if(this.tcmPurchaseList.length > 0){
+            for(var index in this.tcmPurchaseList){
+                var tcm = {
+                    id: this.validateForm.controls['tcm' + index].value.id,
+                    num: this.validateForm.controls['num' + index].value,
+                    unit: this.validateForm.controls['unit' + index].value,
+                    bid: this.validateForm.controls['bid' + index].value,
+                }
+                if(tcm.id && tcm.num && tcm.bid){
+                    fee += tcm.num * (tcm.bid * 10000);
+                }
+            }
+        }
+        this.validateForm.controls['fee'].setValue(fee / 10000);
     }
 
     save() {

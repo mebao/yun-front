@@ -40,11 +40,11 @@
 				        		<nz-option [nzLabel]="tcm.name" [nzValue]="tcm"></nz-option>
 							</ng-container>
 			      		</nz-select>
-		                <nz-input-number class="w20 mr0" [formControlName]="tcmPurchase.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'"></nz-input-number>
+		                <nz-input-number class="w20 mr0" [formControlName]="tcmPurchase.num" [nzMin]="0" [nzStep]="1" [nzPlaceHolder]="'请输入数量'" (nzBlur)="changeFee()"></nz-input-number>
 			      		<nz-select [formControlName]="tcmPurchase.unit" [nzPlaceHolder]="'请选择单位'" class="w20" [nzDisabled]="true">
 							<nz-option [nzLabel]="tcmPurchase.selectedUnit" [nzValue]="tcmPurchase.selectedUnit"></nz-option>
 			      		</nz-select>
-		                <nz-input-number class="w20 mr0" [formControlName]="tcmPurchase.bid" [nzMin]="0" [nzStep]="0.0001" [nzPlaceHolder]="'请输入单价'"></nz-input-number>
+		                <nz-input-number class="w20 mr0" [formControlName]="tcmPurchase.bid" [nzMin]="0" [nzStep]="0.0001" [nzPlaceHolder]="'请输入单价'" (nzBlur)="changeFee()"></nz-input-number>
 			    	</nz-input-group>
 	            </div>
 				<i *ngIf="tcmPurchase.id != 0" class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(tcmPurchase, $event)"></i>
