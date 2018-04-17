@@ -354,18 +354,18 @@
 		</div>
 		<div class="pure-u-4-5 right-tab booking-info pad10">
 			<div class="second-bar-tab flex mb10">
-				<div (click)="changeTab('3', 'docbooking')" class="item">实验室检查</div>
-				<div (click)="changeTab('6', 'docbooking')" class="item">辅助治疗</div>
-				<div (click)="changeTab('4', 'docbooking')" class="item">西/中成药处方</div>
-				<div (click)="changeTab('7', 'docbooking')" class="item">中药处方</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('3', 'docbooking')" class="item">实验室检查</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('6', 'docbooking')" class="item">辅助治疗</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('4', 'docbooking')" class="item">西/中成药处方</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('7', 'docbooking')" class="item">中药处方</div>
 				<!-- <div (click)="changeTab('1')" [ngClass]="{'active': selectedTab == '1'}" class="item">科室列表</div> -->
-				<div (click)="changeTab('2', 'docbooking')" class="item">费用列表</div>
-				<div (click)="changeTab('5', 'docbooking')" class="item">随访</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('2', 'docbooking')" class="item">费用列表</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('5', 'docbooking')" class="item">随访</div>
 				<!-- <div (click)="changeTab('6', 'docbooking/growthrecords')" class="item">成长记录</div> -->
-				<div (click)="changeTab('7', 'docbooking/casehistory')" class="item">病历</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('7', 'docbooking/casehistory')" class="item">病历</div>
 				<div class="item active">儿保记录</div>
-				<div (click)="changeTab('9', 'docbooking/growthChart')" class="item">成长曲线</div>
-				<div (click)="changeTab('10', 'docbooking/growthEvaluation')" class="item">成长测评</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('9', 'docbooking/growthChart')" class="item">成长曲线</div>
+				<div *ngIf="pageType != 'examine'" (click)="changeTab('10', 'docbooking/growthEvaluation')" class="item">成长测评</div>
 			</div>
 			<div class="tab pure-tab">
 				<div *ngIf="healthrecordList.length > 0">
@@ -374,7 +374,7 @@
 						<div *ngIf="pageType != 'history'">
 							<div class="text-right">
 								<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
-								<button *ngIf="editType != 'update'" (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine')" (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
 							</div>
 						</div>
 						<div *ngIf="editType == 'view'">
@@ -780,6 +780,9 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div *ngIf="editType == 'view' && pageType == 'examine' && info.checkId == null" class="text-center mt20">
+						<button (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">审核通过</button>
 					</div>
 				</div>
 				<div *ngIf="healthrecordList.length == 0 && editType == 'view'">
@@ -1565,9 +1568,10 @@
 						</div>
 					</div>
 					<div class="text-center mt10">
-						<button (click)="create(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+						<button (click)="create('')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+						<button *ngIf="pageType == 'examine' && info.checkId == null" (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存并审核通过</button>
 					</div>
-					<button (click)="create(f)" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+					<button (click)="create('')" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 				</fieldset>
 			</form>
 		</div>

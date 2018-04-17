@@ -214,13 +214,13 @@ export class BookingReceiveComponent{
 		//可编辑日期
 		//重置详情选中模块
 		// sessionStorage.setItem('doctorBookingTab', '3');
-		// if(service.serviceName == '小儿全科' || service.serviceName == '小儿推拿'){
-		// 	this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
-		// }else if(service.serviceName == '儿童保健' || service.serviceName == '小儿专科'){
-		// 	this.router.navigate(['./admin/docbooking/healthrecord'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
-		// }else{
+		if(service.serviceName == '小儿全科' || service.serviceName == '小儿推拿'){
+		 	this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
+		 }else if(service.serviceName == '儿童保健' || service.serviceName == '小儿专科'){
+		 	this.router.navigate(['./admin/docbooking/healthrecord'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
+		 }else{
 			this.router.navigate(['./admin/docbooking'], {queryParams: {id: booking.bookingId, doctorId: service.userDoctorId}});
-		// }
+		 }
 	}
 
 	getUrlOptios() {

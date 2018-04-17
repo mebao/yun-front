@@ -88,6 +88,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	hasHistoryData: boolean;
 	modalTab: boolean;
 	info: {
+		child_id:string,
+		booking_id:string,
 		name: string,
 		age: string,
 		weight: string,
@@ -214,6 +216,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}
 
 		this.info = {
+			child_id:'',
+			booking_id:'',
 			name: '',
 			age: '',
 			weight: '',
@@ -332,69 +336,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				 + '&token=' + this.adminService.getUser().token
 				 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		//病例
-		this.casehistoryList = [];
-		this.hasCasehistoryData = false;
-		var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
-		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].time = results.list[i].time ? this.adminService.dateFormat(results.list[i].time) : results.list[i].time;
-					}
-					sessionStorage.setItem('casehistory', JSON.stringify(results.list[0]));
-				}
-				this.casehistoryList = results.list;
-				this.hasCasehistoryData = true;
-				if(this.hasCasehistoryData && this.casehistoryList.length == 0){
-					this.editType = 'create';
-				}else{
-					this.editType = 'view';
-				}
-				// 若是查看历史记录
-				if(this.pageType == 'history'){
-					this.editType = 'view';
-				}
-				//获取开方信息
-				this.prescriptList = [];
-				this.prescription = [];
-				//this.initEdit();
-				// 病历模板
-				this.casetempletList = [];
-				this.selectedTemplet = '';
-				var searchcasetempletUrl = this.url + '&doctor_id=' + this.doctorId
-					 + '&status=1';
-				this.doctorService.searchcasetemplet(searchcasetempletUrl).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						var results = JSON.parse(JSON.stringify(data.results));
-						if(results.list.length > 0){
-							for(var i = 0; i < results.list.length; i++){
-								results.list[i].string = JSON.stringify(results.list[i]);
-							}
-						}
-						this.casetempletList = results.list;
-						if(this.casetempletList.length > 0){
-							this.selectedTemplet = this.casetempletList[0].string;
-							sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
-						}
-						//获取预约信息
-						this.getBookingData();
-					}
-				}).catch(() => {
-					this.toastTab('服务器错误', 'error');
-				});
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-			this.toastTab('服务器错误', 'error');
-		});
-
 		this.doctorInfo = {
 			avatarUrl: '',
 			id: '',
@@ -458,16 +399,17 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.toastTab('服务器错误', 'error');
 			});
 		}
-
+		//获取预约信息
+		this.getBookingData();
 		//获取开方信息
 		// this.prescriptList = [];
 		// this.prescription = [];
-		this.getPrescriptData();
 
 		this.historyList = [];
 		this.hasHistoryData = false;
 		this.modalTab = false;
 
+		this.casehistoryList = [];
 		this.historyHealthRList = [];
 		this.historyHealthR = [];
 		this.historyHealthRBookingFirst = [];
@@ -486,18 +428,25 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.modalConfirmTab = false;
 		this.getQiniuToken();
 		this.createType = '';
+
+		this.showExamination = false;
+
+		this.btnCanEdit = false;
+		this.getDoctorList();
+		this.getServiceList();
 	}
 
-	initEdit() {
+	initEdit(doctorBooking,casehistory) {
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
 		if(this.editType == 'update' || this.pageType == 'examine'){
-			var casehistory = JSON.parse(sessionStorage.getItem('casehistory'));
 			this.info = {
-				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
-				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
+				child_id: doctorBooking.childId,
+				booking_id: doctorBooking.bookingId,
+				name: doctorBooking.childName,
+				age: doctorBooking.age,
 				weight: casehistory.weight == '0.00' ? '' : casehistory.weight,
 				mid_weight: casehistory.midWeight == '0.00' ? '' : casehistory.midWeight,
 				compare_weight: casehistory.compareWeight,
@@ -561,8 +510,10 @@ export class DocbookingCasehistoryComponent implements OnInit{
             }
 		}else if(this.editType == 'create'){
 			this.info = {
-				name: JSON.parse(sessionStorage.getItem('doctorBooking')).childName,
-				age: JSON.parse(sessionStorage.getItem('doctorBooking')).age,
+				child_id: doctorBooking.childId,
+				booking_id: doctorBooking.bookingId,
+				name: doctorBooking.childName,
+				age: doctorBooking.age,
 				weight: null,
 				mid_weight: null,
 				compare_weight: null,
@@ -624,90 +575,22 @@ export class DocbookingCasehistoryComponent implements OnInit{
                 blood_pressure: null,
 				teeth:null,
             }
-			var childcontrast = JSON.parse(sessionStorage.getItem('childcontrast'));
-			if(childcontrast == null){
-				//中等值身高体重
-				var childcontrastUrl = '?child_id=' + JSON.parse(sessionStorage.getItem('doctorBooking')).childId;
-				 this.adminService.childcontrast(childcontrastUrl).then((data) => {
-					if(data.status == 'no'){
-						this.loadingShow = false;
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
-						childcontrast = JSON.stringify(data.results);
-						this.initTemplet(childcontrast);
-						this.loadingShow = false;
-					}
-				}).catch(() => {
+			//中等值身高体重
+			var childcontrastUrl = '?child_id=' + doctorBooking.childId;
+			 this.adminService.childcontrast(childcontrastUrl).then((data) => {
+				if(data.status == 'no'){
 					this.loadingShow = false;
-					this.toastTab('服务器错误', 'error');
-				});
-			}else{
-				this.initTemplet(childcontrast);
-			}
-			// 若就诊管理中，添加了小孩临时信息，则直接使用
-			if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
-				var childinfoUrl = this.url + '&child_id=' + this.booking.childId;
-				this.adminService.getChildinfo(childinfoUrl).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						var results = JSON.parse(JSON.stringify(data.results));
-						if(results.childInfo != null){
-							if(this.info.height != null && results.childInfo.height != null){
-								this.info.height = results.childInfo.height;
-							}
-							if(this.info.weight != null && results.childInfo.weight != null){
-								this.info.weight = results.childInfo.weight;
-							}
-							if(this.info.breathe != null && results.childInfo.breathe != null){
-								this.info.breathe = results.childInfo.breathe;
-							}
-							if(this.info.body_temperature != null && results.childInfo.bodyTemperature != null){
-								this.info.body_temperature = results.childInfo.bodyTemperature;
-							}
-							if(this.info.blood_pressure != null && results.childInfo.bloodPressure != null){
-								this.info.blood_pressure = results.childInfo.bloodPressure;
-							}
-							if(this.info.head_circum != null && results.childInfo.headCircum != null){
-								this.info.head_circum = results.childInfo.headCircum;
-							}
-						}
-					}
-				}).catch(() => {
-					this.toastTab('服务器错误', 'error');
-				});
-			}
-			// 获取儿保记录，若是身高、体重、头围、体温等信息已存在，则直接使用
-			if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
-				var healthrecordUrl = this.url + '&booking_id=' + this.id;
-				this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-					}else{
-						var results = JSON.parse(JSON.stringify(data.results));
-						if(results.list.length > 0){
-							if(this.info.height != null && results.list[0].height && parseFloat(results.list[0].height) != 0){
-								this.info.height = results.list[0].height;
-							}
-							if(this.info.weight != null && results.list[0].weight && parseFloat(results.list[0].weight) != 0){
-								this.info.weight = results.list[0].weight;
-							}
-							if(this.info.head_circum != null && results.list[0].headCircum && parseFloat(results.list[0].headCircum) != 0){
-								this.info.head_circum = results.list[0].headCircum;
-							}
-							if(this.info.body_temperature != null && results.list[0].bodyTemperature && parseFloat(results.list[0].bodyTemperature) != 0){
-								this.info.body_temperature = results.list[0].bodyTemperature;
-							}
-						}
-					}
-				}).catch(() => {
-					this.toastTab('服务器错误', 'error');
-				});
-			}
-
-			// 获取实验室检查信息
-			this.getBookingCheckList();
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					// sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
+					var childcontrast = JSON.parse(JSON.stringify(data.results));
+					this.initTemplet(childcontrast);
+					this.loadingShow = false;
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this.toastTab('服务器错误', 'error');
+			});
 		}
 
 		// 主诉模板
@@ -732,11 +615,72 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			this.toastTab('服务器错误', 'error');
 		});
 
-		this.showExamination = false;
+	}
 
-		this.btnCanEdit = false;
-		this.getDoctorList();
-		this.getServiceList();
+	searchCaseHistory(doctorBooking){
+		//病例
+		this.hasCasehistoryData = false;
+		var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
+		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						results.list[i].time = results.list[i].time ? this.adminService.dateFormat(results.list[i].time) : results.list[i].time;
+					}
+					sessionStorage.setItem('casehistory', JSON.stringify(results.list[0]));
+				}
+				this.casehistoryList = results.list;
+				this.hasCasehistoryData = true;
+				if(this.hasCasehistoryData && this.casehistoryList.length == 0){
+					this.editType = 'create';
+					// 病历模板
+					this.casetempletList = [];
+					this.selectedTemplet = '';
+					var searchcasetempletUrl = this.url + '&doctor_id=' + this.doctorId
+						 + '&status=1';
+					this.doctorService.searchcasetemplet(searchcasetempletUrl).then((data) => {
+						if(data.status == 'no'){
+							this.toastTab(data.errorMsg, 'error');
+						}else{
+							var results = JSON.parse(JSON.stringify(data.results));
+							if(results.list.length > 0){
+								for(var i = 0; i < results.list.length; i++){
+									results.list[i].string = JSON.stringify(results.list[i]);
+								}
+							}
+							this.casetempletList = results.list;
+							if(this.casetempletList.length > 0){
+								this.selectedTemplet = this.casetempletList[0].string;
+								sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
+								var casehistory =  [];
+								this.initEdit(doctorBooking,casehistory);
+							}
+
+						}
+					})
+				}else{
+					this.editType = 'view';
+					var casehistory =  results.list[0];
+					this.initEdit(doctorBooking,casehistory);
+				}
+				// 若是查看历史记录
+				if(this.pageType == 'history'){
+					this.editType = 'view';
+				}
+				//获取开方信息
+				this.prescriptList = [];
+				this.prescription = [];
+				this.getPrescriptData();
+				this.loadingShow = false;
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
+		});
 	}
 
 	initTemplet(childcontrast){
@@ -752,6 +696,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						}else{
 							this.info.mid_height = '';
 						}
+						console.log(this.info,childcontrast);
 					}
 					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
 						if(childcontrast.info){
@@ -781,6 +726,69 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				}
 			}
 		}
+		// 若就诊管理中，添加了小孩临时信息，则直接使用
+		if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
+			var childinfoUrl = this.url + '&child_id=' + this.booking.childId;
+			this.adminService.getChildinfo(childinfoUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.childInfo != null){
+						if(this.info.height != null && results.childInfo.height != null){
+							this.info.height = results.childInfo.height;
+						}
+						if(this.info.weight != null && results.childInfo.weight != null){
+							this.info.weight = results.childInfo.weight;
+						}
+						if(this.info.breathe != null && results.childInfo.breathe != null){
+							this.info.breathe = results.childInfo.breathe;
+						}
+						if(this.info.body_temperature != null && results.childInfo.bodyTemperature != null){
+							this.info.body_temperature = results.childInfo.bodyTemperature;
+						}
+						if(this.info.blood_pressure != null && results.childInfo.bloodPressure != null){
+							this.info.blood_pressure = results.childInfo.bloodPressure;
+						}
+						if(this.info.head_circum != null && results.childInfo.headCircum != null){
+							this.info.head_circum = results.childInfo.headCircum;
+						}
+					}
+				}
+			}).catch(() => {
+				this.toastTab('服务器错误', 'error');
+			});
+		}
+		// 获取儿保记录，若是身高、体重、头围、体温等信息已存在，则直接使用
+		if(this.info.height != null || this.info.weight != null || this.info.head_circum != null || this.info.body_temperature != null){
+			var healthrecordUrl = this.url + '&booking_id=' + this.id;
+			this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
+				if(data.status == 'no'){
+					this.toastTab(data.errorMsg, 'error');
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.list.length > 0){
+						if(this.info.height != null && results.list[0].height && parseFloat(results.list[0].height) != 0){
+							this.info.height = results.list[0].height;
+						}
+						if(this.info.weight != null && results.list[0].weight && parseFloat(results.list[0].weight) != 0){
+							this.info.weight = results.list[0].weight;
+						}
+						if(this.info.head_circum != null && results.list[0].headCircum && parseFloat(results.list[0].headCircum) != 0){
+							this.info.head_circum = results.list[0].headCircum;
+						}
+						if(this.info.body_temperature != null && results.list[0].bodyTemperature && parseFloat(results.list[0].bodyTemperature) != 0){
+							this.info.body_temperature = results.list[0].bodyTemperature;
+						}
+					}
+				}
+			}).catch(() => {
+				this.toastTab('服务器错误', 'error');
+			});
+		}
+
+		// 获取实验室检查信息
+		this.getBookingCheckList();
 	}
 
 	// 选择实际操作人
@@ -935,9 +943,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						}
 					}
 					this.booking.totalFee = this.adminService.toDecimal2(total.toString());
-					sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-					this.initEdit();
-
+					var doctorBooking = this.booking
+					this.searchCaseHistory(doctorBooking);
 					// 获取小孩儿保记录
 					this.getHistoryHealthRList();
 				}
@@ -1014,10 +1021,10 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			return;
 		}
 		sessionStorage.setItem('doctorBookingCaseTemplet', this.selectedTemplet);
-		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		//sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		//this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
 		this.editType = 'create';
-		this.initEdit();
+		this.initEdit(this.booking,[]);
 	}
 
 	// 修改病历
@@ -1032,11 +1039,11 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}else{
 			sessionStorage.setItem('prescript', '');
 		}
-		sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-		sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
+		//sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
+		//sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
 		//this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctor: this.doctorId, childId: this.booking.childId, type: 'update'}});
 		this.editType = 'update';
-		this.initEdit();
+		this.initEdit(this.booking,casehistory);
 		this.btnCanEdit = false;
 	}
 
@@ -1206,8 +1213,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			child_id: JSON.parse(sessionStorage.getItem('doctorBooking')).childId,
-			booking_id: JSON.parse(sessionStorage.getItem('doctorBooking')).bookingId,
+			child_id: this.info.child_id,
+			booking_id: this.info.booking_id,
 			weight: this.info.weight == '' ? '0' : (this.info.weight == null ? (this.baseInfo.weight == null ? null : '0') : this.info.weight),
 			mid_weight: this.info.mid_weight == '' ? '0' : (this.info.mid_weight == null ? (this.baseInfo.mid_weight == null ? null : '0') : this.info.mid_weight),
 			compare_weight: this.info.compare_weight,
