@@ -671,7 +671,7 @@ export class DocbookingComponent implements OnInit{
 						results.list[i].infoLength = results.list[i].info.length;
 						if(results.list[i].info.length > 0){
 							for(var j = 0; j < results.list[i].info.length; j++){
-								results.list[i].info[j].msExplain = '单次：' + parseFloat(results.list[i].info[j].oneNum) + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
+								results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
 							}
 						}
 					}

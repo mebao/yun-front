@@ -1,205 +1,224 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-doctor-prescript">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="info-tab flex">
-		<div class="item flex-1">
-			<label>宝宝姓名：</label>
-			<span class="info">{{bookingInfo.childName}}</span>
-		</div>
-		<div class="item flex-1">
-			<label>年龄：</label>
-			<span class="info">{{bookingInfo.age}}</span>
-		</div>
-		<!-- <div class="item flex">
-			<label>预约类型</label>
-			<div class="info">{{bookingInfo.type == 'PT' ? '普通号' : '专家号'}}</div>
-		</div> -->
-		<div class="item flex-1">
-			<label>预约时间：</label>
-			<span class="info">{{bookingInfo.bookingDate}}</span>
-			<span class="info">{{bookingInfo.time}}</span>
-		</div>
-	</div>
-	<div *ngIf="this.secondType == 'back'" class="item flex mt30">
-		<div class="flex-1"></div>
-		<div class="flex-0">提示:删除的药是需要保留的药</div>
-	</div>
-	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-		<fieldset>
-			<!-- <div class="pure-g">
-				<div class="pure-u-7-24 pr10">
-					<label for="name">药方名</label>
-					<input type="text" id="name" name="name" [(ngModel)]="prescriptInfo.name" #name="ngModel" placeholder="请输入药方名" [disabled]="secondType != ''">
+    <nz-card class="w100">
+        <ng-template #title>
+            预约详情
+        </ng-template>
+        <ng-template #body>
+			<div class="flex">
+				<div>宝宝姓名：</div>
+				<div class="flex-1">{{bookingInfo.childName}}</div>
+			</div>
+			<div class="flex mt10">
+				<div>年龄：</div>
+				<div class="flex-1">{{bookingInfo.age}}</div>
+			</div>
+			<div class="flex mt10">
+				<div>预约时间：</div>
+				<div class="flex-1">
+					<span class="info">{{bookingInfo.bookingDate}}</span>
+					<span class="info">{{bookingInfo.time}}</span>
 				</div>
-			</div> -->
-			<div *ngFor="let ms of plist" class="ms-tab mt5">
-				<div *ngIf="ms.use">
-					<div (click)="showMs(ms.key)" class="ms-bar flex">
-						<div class="flex-1 pt5">
-							<ng-container *ngIf="ms.show">
-								<span>隐藏</span>
-								<i class="anticon anticon-right"></i>
-							</ng-container>
-							<ng-container *ngIf="!ms.show">
-								<span>展开</span>
-								<i class="anticon anticon-down"></i>
-							</ng-container>
+			</div>
+		</ng-template>
+	</nz-card>
+    <nz-card class="w100 mt20">
+        <ng-template #title>
+            药方详情{{mPrescriptList.length}}
+        </ng-template>
+        <ng-template #body>
+			<nz-alert *ngIf="this.secondType == 'back'" [nzType]="'warning'" [nzMessage]="'退药提醒'" [nzDescription]="'留下的药品为用户需要退的药品'" nzShowIcon class="mb10"></nz-alert>
+		    <form nz-form [formGroup]="validateForm">
+				<nz-collapseset>
+					<nz-collapse *ngFor="let medical_info of mPrescriptList; let index=index;" [nzTitle]="'药品'" [nzActive]="medical_info.isActive">
+						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update') && medical_info.id != 0) || (secondType == 'continueAdd' && !medical_info.isOut)" class="mt10 mb10 text-right">
+							<nz-popconfirm [nzTitle]="'确定要删除这个药品吗？'" (nzOnConfirm)="removeField(medical_info)">
+								<button nz-popconfirm nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+						    </nz-popconfirm>
 						</div>
-						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update') && ms.key != 1) || (secondType == 'continueAdd' && ms.ms.isOut == '')">
-							<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
-						</div>
-					</div>
-					<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-						<div class="pure-u-7-24 pr10">
-							<div class="pure-control-group">
-								<label for="ms_{{ms.key}}">
-									<span>药品名</span>
-									<span class="required">*</span>
-								</label>
-								<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-										<option value="{{medicalSupplie.string}}" [disabled]="medicalSupplie.others.length == 0">{{medicalSupplie.name}}{{medicalSupplie.others.length == 0 ? '（库存为0）' : ''}}（规格：{{medicalSupplie.format}}）</option>
-									</ng-container>
-								</select>
+						<div nz-row [nzGutter]="30">
+							<div nz-col [nzSpan]="12">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>药品名：</label>
+									</div>
+									<div nz-form-control>
+										<nz-select
+											[formControlName]="medical_info.medical"
+											[nzPlaceHolder]="'请选择药品'"
+											(nzOpenChange)="msChange(index)"
+											[nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"
+											nzShowSearch>
+											<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+												<nz-option
+													[nzValue]="medicalSupplie"
+													[nzLabel]="medicalSupplie.name + (medicalSupplie.others.length == 0 ? '（库存为0）' : '') + '（规格：' + medicalSupplie.format + '）'"
+													[nzDisabled]="medicalSupplie.others.length == 0"></nz-option>
+											</ng-container>
+										</nz-select>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="pure-u-3-24 pr10">
-							<div class="pure-control-group">
-								<label for="batch_{{ms.key}}">
-									<span>批次</span>
-									<span class="required">*</span>
-								</label>
-								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-									<ng-container *ngFor="let batch of ms.batchList">
-										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-									</ng-container>
-								</select>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>批次：</label>
+									</div>
+									<div nz-form-control>
+										<nz-select
+											*ngIf="!(secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != ''))"
+											[formControlName]="medical_info.batch"
+											[nzPlaceHolder]="'请选择批次'"
+											nzShowSearch>
+											<ng-container *ngFor="let batch of medical_info.batchList">
+												<nz-option
+													[nzValue]="batch"
+													[nzLabel]="batch.batch + '（库存：' + batch.stock + medical_info	.selectedUnit + '）'"></nz-option>
+											</ng-container>
+										</nz-select>
+										<nz-input *ngIf="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="true" [nzPlaceHolder]="medical_info.selectedBatch.batch"></nz-input>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="pure-u-3-24 pr10">
-							<div class="pure-control-group">
-								<label for="one_num_{{ms.key}}">
-									<span>单次剂量</span>
-									<span class="required">*</span>
-								</label>
-								<div class="flex flex-tab">
-									<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
-										<select-search [title]="ms.ms.oneNum" [selectList]="oneNumList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'oneNum')"></select-search>
-									</ng-container>
-									<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-										<input type="number" id="one_num_{{ms.key}}" name="one_num_{{ms.key}}" [(ngModel)]="ms.ms.oneNum" disabled>
-									</ng-container>
-									<select disabled="">
-										<option>{{ms.ms.oneUnit}}</option>
-									</select>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>单次计量：</label>
+									</div>
+									<div nz-form-control>
+										<nz-input-group [nzSize]="'large'">
+											<nz-select [formControlName]="medical_info.oneNum" [nzPlaceHolder]="'请选择单次计量'" class="w50" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+												<ng-container *ngFor="let number of oneNumList">
+													<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
+												</ng-container>
+											</nz-select>
+								      		<nz-select [formControlName]="medical_info.oneUnit" [nzPlaceHolder]="'请选择单次计量单位'" class="w50" [nzDisabled]="true">
+												<nz-option [nzLabel]="medical_info.selectedOneUnit" [nzValue]="medical_info.selectedOneUnit"></nz-option>
+								      		</nz-select>
+										</nz-input-group>
+									</div>
+								</div>
+							</div>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>用法：</label>
+									</div>
+									<div nz-form-control>
+										<nz-select [formControlName]="medical_info.usage" [nzPlaceHolder]="'请选择用法'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+											<ng-container *ngFor="let usage of usagelsit">
+												<nz-option [nzValue]="usage" [nzLabel]="usage"></nz-option>
+											</ng-container>
+										</nz-select>
+									</div>
+								</div>
+							</div>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>用药频次：</label>
+									</div>
+									<div nz-form-control>
+										<nz-select [formControlName]="medical_info.frequency" [nzPlaceHolder]="'请选择用药频次'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+											<ng-container *ngFor="let frequency of frequencylist">
+												<nz-option [nzValue]="frequency" [nzLabel]="frequency"></nz-option>
+											</ng-container>
+										</nz-select>
+									</div>
+								</div>
+							</div>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>天数：</label>
+									</div>
+									<div nz-form-control>
+										<nz-select [formControlName]="medical_info.days" [nzPlaceHolder]="'请选择天数'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+											<ng-container *ngFor="let number of numberList">
+												<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
+											</ng-container>
+										</nz-select>
+									</div>
+								</div>
+							</div>
+							<div nz-col [nzSpan]="6">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '总量' : '退药'}}：</label>
+									</div>
+									<div nz-form-control>
+										<nz-input-group [nzSize]="'large'">
+											<nz-select [formControlName]="medical_info.num" [nzPlaceHolder]="'请选择总量'" [nzDisabled]="secondType == 'continueAdd' && medical_info.isOut != ''" class="w50">
+												<ng-container *ngFor="let number of numberList">
+													<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
+												</ng-container>
+											</nz-select>
+								      		<nz-select [formControlName]="medical_info.unit" [nzPlaceHolder]="'请选择单位'" class="w50" [nzDisabled]="true">
+												<nz-option [nzLabel]="medical_info.selectedUnit" [nzValue]="medical_info.selectedUnit"></nz-option>
+								      		</nz-select>
+										</nz-input-group>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="pure-u-3-24 pr10">
-							<div class="pure-control-group">
-								<label for="frequency_{{ms.key}}">
-									<span>用法</span>
-									<span class="required">*</span>
-								</label>
-								<select id="frequency_{{ms.key}}" name="frequency_{{ms.key}}" #frequency_{{ms.key}}="ngModel" [(ngModel)]="ms.ms.frequency" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-									<ng-container *ngFor="let frequency of frequencylist">
-										<option value="{{frequency}}">{{frequency}}</option>
-									</ng-container>
-								</select>
+						<div nz-row [nzGutter]="30">
+							<div nz-col [nzSpan]="12">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label nz-form-item-required>一般用法：</label>
+									</div>
+									<div nz-form-control>
+										<nz-input [formControlName]="medical_info.ms_usage" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入一般用法'" nzDisabled></nz-input>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="pure-u-3-24 pr10">
-							<div class="pure-control-group">
-								<label for="usage_{{ms.key}}">
-									<span>用药频次</span>
-									<span class="required">*</span>
-								</label>
-								<select id="usage_{{ms.key}}" name="usage_{{ms.key}}" [(ngModel)]="ms.ms.usage" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-									<ng-container *ngFor="let usage of usagelsit">
-										<option value="{{usage}}">{{usage}}</option>
-									</ng-container>
-								</select>
-							</div>
-						</div>
-						<div class="pure-u-2-24 pr10">
-							<div class="pure-control-group">
-								<label for="days_{{ms.key}}">
-									<span>天数</span>
-									<span class="required">*</span>
-								</label>
-								<ng-container *ngIf="secondType == '' || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
-									<select-search [title]="ms.ms.days" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'days')"></select-search>
-								</ng-container>
-								<ng-container *ngIf="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')">
-									<input type="number" id="days_{{ms.key}}" name="days_{{ms.key}}" [(ngModel)]="ms.ms.days" disabled>
-								</ng-container>
-							</div>
-						</div>
-						<div class="pure-u-3-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="num_{{ms.key}}">
-									<span>{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '总量' : '退药'}}</span>
-									<span class="required">*</span>
-								</label>
-								<div class="flex flex-tab">
-									<ng-container *ngIf="secondType == '' || (secondType == 'back') || (secondType == 'continueAdd' && ms.ms.isOut == '') || secondType == 'update'">
-										<select-search [title]="ms.ms.num" [selectList]="numberList" [addInput]="true" (onVoted)="changeNumber($event, ms.key, 'num')"></select-search>
-									</ng-container>
-									<ng-container *ngIf="secondType == 'continueAdd' && ms.ms.isOut != ''">
-										<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num" disabled>
-									</ng-container>
-									<select disabled="">
-										<option>{{ms.ms.unit}}</option>
-									</select>
+							<div nz-col [nzSpan]="12">
+								<div nz-form-item>
+									<div nz-form-label>
+										<label>注意事项：</label>
+									</div>
+									<div nz-form-control>
+										<nz-input [formControlName]="medical_info.remark" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入一般用法'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"></nz-input>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="pure-u-7-24 pr10">
-							<div class="pure-control-group">
-								<label for="ms_usage_{{ms.key}}">
-									<span>一般用法</span>
-								</label>
-								<textarea id="ms_usage_{{ms.key}}" rows="4" name="ms_usage_{{ms.key}}" [(ngModel)]="ms.ms.ms_usage" class="auto" disabled></textarea>
+					</nz-collapse>
+				</nz-collapseset>
+				<div *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'" class="text-center mt20">
+	        		<button nz-button [nzType]="'dashed'" [nzSize]="'large'" class="w100" (click)="addField(null, $event)">
+	          			<i class="anticon anticon-plus"></i>
+	          			<span> 添加药品</span>
+	        		</button>
+		    	</div>
+				<div nz-row [nzGutter]="30">
+					<div nz-col [nzSpan]="12">
+						<div nz-form-item>
+							<div nz-form-label>
+								<label *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'">备注</label>
+								<label *ngIf="!(secondType == '' || secondType == 'continueAdd' || secondType == 'update')" nz-form-item-required>退药说明</label>
 							</div>
-						</div>
-						<div class="pure-u-6-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="remark_{{ms.key}}">
-									<span>注意事项（最多20字）</span>
-								</label>
-								<textarea maxlength="20" rows="4" id="remark_{{ms.key}}" name="remark_{{ms.key}}" [(ngModel)]="ms.ms.remark" class="auto" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && ms.ms.isOut != '')"></textarea>
+							<div nz-form-control>
+								<nz-input formControlName="remark" [nzPlaceHolder]="'请输入'" [nzType]="'textarea'" [nzSize]="'large'"></nz-input>
 							</div>
 						</div>
 					</div>
 				</div>
+			</form>
+			<div class="text-center">
+				<button *ngIf="this.secondType != '' && this.secondType != 'continueAdd' && this.secondType != 'update'" (click)="confirmCreate(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">退药</button>
+				<button *ngIf="this.secondType == '' || this.secondType == 'continueAdd' || this.secondType == 'update'" (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">保存</button>
 			</div>
-			<div *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'" class="mt10">
-				<button (click)="addMs()" class="pure-button pure-button-primary"><i class="anticon anticon-plus mr5"></i>添加药品</button>
-			</div>
-			<div class="pure-g">
-				<div class="pure-u-7-24 pr10">
-					<label for="remark">{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '备注' : '退药说明'}}（最多100字）</label>
-					<textarea id="remark" name="remark" rows="4" maxlength="100" [(ngModel)]="prescriptInfo.remark" class="auto" placeholder="请输入"></textarea>
-				</div>
-			</div>
-		</fieldset>
-		<div class="text-center">
-			<button *ngIf="this.secondType != '' && this.secondType != 'continueAdd' && this.secondType != 'update'" (click)="confirmCreate(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">退药</button>
-			<button *ngIf="this.secondType == '' || this.secondType == 'continueAdd' || this.secondType == 'update'" (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
-		</div>
-	</form>
+		</ng-template>
+	</nz-card>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{selected.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button *ngIf="createTab" (click)="confirmPre()" class="pure-button pure-button-primary">确认</button>
-		</div>
-	</div>
-</div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="closeConfirm()">
+	<ng-template #modalContent>
+    	<p>{{selected.text}}</p>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">取消</button>
+		<button *ngIf="createTab" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmPre()">确认</button>
+	</ng-template>
+</nz-modal>

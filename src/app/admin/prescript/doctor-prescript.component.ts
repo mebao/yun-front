@@ -1,22 +1,25 @@
 import { Component, OnInit }                     from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute }                from '@angular/router';
+
+import { NzMessageService }                      from 'ng-zorro-antd';
 
 import { AdminService }                          from '../admin.service';
 
 @Component({
 	selector: 'app-doctor-prescript',
 	templateUrl: './doctor-prescript.component.html',
-	styleUrls: ['./doctor-prescript.component.scss'],
+	styleUrls: ['./doctor-prescript.component.scss', '../../../assets/css/ant-common.scss'],
 })
 export class DoctorPrescriptComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	url: string;
 	id: string;
@@ -41,7 +44,6 @@ export class DoctorPrescriptComponent{
 		services: any[],
 		fees: any[],
 	};
-	plist: any[];
 	medicalSupplies: any[];
 	usagelsit: any[];
 	frequencylist: any[];
@@ -58,29 +60,37 @@ export class DoctorPrescriptComponent{
 	numberList: any[];
 	oneNumList: any[];
 	// 不可连续点击
-	btnCanEdit: boolean;
+	isLoadingSave: boolean;
 	createTab: boolean;
 	form: any;
 	actualOperator: {
 		use: boolean,
 		name: string,
 	}
+    validateForm: FormGroup;
+    // 已选中药品
+	mPrescriptList: any[];
+    // 药方中药品
+    mPrescriptInfoList: any[];
+    // 删除的药品
+    mPrescriptDelList: any[];
 
 	constructor(
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
-	) {}
+		private _message: NzMessageService,
+        private fb: FormBuilder,
+	) {
+        this.validateForm = this.fb.group({
+			remark: [ '', [ Validators.required ]],
+		});
+	}
 
 	ngOnInit() {
 		this.topBar = {
 			title: '开方',
 			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.bookingInfo = {
@@ -103,7 +113,7 @@ export class DoctorPrescriptComponent{
 		};
 
 		//用法
-		this.usagelsit = [
+		this.frequencylist = [
 			'每天五次',
 			'每天四次',
 			'每天三次',
@@ -133,7 +143,7 @@ export class DoctorPrescriptComponent{
 		];
 
 		//用药频次
-		this.frequencylist = [
+		this.usagelsit = [
 			'口服',
 			'注射',
 			'舌下含服',
@@ -163,10 +173,14 @@ export class DoctorPrescriptComponent{
 		this.oneNumList = [];
 		for(var i = 1; i < 21; i++){
 			if(i == 1){
-				this.oneNumList.push({key: 0.5, value: 0.5});
+				this.oneNumList.push({key: '1/8', value: '1/8'});
+				this.oneNumList.push({key: '1/5', value: '1/5'});
+				this.oneNumList.push({key: '1/4', value: '1/4'});
+				this.oneNumList.push({key: '1/3', value: '1/3'});
+				this.oneNumList.push({key: '1/2', value: '1/2'});
 			}
 			this.numberList.push({key: i, value: i});
-			this.oneNumList.push({key: i, value: i});
+			this.oneNumList.push({key: i.toString(), value: i.toString()});
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -176,13 +190,15 @@ export class DoctorPrescriptComponent{
 			this.secondType = params.type ? params.type : '';
 		});
 
-		this.plist = [];
 		this.prescriptInfo = {
 			name: '',
 			remark: '',
 		}
 
 		//判断创建或修改
+		this.mPrescriptList = [];
+        this.mPrescriptInfoList = [];
+        this.mPrescriptDelList = [];
 		if(this.prescriptId && this.prescriptId != ''){
 			this.editType = 'update';
 			var sessionPrescript = JSON.parse(sessionStorage.getItem('prescript'));
@@ -192,48 +208,28 @@ export class DoctorPrescriptComponent{
 			}
 			if(sessionPrescript.info.length > 0){
 				for(var i = 0; i < sessionPrescript.info.length; i++){
-					var p = {
-						key: this.plist.length + 1,
-						show: this.secondType == '' || this.secondType == 'back' || this.secondType == 'update',
-						use: true,
-						ms: sessionPrescript.info[i],
-						batchList: [],
-						bak: JSON.stringify(sessionPrescript.info[i]),
-						string: '',
-					}
-					this.plist.push(p);
+                    var mInfo = {
+                        medical: {},
+                        batch: {},
+                        pid: sessionPrescript.info[i].pid,
+                        sinfoId: sessionPrescript.info[i].sinfoId,
+                        oneNum: sessionPrescript.info[i].oneNum,
+                        oneUnit: sessionPrescript.info[i].oneUnit,
+                        frequency: sessionPrescript.info[i].frequency,
+                        usage: sessionPrescript.info[i].usage,
+                        days: sessionPrescript.info[i].days,
+                        num: sessionPrescript.info[i].num,
+                        unit: sessionPrescript.info[i].unit,
+                        ms_usage: '',
+                        remark: sessionPrescript.info[i].remark,
+                        isOut: sessionPrescript.info[i].isOut,
+                    }
+                    this.mPrescriptInfoList.push(mInfo);
 				}
-			}
-			// 如果加药，
-			if(this.secondType == 'continueAdd'){
-				this.addMs();
 			}
 		}else{
 			this.editType = 'create';
-
-			this.plist.push({
-				key: 1,
-				show: true,
-				use: true,
-				ms: {
-					batch: '',
-					days: '',
-					frequency: '',
-					num: '',
-					oneNum: '',
-					oneUnit: '',
-					pid: '',
-					pname: '',
-					price: '',
-					remark: '',
-					sinfoId: '',
-					unit: '',
-					usage: '',
-					ms_usage: '',
-				},
-				batchList: [],
-				string: '',
-			});
+    		this.addField(null);
 		}
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -243,7 +239,7 @@ export class DoctorPrescriptComponent{
 		var urlOptions = this.url + '&id=' + this.id;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
@@ -259,7 +255,7 @@ export class DoctorPrescriptComponent{
 		var searchsuppliesUrl = this.url + '&type=1,2';
 		this.adminService.searchsupplies(searchsuppliesUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
@@ -267,44 +263,55 @@ export class DoctorPrescriptComponent{
 					for(var i = 0; i < results.list.length; i++){
 						// 处理库存信息，若批次库存为0，则不显示
 						var item = results.list[i];
-						if(results.list[i].others.length > 0){
-							var itemInfo = [];
-							for(var j = 0; j < results.list[i].others.length; j++){
-								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
-								//修改时，需要获取药品、批次数据
-								if(this.editType == 'update'){
-									for(var k = 0; k < this.plist.length; k++){
-										if(results.list[i].others[j].id == this.plist[k].ms.sinfoId){
-											this.plist[k].batchList = results.list[i].others;
-											this.plist[k].ms.batch = results.list[i].others[j].string;
-											this.plist[k].ms.ms_usage = results.list[i].usage;
-										}
+						var itemInfo = [];
+						for(var j = 0; j < results.list[i].others.length; j++){
+							//修改时，需要获取药品、批次数据
+							if(this.editType == 'update'){
+								for(var k = 0; k < this.mPrescriptInfoList.length; k++){
+									if(results.list[i].others[j].id == this.mPrescriptInfoList[k].sinfoId){
+										this.mPrescriptInfoList[k].batch = results.list[i].others[j];
+                                        this.mPrescriptInfoList[k].selectedBatch = results.list[i].others[j];
+										this.mPrescriptInfoList[k].ms_usage = results.list[i].usage;
 									}
 								}
-								if(results.list[i].others[j].stock != '0'){
-									itemInfo.push(results.list[i].others[j]);
-								}
 							}
-							item.others = itemInfo;
+                            // 库存不为0，则获取
+							if(results.list[i].others[j].stock != '0'){
+								itemInfo.push(results.list[i].others[j]);
+							}
 						}
-						results.list[i].string = JSON.stringify(results.list[i]);
 						//修改时，需要获取药品、批次数据
 						if(this.editType == 'update'){
 							if(results.list[i].others.length > 0){
 								for(var j = 0; j < results.list[i].others.length; j++){
-									for(var k = 0; k < this.plist.length; k++){
-										if(results.list[i].others[j].id == this.plist[k].ms.sinfoId){
-											this.plist[k].string = results.list[i].string;
+									for(var k = 0; k < this.mPrescriptInfoList.length; k++){
+										if(results.list[i].others[j].id == this.mPrescriptInfoList[k].sinfoId){
+											this.mPrescriptInfoList[k].medical = results.list[i];
 										}
 									}
 								}
 							}
 						}
+						if(results.list[i].others.length > 0){
+	                        item.others = itemInfo;
+                        }
 					}
+                    //修改时，需要获取药品、批次数据
+                    if(this.editType == 'update'){
+                        for(var index in this.mPrescriptInfoList){
+                            this.addField(this.mPrescriptInfoList[index]);
+                        }
+                    }
+        			// 如果加药，
+        			if(this.secondType == 'continueAdd'){
+        				this.addField(null);
+        			}
 				}
 				this.medicalSupplies = results.list;
 			}
-		});
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 
 		// 若是登录账号为'嘉宝体检'，则需要选定操作人
 		this.actualOperator = {
@@ -317,128 +324,197 @@ export class DoctorPrescriptComponent{
 			text: '',
 		}
 
-		this.btnCanEdit = false;
+		this.isLoadingSave = false;
 		this.createTab = false;
 		this.form = '';
 	}
 
-	showMs(_key) {
-		if(this.plist.length > 0){
-			for(var i = 0; i < this.plist.length; i++){
-				if(this.plist[i].key == _key){
-					this.plist[i].show = !this.plist[i].show;
-				}
-			}
-		}
+    addField(medical, e?: MouseEvent) {
+        if (e) {
+          e.preventDefault();
+        }
+        const id = (this.mPrescriptList.length > 0) ? this.mPrescriptList[this.mPrescriptList.length - 1].id + 1 : 0;
+        const medical_info = {
+            id: id,
+            isActive: medical == null ? true : (this.secondType == 'continueAdd' ? false : true),
+            medical: `medical${id}`,
+			batch: `batch${id}`,
+			batchList: medical == null ? [] : medical.medical.others,
+            selectedBatch: medical == null ? {} : medical.selectedBatch,
+            pid: medical == null ? '' : medical.pid,
+			oneNum: `oneNum${id}`,
+			oneUnit: `oneUnit${id}`,
+			selectedOneUnit: medical == null ? '' : medical.oneUnit,
+			frequency: `frequency${id}`,
+			usage: `usage${id}`,
+			days: `days${id}`,
+			num: `num${id}`,
+            bakNum: `bakNum${id}`,
+			unit: `unit${id}`,
+			selectedUnit: medical == null ? '' : medical.unit,
+			ms_usage: `ms_usage${id}`,
+			remark: `remark${id}`,
+			isOut: medical == null ? '' : medical.isOut,
+        };
+        const index = this.mPrescriptList.push(medical_info);
+        this.validateForm.addControl(this.mPrescriptList[index - 1].medical, new FormControl(medical == null ? '' : medical.medical, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].batch, new FormControl(medical == null ? '' : medical.batch, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].oneNum, new FormControl(medical == null ? '' : medical.oneNum, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].oneUnit, new FormControl(medical == null ? '' : medical.oneUnit, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].frequency, new FormControl(medical == null ? '' : medical.frequency, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].usage, new FormControl(medical == null ? '' : medical.usage, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].days, new FormControl(medical == null ? '' : Number(medical.days), Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].num, new FormControl(medical == null ? '' : Number(medical.num), Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].bakNum, new FormControl(medical == null ? '' : Number(medical.num), Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].unit, new FormControl(medical == null ? '' : medical.unit, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].ms_usage, new FormControl(medical == null ? '' : medical.ms_usage, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].remark, new FormControl(medical == null ? '' : medical.remark, Validators.required));
+    }
+
+    removeField(i) {
+        this.mPrescriptDelList.push(i);
+        if (this.mPrescriptList.length > 0) {
+            const index = this.mPrescriptList.indexOf(i);
+            this.mPrescriptList.splice(index, 1);
+            if(this.secondType != 'back'){
+                this.validateForm.removeControl(i.medical);
+                this.validateForm.removeControl(i.batch);
+                this.validateForm.removeControl(i.oneNum);
+                this.validateForm.removeControl(i.oneUnit);
+                this.validateForm.removeControl(i.frequency);
+                this.validateForm.removeControl(i.usage);
+                this.validateForm.removeControl(i.days);
+                this.validateForm.removeControl(i.num);
+    			this.validateForm.removeControl(i.unit);
+    			this.validateForm.removeControl(i.ms_usage);
+    			this.validateForm.removeControl(i.remark);
+            }
+        }
+    }
+
+	msChange(_index) {
+        var selectedOneUnit = this.validateForm.controls['medical' + _index].value.oneUnit ? this.validateForm.controls['medical' + _index].value.oneUnit : '';
+        var selectedUnit = this.validateForm.controls['medical' + _index].value.unit ? this.validateForm.controls['medical' + _index].value.unit : '';
+        var selectedUsage = this.validateForm.controls['medical' + _index].value.usage ? this.validateForm.controls['medical' + _index].value.usage : '';
+		this.mPrescriptList[_index].batchList = this.validateForm.controls['medical' + _index].value.others;
+        this.mPrescriptList[_index].selectedOneUnit = selectedOneUnit;
+        this.mPrescriptList[_index].selectedUnit = selectedUnit;
+        this.validateForm.controls['oneUnit' + _index].setValue(selectedUnit);
+        this.validateForm.controls['unit' + _index].setValue(selectedUnit);
+        this.validateForm.controls['ms_usage' + _index].setValue(selectedUsage);
 	}
 
-	addMs() {
-		this.plist.push({
-			key: this.plist.length + 1,
-			show: true,
-			use: true,
-			ms: {
-				batch: '',
-				days: '',
-				frequency: '',
-				num: '',
-				oneNum: '',
-				oneUnit: '',
-				pid: '',
-				pname: '',
-				price: '',
-				remark: '',
-				sinfoId: '',
-				unit: '',
-				usage: '',
-				ms_usage: '',
-				isOut: '',
-			},
-			batchList: [],
-			string: '',
-		});
-	}
-
-	deleteMs(_key) {
-		if(this.plist.length > 0){
-			for(var i = 0; i < this.plist.length; i++){
-				if(this.plist[i].key == _key){
-					this.plist[i].use = false;
-				}
-			}
-		}
-	}
-
-	msChange(key, _value) {
-		for(var i = 0; i < this.plist.length; i++){
-			if(this.plist[i].key == key){
-				// 兼容select-search
-				var oneNum = this.plist[i].ms.oneNum;
-				var days = this.plist[i].ms.days;
-				var num = this.plist[i].ms.num;
-				var batch = this.plist[i].ms.batch;
-				this.plist[i].ms = JSON.parse(_value);
-				this.plist[i].ms.batch = batch == null ? '' : null;
-				this.plist[i].ms.oneNum = oneNum;
-				this.plist[i].ms.usage = '';
-				this.plist[i].ms.frequency = '';
-				this.plist[i].ms.days = days;
-				this.plist[i].ms.num = num;
-				// this.plist[i].ms.remark = '';
-				this.plist[i].ms.ms_usage = JSON.parse(_value).usage;
-				this.plist[i].ms.isOut = '';
-				this.plist[i].batchList = JSON.parse(_value).others;
-			}
-		}
-	}
-
-	changeNumber(_value, index, key) {
-		this.plist[index - 1].ms[key] = _value;
-	}
-
-	confirmCreate(f){
+	confirmCreate(){
 		this.createTab = true;
 		var p = '';
-		for(var i = 0;i<this.plist.length;i++){
-			if(this.plist[i].use){
-				p+=this.plist[i].ms.pname+',';
-			}
+		for(var i = 0; i < this.mPrescriptList.length; i++){
+            var index = this.mPrescriptList[i].id;
+			p += this.validateForm.controls['medical' + index].value.name + '（' + this.validateForm.controls['num' + index].value + this.validateForm.controls['unit' + index].value + '），';
 		}
-		if(p==''){
+		if(p == ''){
 			this.selected = {
 				text: '暂无退药',
 			}
 		}else{
 			this.selected = {
-				text: '将'+p.toString().substring(0,p.length - 1)+'药品退回到药品库',
+				text: '将' + p.toString().substring(0, p.length - 1) + '退回到药品库？',
 			}
 		}
 
 		this.modalConfirmTab = true;
-		this.form = f;
 	}
 
 	//确认退药
 	confirmPre(){
-		var f = this.form;
-		this.create(f);
+        this.isLoadingSave = false;
+        this.modalConfirmTab = false;
+        //退药逻辑，填写需要退多少量的药品，计算剩下的药品
+        if(this.mPrescriptList.length > 0){
+            var backPlist = [];
+            var hasBack = false;
+            var feeAll = 0;
+            for(var i = 0; i < this.mPrescriptList.length; i++){
+                var index = this.mPrescriptList[i].id;
+                //判断该药品是否退药
+                var backP = {
+                    id: this.mPrescriptList[i].pid,
+                    num: '',
+                    remark: this.validateForm.controls['remark' + index].value,
+                }
+                hasBack = true;
+                //判断是否填写
+                if(this.validateForm.controls['num' + index].value == ''){
+                    this._message.error(this.validateForm.controls['medical' + index].value.name + '退药数量不可为空');
+                    this.isLoadingSave = false;
+                    return;
+                }
+                if(Number(this.validateForm.controls['num' + index].value) > Number(this.validateForm.controls['bakNum' + index].value)){
+                    this._message.error(this.validateForm.controls['medical' + index].value.name + '退药数量大于开药数量');
+                    this.isLoadingSave = false;
+                    return;
+                }
+                backP.num = (Number(this.validateForm.controls['bakNum' + index].value) - Number(this.validateForm.controls['num' + index].value)).toString();
+                backPlist.push(backP);
+                feeAll += Number(backP.num) * Number(this.validateForm.controls['batch' + index].value.price);
+            }
+            for(var indexDel in this.mPrescriptDelList){
+                var iDel = this.mPrescriptDelList[indexDel].id;
+                feeAll += Number(this.validateForm.controls['num' + iDel].value) * Number(this.validateForm.controls['batch' + iDel].value.price);
+            }
+            if(!hasBack){
+                this._message.error('未选择退药信息');
+                this.isLoadingSave = false;
+                return;
+            }
+            if(this.validateForm.controls.remark.value == ''){
+                this._message.error('退药说明不可为空');
+                this.isLoadingSave = false;
+                return;
+            }
+
+            var backParams = {
+                username: this.adminService.getUser().username,
+                token: this.adminService.getUser().token,
+                id: this.prescriptId,
+                plist: JSON.stringify(backPlist),
+                fee: feeAll.toString(),
+                remark: this.validateForm.controls.remark.value,
+                true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
+                true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
+            }
+
+            this.adminService.doctorback(this.prescriptId, backParams).then((data) => {
+                if(data.status == 'no'){
+                    this._message.error(data.errorMsg);
+                    this.isLoadingSave = false;
+                }else{
+                    this._message.success('退药成功');
+                    setTimeout(() => {
+                        this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
+                    }, 2000);
+                }
+            }).catch(() => {
+                this.isLoadingSave = false;
+                this._message.error('服务器错误');
+            });
+        }
 	}
 
-	create(f) {
+	create() {
 		if(this.actualOperator.use && this.adminService.isFalse(this.actualOperator.name)){
-			this.toastTab('请先选择实际操作人', 'error');
+			this._message.error('请先选择实际操作人');
 			return;
 		}
-		this.btnCanEdit = true;
+		this.isLoadingSave = true;
 		//新增或修改或再次加药
 		if(this.secondType == '' || this.secondType == 'update' || this.secondType == 'continueAdd'){
 			var plist = [];
 			var num = 0;
 			var feeAll = 0;
-			if(this.plist.length > 0){
-				for(var i = 0; i < this.plist.length; i++){
+			if(this.mPrescriptList.length > 0){
+				for(var i = 0; i < this.mPrescriptList.length; i++){
 					//判断可用或未出药
-					if(this.plist[i].use && (this.adminService.isFalse(this.plist[i].ms.isOut) || (this.plist[i].ms.isOut == '0' && this.secondType == 'update'))){
+					if(this.adminService.isFalse(this.mPrescriptList[i].isOut) || (this.mPrescriptList[i].isOut == '0' && this.secondType == 'update')){
 						num++;
 						var p = {
 							sinfo_id: '',
@@ -453,88 +529,86 @@ export class DoctorPrescriptComponent{
 							days: '',
 							remark: '',
 						};
-						this.plist[i].ms.remark = this.adminService.trim(this.plist[i].ms.remark);
-						if(this.plist[i].string == ''){
-							this.toastTab('第' + num + '条药品名不可为空', 'error');
-							this.btnCanEdit = false;
+						this.validateForm.controls['remark' + i].setValue(this.adminService.trim(this.validateForm.controls['remark' + i].value));
+						if(this.validateForm.controls['medical' + i].value == ''){
+							this._message.error('第' + num + '条药品名不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						if(this.adminService.isFalse(this.plist[i].ms.batch)){
-							this.toastTab('第' + num + '条批次不可为空', 'error');
-							this.btnCanEdit = false;
+						if(this.adminService.isFalse(this.validateForm.controls['batch' + i].value)){
+							this._message.error('第' + num + '条批次不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.sinfo_id = JSON.parse(this.plist[i].ms.batch).id;
-						p.name = JSON.parse(this.plist[i].string).name;
-						p.unit = JSON.parse(this.plist[i].string).unit;
-						p.one_unit = JSON.parse(this.plist[i].string).oneUnit;
-						if(this.adminService.isFalse(this.plist[i].ms.oneNum)){
-							this.toastTab('第' + num + '条单位剂量不可为空', 'error');
-							this.btnCanEdit = false;
+						p.sinfo_id = this.validateForm.controls['batch' + i].value.id;
+						p.name = this.validateForm.controls['medical' + i].value.name;
+						p.unit = this.validateForm.controls['medical' + i].value.unit;
+						p.one_unit = this.validateForm.controls['medical' + i].value.oneUnit;
+						if(this.adminService.isFalse(this.validateForm.controls['oneNum' + i].value)){
+							this._message.error('第' + num + '条单位剂量不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						if(parseFloat(this.plist[i].ms.oneNum) <= 0){
-							this.toastTab('第' + num + '条单位剂量应大于0', 'error');
-							this.btnCanEdit = false;
+						if(parseFloat(this.validateForm.controls['oneNum' + i].value) <= 0){
+							this._message.error('第' + num + '条单次计量应大于0');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.one_num = this.plist[i].ms.oneNum;
-						if(!(this.plist[i].ms.usage) || this.plist[i].ms.usage == ''){
-							this.toastTab('第' + num + '条用法不可为空', 'error');
-							this.btnCanEdit = false;
+						p.one_num = this.validateForm.controls['oneNum' + i].value;
+						if(!(this.validateForm.controls['usage' + i].value) || this.validateForm.controls['usage' + i].value == ''){
+							this._message.error('第' + num + '条用法不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.usage = this.plist[i].ms.usage;
-						if(!(this.plist[i].ms.frequency) || this.plist[i].ms.frequency == ''){
-							this.toastTab('第' + num + '条用药频次不可为空', 'error');
-							this.btnCanEdit = false;
+						p.usage = this.validateForm.controls['usage' + i].value;
+						if(!(this.validateForm.controls['frequency' + i].value) || this.validateForm.controls['frequency' + i].value == ''){
+							this._message.error('第' + num + '条用药频次不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.frequency = this.plist[i].ms.frequency;
-						if(this.adminService.isFalse(this.plist[i].ms.days)){
-							this.toastTab('第' + num + '条天数不可为空', 'error');
-							this.btnCanEdit = false;
+						p.frequency = this.validateForm.controls['frequency' + i].value;
+						if(this.adminService.isFalse(this.validateForm.controls['days' + i].value)){
+							this._message.error('第' + num + '条天数不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						if(Number(this.plist[i].ms.days) <=0 || Number(this.plist[i].ms.days) % 1 != 0){
-							this.toastTab('第' + num + '条天数应为大于0的整数', 'error');
-							this.btnCanEdit = false;
+						if(Number(this.validateForm.controls['days' + i].value) <=0 || Number(this.validateForm.controls['days' + i].value) % 1 != 0){
+							this._message.error('第' + num + '条天数应为大于0的整数');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.days = this.plist[i].ms.days;
-						if(this.adminService.isFalse(this.plist[i].ms.num)){
-							this.toastTab('第' + num + '条药单总量不可为空', 'error');
-							this.btnCanEdit = false;
+						p.days = this.validateForm.controls['days' + i].value;
+						if(this.adminService.isFalse(this.validateForm.controls['num' + i].value)){
+							this._message.error('第' + num + '条药单总量不可为空');
+							this.isLoadingSave = false;
 							return;
 						}
-						if(Number(this.plist[i].ms.num) <= 0 || Number(this.plist[i].ms.num) % 1 != 0){
-							this.toastTab('第' + num + '条药单总量应为大于0的整数', 'error');
-							this.btnCanEdit = false;
+						if(Number(this.validateForm.controls['num' + i].value) <= 0 || Number(this.validateForm.controls['num' + i].value) % 1 != 0){
+							this._message.error('第' + num + '条药单总量应为大于0的整数');
+							this.isLoadingSave = false;
 							return;
 						}
-						p.num = this.plist[i].ms.num;
-						if(Number(JSON.parse(this.plist[i].ms.batch).price) == 0){
+						p.num = this.validateForm.controls['num' + i].value;
+						if(Number(this.validateForm.controls['batch' + i].value.price) == 0){
 							this.selected = {
-								text: p.name + JSON.parse(this.plist[i].ms.batch).batch + '批次，尚未设置售价，请先设置售价，再开方',
+								text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，尚未设置售价，请先设置售价，再开方',
 							}
 							this.modalConfirmTab = true;
-							this.btnCanEdit = false;
+							this.isLoadingSave = false;
 							return;
 						}
-						p.price = JSON.parse(this.plist[i].ms.batch).price;
-						if(Number(p.num) > Number(JSON.parse(this.plist[i].ms.batch).stock)){
+						p.price = this.validateForm.controls['batch' + i].value.price;
+						if(Number(p.num) > Number(this.validateForm.controls['batch' + i].value.stock)){
 							this.selected = {
-								text: p.name + JSON.parse(this.plist[i].ms.batch).batch + '批次，库存' + JSON.parse(this.plist[i].ms.batch).stock + p.unit + '，所选药品数量超过库存现有量',
+								text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，库存' + this.validateForm.controls['batch' + i].value.stock + p.unit + '，所选药品数量超过库存现有量',
 							}
 							this.modalConfirmTab = true;
-							this.btnCanEdit = false;
+							this.isLoadingSave = false;
 							return;
 						}
-						p.remark = this.plist[i].ms.remark ? this.plist[i].ms.remark : '';
+						p.remark = this.validateForm.controls['remark' + i].value ? this.validateForm.controls['remark' + i].value : '';
 						plist.push(p);
-						feeAll += parseFloat(JSON.parse(this.plist[i].ms.batch).price) * Number(p.num);
-					}else if(this.plist[i].use){
-						feeAll += parseFloat(this.plist[i].ms.price) * Number(this.plist[i].ms.num);
+						feeAll += parseFloat(this.validateForm.controls['batch' + i].value.price) * Number(p.num);
 					}
 				}
 			}
@@ -551,7 +625,7 @@ export class DoctorPrescriptComponent{
 						child_name: this.bookingInfo.childName,
 						name: '',
 						plist: JSON.stringify(plist),
-						remark: this.adminService.trim(f.value.remark),
+						remark: this.adminService.trim(this.validateForm.controls.remark.value),
 						fee: feeAll.toString(),
 						true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
 						true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
@@ -559,37 +633,43 @@ export class DoctorPrescriptComponent{
 
 					this.adminService.doctorprescript(params).then((data) => {
 						if(data.status == 'no'){
-							this.toastTab(data.errorMsg, 'error');
-							this.btnCanEdit = false;
+							this._message.error(data.errorMsg);
+							this.isLoadingSave = false;
 						}else{
-							this.toastTab('开方成功', '');
+							this._message.success('开方成功');
 							setTimeout(() => {
 								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
 						}
-					})
+					}).catch(() => {
+                        this.isLoadingSave = false;
+                        this._message.error('服务器错误');
+                    });
 				}else{
 					var updateParams = {
 						username: this.adminService.getUser().username,
 						token: this.adminService.getUser().token,
 						name: '',
 						plist: JSON.stringify(plist),
-						remark: f.value.remark,
+						remark: this.validateForm.controls.remark.value,
 						fee: feeAll,
 						true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
 						true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 					}
 					this.adminService.updateprescript(this.prescriptId, updateParams).then((data) => {
 						if(data.status == 'no'){
-							this.toastTab(data.errorMsg, 'error');
-							this.btnCanEdit = false;
+							this._message.error(data.errorMsg);
+							this.isLoadingSave = false;
 						}else{
-							this.toastTab('药方修改成功', '');
+							this._message.success('药方修改成功');
 							setTimeout(() => {
 								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
 						}
-					})
+					}).catch(() => {
+                        this.isLoadingSave = false;
+                        this._message.error('服务器错误');
+                    });
 				}
 			}else{
 				var addParams = {
@@ -602,103 +682,25 @@ export class DoctorPrescriptComponent{
 				}
 				this.adminService.adddrug(this.prescriptId, addParams).then((data) => {
 					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
+                        this.isLoadingSave = false;
+						this._message.error(data.errorMsg);
 					}else{
-						this.toastTab('药品添加成功', '');
+						this._message.success('药品添加成功');
 						setTimeout(() => {
 							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 						}, 2000);
 					}
-				});
+				}).catch(() => {
+                    this.isLoadingSave = false;
+                    this._message.error('服务器错误');
+                });
 			}
 		}else{
-			//退药逻辑，填写需要退多少量的药品，计算剩下的药品
-			if(this.plist.length > 0){
-				var backPlist = [];
-				var hasBack = false;
-				var feeAll = 0;
-				for(var i = 0; i < this.plist.length; i++){
-					//判断该药品是否退药
-					var backP = {
-						id: this.plist[i].ms.pid,
-						num: '',
-						remark: this.plist[i].ms.remark,
-					}
-					if(this.plist[i].use){
-						hasBack = true;
-						//判断是否填写
-						if(this.plist[i].ms.num == ''){
-							this.toastTab(this.plist[i].ms.pname + '退药数量不可为空', 'error');
-							this.btnCanEdit = false;
-							return;
-						}
-						if(Number(this.plist[i].ms.num) > JSON.parse(this.plist[i].bak).num){
-							this.toastTab(this.plist[i].ms.pname + '退药数量大于开药数量', 'error');
-							this.btnCanEdit = false;
-							return;
-						}
-						backP.num = (Number(JSON.parse(this.plist[i].bak).num) - Number(this.plist[i].ms.num)).toString();
-					}else{
-						backP.num = JSON.parse(this.plist[i].bak).num;
-					}
-					backPlist.push(backP);
-					feeAll += Number(backP.num) * Number(this.plist[i].ms.price);
-				}
-				if(!hasBack){
-					this.toastTab('未选择退药信息', 'error');
-					this.btnCanEdit = false;
-					return;
-				}
-				if(f.value.remark == ''){
-					this.toastTab('退药说明不可为空', 'error');
-					this.btnCanEdit = false;
-					return;
-				}
 
-				this.modalConfirmTab = false;
-
-				var backParams = {
-					username: this.adminService.getUser().username,
-					token: this.adminService.getUser().token,
-					id: this.prescriptId,
-					plist: JSON.stringify(backPlist),
-					fee: feeAll.toString(),
-					remark: f.value.remark,
-					true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
-					true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
-				}
-
-				this.adminService.doctorback(this.prescriptId, backParams).then((data) => {
-					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
-						this.btnCanEdit = false;
-					}else{
-						this.toastTab('退药成功', '');
-						setTimeout(() => {
-							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
-						}, 2000);
-					}
-				});
-			}
 		}
 	}
 
 	closeConfirm() {
 		this.modalConfirmTab = false;
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }
