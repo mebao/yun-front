@@ -49,10 +49,6 @@ export class DoctorPrescriptComponent{
 	frequencylist: any[];
 	editType: string;
 	secondType: string;
-	prescriptInfo: {
-		name: string,
-		remark: string,
-	}
 	modalConfirmTab: boolean;
 	selected: {
 		text: string,
@@ -186,11 +182,6 @@ export class DoctorPrescriptComponent{
 			this.secondType = params.type ? params.type : '';
 		});
 
-		this.prescriptInfo = {
-			name: '',
-			remark: '',
-		}
-
 		//判断创建或修改
 		this.mPrescriptList = [];
         this.mPrescriptInfoList = [];
@@ -198,10 +189,7 @@ export class DoctorPrescriptComponent{
 		if(this.prescriptId && this.prescriptId != ''){
 			this.editType = 'update';
 			var sessionPrescript = JSON.parse(sessionStorage.getItem('prescript'));
-			this.prescriptInfo = {
-				name: sessionPrescript.name,
-				remark: sessionPrescript.remark,
-			}
+            this.validateForm.controls.remark.setValue(sessionPrescript.remark);
 			if(sessionPrescript.info.length > 0){
 				for(var i = 0; i < sessionPrescript.info.length; i++){
                     var mInfo = {
@@ -686,6 +674,7 @@ export class DoctorPrescriptComponent{
 					token: this.adminService.getUser().token,
 					fee: feeAll,
 					plist: JSON.stringify(plist),
+                    remark: this.validateForm.controls.remark.value,
 					true_id: this.actualOperator.use ? JSON.parse(this.actualOperator.name).id : null,
 					true_name: this.actualOperator.use ? JSON.parse(this.actualOperator.name).realName : null,
 				}
