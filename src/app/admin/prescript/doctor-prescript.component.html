@@ -88,7 +88,7 @@
 									</div>
 									<div nz-form-control>
 										<nz-input-group [nzSize]="'large'">
-											<nz-select [formControlName]="medical_info.oneNum" [nzPlaceHolder]="'请选择单次计量'" class="w50" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+											<nz-select [formControlName]="medical_info.oneNum" [nzPlaceHolder]="'请选择单次计量'" class="w50" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" nzShowSearch (nzSearchChange)="searchOneNum($event)">
 												<ng-container *ngFor="let number of oneNumList">
 													<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
 												</ng-container>

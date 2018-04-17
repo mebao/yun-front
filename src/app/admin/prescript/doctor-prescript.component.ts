@@ -59,6 +59,7 @@ export class DoctorPrescriptComponent{
 	}
 	numberList: any[];
 	oneNumList: any[];
+    oneNumOldList: any[];
 	// 不可连续点击
 	isLoadingSave: boolean;
 	createTab: boolean;
@@ -171,16 +172,11 @@ export class DoctorPrescriptComponent{
 
 		this.numberList = [];
 		this.oneNumList = [];
+        this.oneNumOldList = [];
 		for(var i = 1; i < 21; i++){
-			if(i == 1){
-				this.oneNumList.push({key: '1/8', value: '1/8'});
-				this.oneNumList.push({key: '1/5', value: '1/5'});
-				this.oneNumList.push({key: '1/4', value: '1/4'});
-				this.oneNumList.push({key: '1/3', value: '1/3'});
-				this.oneNumList.push({key: '1/2', value: '1/2'});
-			}
 			this.numberList.push({key: i, value: i});
 			this.oneNumList.push({key: i.toString(), value: i.toString()});
+			this.oneNumOldList.push({key: i.toString(), value: i.toString()});
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -369,6 +365,12 @@ export class DoctorPrescriptComponent{
         this.validateForm.addControl(this.mPrescriptList[index - 1].unit, new FormControl(medical == null ? '' : medical.unit, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].ms_usage, new FormControl(medical == null ? '' : medical.ms_usage, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].remark, new FormControl(medical == null ? '' : medical.remark, Validators.required));
+        if(medical != null){
+            if(this.oneNumList.indexOf({key: medical.oneNum, value: medical.oneNum}) == -1){
+                this.oneNumList.push({key: medical.oneNum, value: medical.oneNum});
+                this.oneNumOldList.push({key: medical.oneNum, value: medical.oneNum});
+            }
+        }
     }
 
     removeField(i) {
@@ -403,6 +405,13 @@ export class DoctorPrescriptComponent{
         this.validateForm.controls['unit' + _index].setValue(selectedUnit);
         this.validateForm.controls['ms_usage' + _index].setValue(selectedUsage);
 	}
+
+    searchOneNum(_value) {
+        if(this.oneNumList.indexOf({key: _value, value: _value}) == -1){
+            this.oneNumList = JSON.parse(JSON.stringify(this.oneNumOldList));
+            this.oneNumList.push({key: _value, value: _value});
+        }
+    }
 
 	confirmCreate(){
 		this.createTab = true;
