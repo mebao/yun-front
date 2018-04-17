@@ -157,6 +157,19 @@ export class BookingInfoComponent{
 				this.toastService.toast(toastCfg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				// 时间格式变更
+				if(results.weekbooks.length > 0 && results.weekbooks[0].services.length > 0){
+					if(results.weekbooks[0].services[0].begin){
+						results.weekbooks[0].services[0].begin = results.weekbooks[0].services[0].begin.replace('-', '年');
+						results.weekbooks[0].services[0].begin = results.weekbooks[0].services[0].begin.replace('-', '月');
+						results.weekbooks[0].services[0].begin = results.weekbooks[0].services[0].begin.replace(' ', '日 ');
+					}
+					if(results.weekbooks[0].services[0].end){
+						results.weekbooks[0].services[0].end = results.weekbooks[0].services[0].end.replace('-', '年');
+						results.weekbooks[0].services[0].end = results.weekbooks[0].services[0].end.replace('-', '月');
+						results.weekbooks[0].services[0].end = results.weekbooks[0].services[0].end.replace(' ', '日 ');
+					}
+				}
 				if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
 					this.canEdit = false;
 				}else{

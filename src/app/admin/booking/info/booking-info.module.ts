@@ -2,6 +2,8 @@ import { NgModule }                  from '@angular/core';
 import { CommonModule }              from '@angular/common';
 import { FormsModule }               from '@angular/forms';
 
+import { NgZorroAntdModule }         from 'ng-zorro-antd';
+
 import { NavModule }                 from '../../nav/nav.module';
 
 import { PipeModule }                from '../../../pipe/pipe.module';
@@ -22,6 +24,7 @@ import { BookingInfoComponent }      from './booking-info.component';
     imports: [
         CommonModule,
         FormsModule,
+        NgZorroAntdModule,
         NavModule,
         PipeModule,
         AngCommonModule,

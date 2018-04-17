@@ -393,46 +393,57 @@
 				</div>
 				<div class="item flex bb-default">
 					<div class="flex-1 flex">
-						<label>状态：</label>
-						<div class="info">{{booking.statusText}}</div>
+						<label>预约科室：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}</div>
 					</div>
 					<div class="flex-1 flex">
-						<label>预约金支付时间：</label>
-						<div class="info">{{booking.yyj.time}}</div>
+						<label>预约医生：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}</div>
 					</div>
 				</div>
 				<div class="item flex bb-default">
 					<div class="flex-1 flex">
+						<label>预约日期：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].serviceDate : ''}}</div>
+					</div>
+					<div class="flex-1 flex">
+						<label>预约时间：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].serviceTime : ''}}</div>
+					</div>
+				</div>
+				<div class="item flex bb-default">
+					<div class="flex-1 flex">
+						<label>就诊开始时间：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].begin : ''}}</div>
+					</div>
+					<div class="flex-1 flex">
+						<label>就诊结束时间：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].end : ''}}</div>
+					</div>
+				</div>
+				<div class="item flex bb-default">
+					<div class="flex-1 flex">
+						<label>就诊时间：</label>
+						<div class="info">{{booking.services.length > 0 ? booking.services[0].mins : ''}}</div>
+					</div>
+					<div class="flex-1 flex">
+						<label>状态：</label>
+						<div class="info">{{booking.statusText}}</div>
+					</div>
+				</div>
+				<div class="item flex bb-default">
+					<div class="flex-1 flex">
+						<label>预约金支付时间：</label>
+						<div class="info">{{booking.yyj.time}}</div>
+					</div>
+					<div class="flex-1 flex">
 						<label>推荐人：</label>
 						<div class="info">{{booking.refereeName}}</div>
 					</div>
-					<div class="flex-1"></div>
 				</div>
 				<div class="item flex">
 					<label>备注：</label>
 					<div class="info">{{booking.remark}}</div>
-				</div>
-				<div class="item flex">
-					<div class="info flex-1">
-						<table class="pure-table w100">
-							<thead>
-								<tr>
-									<th>预约科室</th>
-									<th>预约医生</th>
-									<th>预约日期</th>
-									<th>预约时间</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let service of booking.services; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-									<td>{{service.serviceName}}</td>
-									<td>{{service.userDoctorName}}</td>
-									<td>{{service.serviceDate}}</td>
-									<td>{{service.serviceTime}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
 				</div>
 				<div class="item flex">
 					<div class="info flex-1">

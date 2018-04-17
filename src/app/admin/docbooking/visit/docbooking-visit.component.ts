@@ -1,11 +1,10 @@
 import { Component }                         from '@angular/core';
 import { Router }                            from '@angular/router';
 
+import { NzMessageService }                  from 'ng-zorro-antd';
+
 import { DoctorService }                     from '../../doctor/doctor.service';
 import { AdminService }                      from '../../admin.service';
-
-import { ToastService }                      from '../../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }            from '../../../common/nll-toast/toast-model';
 
 @Component({
     selector: 'admin-doctor-visit',
@@ -32,12 +31,7 @@ export class DocbookingVisitComponent{
 	canEdit: boolean;
     modalTabAgain : boolean;
     bookingId: string;
-    searchInfo: {
-        duty: string,
-        duty_text: string,
-        today_num: number,
-    }
-    modalAddInfo = false;
+    modalAddInfoTab: boolean;
     childInfo: {
         child_id: string,
         height: string,
@@ -47,12 +41,13 @@ export class DocbookingVisitComponent{
         blood_pressure: string,
         head_circum: string,
     }
+    _bookingDate = null;
 
     constructor(
+        private _message: NzMessageService,
         public doctorService: DoctorService,
         public adminService: AdminService,
         private router: Router,
-        private toastService: ToastService,
     ) {}
 
 	ngOnInit() {
@@ -104,11 +99,7 @@ export class DocbookingVisitComponent{
         this.hasData = false;
 
 		var todayDate = this.adminService.getDayByDate(new Date());
-        this.searchInfo = {
-            duty: todayDate,
-            duty_text: this.adminService.dateFormat(todayDate),
-            today_num: new Date(todayDate).getTime(),
-        }
+        this._bookingDate = new Date();
 
         this.getData();
 
@@ -116,6 +107,7 @@ export class DocbookingVisitComponent{
         this.modalTabAgain = false;
         this.bookingId = '';
 
+        this.modalAddInfoTab = false;
         this.childInfo = {
             child_id: '',
             height: '',
@@ -127,21 +119,15 @@ export class DocbookingVisitComponent{
         }
     }
 
-    changeDate(_value) {
-		this.searchInfo.duty = JSON.parse(_value).value;
-        this.getData();
-    }
-
     getData() {
-        var url = this.url + '&duty=' + this.searchInfo.duty;
+        var url = this.url + '&duty=' + this.adminService.getDayByDate(new Date(this._bookingDate));
         if(this.moduleAuthority.personal && !this.moduleAuthority.see){
             url += '&myself=1';
         }
         this.doctorService.doctorwork(url).then((data) => {
             if(data.status == 'no'){
 		        this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.visitList = this.setData(results.doctors);
@@ -156,8 +142,7 @@ export class DocbookingVisitComponent{
 		        this.loadingShow = false;
             }
         }).catch((data) => {
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
     }
 
@@ -167,7 +152,7 @@ export class DocbookingVisitComponent{
                 if(data[i].doctorChilds.length > 0){
                     var hasSelected = false;
                     for(var j = 0; j < data[i].doctorChilds.length; j++){
-                        if(data[i].doctorChilds[j].begin){
+                        if(data[i].doctorChilds[j].status == '4'){
                             hasSelected = true;
                             data[i].selected = data[i].doctorChilds[j].serviceId;
                             data[i].visitChildId = data[i].doctorChilds[j].childId;
@@ -199,18 +184,15 @@ export class DocbookingVisitComponent{
             }
             this.doctorService.updateservice(visit.selected, params).then((data) => {
                 if(data.status == 'no'){
-    				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-    				this.toastService.toast(toastCfg);
+                    this._message.error(data.errorMsg);
                     this.canEdit = false;
                 }else{
-    				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '开始就诊', 3000);
-    				this.toastService.toast(toastCfg);
+                    this._message.success('开始就诊');
                     this.getData();
                     this.canEdit = false;
                 }
             }).catch((data) => {
-                const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-                this.toastService.toast(toastCfg);
+                this._message.error('服务器错误');
             });
         }else{
             var paramsEnd = {
@@ -220,12 +202,10 @@ export class DocbookingVisitComponent{
             }
             this.doctorService.updateservice(visit.selected, paramsEnd).then((data) => {
                 if(data.status == 'no'){
-    				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-    				this.toastService.toast(toastCfg);
+                    this._message.error(data.errorMsg);
                     this.canEdit = false;
                 }else{
-    				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '结束就诊', 3000);
-    				this.toastService.toast(toastCfg);
+                    this._message.success('结束就诊');
                     this.getData();
                     this.canEdit = false;
                     if(this.moduleAuthority.payment){
@@ -238,8 +218,7 @@ export class DocbookingVisitComponent{
                     }
                 }
             }).catch((data) => {
-                const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-                this.toastService.toast(toastCfg);
+                this._message.error('服务器错误');
             });
         }
     }
@@ -264,8 +243,7 @@ export class DocbookingVisitComponent{
         this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
@@ -282,8 +260,7 @@ export class DocbookingVisitComponent{
                 this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
 			}
 		}).catch((data) => {
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
 	}
 
@@ -298,39 +275,34 @@ export class DocbookingVisitComponent{
             blood_pressure: child.bloodPressure,
             head_circum:child.headCircum,
         }
-        this.modalAddInfo = true;
+        this.modalAddInfoTab = true;
     }
 
     closeInfo() {
-        this.modalAddInfo = false;
+        console.log(123);
+        this.modalAddInfoTab = false;
     }
 
     confirmInfo() {
         if(!this.adminService.isFalse(this.childInfo.height) && (parseFloat(this.childInfo.height) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '身高应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('身高应大于0');
         }
         if(!this.adminService.isFalse(this.childInfo.weight) && (parseFloat(this.childInfo.weight) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '体重应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('体重应大于0');
         }
         if(!this.adminService.isFalse(this.childInfo.body_temperature) && (parseFloat(this.childInfo.body_temperature) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '体温应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('体温应大于0');
         }
         if(!this.adminService.isFalse(this.childInfo.breathe) && (parseFloat(this.childInfo.breathe) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '呼吸应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('呼吸应大于0');
         }
         if(!this.adminService.isFalse(this.childInfo.blood_pressure) && (parseFloat(this.childInfo.blood_pressure) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '血压应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('血压应大于0');
         }
         if(!this.adminService.isFalse(this.childInfo.head_circum) && (parseFloat(this.childInfo.head_circum) <= 0)){
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '头围应大于0', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('头围应大于0');
         }
-        this.modalAddInfo = false;
+        this.modalAddInfoTab = false;
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
@@ -344,16 +316,13 @@ export class DocbookingVisitComponent{
         }
         this.adminService.childinfo(this.childInfo.child_id, params).then((data) => {
             if(data.status == 'no'){
-                const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-                this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
             }else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '完善信息成功', 3000);
-				this.toastService.toast(toastCfg);
+                this._message.success('完善信息成功');
                 this.getData();
             }
         }).catch((data) => {
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
     }
 }

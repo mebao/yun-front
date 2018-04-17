@@ -1,117 +1,120 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-doctor-visit">
 	<top-bar [data]="topBar"></top-bar>
-	<div>
-		<div class="flex pure-form search-tab max mt2">
-			<div class="flex-1"></div>
-			<div class="pure-control-group mr10 flex">
-				<label for="cdate_big">预约时间：</label>
-				<select-date title="请选择日期" [dateText]="searchInfo.duty_text" [endDate]="searchInfo.today_num" (onVoted)="changeDate($event)"></select-date>
+	<div nz-row class="mb10">
+		<div nz-col [nzSpan]="6" [nzOffset]="18">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="9" class="text-right">
+					<label>预约时间：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="15">
+					<nz-datepicker (ngModelChange)="_bookingDate=$event; getData()"
+					[nzSize]="'large'" class="w100" [ngModel]="_bookingDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择预约日期'"></nz-datepicker>
+				</div>
 			</div>
 		</div>
-		<table *ngIf="visitList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th class="w70p"></th>
-					<th>坐诊医生</th>
-                    <th>就诊宝宝</th>
-					<th>就诊状态</th>
-					<th>就诊时长</th>
-					<th>待接诊列表</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let visit of visitList; let index=index;">
-                    <td>
-                        <div class="img-tab-default">
-							<img src="{{(!visit.imageUrl || visit.imageUrl == '') ? '../assets/images/img.png' : visit.imageUrl}}">
-						</div>
-                    </td>
-					<td>{{visit.doctorName}}</td>
-					<td>{{visit.visitChildName}}</td>
-					<td>
-						<button *ngIf="!visit.visitChildName" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button pure-button-primary">开始接诊</button>
-						<button *ngIf="visit.visitChildName" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" class="pure-button button-error">结束接诊</button>
-					</td>
-					<td>{{visit.visitTime}}</td>
-					<td>
-						<div *ngIf="visit.visitChildName">
-							结束就诊后，可接诊下一位。
-						</div>
-						<div class="radio-tab" [ngClass]="{'disabled': visit.visitChildName}">
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="visitList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th class="w70p"></th>
+				<th>坐诊医生</th>
+				<th>就诊宝宝</th>
+				<th>就诊状态</th>
+				<th>就诊时长</th>
+				<th>待接诊列表</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<tr *ngFor="let visit of visitList; let index=index;">
+				<td>
+					<div class="img-tab-default">
+						<img src="{{(!visit.imageUrl || visit.imageUrl == '') ? '../assets/images/img.png' : visit.imageUrl}}">
+					</div>
+				</td>
+				<td>{{visit.doctorName}}</td>
+				<td>{{visit.visitChildName}}</td>
+				<td>
+					<button *ngIf="!visit.visitChildName" (click)="receive(visit, 'begin')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" nz-button [nzType]="'primary'" [nzSize]="'large'">开始接诊</button>
+					<button *ngIf="visit.visitChildName" (click)="receive(visit, 'end')" [disabled]="!(visit.selected && visit.selected != '') || canEdit" nz-button [nzType]="'primary'" [nzSize]="'large'">结束接诊</button>
+				</td>
+				<td>{{visit.visitTime}}</td>
+				<td>
+					<div *ngIf="visit.visitChildName">
+						结束就诊后，可接诊下一位。
+					</div>
+					<div class="radio-tab" [ngClass]="{'disabled': visit.visitChildName}">
+						<nz-radio-group [(ngModel)]="visit.selected" [nzSize]="'large'">
 							<ng-container *ngFor="let child of visit.doctorChilds">
-								<div class="flex mb5">
-									<div class="flex item pt10 pb5" (click)="changeVisit(child.serviceId, index, visit.visitChildName)" [ngClass]="{'active': visit.selected == child.serviceId}">
-										<div class="icon"></div>
-										<div class="info pl10 w210p">
-											{{child.time}}-{{child.childName}}
-										</div>
+								<div class="flex mb10">
+									<div class="flex item" (click)="changeVisit(child.serviceId, index, visit.visitChildName)">
+										<label nz-radio [nzValue]="child.serviceId">
+									        <span>{{child.time}}-{{child.childName}}</span>
+								      	</label>
 									</div>
 									<div class="flex-1 pl20">
-										<button (click)="addInfo(child)" class="pure-button pure-button-primary button-xsmall mt8">完善信息</button>
+										<button (click)="addInfo(child)" nz-button [nzType]="'primary'" [nzSize]="'small'">完善信息</button>
 									</div>
 								</div>
 							</ng-container>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && visitList.length == 0" class="mt10">
-			<nodata title="未查询到就诊信息"></nodata>
-		</div>
-	</div>
+						</nz-radio-group>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</nz-table>
 </div>
-<div class="modal" *ngIf="modalTabAgain">
-	<div class="modal-mask"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			该患者就诊结束，是否去收费？
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeAgain()" class="pure-button">取消</button>
-			<button (click)="confirmType()" class="pure-button pure-button-primary">去收费</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalAddInfo">
-	<div class="modal-mask" (click)="closeInfo()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			<div class="pure-form">
-				<div class="pure-control-group mt5">
-					<label for="height">身高：</label>
-					<input type="number" name="height" step="0.01" [(ngModel)]="childInfo.height"> cm
-				</div>
-				<div class="pure-control-group mt5">
-					<label for="weight">体重：</label>
-					<input type="number" name="weight" step="0.01" [(ngModel)]="childInfo.weight"> kg
-				</div>
-				<div class="pure-control-group mt5">
-					<label for="body_temperature">体温：</label>
-					<input type="number" name="body_temperature" step="0.01" [(ngModel)]="childInfo.body_temperature"> ℃
-				</div>
-				<div class="pure-control-group mt5">
-					<label for="head_circum">头围：</label>
-					<input type="number" name="head_circum" step="0.01" [(ngModel)]="childInfo.head_circum"> cm
-				</div>
-				<!-- <div class="pure-control-group mt5">
-					<label for="breathe">呼吸：</label>
-					<input type="number" name="breathe" step="0.01" [(ngModel)]="childInfo.breathe">
-				</div>
-				<div class="pure-control-group mt5">
-					<label for="blood_pressure">血压：</label>
-					<input type="number" name="blood_pressure" step="0.01" [(ngModel)]="childInfo.blood_pressure">
-				</div> -->
+<nz-modal [nzVisible]="modalTabAgain" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="closeAgain()">
+	<ng-template #modalContent>
+    	<p>该患者就诊结束，是否去收费？</p>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeAgain()">取消</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmType()">去收费</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalAddInfoTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalAddInfo" [nzFooter]="footerAddInfo" (nzOnCancel)="closeInfo()">
+	<ng-template #modalAddInfo>
+		<div nz-form-item nz-row>
+			<div nz-form-label nz-col [nzSpan]="4" class="text-right">
+				<label>身高：</label>
 			</div>
+			<div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-number class="w100" [(ngModel)]="childInfo.height" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入身高'"></nz-input-number>
+			</div>
+			<div nz-col [nzSpan]="7" [nzOffset]="1">cm</div>
 		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeInfo()" class="pure-button">取消</button>
-			<button (click)="confirmInfo()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		<div nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="4" class="text-right">
+				<label>体重：</label>
+			</div>
+			<div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-number class="w100" [(ngModel)]="childInfo.weight" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入体重'"></nz-input-number>
+			</div>
+			<div nz-col [nzSpan]="7" [nzOffset]="1">kg</div>
 		</div>
-	</div>
-</div>
-<nll-toast-box></nll-toast-box>
+		<div nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="4" class="text-right">
+				<label>体温：</label>
+			</div>
+			<div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-number class="w100" [(ngModel)]="childInfo.body_temperature" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入体温'"></nz-input-number>
+			</div>
+			<div nz-col [nzSpan]="7" [nzOffset]="1">℃</div>
+		</div>
+		<div nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="4" class="text-right">
+				<label>头围：</label>
+			</div>
+			<div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-number class="w100" [(ngModel)]="childInfo.head_circum" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入头围'"></nz-input-number>
+			</div>
+			<div nz-col [nzSpan]="7" [nzOffset]="1">cm</div>
+		</div>
+	</ng-template>
+	<ng-template #footerAddInfo>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeInfo()">取消</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmInfo()">确认</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

@@ -7,57 +7,69 @@
 		<button (click)="backBookingFee()" *ngIf="booking.status == '2'" class="pure-button button-error" [disabled]="btnCanEdit">{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}</button>
 		<button (click)="cancel('status')" *ngIf="booking.status == '3'" class="pure-button button-error" [disabled]="btnCanEdit">取消登记</button>
 	</div>
-	<div class="tab">
-		<div class="item flex">
-			<label>家长姓名：</label>
-			<div class="info">{{booking.creatorName}}</div>
-		</div>
-		<div class="item flex">
-			<label>宝宝姓名：</label>
-			<div class="info">{{booking.childName}}</div>
-		</div>
-		<div class="item flex">
-			<label>年龄：</label>
-			<div class="info">{{booking.age}}</div>
-		</div>
-		<div class="item flex">
-			<label>状态：</label>
-			<div class="info">{{booking.statusText}}</div>
-		</div>
-		<div class="item flex">
-			<label>预约金支付时间：</label>
-			<div class="info">{{booking.yyj.time}}</div>
-		</div>
-		<div class="item flex">
-			<label>推荐人：</label>
-			<div class="info">{{booking.refereeName}}</div>
-		</div>
-		<div class="item flex">
-			<label>备注：</label>
-			<div class="info">{{booking.remark}}</div>
-		</div>
-		<div class="item flex">
-			<div class="info flex-1">
-				<table class="pure-table w100">
-					<thead>
-						<tr>
-							<th>预约科室</th>
-							<th>预约医生</th>
-							<th>预约日期</th>
-							<th>预约时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let service of booking.services; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-							<td>{{service.serviceName}}</td>
-							<td>{{service.userDoctorName}}</td>
-							<td>{{service.serviceDate}}</td>
-							<td>{{service.serviceTime}}</td>
-						</tr>
-					</tbody>
-				</table>
+	<nz-card class="w100">
+		<ng-template #title>
+			预约详情
+		</ng-template>
+		<ng-template #body>
+			<div nz-row [nzGutter]="30">
+				<div nz-col [nzSpan]="8">
+					家长姓名：{{booking.creatorName}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					宝宝姓名：{{booking.childName}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					年龄：{{booking.age}}
+				</div>
 			</div>
-		</div>
+			<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					性别：{{booking.genderText}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					预约科室：{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					预约医生：{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}
+				</div>
+			</div>
+			<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					预约日期：{{booking.services.length > 0 ? booking.services[0].serviceDate : ''}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					预约时间：{{booking.services.length > 0 ? booking.services[0].serviceTime : ''}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					状态：{{booking.statusText}}
+				</div>
+			</div>
+			<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					就诊开始时间：{{booking.services.length > 0 ? booking.services[0].begin : ''}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					就诊结束时间：{{booking.services.length > 0 ? booking.services[0].end : ''}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					就诊时间：{{booking.services.length > 0 ? booking.services[0].mins : ''}}
+				</div>
+			</div>
+			<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					预约金支付时间：{{booking.yyj.time}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					推荐人：{{booking.refereeName}}
+				</div>
+				<div nz-col [nzSpan]="8">
+					备注：{{booking.remark}}
+				</div>
+			</div>
+		</ng-template>
+	</nz-card>
+	<div class="tab">
 		<div class="item flex">
 			<div class="info flex-1">
 				<table class="pure-table w100">

@@ -449,6 +449,24 @@ export class BookingListComponent implements OnInit{
 				var todayTime = new Date(this.adminService.getDayByDate(new Date())).getTime();
 				if(type == 'week'){
 					var weekbooks = JSON.parse(JSON.stringify(data.results)).weekbooks;
+					// 时间格式变更
+					if(weekbooks.length > 0){
+						for(var k = 0; k < weekbooks.length; k++){
+							if(weekbooks[k].services.length > 0){
+								if(weekbooks[k].services[0].begin){
+									weekbooks[k].services[0].begin = weekbooks[k].services[0].begin.replace('-', '年');
+									weekbooks[k].services[0].begin = weekbooks[k].services[0].begin.replace('-', '月');
+									weekbooks[k].services[0].begin = weekbooks[k].services[0].begin.replace(' ', '日 ');
+								}
+								if(weekbooks[k].services[0].end){
+									weekbooks[k].services[0].end = weekbooks[k].services[0].end.replace('-', '年');
+									weekbooks[k].services[0].end = weekbooks[k].services[0].end.replace('-', '月');
+									weekbooks[k].services[0].end = weekbooks[k].services[0].end.replace(' ', '日 ');
+								}
+							}
+						}
+					}
+
 					var weekArray = this.adminService.getWeekByNumber(this.weekNum);
 					//weeklist
 					var weeklist = new Array();
@@ -566,6 +584,20 @@ export class BookingListComponent implements OnInit{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.weekbooks.length > 0){
 						for(var i = 0; i < results.weekbooks.length; i++){
+							// 时间格式变更
+							if(results.weekbooks[i].services.length > 0){
+								if(results.weekbooks[i].services[0].begin){
+									results.weekbooks[i].services[0].begin = results.weekbooks[i].services[0].begin.replace('-', '年');
+									results.weekbooks[i].services[0].begin = results.weekbooks[i].services[0].begin.replace('-', '月');
+									results.weekbooks[i].services[0].begin = results.weekbooks[i].services[0].begin.replace(' ', '日 ');
+								}
+								if(results.weekbooks[i].services[0].end){
+									results.weekbooks[i].services[0].end = results.weekbooks[i].services[0].end.replace('-', '年');
+									results.weekbooks[i].services[0].end = results.weekbooks[i].services[0].end.replace('-', '月');
+									results.weekbooks[i].services[0].end = results.weekbooks[i].services[0].end.replace(' ', '日 ');
+								}
+							}
+
 							if((new Date(this.adminService.dateFormatHasWord(results.weekbooks[i].bookingDate)).getTime()) < todayTime){
 								results.weekbooks[i].use = false;
 							}else{
