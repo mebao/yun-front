@@ -89,8 +89,6 @@ export class DocbookingVisitComponent{
             }
 		}
 
-		this.loadingShow = true;
-
         this.url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
              + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -120,6 +118,7 @@ export class DocbookingVisitComponent{
     }
 
     getData() {
+        this.loadingShow = true;
         var url = this.url + '&duty=' + this.adminService.getDayByDate(new Date(this._bookingDate));
         if(this.moduleAuthority.personal && !this.moduleAuthority.see){
             url += '&myself=1';

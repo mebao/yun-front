@@ -1,34 +1,29 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-clinicroom">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="">
-		<button *ngIf="moduleAuthority.edit" (click)="add()" class="pure-button pure-button-primary">新增检查项目</button>
+	<div *ngIf="moduleAuthority.edit" class="mb10">
+		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增检查项目</button>
 	</div>
-	<div>
-		<table *ngIf="projectlist.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th>项目名</th>
-					<th>项目价格</th>
-					<th>状态</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let project of projectlist">
-					<td>{{project.name}}</td>
-					<td>{{project.price}}</td>
-					<td>{{project.canUse == '1' ? '可用' : '停用'}}</td>
-					<td>
-						<button *ngIf="moduleAuthority.edit" (click)="update(project)" class="pure-button pure-button-primary">修改</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && projectlist.length == 0" class="mt10">
-			<nodata title="未查询到检查项目"></nodata>
-		</div>
-	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="projectlist" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th nz-th>项目名</th>
+				<th nz-th>项目价格</th>
+				<th nz-th>状态</th>
+				<th nz-th>操作</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<tr nz-tbody-tr *ngFor="let project of projectlist">
+				<td nz-tbody-td>{{project.name}}</td>
+				<td nz-tbody-td>{{project.price}}</td>
+				<td nz-tbody-td>{{project.canUse == '1' ? '可用' : '停用'}}</td>
+				<td nz-tbody-td>
+					<button *ngIf="moduleAuthority.edit" (click)="update(project)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+				</td>
+			</tr>
+		</tbody>
+	</nz-table>
 </div>
 <modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>
