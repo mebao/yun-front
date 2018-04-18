@@ -1,6 +1,8 @@
 import { Component }                                from '@angular/core';
 import { Router }                                   from '@angular/router';
 
+import { NzMessageService }                         from 'ng-zorro-antd';
+
 import { AdminService }                             from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class AssistListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
     // 权限
     moduleAuthority: {
@@ -35,6 +32,7 @@ export class AssistListComponent{
     }
 
     constructor(
+        private _message: NzMessageService,
         public adminService: AdminService,
         private router: Router,
     ) {}
@@ -43,11 +41,6 @@ export class AssistListComponent{
 		this.topBar = {
 			title: '辅助治疗列表',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -80,12 +73,14 @@ export class AssistListComponent{
 		}else{
 			this.adminService.clinicdata().then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+                    this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this._message.error('服务器错误');
+            });
 		}
 
         if(JSON.parse(sessionStorage.getItem('search-assistList'))){
@@ -134,13 +129,16 @@ export class AssistListComponent{
         this.adminService.searchassist(urlOpltions).then((data) => {
             if(data.status == 'no'){
 		        this.loadingShow = false;
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.assistList = results.list;
                 this.hasData = true;
 		        this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            this._message.error('服务器错误');
         });
     }
 
@@ -166,26 +164,13 @@ export class AssistListComponent{
 
         this.adminService.clinicassist(params).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
-                this.toastTab('状态修改成功', '');
+                this._message.success('状态修改成功');
                 this.search();
             }
+        }).catch(() => {
+            this._message.error('服务器错误');
         });
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }
