@@ -35,14 +35,14 @@
 		<div class="flex mt10">
 			<div class="flex-1">检查项目费用</div>
 			<div class="flex-1">{{fee.feeInfo.checkOriginalFee}}</div>
-			<div class="flex-1">药方药品费用</div>
+			<div class="flex-1">西/中成药费用</div>
 			<div class="flex-1">{{fee.feeInfo.medicalOriginalFee}}</div>
 		</div>
 		<div class="flex mt10">
+			<div class="flex-1">中药药方费用</div>
+			<div class="flex-1">{{fee.feeInfo.tcmOriginalFee}}</div>
 			<div class="flex-1">其他费用</div>
 			<div class="flex-1">{{fee.feeInfo.otherOriginalFee}}</div>
-			<div class="flex-1"></div>
-			<div class="flex-1"></div>
 		</div>
 		<div class="mb20 mt40">费用明细</div>
 		<div class="flex detail">
@@ -57,7 +57,7 @@
 		<div class="detail-item">
 			<div class="flex" *ngFor="let service of fee.feeInfo.serviceFeeList">
 				<div class="w20">{{service.projectName}}-{{service.serviceName}}</div>
-				<div class="w10">{{service.fee}}</div>
+				<div class="w10">{{service.price}}</div>
 				<div class="w5">{{service.number}}</div>
 				<div class="w15">{{service.originalServiceFee}}</div>
 				<div class="w15">
@@ -121,6 +121,22 @@
 					<div class="w15">{{info.medicalFee}}</div>
 				</div>
 			</ng-container>
+			<div class="flex" *ngFor="let tcm of fee.feeInfo.tcmFeeList">
+				<div class="w20">{{tcm.projectName}}</div>
+				<div class="w10">{{tcm.price}}</div>
+				<div class="w5">{{tcm.number}}</div>
+				<div class="w15">{{tcm.originalCheckFee}}</div>
+				<div class="w15">
+					<ng-container *ngIf="dataCode == '0'">
+						{{tcm.tcmDiscount}}
+					</ng-container>
+					<ng-container *ngIf="dataCode == '1'">
+						{{tcm.tcmDiscountFee}}
+					</ng-container>
+				</div>
+				<div class="w20"></div>
+				<div class="w15">{{tcm.tcmFee}}</div>
+			</div>
 			<div class="flex" *ngFor="let other of fee.feeInfo.otherFeeList">
 				<div class="w20">{{other.projectName}}</div>
 				<div class="w10">{{other.price}}</div>

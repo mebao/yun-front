@@ -573,6 +573,16 @@ export class DocbookingComponent implements OnInit{
 							}
 						}
 					}
+					// fees中fee为折扣费用，需计算实际费用
+					if(results.weekbooks[0].fees.length > 0){
+						for(var index in results.weekbooks[0].fees){
+							if(results.weekbooks[0].fees[index].number != null){
+								results.weekbooks[0].fees[index].originFee = this.adminService.toDecimal2(parseFloat(results.weekbooks[0].fees[index].number) * parseFloat(results.weekbooks[0].fees[index].price));
+							}else{
+								results.weekbooks[0].fees[index].originFee = results.weekbooks[0].fees[index].fee;
+							}
+						}
+					}
 					this.booking = results.weekbooks[0];
 					var fees = results.weekbooks[0].fees;
 					var total = 0;

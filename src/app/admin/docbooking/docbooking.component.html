@@ -803,7 +803,7 @@
 								</td>
 								<td>
 									<!-- 展示 -->
-									<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.fee}}</div>
+									<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.originFee}}</div>
 									<!-- 编辑 -->
 									<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 										<input type="number" step="0.01" name="fee" #fee="ngModel" [(ngModel)]="addFeeInfo.fee" placeholder="请输入费用" required="" [disabled]="addFeeInfo.editType == 'update'" class="w100">

@@ -77,6 +77,10 @@ export class PaymentPrintComponent{
 			medicalOriginalFee: string,
 			medicalDiscount: string,
 			medicalFee: string,
+			tcmFeeList: any[],
+			tcmOriginalFee: string,
+			tcmDiscount: string,
+			tcmFee: string,
 			otherFeeList: any[],
 			otherOriginalFee: string,
 			otherDiscount: string,
@@ -96,6 +100,7 @@ export class PaymentPrintComponent{
 		assists: any[],
 		check: string,
 		prescript: string,
+		tcm: string,
 		other: string,
 	}
 	modalTab: boolean;
@@ -111,6 +116,7 @@ export class PaymentPrintComponent{
 		assist: any[],
 		check: any[],
 		medical: any[],
+		tcm: any[],
 		other: any[],
 	}
 	// 折扣方式
@@ -176,6 +182,10 @@ export class PaymentPrintComponent{
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
+				tcmFeeList: [],
+				tcmOriginalFee: '',
+				tcmDiscount: '',
+				tcmFee: '',
 				otherFeeList: [],
 				otherOriginalFee: '',
 				otherDiscount: '',
@@ -195,6 +205,7 @@ export class PaymentPrintComponent{
 			assists: [],
 			check: '100',
 			prescript: '100',
+			tcm: '100',
 			other: '100',
 		}
 
@@ -215,6 +226,7 @@ export class PaymentPrintComponent{
 			assist: [],
 			check: [],
 			medical: [],
+			tcm: [],
 			other: [],
 		}
 
@@ -303,6 +315,7 @@ export class PaymentPrintComponent{
 										assists: [],
 										check: '1',
 										prescript: '1',
+										tcm: '1',
 										other: '1',
 									}
 									//计算折扣后的费用信息
@@ -469,6 +482,10 @@ export class PaymentPrintComponent{
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
+				tcmFeeList: results.feeinfo['中药药方费用'],
+				tcmOriginalFee: '',
+				tcmDiscount: '',
+				tcmFee: '',
 				otherFeeList: results.feeinfo['其他费用'],
 				otherOriginalFee: '',
 				otherDiscount: '',
@@ -513,6 +530,10 @@ export class PaymentPrintComponent{
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
+				tcmFeeList: results.feeinfo['中药药方费用'],
+				tcmOriginalFee: '',
+				tcmDiscount: '',
+				tcmFee: '',
 				otherFeeList: results.feeinfo['其他费用'],
 				otherOriginalFee: '',
 				otherDiscount: '',
@@ -549,12 +570,12 @@ export class PaymentPrintComponent{
 						this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.userMember.service;
 					}
 				}
-				var fee_service = parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;
+				var fee_service = parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;
 				serviceFee += fee_service;
-				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].fee);
+				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].number);
 
 				this.fee.feeInfo.serviceFeeList[i].serviceFee = this.adminService.toDecimal2(fee_service);
-				this.fee.feeInfo.serviceFeeList[i].originalServiceFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].fee));
+				this.fee.feeInfo.serviceFeeList[i].originalServiceFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].number));
 				this.fee.feeInfo.serviceFeeList[i].serviceDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].originalServiceFee) - parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceFee));
 			}
 		}
@@ -583,12 +604,12 @@ export class PaymentPrintComponent{
 						this.fee.feeInfo.assistFeeList[i].assistDiscount = this.userMember.assist;
 					}
 				}
-				var fee_assist = parseFloat(this.fee.feeInfo.assistFeeList[i].fee) * parseFloat(this.fee.feeInfo.assistFeeList[i].assistDiscount) / 100;
+				var fee_assist = parseFloat(this.fee.feeInfo.assistFeeList[i].price) * parseFloat(this.fee.feeInfo.assistFeeList[i].number) * parseFloat(this.fee.feeInfo.assistFeeList[i].assistDiscount) / 100;
 				assistFee += fee_assist;
-				originalAssistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].fee);
+				originalAssistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].price) * parseFloat(this.fee.feeInfo.assistFeeList[i].number);
 
 				this.fee.feeInfo.assistFeeList[i].assistFee = this.adminService.toDecimal2(fee_assist);
-				this.fee.feeInfo.assistFeeList[i].originalAssistFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.assistFeeList[i].fee));
+				this.fee.feeInfo.assistFeeList[i].originalAssistFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.assistFeeList[i].price) * parseFloat(this.fee.feeInfo.assistFeeList[i].number));
 				this.fee.feeInfo.assistFeeList[i].assistDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.assistFeeList[i].originalAssistFee) - parseFloat(this.fee.feeInfo.assistFeeList[i].assistFee));
 			}
 		}
@@ -614,12 +635,12 @@ export class PaymentPrintComponent{
 						this.fee.feeInfo.checkFeeList[i].checkDiscount = this.userMember.check;
 					}
 				}
-				var fee_check = parseFloat(this.fee.feeInfo.checkFeeList[i].fee) * parseFloat(this.fee.feeInfo.checkFeeList[i].checkDiscount) / 100;
+				var fee_check = parseFloat(this.fee.feeInfo.checkFeeList[i].price) * parseFloat(this.fee.feeInfo.checkFeeList[i].number) * parseFloat(this.fee.feeInfo.checkFeeList[i].checkDiscount) / 100;
 				checkFee += fee_check;
-				originalCheckFee += parseFloat(this.fee.feeInfo.checkFeeList[i].fee);
+				originalCheckFee += parseFloat(this.fee.feeInfo.checkFeeList[i].price) * parseFloat(this.fee.feeInfo.checkFeeList[i].number);
 
 				this.fee.feeInfo.checkFeeList[i].checkFee = this.adminService.toDecimal2(fee_check);
-				this.fee.feeInfo.checkFeeList[i].originalCheckFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.checkFeeList[i].fee));
+				this.fee.feeInfo.checkFeeList[i].originalCheckFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.checkFeeList[i].price) * parseFloat(this.fee.feeInfo.checkFeeList[i].number));
 				this.fee.feeInfo.checkFeeList[i].checkDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.checkFeeList[i].originalCheckFee) - parseFloat(this.fee.feeInfo.checkFeeList[i].checkFee));
 			}
 		}
@@ -671,6 +692,37 @@ export class PaymentPrintComponent{
 		this.fee.feeInfo.medicalFee = this.adminService.toDecimal2(medicalFee);
 		this.fee.feeInfo.medicalOriginalFee = this.adminService.toDecimal2(originalMedicalFee);
 		this.fee.feeInfo.medicalDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalOriginalFee) - parseFloat(this.fee.feeInfo.medicalFee));
+		//中药
+		var tcmFee = 0;
+		var originalTcmFee = 0;
+		if(this.fee.feeInfo.tcmFeeList.length > 0){
+			for(var i = 0; i < this.fee.feeInfo.tcmFeeList.length; i++){
+				// 支付时的其他折扣
+				if(this.discount_info.tcm.length > 0){
+					for(var index in this.discount_info.tcm){
+						if(this.fee.feeInfo.tcmFeeList[i].id == this.discount_info.tcm[index].id){
+							this.fee.feeInfo.tcmFeeList[i].tcmDiscount = this.discount_info.tcm[index].discount;
+						}
+					}
+				}else{
+					if(this.adminService.isFalse(this.fee.feeInfo.tcmFeeList[i].tcmDiscount)){
+						this.fee.feeInfo.tcmFeeList[i].tcmDiscount = this.userMember.tcm;
+					}
+				}
+				var fee_tcm = parseFloat(this.fee.feeInfo.tcmFeeList[i].price) * parseFloat(this.fee.feeInfo.tcmFeeList[i].number) * parseFloat(this.fee.feeInfo.tcmFeeList[i].tcmDiscount) / 100;
+				tcmFee += fee_tcm;
+				originalTcmFee += parseFloat(this.fee.feeInfo.tcmFeeList[i].price) * parseFloat(this.fee.feeInfo.tcmFeeList[i].number);
+
+				this.fee.feeInfo.tcmFeeList[i].tcmFee = this.adminService.toDecimal2(fee_tcm);
+				this.fee.feeInfo.tcmFeeList[i].originalTcmFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.tcmFeeList[i].price) * parseFloat(this.fee.feeInfo.tcmFeeList[i].number));
+				this.fee.feeInfo.tcmFeeList[i].tcmDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.tcmFeeList[i].originalTcmFee) - parseFloat(this.fee.feeInfo.tcmFeeList[i].tcmFee));
+			}
+		}
+		fee += parseFloat(this.adminService.toDecimal2(tcmFee));
+		originalCost += parseFloat(this.adminService.toDecimal2(originalTcmFee));
+		this.fee.feeInfo.tcmFee = this.adminService.toDecimal2(tcmFee);
+		this.fee.feeInfo.tcmOriginalFee = this.adminService.toDecimal2(originalTcmFee);
+		this.fee.feeInfo.tcmDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.tcmOriginalFee) - parseFloat(this.fee.feeInfo.tcmFee));
 		//其他
 		var otherFee = 0;
 		var originalOtherFee = 0;
@@ -688,12 +740,12 @@ export class PaymentPrintComponent{
 						this.fee.feeInfo.otherFeeList[i].otherDiscount = this.userMember.other;
 					}
 				}
-				var fee_other = parseFloat(this.fee.feeInfo.otherFeeList[i].fee) * parseFloat(this.fee.feeInfo.otherFeeList[i].otherDiscount) / 100;
+				var fee_other = parseFloat(this.fee.feeInfo.otherFeeList[i].price) * parseFloat(this.fee.feeInfo.otherFeeList[i].number) * parseFloat(this.fee.feeInfo.otherFeeList[i].otherDiscount) / 100;
 				otherFee += fee_other;
-				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].fee);
+				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].price) * parseFloat(this.fee.feeInfo.otherFeeList[i].number);
 
 				this.fee.feeInfo.otherFeeList[i].otherFee = this.adminService.toDecimal2(fee_other);
-				this.fee.feeInfo.otherFeeList[i].originalOtherFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].fee));
+				this.fee.feeInfo.otherFeeList[i].originalOtherFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].price) * parseFloat(this.fee.feeInfo.otherFeeList[i].number));
 				this.fee.feeInfo.otherFeeList[i].otherDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherFeeList[i].originalOtherFee) - parseFloat(this.fee.feeInfo.otherFeeList[i].otherFee));
 			}
 		}
@@ -710,6 +762,8 @@ export class PaymentPrintComponent{
 
 		this.fee.fee = this.adminService.toDecimal2(fee);
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
+
+		console.log(this.fee);
 	}
 
 	getFeeInfoFirst(userMember, results) {
@@ -763,6 +817,10 @@ export class PaymentPrintComponent{
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
+				tcmFeeList: results.feeinfo['中药药方费用'],
+				tcmOriginalFee: '',
+				tcmDiscount: '',
+				tcmFee: '',
 				otherFeeList: results.feeinfo['其他费用'],
 				otherOriginalFee: '',
 				otherDiscount: '',

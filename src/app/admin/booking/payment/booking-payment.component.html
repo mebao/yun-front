@@ -69,7 +69,7 @@
 							<tbody>
 								<tr *ngFor="let service of fee.feeInfo.serviceFeeList; let index=index;">
 									<td>{{service.serviceName}}</td>
-									<td>{{service.fee}}</td>
+									<td>{{service.originalFee}}</td>
 									<td>
 										<div class="text-lg">{{service.remark}}</div>
 									</td>
@@ -210,7 +210,7 @@
 									<td>{{assist.projectName}}</td>
 									<td>{{assist.price}}</td>
 									<td>{{assist.number}}</td>
-									<td>{{assist.fee}}</td>
+									<td>{{assist.originalFee}}</td>
 									<td>
 										<div class="text-lg">{{assist.remark}}</div>
 									</td>
@@ -329,7 +329,7 @@
 							<tbody>
 								<tr *ngFor="let check of fee.feeInfo.checkFeeList; let index=index;">
 									<td>{{check.projectName}}</td>
-									<td>{{check.fee}}</td>
+									<td>{{check.originalFee}}</td>
 									<td>
 										<div class="text-lg">{{check.remark}}</div>
 									</td>
@@ -428,7 +428,7 @@
 					</div>
 				</div>
 				<div *ngIf="fee.feeInfo.medicalFeeList.length > 0" class="section">
-					<div class="title">药方药品费用</div>
+					<div class="title">西/中成药费用</div>
 					<div class="pad10">
 						<table class="pure-table pure-table-horizontal table-tab w100">
 							<thead>
@@ -552,6 +552,125 @@
 						</table>
 					</div>
 				</div>
+				<div *ngIf="fee.feeInfo.tcmFeeList.length" class="section">
+					<div class="title">中药药方费用</div>
+					<div class="pad10">
+						<table class="pure-table pure-table-horizontal table-tab w100">
+							<thead>
+								<tr>
+									<th>检查</th>
+									<th>总价</th>
+									<th class="width-lg">备注</th>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
+										<th>折扣</th>
+										<th>折后金额</th>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<th>金额</th>
+									</ng-container>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let tcm of fee.feeInfo.tcmFeeList; let index=index;">
+									<td>{{tcm.projectName}}</td>
+									<td>{{tcm.originalFee}}</td>
+									<td>
+										<div class="text-lg">{{tcm.remark}}</div>
+									</td>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
+										<td>
+											<span *ngIf="editMemberType != 'update'">{{tcm.tcmDiscount}}%</span>
+											<div *ngIf="editMemberType == 'update'" class="flex">
+												<input type="number" name="tcm_{{index}}" [(ngModel)]="tcm.tcmDiscount" (change)="changeDiscount(tcm.tcmDiscount, tcm.projectName)" class="flex-1 w100">
+												<div class="pt5">%</div>
+											</div>
+										</td>
+										<td>{{tcm.tcmFee}}</td>
+									</ng-container>
+									<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<td>{{tcm.tcmFee}}</td>
+									</ng-container>
+								</tr>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '30'">
+									<tr>
+										<td colspan="5">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.tcmOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.tcmOriginalFee != fee.feeInfo.tcmDiscount">
+										<tr>
+											<td colspan="5">
+												<div class="flex">
+													<div class="flex-1 text-right">折扣金额：</div>
+													<div class="w100p">{{fee.feeInfo.tcmDiscount}}</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="5">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.tcmFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+									<tr>
+										<td colspan="4">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.tcmOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.tcmOriginalFee != fee.feeInfo.tcmDiscount">
+										<tr>
+											<td colspan="4">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.tcmFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="dataCode == '0'">
+									<tr>
+										<td colspan="3">
+											<div class="flex">
+												<div class="flex-1 text-right">费用合计：</div>
+												<div class="w100p">{{fee.feeInfo.tcmOriginalFee}}</div>
+											</div>
+										</td>
+									</tr>
+									<ng-container *ngIf="fee.feeInfo.tcmOriginalFee != fee.feeInfo.tcmDiscount">
+										<tr>
+											<td colspan="3">
+												<div class="flex">
+													<div class="flex-1 text-right">折扣金额：</div>
+													<div class="w100p">{{fee.feeInfo.tcmDiscount}}</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<div class="flex">
+													<div class="flex-1 text-right">应收费用：</div>
+													<div class="w100p">{{fee.feeInfo.tcmFee}}</div>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+								</ng-container>
+							</tbody>
+						</table>
+					</div>
+				</div>
 				<div *ngIf="fee.feeInfo.otherFeeList.length > 0" class="section">
 					<div class="title">其他费用</div>
 					<div class="pad10">
@@ -577,7 +696,7 @@
 									<td>{{other.projectName}}</td>
 									<td>{{other.price}}</td>
 									<td>{{other.number}}</td>
-									<td>{{other.fee}}</td>
+									<td>{{other.originalFee}}</td>
 									<td>
 										<div class="text-lg">{{other.remark}}</div>
 									</td>
