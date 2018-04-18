@@ -14,6 +14,8 @@ export class AdminService{
 	constructor(
 		private http: Http,
 	) {
+		sessionStorage.removeItem('userClinicRoles');
+		sessionStorage.removeItem('userClinicRolesInfos');
 		//初始化缓存数据
 		this.clinicdata().then((data) => {
 			if(data.status == 'no'){

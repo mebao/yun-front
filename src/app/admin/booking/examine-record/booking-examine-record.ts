@@ -32,7 +32,7 @@ export class BookingExamineRecord{
     recordList: any[];
     hasData: boolean;
 	moduleAuthority:  {
-		editAgain: boolean,
+		editHealthAgain: boolean,
 	}
 
     constructor(
@@ -49,7 +49,7 @@ export class BookingExamineRecord{
         var todayDate = this.adminService.getDayByDate(new Date());
 
 		this.moduleAuthority = {
-    		editAgain: false,
+    		editHealthAgain: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限

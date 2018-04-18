@@ -962,12 +962,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
-					if(results.list[0].info.length > 0){
-						for(var i = 0; i < results.list[0].info.length; i++){
-							results.list[0].info[i].oneNum = parseFloat(results.list[0].info[i].oneNum);
-						}
-					}
-
 					if(this.status != '5' && !results.list[0].apotId){
 						this.canUpdatePrescript = true;
 					}

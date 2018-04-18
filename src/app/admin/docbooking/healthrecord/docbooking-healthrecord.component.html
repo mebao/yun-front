@@ -374,7 +374,7 @@
 						<div *ngIf="pageType != 'history'">
 							<div class="text-right">
 								<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
-								<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine')" (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
+								<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')" (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
 							</div>
 						</div>
 						<div *ngIf="editType == 'view'">

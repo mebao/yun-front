@@ -160,25 +160,33 @@
 				<span>随访管理</span>
 			</span>
 		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.bookingExamineCase.use != ''"
-			routerLink="./bookingExamineCase"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('bookingExamineCase')">
+		<li nz-submenu *ngIf="clinicRole.bookingExamine.use != ''">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>病例审核</span>
+				<span>审核</span>
 			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.bookingExamineRecord.use != ''"
-			routerLink="./bookingExamineRecord"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('bookingExamineRecord')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>儿保记录审核</span>
-			</span>
+			<ul>
+				<li nz-menu-item
+					*ngIf="clinicRole.bookingExamine.twoLevel.seeCase.use != ''"
+					routerLink="./bookingExamineCase"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('bookingExamineCase')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>病例审核</span>
+					</span>
+				</li>
+				<li nz-menu-item
+					*ngIf="clinicRole.bookingExamine.twoLevel.seeHealth.use != ''"
+					routerLink="./bookingExamineHealth"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('bookingExamineHealth')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>儿保记录审核</span>
+					</span>
+				</li>
+			</ul>
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.childServiceList.use != ''"
@@ -577,7 +585,7 @@
 				随访管理
 		</a>
 	  	<a
-			*ngIf="clinicRole.bookingExamineCase.use != ''"
+			*ngIf="clinicRole.bookingExamine.use != ''"
 			routerLink="./bookingExamineCase"
 			routerLinkActive="active"
 			(click)="goPage('bookingExamineCase')">

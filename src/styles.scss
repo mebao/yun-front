@@ -1006,9 +1006,13 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 	}
 }
 
-// .admin-booking-list{
-// 	.img{
-// 		height:20px;
-// 		margin-top:10px;
-// 	}
-// }
+.admin-doctor-visit /deep/{
+	.ant-radio-inner{
+		width: 20px;
+		height: 20px;
+		&:after{
+			left: 6px;
+			top: 6px;
+		}
+	}
+}

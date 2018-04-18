@@ -205,15 +205,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
-		bookingExamineCase: {
+		bookingExamine: {
 			use: string,
 			authority: any[],
 			infos: any[],
-		},
-		bookingExamineRecord: {
-			use: string,
-			authority: any[],
-			infos: any[],
+			hasTwoLevel: boolean,
+			twoLevel: any,
 		},
 		message: {
 			use: string,
@@ -453,15 +450,19 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
-			bookingExamineCase: {
+			bookingExamine: {
 				use: '',
-				authority: ['see'],
+				authority: ['seeCase', 'seeHealth'],
 				infos: [],
-			},
-			bookingExamineRecord: {
-				use: '',
-				authority: ['see'],
-				infos: [],
+				hasTwoLevel: true,
+				twoLevel: {
+					seeCase: {
+						use: '',
+					},
+					seeHealth: {
+						use: '',
+					},
+				}
 			},
 			message: {
 				use: '',

@@ -230,7 +230,7 @@ export class LoginComponent{
 			infos: any[],
 		},
 		// 病例审核
-		bookingExamineCase: {
+		bookingExamine: {
 			use: string,
 			authority: any[],
 			url: string,
@@ -439,9 +439,9 @@ export class LoginComponent{
 				url: '/admin/givefeeList',
 				infos: [],
 			},
-			bookingExamineCase: {
+			bookingExamine: {
 				use: '',
-				authority: ['see'],
+				authority: ['seeCase'],
 				url: '/admin/bookingExamineCase',
 				infos: [],
 			}

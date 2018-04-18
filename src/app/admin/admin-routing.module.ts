@@ -155,7 +155,7 @@ const adminRoutes: Routes = [
 						loadChildren: './booking/examine-case/booking-examine-case.module#BookingExamineCaseModule',
 					},
 					{
-						path: 'bookingExamineRecord',
+						path: 'bookingExamineHealth',
 						loadChildren: './booking/examine-record/booking-examine-record.module#BookingExamineRecordModule',
 					},
 					{

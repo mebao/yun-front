@@ -1116,26 +1116,19 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
-						firstKey: 'bookingExamineCase',
+						firstKey: 'bookingExamine',
 						firstUrl: '',
 						authority: [],
 						second: [
 							{
 								url: '/admin/bookingExamineCase',
-								authority: 'see',
+								authority: 'seeCase',
 								queryType: '',
 								queryParams: '',
-							}
-						]
-					},
-					{
-						firstKey: 'bookingExamineRecord',
-						firstUrl: '',
-						authority: [],
-						second: [
+							},
 							{
-								url: '/admin/bookingExamineRecord',
-								authority: 'see',
+								url: '/admin/bookingExamineHealth',
+								authority: 'seeHealth',
 								queryType: '',
 								queryParams: '',
 							}
