@@ -1,6 +1,8 @@
 import { Component, OnInit }                         from '@angular/core';
 import { Router }                                    from '@angular/router';
 
+import { NzMessageService }                          from 'ng-zorro-antd';
+
 import { AdminService }                              from '../../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class PrescriptSaleListComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	// 权限
 	moduleAuthority: {
 		see: boolean,
@@ -27,15 +24,16 @@ export class PrescriptSaleListComponent{
 	}
 	loadingShow: boolean;
 	hasData: boolean;
-	list: any[];
+	saleList: any[];
 	url: string;
     searchInfo: {
         mobile: string,
-        day: string,
         admin_name: string,
     }
+	_date = null;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -44,11 +42,6 @@ export class PrescriptSaleListComponent{
 		this.topBar = {
 			title: '药方列表',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -74,12 +67,12 @@ export class PrescriptSaleListComponent{
 		this.loadingShow = false;
 
         this.hasData = false;
-        this.list = [];
+        this.saleList = [];
         this.searchInfo = {
             mobile: '',
-            day: '',
             admin_name: '',
         }
+		this._date = new Date();
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -94,9 +87,9 @@ export class PrescriptSaleListComponent{
 		if(this.searchInfo.mobile != ''){
 			urlOptions += ('&mobile=' + this.searchInfo.mobile);
 		}
-		if(this.searchInfo.day != ''){
-			urlOptions += ('&day=' + this.searchInfo.day);
-		}
+        if(this._date){
+            urlOptions += '&day=' + this.adminService.getDayByDate(new Date(this._date));
+        }
 		if(this.searchInfo.admin_name != ''){
 			urlOptions += ('&admin_name=' + this.searchInfo.admin_name);
 		}
@@ -107,7 +100,7 @@ export class PrescriptSaleListComponent{
 		this.adminService.searchdrugretail(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
@@ -118,34 +111,17 @@ export class PrescriptSaleListComponent{
 						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
-				this.list = results.list;
+				this.saleList = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
-	}
-
-	// 选择日期
-	changeDate(_value) {
-		this.searchInfo.day = JSON.parse(_value).value;
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
 	goUrl(_url) {
 		this.router.navigate([_url]);
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

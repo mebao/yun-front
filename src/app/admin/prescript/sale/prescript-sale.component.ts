@@ -66,7 +66,7 @@ export class PrescriptSaleComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '药方列表',
+			title: '药方零售',
 			back: true,
 		}
 		this.toast = {

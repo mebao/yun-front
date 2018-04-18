@@ -7,55 +7,97 @@
 		<div *ngIf="moduleAuthority.seeTcm" class="item" (click)="goUrl('./admin/prescript/tcmList')">中药-出药</div>
 		<div *ngIf="moduleAuthority.seeSale" class="item" (click)="goUrl('./admin/prescript/sale/list')">药品零售</div>
 	</div>
-	<div class="pure-form flex mt10 search-tab max">
-		<div class="flex-1"></div>
-		<div class="pure-control-group mr10">
-			<label for="is_back">状态：</label>
-			<select id="is_back" name="is_back" [(ngModel)]="searchInfo.is_back">
-				<option value="1">医生同意退药</option>
-				<option value="2">已成功退药</option>
-			</select>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="6" [nzOffset]="12">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="is_back">状态：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select class="w100"
+						[(ngModel)]="searchInfo.is_back"
+						[nzPlaceHolder]="'请选择状态'"
+						[nzSize]="'large'">
+						<nz-option [nzValue]="'1'" [nzLabel]="'医生同意退药'"></nz-option>
+						<nz-option [nzValue]="'2'" [nzLabel]="'已成功退药'"></nz-option>
+					</nz-select>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="doctor_name">医生名：</label>
-			<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="searchInfo.doctor_name" placeholder="请输入医生名">
+		<div nz-col [nzSpan]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="doctor_name">医生名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.doctor_name" [nzPlaceHolder]="'请输入医生名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<div class="w64p"></div>
 	</div>
-	<div class="pure-form flex mt10 search-tab max">
-		<div class="flex-1"></div>
-		<div class="pure-control-group mr10">
-			<label for="user_name">家长姓名：</label>
-			<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入家长姓名">
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="6" [nzOffset]="12">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="user_name">家长姓名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.user_name" [nzPlaceHolder]="'请输入家长姓名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="child_name">宝宝名：</label>
-			<input type="text" id="child_name" name="child_name" [(ngModel)]="searchInfo.child_name" placeholder="请输入宝宝名">
+		<div nz-col [nzSpan]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="child_name">宝宝名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.child_name" [nzPlaceHolder]="'请输入宝宝名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 	</div>
-	<div class="">
-		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<!-- <th>药方名</th> -->
-					<th>就诊医生</th>
-					<th>家长姓名</th>
-					<th>宝宝名</th>
-					<th>药品名</th>
-					<th>批次</th>
-					<th>药品单位</th>
-					<th>退药数量</th>
-					<th class="th-width">备注</th>
-					<th>日期</th>
-					<th>退药人</th>
-					<th>操作</th>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="prescriptList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th nz-th>就诊医生</th>
+				<th nz-th>家长姓名</th>
+				<th nz-th>宝宝名</th>
+				<th nz-th>药品名</th>
+				<th nz-th>批次</th>
+				<th nz-th>药品单位</th>
+				<th nz-th>退药数量</th>
+				<th nz-th class="w10">备注</th>
+				<th nz-th>日期</th>
+				<th nz-th>退药人</th>
+				<th nz-th>操作</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<ng-container *ngFor="let item of prescriptList;">
+				<tr *ngIf="item.info.length == 0">
+					<td>{{item.doctorName}}</td>
+					<td>{{item.userName}}</td>
+					<td>{{item.childName}}</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<div class="length-text">{{item.remark}}</div>
+					</td>
+					<td>{{item.date}}</td>
+					<td>{{item.apotName}}</td>
+					<td>
+						<span *ngIf="moduleAuthority.editBack && (item.isBack == '2')">已退药</span>
+						<button *ngIf="moduleAuthority.editBack && (item.isBack == '1')" (click)="selectPrescript(item.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">确认退药</button>
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				<ng-container *ngFor="let item of list;">
+				<ng-container *ngIf="item.info.length > 0">
 					<tr *ngFor="let info of item.info; let indexInfo=index;">
-						<!-- <td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.name}}</td> -->
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.childName}}</td>
@@ -70,29 +112,21 @@
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
 						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
 							<span *ngIf="moduleAuthority.editBack && (item.isBack == '2')">已退药</span>
-							<button *ngIf="moduleAuthority.editBack && (item.isBack == '1')" (click)="selectPrescript(item.id)" class="pure-button pure-button-primary">确认退药</button>
+							<button *ngIf="moduleAuthority.editBack && (item.isBack == '1')" (click)="selectPrescript(item.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">确认退药</button>
 						</td>
 					</tr>
 				</ng-container>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && list.length == 0" class="mt10">
-			<nodata title="未查询到退药信息"></nodata>
-		</div>
-	</div>
+			</ng-container>
+		</tbody>
+	</nz-table>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{select.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary">确认</button>
-		</div>
-	</div>
-</div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="closeConfirm()">
+	<ng-template #modalContent>
+    	<p>{{select.text}}</p>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm()">确认</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

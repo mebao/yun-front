@@ -1,11 +1,6 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-prescript-sale">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="second-bar-tab flex">
-		<div class="item" (click)="goUrl('./admin/prescript/list')">出药</div>
-		<div class="item" (click)="goUrl('./admin/prescript/backList')">退药</div>
-		<div class="item active" (click)="goUrl('./admin/prescript/sale/list')">药品零售</div>
-	</div>
 	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
 		<div class="pure-g">
 			<div class="pure-u-8-24 pr10">
@@ -84,23 +79,23 @@
 							</select>
 						</div>
 					</div>
-						<div class="pure-u-3-24 pl5 pr5">
-							<div class="pure-control-group">
-								<label for="batch_{{ms.key}}">
-									<span>批次</span>
-									<span class="required">*</span>
-								</label>
-								<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
-									<ng-container *ngFor="let batch of ms.batchList">
-										<ng-container *ngIf="batch.stock != '0'">
-										<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
-											<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-										<!-- </ng-container> -->
-										</ng-container>
+					<div class="pure-u-3-24 pl5 pr5">
+						<div class="pure-control-group">
+							<label for="batch_{{ms.key}}">
+								<span>批次</span>
+								<span class="required">*</span>
+							</label>
+							<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
+								<ng-container *ngFor="let batch of ms.batchList">
+									<ng-container *ngIf="batch.stock != '0'">
+									<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
+										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
+									<!-- </ng-container> -->
 									</ng-container>
-								</select>
-							</div>
+								</ng-container>
+							</select>
 						</div>
+					</div>
 					<div class="pure-u-3-24 pl10">
 						<div class="pure-control-group">
 							<label for="num_{{ms.key}}">

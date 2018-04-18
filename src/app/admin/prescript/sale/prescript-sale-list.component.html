@@ -7,65 +7,80 @@
 		<div *ngIf="moduleAuthority.seeTcm" class="item" (click)="goUrl('./admin/prescript/tcmList')">中药-出药</div>
 		<div class="item active">药品零售</div>
 	</div>
-    <div class="pure-form flex mt10">
-        <div class="flex-1">
-            <button *ngIf="moduleAuthority.editSale" (click)="goUrl('./admin/prescript/sale')" class="pure-button pure-button-primary">新增零售</button>
-        </div>
-		<div class="pure-control-group mr10">
-			<label for="mobile">患者手机号码：</label>
-			<input type="tel" id="mobile" name="mobile" [(ngModel)]="searchInfo.mobile" placeholder="请输入患者手机号码">
+	<div *ngIf="moduleAuthority.editSale" class="mt10 mb10">
+		<button (click)="goUrl('./admin/prescript/sale')" nz-button [nzType]="'primary'" [nzSize]="'large'">新增零售</button>
+	</div>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="6" [nzOffset]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="mobile">患者手机号码：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.mobile" [nzPlaceHolder]="'请输入患者手机号码'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10 flex">
-			<label for="day">日期：</label>
-			<select-date title="请选择日期" [showClear]="true" (onVoted)="changeDate($event)"></select-date>
+    	<div nz-col [nzSpan]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="_startDate">日期：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="_date=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="_date" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择日期'"></nz-datepicker>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="admin_name">售药员工：</label>
-			<input type="text" id="admin_name" name="admin_name" [(ngModel)]="searchInfo.admin_name" placeholder="请输入售药员工">
-		</div>
-		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-    </div>
-	<div class="">
-		<table *ngIf="list.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th>购买人</th>
-					<th>手机号码</th>
-					<th>身份证号</th>
-                    <th>药品名</th>
-                    <th>数量</th>
-					<th>总价格</th>
-					<th>免除金额</th>
-					<th>折后价格</th>
-					<th class="w10">备注</th>
-					<th>日期</th>
-					<th>操作人</th>
-				</tr>
-			</thead>
-			<tbody>
-				<ng-container *ngFor="let item of list;">
-					<tr *ngFor="let info of item.info; let indexInfo=index;">
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.mobile}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
-						<td>{{info.pname}}</td>
-						<td>{{info.num}}{{info.unit}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-							<div class="length-text">{{item.remark}}</div>
-						</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
-					</tr>
-				</ng-container>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && list.length == 0" class="mt10">
-			<nodata title="未查询到药品零售信息"></nodata>
+		<div nz-col [nzSpan]="6">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="admin_name">售药员工：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.admin_name" [nzPlaceHolder]="'请输入售药员工'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="saleList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th nz-th>购买人</th>
+				<th nz-th>手机号码</th>
+				<th nz-th>身份证号</th>
+				<th nz-th>药品名</th>
+				<th nz-th>数量</th>
+				<th nz-th>总价格</th>
+				<th nz-th>免除金额</th>
+				<th nz-th>折后价格</th>
+				<th class="w10">备注</th>
+				<th nz-th>日期</th>
+				<th nz-th>操作人</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<ng-container *ngFor="let item of saleList;">
+				<tr *ngFor="let info of item.info; let indexInfo=index;">
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.mobile}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
+					<td>{{info.pname}}</td>
+					<td>{{info.num}}{{info.unit}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+						<div class="length-text">{{item.remark}}</div>
+					</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</nz-table>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

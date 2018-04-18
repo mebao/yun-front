@@ -1,6 +1,8 @@
 import { Component, OnInit }                         from '@angular/core';
 import { Router }                                    from '@angular/router';
 
+import { NzMessageService }                          from 'ng-zorro-antd';
+
 import { AdminService }                              from '../../admin.service';
 
 @Component({
@@ -13,11 +15,6 @@ export class PrescriptBackListComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	// 权限
 	moduleAuthority: {
 		see: boolean,
@@ -28,7 +25,7 @@ export class PrescriptBackListComponent{
 	}
 	loadingShow: boolean;
 	hasData: boolean;
-	list: any[];
+	prescriptList: any[];
 	modalConfirmTab: boolean;
 	select: {
 		id: string,
@@ -44,6 +41,7 @@ export class PrescriptBackListComponent{
 	}
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -52,11 +50,6 @@ export class PrescriptBackListComponent{
 		this.topBar = {
 			title: '药方列表',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -83,7 +76,7 @@ export class PrescriptBackListComponent{
 
 		this.hasData = false;
 
-		this.list = [];
+		this.prescriptList = [];
 		this.modalConfirmTab = false;
 		this.select = {
 			id: '',
@@ -109,7 +102,7 @@ export class PrescriptBackListComponent{
 		this.adminService.searchbackdrug(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
@@ -117,17 +110,20 @@ export class PrescriptBackListComponent{
 						results.list[i].infoLength = results.list[i].info.length;
 					}
 				}
-				this.list = results.list;
+				this.prescriptList = results.list;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
 	search() {
 		this.loadingShow = true;
 		var urlOptions = this.url;
-		if(this.searchInfo.is_back != ''){
+		if(this.searchInfo.is_back && this.searchInfo.is_back != ''){
 			urlOptions += ('&is_back=' + this.searchInfo.is_back);
 		}
 		if(this.searchInfo.doctor_name != ''){
@@ -167,26 +163,13 @@ export class PrescriptBackListComponent{
 
 		this.adminService.backdrug(this.select.id, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
-				this.toastTab('药品退药成功', '');
+				this._message.success('药品退药成功');
 				this.getData(this.searchUrl);
 			}
-		})
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
+		}).catch(() => {
+			this._message.error('服务器错误');
+		});
 	}
 }
