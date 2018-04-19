@@ -1,6 +1,8 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router }                             from '@angular/router';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { AdminService }                       from '../../admin.service';
 
 @Component({
@@ -11,11 +13,6 @@ export class BookingFollowupsListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -41,6 +38,7 @@ export class BookingFollowupsListComponent{
 	btnCanEdit: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -50,11 +48,6 @@ export class BookingFollowupsListComponent{
 			title: '随访管理',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type:  '',
-		};
 
 		this.moduleAuthority = {
 			see: false,
@@ -133,7 +126,7 @@ export class BookingFollowupsListComponent{
 		this.adminService.userfollowups(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.followupsList = results.list;
@@ -173,10 +166,10 @@ export class BookingFollowupsListComponent{
 
 		this.adminService.followupresult(followups.id, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('该随访取消成功', '');
+				this._message.success('该随访取消成功');
 				this.search();
 				this.btnCanEdit = false;
 			}
@@ -193,20 +186,5 @@ export class BookingFollowupsListComponent{
 			type: 'create',
 			from: 'bookingFollowupsList',
 		}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

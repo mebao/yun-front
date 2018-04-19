@@ -1,10 +1,9 @@
 import { Component }                   from '@angular/core';
 import { Router, ActivatedRoute }      from '@angular/router';
 
-import { AdminService }                from '../../admin.service';
+import { NzMessageService }            from 'ng-zorro-antd';
 
-import { ToastService }                from '../../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
+import { AdminService }                from '../../admin.service';
 
 @Component({
     selector: 'admin-booking-examine-case',
@@ -22,13 +21,9 @@ export class BookingExamineCase{
         doctor_name: string,
         check: string,
         service_name:string,
-        b_time: string,
-		b_time_text: string,
-		b_time_num: number,
-		l_time: string,
-		l_time_text: string,
-		l_time_num: number,
     }
+    _startDate = null;
+    _endDate = null;
     caseList: any[];
     hasData: boolean;
 	moduleAuthority:  {
@@ -36,8 +31,8 @@ export class BookingExamineCase{
 	}
 
     constructor(
+        private _message: NzMessageService,
         private adminService: AdminService,
-        private toastService: ToastService,
         private router: Router,
     ) {}
 
@@ -69,13 +64,9 @@ export class BookingExamineCase{
             doctor_name: '',
             check: '1',
             service_name:'',
-            b_time: todayDate,
-			b_time_text: this.adminService.dateFormat(todayDate),
-			b_time_num: new Date(todayDate).getTime(),
-			l_time: todayDate,
-			l_time_text: this.adminService.dateFormat(todayDate),
-			l_time_num: new Date(todayDate).getTime(),
         }
+        this._startDate = new Date();
+        this._endDate = new Date();
         this.caseList = [];
         this.hasData = false;
         this.search();
@@ -94,11 +85,11 @@ export class BookingExamineCase{
         if(this.searchInfo.check && this.searchInfo.check != ''){
             urlOptions += '&unchecked=' + this.searchInfo.check;
         }
-        if(this.searchInfo.b_time != ''){
-			urlOptions += '&b_time=' + this.searchInfo.b_time;
+        if(this._startDate){
+			urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
 		}
-		if(this.searchInfo.l_time != ''){
-			urlOptions += '&l_time=' + this.searchInfo.l_time;
+		if(this._endDate){
+			urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
 		}
         if(this.searchInfo.service_name != ''){
 			urlOptions += '&service_name=' + this.searchInfo.service_name;
@@ -106,19 +97,26 @@ export class BookingExamineCase{
         this.getData(urlOptions);
     }
 
-    // 选择时间
-	changeDate(_value, key) {
-		this.searchInfo[key] = JSON.parse(_value).value;
-		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-	}
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
 
     getData(urlOptions) {
         this.loadingShow = true;
         this.adminService.searchcasehistory(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.list.length > 0){
@@ -132,8 +130,7 @@ export class BookingExamineCase{
             }
         }).catch(() => {
             this.loadingShow = false;
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
     }
 
