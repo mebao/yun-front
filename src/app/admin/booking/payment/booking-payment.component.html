@@ -968,15 +968,15 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="prescriptTabShow">
+<div class="modal" *ngIf="prescript.tabShow">
 	<div class="modal-mask" (click)="closePrescriptTab()"></div>
 	<div class="container">
 		<div class="title">提示</div>
 		<div class="content pad10">
-			尚有药品未出药，请出药后再支付
+			{{prescript.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="goPrescript()" class="pure-button pure-button-primary">去出药</button>
+			<button (click)="goPrescript(prescript.type)" class="pure-button pure-button-primary">去出药</button>
 		</div>
 	</div>
 </div>

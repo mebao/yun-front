@@ -153,6 +153,7 @@ export class DocbookingVisitComponent{
                     for(var j = 0; j < data[i].doctorChilds.length; j++){
                         if(data[i].doctorChilds[j].status == '4'){
                             hasSelected = true;
+                            data[i].hasSelected = true;
                             data[i].selected = data[i].doctorChilds[j].serviceId;
                             data[i].visitChildId = data[i].doctorChilds[j].childId;
                             data[i].visitChildName = data[i].doctorChilds[j].childName;

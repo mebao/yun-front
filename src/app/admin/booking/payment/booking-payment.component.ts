@@ -150,7 +150,11 @@ export class BookingPaymentComponent{
 	modalTabAddPay: boolean;
 	tranInfo: any;
 	// 药方弹窗，用于判断是否含有未出药
-	prescriptTabShow: boolean;
+	prescript: {
+		tabShow: boolean,
+		type: string,
+		text: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -483,7 +487,11 @@ export class BookingPaymentComponent{
 
 		this.editMemberType = 'save';
 
-		this.prescriptTabShow = false;
+		this.prescript = {
+			tabShow: false,
+			type: '',
+			text: '',
+		}
 	}
 
 	selectMember() {
@@ -1177,6 +1185,11 @@ export class BookingPaymentComponent{
 				}
 			}
 		}
+		if(this.fee.feeInfo.tcmFeeList.length > 0){
+			for(var tcm in this.fee.feeInfo.tcmFeeList){
+				this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount = this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount_session;
+			}
+		}
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var other in this.fee.feeInfo.otherFeeList){
 				this.fee.feeInfo.otherFeeList[other].otherDiscount = this.fee.feeInfo.otherFeeList[other].otherDiscount_session;
@@ -1534,7 +1547,46 @@ export class BookingPaymentComponent{
 						}
 					}
 					if(hasPrescript){
-						this.prescriptTabShow = true;
+						this.prescript = {
+							tabShow: true,
+							type: 'prescript/list',
+							text: '尚有药品未出药，请出药后再支付'
+						}
+					}else{
+						// 验证中药是否出药
+						this.getTcmPrescript();
+					}
+				}else{
+					// 验证中药是否出药
+					this.getTcmPrescript();
+				}
+			}
+		}).catch((error) => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
+		});
+	}
+
+	getTcmPrescript() {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&booking_id=' + this.id + '&isout=1';
+		this.adminService.searchtcmprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this.toastTab(data.errorMsg, 'error');
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.loadingShow = false;
+				if(results.list.length > 0){
+					if(results.list[0].apotId == null){
+						this.prescript = {
+							tabShow: true,
+							type: 'prescript/tcmList',
+							text: '尚有中药未出药，请出药后再支付'
+						}
 					}else{
 						// 支付
 						this.pay();
@@ -1551,11 +1603,15 @@ export class BookingPaymentComponent{
 	}
 
 	closePrescriptTab() {
-		this.prescriptTabShow = false;
+		this.prescript = {
+			tabShow: false,
+			type: '',
+			text: ''
+		}
 	}
 
-	goPrescript() {
-		this.router.navigate(['./admin/prescript/list']);
+	goPrescript(_value) {
+		this.router.navigate(['./admin/' + _value]);
 	}
 
 	closeAddPay() {

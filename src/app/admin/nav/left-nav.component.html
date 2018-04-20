@@ -51,7 +51,7 @@
 			routerLinkActive="ant-menu-item-selected">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>就诊管理</span>
+				<span>就诊列表</span>
 			</span>
 		</li>
 		<li nz-menu-item
@@ -157,7 +157,7 @@
 			(click)="goPage('bookingFollowupsList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>随访管理</span>
+				<span>随访列表</span>
 			</span>
 		</li>
 		<li nz-submenu *ngIf="clinicRole.bookingExamine.use != ''">
@@ -200,7 +200,7 @@
 					routerLinkActive="ant-menu-item-selected">
 					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>科室项目</span>
+						<span>科室管理</span>
 					</span>
 				</li>
 				<li nz-menu-item
@@ -209,7 +209,7 @@
 					routerLinkActive="ant-menu-item-selected">
 					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>检查项目</span>
+						<span>检查管理</span>
 					</span>
 				</li>
 				<li nz-menu-item
@@ -219,7 +219,7 @@
 					(click)="goPage('assistList')">
 					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>辅助治疗列表</span>
+						<span>辅助治疗管理</span>
 					</span>
 				</li>
 				<li nz-menu-item
@@ -320,7 +320,7 @@
 				<li nz-submenu *ngIf="clinicRole.medicalList.use != ''">
 					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>西/中成药</span>
+						<span>西/中成药管理</span>
 					</span>
 					<ul>
 						<li nz-menu-item
@@ -376,7 +376,7 @@
 					</ul>
 				</li>
 				<li nz-submenu *ngIf="clinicRole.tcm.use != ''">
-					<span title>中药</span>
+					<span title>中药管理</span>
 					<ul>
 						<li nz-menu-item
 							*ngIf="clinicRole.tcm.twoLevel.see.use != ''"

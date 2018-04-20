@@ -43,12 +43,12 @@
 					<div *ngIf="visit.visitChildName">
 						结束就诊后，可接诊下一位。
 					</div>
-					<div class="radio-tab" [ngClass]="{'disabled': visit.visitChildName}">
+					<div class="radio-tab">
 						<nz-radio-group [(ngModel)]="visit.selected" [nzSize]="'large'">
 							<ng-container *ngFor="let child of visit.doctorChilds">
 								<div class="flex mb10">
 									<div class="flex item" (click)="changeVisit(child.serviceId, index, visit.visitChildName)">
-										<label nz-radio [nzValue]="child.serviceId">
+										<label nz-radio [nzValue]="child.serviceId" [nzDisabled]="visit.hasSelected && visit.selected != child.serviceId">
 									        <span>{{child.time}}-{{child.childName}}</span>
 								      	</label>
 									</div>
