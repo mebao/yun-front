@@ -73,7 +73,7 @@ export class WorkbenchReceptionComponent{
 	        }
 			#print_div_workbench{
 				width:400px;
-				line-height:1.8em;
+				line-height:2em;
 			}
 			.print-container{
 				padding:13px 20px;

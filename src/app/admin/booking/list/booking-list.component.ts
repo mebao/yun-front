@@ -130,7 +130,7 @@ export class BookingListComponent implements OnInit{
 	        }
 			#print_div{
 				width:400px;
-				line-height:1.8em;
+				line-height:2em;
 				page-break-before: always;
 
 			}
