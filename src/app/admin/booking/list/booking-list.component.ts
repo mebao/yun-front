@@ -608,6 +608,15 @@ export class BookingListComponent implements OnInit{
 									results.weekbooks[i].tuina = Math.floor(results.weekbooks[i].members[j].balance/100);
 								}
 							}
+							var memberList = [];
+							if(results.weekbooks[i].members.length > 0){
+								for(var j = 0; j < results.weekbooks[i].members.length; j++){
+									if(results.weekbooks[i].members[j].canUse == '1'){
+										memberList.push(results.weekbooks[i].members[j]);
+									}
+								}
+							}
+							results.weekbooks[i].memberList = memberList;
 						}
 					}
 					this.bookinglist = results.weekbooks;

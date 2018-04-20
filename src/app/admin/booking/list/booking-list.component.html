@@ -150,16 +150,16 @@
 					</div>
 				</div>
 				<div class="tab" [ngClass]="{'cancel': booking.status == '0' || booking.status == '-1', 'in': (booking.status != '0' && booking.status != '-1' && booking.status != '1' && booking.status != '2')}">
-					<div *ngIf="booking.members.length > 0" class="vip-tip-text">
-						<ng-container *ngFor="let member of booking.members">
+					<div *ngIf="booking.memberList.length > 0" class="vip-tip-text">
+						<ng-container *ngFor="let member of booking.memberList">
 							<ng-container *ngIf="member.canUse == '1'">
 								{{member.memberName}}（{{member.balance ? member.balance : '0.00'}}元）
 							</ng-container>
 						</ng-container>
 						<div class="arrow"></div>
 					</div>
-					<div class="info pad10" [ngClass]="{'active': booking.members.length > 0}">
-						<img *ngIf="booking.members.length > 0" class="vip-icon" src="../assets/images/vip.png" />
+					<div class="info pad10" [ngClass]="{'active': booking.memberList.length > 0}">
+						<img *ngIf="booking.memberList.length > 0" class="vip-icon" src="../assets/images/vip.png" />
 						<div class="flex">
 							<div class="flex-1"></div>
 							<div class="status">

@@ -160,6 +160,7 @@ export class BookingReceiveComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
 					for(var i = 0; i < results.weekbooks.length; i++){
+						var memberList = [];
 						var allFee = 0;
 						if(results.weekbooks[i].fees.length > 0){
 							for(var j = 0; j < results.weekbooks[i].fees.length; j++){
@@ -167,6 +168,14 @@ export class BookingReceiveComponent{
 							}
 						}
 						results.weekbooks[i].allFee = parseFloat(allFee.toString());
+						if(results.weekbooks[i].members.length > 0){
+							for(var j = 0; j < results.weekbooks[i].members.length; j++){
+								if(results.weekbooks[i].members[j].canUse == '1'){
+									memberList.push(results.weekbooks[i].members[j]);
+								}
+							}
+						}
+						results.weekbooks[i].memberList = memberList;
 					}
 				}
 				this.bookinglist = results.weekbooks;
