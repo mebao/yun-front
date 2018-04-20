@@ -762,8 +762,6 @@ export class PaymentPrintComponent{
 
 		this.fee.fee = this.adminService.toDecimal2(fee);
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
-
-		console.log(this.fee);
 	}
 
 	getFeeInfoFirst(userMember, results) {

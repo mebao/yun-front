@@ -696,7 +696,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						}else{
 							this.info.mid_height = '';
 						}
-						console.log(this.info,childcontrast);
 					}
 					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight'){
 						if(childcontrast.info){

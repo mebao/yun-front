@@ -891,7 +891,6 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.tcmFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.tcmFeeList.length; i++){
 				// 支付时的中药折扣
-				// console.log(this.discount_info.tcm);
 				if(this.discount_info.tcm.length > 0){
 					for(var index in this.discount_info.tcm){
 						if(this.fee.feeInfo.tcmFeeList[i].id == this.discount_info.tcm[index].id){
@@ -977,7 +976,6 @@ export class BookingPaymentComponent{
 		this.payInfo.stillNeedPay = this.fee.fee;
 
 		this.loadingShow = false;
-		console.log(this.fee);
 	}
 
 	getFeeInfoFirst(userMember, results) {
@@ -1152,7 +1150,6 @@ export class BookingPaymentComponent{
 		this.payInfo.stillNeedPay = this.fee.fee;
 
 		this.loadingShow = false;
-		console.log(123);
 	}
 
 	// 修改默认折扣

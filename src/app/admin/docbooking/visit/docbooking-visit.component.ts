@@ -279,7 +279,6 @@ export class DocbookingVisitComponent{
     }
 
     closeInfo() {
-        console.log(123);
         this.modalAddInfoTab = false;
     }
 
