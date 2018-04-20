@@ -45,6 +45,7 @@ export class BookingUpdateInfo{
     serviceList: any[];
     timeList: any[];
     statusList: any[];
+    prescriptList: any[];
     isVisible = false;
     isConfirmLoading = false;
     selectFee: {
@@ -73,6 +74,19 @@ export class BookingUpdateInfo{
         second_amount: string,
         remark: string,
     }
+    updatePrescript: {
+        pid: string,
+        one_num: string,
+        one_unit: string,
+        usage: string,
+        frequency: string,
+        days: string,
+        remark: string,
+    }
+    usagelist: any[];
+	frequencylist: any[];
+	oneNumList: any[];
+    oneUnitList:any[];
 
     constructor(
         private route: ActivatedRoute,
@@ -173,7 +187,98 @@ export class BookingUpdateInfo{
             remark: '',
         }
 
+        this.updatePrescript = {
+            pid: '',
+            one_num: '',
+            one_unit: '',
+            usage: '',
+            frequency: '',
+            days: '',
+            remark: '',
+        }
+
+        //用法
+		this.frequencylist = [
+			'每天五次',
+			'每天四次',
+			'每天三次',
+			'每天两次',
+			'每天一次',
+			'两天一次',
+			'每周两次',
+			'每周一次',
+			'需要时',
+			'立即',
+			'睡前',
+			'饭前',
+			'空腹',
+			'饭后',
+			'饭中',
+			'必要时',
+			'bid',
+			'晚睡前',
+			'Qd',
+			'Tid',
+			'Q2h',
+			'Q4h',
+			'Q6h',
+			'Q8h',
+			'QN',
+			'Q2D',
+		];
+
+		//用药频次
+		this.usagelist = [
+			'口服',
+			'注射',
+			'舌下含服',
+			'皮下注射',
+			'滴入',
+			'塞肛用',
+			'阴道用',
+			'外用',
+			'肌肉注射',
+			'皮内注射',
+			'吸入',
+			'滴耳',
+			'滴鼻',
+			'滴眼',
+			'嚼服',
+			'纳肛',
+			'喷鼻',
+			'雾化吸入',
+			'外涂',
+			'含漱',
+			'外敷',
+			'PO',
+			'喷喉'
+		];
+
+		this.oneNumList = [];
+		for(var i = 1; i < 21; i++){
+			//this.numberList.push({key: i, value: i});
+			this.oneNumList.push({key: i.toString(), value: i.toString()});
+			//this.oneNumOldList.push({key: i.toString(), value: i.toString()});
+		}
+
+        this.oneUnitList = [];
+        var oneUnitList = JSON.parse(sessionStorage.getItem('clinicdata')).OneUnits;
+        if(oneUnitList != null){
+            this.oneUnitList = oneUnitList;
+        }else{
+            this.as.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this._message.error(data.errorMsg);
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.oneUnitList = results.OneUnits;
+				}
+			});
+        }
+
+        this.prescriptList = [];
         this.getData();
+        this.getPrescriptData();
     }
 
     getData() {
@@ -226,6 +331,38 @@ export class BookingUpdateInfo{
             this._message.error(`服务器错误`);
         });
     }
+
+    getPrescriptData() {
+        var urlOptions = this.url + '&booking_id=' + this.bookingId;
+		this.as.searchprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				//this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				var prescriptList = [];
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						//if(this.searchInfo.isout == '1' || this.searchInfo.isout == null || (this.searchInfo.isout == '' && results.list[i].outCode != 0)){
+							results.list[i].infoLength = results.list[i].info.length;
+							if(results.list[i].info.length > 0){
+								for(var j = 0; j < results.list[i].info.length; j++){
+									results.list[i].info[j].expiringDate = this.as.dateFormat(results.list[i].info[j].expiringDate);
+									results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+									results.list[i].info[j].msExplainPrint = '一次' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
+									// results.list[i].info[j].isCheck = true;
+									// results.list[i].info[j].printNum = results.list[i].info[j].num;
+								}
+							}
+							prescriptList.push(results.list[i]);
+						//}
+					}
+				}
+				this.prescriptList = prescriptList;
+				//this.loadingShow = false;
+			}
+		})
+	}
 
     changeShowBookingInfo() {
         this.cancelFee();
@@ -448,6 +585,53 @@ export class BookingUpdateInfo{
             number: fee.number,
             fee: fee.fee,
         }
+    }
+
+    updatePrescriptInfo(info){
+        this.updatePrescript = {
+            pid: info.pid,
+            one_num: info.oneNum,
+            one_unit: info.oneUnit,
+            usage: info.usage,
+            frequency: info.frequency,
+            days: info.days,
+            remark: info.remark,
+        }
+    }
+
+    cancelPrescriptInfo(){
+        this.updatePrescript = {
+            pid: '',
+            one_num: '',
+            one_unit: '',
+            usage: '',
+            frequency: '',
+            days: '',
+            remark: '',
+        }
+    }
+
+    savePrescriptInfo(){
+        var urlOptions = this.updatePrescript.pid;
+        var params = {
+            username: this.as.getUser().username,
+            token: this.as.getUser().token,
+            one_num: this.updatePrescript.one_num,
+            one_unit: this.updatePrescript.one_unit,
+            usage: this.updatePrescript.usage,
+            frequency: this.updatePrescript.frequency,
+            days: this.updatePrescript.days,
+            remark: this.updatePrescript.remark,
+        }
+        this.as.updatepinfo(urlOptions, params).then((data) => {
+            if(data.status == 'no'){
+                this._message.error(data.errorMsg);
+            }else{
+                this._message.success('药方修改成功');
+                this.cancelPrescriptInfo();
+                this.getPrescriptData();
+            }
+        })
     }
 
     changeFee() {

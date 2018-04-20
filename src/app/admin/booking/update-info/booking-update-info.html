@@ -217,6 +217,167 @@
                 </ng-template>
             </nz-card>
         </div>
+		<div nz-col [nzSpan]="24" class="mt20"  *ngIf="prescriptList.length > 0">
+            <nz-card class="w100">
+                <ng-template #title>
+                    药方详情
+                </ng-template>
+                <ng-template #body>
+					<nz-table #nzTable [nzDataSource]="prescriptList" [nzBordered]="true" [nzIsPagination]="false">
+						<thead nz-thead>
+							<tr>
+								<!-- <th nz-th>就诊医生</th>
+								<th nz-th>宝宝名</th> -->
+								<th nz-th>药品名</th>
+								<th nz-th>批次</th>
+								<th nz-th>单次计量</th>
+								<th nz-th>用法</th>
+								<th nz-th>用药频次</th>
+								<th nz-th>天数</th>
+								<th nz-th>总量</th>
+								<th nz-th class="w15">注意事项</th>
+								<!-- <th nz-th class="text-center">状态</th> -->
+								<!-- <th nz-th>日期</th>
+								<th nz-th>出药人</th> -->
+								<th nz-th>操作</th>
+							</tr>
+						</thead>
+						<tbody nz-tbody>
+							<ng-container *ngFor="let item of prescriptList;">
+								<tr *ngIf="item.info.length == 0">
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>
+									</td>
+								</tr>
+								<ng-container *ngIf="item.info.length > 0">
+									<tr *ngFor="let info of item.info; let indexInfo=index;">
+										<td>{{info.pname}}</td>
+										<td>{{info.batch}}</td>
+										<td>
+											<ng-container *ngIf="updatePrescript.pid == '' || updatePrescript.pid != info.pid">
+												{{info.oneNum}}{{info.oneUnit}}
+											</ng-container>
+											<ng-container *ngIf="updatePrescript.pid == info.pid">
+												<div nz-form-control>
+													<nz-input-group [nzSize]="'large'">
+														<nz-select
+														class="w50"
+														(ngModelChange)="updatePrescript.one_num=$event"
+														[nzSize]="'large'"
+														[nzPlaceHolder]="'请选择'"
+														[ngModel]="updatePrescript.one_num">
+															<ng-container *ngFor="let number of oneNumList">
+																<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
+															</ng-container>
+														</nz-select>
+														<nz-select
+														class="w50"
+														(ngModelChange)="updatePrescript.one_unit=$event"
+														[nzSize]="'large'"
+														[nzPlaceHolder]="'请选择'"
+														[ngModel]="updatePrescript.one_unit">
+															<ng-container *ngFor="let one of oneUnitList">
+																<nz-option [nzLabel]="one" [nzValue]="one"></nz-option>
+															</ng-container>
+														</nz-select>
+													</nz-input-group>
+												</div>
+									      		<!-- <nz-select [formControlName]="medical_info.oneUnit" [nzPlaceHolder]="'请选择单次计量单位'" class="w50" [nzDisabled]="true">
+													<nz-option [nzLabel]="medical_info.selectedOneUnit" [nzValue]="medical_info.selectedOneUnit"></nz-option>
+									      		</nz-select> -->
+												<!-- <nz-input-number [(ngModel)]="updatePrescript.oneNum" [nzSize]="'large'" [nzStep]="0.01" [nzDisabled]="true"></nz-input-number>
+												<nz-input-number [(ngModel)]="updatePrescript.oneUnit" [nzSize]="'large'" [nzStep]="0.01" [nzDisabled]="true"></nz-input-number> -->
+											</ng-container>
+										</td>
+										<td>
+											<ng-container *ngIf="updatePrescript.pid == '' || updatePrescript.pid != info.pid">
+												{{info.usage}}
+											</ng-container>
+											<ng-container *ngIf="updatePrescript.pid == info.pid">
+												<nz-select
+												class="w100"
+												(ngModelChange)="updatePrescript.usage=$event"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请选择'"
+												[ngModel]="updatePrescript.usage">
+													<ng-container *ngFor="let usage of usagelist">
+														<nz-option [nzLabel]="usage" [nzValue]="usage"></nz-option>
+													</ng-container>
+												</nz-select>
+											</ng-container>
+										</td>
+										<td>
+											<ng-container *ngIf="updatePrescript.pid == '' || updatePrescript.pid != info.pid">
+												{{info.frequency}}
+											</ng-container>
+											<ng-container *ngIf="updatePrescript.pid == info.pid">
+												<nz-select
+												class="w100"
+												(ngModelChange)="updatePrescript.frequency=$event"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请选择'"
+												[ngModel]="updatePrescript.frequency">
+													<ng-container *ngFor="let frequency of frequencylist">
+														<nz-option [nzLabel]="frequency" [nzValue]="frequency"></nz-option>
+													</ng-container>
+												</nz-select>
+											</ng-container>
+										</td>
+										<td>
+											<ng-container *ngIf="updatePrescript.pid == '' || updatePrescript.pid != info.pid">
+												{{info.days}}
+											</ng-container>
+											<ng-container *ngIf="updatePrescript.pid == info.pid">
+												<nz-select
+												class="w100"
+												(ngModelChange)="updatePrescript.days=$event"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请选择'"
+												[ngModel]="updatePrescript.days">
+													<ng-container *ngFor="let number of oneNumList">
+														<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
+													</ng-container>
+												</nz-select>
+											</ng-container>
+										</td>
+										<td>{{info.num}}{{info.unit}}</td>
+										<td>
+											<ng-container *ngIf="updatePrescript.pid == '' || updatePrescript.pid != info.pid">
+												<div class="length-text">{{info.remark}}</div>
+											</ng-container>
+											<ng-container *ngIf="updatePrescript.pid == info.pid">
+												<nz-input class="w100"
+												(ngModelChange)="updatePrescript.remark=$event"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请输入'"
+												[nzType]="'textarea'"
+												[ngModel]="updatePrescript.remark"></nz-input>
+											</ng-container>
+										</td>
+										<td>
+											<ng-container  *ngIf="updatePrescript.pid == ''">
+												<button (click)="updatePrescriptInfo(info)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+											</ng-container>
+											<ng-container  *ngIf="updatePrescript.pid == info.pid">
+												<button (click)="savePrescriptInfo()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
+												<button (click)="cancelPrescriptInfo()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+											</ng-container>
+										</td>
+									</tr>
+								</ng-container>
+							</ng-container>
+						</tbody>
+					</nz-table>
+				</ng-template>
+			</nz-card>
+		</div>
         <div nz-col [nzSpan]="24" class="mt20">
             <nz-card class="w100">
                 <ng-template #title>

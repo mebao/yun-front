@@ -1021,3 +1021,11 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
     background: #39A99D!important;
     color: #fff;
 }
+
+.admin-booking-update-info{
+	.length-text{
+		max-height:100px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+}

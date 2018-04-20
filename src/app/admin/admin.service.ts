@@ -1365,6 +1365,17 @@ export class AdminService{
 			.catch();
 	}
 
+	// 中药药方出药
+	updatepinfo(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/updatepinfo/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
