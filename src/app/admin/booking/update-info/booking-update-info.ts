@@ -333,33 +333,27 @@ export class BookingUpdateInfo{
     }
 
     getPrescriptData() {
-        var urlOptions = this.url + '&booking_id=' + this.bookingId;
+        var urlOptions = this.url + '&booking_id=' + this.bookingId + '&isout=1';
 		this.as.searchprescript(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				//this.loadingShow = false;
 				this._message.error(data.errorMsg);
 			}else{
 				var prescriptList = [];
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						//if(this.searchInfo.isout == '1' || this.searchInfo.isout == null || (this.searchInfo.isout == '' && results.list[i].outCode != 0)){
-							results.list[i].infoLength = results.list[i].info.length;
-							if(results.list[i].info.length > 0){
-								for(var j = 0; j < results.list[i].info.length; j++){
-									results.list[i].info[j].expiringDate = this.as.dateFormat(results.list[i].info[j].expiringDate);
-									results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
-									results.list[i].info[j].msExplainPrint = '一次' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
-									// results.list[i].info[j].isCheck = true;
-									// results.list[i].info[j].printNum = results.list[i].info[j].num;
-								}
+						results.list[i].infoLength = results.list[i].info.length;
+						if(results.list[i].info.length > 0){
+							for(var j = 0; j < results.list[i].info.length; j++){
+								results.list[i].info[j].expiringDate = this.as.dateFormat(results.list[i].info[j].expiringDate);
+								results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+								results.list[i].info[j].msExplainPrint = '一次' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
 							}
-							prescriptList.push(results.list[i]);
-						//}
+						}
+						prescriptList.push(results.list[i]);
 					}
 				}
 				this.prescriptList = prescriptList;
-				//this.loadingShow = false;
 			}
 		})
 	}

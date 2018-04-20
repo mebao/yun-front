@@ -267,16 +267,10 @@
 											<ng-container *ngIf="updatePrescript.pid == info.pid">
 												<div nz-form-control>
 													<nz-input-group [nzSize]="'large'">
-														<nz-select
-														class="w50"
+														<input class="w50"
 														(ngModelChange)="updatePrescript.one_num=$event"
 														[nzSize]="'large'"
-														[nzPlaceHolder]="'请选择'"
-														[ngModel]="updatePrescript.one_num">
-															<ng-container *ngFor="let number of oneNumList">
-																<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
-															</ng-container>
-														</nz-select>
+														[ngModel]="updatePrescript.one_num" nz-input>
 														<nz-select
 														class="w50"
 														(ngModelChange)="updatePrescript.one_unit=$event"
@@ -289,11 +283,6 @@
 														</nz-select>
 													</nz-input-group>
 												</div>
-									      		<!-- <nz-select [formControlName]="medical_info.oneUnit" [nzPlaceHolder]="'请选择单次计量单位'" class="w50" [nzDisabled]="true">
-													<nz-option [nzLabel]="medical_info.selectedOneUnit" [nzValue]="medical_info.selectedOneUnit"></nz-option>
-									      		</nz-select> -->
-												<!-- <nz-input-number [(ngModel)]="updatePrescript.oneNum" [nzSize]="'large'" [nzStep]="0.01" [nzDisabled]="true"></nz-input-number>
-												<nz-input-number [(ngModel)]="updatePrescript.oneUnit" [nzSize]="'large'" [nzStep]="0.01" [nzDisabled]="true"></nz-input-number> -->
 											</ng-container>
 										</td>
 										<td>
@@ -356,7 +345,7 @@
 												<nz-input class="w100"
 												(ngModelChange)="updatePrescript.remark=$event"
 												[nzSize]="'large'"
-												[nzPlaceHolder]="'请输入'"
+												[nzPlaceHolder]="'请输入注意事项'"
 												[nzType]="'textarea'"
 												[ngModel]="updatePrescript.remark"></nz-input>
 											</ng-container>

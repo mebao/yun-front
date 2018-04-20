@@ -189,6 +189,7 @@ export class DoctorPrescriptComponent{
 		if(this.prescriptId && this.prescriptId != ''){
 			this.editType = 'update';
 			var sessionPrescript = JSON.parse(sessionStorage.getItem('prescript'));
+            console.log(sessionPrescript);
             this.validateForm.controls.remark.setValue(sessionPrescript.remark);
 			if(sessionPrescript.info.length > 0){
 				for(var i = 0; i < sessionPrescript.info.length; i++){
