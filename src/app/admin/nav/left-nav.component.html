@@ -188,33 +188,60 @@
 				</li>
 			</ul>
 		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.childServiceList.use != ''"
-			[routerLink]="['./childService/list']"
-			routerLinkActive="ant-menu-item-selected">
+		<li nz-submenu *ngIf="clinicRole.childServiceList.use != '' || clinicRole.setupInspectList.use != '' || clinicRole.assistList.use != '' || clinicRole.memberList.use != ''">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>科室项目</span>
+				<span>诊所设置</span>
 			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.setupInspectList.use != ''"
-			routerLink="./setupInspect/list"
-			routerLinkActive="ant-menu-item-selected">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>检查项目</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.assistList.use != ''"
-			routerLink="./assist/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('assistList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>辅助治疗列表</span>
-			</span>
+			<ul>
+				<li nz-menu-item
+					*ngIf="clinicRole.childServiceList.use != ''"
+					[routerLink]="['./childService/list']"
+					routerLinkActive="ant-menu-item-selected">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>科室项目</span>
+					</span>
+				</li>
+				<li nz-menu-item
+					*ngIf="clinicRole.setupInspectList.use != ''"
+					routerLink="./setupInspect/list"
+					routerLinkActive="ant-menu-item-selected">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>检查项目</span>
+					</span>
+				</li>
+				<li nz-menu-item
+					*ngIf="clinicRole.assistList.use != ''"
+					routerLink="./assist/list"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('assistList')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>辅助治疗列表</span>
+					</span>
+				</li>
+				<li nz-menu-item
+					*ngIf="clinicRole.memberList.use != ''"
+					routerLink="./member/list"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('memberList')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>会员管理</span>
+					</span>
+				</li>
+				<!-- <li nz-menu-item
+					routerLink="./actcard/list"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('actcardList')">
+					<span title> -->
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<!-- <span>活动卡管理</span>
+					</span>
+				</li> -->
+			</ul>
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.medicalSupplierList.use != ''"
@@ -404,16 +431,6 @@
 					</ul>
 				</li>
 			</ul>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.memberList.use != ''"
-			routerLink="./member/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('memberList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>会员管理</span>
-			</span>
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.userList.use != ''"

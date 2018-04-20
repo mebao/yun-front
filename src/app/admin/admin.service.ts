@@ -1374,7 +1374,32 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询活动卡列表
+	searchactcard(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchactcard' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
 
+	// 新增修改活动卡
+	actcard(params): Promise<Data>{
+		var url = this.url + '/mebcrm/actcard';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 用户购买活动卡
+	useractcard(params): Promise<Data>{
+		var url = this.url + '/mebcrm/useractcard';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
 
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
