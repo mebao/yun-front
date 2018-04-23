@@ -46,16 +46,6 @@
 					color: #39A99D;
 				}
 			}
-			&:hover{
-				.vip-tip-text{
-					display: inline-block;
-				}
-				.info{
-					&.active{
-						margin-top:-24px;
-					}
-				}
-			}
 			&.complete{
 				.info{
 					background-color: #448CCB;

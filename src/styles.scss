@@ -557,16 +557,6 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 						color: #39A99D;
 					}
 				}
-				&:hover{
-					.vip-tip-text{
-						display: inline-block;
-					}
-					.info{
-						&.active{
-							margin-top:-24px;
-						}
-					}
-				}
 			}
 		}
 	}
