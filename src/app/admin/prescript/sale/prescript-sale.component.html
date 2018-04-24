@@ -1,206 +1,263 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-prescript-sale">
 	<top-bar [data]="topBar"></top-bar>
-	<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-		<div class="pure-g">
-			<div class="pure-u-8-24 pr10">
-				<div class="pure-control-group">
-					<label for="type">用户类型</label>
-					<select id="type" name="type" #type="ngModel" [(ngModel)]="sale.type">
-						<option value="1">诊所用户</option>
-						<option value="2">外来用户</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<div *ngIf="sale.type != ''" class="pure-g">
-			<div *ngIf="sale.type == '1'" class="pure-u-8-24 pr10">
-				<div class="pure-control-group">
-					<label for="user">用户</label>
-					<select-search [title]="'请选择用户'" [selectList]="userList" (onVoted)="changeUser($event)"></select-search>
-				</div>
-			</div>
-			<div *ngIf="sale.type == '2'" class="pure-u-8-24 pr10">
-				<div class="pure-control-group">
-					<label for="mobile">手机号码</label>
-					<input type="tel" id="mobile" name="mobile" maxlength="11" minlength="11" [(ngModel)]="sale.mobile" placeholder="请输入手机号码">
-				</div>
-			</div>
-			<div class="pure-u-8-24 pl5 pr5">
-				<div class="pure-control-group">
-					<label for="idcard">身份证号</label>
-					<input type="tel" id="idcard" name="idcard" [(ngModel)]="sale.idcard" placeholder="请输入身份证号">
-				</div>
-			</div>
-			<div *ngIf="sale.type == '1'" class="pure-u-8-24 pl10">
-				<div class="pure-control-group">
-					<label for="member">会员卡</label>
-					<select name="member" [(ngModel)]="sale.selectedMember" (change)="changeMember()">
-						<option value=""></option>
-						<ng-container *ngFor="let member of sale.user.members">
-							<ng-container *ngIf="member.canUse == '1'">
-								<option value="{{member.string}}">{{member.memberName}}</option>
-							</ng-container>
+  	<div nz-row [nzGutter]="30">
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label for="type">用户类型：</label>
+            	</div>
+            	<div nz-form-control class="mt5">
+					<nz-select
+						class="w100"
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择用户类型'"
+						[ngModel]="sale.type"
+						(ngModelChange)="sale.type=$event"
+						nzAllowClear>
+						<nz-option [nzLabel]="'诊所用户'" [nzValue]="'1'"></nz-option>
+						<nz-option [nzLabel]="'外来用户'" [nzValue]="'2'"></nz-option>
+					</nz-select>
+            	</div>
+          	</div>
+    	</div>
+	</div>
+  	<div nz-row [nzGutter]="30" *ngIf="sale.type != null && sale.type != ''" class="mt10">
+    	<div nz-col [nzSpan]="8" *ngIf="sale.type == '1'">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label for="user">用户：</label>
+            	</div>
+            	<div nz-form-control class="mt5">
+					<nz-select
+						class="w100"
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择用户'"
+						[ngModel]="sale.user"
+						(ngModelChange)="sale.user=$event;changeUser()"
+						nzAllowClear>
+						<ng-container *ngFor="let user of userList">
+							<nz-option [nzLabel]="user.name" [nzValue]="user"></nz-option>
 						</ng-container>
-					</select>
-				</div>
-			</div>
-		</div>
-		<div *ngFor="let ms of plist" class="ms-tab mt5">
-			<div *ngIf="ms.use">
-				<div (click)="showMs(ms.key)" class="ms-bar flex">
-					<div class="flex-1 pt5">
-						<ng-container *ngIf="ms.show">
-							<span>隐藏</span>
-							<i class="anticon anticon-right"></i>
+					</nz-select>
+            	</div>
+          	</div>
+    	</div>
+    	<div nz-col [nzSpan]="8" *ngIf="sale.type == '2'">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label for="mobile">手机号码：</label>
+            	</div>
+            	<div nz-form-control class="mt5">
+					<nz-input
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请输入手机号码'"
+						[ngModel]="sale.mobile">
+					</nz-input>
+            	</div>
+          	</div>
+    	</div>
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label for="idcard">身份证号：</label>
+            	</div>
+            	<div nz-form-control class="mt5">
+					<nz-input
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请输入身份证号'"
+						[ngModel]="sale.idcard"></nz-input>
+            	</div>
+          	</div>
+    	</div>
+    	<div nz-col [nzSpan]="8" *ngIf="sale.type == '1'">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label for="member">会员卡：</label>
+            	</div>
+            	<div nz-form-control class="mt5">
+					<nz-select
+						class="w100"
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择会员卡'"
+						[ngModel]="sale.selectedMember"
+						(ngModelChange)="sale.selectedMember=$event;changeMember()"
+						nzAllowClear>
+						<ng-container *ngIf="sale.user != null">
+							<nz-option *ngFor="let member of sale.user.memberList" [nzValue]="member" [nzLabel]="member.memberName"></nz-option>
 						</ng-container>
-						<ng-container *ngIf="!ms.show">
-							<span>展开</span>
-							<i class="anticon anticon-down"></i>
-						</ng-container>
-					</div>
-					<div *ngIf="ms.key != 1">
-						<button (click)="deleteMs(ms.key); $event.stopPropagation();" class="pure-button pure-button-primary">删除</button>
-					</div>
+					</nz-select>
+            	</div>
+          	</div>
+    	</div>
+	</div>
+	<div class="mt20">
+		<nz-collapseset>
+			<nz-collapse *ngFor="let ms of plist; let index=index;" [nzTitle]="'药品'" [nzActive]="true">
+				<div *ngIf="index != 0" class="text-right">
+					<nz-popconfirm [nzTitle]="'确定移除这个药品吗？'" (nzOnConfirm)="deleteMs(index)">
+						<button nz-popconfirm nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+				    </nz-popconfirm>
 				</div>
-				<div [ngClass]="{'hide': !ms.show}" class="pure-g">
-					<div class="pure-u-8-24 pr10">
-						<div class="pure-control-group">
-							<label for="ms_{{ms.key}}">
-								<span>药品名</span>
-								<span class="required">*</span>
-							</label>
-							<select id="ms_{{ms.key}}" name="ms_{{ms.key}}" [(ngModel)]="ms.string" (change)="msChange(ms.key, $event.target.value)">
-								<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-									<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
-										<option value="{{medicalSupplie.string}}">{{medicalSupplie.name}}</option>
+			  	<div nz-row [nzGutter]="30">
+			    	<div nz-col [nzSpan]="8">
+			          	<div nz-form-item>
+			            	<div nz-form-label>
+			              		<label nz-form-item-required>药品名：</label>
+			            	</div>
+			            	<div nz-form-control class="mt5">
+								<nz-select
+									class="w100"
+									[nzSize]="'large'"
+									[nzPlaceHolder]="'请选择药品'"
+									[ngModel]="ms.ms"
+									(ngModelChange)="msChange(index, $event)"
+									nzShowSearch>
+									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+										<ng-container *ngIf="medicalSupplie.type == '1' || medicalSupplie.type == '2'">
+											<nz-option [nzLabel]="medicalSupplie.name" [nzValue]="medicalSupplie"></nz-option>
+										</ng-container>
 									</ng-container>
-								</ng-container>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-3-24 pl5 pr5">
-						<div class="pure-control-group">
-							<label for="batch_{{ms.key}}">
-								<span>批次</span>
-								<span class="required">*</span>
-							</label>
-							<select id="batch_{{ms.key}}" name="batch_{{ms.key}}" [(ngModel)]="ms.ms.batch">
-								<ng-container *ngFor="let batch of ms.batchList">
-									<ng-container *ngIf="batch.stock != '0'">
-									<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
-										<option value="{{batch.string}}">{{batch.batch}}（库存：{{batch.stock}}{{ms.ms.unit}}）</option>
-									<!-- </ng-container> -->
+								</nz-select>
+			            	</div>
+			          	</div>
+			    	</div>
+			    	<div nz-col [nzSpan]="8">
+			          	<div nz-form-item>
+			            	<div nz-form-label>
+			              		<label nz-form-item-required>批次：</label>
+			            	</div>
+			            	<div nz-form-control class="mt5">
+								<nz-select
+									class="w100"
+									[nzSize]="'large'"
+									[nzPlaceHolder]="'请选择批次'"
+									[ngModel]="ms.ms.batch"
+									(ngModelChange)="ms.ms.batch=$event"
+									nzAllowClear>
+									<ng-container *ngFor="let batch of ms.batchList">
+										<ng-container *ngIf="batch.stock != '0'">
+										<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
+											<nz-option [nzValue]="batch" [nzLabel]="batch.batch + '（库存：' + batch.stock ++ ms.ms.unit + '）'"></nz-option>
+										<!-- </ng-container> -->
+										</ng-container>
 									</ng-container>
-								</ng-container>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-3-24 pl10">
-						<div class="pure-control-group">
-							<label for="num_{{ms.key}}">
-								<span>总量</span>
-								<span class="required">*</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="num_{{ms.key}}" name="num_{{ms.key}}" [(ngModel)]="ms.ms.num">
-								<select disabled="">
-									<option>{{ms.ms.unit}}</option>
-								</select>
-							</div>
-						</div>
-					</div>
+								</nz-select>
+			            	</div>
+			          	</div>
+			    	</div>
+			    	<div nz-col [nzSpan]="8">
+			          	<div nz-form-item>
+			            	<div nz-form-label>
+			              		<label nz-form-item-required>总量：</label>
+			            	</div>
+			            	<div nz-form-control class="mt5">
+								<nz-input-group [nzSize]="'large'" nzCompact>
+								    <input [(ngModel)]="ms.ms.num" placeholder="请输入总量" nz-input [nzSize]="'large'" class="w50">
+									<nz-select
+										class="w50"
+										[nzSize]="'large'"
+										[nzPlaceHolder]="'请选择单位'"
+										[nzDisabled]="true">
+											<nz-option [nzValue]="ms.ms.unit" [nzLabel]="ms.ms.unit"></nz-option>
+									</nz-select>
+							    </nz-input-group>
+			            	</div>
+			          	</div>
+			    	</div>
 				</div>
-			</div>
-		</div>
-		<div class="mt10">
-			<button (click)="addMs()" class="pure-button pure-button-primary"><i class="anticon anticon-plus mr5"></i>添加药品</button>
-		</div>
-		<div class="text-center">
-			<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max">出售</button>
-		</div>
-	</form>
+			</nz-collapse>
+		</nz-collapseset>
+	</div>
+	<div class="mt10">
+		<button (click)="addMs()" nz-button [nzType]="'primary'" [nzSize]="'large'"><i class="anticon anticon-plus mr5"></i>添加药品</button>
+	</div>
+	<div class="text-center">
+		<button (click)="create(f); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
+	</div>
 </div>
-<div class="modal" *ngIf="modalTab">
-	<div class="modal-mask" (click)="close()"></div>
-	<div class="container">
-		<div class="title">支付</div>
-		<div class="content pad10 pure-form">
-			<ng-container *ngIf="sale.user.id != ''">
-				<div class="pure-control-group flex">
-					<label for="text" class="w100p">用户：</label>
-					<div class="flex-1 p-group">{{sale.user.name}}</div>
-				</div>
-				<div *ngIf="sale.member.id != ''" class="pure-control-group flex mt10">
-					<label for="member" class="w100p">会员类型：</label>
-					<div class="flex-1 p-group">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
-				</div>
-				<div *ngIf="sale.member.id != ''" class="pure-control-group flex mt10">
-					<label for="prescript" class="w100p">药品折扣：</label>
-					<div class="flex-1 p-group">{{sale.member.prescript}}</div>
-				</div>
-			</ng-container>
-			<table *ngIf="selected.plist.length > 0" class="pure-table pure-table-horizontal w100 table-tab mt10">
-				<thead>
+<nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'支付'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="close()">
+	<ng-template #modalContent>
+		<ng-container *ngIf="sale.user && sale.user.id != ''">
+			<div class="flex">
+				<div class="w100p">用户：</div>
+				<div class="flex-1">{{sale.user.name}}</div>
+			</div>
+			<div *ngIf="sale.member.id != ''" class="flex mt10">
+				<div class="w100p">会员类型：</div>
+				<div class="flex-1">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
+			</div>
+			<div *ngIf="sale.member.id != ''" class="flex mt10">
+				<div class="w100p">药品折扣：</div>
+				<div class="flex-1">{{sale.member.prescript}}</div>
+			</div>
+		</ng-container>
+		<div class="mt10">
+			<nz-table #nzTable [nzDataSource]="selected.plist" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
 					<tr>
-						<th class="w20">药品名</th>
-						<th class="w20">批次</th>
-						<th class="w10">总量</th>
-						<th class="w10">单位</th>
-						<th class="w10">价格</th>
-						<th class="w10">总价格</th>
-						<th *ngIf="sale.user.id != ''" class="w20">是否可打折</th>
-						<th *ngIf="sale.user.id != ''" class="w20">折后价格</th>
+						<th class="w15">药品名</th>
+						<th>批次</th>
+						<th>总量</th>
+						<th>单位</th>
+						<th>价格</th>
+						<th>总价格</th>
+						<th *ngIf="sale.user && sale.user.id != ''">是否可打折</th>
+						<th *ngIf="sale.user && sale.user.id != ''">折后价格</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr *ngFor="let p of selected.plist">
+				<tbody nz-tbody>
+					<tr nz-tbody-tr *ngFor="let p of selected.plist">
 						<td>{{p.name}}</td>
 						<td>{{p.batch}}</td>
 						<td>{{p.num}}</td>
 						<td>{{p.unit}}</td>
 						<td>{{p.price}}</td>
 						<td>{{p.fee}}</td>
-						<td *ngIf="sale.user.id != ''">{{p.canDiscount == '1' ? '可打折' : '不可打折'}}</td>
-						<td *ngIf="sale.user.id != ''">{{p.discountFee}}</td>
+						<td *ngIf="sale.user && sale.user.id != ''">{{p.canDiscount == '1' ? '可打折' : '不可打折'}}</td>
+						<td *ngIf="sale.user && sale.user.id != ''">{{p.discountFee}}</td>
 					</tr>
 				</tbody>
-			</table>
-			<div class="pure-control-group flex mt10">
-				<label for="amount" class="w100p">总价格：</label>
-				<div class="flex-1 p-group">{{selected.feeAll}}</div>
+			</nz-table>
+		</div>
+		<div class="flex pt10 pb10">
+			<div class="w100p">总价格：</div>
+			<div class="flex-1">{{selected.feeAll}}</div>
+		</div>
+		<div *ngIf="sale.user && sale.user.id != ''" class="flex pt10 pb10">
+			<div class="w100p">折后价格：</div>
+			<div class="flex-1">{{selected.saleFee}}</div>
+		</div>
+		<div nz-form-item class="flex pt10">
+			<div nz-form-label class="w100p">
+				<label nz-form-item-required>支付方式：</label>
 			</div>
-			<div *ngIf="sale.user.id != ''" class="pure-control-group flex mt10">
-				<label for="amount" class="w100p">折后价格：</label>
-				<div class="flex-1 p-group">{{selected.saleFee}}</div>
+			<div nz-form-control class="mt5 flex-1">
+				<nz-select
+					class="w100"
+					[nzSize]="'large'"
+					[nzPlaceHolder]="'请选择支付方式'"
+					[ngModel]="sale.pay_way"
+					(ngModelChange)="sale.pay_way=$event">
+					<nz-option *ngIf="sale.user && sale.user.id != '' && sale.selectedMemberJson.umId" [nzValue]="'member_' + sale.selectedMemberJson.umId" [nzLabel]="sale.member.name + '支付' + (sale.balanceUse == '' ? ('（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）') : ('（' + sale.balanceUse + '）'))" [nzDisabled]="sale.balanceUse != ''"></nz-option>
+					<nz-option [nzValue]="'ali'" [nzLabel]="'支付宝支付'"></nz-option>
+					<nz-option [nzValue]="'wechat'" [nzLabel]="'微信支付'"></nz-option>
+					<nz-option [nzValue]="'card'" [nzLabel]="'刷卡支付'"></nz-option>
+					<nz-option [nzValue]="'money'" [nzLabel]="'现金支付'"></nz-option>
+				</nz-select>
 			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="pay_way" class="w100p">支付方式：</label>
-				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="sale.pay_way">
-					<option *ngIf="sale.user.id != '' && sale.selectedMemberJson.umId" value="member_{{sale.selectedMemberJson.umId}}" [disabled]="sale.balanceUse != ''">{{sale.member.name}}支付{{ sale.balanceUse == '' ? ('（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）') : ('（' + sale.balanceUse + '）')}}</option>
-					<option value="ali">支付宝支付</option>
-					<option value="wechat">微信支付</option>
-					<option value="card">刷卡支付</option>
-					<option value="money">现金支付</option>
-				</select>
-			</div>
 		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">支付</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{selected.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-		</div>
-	</div>
-</div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+	</ng-template>
+	<ng-template #footerTab>
+		<button (click)="close()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
+		<button (click)="confirm()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">支付</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalContentConfirm" [nzFooter]="footerTabConfirm" (nzOnCancel)="closeConfirm()">
+	<ng-template #modalContentConfirm>
+    	<p>{{selected.text}}</p>
+	</ng-template>
+	<ng-template #footerTabConfirm>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
+	</ng-template>
+</nz-modal>

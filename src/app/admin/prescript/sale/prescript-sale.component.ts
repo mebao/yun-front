@@ -1,6 +1,8 @@
 import { Component, OnInit }                     from '@angular/core';
 import { Router }                                from '@angular/router';
 
+import { NzMessageService }                      from 'ng-zorro-antd';
+
 import { AdminService }                          from '../../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class PrescriptSaleComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	url: string;
 	plist: any[];
@@ -37,8 +34,9 @@ export class PrescriptSaleComponent{
 		user: {
 			id: string,
 			name: string,
+			mobile: string,
 			userBalance: string,
-			members: any[],
+			memberList: any[],
 		},
 		member: {
 			id: string,
@@ -60,6 +58,7 @@ export class PrescriptSaleComponent{
 	btnCanEdit: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -68,11 +67,6 @@ export class PrescriptSaleComponent{
 		this.topBar = {
 			title: '药方零售',
 			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.userList = [];
@@ -89,65 +83,45 @@ export class PrescriptSaleComponent{
 		// 获取诊所用户
 		this.adminService.searchuser(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
 					for(var i = 0; i < results.users.length; i++){
-						results.users[i].string = JSON.stringify(results.users[i]);
-						results.users[i].key = JSON.stringify(results.users[i]);
-						results.users[i].value = results.users[i].name + '(' + results.users[i].mobile + ')';
+						var _memberList = [];
+						if(results.users[i].members.length > 0){
+							for(var member of results.users[i].members){
+								if(member.canUse == '1'){
+									_memberList.push(member);
+								}
+							}
+						}
+						results.users[i].memberList = _memberList;
 					}
 				}
 				this.userList = results.users;
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
 		});
 
 		//查看库存
 		this.adminService.searchsupplies(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						if(results.list[i].others.length > 0){
-							for(var j = 0; j < results.list[i].others.length; j++){
-								results.list[i].others[j].string = JSON.stringify(results.list[i].others[j]);
-							}
-						}
-						results.list[i].string = JSON.stringify(results.list[i]);
-					}
-				}
 				this.medicalSupplies = results.list;
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
 		});
 
 		this.btnCanEdit = false;
 	}
 
 	initData() {
-		this.plist = [{
-			key: 1,
-			show: true,
-			use: true,
-			ms: {
-				days: '',
-				frequency: '',
-				num: '',
-				oneNum: '',
-				oneUnit: '',
-				pid: '',
-				pname: '',
-				price: '',
-				remark: '',
-				sinfoId: '',
-				unit: '',
-				usage: '',
-			},
-			batchList: [],
-			string: '',
-		}];
+		this.addMs();
 		this.modalTab = false;
 
 		this.sale = {
@@ -155,8 +129,9 @@ export class PrescriptSaleComponent{
 			user: {
 				id: '',
 				name: '',
+				mobile: '',
 				userBalance: '',
-				members: [],
+				memberList: [],
 			},
 			member: {
 				id: '',
@@ -185,26 +160,27 @@ export class PrescriptSaleComponent{
 	}
 
 	// 选择用户
-	changeUser(value) {
-		var user = JSON.parse(value);
-		if(user.members.length > 0){
-			for(var i = 0; i < user.members.length; i++){
-				user.members[i].string = JSON.stringify(user.members[i]);
+	changeUser() {
+		if(this.sale.user != null){
+			if(this.sale.user.memberList.length > 0){
+				for(var i = 0; i < this.sale.user.memberList.length; i++){
+					this.sale.user.memberList[i].string = JSON.stringify(this.sale.user.memberList[i]);
+				}
 			}
+			this.sale.mobile = this.sale.user.mobile;
+			this.sale.user = this.sale.user;
 		}
-		this.sale.mobile = user.mobile;
-		this.sale.user = user;
 	}
 
 	// 选择会员卡
 	changeMember() {
 		// 获取用户会员信息
-		if(this.sale.selectedMember != ''){
-			this.sale.selectedMemberJson = JSON.parse(this.sale.selectedMember);
+		if(this.sale.selectedMember != null){
+			this.sale.selectedMemberJson = this.sale.selectedMember;
 			var urlOptions = this.url + '&id=' + this.sale.selectedMemberJson.memberId + '&status=1';
 			this.adminService.memberlist(urlOptions).then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.list.length > 0){
@@ -215,6 +191,8 @@ export class PrescriptSaleComponent{
 						}
 					}
 				}
+			}).catch(() => {
+				this._message.error('服务器错误');
 			});
 		}else{
 			this.sale.selectedMemberJson = {};
@@ -226,22 +204,10 @@ export class PrescriptSaleComponent{
 		}
 	}
 
-	showMs(_key) {
-		if(this.plist.length > 0){
-			for(var i = 0; i < this.plist.length; i++){
-				if(this.plist[i].key == _key){
-					this.plist[i].show = !this.plist[i].show;
-				}
-			}
-		}
-	}
-
 	addMs() {
 		this.plist.push({
-			key: this.plist.length + 1,
-			show: true,
-			use: true,
 			ms: {
+				batch: {},
 				days: '',
 				frequency: '',
 				num: '',
@@ -254,40 +220,31 @@ export class PrescriptSaleComponent{
 				sinfoId: '',
 				unit: '',
 				usage: '',
+				others: [],
 			},
 			batchList: [],
-			string: '',
 		});
 	}
 
-	deleteMs(_key) {
-		if(this.plist.length > 0){
-			for(var i = 0; i < this.plist.length; i++){
-				if(this.plist[i].key == _key){
-					this.plist[i].use = false;
-				}
-			}
-		}
+	deleteMs(_index) {
+		this.plist.splice(_index, 1);
 	}
 
-	msChange(key, _value) {
-		for(var i = 0; i < this.plist.length; i++){
-			if(this.plist[i].key == key){
-				var batch = this.plist[i].ms.batch;
-				this.plist[i].ms = JSON.parse(_value);
-				this.plist[i].ms.batch = (batch == null ? '' : null);
-				this.plist[i].ms.oneNum = '';
-				this.plist[i].ms.usage = '';
-				this.plist[i].ms.frequency = '';
-				this.plist[i].ms.days = '';
-				this.plist[i].ms.num = '';
-				this.plist[i].ms.remark = '';
-				this.plist[i].batchList = JSON.parse(_value).others;
-			}
-		}
+	msChange(_index, value) {
+		var batch = this.plist[_index].ms.batch;
+		this.plist[_index].ms = value;
+		this.plist[_index].ms.batch = (batch == null ? '' : null);
+		this.plist[_index].ms.oneNum = '';
+		this.plist[_index].ms.usage = '';
+		this.plist[_index].ms.frequency = '';
+		this.plist[_index].ms.days = '';
+		this.plist[_index].ms.num = '';
+		this.plist[_index].ms.remark = '';
+		this.plist[_index].batchList = this.plist[_index].ms.others;
 	}
 
-	create(f) {
+	create() {
+		console.log(this.plist);
 		var plist = [];
 		var num = 0;
 		// 原价格
@@ -296,75 +253,72 @@ export class PrescriptSaleComponent{
 		var saleFee = 0;
 		if(this.plist.length > 0){
 			for(var i = 0; i < this.plist.length; i++){
-				//判断可用
-				if(this.plist[i].use){
-					num++;
-					var p = {
-						sinfo_id: '',
-						name: '',
-						unit: '',
-						num: '',
-						price: '',
-						fee: '',
-						canDiscount: '',
-						discountFee: '',
-						batch: '',
-					};
-					if(f.value['ms_' + this.plist[i].key] == ''){
-						this.toastTab('第' + num + '条药品名不可为空', 'error');
-						return;
-					}
-					if(f.value['batch_' + this.plist[i].key] == ''){
-						this.toastTab('第' + num + '条批次不可为空', 'error');
-						return;
-					}
-					p.sinfo_id = JSON.parse(f.value['batch_' + this.plist[i].key]).id;
-					p.batch = JSON.parse(f.value['batch_' + this.plist[i].key]).batch;
-					p.name = JSON.parse(f.value['ms_' + this.plist[i].key]).name;
-					p.unit = JSON.parse(f.value['ms_' + this.plist[i].key]).unit;
-					if(this.adminService.isFalse(f.value['num_' + this.plist[i].key])){
-						this.toastTab('第' + num + '条药单总量不可为空', 'error');
-						return;
-					}
-					if(Number(f.value['num_' + this.plist[i].key]) <= 0 || Number(f.value['num_' + this.plist[i].key]) % 1 != 0){
-						this.toastTab('第' + num + '条药单总量应为大于0的整数', 'error');
-						return;
-					}
-					p.num = f.value['num_' + this.plist[i].key];
-					if(Number(JSON.parse(f.value['batch_' + this.plist[i].key]).price) == 0){
-						this.selected = {
-							text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，尚未设置售价，请先设置售价，再开方',
-							plist: [],
-							feeAll: '',
-							saleFee: '',
-						}
-						this.modalConfirmTab = true;
-						return;
-					}
-					p.price = JSON.parse(f.value['batch_' + this.plist[i].key]).price;
-					if(Number(p.num) > Number(JSON.parse(f.value['batch_' + this.plist[i].key]).stock)){
-						this.selected = {
-							text: p.name + JSON.parse(f.value['batch_' + this.plist[i].key]).batch + '批次，库存' + JSON.parse(f.value['batch_' + this.plist[i].key]).stock + p.unit + '，所选药品数量超过库存现有量',
-							plist: [],
-							feeAll: '',
-							saleFee: '',
-						}
-						this.modalConfirmTab = true;
-						return;
-					}
-					// 费用
-					p.fee = this.adminService.toDecimal2(Number(p.num) * parseFloat(p.price));
-					p.canDiscount = JSON.parse(f.value['batch_' + this.plist[i].key]).canDiscount;
-					// 折扣价
-					if(p.canDiscount == '1' && this.sale.member.id != ''){
-						p.discountFee = this.adminService.toDecimal2(parseFloat(p.fee) * parseFloat(this.sale.member.prescript));
-					}else{
-						p.discountFee = p.fee;
-					}
-					plist.push(p);
-					feeAll += parseFloat(p.fee);
-					saleFee += parseFloat(p.discountFee);
+				num++;
+				var p = {
+					sinfo_id: '',
+					name: '',
+					unit: '',
+					num: '',
+					price: '',
+					fee: '',
+					canDiscount: '',
+					discountFee: '',
+					batch: '',
+				};
+				if(this.plist[i].ms.name == ''){
+					this._message.error('第' + num + '条药品名不可为空');
+					return;
 				}
+				if(this.plist[i].ms.batch == null || this.plist[i].ms.batch == ''){
+					this._message.error('第' + num + '条批次不可为空');
+					return;
+				}
+				p.sinfo_id = this.plist[i].ms.batch.id;
+				p.batch = this.plist[i].ms.batch.batch;
+				p.name = this.plist[i].ms.name;
+				p.unit = this.plist[i].ms.unit;
+				if(this.adminService.isFalse(this.plist[i].ms.num)){
+					this._message.error('第' + num + '条药单总量不可为空');
+					return;
+				}
+				if(Number(this.plist[i].ms.num) <= 0 || Number(this.plist[i].ms.num) % 1 != 0){
+					this._message.error('第' + num + '条药单总量应为大于0的整数');
+					return;
+				}
+				p.num = this.plist[i].ms.num;
+				if(Number(this.plist[i].ms.batch.price) == 0){
+					this.selected = {
+						text: p.name + this.plist[i].ms.batch.batch + '批次，尚未设置售价，请先设置售价，再开方',
+						plist: [],
+						feeAll: '',
+						saleFee: '',
+					}
+					this.modalConfirmTab = true;
+					return;
+				}
+				p.price = this.plist[i].ms.batch.price;
+				if(Number(p.num) > Number(this.plist[i].ms.batch.stock)){
+					this.selected = {
+						text: p.name + '（' + this.plist[i].ms.batch.batch + '批次），库存' + this.plist[i].ms.batch.stock + p.unit + '，所选药品数量超过库存现有量',
+						plist: [],
+						feeAll: '',
+						saleFee: '',
+					}
+					this.modalConfirmTab = true;
+					return;
+				}
+				// 费用
+				p.fee = this.adminService.toDecimal2(Number(p.num) * parseFloat(p.price));
+				p.canDiscount = this.plist[i].ms.batch.canDiscount;
+				// 折扣价
+				if(p.canDiscount == '1' && this.sale.member.id != ''){
+					p.discountFee = this.adminService.toDecimal2(parseFloat(p.fee) * parseFloat(this.sale.member.prescript));
+				}else{
+					p.discountFee = p.fee;
+				}
+				plist.push(p);
+				feeAll += parseFloat(p.fee);
+				saleFee += parseFloat(p.discountFee);
 			}
 		}
 		// 是否是诊所用户
@@ -389,13 +343,14 @@ export class PrescriptSaleComponent{
 
 	// 支付
 	close() {
+		this.sale.pay_way = (this.sale.pay_way == null ? '' : null);
 		this.modalTab = false;
 	}
 
 	confirm() {
 		this.btnCanEdit = true;
 		if(this.sale.pay_way == ''){
-			this.toastTab('支付方式不可为空', 'error');
+			this._message.error('支付方式不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -419,34 +374,22 @@ export class PrescriptSaleComponent{
 
 		this.adminService.drugretail(params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('支付成功', '');
+				this._message.success('支付成功');
 				setTimeout(() => {
 					this.router.navigate(['./admin/prescript/sale/list']);
 				}, 2000);
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
 		});
 	}
 
 	// 提示性消息
 	closeConfirm() {
 		this.modalConfirmTab = false;
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }
