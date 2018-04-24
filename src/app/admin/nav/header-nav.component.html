@@ -14,7 +14,7 @@
 		<div mouseIn class="item setup-tab" [ngClass]="{'show': showSetup}" (mouseHandler)="handlerTab($event, 'showSetup')">
 			<div class="tab-title pl20 pr20" (click)="showTab('showSetup')">设置</div>
 			<div class="setup-list">
-				<div (click)="goUrl('setup/message')">消息订阅</div>
+				<div (click)="goUrl('setupMessage')">消息订阅</div>
 			</div>
 		</div>
 		<div (click)="logout()" class="item cursor-p pl20 pr20">退出</div>

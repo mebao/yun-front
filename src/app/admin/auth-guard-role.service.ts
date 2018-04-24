@@ -526,6 +526,20 @@ export class AuthGuardRole implements CanActivate{
 						firstUrl: '/admin/material/list',
 						authority: ['see'],
 						second: [
+							// 物资零售
+							{
+								url: '/admin/material/sale/list',
+								authority: 'seeSale',
+								queryType: '',
+								queryParams: '',
+							},
+							// 新增零售
+							{
+								url: '/admin/material/sale',
+								authority: 'editSale',
+								queryType: '',
+								queryParams: '',
+							},
 							// 物资管理
 							{
 								url: '/admin/material/list',

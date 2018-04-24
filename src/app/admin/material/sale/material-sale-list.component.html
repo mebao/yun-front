@@ -1,14 +1,8 @@
 <!-- <header-nav></header-nav> -->
-<div class="content-section admin-prescript-back-list">
+<div class="content-section">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="second-bar-tab flex">
-		<div *ngIf="moduleAuthority.see" class="item" (click)="goUrl('./admin/prescript/list')">西/中成药-出药</div>
-		<div *ngIf="moduleAuthority.seeBack" class="item" (click)="goUrl('./admin/prescript/backList')">西/中成药-退药</div>
-		<div *ngIf="moduleAuthority.seeTcm" class="item" (click)="goUrl('./admin/prescript/tcmList')">中药-出药</div>
-		<div class="item active">药品零售</div>
-	</div>
 	<div *ngIf="moduleAuthority.editSale" class="mt10 mb10">
-		<button (click)="goUrl('./admin/prescript/sale')" nz-button [nzType]="'primary'" [nzSize]="'large'">新增零售</button>
+		<button (click)="goUrl('./admin/material/sale')" nz-button [nzType]="'primary'" [nzSize]="'large'">新增零售</button>
 	</div>
 	<div nz-row class="mt10 mb10">
 		<div nz-col [nzSpan]="6" [nzOffset]="6">
@@ -35,10 +29,10 @@
 		<div nz-col [nzSpan]="6">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-					<label for="admin_name">售药员工：</label>
+					<label for="admin_name">零售员工：</label>
 				</div>
 				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-input [(ngModel)]="searchInfo.admin_name" [nzPlaceHolder]="'请输入售药员工姓名'" [nzSize]="'large'"></nz-input>
+					<nz-input [(ngModel)]="searchInfo.admin_name" [nzPlaceHolder]="'请输入零售员工姓名'" [nzSize]="'large'"></nz-input>
 				</div>
 			</div>
 		</div>
@@ -52,7 +46,7 @@
 				<th nz-th>购买人</th>
 				<th nz-th>手机号码</th>
 				<th nz-th>身份证号</th>
-				<th nz-th>药品名</th>
+				<th nz-th>物资名</th>
 				<th nz-th>数量</th>
 				<th nz-th>总价格</th>
 				<th nz-th>免除金额</th>

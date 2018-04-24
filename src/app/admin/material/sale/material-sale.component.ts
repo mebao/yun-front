@@ -6,20 +6,17 @@ import { NzMessageService }                      from 'ng-zorro-antd';
 import { AdminService }                          from '../../admin.service';
 
 @Component({
-	selector: 'app-prescript-sale',
-	templateUrl: './prescript-sale.component.html',
-	styleUrls: ['./prescript-sale.component.scss'],
+	selector: 'app-material-sale',
+	templateUrl: './material-sale.component.html',
 })
-export class PrescriptSaleComponent{
+export class MaterialSaleComponent{
 	topBar: {
 		title: string,
 		back: boolean,
 	};
 	url: string;
 	plist: any[];
-	// 药品批次
-	batchList: any[];
-	medicalSupplies: any[];
+	materialSupplies: any[];
 	modalConfirmTab: boolean;
 	selected: {
 		text: string,
@@ -65,13 +62,12 @@ export class PrescriptSaleComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '药方零售',
+			title: '物资零售',
 			back: true,
 		}
 
 		this.userList = [];
 		this.plist = [];
-		this.batchList = [];
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
@@ -106,12 +102,12 @@ export class PrescriptSaleComponent{
 		});
 
 		//查看库存
-		this.adminService.searchsupplies(this.url + '&type=1,2').then((data) => {
+		this.adminService.searchsupplies(this.url + '&type=3,4').then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				this.medicalSupplies = results.list;
+				this.materialSupplies = results.list;
 			}
 		}).catch(() => {
 			this._message.error('服务器错误');
@@ -207,12 +203,10 @@ export class PrescriptSaleComponent{
 	addMs() {
 		this.plist.push({
 			ms: {
-				batch: {},
 				num: '',
 				unit: '',
 				others: [],
 			},
-			batchList: [],
 		});
 	}
 
@@ -221,11 +215,8 @@ export class PrescriptSaleComponent{
 	}
 
 	msChange(_index, value) {
-		var batch = this.plist[_index].ms.batch;
 		this.plist[_index].ms = value;
-		this.plist[_index].ms.batch = (batch == null ? '' : null);
 		this.plist[_index].ms.num = '';
-		this.plist[_index].batchList = this.plist[_index].ms.others;
 	}
 
 	create() {
@@ -247,32 +238,30 @@ export class PrescriptSaleComponent{
 					fee: '',
 					canDiscount: '',
 					discountFee: '',
-					batch: '',
 				};
 				if(this.plist[i].ms.name == ''){
-					this._message.error('第' + num + '条药品不可为空');
+					this._message.error('第' + num + '条物资不可为空');
 					return;
 				}
-				if(this.plist[i].ms.batch == null || this.plist[i].ms.batch == ''){
-					this._message.error('第' + num + '条批次不可为空');
+				if(this.plist[i].ms.others.length == 0){
+					this._message.error('第' + num + '条物资信息错误，不可零售');
 					return;
 				}
-				p.sinfo_id = this.plist[i].ms.batch.id;
-				p.batch = this.plist[i].ms.batch.batch;
+				p.sinfo_id = this.plist[i].ms.others[0].id;
 				p.name = this.plist[i].ms.name;
 				p.unit = this.plist[i].ms.unit;
 				if(this.adminService.isFalse(this.plist[i].ms.num)){
-					this._message.error('第' + num + '条药单总量不可为空');
+					this._message.error('第' + num + '条物资总量不可为空');
 					return;
 				}
 				if(Number(this.plist[i].ms.num) <= 0 || Number(this.plist[i].ms.num) % 1 != 0){
-					this._message.error('第' + num + '条药单总量应为大于0的整数');
+					this._message.error('第' + num + '条物资总量应为大于0的整数');
 					return;
 				}
 				p.num = this.plist[i].ms.num;
-				if(Number(this.plist[i].ms.batch.price) == 0){
+				if(Number(this.plist[i].ms.others[0].price) == 0){
 					this.selected = {
-						text: p.name + '（' + this.plist[i].ms.batch.batch + '批次），尚未设置售价，请先设置售价，再出售',
+						text: p.name + '，尚未设置售价，请先设置售价，再出售',
 						plist: [],
 						feeAll: '',
 						saleFee: '',
@@ -280,10 +269,10 @@ export class PrescriptSaleComponent{
 					this.modalConfirmTab = true;
 					return;
 				}
-				p.price = this.plist[i].ms.batch.price;
-				if(Number(p.num) > Number(this.plist[i].ms.batch.stock)){
+				p.price = this.plist[i].ms.others[0].price;
+				if(Number(p.num) > Number(this.plist[i].ms.others[0].stock)){
 					this.selected = {
-						text: p.name + '（' + this.plist[i].ms.batch.batch + '批次），库存' + this.plist[i].ms.batch.stock + p.unit + '，所选药品数量超过库存现有量',
+						text: p.name + '，库存' + this.plist[i].ms.others[0].stock + p.unit + '，所选物资数量超过库存现有量',
 						plist: [],
 						feeAll: '',
 						saleFee: '',
@@ -293,7 +282,7 @@ export class PrescriptSaleComponent{
 				}
 				// 费用
 				p.fee = this.adminService.toDecimal2(Number(p.num) * parseFloat(p.price));
-				p.canDiscount = this.plist[i].ms.batch.canDiscount;
+				p.canDiscount = this.plist[i].ms.others[0].canDiscount;
 				// 折扣价
 				if(p.canDiscount == '1' && this.sale.member.id != ''){
 					p.discountFee = this.adminService.toDecimal2(parseFloat(p.fee) * parseFloat(this.sale.member.prescript));
@@ -363,7 +352,7 @@ export class PrescriptSaleComponent{
 			}else{
 				this._message.success('支付成功');
 				setTimeout(() => {
-					this.router.navigate(['./admin/prescript/sale/list']);
+					this.router.navigate(['./admin/material/sale/list']);
 				}, 2000);
 			}
 		}).catch(() => {

@@ -30,6 +30,10 @@ import { MaterialListComponent }          from './material-list.component';
             loadChildren: './purchase/material-purchase.module#MaterialPurchaseModule',
         },
         {
+            path: 'sale',
+            loadChildren: './sale/material-sale.module#MaterialSaleModule',
+        },
+        {
             path: 'index',
             canActivate: [AuthGuardRole],
             component: MaterialComponent,

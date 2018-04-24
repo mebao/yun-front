@@ -6,21 +6,18 @@ import { NzMessageService }                          from 'ng-zorro-antd';
 import { AdminService }                              from '../../admin.service';
 
 @Component({
-	selector: 'app-prescript-sale-list',
-	templateUrl: './prescript-sale-list.component.html',
+	selector: 'app-material-sale-list',
+	templateUrl: './material-sale-list.component.html',
 })
-export class PrescriptSaleListComponent{
+export class MaterialSaleListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
 	};
 	// 权限
 	moduleAuthority: {
-		see: boolean,
-		seeBack: boolean,
 		seeSale: boolean,
 		editSale: boolean,
-		seeTcm: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
@@ -40,16 +37,13 @@ export class PrescriptSaleListComponent{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '药方列表',
+			title: '物资零售',
 			back: false,
 		}
 
 		this.moduleAuthority = {
-			see: false,
-			seeBack: false,
 			seeSale: false,
 			editSale: false,
-			seeTcm: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -83,7 +77,7 @@ export class PrescriptSaleListComponent{
 
 	search() {
 		this.loadingShow = true;
-		var urlOptions = this.url + '&typelist=1,2';
+		var urlOptions = this.url + '&typelist=3,4';
 		if(this.searchInfo.mobile != ''){
 			urlOptions += ('&mobile=' + this.searchInfo.mobile);
 		}

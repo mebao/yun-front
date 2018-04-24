@@ -1,5 +1,5 @@
 <!-- <header-nav></header-nav> -->
-<div class="content-section admin-prescript-sale">
+<div class="content-section">
 	<top-bar [data]="topBar"></top-bar>
   	<div nz-row [nzGutter]="30">
     	<div nz-col [nzSpan]="8">
@@ -93,9 +93,9 @@
 	</div>
 	<div class="mt20">
 		<nz-collapseset>
-			<nz-collapse *ngFor="let ms of plist; let index=index;" [nzTitle]="'药品'" [nzActive]="true">
+			<nz-collapse *ngFor="let ms of plist; let index=index;" [nzTitle]="'物资'" [nzActive]="true">
 				<div *ngIf="index != 0" class="text-right">
-					<nz-popconfirm [nzTitle]="'确定移除这个药品吗？'" (nzOnConfirm)="deleteMs(index)">
+					<nz-popconfirm [nzTitle]="'确定移除这个物资吗？'" (nzOnConfirm)="deleteMs(index)">
 						<button nz-popconfirm nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 				    </nz-popconfirm>
 				</div>
@@ -103,42 +103,18 @@
 			    	<div nz-col [nzSpan]="8">
 			          	<div nz-form-item>
 			            	<div nz-form-label>
-			              		<label nz-form-item-required>药品名：</label>
+			              		<label nz-form-item-required>物资名：</label>
 			            	</div>
 			            	<div nz-form-control class="mt5">
 								<nz-select
 									class="w100"
 									[nzSize]="'large'"
-									[nzPlaceHolder]="'请选择药品'"
+									[nzPlaceHolder]="'请选择物资'"
 									[ngModel]="ms.ms"
 									(ngModelChange)="msChange(index, $event)"
 									nzShowSearch>
-									<ng-container *ngFor="let medicalSupplie of medicalSupplies">
-										<nz-option [nzLabel]="medicalSupplie.name" [nzValue]="medicalSupplie"></nz-option>
-									</ng-container>
-								</nz-select>
-			            	</div>
-			          	</div>
-			    	</div>
-			    	<div nz-col [nzSpan]="8">
-			          	<div nz-form-item>
-			            	<div nz-form-label>
-			              		<label nz-form-item-required>批次：</label>
-			            	</div>
-			            	<div nz-form-control class="mt5">
-								<nz-select
-									class="w100"
-									[nzSize]="'large'"
-									[nzPlaceHolder]="'请选择批次'"
-									[ngModel]="ms.ms.batch"
-									(ngModelChange)="ms.ms.batch=$event"
-									nzAllowClear>
-									<ng-container *ngFor="let batch of ms.batchList">
-										<ng-container *ngIf="batch.stock != '0'">
-										<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
-											<nz-option [nzValue]="batch" [nzLabel]="batch.batch + '（库存：' + batch.stock ++ ms.ms.unit + '）'"></nz-option>
-										<!-- </ng-container> -->
-										</ng-container>
+									<ng-container *ngFor="let materialSupplie of materialSupplies">
+										<nz-option [nzLabel]="materialSupplie.name + '（' + (materialSupplie.others.length > 0 ? materialSupplie.others[0].stock + materialSupplie.unit : '') + '）'" [nzValue]="materialSupplie"></nz-option>
 									</ng-container>
 								</nz-select>
 			            	</div>
@@ -169,7 +145,7 @@
 		</nz-collapseset>
 	</div>
 	<div class="mt10">
-		<button (click)="addMs()" nz-button [nzType]="'primary'" [nzSize]="'large'"><i class="anticon anticon-plus mr5"></i>添加药品</button>
+		<button (click)="addMs()" nz-button [nzType]="'primary'" [nzSize]="'large'"><i class="anticon anticon-plus mr5"></i>添加物资</button>
 	</div>
 	<div class="text-center">
 		<button (click)="create(f); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
@@ -187,7 +163,7 @@
 				<div class="flex-1">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
 			</div>
 			<div *ngIf="sale.member.id != ''" class="flex mt10">
-				<div class="w100p">药品折扣：</div>
+				<div class="w100p">物资折扣：</div>
 				<div class="flex-1">{{sale.member.prescript}}</div>
 			</div>
 		</ng-container>
@@ -195,8 +171,7 @@
 			<nz-table #nzTable [nzDataSource]="selected.plist" [nzBordered]="true" [nzIsPagination]="false">
 				<thead nz-thead>
 					<tr>
-						<th class="w15">药品名</th>
-						<th>批次</th>
+						<th class="w15">物资名</th>
 						<th>总量</th>
 						<th>单位</th>
 						<th>价格</th>
@@ -208,7 +183,6 @@
 				<tbody nz-tbody>
 					<tr nz-tbody-tr *ngFor="let p of selected.plist">
 						<td>{{p.name}}</td>
-						<td>{{p.batch}}</td>
 						<td>{{p.num}}</td>
 						<td>{{p.unit}}</td>
 						<td>{{p.price}}</td>

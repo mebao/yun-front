@@ -260,6 +260,16 @@
 			</span>
 			<ul>
 				<li nz-menu-item
+					*ngIf="clinicRole.materialList.twoLevel.seeSale.use != ''"
+					routerLink="./material/sale/list"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('materialSaleList')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>物资零售</span>
+					</span>
+				</li>
+				<li nz-menu-item
 					*ngIf="clinicRole.materialList.twoLevel.see.use != ''"
 					routerLink="./material/list"
 					routerLinkActive="ant-menu-item-selected"

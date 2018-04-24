@@ -293,10 +293,13 @@ export class LeftNavComponent{
 			},
 			materialList: {
 				use: '',
-				authority: ['see', 'seePut', 'seeHas', 'seeLost', 'seeCheck'],
+				authority: ['seeSale', 'see', 'seePut', 'seeHas', 'seeLost', 'seeCheck'],
 				infos: [],
 				hasTwoLevel: true,
 				twoLevel: {
+					seeSale: {
+						use: '',
+					},
 					see: {
 						use: '',
 					},
