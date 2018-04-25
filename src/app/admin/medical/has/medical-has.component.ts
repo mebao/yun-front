@@ -161,6 +161,11 @@ export class MedicalHasComponent{
 		f.value.otc = this.adminService.trim(f.value.otc);
 		f.value.code = this.adminService.trim(f.value.code);
 		f.value.usage = this.adminService.trim(f.value.usage);
+		if(this.adminService.isFalse(f.value.name) || f.value.name == ''){
+			this.toastTab('药品名不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(this.adminService.isFalse(f.value.trade_name) || f.value.trade_name == ''){
 			this.toastTab('商品名不可为空', 'error');
 			this.btnCanEdit = false;
@@ -237,6 +242,7 @@ export class MedicalHasComponent{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			id: this.info.id,
+			name: this.info.name,
 			trade_name: this.info.trade_name,
 			manufacturer: this.info.manufacturer,
 			format: this.info.format,

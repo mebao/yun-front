@@ -131,6 +131,11 @@ export class MaterialHasComponent{
 	update(f) {
 		this.btnCanEdit = true;
 		f.value.usage = this.adminService.trim(f.value.usage);
+		if(f.value.name == ''){
+			this.toastTab('物资名不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(f.value.unit == ''){
 			this.toastTab('单位不可为空', 'error');
 			this.btnCanEdit = false;
@@ -172,6 +177,7 @@ export class MaterialHasComponent{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			id: this.info.id,
+			name: this.info.name,
 			unit: f.value.unit,
 			one_unit: f.value.one_unit,
 			type: f.value.type,
