@@ -1,10 +1,9 @@
 import { Component, OnInit }                     from '@angular/core';
 import { Router, ActivatedRoute }                from '@angular/router';
 
-import { AdminService }                          from '../admin.service';
+import { NzMessageService }                      from 'ng-zorro-antd';
 
-import { ToastService }                          from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }                from '../../common/nll-toast/toast-model';
+import { AdminService }                          from '../admin.service';
 
 @Component({
 	selector: 'app-child-service-list',
@@ -23,12 +22,14 @@ export class ChildServiceListComponent implements OnInit{
 	loadingShow: boolean;
 	childServiceList: any[];
 	hasData: boolean;
-	status: string;
+	searchInfo: {
+		status: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
 		public router: Router,
-		private toastService: ToastService,
+		private _message: NzMessageService,
 	) {}
 
 	ngOnInit(): void {
@@ -55,34 +56,37 @@ export class ChildServiceListComponent implements OnInit{
 			}
 		}
 
-		this.loadingShow = true;
-
 		this.hasData = false;
 
 		this.childServiceList = [];
 
-		this.status = '1';
+		this.searchInfo = {
+			status: '1'
+		}
 
 		this.getData();
 	}
 
 	getData(){
+		this.loadingShow = true;
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId
-			 + '&status=' + this.status;
+			 + '&status=' + this.searchInfo.status;
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.childServiceList = results.servicelist;
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
 	update(_id){
@@ -98,14 +102,15 @@ export class ChildServiceListComponent implements OnInit{
 		this.adminService.clinicservicestatus(_id,param).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '状态修改成功', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.success('状态修改成功');
                 this.getData();
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
 	goCreate() {
