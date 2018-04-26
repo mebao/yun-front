@@ -4,6 +4,8 @@ import { Router, ActivatedRoute }            from '@angular/router';
 import { AdminService }                      from '../../admin.service';
 import { DoctorService }                     from './../doctor.service';
 
+import { NzMessageService }                  from 'ng-zorro-antd';
+
 @Component({
     selector: 'doctor-record-templet',
     templateUrl: './doctor-record-templet.component.html',
@@ -29,12 +31,14 @@ export class DoctorRecordTempletComponent{
     editType: string;
 	// 不可连续点击
 	btnCanEdit: boolean;
+    hasRemove: boolean;
 
     constructor(
         public adminService: AdminService,
         public doctorService: DoctorService,
         private router: Router,
         private route: ActivatedRoute,
+        private _message: NzMessageService,
     ) {}
 
 	ngOnInit() {
@@ -52,6 +56,7 @@ export class DoctorRecordTempletComponent{
 
         this.hasData = false;
         this.recordtempletKeys = [];
+        this.hasRemove = false;
         this.rkList = [];
         this.name = '';
         this.route.queryParams.subscribe((params) => {
@@ -62,33 +67,14 @@ export class DoctorRecordTempletComponent{
         var url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token;
 
-        // 修改
-        if(this.editType == 'update'){
-            var recordtemplet = JSON.parse(sessionStorage.getItem('recordtemplet'));
-            this.name = recordtemplet.name;
-            this.doctorName = recordtemplet.doctor_name;
-            if(recordtemplet.recordkeys.length > 0){
-                for(var i = 0; i < recordtemplet.recordkeys.length; i++){
-                    this.rkList.push({
-                        key: this.rkList.length + 1,
-                        use: true,
-                        value: JSON.stringify({
-                            id: recordtemplet.recordkeys[i].keyId,
-                            key: recordtemplet.recordkeys[i].key,
-                            name: recordtemplet.recordkeys[i].keyName,
-                        }),
-                        selectedValue: recordtemplet.recordkeys[i].keyName,
-                    });
-                }
-            }
-        }else{
+        if(this.editType == 'create'){
             this.doctorName = '';
             // 查询医生姓名
             var adminlistUrl = url + '&clinic_id=' + this.adminService.getUser().clinicId
                  + '&id=' + this.id;
             this.adminService.adminlist(adminlistUrl).then((data) => {
                 if(data.status == 'no'){
-                    this.toastTab(data.errorMsg, 'error');
+                    this._message.error(data.errorMsg);
                 }else{
                     var results = JSON.parse(JSON.stringify(data.results));
                     if(results.adminlist.length > 0){
@@ -101,7 +87,7 @@ export class DoctorRecordTempletComponent{
         this.doctorService.searchrecordkeys(url).then((data) => {
             if(data.status == 'no'){
 		        this.loadingShow = false;
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.list.length > 0){
@@ -112,9 +98,9 @@ export class DoctorRecordTempletComponent{
                 }
                 this.recordtempletKeys = results.list;
                 // 新增
-                if(this.editType == 'create'){
+                // if(this.editType == 'create'){
                     this.showAll();
-                }
+                // }
                 this.hasData = true;
 		        this.loadingShow = false;
             }
@@ -125,25 +111,85 @@ export class DoctorRecordTempletComponent{
 
     // 新增首次，展示所有模板内容
     showAll() {
-        if(this.recordtempletKeys.length > 0){
-            for(var i = 0; i < this.recordtempletKeys.length; i++){
-                this.rkList.push({
-                    key: i + 1,
-                    use: true,
-                    value: this.recordtempletKeys[i].key,
-                    selectedValue: this.recordtempletKeys[i].value,
-                });
+        if(this.editType == 'create'){
+            if(this.recordtempletKeys.length > 0){
+                for(var i = 0; i < this.recordtempletKeys.length; i++){
+                    this.rkList.push({
+                        key: this.recordtempletKeys[i].id,
+                        use: true,
+                        value: this.recordtempletKeys[i].key,
+                        selectedValue: this.recordtempletKeys[i].value,
+                        rkValue:'',
+                        rkValueDisabled:false
+                    });
+                }
+            }
+        }else{
+            if(this.recordtempletKeys.length > 0){
+                for(var i = 0; i < this.recordtempletKeys.length; i++){
+                    this.rkList.push({
+                        key: this.recordtempletKeys[i].id,
+                        use: false,
+                        value: this.recordtempletKeys[i].key,
+                        selectedValue: this.recordtempletKeys[i].value,
+                        rkValue:'',
+                        rkValueDisabled:false
+                    });
+                }
+            }
+            var recordtemplet = JSON.parse(sessionStorage.getItem('recordtemplet'));
+            this.name = recordtemplet.name;
+            this.doctorName = recordtemplet.doctor_name;
+            for(var i = 0; i < this.rkList.length; i++){
+                if(recordtemplet.recordkeys.length > 0){
+                    for(var j = 0; j < recordtemplet.recordkeys.length; j++){
+                        if(recordtemplet.recordkeys[j].keyId == this.rkList[i].key){
+                            this.rkList[i].use = true;
+                            this.rkList[i].value = JSON.stringify({
+                                id: recordtemplet.recordkeys[j].keyId,
+                                key: recordtemplet.recordkeys[j].key,
+                                name: recordtemplet.recordkeys[j].keyName,
+                            });
+                            this.rkList[i].selectedValue = recordtemplet.recordkeys[j].value;
+                            this.rkList[i].rkValue = recordtemplet.recordkeys[j].value;
+                        }
+
+                    }
+                }
+            }
+
+        }
+        for(var i = 0; i < this.rkList.length; i++){
+            var key = JSON.parse(this.rkList[i].value).key;
+            if(key=='height' || key=='medium_height' || key=='weight' || key=='medium_weight' ||key=='head_circum' ||key=='breast_circum' ||key=='breathe' ||key=='blood_pressure' ||key=='body_temperature'){
+                this.rkList[i].rkValueDisabled = true;
+            }
+            if(this.rkList[i].use == false){
+                this.hasRemove = true;
             }
         }
     }
 
-    addRk() {
-        this.rkList.push({
-            key: this.rkList.length + 1,
-            use: true,
-            value: '',
-            selectedValue: '',
-        });
+    // addRk() {
+    //     this.rkList.push({
+    //         key: this.rkList.length + 1,
+    //         use: true,
+    //         value: '',
+    //         selectedValue: '',
+    //         rkValue:'',
+    //     });
+    // }
+
+    addRk(key) {
+        this.hasRemove = false;
+        for(var i = 0; i < this.rkList.length; i++){
+            if(this.rkList[i].key == key){
+                this.rkList[i].use = true;
+            }
+            if(this.rkList[i].use == false){
+                this.hasRemove = true;
+            }
+        }
     }
 
     removeRk(_key) {
@@ -152,6 +198,7 @@ export class DoctorRecordTempletComponent{
                 this.rkList[i].use = false;
             }
         }
+        this.hasRemove = true;
     }
 
     selectedRk(_value, _key) {
@@ -166,26 +213,31 @@ export class DoctorRecordTempletComponent{
         this.btnCanEdit = true;
         this.name = this.adminService.trim(this.name);
         if(this.name == ''){
-            this.toastTab('模板名不可为空', 'error');
+            this._message.error('模板名不可为空');
             this.btnCanEdit = false;
             return;
         }
         var rk = [];
         var rkNum = 1;
+        var rkList = [];
         for(var i = 0; i < this.rkList.length; i++){
             if(this.rkList[i].use){
                 if(this.rkList[i].value == ''){
-                    this.toastTab('第' + rkNum + '条模板内容不可为空', 'error');
+                    this._message.error('第' + rkNum + '条模板内容不可为空');
                     this.btnCanEdit = false;
                     return;
                 }else{
                     // 判断是否重复
                     if(rk.indexOf(JSON.parse(this.rkList[i].value).id) != -1){
-                        this.toastTab('模板内容--' + JSON.parse(this.rkList[i].value).name + '--重复', 'error');
+                        this._message.error('模板内容--' + JSON.parse(this.rkList[i].value).name + '--重复');
                         this.btnCanEdit = false;
                         return;
                     }
                     rk.push(JSON.parse(this.rkList[i].value).id);
+                    rkList.push({
+                        rk_id:JSON.parse(this.rkList[i].value).id,
+                        value:this.rkList[i].rkValue
+                    });
                     rkNum++;
                 }
             }
@@ -200,14 +252,15 @@ export class DoctorRecordTempletComponent{
                 doctor_name: this.doctorName,
                 name: this.name,
                 rk_id: rk.toString(),
+                rkList: JSON.stringify(rkList),
             }
 
             this.doctorService.recordtemplet(params).then((data) => {
                 if(data.status == 'no'){
-                    this.toastTab(data.errorMsg, 'error');
+                    this._message.error(data.errorMsg);
                     this.btnCanEdit = false;
                 }else{
-                    this.toastTab('模板创建成功', '');
+                    this._message.success('模板创建成功');
                     setTimeout(() => {
                         this.router.navigate(['./admin/doctor/recordTemplet/list'], {queryParams: {id: this.id}});
                     }, 2000);
@@ -218,6 +271,7 @@ export class DoctorRecordTempletComponent{
                 username: this.adminService.getUser().username,
                 token: this.adminService.getUser().token,
                 rk_id: rk.toString(),
+                rkList: JSON.stringify(rkList),
             }
 
             this.doctorService.updaterecordtemplet(JSON.parse(sessionStorage.getItem('recordtemplet')).id, updateParams).then((data) => {
@@ -225,7 +279,7 @@ export class DoctorRecordTempletComponent{
                     this.toastTab(data.errorMsg, 'error');
                     this.btnCanEdit = false;
                 }else{
-                    this.toastTab('模板修改成功', '');
+                    this._message.success('模板修改成功');
                     setTimeout(() => {
                         this.router.navigate(['./admin/doctor/recordTemplet/list'], {queryParams: {id: this.id}});
                     }, 2000);

@@ -96,7 +96,7 @@ export class InspectResultsComponent{
 			 + '&booking_id=' + this.id
 			 + '&today=1';
 
-		this.adminService.usercheckprojects(urlOptions).then((data) => {
+		this.adminService.usercheckprojectinfo(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');

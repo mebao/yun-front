@@ -609,6 +609,15 @@ export class AdminService{
 			.catch();
 	}
 
+	//查看用户检查详情
+	private usercheckprojectinfoUrl = this.url + '/mebcrm/usercheckprojectinfo';
+	usercheckprojectinfo(urlOptions): Promise<Data>{
+		return this.http.get(this.usercheckprojectinfoUrl + urlOptions)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	//删除药方
 	private deleteprescriptUrl = this.url + '/mebcrm/deleteprescript/';
 	deleteprescript(urlOptions): Promise<Data>{

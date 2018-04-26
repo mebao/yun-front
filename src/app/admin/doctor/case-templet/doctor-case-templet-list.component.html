@@ -2,29 +2,29 @@
 <div class="content-section admin-doctor-list">
 	<top-bar [data]="topBar"></top-bar>
     <div class="flex">
-        <button (click)="add()" class="pure-button pure-button-primary">新增病历模板</button>
+        <button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增病历模板</button>
         <div class="flex-1"></div>
     </div>
 	<div class="mt10">
-		<table *ngIf="casetempletList.length > 0" class="list" class="pure-table pure-table-horizontal w100">
-			<thead>
+		<nz-table #nzTable [nzDataSource]="casetempletList" [nzBordered]="true" [nzIsPagination]="false" *ngIf="casetempletList.length > 0" class="w100">
+			<thead nz-thead>
 				<tr>
-					<th>模板名</th>
-					<th>状态</th>
-					<th>操作</th>
+					<th nz-th>模板名</th>
+					<th nz-th>状态</th>
+					<th nz-th>操作</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr *ngFor="let casetemplet of casetempletList">
-					<td>{{casetemplet.name}}</td>
-					<td>{{casetemplet.status == '1' ? '可用' : '停用'}}</td>
-					<td>
-						<button (click)="update(casetemplet)" class="pure-button pure-button-primary">修改</button>
-						<button (click)="updateStatus(casetemplet.id, casetemplet.status)" class="pure-button pure-button-primary">修改状态</button>
+			<tbody nz-tbody>
+				<tr nz-tbody-tr *ngFor="let casetemplet of nzTable.data">
+					<td nz-td>{{casetemplet.name}}</td>
+					<td nz-td>{{casetemplet.status == '1' ? '可用' : '停用'}}</td>
+					<td nz-td>
+						<button (click)="update(casetemplet)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+						<button (click)="updateStatus(casetemplet.id, casetemplet.status)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改状态</button>
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</nz-table>
 		<div *ngIf="hasData && casetempletList.length == 0" class="mt10">
 			<nodata title="未查询到病历模板信息"></nodata>
 		</div>

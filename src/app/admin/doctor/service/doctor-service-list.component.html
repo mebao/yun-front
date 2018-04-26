@@ -1,60 +1,56 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-doctor-service-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="flex pure-form max">
+	<div class="flex max mb10">
         <div class="flex-1">
 			<div class="button-tab">
-				<button (click)="goCreate()" class="pure-button pure-button-primary">新增医生科室</button>
+				<button (click)="goCreate()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增医生科室</button>
 			</div>
         </div>
-        <div class="pure-control-group mr10">
+        <div class="mr10">
             <label for="status">状态：</label>
-            <select id="status" name="status" [(ngModel)]="searchInfo.status" (change)="search()">
-				<option value="0">可用</option>
-				<option value="1">停用</option>
-            </select>
+            <nz-select id="status" name="status" [(ngModel)]="searchInfo.status" (nzOpenChange)="search()" class="w100p" [nzPlaceHolder]="''">
+				<nz-option [nzValue]="'0'" [nzLabel]="'可用'"></nz-option>
+				<nz-option [nzValue]="'1'" [nzLabel]="'停用'"></nz-option>
+            </nz-select>
         </div>
 	</div>
-	<table *ngIf="doctorServiceList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-		<thead>
+	<nz-table #nzTable [nzDataSource]="doctorServiceList" [nzBordered]="true" [nzIsPagination]="false" *ngIf="doctorServiceList.length > 0" class="w100 mt10">
+		<thead nz-thead>
 			<tr>
-				<th>科室名</th>
-				<th>科室费用</th>
-				<th>预约金</th>
-				<th>状态</th>
-				<th>操作</th>
+				<th nz-th>科室名</th>
+				<th nz-th>科室费用</th>
+				<th nz-th>预约金</th>
+				<th nz-th>状态</th>
+				<th nz-th>操作</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr *ngFor="let doctorService of doctorServiceList">
-				<td>{{doctorService.serviceName}}</td>
-				<td>{{doctorService.fee}}元</td>
-				<td>{{doctorService.bookingFee}}元</td>
-				<td>{{doctorService.isDeleted == '0' ? '可用' : '停用'}}</td>
-				<td>
-					<button (click)="update(doctorService.id)" class="pure-button pure-button-primary">修改</button>
-					<button (click)="updateStatus(doctorService)" class="pure-button pure-button-primary">{{doctorService.isDeleted == '0' ? '停用' : '可用'}}</button>
-					<button (click)="delete(doctorService)" class="pure-button button-error">删除</button>
+		<tbody nz-tbody>
+			<tr nz-tbody-tr *ngFor="let doctorService of nzTable.data">
+				<td nz-td>{{doctorService.serviceName}}</td>
+				<td nz-td>{{doctorService.fee}}元</td>
+				<td nz-td>{{doctorService.bookingFee}}元</td>
+				<td nz-td>{{doctorService.isDeleted == '0' ? '可用' : '停用'}}</td>
+				<td nz-td>
+					<button (click)="update(doctorService.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+					<button (click)="updateStatus(doctorService)" nz-button [nzType]="'primary'" [nzSize]="'large'">{{doctorService.isDeleted == '0' ? '停用' : '可用'}}</button>
+					<button (click)="delete(doctorService)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 				</td>
 			</tr>
 		</tbody>
-	</table>
+	</nz-table>
 	<div *ngIf="hasData && doctorServiceList.length == 0" class="mt10">
 		<nodata title="未查询到医生科室"></nodata>
 	</div>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{selector.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
-		</div>
-	</div>
-</div>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" [nzFooter]="footerConfirm" (nzOnCancel)="closeConfirm()">
+	<ng-template #contentConfirm>
+    	<p>{{selector.text}}</p>
+	</ng-template>
+	<ng-template #footerConfirm>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm()" [disabled]="btnCanEdit">确认</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>
 <nll-toast-box></nll-toast-box>

@@ -688,7 +688,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		if(doctorBookingCaseTemplet != null){
 			if(doctorBookingCaseTemplet.casekeys.length > 0){
 				for(var i = 0; i < doctorBookingCaseTemplet.casekeys.length; i++){
-					this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
+					doctorBookingCaseTemplet.casekeys[i].value = null ? (this.info[doctorBookingCaseTemplet.casekeys[i].key] = ''):(this.info[doctorBookingCaseTemplet.casekeys[i].key] = doctorBookingCaseTemplet.casekeys[i].value);
+					//this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
 					this.baseInfo[doctorBookingCaseTemplet.casekeys[i].key] = '';
 					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_height'){
 						if(childcontrast.info){

@@ -5,6 +5,8 @@ import { AdminService }                         from '../../admin.service';
 import { ToastService }                         from '../../../common/nll-toast/toast.service';
 import { ToastConfig, ToastType }               from '../../../common/nll-toast/toast-model';
 
+import { NzMessageService }                     from 'ng-zorro-antd';
+
 @Component({
 	selector:'app-doctor-service-list',
 	templateUrl: 'doctor-service-list.component.html'
@@ -35,6 +37,7 @@ export class DoctorServiceListComponent{
 		private router: Router,
 		private route: ActivatedRoute,
 		private toastService: ToastService,
+		private _message:NzMessageService,
 	) {}
 
 	ngOnInit() {
@@ -80,8 +83,7 @@ export class DoctorServiceListComponent{
 		this.adminService.doctorservice(adminServiceUrl).then((data) => {
 			if(data.status == 'no'){
 			   this.loadingShow = false;
-			   const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-			   this.toastService.toast(toastCfg);
+			   this._message.error(data.errorMsg, {nzDuration: 3000});
 			}else{
 			   var results = JSON.parse(JSON.stringify(data.results));
 			   if(results.servicelist.length > 0){
@@ -95,8 +97,7 @@ export class DoctorServiceListComponent{
 			}
 		}).catch((data) => {
 		   	this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误', {nzDuration: 3000});
 		});
 	}
 
@@ -120,11 +121,9 @@ export class DoctorServiceListComponent{
 
 		this.adminService.doctorservicejoin(params).then((data) => {
 			if(data.status == 'no'){
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg, {nzDuration: 3000});
 			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', (service.isDeleted == '0' ? '停用' : '可用') + '成功', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.success((service.isDeleted == '0' ? '停用' : '可用') + '成功', {nzDuration: 3000});
 				this.search();
 			}
 		})
@@ -153,18 +152,15 @@ export class DoctorServiceListComponent{
 		this.adminService.deletedoctorservice(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.btnCanEdit = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg, {nzDuration: 3000});
 			}else{
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '删除成功', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.success('删除成功', {nzDuration: 3000});
 				this.btnCanEdit = false;
 				this.search();
 			}
 		}).catch((data) => {
 			this.btnCanEdit = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误', {nzDuration: 3000});
 		});
 	}
 }

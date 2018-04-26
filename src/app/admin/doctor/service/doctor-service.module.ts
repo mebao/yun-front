@@ -11,6 +11,8 @@ import { DoctorServiceRoutingModule }        from './doctor-service.routing.modu
 import { DoctorServiceComponent }            from './doctor-service.component';
 import { DoctorServiceListComponent }        from './doctor-service-list.component';
 
+import { NgZorroAntdModule }                 from 'ng-zorro-antd';
+
 @NgModule({
     declarations: [
         DoctorServiceComponent,
@@ -26,6 +28,7 @@ import { DoctorServiceListComponent }        from './doctor-service-list.compone
         NavModule,
         AngCommonModule,
         DoctorServiceRoutingModule,
+        NgZorroAntdModule,
     ]
 })
 

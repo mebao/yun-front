@@ -1,6 +1,6 @@
 import { NgModule }                                 from '@angular/core';
 import { CommonModule }                             from '@angular/common';
-import { FormsModule }                              from '@angular/forms';
+import { FormsModule, ReactiveFormsModule}                              from '@angular/forms';
 
 import { NavModule }                                from '../../nav/nav.module';
 
@@ -10,6 +10,8 @@ import { DoctorCaseTempletRoutingModule }           from './doctor-case-templet.
 
 import { DoctorCaseTempletComponent }               from './doctor-case-templet.component';
 import { DoctorCaseTempletListComponent }           from './doctor-case-templet-list.component';
+
+import { NgZorroAntdModule }                        from 'ng-zorro-antd';
 
 @NgModule({
     declarations: [
@@ -26,6 +28,8 @@ import { DoctorCaseTempletListComponent }           from './doctor-case-templet-
         NavModule,
         AngCommonModule,
         DoctorCaseTempletRoutingModule,
+        NgZorroAntdModule,
+        ReactiveFormsModule,
     ]
 })
 

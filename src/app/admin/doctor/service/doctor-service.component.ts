@@ -1,7 +1,8 @@
-import { Component, OnInit }                       from '@angular/core';
-import { Router, ActivatedRoute }                   from '@angular/router';
+import { Component, OnInit }                    from '@angular/core';
+import { Router, ActivatedRoute }               from '@angular/router';
 
-import { AdminService }                            from '../../admin.service';
+import { AdminService }                         from '../../admin.service';
+import { NzMessageService }                  	from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-doctor-service',
@@ -38,6 +39,7 @@ export class DoctorServiceComponent{
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private _message: NzMessageService,
 	) {}
 
 	ngOnInit(): void {
@@ -72,7 +74,7 @@ export class DoctorServiceComponent{
 				 + '&doctor_id=' + this.serviceModel.doctor_id;
 			this.adminService.doctorservice(adminServiceUrl).then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.servicelist.length > 0){
@@ -102,7 +104,7 @@ export class DoctorServiceComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -122,27 +124,27 @@ export class DoctorServiceComponent{
 	submit(f) {
 		this.btnCanEdit = true;
 		if(f.value.service == ''){
-			this.toastTab('科室不可为空', 'error');
+			this._message.error('科室不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.fee)){
-			this.toastTab('费用不可为空', 'error');
+			this._message.error('费用不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(f.value.fee) < 0){
-			this.toastTab('费用应大于等于0', 'error');
+			this._message.error('费用应大于等于0');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(f.value.booking_fee)){
-			this.toastTab('预约金不可为空', 'error');
+			this._message.error('预约金不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(Number(f.value.booking_fee) < 0){
-			this.toastTab('预约金应大于等于0', 'error');
+			this._message.error('预约金应大于等于0');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -160,13 +162,13 @@ export class DoctorServiceComponent{
 
 		this.adminService.doctorservicejoin(params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
 				if(this.type == 'update'){
-					this.toastTab('修改成功', '');
+					this._message.success('修改成功');
 				}else{
-					this.toastTab('创建成功', '');
+					this._message.success('创建成功');
 				}
 				setTimeout(() => {
 					this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': this.serviceModel.doctor_id}});

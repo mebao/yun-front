@@ -11,6 +11,8 @@ import { DoctorRecordTempletRoutingModule }         from './doctor-record-temple
 import { DoctorRecordTempletComponent }             from './doctor-record-templet.component';
 import { DoctorRecordTempletListComponent }         from './doctor-record-templet-list.component';
 
+import { NgZorroAntdModule }                        from 'ng-zorro-antd';
+
 @NgModule({
     declarations: [
         DoctorRecordTempletComponent,
@@ -26,6 +28,7 @@ import { DoctorRecordTempletListComponent }         from './doctor-record-temple
         NavModule,
         AngCommonModule,
         DoctorRecordTempletRoutingModule,
+        NgZorroAntdModule,
     ]
 })
 

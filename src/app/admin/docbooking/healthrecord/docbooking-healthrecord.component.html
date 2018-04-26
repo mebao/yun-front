@@ -173,7 +173,6 @@
 					<label>前囟：</label>
 					<label class="flex-1">
 						{{historyHealthR[0].bregmatic}}
-						<span class="pl5">cm^2</span>
 					</label>
 				</div>
 				<div *ngIf="historyHealthR[0].ear != null && historyHealthR[0].ear != '未见明显畸形'" class="flex item">
@@ -193,13 +192,13 @@
 					<label class="flex-1">{{historyHealthR[0].tonsil}}</label>
 				</div>
 				<div *ngIf="historyHealthR[0].eyes != null && historyHealthR[0].eyes != '未见明显畸形'" class="flex item">
-					<label>双眼：</label>
+					<label>双眼（外眼部检查）：</label>
 					<label class="flex-1">{{historyHealthR[0].eyes}}</label>
 				</div>
-				<div *ngIf="historyHealthR[0].vision != null && historyHealthR[0].vision != '未见异常'" class="flex item">
+				<!-- <div *ngIf="historyHealthR[0].vision != null && historyHealthR[0].vision != '未见异常'" class="flex item">
 					<label>外眼部检查：</label>
 					<label class="flex-1">{{historyHealthR[0].vision}}</label>
-				</div>
+				</div> -->
 				<div *ngIf="historyHealthR[0].gums != null && historyHealthR[0].gums != '未见异常'" class="flex item">
 					<label>牙龈：</label>
 					<label class="flex-1">{{historyHealthR[0].gums}}</label>
@@ -220,7 +219,7 @@
 					<label>出牙数：</label>
 					<label class="flex-1">
 						{{historyHealthR[0].teeth_num}}
-						<span *ngIf="historyHealthR[0].teeth_num != '' && historyHealthR[0].teeth_num != '0'" class="pl5">颗</span>
+						<span *ngIf="historyHealthR[0].teeth_num != '' && historyHealthR[0].teeth_num != '0'" class="pl5"></span>
 					</label>
 				</div>
 				<div *ngIf="historyHealthR[0].dental_caries != null && historyHealthR[0].dental_caries != '未见异常'" class="flex item">
@@ -246,6 +245,10 @@
 				<div *ngIf="historyHealthR[0].abdomen != null && historyHealthR[0].abdomen != '未见异常'" class="flex item">
 					<label>腹部：</label>
 					<label class="flex-1">{{historyHealthR[0].abdomen}}</label>
+				</div>
+				<div *ngIf="historyHealthR[0].mammaryGland != null && historyHealthR[0].mammaryGland != '未见异常'" class="flex item">
+					<label>乳腺：</label>
+					<label class="flex-1">{{historyHealthR[0].mammaryGland}}</label>
 				</div>
 				<div *ngIf="historyHealthR[0].limb != null && historyHealthR[0].limb != '未见异常'" class="flex item">
 					<label>脊柱及四肢：</label>
@@ -507,7 +510,6 @@
 										<label class="w150pp">前囟：</label>
 										<div class="flex-1">
 											{{healthrecord.bregmatic}}
-											<span *ngIf="healthrecord.bregmatic != ''" class="pl5">cm^2</span>
 										</div>
 									</div>
 								</div>
@@ -515,8 +517,12 @@
 							<div
 								*ngIf="healthrecord.ear != null || healthrecord.nose != null || healthrecord.throat != null || healthrecord.tonsil != null"
 								class="section">
-								<div class="title">耳鼻喉检查 （有助于早期发现鼻部、咽喉异常及听力障碍的征兆，尽早干预)</div>
+								<div class="title">眼耳鼻喉检查 （有助于早期发现眼部、耳部外观及听力、鼻部外观、咽喉异常，尽早干预）</div>
 								<div class="pure-g">
+									<div *ngIf="healthrecord.eyes != null" class="pure-u-24-24 bt info flex">
+										<label class="w150pp">双眼（外眼部检查）：</label>
+										<div class="flex-1">{{healthrecord.eyes}}</div>
+									</div>
 									<div *ngIf="healthrecord.ear != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">耳：</label>
 										<div class="flex-1">{{healthrecord.ear}}</div>
@@ -535,7 +541,7 @@
 									</div>
 								</div>
 							</div>
-							<div
+							<!-- <div
 								*ngIf="healthrecord.eyes != null || healthrecord.vision != null"
 								class="section">
 								<div class="title">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
@@ -549,7 +555,7 @@
 										<div class="flex-1">{{healthrecord.vision}}</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div
 								*ngIf="healthrecord.gums != null || healthrecord.tongue_tie != null || healthrecord.teeth_pit != null || healthrecord.plaque != null || healthrecord.teeth_num || healthrecord.dental_caries != null"
 								class="section">
@@ -575,7 +581,7 @@
 										<label class="w150pp">出牙数：</label>
 										<div class="flex-1">
 											{{healthrecord.teeth_num == '0' ? '' : healthrecord.teeth_num}}
-											<span *ngIf="healthrecord.teeth_num != '' && healthrecord.teeth_num != '0'" class="pl5">颗</span>
+											<span *ngIf="healthrecord.teeth_num != '' && healthrecord.teeth_num != '0'" class="pl5"></span>
 										</div>
 									</div>
 									<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
@@ -585,7 +591,7 @@
 								</div>
 							</div>
 							<div
-								*ngIf="healthrecord.thoracic != null || healthrecord.heart != null || healthrecord.lung != null || healthrecord.kidney != null || healthrecord.abdomen != null"
+								*ngIf="healthrecord.thoracic != null || healthrecord.heart != null || healthrecord.lung != null || healthrecord.kidney != null || healthrecord.abdomen != null || healthrecord.mammaryGland != null"
 								class="section">
 								<div class="title">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 								<div class="pure-g">
@@ -608,6 +614,10 @@
 									<div *ngIf="healthrecord.abdomen != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">腹部：</label>
 										<div class="flex-1">{{healthrecord.abdomen}}</div>
+									</div>
+									<div *ngIf="healthrecord.mammaryGland != null" class="pure-u-24-24 bt info flex">
+										<label class="w150pp">乳腺：</label>
+										<div class="flex-1">{{healthrecord.mammaryGland}}</div>
 									</div>
 								</div>
 							</div>
@@ -988,15 +998,29 @@
 						</div>
 						<div *ngIf="info.bregmatic != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
-								<label for="bregmatic" class="w150pp">前囟（cm^2）：</label>
+								<label for="bregmatic" class="w150pp">前囟：</label>
 								<textarea id="bregmatic" maxlength="200" rows="1" name="bregmatic" [(ngModel)]="info.bregmatic" class="auto flex-1"></textarea>
 							</div>
 						</div>
 					</div>
 					<div
-						*ngIf="info.ear != null || info.nose != null || info.throat != null || info.tonsil != null"
-						class="bg-title mt10 mb20">耳鼻喉检查 （有助于早期发现鼻部、咽喉异常及听力障碍的征兆，尽早干预)</div>
+						*ngIf="info.ear != null || info.nose != null || info.throat != null || info.tonsil != null || info.eyes != null"
+						class="bg-title mt10 mb20">眼耳鼻喉检查 （有助于早期发现眼部、耳部外观及听力、鼻部外观、咽喉异常，尽早干预）</div>
 					<div class="pure-g">
+						<div *ngIf="info.eyes != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="eyes" class="w150pp">双眼（外眼部检查）：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见明显畸形', 'eyes')" [ngClass]="{'active': info.eyes == '未见明显畸形'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见明显畸形</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'eyes_other')">
+										<textarea maxlength="200" name="eyes_other" rows="1" #eyes_other="ngModel" [(ngModel)]="info.eyes_other" placeholder="其他" class="mt0 mb0 auto"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div *ngIf="info.ear != null" class="pure-u-24-24">
 							<div class="pure-control-group flex">
 								<label for="ear" class="w150pp">耳：</label>
@@ -1054,7 +1078,7 @@
 							</div>
 						</div>
 					</div>
-					<div
+					<!-- <div
 						*ngIf="info.eyes != null || info.vision != null"
 						class="bg-title mt10 mb20">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
 					<div class="pure-g">
@@ -1086,7 +1110,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<div
 						*ngIf="info.gums != null || info.tongue_tie != null || info.teeth_pit != null || info.plaque != null || info.teeth_num != null || info.dental_caries != null"
 						class="bg-title mt10 mb20">口腔检查 （发现口腔异常情况，如：有无诞生牙及畸形）</div>
@@ -1169,7 +1193,7 @@
 						</div>
 					</div>
 					<div
-						*ngIf="info.thoracic != null || info.heart != null || info.lung != null || info.liver_spleen != null || info.kidney != null || info.abdomen != null"
+						*ngIf="info.thoracic != null || info.heart != null || info.lung != null || info.liver_spleen != null || info.kidney != null || info.abdomen != null || info.mammary_gland != null"
 						class="bg-title mt10 mb20">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
 					<div class="pure-g">
 						<div *ngIf="info.thoracic != null" class="pure-u-24-24">
@@ -1252,6 +1276,20 @@
 									</div>
 									<div class="flex-1" (click)="changeRedio('', 'abdomen_other')">
 										<textarea maxlength="200" name="abdomen_other" rows="1" #abdomen_other="ngModel" [(ngModel)]="info.abdomen_other" placeholder="其他" class="mt0 mb0 auto"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="info.mammary_gland != null" class="pure-u-24-24">
+							<div class="pure-control-group flex">
+								<label for="mammary_gland" class="w150pp">乳腺：</label>
+		                        <div class="flex-1 flex pt10">
+									<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'mammary_gland')" [ngClass]="{'active': info.mammary_gland == '未见异常'}">
+										<div class="radioTab mr10"></div>
+										<div class="flex-1">未见异常</div>
+									</div>
+									<div class="flex-1" (click)="changeRedio('', 'mammary_gland_other')">
+										<textarea maxlength="200" name="mammary_gland_other" rows="1" #mammary_gland_other="ngModel" [(ngModel)]="info.mammary_gland_other" placeholder="其他" class="mt0 mb0 auto"></textarea>
 									</div>
 								</div>
 							</div>

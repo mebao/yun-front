@@ -123,6 +123,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
         kidney_other: string,
         abdomen: string,
         abdomen_other: string,
+		mammary_gland: string,
+        mammary_gland_other: string,
         ear: string,
         ear_other: string,
         nose: string,
@@ -298,6 +300,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			kidney_other: '',
 			abdomen: '',
 			abdomen_other: '',
+			mammary_gland: '',
+			mammary_gland_other: '',
 			ear: '',
 			ear_other: '',
 			nose: '',
@@ -542,7 +546,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						// results.list[i].stoolRoutineExamination = results.list[i].stoolRoutineExamination.replace('镜检：', '\n镜检：');
 						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
 					}
 					sessionStorage.setItem('healthrecord', JSON.stringify(results.list[0]));
@@ -639,6 +642,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				kidney_other: healthrecord.kidney == '未见异常' ? '' : healthrecord.kidney,
 				abdomen: healthrecord.abdomen,
 				abdomen_other: healthrecord.abdomen == '未见异常' ? '' : healthrecord.abdomen,
+				mammary_gland: healthrecord.mammaryGland,
+				mammary_gland_other: healthrecord.mammaryGland == '未见异常' ? '' : healthrecord.mammaryGland,
 				ear: healthrecord.ear,
 				ear_other: healthrecord.ear == '未见明显畸形' ? '' : healthrecord.ear,
 				nose: healthrecord.nose,
@@ -760,6 +765,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				kidney_other: '',
 				abdomen: null,
 				abdomen_other: '',
+				mammary_gland: null,
+				mammary_gland_other: '',
 				ear: null,
 				ear_other: '',
 				nose: null,
@@ -863,7 +870,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		if(doctorBookingRecordTemplet != null){
 			if(doctorBookingRecordTemplet.recordkeys.length > 0){
 				for(var i = 0; i < doctorBookingRecordTemplet.recordkeys.length; i++){
-					this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
+					doctorBookingRecordTemplet.recordkeys[i].value = null ? (this.info[doctorBookingRecordTemplet.recordkeys[i].key] = ''):(this.info[doctorBookingRecordTemplet.recordkeys[i].key] = doctorBookingRecordTemplet.recordkeys[i].value);
+					// this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
 					this.baseInfo[doctorBookingRecordTemplet.recordkeys[i].key] = '';
 					if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_height'){
 						if(childcontrast.info){
@@ -908,6 +916,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}
 					if(doctorBookingRecordTemplet.recordkeys[i].key=='abdomen'){
 							this.info.abdomen = '未见异常';
+					}
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='mammary_gland'){
+							this.info.mammary_gland = '未见异常';
 					}
 					if(doctorBookingRecordTemplet.recordkeys[i].key=='ear'){
 							this.info.ear = '未见明显畸形';
@@ -1365,6 +1376,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
         this.info.kidney_other = this.adminService.trim(this.info.kidney_other);
         this.info.abdomen = this.adminService.trim(this.info.abdomen);
         this.info.abdomen_other = this.adminService.trim(this.info.abdomen_other);
+		this.info.mammary_gland = this.adminService.trim(this.info.mammary_gland);
+        this.info.mammary_gland_other = this.adminService.trim(this.info.mammary_gland_other);
         this.info.ear = this.adminService.trim(this.info.ear);
         this.info.ear_other = this.adminService.trim(this.info.ear_other);
         this.info.nose = this.adminService.trim(this.info.nose);
@@ -1464,11 +1477,11 @@ export class DocbookingHealthrecordComponent implements OnInit{
             this.btnCanEdit = false;
 			return;
 		}
-		if(!this.adminService.isFalse(this.info.teeth_num) && (Number(this.info.teeth_num) < 0 || parseFloat(this.info.teeth_num) % 1 != 0)){
-			this.toastTab('出牙数应为大于0的整数', 'error');
-            this.btnCanEdit = false;
-			return false;
-		}
+		// if(!this.adminService.isFalse(this.info.teeth_num) && (Number(this.info.teeth_num) < 0 || parseFloat(this.info.teeth_num) % 1 != 0)){
+		// 	this.toastTab('出牙数应为大于0的整数', 'error');
+        //     this.btnCanEdit = false;
+		// 	return false;
+		// }
 		// 当复查日期存在是，诊疗记录不可为空
 		if(this.editType == 'create' && this.info.review_date != '' && this.info.record == ''){
 			this.toastTab('复查日期存在时，诊疗记录不可为空', 'error');
@@ -1507,6 +1520,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             liver_spleen: this.info.liver_spleen != '' ? this.info.liver_spleen : this.info.liver_spleen_other,
             kidney: this.info.kidney != '' ? this.info.kidney : this.info.kidney_other,
             abdomen: this.info.abdomen != '' ? this.info.abdomen : this.info.abdomen_other,
+			mammary_gland: this.info.mammary_gland != '' ? this.info.mammary_gland : this.info.mammary_gland_other,
             ear: this.info.ear != '' ? this.info.ear : this.info.ear_other,
             nose: this.info.nose != '' ? this.info.nose : this.info.nose_other,
             throat: this.info.throat != '' ? this.info.throat : this.info.throat_other,
