@@ -108,6 +108,7 @@
 			            	<div nz-form-control class="mt5">
 								<nz-select
 									class="w100"
+									name="ms_{{index}}"
 									[nzSize]="'large'"
 									[nzPlaceHolder]="'请选择药品'"
 									[ngModel]="ms.ms"
@@ -128,6 +129,7 @@
 			            	<div nz-form-control class="mt5">
 								<nz-select
 									class="w100"
+									name="batch_{{index}}"
 									[nzSize]="'large'"
 									[nzPlaceHolder]="'请选择批次'"
 									[ngModel]="ms.ms.batch"
@@ -172,7 +174,7 @@
 		<button (click)="addMs()" nz-button [nzType]="'primary'" [nzSize]="'large'"><i class="anticon anticon-plus mr5"></i>添加药品</button>
 	</div>
 	<div class="text-center">
-		<button (click)="create(f); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
+		<button (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
 	</div>
 </div>
 <nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'支付'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="close()">
@@ -227,11 +229,11 @@
 			<div class="w100p">折后价格：</div>
 			<div class="flex-1">{{selected.saleFee}}</div>
 		</div>
-		<div nz-form-item class="flex pt10">
-			<div nz-form-label class="w100p">
+		<div nz-form-item class="pt10">
+			<div nz-form-label>
 				<label nz-form-item-required>支付方式：</label>
 			</div>
-			<div nz-form-control class="mt5 flex-1">
+			<div nz-form-control class="mt5">
 				<nz-select
 					class="w100"
 					[nzSize]="'large'"

@@ -222,10 +222,10 @@ export class PrescriptSaleComponent{
 
 	msChange(_index, value) {
 		var batch = this.plist[_index].ms.batch;
-		this.plist[_index].ms = value;
+		this.plist[_index].ms = JSON.parse(JSON.stringify(value));
 		this.plist[_index].ms.batch = (batch == null ? '' : null);
 		this.plist[_index].ms.num = '';
-		this.plist[_index].batchList = this.plist[_index].ms.others;
+		this.plist[_index].batchList = JSON.parse(JSON.stringify(value)).others;
 	}
 
 	create() {

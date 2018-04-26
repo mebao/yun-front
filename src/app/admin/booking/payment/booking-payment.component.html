@@ -883,7 +883,7 @@
 											</nz-select>
 						            	</div>
 						          	</div>
-									<div nz-row [nzGutter]="30" class="actcard-list mt10">
+									<div *ngIf="selectedInfo.user != null && selectedInfo.user.actCards && selectedInfo.user.actCards.length > 0" nz-row [nzGutter]="30" class="actcard-list mt10">
 										<div nz-col [nzSpan]="6" *ngFor="let actcard of selectedInfo.user.actCards">
 											<nz-badge [nzCount]="actcard.num" class="w100 item" (click)="selectActcard(actcard)" [ngClass]="{'disabled': actcard.disabled == 1, 'canUse': actcard.disabled != 1 && actcard.selected != 1, 'selected': actcard.selected == 1}">
 										        <ng-template #content>
@@ -893,18 +893,21 @@
 										    </nz-badge>
 										</div>
 									</div>
+									<div *ngIf="selectedInfo.user != null && selectedInfo.user.actCards && selectedInfo.user.actCards.length == 0">
+										暂无活动卡
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</ng-template>
 			</nz-card>
-			<nz-card class="mt20">
+			<nz-card class="mt20" *ngIf="bookingInfo.status == '5'">
                 <ng-template #title>
                     支付详情
                 </ng-template>
                 <ng-template #body>
-					<div *ngIf="bookingInfo.status == '5'">
+					<div>
 						<div class="section">
 							<div class="title">减免金额：{{fee.tranInfo.giveAmount}}</div>
 						</div>

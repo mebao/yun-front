@@ -148,7 +148,7 @@
 		<button (click)="addMs()" nz-button [nzType]="'primary'" [nzSize]="'large'"><i class="anticon anticon-plus mr5"></i>添加物资</button>
 	</div>
 	<div class="text-center">
-		<button (click)="create(f); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
+		<button (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'">出售</button>
 	</div>
 </div>
 <nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'支付'" [nzContent]="modalContent" [nzFooter]="footerTab" (nzOnCancel)="close()">
