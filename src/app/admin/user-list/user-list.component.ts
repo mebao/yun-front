@@ -1,6 +1,8 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router }                             from '@angular/router';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { AdminService }                       from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class UserListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -42,6 +39,7 @@ export class UserListComponent{
 		amount: string,
 		give_amount: string,
 		pay_way: string,
+		actcard: any,
 	}
 	searchInfo: {
 		name: string,
@@ -57,8 +55,12 @@ export class UserListComponent{
 	btnCanEdit: boolean;
 	modalTabMember: boolean;
 	showAddMember: boolean;
+	// 购买活动卡
+	actcardList: any[];
+	modalActcardTab: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -68,11 +70,6 @@ export class UserListComponent{
 			title: '用户管理',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		// 权限
 		this.moduleAuthority = {
@@ -110,6 +107,7 @@ export class UserListComponent{
 			amount: '',
 			give_amount: '',
 			pay_way: '',
+			actcard: {},
 		}
 
 		if(JSON.parse(sessionStorage.getItem('search-userList'))){
@@ -141,7 +139,7 @@ export class UserListComponent{
 		var memberUrl = this.url + '&status=1';
 		this.adminService.memberlist(memberUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
@@ -151,18 +149,25 @@ export class UserListComponent{
 				}
 				this.memberList = results.list;
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
 		});
 
 		this.btnCanEdit = false;
 		this.modalTabMember = false;
 		this.showAddMember = false;
+
+		// 获取活动卡列表
+		this.actcardList = [];
+		this.modalActcardTab = false;
+		this.getActcardList();
 	}
 
 	getData(urlOptions) {
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
@@ -179,6 +184,9 @@ export class UserListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -219,6 +227,7 @@ export class UserListComponent{
 			amount: '',
 			give_amount: '',
 			pay_way: '',
+			actcard: {},
 		}
 		this.modalConfirmTab = true;
 	}
@@ -234,13 +243,16 @@ export class UserListComponent{
 			 + '&token=' + this.adminService.getUser().token;
 		this.adminService.deleteuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
 				this.search();
-				this.toastTab('删除成功', '');
+				this._message.success('删除成功');
 				this.btnCanEdit = false;
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
 		});
 	}
 
@@ -257,6 +269,7 @@ export class UserListComponent{
 			amount: '',
 			give_amount: '',
 			pay_way: '',
+			actcard: {},
 		}
 	}
 
@@ -272,6 +285,7 @@ export class UserListComponent{
 			amount: '',
 			give_amount: '',
 			pay_way: '',
+			actcard: {},
 		}
 	}
 
@@ -287,17 +301,17 @@ export class UserListComponent{
 
 	validate() {
 		if(this.adminService.isFalse(this.selector.member)){
-			this.toastTab('会员类型不可为空', 'error');
+			this._message.error('会员类型不可为空');
 			this.btnCanEdit = false;
 			return false;
 		}
 		if(this.adminService.isFalse(this.selector.amount)){
-			this.toastTab('支付金额不可为空', 'error');
+			this._message.error('支付金额不可为空');
 			this.btnCanEdit = false;
 			return false;
 		}
 		if(parseFloat(this.selector.amount) < 0){
-			this.toastTab('支付金额不可为负数', 'error');
+			this._message.error('支付金额不可为负数');
 			this.btnCanEdit = false;
 			return false;
 		}
@@ -305,12 +319,12 @@ export class UserListComponent{
 			this.selector.give_amount = '0';
 		}
 		if(parseFloat(this.selector.give_amount) < 0){
-			this.toastTab('赠送金额不可为负数', 'error');
+			this._message.error('赠送金额不可为负数');
 			this.btnCanEdit = false;
 			return false;
 		}
 		if(this.adminService.isFalse(this.selector.pay_way) || this.selector.pay_way == ''){
-			this.toastTab('支付方式不可为空', 'error');
+			this._message.error('支付方式不可为空');
 			this.btnCanEdit = false;
 			return false;
 		}
@@ -324,7 +338,7 @@ export class UserListComponent{
 					}
 				}
 				if(parseFloat(this.selector.amount) > parseFloat(selectedPayMember['balance'])){
-					this.toastTab(selectedPayMember['memberName'] + '余额不足', 'error');
+					this._message.error(selectedPayMember['memberName'] + '余额不足');
 					this.btnCanEdit = false;
 					return false;
 				}
@@ -357,14 +371,17 @@ export class UserListComponent{
 
 		this.adminService.userrecharge(params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('充值成功', '');
+				this._message.success('充值成功');
 				this.closeCharge();
 				this.search();
 				this.btnCanEdit = false;
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
 		});
 	}
 
@@ -380,6 +397,7 @@ export class UserListComponent{
 			amount: '',
 			give_amount: '',
 			pay_way: '',
+			actcard: {},
 		}
 		this.uMemberList = [];
 		if(this.memberList.length > 0){
@@ -419,7 +437,7 @@ export class UserListComponent{
 	confirmMember() {
 		this.btnCanEdit = true;
 		if(this.adminService.isFalse(this.selector.member)){
-			this.toastTab('会员类型不可为空', 'error');
+			this._message.error('会员类型不可为空');
 			this.btnCanEdit = false;
 			return false;
 		}
@@ -454,14 +472,14 @@ export class UserListComponent{
 				if(type == 'update'){
 					this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
 				}
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
 				this.search();
 				if(type == 'add'){
 					this.closeMember();
 				}else{
-					this.toastTab('会员状态修改成功', '');
+					this._message.success('会员状态修改成功');
 				}
 				this.btnCanEdit = false;
 			}
@@ -470,7 +488,7 @@ export class UserListComponent{
 			if(type == 'update'){
 				this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
 			}
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 			this.btnCanEdit = false;
 		});
 	}
@@ -483,18 +501,107 @@ export class UserListComponent{
 		}
 	}
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
+	// 购买活动卡
+	getActcardList() {
+		this.adminService.searchactcard(this.url).then((data) => {
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.actcardList = results.list;
 			}
-	    }, 2000);
+		}).catch(() => {
+			this._message.error('服务器错误');
+		});
+	}
+
+	closeActcard() {
+		this.modalActcardTab = false;
+		this.selector = {
+			id: '',
+			members: [],
+			member: '',
+			member_id: '',
+			text: '',
+			userBalance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+			actcard: {},
+		}
+	}
+
+	setUpActcard(user) {
+		this.modalActcardTab = true;
+		this.selector = {
+			id: user.id,
+			members: user.members,
+			member: '',
+			member_id: '',
+			text: user.name,
+			userBalance: user.userBalance ? user.userBalance : 0,
+			amount: '',
+			give_amount: '',
+			pay_way: this.selector.pay_way == null ? '' : null,
+			actcard: null,
+		}
+	}
+
+	confirmActcard() {
+		if(!this.selector.actcard.id){
+			this._message.error('活动卡不可为空');
+			return;
+		}
+		if(!this.selector.amount || this.selector.amount == ''){
+			this._message.error('支付金额不可为空');
+			return;
+		}
+		if(!this.selector.pay_way || this.selector.pay_way == ''){
+			this._message.error('支付方式不可为空');
+			return;
+		}
+		if(this.selector.pay_way.indexOf('member') != -1){
+			var um_id = this.selector.pay_way.split('_')[1];
+			var canPay = false;
+			for(var index in this.selector.members){
+				if(this.selector.members[index].umId == um_id){
+					if(parseFloat(this.selector.members[index].balance) >= parseFloat(this.selector.amount)){
+						canPay = true;
+					}
+				}
+			}
+			if(!canPay){
+				this._message.error('会员余额不足');
+				return;
+			}
+		}
+		this.btnCanEdit = true;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			user_id: this.selector.id,
+			user_name: this.selector.text,
+			activity_id: this.selector.actcard.id,
+			amount: this.selector.amount.toString(),
+			need_amount: this.selector.actcard.price,
+			give_amount: '0',
+			pay_way: this.selector.pay_way.indexOf('member') != -1 ? 'member' : this.selector.pay_way,
+			um_id: this.selector.pay_way.indexOf('member') != -1 ? this.selector.pay_way.split('_')[1] : null,
+		}
+        this.adminService.useractcard(params).then((data) => {
+            if(data.status == 'no'){
+				this.btnCanEdit = false;
+                this._message.error(data.errorMsg);
+            }else{
+				this.btnCanEdit = false;
+				this.closeActcard();
+                this._message.success('活动卡购买成功');
+				this.search();
+            }
+        }).catch(() => {
+			this.btnCanEdit = false;
+            this._message.error('服务器错误');
+        });
 	}
 }

@@ -70,6 +70,7 @@ export class DocbookingComponent implements OnInit{
 	hasPrescriptData: boolean;
 	prescriptList: any[];
 	booking: {
+		actCards: any[],
 		age: string,
 		birthDate: string,
 		bookingAge: string,
@@ -191,6 +192,7 @@ export class DocbookingComponent implements OnInit{
 		}
 
 		this.booking = {
+			actCards: [],
 			age: '',
 			birthDate: '',
 			bookingAge: '',

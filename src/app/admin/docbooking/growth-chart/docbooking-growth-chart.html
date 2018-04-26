@@ -19,6 +19,12 @@
 				<span>当前年龄：</span>
 				<span>{{booking.age}}</span>
 			</div>
+			<div *ngIf="booking.actCards.length > 0" class="item flex">
+				<div>活动卡：</div>
+				<div class="flex-1">
+					<div *ngFor="let actcard of booking.actCards">{{actcard.activityName + '（剩余' + actcard.num + '次）'}}</div>
+				</div>
+			</div>
 			<div class="item">
 				<span>备注：</span>
 				<span>{{booking.remark}}</span>

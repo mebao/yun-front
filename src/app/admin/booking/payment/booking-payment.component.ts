@@ -1,6 +1,8 @@
 import { Component }                               from '@angular/core';
 import { ActivatedRoute, Router }                  from '@angular/router';
 
+import { NzMessageService }                        from 'ng-zorro-antd';
+
 import { AdminService }                            from '../../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class BookingPaymentComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -77,37 +74,45 @@ export class BookingPaymentComponent{
 		originalCost: string,
 		// 应收费用
 		fee: string,
-		// 实收费用
-		realFee: string,
+		// 去除活动卡支付，仍需支付
+		stillNeedFee: string,
 		// 收费结果
 		resultsList: any[],
+		// 支付详情
+		tranInfo: any,
 	};
 	//获取用户会员信息
-	userMember: {
-		name: string,
-		// 会员列表
-		memberList: any[],
-		// 选中会员
-		selectedMember: string,
-		// 选中会员json
-		selectedMemberJson: any,
-		// 是否是会员
-		member: boolean,
-		userBalance: string,
-		service: string,
-		service_session: string,
-		services: any[],
-		assist: string,
-		assist_session: string,
-		assists: any[],
-		check: string,
-		check_session: string,
-		prescript: string,
-		prescript_session: string,
-		tcm: string,
-		tcm_session: string,
-		other: string,
-		other_session: string,
+	userInfo: {
+		actCards: any[],
+		selectedActcard: {
+			service: any[],
+		},
+		member: {
+			name: string,
+			// 会员列表
+			memberList: any[],
+			// 选中会员
+			selectedMember: string,
+			// 选中会员json
+			selectedMemberJson: any,
+			// 是否是会员
+			member: boolean,
+			userBalance: string,
+			service: string,
+			service_session: string,
+			services: any[],
+			assist: string,
+			assist_session: string,
+			assists: any[],
+			check: string,
+			check_session: string,
+			prescript: string,
+			prescript_session: string,
+			tcm: string,
+			tcm_session: string,
+			other: string,
+			other_session: string,
+		}
 	}
 	modalTab: boolean;
 	payInfo: {
@@ -150,13 +155,15 @@ export class BookingPaymentComponent{
 	modalTabAddPay: boolean;
 	tranInfo: any;
 	// 药方弹窗，用于判断是否含有未出药
-	prescript: {
-		tabShow: boolean,
-		type: string,
-		text: string,
+	prescriptTabShow: boolean;
+	// 选择他人活动卡
+	selectedInfo: {
+		user: any,
+		userList: any[],
 	}
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -167,11 +174,6 @@ export class BookingPaymentComponent{
 			title: '收费',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
@@ -236,31 +238,38 @@ export class BookingPaymentComponent{
 			},
 			originalCost: '',
 			fee: '',
-			realFee: '',
+			stillNeedFee: '',
 			resultsList: [],
+			tranInfo: {},
 		}
 
-		this.userMember = {
-			name: '',
-			memberList: [],
-			selectedMember: '',
-			selectedMemberJson: {},
-			member: false,
-			userBalance: '0.00',
-			service: '100',
-			service_session: '100',
-			services: [],
-			assist: '100',
-			assist_session: '100',
-			assists: [],
-			check: '100',
-			check_session: '100',
-			prescript: '100',
-			prescript_session: '100',
-			tcm: '100',
-			tcm_session: '100',
-			other: '100',
-			other_session: '100',
+		this.userInfo = {
+			actCards: [],
+			selectedActcard: {
+				service: [],
+			},
+			member: {
+				name: '',
+				memberList: [],
+				selectedMember: '',
+				selectedMemberJson: {},
+				member: false,
+				userBalance: '0.00',
+				service: '100',
+				service_session: '100',
+				services: [],
+				assist: '100',
+				assist_session: '100',
+				assists: [],
+				check: '100',
+				check_session: '100',
+				prescript: '100',
+				prescript_session: '100',
+				tcm: '100',
+				tcm_session: '100',
+				other: '100',
+				other_session: '100',
+			}
 		}
 
 		this.route.queryParams.subscribe((params) => {
@@ -299,11 +308,12 @@ export class BookingPaymentComponent{
 		this.pageType = '';
 		this.paymentType = '';
 		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
+			 + '&token=' + this.adminService.getUser().token
+			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.bookingfee(this.id + this.url).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				// 	feeinfo为[]
@@ -316,70 +326,70 @@ export class BookingPaymentComponent{
 					// 第一种discount_info解析方式
 					if(results.dataCode == '0'){
 						if(results.discountInfo == '' || !results.discountInfo){
-							var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
-								+ '&clinic_id=' + this.adminService.getUser().clinicId;
+							var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
 							this.adminService.searchuser(userUrl).then((userData) => {
 								if(userData.status == 'no'){
-									this.toastTab(userData.errorMsg, 'error');
+									this._message.error(userData.errorMsg);
 								}else{
 									var userResults = JSON.parse(JSON.stringify(userData.results));
 									if(userResults.users.length > 0){
-										this.userMember.userBalance = this.adminService.toDecimal2(userResults.users[0].balance);
+										this.userInfo.member.userBalance = this.adminService.toDecimal2(userResults.users[0].balance);
 									}
 									if(userResults.users[0].memberId){
 										//获取会员折扣信息
-										var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-											 + '&id=' + userResults.users[0].memberId + '&status=1';
+										var memberUrl = this.url + '&id=' + userResults.users[0].memberId + '&status=1';
 										this.adminService.memberlist(memberUrl).then((memberData) => {
 											if(memberData.status == 'no'){
-												this.toastTab(memberData.errorMsg, 'error');
+												this._message.error(memberData.errorMsg);
 											}else{
 												var memberResults = JSON.parse(JSON.stringify(memberData.results));
 												if(memberResults.list.length > 0){
-													this.userMember.member = true;
-													this.userMember.name = memberResults.list[0].name;
-													this.userMember.service = this.adminService.isFalse(memberResults.list[0].service) ? '1.00' : this.adminService.toDecimal2(Number(memberResults.list[0].service) / 100);
-													this.userMember.service_session = this.userMember.service;
+													this.userInfo.member.member = true;
+													this.userInfo.member.name = memberResults.list[0].name;
+													this.userInfo.member.service = this.adminService.isFalse(memberResults.list[0].service) ? '1.00' : this.adminService.toDecimal2(Number(memberResults.list[0].service) / 100);
+													this.userInfo.member.service_session = this.userInfo.member.service;
 													// 计算每一个服务的折扣
 													if(memberResults.list[0].services.length > 0){
 														for(var service in memberResults.list[0].services){
 															if(memberResults.list[0].services[service].discount != ''){
 																memberResults.list[0].services[service].discount = this.adminService.toDecimal2(Number(memberResults.list[0].services[service].discount) / 100);
 															}else{
-																memberResults.list[0].services[service].discount = this.userMember.service;
+																memberResults.list[0].services[service].discount = this.userInfo.member.service;
 															}
 															memberResults.list[0].services[service].discount_session = memberResults.list[0].services[service].discount;
 														}
 													}
-													this.userMember.services = memberResults.list[0].services;
-													this.userMember.assist = this.adminService.isFalse(memberResults.list[0].assist) ? '1.00' :  this.adminService.toDecimal2(Number(memberResults.list[0].assist) / 100);
-													this.userMember.assist_session = this.userMember.assist;
+													this.userInfo.member.services = memberResults.list[0].services;
+													this.userInfo.member.assist = this.adminService.isFalse(memberResults.list[0].assist) ? '1.00' :  this.adminService.toDecimal2(Number(memberResults.list[0].assist) / 100);
+													this.userInfo.member.assist_session = this.userInfo.member.assist;
 													// 计算每一个辅助治疗的折扣
 													if(memberResults.list[0].assists.length > 0){
 														for(var assist in memberResults.list[0].assists){
 															if(memberResults.list[0].assists[assist].discount != ''){
 																memberResults.list[0].assists[assist].discount = this.adminService.toDecimal2(Number(memberResults.list[0].assists[assist].discount) / 100);
 															}else{
-																memberResults.list[0].assists[assist].discount = this.userMember.assist;
+																memberResults.list[0].assists[assist].discount = this.userInfo.member.assist;
 															}
 															memberResults.list[0].assists[assist].discount_session = memberResults.list[0].assists[assist].discount;
 														}
 													}
-													this.userMember.assists = memberResults.list[0].assists;
-													this.userMember.check = this.adminService.toDecimal2(Number(memberResults.list[0].check) / 100);
-													this.userMember.check_session = this.userMember.check;
-													this.userMember.prescript = this.adminService.toDecimal2(Number(memberResults.list[0].prescript) / 100);
-													this.userMember.prescript_session = this.userMember.prescript;
-													this.userMember.other = this.adminService.toDecimal2(Number(memberResults.list[0].other) / 100);
-													this.userMember.other_session = this.userMember.other;
+													this.userInfo.member.assists = memberResults.list[0].assists;
+													this.userInfo.member.check = this.adminService.toDecimal2(Number(memberResults.list[0].check) / 100);
+													this.userInfo.member.check_session = this.userInfo.member.check;
+													this.userInfo.member.prescript = this.adminService.toDecimal2(Number(memberResults.list[0].prescript) / 100);
+													this.userInfo.member.prescript_session = this.userInfo.member.prescript;
+													this.userInfo.member.other = this.adminService.toDecimal2(Number(memberResults.list[0].other) / 100);
+													this.userInfo.member.other_session = this.userInfo.member.other;
 												}
 												//计算折扣后的费用信息
-												this.getFeeInfoFirst(this.userMember, results);
+												this.getFeeInfoFirst(this.userInfo, results);
 											}
+										}).catch(() => {
+											this._message.error('服务器错误');
 										});
 									}else{
 										// 不是会员，会员折扣，由100更改为1
-										this.userMember = {
+										this.userInfo.member = {
 											name: '',
 											memberList: [],
 											selectedMember: '',
@@ -403,30 +413,48 @@ export class BookingPaymentComponent{
 										}
 
 										//计算折扣后的费用信息
-										this.getFeeInfoFirst(this.userMember, results);
+										this.getFeeInfoFirst(this.userInfo, results);
 									}
 									sessionStorage.setItem('bookingFee', JSON.stringify(results));
 								}
+							}).catch(() => {
+								this._message.error('服务器错误');
 							});
 						}else{
-							this.userMember = results.discountInfo;
-							this.getFeeInfoFirst(this.userMember, results);
+							this.userInfo.member = results.discountInfo;
+							this.getFeeInfoFirst(this.userInfo, results);
 						}
 					}else{
 						// 第二种discount_info解析方式
 						if(!this.adminService.isFalse(results.discountInfo)){
 							this.discount_info = results.discountInfo;
 						}
-						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
-							+ '&clinic_id=' + this.adminService.getUser().clinicId;
+						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId;
 						this.adminService.searchuser(userUrl).then((userData) => {
 							if(userData.status == 'no'){
-								this.toastTab(userData.errorMsg, 'error');
+								this._message.error(userData.errorMsg);
 							}else{
 								var userResults = JSON.parse(JSON.stringify(userData.results));
 								sessionStorage.setItem('bookingFee', JSON.stringify(results));
 								if(userResults.users.length > 0){
-									this.userMember.userBalance = this.adminService.toDecimal2(userResults.users[0].userBalance ? userResults.users[0].userBalance : '0.00');
+									// 重构活动卡信息
+									if(userResults.users[0].actCards.length > 0){
+										for(var indexActcard in userResults.users[0].actCards){
+											// 判断活动卡是否可用
+											if(this.bookingInfo.services.length > 0 && this.bookingInfo.services[0].serviceId == userResults.users[0].actCards[indexActcard].projectId){
+												userResults.users[0].actCards[indexActcard].disabled = 0;
+											}else{
+												userResults.users[0].actCards[indexActcard].disabled = 1;
+											}
+											userResults.users[0].actCards[indexActcard].userId = userResults.users[0].id;
+											userResults.users[0].actCards[indexActcard].num = Number(userResults.users[0].actCards[indexActcard].num);
+											if(userResults.users[0].actCards[indexActcard].num > 0){
+												this.userInfo.actCards.push(userResults.users[0].actCards[indexActcard]);
+											}
+										}
+									}
+
+									this.userInfo.member.userBalance = this.adminService.toDecimal2(userResults.users[0].userBalance ? userResults.users[0].userBalance : '0.00');
 									// 根据会员获取折扣信息
 									if(userResults.users[0].members.length > 0){
 										var hasMember = false;
@@ -439,17 +467,17 @@ export class BookingPaymentComponent{
 											// 获取可用会员
 											if(userResults.users[0].members[i].canUse == '1'){
 												hasMember = true;
-												this.userMember.memberList.push(userResults.users[0].members[i]);
+												this.userInfo.member.memberList.push(userResults.users[0].members[i]);
 												// 选中第一个可用会员
-												if(this.userMember.selectedMember == ''){
-													this.userMember.selectedMember = userResults.users[0].members[i].string;
-													this.userMember.selectedMemberJson = userResults.users[0].members[i];
+												if(this.userInfo.member.selectedMember == ''){
+													this.userInfo.member.selectedMember = userResults.users[0].members[i].string;
+													this.userInfo.member.selectedMemberJson = userResults.users[0].members[i];
 												}
 											}
 										}
 										// 没有找到可用会员
 										if(hasMember){
-											this.getMemberDiscount(this.userMember.selectedMemberJson);
+											this.getMemberDiscount(this.userInfo.member.selectedMemberJson);
 										}else{
 											this.getMemberDiscount('');
 										}
@@ -458,13 +486,18 @@ export class BookingPaymentComponent{
 									}
 								}else{
 									this.loadingShow = false;
-									this.toastTab('用户信息错误', 'error');
+									this._message.error('用户信息错误');
 								}
 							}
+						}).catch(() => {
+							this._message.error('服务器错误');
 						});
 					}
 				}
 			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
 		});
 
 		// 获取支付方式
@@ -475,11 +508,13 @@ export class BookingPaymentComponent{
 		}else{
 			this.adminService.clinicdata().then((data) => {
 				if(data.status == 'no'){
-					return 'error';
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.getPaywayList(results);
 				}
+			}).catch(() => {
+				this._message.error('服务器错误');
 			});
 		}
 
@@ -487,67 +522,71 @@ export class BookingPaymentComponent{
 
 		this.editMemberType = 'save';
 
-		this.prescript = {
-			tabShow: false,
-			type: '',
-			text: '',
+		this.prescriptTabShow = false;
+
+		this.selectedInfo = {
+			user: {},
+			userList: [],
 		}
+		this.getOtherUser();
 	}
 
-	selectMember() {
-		this.userMember.selectedMemberJson = JSON.parse(this.userMember.selectedMember);
-		this.getMemberDiscount(this.userMember.selectedMemberJson);
+	selectMember(event) {
+		this.userInfo.member.selectedMember = event;
+		this.userInfo.member.selectedMemberJson = JSON.parse(this.userInfo.member.selectedMember);
+		this.getMemberDiscount(this.userInfo.member.selectedMemberJson);
 	}
 
 	getMemberDiscount(memberInfo) {
 		if(memberInfo.memberId){
 			//获取会员折扣信息
-			var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
-				 + '&id=' + memberInfo.memberId + '&status=1';
+			var memberUrl = this.url + '&id=' + memberInfo.memberId + '&status=1';
 			this.adminService.memberlist(memberUrl).then((memberData) => {
 				if(memberData.status == 'no'){
-					this.toastTab(memberData.errorMsg, 'error');
+					this._message.error(memberData.errorMsg);
 				}else{
 					var memberResults = JSON.parse(JSON.stringify(memberData.results));
 					if(memberResults.list.length > 0){
-						this.userMember.member = true;
-						this.userMember.name = memberResults.list[0].name;
-						this.userMember.service = this.adminService.isFalse(memberResults.list[0].service) ? '100' : memberResults.list[0].service;
-						this.userMember.service_session = this.userMember.service;
+						this.userInfo.member.member = true;
+						this.userInfo.member.name = memberResults.list[0].name;
+						this.userInfo.member.service = this.adminService.isFalse(memberResults.list[0].service) ? '100' : memberResults.list[0].service;
+						this.userInfo.member.service_session = this.userInfo.member.service;
 						// 计算每一个服务的折扣
 						if(memberResults.list[0].services.length > 0){
 							for(var service in memberResults.list[0].services){
 								if(memberResults.list[0].services[service].discount == ''){
-									memberResults.list[0].services[service].discount = this.userMember.service;
+									memberResults.list[0].services[service].discount = this.userInfo.member.service;
 								}
 								memberResults.list[0].services[service].discount_session = memberResults.list[0].services[service].discount;
 							}
 						}
-						this.userMember.services = memberResults.list[0].services;
-						this.userMember.assist = this.adminService.isFalse(memberResults.list[0].assist) ? '100' : memberResults.list[0].assist;
-						this.userMember.assist_session = this.userMember.assist;
+						this.userInfo.member.services = memberResults.list[0].services;
+						this.userInfo.member.assist = this.adminService.isFalse(memberResults.list[0].assist) ? '100' : memberResults.list[0].assist;
+						this.userInfo.member.assist_session = this.userInfo.member.assist;
 						// 计算每一个辅助治疗的折扣
 						if(memberResults.list[0].assists.length > 0){
 							for(var assist in memberResults.list[0].assists){
 								if(memberResults.list[0].assists[assist].discount == ''){
-									memberResults.list[0].assists[assist].discount = this.userMember.assist;
+									memberResults.list[0].assists[assist].discount = this.userInfo.member.assist;
 								}
 								memberResults.list[0].assists[assist].discount_session = memberResults.list[0].assists[assist].discount;
 							}
 						}
-						this.userMember.assists = memberResults.list[0].assists;
-						this.userMember.check = memberResults.list[0].check;
-						this.userMember.check_session = this.userMember.check;
-						this.userMember.prescript = memberResults.list[0].prescript;
-						this.userMember.prescript_session = this.userMember.prescript;
-						this.userMember.other = memberResults.list[0].other;
-						this.userMember.other_session = this.userMember.other;
+						this.userInfo.member.assists = memberResults.list[0].assists;
+						this.userInfo.member.check = memberResults.list[0].check;
+						this.userInfo.member.check_session = this.userInfo.member.check;
+						this.userInfo.member.prescript = memberResults.list[0].prescript;
+						this.userInfo.member.prescript_session = this.userInfo.member.prescript;
+						this.userInfo.member.other = memberResults.list[0].other;
+						this.userInfo.member.other_session = this.userInfo.member.other;
 					}else{
-						this.toastTab('会员被停用或信息错误，默认不打折', 'error');
+						this._message.error('会员被停用或信息错误，默认不打折');
 					}
 					//计算折扣后的费用信息
 					this.initMemberAndFee(JSON.parse(sessionStorage.getItem('bookingFee')));
 				}
+			}).catch(() => {
+				this._message.error('服务器错误');
 			});
 		}else{
 			//计算折扣后的费用信息
@@ -557,7 +596,7 @@ export class BookingPaymentComponent{
 
 	getPaywayList(clinicdata) {
 		if(clinicdata == 'error'){
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 		}else{
 			var list = [];
 			for(var payway in clinicdata.payWays){
@@ -637,8 +676,9 @@ export class BookingPaymentComponent{
 			},
 			originalCost: '',
 			fee: '',
-			realFee: '',
+			stillNeedFee: '',
 			resultsList: [],
+			tranInfo: results.tranInfo,
 		}
 		this.getFeeInfo();
 	}
@@ -648,11 +688,11 @@ export class BookingPaymentComponent{
 			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
 				var serviceDiscount = '';
 				// 遍历会员科室折扣
-				if(this.userMember.services.length > 0){
-					for(var j = 0; j < this.userMember.services.length; j++){
+				if(this.userInfo.member.services.length > 0){
+					for(var j = 0; j < this.userInfo.member.services.length; j++){
 						// 通过serviceId
-						if(results.feeinfo['医生服务费用'][i].serviceId == this.userMember.services[j].serviceId){
-							serviceDiscount = this.userMember.services[j].discount;
+						if(results.feeinfo['医生服务费用'][i].serviceId == this.userInfo.member.services[j].serviceId){
+							serviceDiscount = this.userInfo.member.services[j].discount;
 						}
 					}
 				}
@@ -663,11 +703,11 @@ export class BookingPaymentComponent{
 			for(var i = 0; i < results.feeinfo['辅助项目费用'].length; i++){
 				var assistDiscount = '';
 				// 遍历会员辅助项目折扣
-				if(this.userMember.assists.length > 0){
-					for(var j = 0; j < this.userMember.assists.length; j++){
+				if(this.userInfo.member.assists.length > 0){
+					for(var j = 0; j < this.userInfo.member.assists.length; j++){
 						// 通过assistId
-						if(results.feeinfo['辅助项目费用'][i].projectId == this.userMember.assists[j].assistId){
-							assistDiscount = this.userMember.assists[j].discount;
+						if(results.feeinfo['辅助项目费用'][i].projectId == this.userInfo.member.assists[j].assistId){
+							assistDiscount = this.userInfo.member.assists[j].discount;
 						}
 					}
 				}
@@ -706,8 +746,9 @@ export class BookingPaymentComponent{
 			},
 			originalCost: '',
 			fee: '',
-			realFee: '',
+			stillNeedFee: '',
 			resultsList: [],
+			tranInfo: results.tranInfo,
 		}
 		this.getFeeInfo();
 	}
@@ -720,28 +761,45 @@ export class BookingPaymentComponent{
 		//科室
 		var serviceFee = 0;
 		var originalServiceFee = 0;
+		var hasServiceActcard = false;
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
+				// 判断是否选择活动卡
+				var serviceActcardIndex = '';
+				this.fee.feeInfo.serviceFeeList[i].hasActcard = false;
+				if(this.userInfo.selectedActcard.service.length > 0){
+					for(var actcardIndex in this.userInfo.selectedActcard.service){
+						if(this.fee.feeInfo.serviceFeeList[i].serviceId == this.userInfo.selectedActcard.service[actcardIndex].projectId){
+							this.fee.feeInfo.serviceFeeList[i].hasActcard = true;
+							this.fee.feeInfo.serviceFeeList[i].serviceDiscount = 100;
+							hasServiceActcard = true;
+							this.userInfo.selectedActcard.service[actcardIndex].pay_way = 'activity';
+							this.userInfo.selectedActcard.service[actcardIndex].pay_text = this.userInfo.selectedActcard.service[actcardIndex].activityName;
+							serviceActcardIndex = actcardIndex;
+						}
+					}
+				}
 				// 如果具体科室折扣存在，则以具体科室折扣计算，否则以默认科室折扣计算
 				// 支付时的服务折扣
-				if(this.discount_info.service.length > 0){
+				if(this.bookingInfo.status == '5' && this.discount_info.service.length > 0){
 					for(var index in this.discount_info.service){
 						if(this.fee.feeInfo.serviceFeeList[i].id == this.discount_info.service[index].id){
 							this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.discount_info.service[index].discount;
 						}
 					}
 				}else{
-					if(this.adminService.isFalse(this.fee.feeInfo.serviceFeeList[i].serviceDiscount)){
-						this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.userMember.service;
+					if(this.adminService.isFalse(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) || this.fee.feeInfo.serviceFeeList[i].serviceDiscount == 0){
+						this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.userInfo.member.service;
 					}
 				}
+				var _fee = parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price);
 				this.fee.feeInfo.serviceFeeList[i].serviceDiscount_session = this.fee.feeInfo.serviceFeeList[i].serviceDiscount;
-				var fee_service = parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;
+				var fee_service = _fee * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;
 				this.fee.feeInfo.serviceFeeList[i].serviceFee = this.adminService.toDecimal2(fee_service);
 				serviceFee += fee_service;
-				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price);
+				originalServiceFee += _fee;
 				// fee中为实际支付的费用
-				this.fee.feeInfo.serviceFeeList[i].originalFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price));
+				this.fee.feeInfo.serviceFeeList[i].originalFee = this.adminService.toDecimal2(_fee);
 				// 费用结果
 				var resultsInfo = {
 					id: this.fee.feeInfo.serviceFeeList[i].id,
@@ -753,7 +811,12 @@ export class BookingPaymentComponent{
 		}
 		// 科室费用，应减去对应的预约金
 		serviceFee = serviceFee - parseFloat(this.fee.feeInfo.bookingFee);
-		fee += parseFloat(this.adminService.toDecimal2(serviceFee));
+
+		// 有活动卡，计算活动卡抵用金额后
+		if(this.userInfo.selectedActcard.service.length > 0){
+			this.userInfo.selectedActcard.service[0].pay_money = serviceFee.toString();
+		}
+		fee += serviceFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalServiceFee));
 		this.fee.feeInfo.serviceFee = this.adminService.toDecimal2(serviceFee);
 		this.fee.feeInfo.serviceOriginalFee = this.adminService.toDecimal2(originalServiceFee);
@@ -765,7 +828,7 @@ export class BookingPaymentComponent{
 			for(var i = 0; i < this.fee.feeInfo.assistFeeList.length; i++){
 				// 如果具体辅助项目折扣存在，则以具体辅助项目折扣计算，否则以默认辅助项目折扣计算
 				// 支付时的辅助项目折扣
-				if(this.discount_info.assist.length > 0){
+				if(this.bookingInfo.status == '5' && this.discount_info.assist.length > 0){
 					for(var index in this.discount_info.assist){
 						if(this.fee.feeInfo.assistFeeList[i].id == this.discount_info.assist[index].id){
 							this.fee.feeInfo.assistFeeList[i].assistDiscount = this.discount_info.assist[index].discount;
@@ -773,7 +836,7 @@ export class BookingPaymentComponent{
 					}
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.assistFeeList[i].assistDiscount)){
-						this.fee.feeInfo.assistFeeList[i].assistDiscount = this.userMember.assist;
+						this.fee.feeInfo.assistFeeList[i].assistDiscount = this.userInfo.member.assist;
 					}
 				}
 				this.fee.feeInfo.assistFeeList[i].assistDiscount_session = this.fee.feeInfo.assistFeeList[i].assistDiscount;
@@ -792,7 +855,7 @@ export class BookingPaymentComponent{
 				this.fee.resultsList.push(resultsInfo);
 			}
 		}
-		fee += parseFloat(this.adminService.toDecimal2(assistFee));
+		fee += assistFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalAssistFee));
 		this.fee.feeInfo.assistFee = this.adminService.toDecimal2(assistFee);
 		this.fee.feeInfo.assistOriginalFee = this.adminService.toDecimal2(originalAssistFee);
@@ -803,7 +866,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.checkFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.checkFeeList.length; i++){
 				// 支付时的检查折扣
-				if(this.discount_info.check.length > 0){
+				if(this.bookingInfo.status == '5' && this.discount_info.check.length > 0){
 					for(var index in this.discount_info.check){
 						if(this.fee.feeInfo.checkFeeList[i].id == this.discount_info.check[index].id){
 							this.fee.feeInfo.checkFeeList[i].checkDiscount = this.discount_info.check[index].discount;
@@ -811,7 +874,7 @@ export class BookingPaymentComponent{
 					}
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.checkFeeList[i].checkDiscount)){
-						this.fee.feeInfo.checkFeeList[i].checkDiscount = this.userMember.check;
+						this.fee.feeInfo.checkFeeList[i].checkDiscount = this.userInfo.member.check;
 					}
 				}
 				this.fee.feeInfo.checkFeeList[i].checkDiscount_session = this.fee.feeInfo.checkFeeList[i].checkDiscount;
@@ -830,7 +893,7 @@ export class BookingPaymentComponent{
 				this.fee.resultsList.push(resultsInfo);
 			}
 		}
-		fee += parseFloat(this.adminService.toDecimal2(checkFee));
+		fee += checkFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalCheckFee));
 		this.fee.feeInfo.checkFee = this.adminService.toDecimal2(checkFee);
 		this.fee.feeInfo.checkOriginalFee = this.adminService.toDecimal2(originalCheckFee);
@@ -843,7 +906,7 @@ export class BookingPaymentComponent{
 				if(this.fee.feeInfo.medicalFeeList[i].info.length > 0){
 					for(var j = 0; j < this.fee.feeInfo.medicalFeeList[i].info.length; j++){
 						// 支付时的药品折扣
-						if(this.discount_info.medical.length > 0){
+						if(this.bookingInfo.status == '5' && this.discount_info.medical.length > 0){
 							for(var index in this.discount_info.medical){
 								if(this.fee.feeInfo.medicalFeeList[i].id + '_' + j == this.discount_info.medical[index].id){
 									this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount = this.discount_info.medical[index].discount;
@@ -851,7 +914,7 @@ export class BookingPaymentComponent{
 							}
 						}else{
 							if(this.adminService.isFalse(this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount)){
-								this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount = this.userMember.prescript;
+								this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount = this.userInfo.member.prescript;
 							}
 						}
 						this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount_session = this.fee.feeInfo.medicalFeeList[i].info[j].msDiscount;
@@ -880,7 +943,7 @@ export class BookingPaymentComponent{
 				this.fee.resultsList.push(resultsInfo);
 			}
 		}
-		fee += parseFloat(this.adminService.toDecimal2(medicalFee));
+		fee += medicalFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalMedicalFee));
 		this.fee.feeInfo.medicalFee = this.adminService.toDecimal2(medicalFee);
 		this.fee.feeInfo.medicalOriginalFee = this.adminService.toDecimal2(originalMedicalFee);
@@ -891,7 +954,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.tcmFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.tcmFeeList.length; i++){
 				// 支付时的中药折扣
-				if(this.discount_info.tcm.length > 0){
+				if(this.bookingInfo.status == '5' && this.discount_info.tcm.length > 0){
 					for(var index in this.discount_info.tcm){
 						if(this.fee.feeInfo.tcmFeeList[i].id == this.discount_info.tcm[index].id){
 							this.fee.feeInfo.tcmFeeList[i].tcmDiscount = this.discount_info.tcm[index].discount;
@@ -899,7 +962,7 @@ export class BookingPaymentComponent{
 					}
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.tcmFeeList[i].tcmDiscount)){
-						this.fee.feeInfo.tcmFeeList[i].tcmDiscount = this.userMember.tcm;
+						this.fee.feeInfo.tcmFeeList[i].tcmDiscount = this.userInfo.member.tcm;
 					}
 				}
 				this.fee.feeInfo.tcmFeeList[i].tcmDiscount_session = this.fee.feeInfo.tcmFeeList[i].tcmDiscount;
@@ -918,7 +981,7 @@ export class BookingPaymentComponent{
 				this.fee.resultsList.push(resultsInfo);
 			}
 		}
-		fee += parseFloat(this.adminService.toDecimal2(tcmFee));
+		fee += tcmFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalTcmFee));
 		this.fee.feeInfo.tcmFee = this.adminService.toDecimal2(tcmFee);
 		this.fee.feeInfo.tcmOriginalFee = this.adminService.toDecimal2(originalTcmFee);
@@ -929,7 +992,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.otherFeeList.length; i++){
 				// 支付时的其他折扣
-				if(this.discount_info.other.length > 0){
+				if(this.bookingInfo.status == '5' && this.discount_info.other.length > 0){
 					for(var index in this.discount_info.other){
 						if(this.fee.feeInfo.otherFeeList[i].id == this.discount_info.other[index].id){
 							this.fee.feeInfo.otherFeeList[i].otherDiscount = this.discount_info.other[index].discount;
@@ -937,7 +1000,7 @@ export class BookingPaymentComponent{
 					}
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.otherFeeList[i].otherDiscount)){
-						this.fee.feeInfo.otherFeeList[i].otherDiscount = this.userMember.other;
+						this.fee.feeInfo.otherFeeList[i].otherDiscount = this.userInfo.member.other;
 					}
 				}
 				this.fee.feeInfo.otherFeeList[i].otherDiscount_session = this.fee.feeInfo.otherFeeList[i].otherDiscount;
@@ -956,14 +1019,14 @@ export class BookingPaymentComponent{
 				this.fee.resultsList.push(resultsInfo);
 			}
 		}
-		fee += parseFloat(this.adminService.toDecimal2(otherFee));
+		fee += otherFee;
 		originalCost += parseFloat(this.adminService.toDecimal2(originalOtherFee));
 		this.fee.feeInfo.otherFee = this.adminService.toDecimal2(otherFee);
 		this.fee.feeInfo.otherOriginalFee = this.adminService.toDecimal2(originalOtherFee);
 		this.fee.feeInfo.otherDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherOriginalFee) - parseFloat(this.fee.feeInfo.otherFee));
 
 		//判断余额是否为0
-		if(parseFloat(this.userMember.selectedMemberJson.balance) != 0){
+		if(parseFloat(this.userInfo.member.selectedMemberJson.balance) != 0){
 			this.payInfo.memberBalance = true;
 		}
 
@@ -971,23 +1034,29 @@ export class BookingPaymentComponent{
 
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
 		this.fee.fee = this.adminService.toDecimal2(fee);
-		this.fee.realFee = this.adminService.toDecimal2(fee);
+		// 如果存在活动卡支付
+		var _stillNeedFee = fee * 100;
+		if(this.userInfo.selectedActcard.service.length > 0){
+			for(var actService of this.userInfo.selectedActcard.service){
+				_stillNeedFee -= actService.pay_money * 100;
+			}
+		}
+		this.fee.stillNeedFee = this.adminService.toDecimal2(_stillNeedFee / 100);
 
 		this.payInfo.stillNeedPay = this.fee.fee;
-
 		this.loadingShow = false;
 	}
 
-	getFeeInfoFirst(userMember, results) {
+	getFeeInfoFirst(userInfo, results) {
 		if(results.feeinfo['医生服务费用'].length > 0){
 			for(var i = 0; i < results.feeinfo['医生服务费用'].length; i++){
 				var serviceDiscount = '';
 				// 遍历会员科室折扣
-				if(userMember.services.length > 0){
-					for(var j = 0; j < userMember.services.length; j++){
+				if(userInfo.member.services.length > 0){
+					for(var j = 0; j < userInfo.member.services.length; j++){
 						// 通过serviceId
-						if(results.feeinfo['医生服务费用'][i].serviceId == userMember.services[j].serviceId){
-							serviceDiscount = userMember.services[j].discount;
+						if(results.feeinfo['医生服务费用'][i].serviceId == userInfo.member.services[j].serviceId){
+							serviceDiscount = userInfo.member.services[j].discount;
 						}
 					}
 				}
@@ -998,11 +1067,11 @@ export class BookingPaymentComponent{
 			for(var i = 0; i < results.feeinfo['辅助项目费用'].length; i++){
 				var assistDiscount = '';
 				// 遍历会员辅助项目折扣
-				if(userMember.assists.length > 0){
-					for(var j = 0; j < userMember.assists.length; j++){
+				if(userInfo.member.assists.length > 0){
+					for(var j = 0; j < userInfo.member.assists.length; j++){
 						// 通过assistId
-						if(results.feeinfo['辅助项目费用'][i].projectId == userMember.assists[j].assistId){
-							assistDiscount = userMember.assists[j].discount;
+						if(results.feeinfo['辅助项目费用'][i].projectId == userInfo.member.assists[j].assistId){
+							assistDiscount = userInfo.member.assists[j].discount;
 						}
 					}
 				}
@@ -1041,8 +1110,9 @@ export class BookingPaymentComponent{
 			},
 			originalCost: '',
 			fee: '',
-			realFee: '',
+			stillNeedFee: '',
 			resultsList: [],
+			tranInfo: results.tranInfo,
 		}
 
 
@@ -1056,7 +1126,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
 				// 如果具体科室折扣存在，则以具体科室折扣计算，否则以默认科室折扣计算
-				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userMember.service);
+				serviceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount != '' ? this.fee.feeInfo.serviceFeeList[i].serviceDiscount : userInfo.member.service);
 				originalServiceFee += parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price);
 			}
 		}
@@ -1073,7 +1143,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.assistFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.assistFeeList.length; i++){
 				// 如果具体辅助项目折扣存在，则以具体辅助项目折扣计算，否则以默认辅助项目折扣计算
-				assistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].number) * parseFloat(this.fee.feeInfo.assistFeeList[i].price) * parseFloat(this.fee.feeInfo.assistFeeList[i].assistDiscount != '' ? this.fee.feeInfo.assistFeeList[i].assistDiscount : userMember.assist);
+				assistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].number) * parseFloat(this.fee.feeInfo.assistFeeList[i].price) * parseFloat(this.fee.feeInfo.assistFeeList[i].assistDiscount != '' ? this.fee.feeInfo.assistFeeList[i].assistDiscount : userInfo.member.assist);
 				originalAssistFee += parseFloat(this.fee.feeInfo.assistFeeList[i].number) * parseFloat(this.fee.feeInfo.assistFeeList[i].price);
 			}
 		}
@@ -1087,7 +1157,7 @@ export class BookingPaymentComponent{
 		var originalCheckFee = 0;
 		if(this.fee.feeInfo.checkFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.checkFeeList.length; i++){
-				checkFee += parseFloat(this.fee.feeInfo.checkFeeList[i].number) * parseFloat(this.fee.feeInfo.checkFeeList[i].price) * parseFloat(userMember.check);
+				checkFee += parseFloat(this.fee.feeInfo.checkFeeList[i].number) * parseFloat(this.fee.feeInfo.checkFeeList[i].price) * parseFloat(userInfo.member.check);
 				originalCheckFee += parseFloat(this.fee.feeInfo.checkFeeList[i].number) * parseFloat(this.fee.feeInfo.checkFeeList[i].price);
 			}
 		}
@@ -1109,7 +1179,7 @@ export class BookingPaymentComponent{
 							medicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
 						}else{
 							//可以优惠
-							medicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) * parseFloat(userMember.prescript);
+							medicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) * parseFloat(userInfo.member.prescript);
 						}
 						originalMedicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
 					}
@@ -1126,7 +1196,7 @@ export class BookingPaymentComponent{
 		var originalOtherFee = 0;
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.otherFeeList.length; i++){
-				otherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].number) * parseFloat(this.fee.feeInfo.otherFeeList[i].price) * parseFloat(userMember.other);
+				otherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].number) * parseFloat(this.fee.feeInfo.otherFeeList[i].price) * parseFloat(userInfo.member.other);
 				originalOtherFee += parseFloat(this.fee.feeInfo.otherFeeList[i].number) * parseFloat(this.fee.feeInfo.otherFeeList[i].price);
 			}
 		}
@@ -1137,7 +1207,7 @@ export class BookingPaymentComponent{
 		this.fee.feeInfo.otherDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.otherOriginalFee) - parseFloat(this.fee.feeInfo.otherFee));
 
 		//判断余额是否为0
-		if(parseFloat(this.userMember.selectedMemberJson.balance) != 0){
+		if(parseFloat(this.userInfo.member.selectedMemberJson.balance) != 0){
 			this.payInfo.memberBalance = true;
 		}
 
@@ -1145,7 +1215,6 @@ export class BookingPaymentComponent{
 
 		this.fee.originalCost = this.adminService.toDecimal2(originalCost);
 		this.fee.fee = this.adminService.toDecimal2(fee);
-		this.fee.realFee = this.adminService.toDecimal2(fee);
 
 		this.payInfo.stillNeedPay = this.fee.fee;
 
@@ -1182,11 +1251,6 @@ export class BookingPaymentComponent{
 				}
 			}
 		}
-		if(this.fee.feeInfo.tcmFeeList.length > 0){
-			for(var tcm in this.fee.feeInfo.tcmFeeList){
-				this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount = this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount_session;
-			}
-		}
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var other in this.fee.feeInfo.otherFeeList){
 				this.fee.feeInfo.otherFeeList[other].otherDiscount = this.fee.feeInfo.otherFeeList[other].otherDiscount_session;
@@ -1197,7 +1261,7 @@ export class BookingPaymentComponent{
 
 	changeDiscount(value, type) {
 		if(parseFloat(value) <= 0 || parseFloat(value) > 100 || parseFloat(value) % 1 != 0){
-			this.toastTab(type + '折扣应为大于0，小于等于100的整数', 'error');
+			this._message.error(type + '折扣应为大于0，小于等于100的整数');
 			return;
 		}
 	}
@@ -1207,7 +1271,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var service in this.fee.feeInfo.serviceFeeList){
 				if(parseFloat(this.fee.feeInfo.serviceFeeList[service].serviceDiscount) <= 0 || parseFloat(this.fee.feeInfo.serviceFeeList[service].serviceDiscount) > 100 || parseFloat(this.fee.feeInfo.serviceFeeList[service].serviceDiscount) % 1 != 0){
-					this.toastTab(this.fee.feeInfo.serviceFeeList[service].serviceName + '折扣应为大于0，小于等于100的整数', 'error');
+					this._message.error(this.fee.feeInfo.serviceFeeList[service].serviceName + '折扣应为大于0，小于等于100的整数');
 					this.fee.feeInfo = JSON.parse(discount_session);
 					return;
 				}else{
@@ -1218,7 +1282,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.assistFeeList.length > 0){
 			for(var assist in this.fee.feeInfo.assistFeeList){
 				if(parseFloat(this.fee.feeInfo.assistFeeList[assist].assistDiscount) <= 0 || parseFloat(this.fee.feeInfo.assistFeeList[assist].assistDiscount) > 100 || parseFloat(this.fee.feeInfo.assistFeeList[assist].assistDiscount) % 1 != 0){
-					this.toastTab(this.fee.feeInfo.assistFeeList[assist].projectName + '折扣应大于0，小于等于100的整数', 'error');
+					this._message.error(this.fee.feeInfo.assistFeeList[assist].projectName + '折扣应大于0，小于等于100的整数');
 					this.fee.feeInfo = JSON.parse(discount_session);
 					return;
 				}else{
@@ -1229,7 +1293,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.checkFeeList.length > 0){
 			for(var check in this.fee.feeInfo.checkFeeList){
 				if(parseFloat(this.fee.feeInfo.checkFeeList[check].checkDiscount) <= 0 || parseFloat(this.fee.feeInfo.checkFeeList[check].checkDiscount) > 100 || parseFloat(this.fee.feeInfo.checkFeeList[check].checkDiscount) % 1 != 0){
-					this.toastTab(this.fee.feeInfo.checkFeeList[check].projectName + '折扣应大于0，小于等于100的整数', 'error');
+					this._message.error(this.fee.feeInfo.checkFeeList[check].projectName + '折扣应大于0，小于等于100的整数');
 					this.fee.feeInfo = JSON.parse(discount_session);
 					return;
 				}else{
@@ -1242,7 +1306,7 @@ export class BookingPaymentComponent{
 				if(this.fee.feeInfo.medicalFeeList[medical].info.length > 0){
 					for(var info in this.fee.feeInfo.medicalFeeList[medical].info){
 						if(parseFloat(this.fee.feeInfo.medicalFeeList[medical].info[info].msDiscount) <= 0 || parseFloat(this.fee.feeInfo.medicalFeeList[medical].info[info].msDiscount) > 100 || parseFloat(this.fee.feeInfo.medicalFeeList[medical].info[info].msDiscount) % 1 != 0){
-							this.toastTab(this.fee.feeInfo.medicalFeeList[medical].info[info].pname + '折扣应大于0，小于等于100的整数', 'error');
+							this._message.error(this.fee.feeInfo.medicalFeeList[medical].info[info].pname + '折扣应大于0，小于等于100的整数');
 							this.fee.feeInfo = JSON.parse(discount_session);
 							return;
 						}else{
@@ -1255,7 +1319,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.tcmFeeList.length > 0){
 			for(var tcm in this.fee.feeInfo.tcmFeeList){
 				if(parseFloat(this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount) <= 0 || parseFloat(this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount) > 100 || parseFloat(this.fee.feeInfo.tcmFeeList[tcm].tcmDiscount) % 1 != 0){
-					this.toastTab(this.fee.feeInfo.tcmFeeList[tcm].projectName + '折扣应大于0，小于等于100的整数', 'error');
+					this._message.error(this.fee.feeInfo.tcmFeeList[tcm].projectName + '折扣应大于0，小于等于100的整数');
 					this.fee.feeInfo = JSON.parse(discount_session);
 					return;
 				}else{
@@ -1266,7 +1330,7 @@ export class BookingPaymentComponent{
 		if(this.fee.feeInfo.otherFeeList.length > 0){
 			for(var other in this.fee.feeInfo.otherFeeList){
 				if(parseFloat(this.fee.feeInfo.otherFeeList[other].otherDiscount) <= 0 || parseFloat(this.fee.feeInfo.otherFeeList[other].otherDiscount) > 100 || parseFloat(this.fee.feeInfo.otherFeeList[other].otherDiscount) % 1 != 0){
-					this.toastTab(this.fee.feeInfo.otherFeeList[other].projectName + '折扣应大于0，小于等于100的整数', 'error');
+					this._message.error(this.fee.feeInfo.otherFeeList[other].projectName + '折扣应大于0，小于等于100的整数');
 					this.fee.feeInfo = JSON.parse(discount_session);
 					return;
 				}else{
@@ -1276,6 +1340,57 @@ export class BookingPaymentComponent{
 		}
 		this.getFeeInfo();
 		this.editMemberType = 'save';
+	}
+
+	getOtherUser() {
+		this.adminService.searchuser(this.url).then((data) => {
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.users.length > 0){
+					// 重构活动卡信息
+					if(results.users[0].actCards.length > 0){
+						for(var indexActcard in results.users[0].actCards){
+							// 判断活动卡是否可用
+							if(this.bookingInfo.services.length > 0 && this.bookingInfo.services[0].serviceId == results.users[0].actCards[indexActcard].projectId){
+								results.users[0].actCards[indexActcard].disabled = 0;
+							}else{
+								results.users[0].actCards[indexActcard].disabled = 1;
+							}
+							results.users[0].actCards[indexActcard].userId = results.users[0].id;
+							results.users[0].actCards[indexActcard].num = Number(results.users[0].actCards[indexActcard].num);
+						}
+					}
+				}
+				this.selectedInfo.userList = results.users;
+			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+		});
+	}
+
+	selectedOtherUser(_value) {
+		this.selectedInfo.user = _value;
+	}
+
+	// 选择活动卡
+	selectActcard(actcard) {
+		if(actcard.disabled == 0){
+			if(!actcard.selected || actcard.selected == 0){
+				if(this.userInfo.selectedActcard.service.length > 0){
+					this._message.error('每个预约只可使用一张活动卡');
+					return;
+				}else{
+					actcard.selected = 1;
+					this.userInfo.selectedActcard.service.push(actcard);
+				}
+			}else{
+				this.userInfo.selectedActcard.service.splice(actcard, 1);
+				actcard.selected = 0;
+			}
+			this.initMemberAndFee(JSON.parse(sessionStorage.getItem('bookingFee')));
+		}
 	}
 
 	// add选择支付方式
@@ -1288,7 +1403,7 @@ export class BookingPaymentComponent{
 				this.payInfo.payway_second.money = '';
 				for(var py of this.paywayList){
 					py.use = true;
-					this.userMember.selectedMemberJson.use = true;
+					this.userInfo.member.selectedMemberJson.use = true;
 				}
 			}else{
 				this.payInfo.payway_second.way = payway.key;
@@ -1299,7 +1414,7 @@ export class BookingPaymentComponent{
 					}
 				}
 				if(payway.key.indexOf('member') == -1){
-					this.userMember.selectedMemberJson.use = false;
+					this.userInfo.member.selectedMemberJson.use = false;
 				}
 			}
 		}
@@ -1361,8 +1476,10 @@ export class BookingPaymentComponent{
 						}
 						hasList.push(selectedItem);
 						this.resetPayway(hasList);
-
 						// 两种支付选择完毕，禁用其他选项
+						if(this.payInfo.payway.way.indexOf('member') == -1){
+							this.userInfo.member.selectedMemberJson.use = false;
+						}
 						for(var py of this.paywayList){
 							if(py.key != this.payInfo.payway.way && py.key != this.payInfo.payway_second.way){
 								py.use = false;
@@ -1387,6 +1504,7 @@ export class BookingPaymentComponent{
 	/**
 	 * 根据已选中支付方式，构造payway，
 	 * 会员支付，只能在第一种支付方式
+	 * 活动卡支付，只能在第一种支付方式
 	 */
 	resetPayway(hasList) {
 		var item = {
@@ -1438,19 +1556,21 @@ export class BookingPaymentComponent{
 		// 支付方式不足两种，解禁其他选项
 		for(var py of this.paywayList){
 			py.use = true;
-			this.userMember.selectedMemberJson.use = true;
+			this.userInfo.member.selectedMemberJson.use = true;
 		}
 		// 第一种方式，是否为会员
-		if(this.payInfo.payway.way.indexOf('member') == -1 && this.payInfo.payway.way != 'guazhang' && this.payInfo.payway.way != ''){
-			for(var py of this.paywayList){
-				if(py.key != 'member' && py.key != this.payInfo.payway.way){
-					py.use = false;
+		if(this.payInfo.payway.way != 'activity'){
+			if(this.payInfo.payway.way.indexOf('member') == -1 && this.payInfo.payway.way != 'guazhang' && this.payInfo.payway.way != ''){
+				for(var py of this.paywayList){
+					if(py.key != 'member' && py.key != this.payInfo.payway.way){
+						py.use = false;
+					}
 				}
-			}
-		}else if(this.payInfo.payway.way == 'guazhang'){
-			for(var py of this.paywayList){
-				if(py.key != 'guazhang' && py.key != 'member'){
-					py.use = false;
+			}else if(this.payInfo.payway.way == 'guazhang'){
+				for(var py of this.paywayList){
+					if(py.key != 'guazhang' && py.key != 'member'){
+						py.use = false;
+					}
 				}
 			}
 		}
@@ -1458,9 +1578,12 @@ export class BookingPaymentComponent{
 
 	// 实时更新stillNeedPay
 	changeMoney(type) {
-		var stillNeedPay = (parseFloat(this.fee.fee) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money) * 100) - (parseFloat(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money) * 100);
+		var give_amount = parseFloat(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount) * 100;
+		var first_monen = parseFloat(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money) * 100;
+		var second_money = parseFloat(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money) * 100;
+		var stillNeedPay = (parseFloat(this.fee.fee) * 100) - give_amount - first_monen - second_money;
 		if(stillNeedPay / 100 < 0){
-			this.toastTab('金额输入错误，请重新输入', 'error');
+			this._message.error('金额输入错误，请重新输入');
 			if(type == 'give_amount'){
 				this.payInfo.give_amount = '';
 			}
@@ -1502,11 +1625,20 @@ export class BookingPaymentComponent{
 			if(this.editMemberType == 'update'){
 				this.cancelMember();
 			}
-			this.payInfo.payway = {
-				way: '',
-				text: '',
-				money: '',
-			};
+			if(this.userInfo.selectedActcard.service.length > 0){
+				this.payInfo.payway = {
+					way: this.userInfo.selectedActcard.service[0].pay_way,
+					text: this.userInfo.selectedActcard.service[0].pay_text,
+					money: this.userInfo.selectedActcard.service[0].pay_money,
+				}
+				this.changeMoney('');
+			}else{
+				this.payInfo.payway = {
+					way: '',
+					text: '',
+					money: '',
+				}
+			}
 			this.payInfo.payway_second = {
 				way: '',
 				text: '',
@@ -1532,7 +1664,7 @@ export class BookingPaymentComponent{
 		this.adminService.searchprescript(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.loadingShow = false;
@@ -1544,46 +1676,7 @@ export class BookingPaymentComponent{
 						}
 					}
 					if(hasPrescript){
-						this.prescript = {
-							tabShow: true,
-							type: 'prescript/list',
-							text: '尚有药品未出药，请出药后再支付'
-						}
-					}else{
-						// 验证中药是否出药
-						this.getTcmPrescript();
-					}
-				}else{
-					// 验证中药是否出药
-					this.getTcmPrescript();
-				}
-			}
-		}).catch((error) => {
-			this.loadingShow = false;
-			this.toastTab('服务器错误', 'error');
-		});
-	}
-
-	getTcmPrescript() {
-		this.loadingShow = true;
-		var urlOptions = '?username=' + this.adminService.getUser().username
-			+ '&token=' + this.adminService.getUser().token
-			+ '&clinic_id=' + this.adminService.getUser().clinicId
-			+ '&booking_id=' + this.id + '&isout=1';
-		this.adminService.searchtcmprescript(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.loadingShow = false;
-				if(results.list.length > 0){
-					if(results.list[0].apotId == null){
-						this.prescript = {
-							tabShow: true,
-							type: 'prescript/tcmList',
-							text: '尚有中药未出药，请出药后再支付'
-						}
+						this.prescriptTabShow = true;
 					}else{
 						// 支付
 						this.pay();
@@ -1595,20 +1688,16 @@ export class BookingPaymentComponent{
 			}
 		}).catch((error) => {
 			this.loadingShow = false;
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 		});
 	}
 
 	closePrescriptTab() {
-		this.prescript = {
-			tabShow: false,
-			type: '',
-			text: ''
-		}
+		this.prescriptTabShow = false;
 	}
 
-	goPrescript(_value) {
-		this.router.navigate(['./admin/' + _value]);
+	goPrescript() {
+		this.router.navigate(['./admin/prescript/list']);
 	}
 
 	closeAddPay() {
@@ -1696,49 +1785,49 @@ export class BookingPaymentComponent{
 		this.btnCanEdit = true;
 		this.payInfo.remark = this.adminService.trim(this.payInfo.remark);
 		if(parseFloat(this.fee.fee) < 0){
-			this.toastTab('订单错误，不可支付', 'error');
+			this._message.error('订单错误，不可支付');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway.way != '' && this.payInfo.payway.money.toString() == ''){
-			this.toastTab(this.payInfo.payway.text + '金额不可为空', 'error');
+			this._message.error(this.payInfo.payway.text + '金额不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway.way != '' && parseFloat(this.payInfo.payway.money) < 0){
-			this.toastTab(this.payInfo.payway.text + '金额应大于等于0', 'error');
+			this._message.error(this.payInfo.payway.text + '金额应大于等于0');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway_second.way != '' && this.payInfo.payway_second.money == ''){
-			this.toastTab(this.payInfo.payway_second.text + '金额不可为空', 'error');
+			this._message.error(this.payInfo.payway_second.text + '金额不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway_second.way != '' && parseFloat(this.payInfo.payway_second.money) <= 0){
-			this.toastTab(this.payInfo.payway_second.text + '金额应大于0', 'error');
+			this._message.error(this.payInfo.payway_second.text + '金额应大于0');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway.way == '' && this.payInfo.payway_second.way == ''){
-			this.toastTab('支付方式不可为空', 'error');
+			this._message.error('支付方式不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount) && Number(this.payInfo.give_amount) <= 0){
-			this.toastTab('减免金额应大于0', 'error');
+			this._message.error('减免金额应大于0');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount) && this.adminService.isFalse(this.payInfo.remark)){
-			this.toastTab('减免金额存在时，备注不可为空', 'error');
+			this._message.error('减免金额存在时，备注不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 
 		// 若第一种支付方式为会员余额支付，需判断是否大于实际余额
-		if(this.payInfo.payway.way.indexOf('member') != -1 && parseFloat(this.payInfo.payway.money) > parseFloat(this.userMember.userBalance)){
-			this.toastTab('会员余额支付金额超出实际会员余额', 'error');
+		if(this.payInfo.payway.way.indexOf('member') != -1 && parseFloat(this.payInfo.payway.money) > parseFloat(this.userInfo.member.userBalance)){
+			this._message.error('会员余额支付金额超出实际会员余额');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -1746,16 +1835,16 @@ export class BookingPaymentComponent{
 		// 验证金额是否一致
 		var hasMoney = 0;
 		if(this.payInfo.payway.way != ''){
-			hasMoney += parseFloat(this.payInfo.payway.money);
+			hasMoney += parseFloat(this.payInfo.payway.money) * 100;
 		}
 		if(this.payInfo.payway_second.way != ''){
-			hasMoney += parseFloat(this.payInfo.payway_second.money);
+			hasMoney += parseFloat(this.payInfo.payway_second.money) * 100;
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount)){
-			hasMoney += parseFloat(this.payInfo.give_amount);
+			hasMoney += parseFloat(this.payInfo.give_amount) * 100;
 		}
-		if(hasMoney != parseFloat(this.fee.fee)){
-			this.toastTab('支付金额与消费金额不一致', 'error');
+		if(hasMoney != parseFloat(this.fee.fee) * 100){
+			this._message.error('支付金额与消费金额不一致');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -1768,7 +1857,7 @@ export class BookingPaymentComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			user_id: this.bookingInfo.creatorId,
+			user_id: this.userInfo.selectedActcard.service.length > 0 ? this.userInfo.selectedActcard.service[0].userId : this.bookingInfo.creatorId,
 			user_name: this.bookingInfo.creatorName,
 			amount: this.payInfo.payway.money.toString(),
 			pay_way: this.payInfo.payway.way.indexOf('member') != -1 ? 'member' : this.payInfo.payway.way,
@@ -1782,17 +1871,21 @@ export class BookingPaymentComponent{
 			second_amount: this.payInfo.payway_second.way == '' ? null : this.payInfo.payway_second.money,
 			discount_info: JSON.stringify(discount_info),
 			feelist: JSON.stringify(this.fee.resultsList),
+			card_id: this.userInfo.selectedActcard.service.length > 0 ? this.userInfo.selectedActcard.service[0].cardId : null,
 		}
 		this.adminService.feepay(this.id, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('支付完成', '');
+				this._message.success('支付完成');
 				setTimeout(() => {
 					this.router.navigate(['./admin/bookingCharge']);
 				}, 2000);
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
 		});
 	}
 
@@ -1800,24 +1893,24 @@ export class BookingPaymentComponent{
 		this.btnCanEdit = true;
 		this.payInfo.remark = this.adminService.trim(this.payInfo.remark);
 		if(parseFloat(this.fee.fee) < 0){
-			this.toastTab('订单错误，不可支付', 'error');
+			this._message.error('订单错误，不可支付');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway_second.way == ''){
-			this.toastTab('未选择支付方式', 'error');
+			this._message.error('未选择支付方式');
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.payInfo.payway_second.money.toString() == ''){
-			this.toastTab('支付金额不可为空', 'error');
+			this._message.error('支付金额不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 
 		// 余额支付，余额是否充足
-		if(this.payInfo.payway_second.way.indexOf('member') != -1 && parseFloat(this.payInfo.payway_second.money) > parseFloat(this.userMember.userBalance)){
-			this.toastTab('会员余额支付金额超出实际会员余额', 'error');
+		if(this.payInfo.payway_second.way.indexOf('member') != -1 && parseFloat(this.payInfo.payway_second.money) > parseFloat(this.userInfo.member.userBalance)){
+			this._message.error('会员余额支付金额超出实际会员余额');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -1830,30 +1923,19 @@ export class BookingPaymentComponent{
 			 + '&second_amount=' + this.payInfo.payway_second.money;
 		this.adminService.addtran(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.closeAddPay();
 				this.btnCanEdit = false;
 			}else{
-				this.toastTab('支付完成', '');
+				this._message.success('支付完成');
 				setTimeout(() => {
 					this.router.navigate(['./admin/bookingCharge']);
 				}, 2000);
 			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.closeAddPay();
+			this.btnCanEdit = false;
 		});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

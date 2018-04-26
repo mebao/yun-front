@@ -36,6 +36,49 @@
 	        overflow-x: hidden;
 	    }
 	}
+	.actcard-list{
+		.item{
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Chrome/Safari/Opera */
+			-khtml-user-select: none; /* Konqueror */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently not supported by any browser */
+			cursor: pointer;
+			padding: 10px;
+			border: 1px solid #ababab;
+			.info{
+				font-size: 18px;
+				padding: 0 0 10px 0;
+			}
+			.useInfo{
+				padding: 10px 0 0 0;
+				border-top: 1px solid #ababab;
+			}
+			&.disabled{
+				cursor: no-drop;
+				border: 1px solid #ababab;
+				color: #ababab;
+				.useInfo{
+					border-top: 1px solid #ababab;
+				}
+			}
+			&.canUse{
+				border: 1px solid #0078e7;
+				.useInfo{
+					border-top: 1px solid #0078e7;
+				}
+			}
+			&.selected{
+				color: #fff;
+				background-color: #39A99D;
+				border: 1px solid #39A99D;
+				.useInfo{
+					border-top: 1px solid #efefef;
+				}
+			}
+		}
+	}
 }
 .modal{
 	.pay-list{

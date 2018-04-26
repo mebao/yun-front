@@ -3,7 +3,8 @@
 		<li nz-menu-item
 			*ngIf="adminRole.bookingUpdate"
 			routerLink="./bookingUpdate"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingUpdate')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>预约修改</span>
@@ -232,15 +233,16 @@
 						<span>会员管理</span>
 					</span>
 				</li>
-				<!-- <li nz-menu-item
+				<li nz-menu-item
+					*ngIf="clinicRole.actcardList.use != ''"
 					routerLink="./actcard/list"
 					routerLinkActive="ant-menu-item-selected"
 					(click)="goPage('actcardList')">
-					<span title> -->
+					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
-						<!-- <span>活动卡管理</span>
+						<span>活动卡管理</span>
 					</span>
-				</li> -->
+				</li>
 			</ul>
 		</li>
 		<li nz-menu-item

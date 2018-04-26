@@ -134,7 +134,9 @@
 										<label nz-form-item-required>天数：</label>
 									</div>
 									<div nz-form-control>
-										<nz-select [formControlName]="medical_info.days" [nzPlaceHolder]="'请选择天数'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+										<nz-select [formControlName]="medical_info.days" [nzPlaceHolder]="'请选择天数'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"
+										nzShowSearch
+										(nzSearchChange)="searchNum($event)">
 											<ng-container *ngFor="let number of numberList">
 												<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
 											</ng-container>
@@ -149,7 +151,9 @@
 									</div>
 									<div nz-form-control>
 										<nz-input-group [nzSize]="'large'">
-											<nz-select [formControlName]="medical_info.num" [nzPlaceHolder]="'请选择总量'" [nzDisabled]="secondType == 'continueAdd' && medical_info.isOut != ''" class="w50">
+											<nz-select [formControlName]="medical_info.num" [nzPlaceHolder]="'请选择总量'" [nzDisabled]="secondType == 'continueAdd' && medical_info.isOut != ''" class="w50"
+											nzShowSearch
+											(nzSearchChange)="searchNum($event)">
 												<ng-container *ngFor="let number of numberList">
 													<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
 												</ng-container>

@@ -6,6 +6,8 @@ import { NgZorroAntdModule }                 from 'ng-zorro-antd';
 
 import { NavModule }                         from '../../nav/nav.module';
 
+import { AngCommonModule }                   from '../../../common/ang-common.module';
+
 import { BookingUpdateRoutingModule }        from './booking-update.routing.module';
 
 import { BookingUpdate }                     from './booking-update';
@@ -23,6 +25,7 @@ import { BookingUpdate }                     from './booking-update';
         ReactiveFormsModule,
         NgZorroAntdModule,
         NavModule,
+        AngCommonModule,
         BookingUpdateRoutingModule,
     ]
 })

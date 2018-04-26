@@ -40,6 +40,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
 	};
 	booking: {
+		actCards: any[],
 		age: string,
 		birthDate: string,
 		bookingAge: string,
@@ -399,6 +400,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.editType = '';
 
 		this.booking = {
+			actCards: [],
 			age: '',
 			birthDate: '',
 			bookingAge: '',

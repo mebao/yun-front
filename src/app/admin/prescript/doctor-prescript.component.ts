@@ -54,6 +54,7 @@ export class DoctorPrescriptComponent{
 		text: string,
 	}
 	numberList: any[];
+    numberOldList: any[];
 	oneNumList: any[];
     oneNumOldList: any[];
 	// 不可连续点击
@@ -167,10 +168,12 @@ export class DoctorPrescriptComponent{
 		];
 
 		this.numberList = [];
+        this.numberOldList = [];
 		this.oneNumList = [];
         this.oneNumOldList = [];
 		for(var i = 1; i < 21; i++){
-			this.numberList.push({key: i, value: i});
+			this.numberList.push({key: i.toString(), value: i.toString()});
+			this.numberOldList.push({key: i.toString(), value: i.toString()});
 			this.oneNumList.push({key: i.toString(), value: i.toString()});
 			this.oneNumOldList.push({key: i.toString(), value: i.toString()});
 		}
@@ -347,9 +350,9 @@ export class DoctorPrescriptComponent{
         this.validateForm.addControl(this.mPrescriptList[index - 1].oneUnit, new FormControl(medical == null ? '' : medical.oneUnit, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].frequency, new FormControl(medical == null ? '' : medical.frequency, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].usage, new FormControl(medical == null ? '' : medical.usage, Validators.required));
-        this.validateForm.addControl(this.mPrescriptList[index - 1].days, new FormControl(medical == null ? '' : Number(medical.days), Validators.required));
-        this.validateForm.addControl(this.mPrescriptList[index - 1].num, new FormControl(medical == null ? '' : Number(medical.num), Validators.required));
-        this.validateForm.addControl(this.mPrescriptList[index - 1].bakNum, new FormControl(medical == null ? '' : Number(medical.num), Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].days, new FormControl(medical == null ? '' : medical.days, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].num, new FormControl(medical == null ? '' : medical.num, Validators.required));
+        this.validateForm.addControl(this.mPrescriptList[index - 1].bakNum, new FormControl(medical == null ? '' : medical.num, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].unit, new FormControl(medical == null ? '' : medical.unit, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].ms_usage, new FormControl(medical == null ? '' : medical.ms_usage, Validators.required));
         this.validateForm.addControl(this.mPrescriptList[index - 1].remark, new FormControl(medical == null ? '' : medical.remark, Validators.required));
@@ -357,6 +360,14 @@ export class DoctorPrescriptComponent{
             if(this.oneNumList.indexOf({key: medical.oneNum, value: medical.oneNum}) == -1){
                 this.oneNumList.push({key: medical.oneNum, value: medical.oneNum});
                 this.oneNumOldList.push({key: medical.oneNum, value: medical.oneNum});
+            }
+            if(this.numberList.indexOf({key: medical.days.to, value: medical.days}) == -1){
+                this.numberList.push({key: medical.days, value: medical.days});
+                this.numberOldList.push({key: medical.days, value: medical.days});
+            }
+            if(this.numberList.indexOf({key: medical.num, value: medical.num}) == -1){
+                this.numberList.push({key: medical.num, value: medical.num});
+                this.numberOldList.push({key: medical.num, value: medical.num});
             }
         }
     }
@@ -398,6 +409,13 @@ export class DoctorPrescriptComponent{
         if(this.oneNumList.indexOf({key: _value, value: _value}) == -1){
             this.oneNumList = JSON.parse(JSON.stringify(this.oneNumOldList));
             this.oneNumList.push({key: _value, value: _value});
+        }
+    }
+
+    searchNum(_value) {
+        if(this.numberList.indexOf({key: _value, value: _value}) == -1){
+            this.numberList = JSON.parse(JSON.stringify(this.numberOldList));
+            this.numberList.push({key: _value, value: _value});
         }
     }
 

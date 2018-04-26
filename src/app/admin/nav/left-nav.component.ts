@@ -169,6 +169,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		//活动卡管理
+		actcardList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
 		//角色管理
 		crmRoleList: {
 			use: string,
@@ -419,6 +425,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			memberList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			actcardList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

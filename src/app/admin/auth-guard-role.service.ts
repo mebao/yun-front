@@ -1022,6 +1022,25 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'actcardList',
+						firstUrl: '/admin/actcard/list',
+						authority: ['see'],
+						second: [
+							{
+								url: '/admin/actcard/list',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/actcard',
+								authority: 'edit',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
+					{
 						firstKey: 'crmRoleList',
 						firstUrl: '/admin/crmRole/list',
 						authority: ['see'],

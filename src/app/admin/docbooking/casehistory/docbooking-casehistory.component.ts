@@ -40,6 +40,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}
 	};
 	booking: {
+		actCards: any[],
 		age: string,
 		birthDate: string,
 		bookingAge: string,
@@ -299,6 +300,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.editType = '';
 
 		this.booking = {
+			actCards: [],
 			age: '',
 			birthDate: '',
 			bookingAge: '',

@@ -40,6 +40,7 @@ export class DocbookingGrowthChart implements OnInit{
 		}
 	};
 	booking: {
+		actCards: any[],
 		age: string,
 		birthDate: string,
 		bookingAge: string,
@@ -140,6 +141,7 @@ export class DocbookingGrowthChart implements OnInit{
 		this.doctorId = '';
 
 		this.booking = {
+			actCards: [],
 			age: '',
 			birthDate: '',
 			bookingAge: '',

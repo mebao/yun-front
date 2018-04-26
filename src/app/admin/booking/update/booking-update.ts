@@ -16,6 +16,7 @@ export class BookingUpdate implements OnInit{
         back: boolean,
     };
     url: string;
+    loadingShow: boolean;
     bookingList: any[];
     searchInfo: {
         child: string,
@@ -45,6 +46,7 @@ export class BookingUpdate implements OnInit{
             + '&token=' + this.as.getUser().token
             + '&clinic_id=' + this.as.getUser().clinicId;
 
+        this.loadingShow = false;
         this.bookingList = [];
         this.searchInfo = {
             child: '',
@@ -54,6 +56,17 @@ export class BookingUpdate implements OnInit{
         }
         this._startDate = new Date();
         this._endDate = new Date();
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingUpdate'));
+        if(sessionSearch){
+			this.searchInfo = {
+                child: sessionSearch.child,
+                service: sessionSearch.service,
+                doctor: sessionSearch.doctor,
+                status: sessionSearch.status,
+            }
+            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
+            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
+		}
 
         this.childList = [];
         this.getChildList();
@@ -74,7 +87,16 @@ export class BookingUpdate implements OnInit{
     }
 
     search() {
+        this.loadingShow = true;
         var urlOptions = this.url;
+		sessionStorage.setItem('search-bookingUpdate', JSON.stringify({
+            child: this.searchInfo.child,
+            service: this.searchInfo.service,
+            doctor: this.searchInfo.doctor,
+            status: this.searchInfo.status,
+            _startDate: this._startDate,
+            _endDate: this._endDate,
+        }));
         if(this.searchInfo.child && this.searchInfo.child != ''){
             urlOptions += '&child_id=' + this.searchInfo.child;
         }
@@ -99,12 +121,15 @@ export class BookingUpdate implements OnInit{
     getData(urlOptions) {
         this.as.searchbooking(urlOptions).then((data) => {
             if(data.status == 'no'){
+                this.loadingShow = false;
                 this._message.error(data.errorMsg);
             }else{
+                this.loadingShow = false;
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.bookingList = results.weekbooks;
             }
         }).catch((data) => {
+            this.loadingShow = false;
             this._message.error(`服务器错误`);
         });
     }

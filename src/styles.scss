@@ -444,6 +444,11 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 			}
 		}
 	}
+	.ant-card-body{
+		height: 140px;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
 }
 
 /*诊所服务*/

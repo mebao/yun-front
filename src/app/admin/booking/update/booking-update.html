@@ -144,10 +144,11 @@
 					<td nz-td>{{booking.services.length > 0 ? booking.services[0].serviceTime : ''}}</td>
 					<td nz-td>{{booking.statusText}}</td>
 					<td nz-td>
-						<button (click)="info(booking)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+						<button *ngIf="booking.status != 0 && booking.status != -1" (click)="info(booking)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
 					</td>
 				</tr>
 			</tbody>
 		</nz-table>
 	</div>
 </div>
+<loading [show]="loadingShow"></loading>

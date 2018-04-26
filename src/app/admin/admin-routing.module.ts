@@ -267,10 +267,10 @@ const adminRoutes: Routes = [
 						path: 'setupMessage',
 						component: Message
 					},
-					// {
-					// 	path: 'actcard',
-					// 	loadChildren: './actcard/actcard.module#ActcardModule',
-					// },
+					{
+						path: 'actcard',
+						loadChildren: './actcard/actcard.module#ActcardModule',
+					},
 					{
 						path: '**',
 						component: PageNotFoundComponent
