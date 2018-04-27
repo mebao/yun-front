@@ -7,7 +7,7 @@
 			<div class="">
 				<div class="">
 					<label for="name">模板名</label>
-					<input [nzSize]="'large'" class="mt10" type="text" id="name" name="name" [(ngModel)]="name" placeholder="请输入模板名" [disabled]="editType == 'update'" nz-input>
+					<input [nzSize]="'large'" class="mt10" [(ngModel)]="name" placeholder="请输入模板名" [nzDisabled]="editType == 'update'" nz-input>
 				</div>
 				<div class="mt10" >
 					<label for="rk">模板内容</label>
@@ -30,10 +30,10 @@
 							  	</nz-select>
 							</div>
 							<div class="flex-1">
-								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="rk.rkValue" placeholder="请输入描述" nz-input>
+								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="rk.rkValue" placeholder="请输入描述" [nzDisabled]="rk.rkValueDisabled" nz-input>
 							</div>
 							<div class="w100p text-right">
-								<button *ngIf="rk.key != 1" (click)="removeRk(rk.key)" nz-button [nzSize]="'large'">移除</button>
+								<button (click)="removeRk(rk.key)" nz-button [nzSize]="'large'">移除</button>
 							</div>
 						</div>
 					</ng-container>
@@ -65,7 +65,7 @@
 							  	</nz-select>
 							</div>
 							<div class="flex-1">
-								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="rk.rkValue" placeholder="请输入描述" nz-input>
+								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="rk.rkValue" placeholder="请输入描述" [nzDisabled]="rk.rkValueDisabled" nz-input>
 							</div>
 							<div class="w100p text-right">
 								<button (click)="addRk(rk.key)" nz-button [nzSize]="'large'">添加</button>
