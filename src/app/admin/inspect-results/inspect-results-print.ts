@@ -42,7 +42,7 @@ export class InspectResultsPrint{
     		 + '&today=1';
 
         this.checkList = [];
-    	this.adminService.usercheckprojects(urlOptions).then((data) => {
+    	this.adminService.usercheckprojectinfo(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.toastTab(data.errorMsg, 'error');
             }else{
