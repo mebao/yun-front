@@ -288,6 +288,12 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
+								url: '/admin/docbooking/growthEvaluation',
+								authority: 'receive',
+								queryType: '',
+								queryParams: '',
+							},
+							{
 								url: '/admin/doctorTcmPrescript',
 								authority: 'receive',
 								queryType: '',

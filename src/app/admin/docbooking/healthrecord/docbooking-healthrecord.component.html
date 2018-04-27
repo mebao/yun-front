@@ -179,7 +179,12 @@
 					<label>前囟：</label>
 					<label class="flex-1">
 						{{historyHealthR[0].bregmatic}}
+						<span class="pl5">cm^2</span>
 					</label>
+				</div>
+				<div *ngIf="historyHealthR[0].eyes != null && historyHealthR[0].eyes != '未见明显畸形'" class="flex item">
+					<label>双眼（外眼部检查）：</label>
+					<label class="flex-1">{{historyHealthR[0].eyes}}</label>
 				</div>
 				<div *ngIf="historyHealthR[0].ear != null && historyHealthR[0].ear != '未见明显畸形'" class="flex item">
 					<label>耳：</label>
@@ -197,14 +202,6 @@
 					<label>扁桃体：</label>
 					<label class="flex-1">{{historyHealthR[0].tonsil}}</label>
 				</div>
-				<div *ngIf="historyHealthR[0].eyes != null && historyHealthR[0].eyes != '未见明显畸形'" class="flex item">
-					<label>双眼（外眼部检查）：</label>
-					<label class="flex-1">{{historyHealthR[0].eyes}}</label>
-				</div>
-				<!-- <div *ngIf="historyHealthR[0].vision != null && historyHealthR[0].vision != '未见异常'" class="flex item">
-					<label>外眼部检查：</label>
-					<label class="flex-1">{{historyHealthR[0].vision}}</label>
-				</div> -->
 				<div *ngIf="historyHealthR[0].gums != null && historyHealthR[0].gums != '未见异常'" class="flex item">
 					<label>牙龈：</label>
 					<label class="flex-1">{{historyHealthR[0].gums}}</label>
@@ -225,7 +222,7 @@
 					<label>出牙数：</label>
 					<label class="flex-1">
 						{{historyHealthR[0].teeth_num}}
-						<span *ngIf="historyHealthR[0].teeth_num != '' && historyHealthR[0].teeth_num != '0'" class="pl5"></span>
+						<span *ngIf="historyHealthR[0].teeth_num != '' && historyHealthR[0].teeth_num != '0'" class="pl5">颗</span>
 					</label>
 				</div>
 				<div *ngIf="historyHealthR[0].dental_caries != null && historyHealthR[0].dental_caries != '未见异常'" class="flex item">

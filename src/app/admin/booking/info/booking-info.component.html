@@ -7,7 +7,7 @@
 		<button (click)="backBookingFee()" *ngIf="booking.status == '2'" class="pure-button button-error" [disabled]="btnCanEdit">{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}</button>
 		<button (click)="cancel('status')" *ngIf="booking.status == '3'" class="pure-button button-error" [disabled]="btnCanEdit">取消登记</button>
 	</div>
-	<nz-card class="w100">
+	<nz-card class="w100 mt10">
 		<ng-template #title>
 			预约详情
 		</ng-template>

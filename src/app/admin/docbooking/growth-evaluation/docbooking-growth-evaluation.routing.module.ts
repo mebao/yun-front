@@ -12,7 +12,7 @@ import { DocbookingGrowthEvaluation }  from './docbooking-growth-evaluation';
     imports: [RouterModule.forChild([
         {
             path: '',
-            // canActivate: [AuthGuardRole],
+            canActivate: [AuthGuardRole],
             component: DocbookingGrowthEvaluation,
         }
     ])]
