@@ -690,7 +690,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		if(doctorBookingCaseTemplet != null){
 			if(doctorBookingCaseTemplet.casekeys.length > 0){
 				for(var i = 0; i < doctorBookingCaseTemplet.casekeys.length; i++){
-					if(doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].value == ''){
 						this.info[doctorBookingCaseTemplet.casekeys[i].key] = '';
 					}else{
 						if(this.info[doctorBookingCaseTemplet.casekeys[i].key+'_other'] != 'undefined'){
@@ -707,29 +707,29 @@ export class DocbookingCasehistoryComponent implements OnInit{
 							this.info.mid_height = '';
 						}
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='mid_weight' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 						if(childcontrast.info){
 							this.info.mid_weight = childcontrast.info.weight;
 						}else{
 							this.info.mid_weight = '';
 						}
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key == 'previous_history' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key == 'previous_history' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 						this.info.previous_history = '否认肝炎、结核病史及接触史，无药物过敏史';
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='face_neck' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 							this.info.face_neck = '未见异常';
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='heart_lung' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='heart_lung' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 							this.info.heart_lung = '未见异常';
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='abdomen' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='abdomen' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 							this.info.abdomen = '未见异常';
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='limbs' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='limbs' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 							this.info.limbs = '未见异常';
 					}
-					if(doctorBookingCaseTemplet.casekeys[i].key=='nervous_system' && doctorBookingCaseTemplet.casekeys[i].value == null){
+					if(doctorBookingCaseTemplet.casekeys[i].key=='nervous_system' && doctorBookingCaseTemplet.casekeys[i].value == ''){
 							this.info.nervous_system = '未见异常';
 					}
 				}

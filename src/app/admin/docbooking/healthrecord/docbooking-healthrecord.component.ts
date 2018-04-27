@@ -896,112 +896,112 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							this.info.medium_weight = '';
 						}
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='skin' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='skin' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.skin = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='oral_mucosa' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='oral_mucosa' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.oral_mucosa = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='hair' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='hair' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.hair = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='lymph_node' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='lymph_node' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.lymph_node = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='heart' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='heart' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.heart = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='thoracic' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='thoracic' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.thoracic = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='lung' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='lung' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.lung = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='liver_spleen' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='liver_spleen' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.liver_spleen = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='kidney' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='kidney' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.kidney = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='abdomen' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='abdomen' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.abdomen = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='mammary_gland' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='mammary_gland' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.mammary_gland = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='ear' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='ear' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.ear = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='nose' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='nose' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.nose = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='throat' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='throat' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.throat = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='tonsil' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='tonsil' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.tonsil = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='eyes' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='eyes' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.eyes = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='vision' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='vision' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.vision = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='gums' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='gums' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.gums = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='tongue_tie' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='tongue_tie' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.tongue_tie = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='teeth_pit' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='teeth_pit' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.teeth_pit = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='plaque' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='plaque' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.plaque = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='dental_caries' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='dental_caries' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.dental_caries = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='limb' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='limb' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.limb = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='ribs' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='ribs' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.ribs = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='hip_joint' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='hip_joint' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.hip_joint = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='torticollis' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='torticollis' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.torticollis = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='genitalia' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='genitalia' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.genitalia = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='anus' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='anus' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.anus = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='neurodevelopment' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='neurodevelopment' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.neurodevelopment = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='blood_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='blood_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.blood_routine_examination = '红细胞数：     ，白细胞总数：     ，血小板总数：     ，血红蛋白：     ';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='routine_urine' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='routine_urine' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.routine_urine = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='stool_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='stool_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.stool_routine_examination = '隐血：\n镜检：';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='bone_density' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='bone_density' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.bone_density = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='BALP' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='BALP' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.BALP = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='trace_element' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='trace_element' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.trace_element = '锌：     ，铁：     ，钙：     ，镁：     ，铜：     ';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='heavy_metal' && doctorBookingRecordTemplet.recordkeys[i].value == null){
+					if(doctorBookingRecordTemplet.recordkeys[i].key=='heavy_metal' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
 							this.info.heavy_metal = '铅：     ，镉：     ，锰：     ';
 					}
 				}
