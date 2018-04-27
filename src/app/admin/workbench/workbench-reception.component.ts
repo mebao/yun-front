@@ -329,14 +329,11 @@ export class WorkbenchReceptionComponent{
 		};
 		this.showBookinglist = JSON.parse(day.string);
 		for(var i=0;i<this.showBookinglist.length;i++){
-			for(var j=0;j<this.showBookinglist[i].members.length;j++){
-				if(this.showBookinglist[i].members[j].memberName == '推拿会员卡'){
-					if(this.showBookinglist[i].members[j].canUse == '1'){
-						this.showBookinglist[i].tuina = Math.floor(this.showBookinglist[i].members[j].balance/100);
-					}
+			for(var j = 0; j < this.showBookinglist[i].actCards.length; j++){
+				if(this.showBookinglist[i].actCards[j].activityName.indexOf('推拿') != '-1'){
+					this.showBookinglist[i].tuina = this.showBookinglist[i].actCards[j].num;
 				}
 			}
-
 		}
 		this.modalTab = true;
 

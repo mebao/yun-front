@@ -603,9 +603,11 @@ export class BookingListComponent implements OnInit{
 							}else{
 								results.weekbooks[i].use = true;
 							}
-							for(var j = 0; j < results.weekbooks[i].members.length; j++){
-								if(results.weekbooks[i].members[j].memberName == '推拿会员卡'){
-									results.weekbooks[i].tuina = Math.floor(results.weekbooks[i].members[j].balance/100);
+							if(results.weekbooks[i].actCards.length > 0){
+								for(var j = 0; j < results.weekbooks[i].actCards.length; j++){
+									if(results.weekbooks[i].actCards[j].activityName.indexOf('推拿') != '-1'){
+										results.weekbooks[i].tuina = results.weekbooks[i].actCards[j].num;
+									}
 								}
 							}
 							var memberList = [];
@@ -838,10 +840,10 @@ export class BookingListComponent implements OnInit{
 	show(value, use) {
 		if(value.length > 0){
 			for(var i = 0; i < value.length; i++){
-				for(var j = 0; j < value[i].members.length; j++){
-					if(value[i].members[j].memberName == '推拿会员卡'){
-						if(value[i].members[j].canUse == '1'){
-							value[i].tuina = Math.floor(value[i].members[j].balance/100);
+				if(value[i].actCards.length > 0){
+					for(var j = 0; j < value[i].actCards.length; j++){
+						if(value[i].actCards[j].activityName.indexOf('推拿') != '-1'){
+							value[i].tuina = value[i].actCards[j].num;
 						}
 					}
 				}
