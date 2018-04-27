@@ -694,7 +694,7 @@
 						<div *ngIf="baseInfo.teeth != null" class="pure-u-8-24">
 							<div class="pure-control-group flex">
 								<label for="teeth" class="w150pp text-right">出牙数（颗）：</label>
-								<input type="number" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth" (change)="validateNumber('teeth', '出牙数')" class="flex-1">
+								<input type="text" id="teeth" name="teeth" #teeth="ngModel" [(ngModel)]="info.teeth" (change)="validateNumber('teeth', '出牙数')" class="flex-1">
 							</div>
 						</div>
 						<div class="pure-u-8-24"></div>

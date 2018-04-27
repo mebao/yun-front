@@ -1208,10 +1208,10 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			this.btnCanEdit = false;
 			return;
 		}
-		if(!this.validateNumber('teeth', '出牙数')){
-			this.btnCanEdit = false;
-			return;
-		}
+		// if(!this.validateNumber('teeth', '出牙数')){
+		// 	this.btnCanEdit = false;
+		// 	return;
+		// }
 		if(!this.validateNumber('body_temperature', '体温')){
 			this.btnCanEdit = false;
 			return;
