@@ -227,7 +227,7 @@
 					</ng-container>
 				</select>
 			</div>
-			<div *ngIf="!showAddMember && uMemberList.length < 1" class="mt10">
+			<div *ngIf="!showAddMember && selector.members.length < 1" class="mt10">
 				<button (click)="addMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增会员</button>
 			</div>
 		</div>

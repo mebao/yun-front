@@ -1350,16 +1350,18 @@ export class BookingPaymentComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
 					// 重构活动卡信息
-					if(results.users[0].actCards.length > 0){
-						for(var indexActcard in results.users[0].actCards){
-							// 判断活动卡是否可用
-							if(this.bookingInfo.services.length > 0 && this.bookingInfo.services[0].serviceId == results.users[0].actCards[indexActcard].projectId){
-								results.users[0].actCards[indexActcard].disabled = 0;
-							}else{
-								results.users[0].actCards[indexActcard].disabled = 1;
+					for(var i = 0; i < results.users.length; i++){
+						if(results.users[i].actCards.length > 0){
+							for(var indexActcard in results.users[i].actCards){
+								// 判断活动卡是否可用
+								if(this.bookingInfo.services.length > 0 && this.bookingInfo.services[0].serviceId == results.users[i].actCards[indexActcard].projectId){
+									results.users[i].actCards[indexActcard].disabled = 0;
+								}else{
+									results.users[i].actCards[indexActcard].disabled = 1;
+								}
+								results.users[i].actCards[indexActcard].userId = results.users[0].id;
+								results.users[i].actCards[indexActcard].num = Number(results.users[i].actCards[indexActcard].num);
 							}
-							results.users[0].actCards[indexActcard].userId = results.users[0].id;
-							results.users[0].actCards[indexActcard].num = Number(results.users[0].actCards[indexActcard].num);
 						}
 					}
 				}

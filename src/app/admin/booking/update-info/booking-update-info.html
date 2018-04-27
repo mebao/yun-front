@@ -228,13 +228,13 @@
 							<tr>
 								<!-- <th nz-th>就诊医生</th>
 								<th nz-th>宝宝名</th> -->
-								<th nz-th>药品名</th>
-								<th nz-th>批次</th>
-								<th nz-th>单次计量</th>
-								<th nz-th>用法</th>
-								<th nz-th>用药频次</th>
-								<th nz-th>天数</th>
-								<th nz-th>总量</th>
+								<th nz-th class="w10">药品名</th>
+								<th nz-th class="w10">批次</th>
+								<th nz-th class="w10">单次计量</th>
+								<th nz-th class="w10">用法</th>
+								<th nz-th class="w10">用药频次</th>
+								<th nz-th class="w10">天数</th>
+								<th nz-th class="w10">总量</th>
 								<th nz-th class="w15">注意事项</th>
 								<!-- <th nz-th class="text-center">状态</th> -->
 								<!-- <th nz-th>日期</th>
@@ -324,16 +324,7 @@
 												{{info.days}}
 											</ng-container>
 											<ng-container *ngIf="updatePrescript.pid == info.pid">
-												<nz-select
-												class="w100"
-												(ngModelChange)="updatePrescript.days=$event"
-												[nzSize]="'large'"
-												[nzPlaceHolder]="'请选择'"
-												[ngModel]="updatePrescript.days">
-													<ng-container *ngFor="let number of oneNumList">
-														<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
-													</ng-container>
-												</nz-select>
+												<nz-input [(ngModel)]="updatePrescript.days" [nzPlaceHolder]="'请输入天数'" [nzSize]="'large'"></nz-input>
 											</ng-container>
 										</td>
 										<td>{{info.num}}{{info.unit}}</td>
