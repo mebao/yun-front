@@ -1359,7 +1359,8 @@ export class BookingPaymentComponent{
 								}else{
 									results.users[i].actCards[indexActcard].disabled = 1;
 								}
-								results.users[i].actCards[indexActcard].userId = results.users[0].id;
+								results.users[i].actCards[indexActcard].userId = results.users[i].id;
+								results.users[i].actCards[indexActcard].userName = results.users[i].name;
 								results.users[i].actCards[indexActcard].num = Number(results.users[i].actCards[indexActcard].num);
 							}
 						}
@@ -1860,7 +1861,7 @@ export class BookingPaymentComponent{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			user_id: this.userInfo.selectedActcard.service.length > 0 ? this.userInfo.selectedActcard.service[0].userId : this.bookingInfo.creatorId,
-			user_name: this.bookingInfo.creatorName,
+			user_name: this.userInfo.selectedActcard.service.length > 0 ? this.userInfo.selectedActcard.service[0].userName : this.bookingInfo.creatorName,
 			amount: this.payInfo.payway.money.toString(),
 			pay_way: this.payInfo.payway.way.indexOf('member') != -1 ? 'member' : this.payInfo.payway.way,
 			// 选择会员支付时，需要传会员id
