@@ -133,7 +133,7 @@ export class UserListComponent{
 		//充值
 		this.modalTabCharge = false;
 
-		this.search();
+		// this.search();
 
 		//获取会员列表
 		var memberUrl = this.url + '&status=1';
