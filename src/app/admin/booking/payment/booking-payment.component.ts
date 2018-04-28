@@ -765,6 +765,8 @@ export class BookingPaymentComponent{
 		var hasServiceActcard = false;
 		if(this.fee.feeInfo.serviceFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.serviceFeeList.length; i++){
+				// 是否有活动卡支付
+				this.fee.feeInfo.serviceFeeList[i].hasActcardPay = false;
 				// 判断是否选择活动卡
 				var serviceActcardIndex = '';
 				this.fee.feeInfo.serviceFeeList[i].hasActcard = false;
@@ -777,6 +779,9 @@ export class BookingPaymentComponent{
 							this.userInfo.selectedActcard.service[actcardIndex].pay_way = 'activity';
 							this.userInfo.selectedActcard.service[actcardIndex].pay_text = this.userInfo.selectedActcard.service[actcardIndex].activityName;
 							serviceActcardIndex = actcardIndex;
+							// 如果选择了活动卡，服务费用应该同步为活动卡售卖时的单价
+							this.fee.feeInfo.serviceFeeList[i].price = this.userInfo.selectedActcard.service[actcardIndex].price.toString();
+							this.fee.feeInfo.serviceFeeList[i].hasActcardPay = true;
 						}
 					}
 				}
@@ -791,6 +796,14 @@ export class BookingPaymentComponent{
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) || this.fee.feeInfo.serviceFeeList[i].serviceDiscount == 0){
 						this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.userInfo.member.service;
+					}
+				}
+				// 是否为活动卡支付
+				if(this.bookingInfo.status == '5' && this.fee.tranInfo != null){
+					// 判断支付类型中，是否有活动卡支付，如果有，则服务单价更新为：fee/number
+					if(this.fee.tranInfo.payWay == 'activity' || this.fee.tranInfo.secondWay == 'activity'){
+						this.fee.feeInfo.serviceFeeList[i].price = (parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * 100 / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
+						this.fee.feeInfo.serviceFeeList[i].hasActcardPay = true;
 					}
 				}
 				var _fee = parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].price);

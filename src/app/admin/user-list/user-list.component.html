@@ -251,7 +251,8 @@
 				<nz-select class="w100"
 					[(ngModel)]="selector.actcard"
 					[nzPlaceHolder]="'请选择活动卡'"
-					[nzSize]="'large'">
+					[nzSize]="'large'"
+					(ngModelChange)="changeActcard()">
 					<ng-container *ngFor="let actcard of actcardList">
 						<nz-option [nzLabel]="actcard.name + '（售价：' + actcard.price + '）'" [nzValue]="actcard"></nz-option>
 					</ng-container>
@@ -263,7 +264,7 @@
                 <label nz-form-item-required>支付金额：</label>
             </div>
             <div nz-col [nzSpan]="12" nz-form-control>
-                <nz-input-number [(ngModel)]="selector.amount" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入支付金额'" [nzSize]="'large'" class="w100"></nz-input-number>
+                <nz-input-number [(ngModel)]="selector.amount" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入支付金额'" [nzSize]="'large'" class="w100" [nzDisabled]="true"></nz-input-number>
             </div>
         </div>
 		<div nz-form-item nz-row class="mt10">

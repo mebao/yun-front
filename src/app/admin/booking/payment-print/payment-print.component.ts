@@ -89,6 +89,8 @@ export class PaymentPrintComponent{
 		},
 		fee: string,
 		originalCost: string,
+		// 支付详情
+		tranInfo: any,
 	};
 	//获取用户会员信息
 	userMember: {
@@ -194,6 +196,7 @@ export class PaymentPrintComponent{
 			},
 			fee: '',
 			originalCost: '',
+			tranInfo: {},
 		}
 
 		this.userMember = {
@@ -494,6 +497,7 @@ export class PaymentPrintComponent{
 			},
 			fee: '',
 			originalCost: '',
+			tranInfo: results.tranInfo,
 		}
 
 		this.getFeeInfo();
@@ -542,6 +546,7 @@ export class PaymentPrintComponent{
 			},
 			fee: '',
 			originalCost: '',
+			tranInfo: results.tranInfo,
 		}
 
 		this.getFeeInfo();
@@ -568,6 +573,13 @@ export class PaymentPrintComponent{
 				}else{
 					if(this.adminService.isFalse(this.fee.feeInfo.serviceFeeList[i].serviceDiscount)){
 						this.fee.feeInfo.serviceFeeList[i].serviceDiscount = this.userMember.service;
+					}
+				}
+				// 是否为活动卡支付
+				if(this.bookingInfo.status == '5' && this.fee.tranInfo != null){
+					// 判断支付类型中，是否有活动卡支付，如果有，则服务单价更新为：fee/number
+					if(this.fee.tranInfo.payWay == 'activity' || this.fee.tranInfo.secondWay == 'activity'){
+						this.fee.feeInfo.serviceFeeList[i].price = (parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * 100 / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
 					}
 				}
 				var fee_service = parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;
@@ -827,6 +839,7 @@ export class PaymentPrintComponent{
 			},
 			fee: '',
 			originalCost: '',
+			tranInfo: results.tranInfo,
 		}
 
 

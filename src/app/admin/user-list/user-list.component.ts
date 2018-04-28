@@ -515,6 +515,10 @@ export class UserListComponent{
 		});
 	}
 
+	changeActcard() {
+		this.selector.amount = this.selector.actcard.price;
+	}
+
 	closeActcard() {
 		this.modalActcardTab = false;
 		this.selector = {
