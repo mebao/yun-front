@@ -72,7 +72,7 @@ export class MemberListComponent{
 		}else{
 			this.searchInfo = {
 				name: '',
-				status: '',
+				status: '1',
 			}
 		}
 
