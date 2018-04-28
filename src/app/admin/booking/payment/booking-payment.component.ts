@@ -447,6 +447,7 @@ export class BookingPaymentComponent{
 												userResults.users[0].actCards[indexActcard].disabled = 1;
 											}
 											userResults.users[0].actCards[indexActcard].userId = userResults.users[0].id;
+											userResults.users[0].actCards[indexActcard].userName = userResults.users[0].name;
 											userResults.users[0].actCards[indexActcard].num = Number(userResults.users[0].actCards[indexActcard].num);
 											if(userResults.users[0].actCards[indexActcard].num > 0){
 												this.userInfo.actCards.push(userResults.users[0].actCards[indexActcard]);
