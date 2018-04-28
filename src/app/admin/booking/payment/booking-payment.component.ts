@@ -1388,7 +1388,26 @@ export class BookingPaymentComponent{
 	}
 
 	selectedOtherUser(_value) {
+		// 用户个人的活动卡是否选择，如果没选择，切换他人活动卡时，将选中活动卡清空
+		var userActcardSelected = false;
+		if(this.userInfo.actCards.length > 0){
+			for(var i = 0; i < this.userInfo.actCards.length; i++){
+				if(this.userInfo.actCards[i].selected == 1){
+					userActcardSelected = true;
+				}
+			}
+		}
+		console.log(_value);
+		if(_value != null && _value.actCards && _value.actCards.length > 0){
+			for(var i = 0; i < _value.actCards.length; i++){
+				_value.actCards[i].selected = 0;
+			}
+		}
 		this.selectedInfo.user = _value;
+
+		if(!userActcardSelected){
+			this.userInfo.selectedActcard.service = [];
+		}
 	}
 
 	// 选择活动卡

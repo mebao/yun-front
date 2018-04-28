@@ -80,7 +80,7 @@ export class ChildListComponent{
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		this.search();
+		// this.search();
 	}
 
 	search() {
