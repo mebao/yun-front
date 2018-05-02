@@ -239,7 +239,9 @@ export class PrescriptListComponent{
 				this.hasPrintData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
 	search() {
@@ -424,7 +426,9 @@ export class PrescriptListComponent{
 				this._message.success('药品出库成功');
 				this.getData(this.searchUrl);
 			}
-		})
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
 	range(num){

@@ -86,7 +86,9 @@ export class BookingHistoryComponent{
 				this.doctorList = results.adminlist;
 				this.doctorList.unshift({id: '', realName: '请选择医生'});
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
         // 获取科室列表
         this.serviceList = [];
@@ -98,7 +100,9 @@ export class BookingHistoryComponent{
 				this.serviceList = results.servicelist;
 				this.serviceList.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
     }
 
     search() {
@@ -129,6 +133,9 @@ export class BookingHistoryComponent{
                 this.hasData = true;
 	            this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
         });
     }
 

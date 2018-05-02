@@ -49,6 +49,8 @@ export class InspectResultsPrint{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.checkList = results.list;
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
         });
     }
 

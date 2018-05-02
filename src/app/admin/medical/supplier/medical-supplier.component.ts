@@ -75,7 +75,9 @@ export class MedicalSupplierComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.editType = 'create';
 		}
@@ -136,7 +138,10 @@ export class MedicalSupplierComponent{
 						this.router.navigate(['./admin/medical/supplier/list']);
 					}, 2000);
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}else{
 			var updateParams = {
 				username: this.adminService.getUser().username,
@@ -158,7 +163,10 @@ export class MedicalSupplierComponent{
 						this.router.navigate(['./admin/medical/supplier/list']);
 					}, 2000);
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}
 	}
 

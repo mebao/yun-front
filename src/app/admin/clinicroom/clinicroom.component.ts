@@ -74,7 +74,9 @@ export class ClinicroomComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.editType = 'create';
 		}
@@ -117,7 +119,9 @@ export class ClinicroomComponent{
 						this.router.navigate(['./admin/clinicroom/list']);
 					}, 2000);
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			var updateParams = {
 				username: this.adminService.getUser().username,
@@ -136,7 +140,9 @@ export class ClinicroomComponent{
 						this.router.navigate(['./admin/clinicroom/list']);
 					}, 2000);
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 	}
 

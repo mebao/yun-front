@@ -126,7 +126,9 @@ export class DoctorServiceListComponent{
 				this._message.success((service.isDeleted == '0' ? '停用' : '可用') + '成功', {nzDuration: 3000});
 				this.search();
 			}
-		})
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
 	goCreate() {

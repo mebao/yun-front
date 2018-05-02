@@ -133,7 +133,9 @@ export class BookingReceiveComponent{
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//科室列表
@@ -147,7 +149,9 @@ export class BookingReceiveComponent{
 				this.servicelist = results.servicelist;
 				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//预约列表
@@ -182,7 +186,10 @@ export class BookingReceiveComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//查询

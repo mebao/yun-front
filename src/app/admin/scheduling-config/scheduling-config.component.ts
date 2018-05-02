@@ -192,7 +192,9 @@ export class SchedulingConfigComponent implements OnInit{
 					this.router.navigate(['./admin/schedulingConfig/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	addDuty(index): void {

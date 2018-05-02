@@ -62,7 +62,9 @@ export class ChildServiceComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.type = 'create';
 		}
@@ -106,7 +108,10 @@ export class ChildServiceComponent{
 					this.router.navigate(['./admin/childService/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

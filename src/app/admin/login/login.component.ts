@@ -522,7 +522,9 @@ export class LoginComponent{
 				}
 
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	// 忘记密码

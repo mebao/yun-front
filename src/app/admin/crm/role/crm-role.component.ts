@@ -71,7 +71,10 @@ export class CrmRoleComponent{
 					this.router.navigate(['./admin/crmRole/list']);
 				}, 2000);
 			}
-		});
+		}).catch(() => {
+			this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

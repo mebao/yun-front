@@ -88,7 +88,9 @@ export class DoctorServiceComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+				this._message.error('服务器错误');
+            });
 		}else{
 			this.type = 'create';
 			this.getData();
@@ -118,7 +120,9 @@ export class DoctorServiceComponent{
 				}
 				this.childServiceList = results.servicelist;
 			}
-		})
+		}).catch(() => {
+			this._message.error('服务器错误');
+        });
 	}
 
 	submit(f) {
@@ -174,7 +178,10 @@ export class DoctorServiceComponent{
 					this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': this.serviceModel.doctor_id}});
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

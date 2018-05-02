@@ -89,7 +89,7 @@ export class TcmCheckList{
 		this.loadingShow = false;
 		this.hasData = false;
 		this.tcmCheckList = [];
-        
+
         this.searchInfo = {
             name: '',
         }
@@ -125,7 +125,10 @@ export class TcmCheckList{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+            this.loadingShow = false;
+            this._message.error('服务器错误');
+        });
 	}
 
 	search() {

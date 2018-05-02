@@ -123,7 +123,10 @@ export class MedicalCheckComponent{
 				}
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	showMs(_key) {
@@ -194,7 +197,10 @@ export class MedicalCheckComponent{
 						this.router.navigate(['./admin/medical/check/list']);
 					}, 2000);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}else{
 			// var updateParams = {
 			// 	username: this.adminService.getUser().username,
@@ -218,7 +224,9 @@ export class MedicalCheckComponent{
 			// 			this.router.navigate(['./admin/medicalCheckList']);
 			// 		}, 2000);
 			// 	}
-			// });
+			// }).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+            // });
 		}
 	}
 

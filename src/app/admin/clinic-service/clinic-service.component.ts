@@ -74,7 +74,9 @@ export class ClinicServiceComponent implements OnInit{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.type = 'create';
 			this.getChildServiceList();
@@ -102,7 +104,9 @@ export class ClinicServiceComponent implements OnInit{
 				}
 				this.childServiceList = results.servicelist;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	submit(f) {
@@ -136,7 +140,9 @@ export class ClinicServiceComponent implements OnInit{
 					this.router.navigate(['./admin/clinicService/list']);
 				}, 2000)
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	toastTab(text, type) {

@@ -124,7 +124,9 @@ export class MedicalHasComponent{
 					}
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 
 		this.drugUnits = [];
@@ -142,7 +144,9 @@ export class MedicalHasComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -269,7 +273,10 @@ export class MedicalHasComponent{
 					this.router.navigate(['./admin/medical/has/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

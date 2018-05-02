@@ -149,7 +149,10 @@ export class MaterialCheckListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	update(material) {

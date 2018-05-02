@@ -98,7 +98,9 @@ export class CrmRoleListComponent{
 				this._message.success('状态修改成功');
 				this.search();
 			}
-		});
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
 	getData(urlOptions) {
@@ -112,7 +114,10 @@ export class CrmRoleListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+        });
 	}
 
 	add() {

@@ -141,6 +141,7 @@ export class DocbookingVisitComponent{
 		        this.loadingShow = false;
             }
         }).catch((data) => {
+            this.loadingShow = false;
             this._message.error('服务器错误');
         });
     }
@@ -193,6 +194,7 @@ export class DocbookingVisitComponent{
                 }
             }).catch((data) => {
                 this._message.error('服务器错误');
+                this.canEdit = false;
             });
         }else{
             var paramsEnd = {
@@ -219,6 +221,7 @@ export class DocbookingVisitComponent{
                 }
             }).catch((data) => {
                 this._message.error('服务器错误');
+                this.canEdit = false;
             });
         }
     }
@@ -260,6 +263,7 @@ export class DocbookingVisitComponent{
                 this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: this.bookingId}});
 			}
 		}).catch((data) => {
+            this.loadingShow = false;
             this._message.error('服务器错误');
         });
 	}

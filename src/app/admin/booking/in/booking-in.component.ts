@@ -161,7 +161,9 @@ export class BookingInComponent{
 				}
 				this.childlist = results.child;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 		this.initPage = {
 			doctor: true,
 			date: true,
@@ -286,7 +288,9 @@ export class BookingInComponent{
 				}
 				this.bookinglist = results.weekbooks;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	getData() {
@@ -309,7 +313,9 @@ export class BookingInComponent{
 				}
 				this.adminList = results.adminlist;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
@@ -327,7 +333,9 @@ export class BookingInComponent{
 				}
 				this.servicelist = results.servicelist;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 
@@ -419,7 +427,9 @@ export class BookingInComponent{
 				this.initPage.doctor = false;
 				this.doctorlist = results.doctors;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//切换医生
@@ -550,7 +560,9 @@ export class BookingInComponent{
 					this.bookingInfo.creator = JSON.stringify(results.users[0]);
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 	}
 
@@ -618,7 +630,11 @@ export class BookingInComponent{
 						this.confirmBooking();
 					}
 				}
-			});
+			}).catch(() => {
+				this.loadingShow = false;
+                this.toastTab('服务器错误', 'error');
+				this.canEdit = false;
+            });
 		}else{
 			this.loadingShow = true;
 			//修改预约并登记
@@ -669,7 +685,11 @@ export class BookingInComponent{
 				this.loadingShow = false;
 				this.modalTabType = true;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+			this.canEdit = false;
+        });
 	}
 
 	// 继续预约
@@ -703,7 +723,11 @@ export class BookingInComponent{
 			}else{
 				this.bookingIn();
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+			this.canEdit = false;
+        });
 	}
 
 	bookingIn() {
@@ -725,7 +749,11 @@ export class BookingInComponent{
 				this.initData();
 				this.canEdit = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+			this.canEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

@@ -273,7 +273,9 @@ export class BookingUpdateInfo{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.oneUnitList = results.OneUnits;
 				}
-			});
+			}).catch(() => {
+                this._message.error('服务器错误');
+            });
         }
 
         this.prescriptList = [];
@@ -355,7 +357,9 @@ export class BookingUpdateInfo{
 				}
 				this.prescriptList = prescriptList;
 			}
-		})
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
     changeShowBookingInfo() {
@@ -625,7 +629,9 @@ export class BookingUpdateInfo{
                 this.cancelPrescriptInfo();
                 this.getPrescriptData();
             }
-        })
+        }).catch(() => {
+            this._message.error('服务器错误');
+        });
     }
 
     changeFee() {

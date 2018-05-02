@@ -79,7 +79,9 @@ export class SetupInspectComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.projectlist = results.list;
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -121,7 +123,10 @@ export class SetupInspectComponent{
 						this.router.navigate(['./admin/setupInspect/list']);
 					}, 2000);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}else{
 			if(this.adminService.isFalse(f.value.price)){
 				this.toastTab('项目价格不可为空', 'error');
@@ -149,7 +154,10 @@ export class SetupInspectComponent{
 						this.router.navigate(['./admin/setupInspect/list']);
 					}, 2000);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}
 	}
 

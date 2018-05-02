@@ -50,7 +50,7 @@ export class ClinicroomRecordsComponent{
 		this.search = {
 			type: '',
 			room_no: '',
-			doctor_id: '',	
+			doctor_id: '',
 		}
 
 		//获取诊室列表
@@ -62,7 +62,9 @@ export class ClinicroomRecordsComponent{
 				results.conditions.unshift({id: '', name: '', roomNo: ''});
 				this.conditionList = results.conditions;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//获取医生列表
 		var adminlistUrl = this.url + '&role=2';
@@ -74,7 +76,9 @@ export class ClinicroomRecordsComponent{
 				results.adminlist.unshift({id: '', realName: ''});
 				this.doctorList = results.adminlist;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.getData(this.url);
 	}
@@ -88,7 +92,9 @@ export class ClinicroomRecordsComponent{
 				this.conditions = results.conditions;
 				this.hasData = true;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	searchChange() {

@@ -78,7 +78,9 @@
 // 				}
 // 				this.servicelist = results.servicelist;
 // 			}
-// 		})
+// 		}).catch(() => {
+        //     this.toastTab('服务器错误', 'error');
+        // });
 // 	}
 //
 // 	//切换科室
@@ -100,7 +102,9 @@
 // 				}
 // 				this.doctorlist = results.doctors;
 // 			}
-// 		})
+// 		}).catch(() => {
+        //     this.toastTab('服务器错误', 'error');
+        // });
 // 	}
 //
 // 	//切换医生
@@ -183,7 +187,9 @@
 // 					this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.bookingInfo.booking_id, doctorId: this.doctorId}});
 // 				}, 2000);
 // 			}
-// 		})
+// 		}).catch(() => {
+        //     this.toastTab('服务器错误', 'error');
+        // });
 // 	}
 //
 // 	toastTab(text, type) {

@@ -1598,7 +1598,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	                }
 	            }
 	        }).catch(() => {
+				this.loadingShow = false;
 				this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
 			});
 		}else{
 			this.adminService.checkhealthrecord(urlOptions, params).then((data) => {

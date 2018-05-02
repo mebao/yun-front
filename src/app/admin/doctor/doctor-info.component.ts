@@ -127,7 +127,10 @@ export class DoctorInfoComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 
 		// 本周预约
 		var bookingUrl = this.url + '&doctorId=' + this.doctor_id + '&weekindex=0';
@@ -155,7 +158,9 @@ export class DoctorInfoComponent{
 					}
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	changeSelected(_tab) {

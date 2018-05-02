@@ -102,7 +102,9 @@ export class MedicalComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.editType = 'create';
 		}
@@ -120,7 +122,9 @@ export class MedicalComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -254,7 +258,10 @@ export class MedicalComponent{
 					this.router.navigate(['./admin/medical/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

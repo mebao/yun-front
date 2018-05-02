@@ -111,7 +111,9 @@ export class CrmUserListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.clinicRoleList = results.list;
 			}
-		});
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 
 		this.btnCanEdit = false;
 	}
@@ -127,7 +129,10 @@ export class CrmUserListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+        });
 	}
 
 	add() {
@@ -178,7 +183,10 @@ export class CrmUserListComponent{
 				this.search();
 				this.btnCanEdit = false;
 			}
-		})
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
+        });
 	}
 
 	goUrl(_url) {

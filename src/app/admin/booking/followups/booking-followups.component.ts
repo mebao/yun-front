@@ -127,7 +127,10 @@ export class BookingFollowupsComponent{
 		// 		}
 		// 		this.adminList = results.adminlist;
 		// 	}
-		// });
+		// }).catch(() => {
+		// 		const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+		// 		this.toastService.toast(toastCfg);
+            // });
 
 		// 获取小孩列表
 		this.childList = [];
@@ -152,7 +155,10 @@ export class BookingFollowupsComponent{
 					}
 					this.childList = results.child;
 				}
-			});
+			}).catch(() => {
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -233,7 +239,11 @@ export class BookingFollowupsComponent{
 						}
 					}, 2000);
 				}
-			});
+			}).catch(() => {
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+				this.btnCanEdit = false;
+            });
 		}else{
 			if(this.adminService.isFalse(this.info.account)){
 				const toastCfg = new ToastConfig(ToastType.ERROR, '', '随访内容和原因不可为空', 3000);
@@ -266,7 +276,11 @@ export class BookingFollowupsComponent{
 						this.router.navigate(['./admin/bookingFollowups/list']);
 					}, 2000);
 				}
-			});
+			}).catch(() => {
+				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+				this.toastService.toast(toastCfg);
+				this.btnCanEdit = false;
+            });
 		}
 	}
 }

@@ -91,7 +91,9 @@ export class MaterialComponent{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.editType = 'create';
 		}
@@ -109,7 +111,9 @@ export class MaterialComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -202,7 +206,10 @@ export class MaterialComponent{
 					this.router.navigate(['./admin/material/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

@@ -79,7 +79,9 @@ export class AuthGuardRole implements CanActivate{
 				}else{
 					return this.checkRole(url);
 				}
-			});
+			}).catch(() => {
+                console.log('服务器错误');
+            });
 		}
 	}
 

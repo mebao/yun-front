@@ -299,7 +299,9 @@ export class BookingComponent implements OnInit{
 					// 	}
 					// }
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			//创建
 			//从病人库直接预约
@@ -357,7 +359,9 @@ export class BookingComponent implements OnInit{
 				}
 				this.adminList = results.adminlist;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//查询诊所科室
 		var urlOptions = '?username=' + this.adminService.getUser().username
@@ -391,7 +395,9 @@ export class BookingComponent implements OnInit{
 				}
 				this.servicelist = results.servicelist;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//查询宝宝列表
 		var searchchildUrl = '?username=' + this.adminService.getUser().username
@@ -409,7 +415,9 @@ export class BookingComponent implements OnInit{
 				}
 				this.childlist = results.child;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//普通预约dutys
 		var dutys = [];
@@ -505,7 +513,9 @@ export class BookingComponent implements OnInit{
 				this.initPage.doctor = false;
 				this.doctorlist = results.doctors;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//切换医生
@@ -653,7 +663,9 @@ export class BookingComponent implements OnInit{
 					this.bookingInfo.creator = JSON.stringify(results.users[0]);
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 	}
 	// creatorChange(value) {
@@ -755,7 +767,11 @@ export class BookingComponent implements OnInit{
 							this.confirmBooking();
 						}
 					}
-				});
+				}).catch(() => {
+					this.loadingShow = false;
+	                this.toastTab('服务器错误', 'error');
+					this.canEdit = false;
+	            });
 			}else{
 				this.confirmBooking();
 			}
@@ -812,7 +828,11 @@ export class BookingComponent implements OnInit{
 						this.location.back();
 					}, 2000);
 				}
-			})
+			}).catch(() => {
+				this.loadingShow = false;
+                this.toastTab('服务器错误', 'error');
+				this.canEdit = false;
+            });
 		}else{
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
@@ -825,7 +845,11 @@ export class BookingComponent implements OnInit{
 					this.loadingShow = false;
 					this.modalTabType = true;
 				}
-			})
+			}).catch(() => {
+				this.loadingShow = false;
+                this.toastTab('服务器错误', 'error');
+				this.canEdit = false;
+            });
 		}
 	}
 

@@ -54,7 +54,9 @@
 //                 var results = JSON.parse(JSON.stringify(data.results));
 //                 this.list = results;
 //             }
-//         });
+//         }).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+            // });
 //     }
 //
 //     authorize(_value) {
@@ -89,7 +91,9 @@
 //                     this.router.navigate(['./admin/authorize/success'], {queryParams: {layout: 'all'}});
 //                 }, 2000);
 //             }
-//         });
+//         }).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+            // });
 //     }
 //
 // 	toastTab(text, type) {

@@ -197,6 +197,7 @@ export class BookingInfoComponent{
 				}
 			}
 		}).catch(() => {
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});
@@ -331,6 +332,8 @@ export class BookingInfoComponent{
 				this.getBooking('backBookingFee');
 			}
 		}).catch((err) => {
+			this.btnCanEdit = false;
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});

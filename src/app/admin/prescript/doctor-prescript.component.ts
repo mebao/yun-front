@@ -236,7 +236,9 @@ export class DoctorPrescriptComponent{
 				}
 				this.bookingInfo = results.weekbooks[0];
 			}
-		})
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 
 		//查看库存
 		var searchsuppliesUrl = this.url + '&type=1,2';

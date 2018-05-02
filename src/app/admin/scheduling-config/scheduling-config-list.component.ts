@@ -67,7 +67,9 @@ export class SchedulingConfigListComponent{
 				this.dutylist = use.concat(notuse);
 				this.hasData = true;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	goCreate() {
@@ -98,7 +100,9 @@ export class SchedulingConfigListComponent{
 				}
 				this.getData(urlOptions);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	toastTab(text, type) {

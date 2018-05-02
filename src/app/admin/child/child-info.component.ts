@@ -141,7 +141,10 @@ export class ChildInfoComponent{
 				}
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	toastTab(text, type) {

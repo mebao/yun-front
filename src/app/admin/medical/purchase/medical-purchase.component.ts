@@ -72,7 +72,9 @@ export class MedicalPurchaseComponent{
 				}
 				this.list = results.list;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//获取医疗用品
 		var medicalsupplieslistUrl = '?username=' + this.adminService.getUser().username
@@ -90,7 +92,9 @@ export class MedicalPurchaseComponent{
 				}
 				this.medicalSupplies = results.medicalSupplies;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.btnCanEdit = false;
 	}
@@ -290,7 +294,10 @@ export class MedicalPurchaseComponent{
 					this.router.navigate(['./admin/medical/purchase/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

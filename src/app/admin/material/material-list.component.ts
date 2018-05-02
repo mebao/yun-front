@@ -105,7 +105,10 @@ export class MaterialListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	search() {

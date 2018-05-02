@@ -111,7 +111,9 @@ export class InspectResultsListComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.checkProjestList = results.list;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 		this.search();
 	}
 
@@ -152,7 +154,10 @@ export class InspectResultsListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	// 选择日期

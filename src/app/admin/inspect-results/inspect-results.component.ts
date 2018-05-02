@@ -82,7 +82,9 @@ export class InspectResultsComponent{
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.getData('');
 
@@ -158,7 +160,10 @@ export class InspectResultsComponent{
 				this.checkProjectList = results.list;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	selectedFile(_file, checkId) {
@@ -359,7 +364,10 @@ export class InspectResultsComponent{
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
 					}
-				});
+				}).catch(() => {
+	                this.toastTab('服务器错误', 'error');
+					this.btnCanEdit = false;
+	            });
 			}else{
 				this.adminService.updatecheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
@@ -370,7 +378,9 @@ export class InspectResultsComponent{
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
 					}
-				});
+				}).catch(() => {
+	                this.toastTab('服务器错误', 'error');
+	            });
 			}
 		}
 	}

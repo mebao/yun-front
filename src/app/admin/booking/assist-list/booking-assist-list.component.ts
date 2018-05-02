@@ -121,6 +121,10 @@ export class BookingAssistList{
                 this.hasData = true;
                 this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
+            this.toastService.toast(toastCfg);
         });
     }
 

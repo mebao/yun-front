@@ -77,6 +77,9 @@ export class RoleAuthorityListComponent{
                 this.authorityList = results.list;
 		        this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
         });
 
         this.btnCanEdit = false;
@@ -151,6 +154,9 @@ export class RoleAuthorityListComponent{
                     // this.router.navigate(['./admin/crmRole/list']);
                 }, 2000);
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
+            this.btnCanEdit = false;
         });
     }
 

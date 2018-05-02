@@ -338,7 +338,10 @@
 // 				this.cprtemplateList = results.template;
 // 				this.loadingShow = false;
 // 			}
-// 		});
+// 		}).catch(() => {
+		// 	this.loadingShow = false;
+        //     this.toastTab('服务器错误', 'error');
+        // });
 //
 // 		this.showExamination = false;
 //
@@ -354,7 +357,9 @@
 // 				var results = JSON.parse(JSON.stringify(data.results));
 // 				this.info.checkList = results.list;
 // 			}
-// 		});
+// 		}).catch(() => {
+        //     this.toastTab('服务器错误', 'error');
+        // });
 // 	}
 //
 //     // 身高对比
@@ -549,7 +554,10 @@
 // 						this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 // 					}, 2000);
 // 				}
-// 			});
+// 			}).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+			// 	this.btnCanEdit = false;
+            // });
 // 		}else{
 // 			this.adminService.casehistory('/' + JSON.parse(sessionStorage.getItem('casehistory')).id, params).then((data) => {
 // 				if(data.status == 'no'){
@@ -561,7 +569,10 @@
 // 						this.router.navigate(['./admin/docbooking/casehistory'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 // 					}, 2000);
 // 				}
-// 			});
+// 			}).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+			// 	this.btnCanEdit = false;
+            // });
 // 		}
 // 	}
 //

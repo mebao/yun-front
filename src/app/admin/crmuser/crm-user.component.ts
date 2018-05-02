@@ -115,7 +115,9 @@ export class CrmUserComponent implements OnInit{
 						}
 					}
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}else{
 			this.editType = 'create';
 			this.getClinicRole();
@@ -134,7 +136,9 @@ export class CrmUserComponent implements OnInit{
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//从缓存中获取clinicdata
 		var clinicdata = sessionStorage.getItem('clinicdata');
@@ -148,7 +152,9 @@ export class CrmUserComponent implements OnInit{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -201,7 +207,9 @@ export class CrmUserComponent implements OnInit{
 				}
 				this.clinicRoleList = results.list;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	selectedFile(_file) {
@@ -320,7 +328,10 @@ export class CrmUserComponent implements OnInit{
 						this.router.navigate(['./admin/crmuser/list']);
 					}, 2000)
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}else{
 			var updateParam = {
 				username: this.adminService.getUser().username,
@@ -346,7 +357,10 @@ export class CrmUserComponent implements OnInit{
 						this.router.navigate(['./admin/crmuser/list']);
 					}, 2000)
 				}
-			})
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+				this.btnCanEdit = false;
+            });
 		}
 	}
 

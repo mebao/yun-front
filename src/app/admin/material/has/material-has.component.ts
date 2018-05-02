@@ -101,7 +101,9 @@ export class MaterialHasComponent{
 					}
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 		this.drugUnits = [];
 		this.OneUnits = [];
 		//计量单位
@@ -117,7 +119,9 @@ export class MaterialHasComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -197,7 +201,10 @@ export class MaterialHasComponent{
 					this.router.navigate(['./admin/material/has/list']);
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

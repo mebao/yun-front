@@ -114,7 +114,9 @@ export class UserInfoComponent{
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//从缓存中获取clinicdata
 		var clinicdata = sessionStorage.getItem('clinicdata');
@@ -128,7 +130,9 @@ export class UserInfoComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		this.btnCanEdit = false;
@@ -174,7 +178,10 @@ export class UserInfoComponent{
 				}
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	selectedFile(_file, key) {
@@ -350,7 +357,10 @@ export class UserInfoComponent{
 				this.getUserInfo();
 				this.btnUserCanEdit = false;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnUserCanEdit = false;
+        });
 	}
 
 	createChild(f) {
@@ -481,7 +491,10 @@ export class UserInfoComponent{
 							this.childlist = [];
 							this.btnCanEdit = false;
 						}
-					});
+					}).catch(() => {
+		                this.toastTab('服务器错误', 'error');
+						this.btnCanEdit = false;
+		            });
 				}
 			}else{
 				for(var i = 0; i < childData.length; i++){
@@ -496,7 +509,10 @@ export class UserInfoComponent{
 							this.childlist = [];
 							this.btnCanEdit = false;
 						}
-					});
+					}).catch(() => {
+		                this.toastTab('服务器错误', 'error');
+						this.btnCanEdit = false;
+		            });
 				}
 			}
 
@@ -536,7 +552,10 @@ export class UserInfoComponent{
 				this.childlist = [];
 				this.btnCanEdit = false;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	//宝宝详情

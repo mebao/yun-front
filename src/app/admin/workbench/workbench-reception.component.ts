@@ -229,6 +229,7 @@ export class WorkbenchReceptionComponent{
 				this.loadingShow = false;
 			}
 		}).catch((err) => {
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});

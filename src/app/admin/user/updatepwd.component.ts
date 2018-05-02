@@ -81,6 +81,9 @@ export class UpdatepwdComponent{
                 }
                 this.btnCanEdit = false;
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
+            this.btnCanEdit = false;
         });
     }
 

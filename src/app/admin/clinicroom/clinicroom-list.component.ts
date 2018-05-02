@@ -106,7 +106,9 @@ export class ClinicroomListComponent{
 				this.conditions = results.conditions;
 				this.hasData = true;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	getDoctorAndBooking(doctorList, childList) {
@@ -137,7 +139,9 @@ export class ClinicroomListComponent{
 				}
 				this.doctorlist = results.adminlist;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		//查询今日预约
 		var todayDate = this.adminService.getDayByDate(new Date());
@@ -179,7 +183,9 @@ export class ClinicroomListComponent{
 				}
 				this.bookinglist = results.weekbooks;
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 	}
 
@@ -207,7 +213,10 @@ export class ClinicroomListComponent{
 				this.toastTab('诊室分配专家成功', '');
 				this.getList();
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.getList();
+        });
 	}
 
 	bookingChange(booking, doctorId, _id) {
@@ -272,9 +281,14 @@ export class ClinicroomListComponent{
 					}else{
 						this.selectedBooking = '';
 					}
-				});
+				}).catch(() => {
+	                this.toastTab('服务器错误', 'error');
+	            });
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.getList();
+        });
 	}
 
 	closeConfirm() {
@@ -295,7 +309,9 @@ export class ClinicroomListComponent{
 				this.toastTab('诊室已可用', '');
 				this.getList();
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	removeroomdoctor(_id) {
@@ -311,7 +327,9 @@ export class ClinicroomListComponent{
 				this.toastTab('该诊室专家已移除', '');
 				this.getList();
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	updateClinicroom(_id) {

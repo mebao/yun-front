@@ -65,7 +65,9 @@ export class MaterialLostComponent{
 				}
 				this.list = results.list;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.btnCanEdit = false;
 	}
@@ -162,7 +164,10 @@ export class MaterialLostComponent{
 					this.router.navigate(['./admin/material/lost/list'])
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

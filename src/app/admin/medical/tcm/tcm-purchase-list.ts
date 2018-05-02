@@ -110,7 +110,10 @@ export class TcmPurchaseList{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+            this.loadingShow = false;
+            this._message.error('服务器错误');
+        });
 	}
 
 	search() {

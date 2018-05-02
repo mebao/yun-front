@@ -184,7 +184,10 @@ export class SchedulingComponent{
 				this.schedulinglist = adminduty;
 				this.loadingShow = false;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	prec() {
@@ -297,12 +300,16 @@ export class SchedulingComponent{
 							this.dutylist = [{id: 1, use: true}];
 							this.getList(this.url + '&weekindex=' + this.weekNum);
 						}
-					})
+					}).catch(() => {
+		                this.toastTab('服务器错误', 'error');
+		            });
 				}else{
 					this.update(dateStr, results.id);
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	delete(type, list) {
@@ -327,7 +334,9 @@ export class SchedulingComponent{
 					this.configAndScheduling('', list);
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	update(name, id) {
@@ -346,7 +355,9 @@ export class SchedulingComponent{
 				this.dutylist = [{id: 1, use: true}];
 				this.getList(this.url + '&weekindex=' + this.weekNum);
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	addDuty(index): void {
@@ -441,7 +452,9 @@ export class SchedulingComponent{
 				this.toastTab('复制排版成功', '');
 				this.getList(this.url + '&weekindex=' + this.weekNum);
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	toastTab(text, type) {

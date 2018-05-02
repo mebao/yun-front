@@ -77,7 +77,9 @@ export class MedicalLostComponent{
 				}
 				this.list = results.list;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.btnCanEdit = false;
 	}
@@ -188,7 +190,10 @@ export class MedicalLostComponent{
 					this.router.navigate(['./admin/medical/lost/list'])
 				}, 2000);
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {

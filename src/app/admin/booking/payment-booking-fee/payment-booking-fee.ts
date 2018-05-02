@@ -142,6 +142,8 @@ export class PaymentBookingFee{
                     this.getUserInfo(this.booking.creatorId);
                 }
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
         });
 
         this.showTab = '0';
@@ -194,6 +196,9 @@ export class PaymentBookingFee{
                 }
                 this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
         });
     }
 
@@ -262,6 +267,7 @@ export class PaymentBookingFee{
                 }
             }).catch((data) => {
                 this.toastTab('服务器数据错误', 'error');
+                this.btnCanEdit = false;
             });
         }else{
             this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token + '&pay_way=' + this.paymentInfo.type + '&type=' + this.paymentInfo.payType;
@@ -321,6 +327,9 @@ export class PaymentBookingFee{
                     this.modalConfirmTab = true;
                 }
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
+            this.btnCanEdit = false;
         });
     }
 

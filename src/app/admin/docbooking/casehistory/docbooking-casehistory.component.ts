@@ -663,7 +663,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 							}
 
 						}
-					})
+					}).catch(() => {
+		                this.toastTab('服务器错误', 'error');
+		            });
 				}else{
 					this.editType = 'view';
 					var casehistory =  results.list[0];

@@ -89,6 +89,9 @@ export class ForgetpwdComponent{
                     }
                 }, 1000);
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
+            this.sms.disabled = false;
         });
     }
 
@@ -115,6 +118,9 @@ export class ForgetpwdComponent{
                     this.router.navigate(['./login']);
                 }, 2000);
             }
+        }).catch(() => {
+            this.toastTab('服务器错误', 'error');
+            this.btnCanEdit = false;
         });
     }
 

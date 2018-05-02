@@ -133,7 +133,10 @@ export class BookingFollowupsListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+        });
 	}
 
 	update(followups) {
@@ -173,7 +176,10 @@ export class BookingFollowupsListComponent{
 				this.search();
 				this.btnCanEdit = false;
 			}
-		});
+		}).catch(() => {
+			this._message.error('服务器错误');
+			this.btnCanEdit = false;
+        });
 	}
 
 	//宝宝详情

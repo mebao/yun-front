@@ -675,7 +675,10 @@
 //                     this.router.navigate(['./admin/docbooking/healthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 //                 }, 2000);
 //             }
-//         });
+//         }).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+            //     this.btnCanEdit = false;
+            // });
 //     }
 //
 // 	toastTab(text, type) {

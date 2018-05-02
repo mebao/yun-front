@@ -149,7 +149,10 @@ export class DocbookingGrowthrecordsComponent implements OnInit{
 				this.hasGrowthrecordData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+			this.toastTab('服务器错误', 'error');
+        });
 
 		this.doctorInfo = {
 			avatarUrl: '',
@@ -176,7 +179,9 @@ export class DocbookingGrowthrecordsComponent implements OnInit{
 					this.doctorInfo = results.adminlist[0];
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		// 获取药方
 		this.prescriptList = [];
@@ -201,7 +206,9 @@ export class DocbookingGrowthrecordsComponent implements OnInit{
 				this.historyList = results.weekbooks;
 				this.hasHistoryData = true;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	close() {
@@ -238,7 +245,9 @@ export class DocbookingGrowthrecordsComponent implements OnInit{
 				}
 				this.prescriptList = results.list;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	getBookingData() {
@@ -264,7 +273,9 @@ export class DocbookingGrowthrecordsComponent implements OnInit{
 				}
 				this.booking.totalFee = this.adminService.toDecimal2(total.toString());
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	changeTab(_value, url) {

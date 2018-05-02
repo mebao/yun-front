@@ -223,7 +223,10 @@ export class TransactionStatisticsComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	// 选择时间
@@ -244,7 +247,9 @@ export class TransactionStatisticsComponent{
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	//科室列表
@@ -264,7 +269,10 @@ export class TransactionStatisticsComponent{
 				}
 				this.servicelist = results.servicelist;
 			}
-		})
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	info(tran) {

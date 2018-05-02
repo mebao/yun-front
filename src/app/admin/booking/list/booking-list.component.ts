@@ -432,6 +432,7 @@ export class BookingListComponent implements OnInit{
 				this.search();
 			}
 		}).catch((err) => {
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});
@@ -627,6 +628,7 @@ export class BookingListComponent implements OnInit{
 				this.loadingShow = false;
 			}
 		}).catch((err) => {
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});
@@ -805,6 +807,8 @@ export class BookingListComponent implements OnInit{
 				this.search();
 			}
 		}).catch((err) => {
+			this.btnCanEdit = false;
+			this.loadingShow = false;
 			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
 			this.toastService.toast(toastCfg);
 		});

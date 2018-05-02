@@ -74,7 +74,9 @@ export class CreateUserComponent{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
-			});
+			}).catch(() => {
+                this.toastTab('服务器错误', 'error');
+            });
 		}
 
 		//获取头像上传token
@@ -85,7 +87,9 @@ export class CreateUserComponent{
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.btnCanEdit = false;
 	}
@@ -303,7 +307,10 @@ export class CreateUserComponent{
 									this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
 								}, 2000);
 							}
-						})
+						}).catch(() => {
+			                this.toastTab('服务器错误', 'error');
+							this.btnCanEdit = false;
+			            });
 					}
 				}else{
 					this.toastTab('用户创建成功', '');
@@ -312,7 +319,10 @@ export class CreateUserComponent{
 					}, 2000);
 				}
 			}
-		})
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	goUrl(_url) {

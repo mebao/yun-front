@@ -306,7 +306,9 @@ export class PaymentPrintComponent{
 											//计算折扣后的费用信息
 											this.getFeeInfoFirst(this.userMember, results);
 										}
-									});
+									}).catch(() => {
+						                this.toastTab('服务器错误', 'error');
+						            });
 								}else{
 									// 不是会员，会员折扣，由100更改为1
 									this.userMember = {
@@ -326,7 +328,9 @@ export class PaymentPrintComponent{
 								}
 								sessionStorage.setItem('bookingFee', JSON.stringify(results));
 							}
-						});
+						}).catch(() => {
+			                this.toastTab('服务器错误', 'error');
+			            });
 					}else{
 						this.userMember = results.discountInfo;
 						this.getFeeInfoFirst(this.userMember, results);
@@ -386,17 +390,23 @@ export class PaymentPrintComponent{
 										//计算折扣后的费用信息
 										this.initMemberAndFee(this.userMember, results);
 									}
-								});
+								}).catch(() => {
+					                this.toastTab('服务器错误', 'error');
+					            });
 							}else{
 								//计算折扣后的费用信息
 								this.initMemberAndFee(this.userMember, results);
 							}
 							sessionStorage.setItem('bookingFee', JSON.stringify(results));
 						}
-					});
+					}).catch(() => {
+		                this.toastTab('服务器错误', 'error');
+		            });
 				}
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 		this.adminService.searchbooking(this.url + '&id=' + this.id + '&clinic_id=' + this.adminService.getUser().clinicId).then((data) => {
 			if(data.status == 'no'){
@@ -411,9 +421,13 @@ export class PaymentPrintComponent{
 						var results = JSON.parse(JSON.stringify(data.results));
 						this.tran.info = results.list[0];
 					}
-				});
+				}).catch(() => {
+	                this.toastTab('服务器错误', 'error');
+	            });
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+        });
 
 	}
 

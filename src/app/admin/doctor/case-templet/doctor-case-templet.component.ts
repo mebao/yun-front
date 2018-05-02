@@ -82,6 +82,8 @@ export class DoctorCaseTempletComponent{
                         this.doctorName = results.adminlist[0].realName;
                     }
                 }
+            }).catch(() => {
+                this._message.error('服务器错误');
             });
         }
 
@@ -105,6 +107,9 @@ export class DoctorCaseTempletComponent{
                 this.hasData = true;
 		        this.loadingShow = false;
             }
+        }).catch(() => {
+            this.loadingShow = false;
+            this._message.error('服务器错误');
         });
 
         this.btnCanEdit = false;
@@ -268,6 +273,9 @@ export class DoctorCaseTempletComponent{
                         this.router.navigate(['./admin/doctor/caseTemplet/list'], {queryParams: {id: this.id}});
                     }, 2000);
                 }
+            }).catch(() => {
+                this._message.error('服务器错误');
+                this.btnCanEdit = false;
             });
         }else{
             var updateParams = {
@@ -287,6 +295,9 @@ export class DoctorCaseTempletComponent{
                         this.router.navigate(['./admin/doctor/caseTemplet/list'], {queryParams: {id: this.id}});
                     }, 2000);
                 }
+            }).catch(() => {
+                this._message.error('服务器错误');
+                this.btnCanEdit = false;
             });
         }
     }

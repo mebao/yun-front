@@ -378,7 +378,10 @@
 // 						this.router.navigate(['./admin/docbooking/growthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 // 					}, 2000);
 // 				}
-// 			});
+// 			}).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+			//     this.btnCanEdit = false;
+            // });
 // 		}else{
 // 			this.adminService.childgrowthrecord('/' + JSON.parse(sessionStorage.getItem('growthrecord')).id, params).then((data) => {
 // 				if(data.status == 'no'){
@@ -390,7 +393,10 @@
 // 						this.router.navigate(['./admin/docbooking/growthrecords'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 // 					}, 2000);
 // 				}
-// 			});
+// 			}).catch(() => {
+            //     this.toastTab('服务器错误', 'error');
+			// 	this.btnCanEdit = false;
+            // });
 // 		}
 // 	}
 //

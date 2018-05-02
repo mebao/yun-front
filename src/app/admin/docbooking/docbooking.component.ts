@@ -612,7 +612,7 @@ export class DocbookingComponent implements OnInit{
 
 					//中等值身高体重
 					var childcontrastUrl = '?child_id=' + this.booking.childId;
-					 this.adminService.childcontrast(childcontrastUrl).then((data) => {
+					this.adminService.childcontrast(childcontrastUrl).then((data) => {
 						if(data.status == 'no'){
 							this.loadingShow = false;
 							this.toastTab(data.errorMsg, 'error');

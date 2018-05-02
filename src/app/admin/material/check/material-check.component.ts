@@ -104,7 +104,10 @@ export class MaterialCheckComponent{
 				}
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+            this.toastTab('服务器错误', 'error');
+        });
 	}
 
 	showMs(_key) {
@@ -174,7 +177,10 @@ export class MaterialCheckComponent{
 					this.router.navigate(['./admin/material/check/list']);
 				}, 2000);
 			}
-		});
+		}).catch(() => {
+            this.toastTab('服务器错误', 'error');
+			this.btnCanEdit = false;
+        });
 	}
 
 	toastTab(text, type) {
