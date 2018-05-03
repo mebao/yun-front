@@ -13,9 +13,7 @@
 					<div class="mt10">家长：{{bookingInfo.creatorName}}</div>
 					<div class="mt10 flex">
 						<div>会员：</div>
-						<div class="flex-1">
-							<div *ngFor="let member of userInfo.member.memberList">{{member.memberName}}（余额：{{member.balance ? member.balance : '0.00'}}）</div>
-						</div>
+						<div class="flex-1">{{userInfo.member.member ? userInfo.member.name : '非会员'}}</div>
 					</div>
 					<div class="mt10">余额：{{userInfo.member.userBalance}}</div>
 				</ng-template>
@@ -35,34 +33,10 @@
 							<div class="flex-1"></div>
 							<div class="flex-0"><button (click)="print()" target="_blank" nz-button [nzType]="'primary'" [nzSize]="'large'">打印</button></div>
 						</div>
-						<div *ngIf="bookingInfo.status != '5' && paymentType == '30'" nz-row class="mt20">
-							<div nz-col [nzSpan]="12">
-								<div *ngIf="userInfo.member.memberList.length > 0" nz-form-item nz-row>
-									<div nz-form-label nz-col [nzSpan]="9" class="text-right">
-										<label for="status">会员：</label>
-									</div>
-									<div nz-form-control nz-col [nzSpan]="15">
-										<nz-select
-											class="w100"
-											(ngModelChange)="selectMember($event)"
-											[nzSize]="'large'"
-											[nzPlaceHolder]="'请选择会员'"
-											[ngModel]="userInfo.member.selectedMember"
-											>
-											<nz-option
-												*ngFor="let member of userInfo.member.memberList"
-												[nzLabel]="member.memberName"
-												[nzValue]="member.string">
-											</nz-option>
-										</nz-select>
-									</div>
-								</div>
-							</div>
-							<div nz-col [nzSpan]="12" class="text-right">
-								<button *ngIf="editMemberType != 'update'" (click)="updateMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改折扣</button>
-								<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-								<button *ngIf="editMemberType == 'update'" (click)="saveMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
-							</div>
+						<div *ngIf="bookingInfo.status != '5' && paymentType == '30' && dataCode == '1'" class="mt20 text-right">
+							<button *ngIf="editMemberType != 'update'" (click)="updateMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改折扣</button>
+							<button *ngIf="editMemberType == 'update'" (click)="cancelMember()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+							<button *ngIf="editMemberType == 'update'" (click)="saveMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">保存</button>
 						</div>
 						<div *ngIf="fee.feeInfo.serviceFeeList.length > 0" class="section">
 							<div class="title">医生科室费用</div>
@@ -77,7 +51,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -100,7 +74,7 @@
 												</td>
 												<td>{{service.serviceFee}}</td>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<td>{{service.serviceFee}}</td>
 											</ng-container>
 										</tr>
@@ -138,7 +112,7 @@
 												</td>
 											</tr>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="4">
 													<div class="flex">
@@ -217,7 +191,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -242,7 +216,7 @@
 												</td>
 												<td>{{assist.assistFee}}</td>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<td>{{assist.assistFee}}</td>
 											</ng-container>
 										</tr>
@@ -274,7 +248,7 @@
 												</tr>
 											</ng-container>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="6">
 													<div class="flex">
@@ -339,7 +313,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -362,7 +336,7 @@
 												</td>
 												<td>{{check.checkFee}}</td>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<td>{{check.checkFee}}</td>
 											</ng-container>
 										</tr>
@@ -394,7 +368,7 @@
 												</tr>
 											</ng-container>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="4">
 													<div class="flex">
@@ -461,7 +435,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -487,7 +461,7 @@
 													</td>
 													<td>{{info.msFee}}</td>
 												</ng-container>
-												<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+												<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 													<td>{{info.msFee}}</td>
 												</ng-container>
 											</tr>
@@ -520,7 +494,7 @@
 												</tr>
 											</ng-container>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="6">
 													<div class="flex">
@@ -585,7 +559,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -608,7 +582,7 @@
 												</td>
 												<td>{{tcm.tcmFee}}</td>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<td>{{tcm.tcmFee}}</td>
 											</ng-container>
 										</tr>
@@ -640,7 +614,7 @@
 												</tr>
 											</ng-container>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="4">
 													<div class="flex">
@@ -707,7 +681,7 @@
 												<th>折扣</th>
 												<th>折后金额</th>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<th>金额</th>
 											</ng-container>
 										</tr>
@@ -732,7 +706,7 @@
 												</td>
 												<td>{{other.otherFee}}</td>
 											</ng-container>
-											<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+											<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 												<td>{{other.otherFee}}</td>
 											</ng-container>
 										</tr>
@@ -764,7 +738,7 @@
 												</tr>
 											</ng-container>
 										</ng-container>
-										<ng-container *ngIf="dataCode == '1' && paymentType == '40'">
+										<ng-container *ngIf="(dataCode == '1' && paymentType == '40') || dataCode == '2'">
 											<tr nz-tbody-tr>
 												<td colspan="6">
 													<div class="flex">
@@ -944,8 +918,8 @@
 					<label class="flex-1">{{bookingInfo.creatorName}}</label>
 				</div>
 				<div class="pure-control-group flex-1 flex">
-					<label for="member" class="w150p mr20 text-right">{{userInfo.member.selectedMemberJson.memberName}}余额：</label>
-					<label>{{userInfo.member.selectedMemberJson.balance}}</label>
+					<label for="member" class="w150p mr20 text-right">余额：</label>
+					<label>{{userInfo.member.userBalance}}</label>
 					<div *ngIf="moduleAuthority.recharge" class="flex-1 ml20">
 						<button (click)="recharge()" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
 					</div>
@@ -966,15 +940,14 @@
 				</label>
 				<div class="flex-1">
 					<div class="flex flex-wrap pay-list">
-						<div
-							*ngIf="userInfo.member.selectedMemberJson.memberId"
+						<!-- <div
+								*ngIf="userInfo.member.selectedMemberJson.memberId"
 							class="item"
 							(click)="changePayway(userInfo.member.selectedMemberJson, userInfo.member.selectedMemberJson.use)"
 							[ngClass]="{'disabled': !payInfo.memberBalance || !userInfo.member.selectedMemberJson.use, 'active': payInfo.payway.way == 'member_' + userInfo.member.selectedMemberJson.umId || payInfo.payway_second.way == 'member_' + userInfo.member.selectedMemberJson.umId}"
-							>{{userInfo.member.selectedMemberJson.memberName}}{{userInfo.member.selectedMemberJson.balance ? '' : '（余额不足）'}}</div>
+							>{{userInfo.member.selectedMemberJson.memberName}}{{userInfo.member.selectedMemberJson.balance ? '' : '（余额不足）'}}</div> -->
 						<ng-container *ngFor="let payway of paywayList">
 							<div
-								*ngIf="payway.key != 'member'"
 								class="item"
 								(click)="changePayway(payway, (payway.key == 'member' ? payInfo.memberBalance : true) && payway.use)"
 								[ngClass]="{'disabled': payway.key == 'member' && !payInfo.memberBalance || !payway.use, 'active': payInfo.payway.way == payway.key || payInfo.payway_second.way == payway.key}"

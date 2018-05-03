@@ -121,7 +121,50 @@ export class PaymentPrintComponent{
 		tcm: any[],
 		other: any[],
 	}
-	// 折扣方式
+	/**
+	 * 数据格式
+	 * 0: {
+	 * 		"name":"金龙会员",
+	 * 	 	"member":true,
+	 * 	  	"balance":"390.00",
+	 * 	   	"service":"0.01",
+	 * 	    "service_session":"0.01",
+	 * 	    "services":[
+	 * 		   {"discount":"0.01","serviceId":"12","serviceName":"小二头孢","discount_session":"0.01"},
+	 * 		   {"discount":"0.01","serviceId":"13","serviceName":"小二推拿","discount_session":"0.01"},
+	 * 		   {"discount":"0.01","serviceId":"14","serviceName":"儿童体检","discount_session":"0.01"}
+	 * 	    ],
+	 * 	    "assist":"0.11",
+	 * 	    "assist_session":"0.11",
+	 * 	    "assists":[
+	 * 		   {"discount":"0.22","assistId":"1","assistName":"针灸","discount_session":"0.22"},
+	 * 		   {"discount":"0.33","assistId":"2","assistName":"足浴","discount_session":"0.33"}
+	 *      ],
+	 *      "check":"0.07",
+	 *      "check_session":"0.07",
+	 *      "prescript":"0.06",
+	 *      "prescript_session":"0.06",
+	 *      "other":"0.05",
+	 *      "other_session":"0.05"
+	 * }
+	 * 1: {
+	 * 		"service":[
+	 *   		{"id":"1200","discount":100}
+	 *      ],
+	 *      "assist":[
+	 *     		{"id":"1202","discount":"100"}
+	 *      ],
+	 *      "check":[
+	 *      	{"id":"1201","discount":"10"}
+	 *      ],
+	 *      "medical":[
+	 *       	{"id":"1203_0","discount":"10"}
+	 *      ],
+	 *      "tcm":[],
+	 *      "other":[]
+	 * }
+	 * 2: 无折扣信息
+	 */
 	dataCode: string;
 	// 支付类型
 	paymentType: string;
@@ -248,9 +291,9 @@ export class PaymentPrintComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.fee.remark = results.tranRemark;
-				this.dataCode = results.dataCode;
+				this.dataCode = results.dataCode.toString();
 				// 第一种discount_info解析方式
-				if(results.dataCode == 0){
+				if(results.dataCode.toString() == '0'){
 					if(results.discountInfo == '' || !results.discountInfo){
 						var userUrl = this.url + '&id=' + this.bookingInfo.creatorId
 							+ '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -260,7 +303,7 @@ export class PaymentPrintComponent{
 							}else{
 								var userResults = JSON.parse(JSON.stringify(userData.results));
 								if(userResults.users.length > 0){
-									this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+									this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].userBalance);
 								}
 								if(userResults.users[0].memberId){
 									//获取会员折扣信息
@@ -348,9 +391,9 @@ export class PaymentPrintComponent{
 						}else{
 							var userResults = JSON.parse(JSON.stringify(userData.results));
 							if(userResults.users.length > 0){
-								this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].balance);
+								this.userMember.balance = this.adminService.toDecimal2(userResults.users[0].userBalance);
 							}
-							if(userResults.users[0].memberId){
+							if(this.dataCode == '1' && userResults.users[0].memberId){
 								//获取会员折扣信息
 								var memberUrl = this.url + '&clinic_id=' + this.adminService.getUser().clinicId
 									 + '&id=' + userResults.users[0].memberId + '&status=1';
