@@ -1410,6 +1410,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 根据起始金额查询会员卡列表
+	memberstart(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/memberstart' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 会员升级
+	memberup(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/memberup/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

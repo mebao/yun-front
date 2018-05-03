@@ -33,15 +33,14 @@ export class MaterialSaleComponent{
 			name: string,
 			mobile: string,
 			userBalance: string,
-			memberList: any[],
+			// 会员是否升级：0 -> 老会员可享用打折，1 -> 新会员制度不可享用打折，充值时可享用赠送金额
+			isNew: number,
 		},
 		member: {
 			id: string,
 			name: string,
 			prescript: string,
 		},
-		selectedMember: string,
-		selectedMemberJson: any,
 		mobile: string,
 		idcard: string,
 		pay_way: string,
@@ -53,6 +52,7 @@ export class MaterialSaleComponent{
 	modalTab: boolean;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	loadingShow: boolean;
 
 	constructor(
 		private _message: NzMessageService,
@@ -82,19 +82,6 @@ export class MaterialSaleComponent{
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.users.length > 0){
-					for(var i = 0; i < results.users.length; i++){
-						var _memberList = [];
-						if(results.users[i].members.length > 0){
-							for(var member of results.users[i].members){
-								if(member.canUse == '1'){
-									_memberList.push(member);
-								}
-							}
-						}
-						results.users[i].memberList = _memberList;
-					}
-				}
 				this.userList = results.users;
 			}
 		}).catch(() => {
@@ -114,6 +101,7 @@ export class MaterialSaleComponent{
 		});
 
 		this.btnCanEdit = false;
+		this.loadingShow = false;
 	}
 
 	initData() {
@@ -127,15 +115,13 @@ export class MaterialSaleComponent{
 				name: '',
 				mobile: '',
 				userBalance: '',
-				memberList: [],
+				isNew: 0,
 			},
 			member: {
 				id: '',
 				name: '',
 				prescript: '',
 			},
-			selectedMember: '',
-			selectedMemberJson: {},
 			mobile: '',
 			idcard: '',
 			pay_way: '',
@@ -158,23 +144,24 @@ export class MaterialSaleComponent{
 	// 选择用户
 	changeUser() {
 		if(this.sale.user != null){
-			if(this.sale.user.memberList.length > 0){
-				for(var i = 0; i < this.sale.user.memberList.length; i++){
-					this.sale.user.memberList[i].string = JSON.stringify(this.sale.user.memberList[i]);
-				}
-			}
 			this.sale.mobile = this.sale.user.mobile;
-			this.sale.user = this.sale.user;
+			this.changeMember();
+		}else{
+			this.sale.member = {
+				id: '',
+				name: '',
+				prescript: '',
+			}
 		}
 	}
 
 	// 选择会员卡
 	changeMember() {
-		// 获取用户会员信息
-		if(this.sale.selectedMember != null){
-			this.sale.selectedMemberJson = this.sale.selectedMember;
-			var urlOptions = this.url + '&id=' + this.sale.selectedMemberJson.memberId + '&status=1';
+		if(this.sale.user['memberId'] != null){
+			this.loadingShow = true;
+			var urlOptions = this.url + '&id=' + this.sale.user['memberId'] + '&status=1';
 			this.adminService.memberlist(urlOptions).then((data) => {
+				this.loadingShow = false;
 				if(data.status == 'no'){
 					this._message.error(data.errorMsg);
 				}else{
@@ -188,10 +175,10 @@ export class MaterialSaleComponent{
 					}
 				}
 			}).catch(() => {
+				this.loadingShow = false;
 				this._message.error('服务器错误');
 			});
 		}else{
-			this.sale.selectedMemberJson = {};
 			this.sale.member = {
 				id: '',
 				name: '',
@@ -284,7 +271,7 @@ export class MaterialSaleComponent{
 				p.fee = this.adminService.toDecimal2(Number(p.num) * parseFloat(p.price));
 				p.canDiscount = this.plist[i].ms.others[0].canDiscount;
 				// 折扣价
-				if(p.canDiscount == '1' && this.sale.member.id != ''){
+				if(this.sale.user && this.sale.user.isNew == 0 && p.canDiscount == '1' && this.sale.member.id != ''){
 					p.discountFee = this.adminService.toDecimal2(parseFloat(p.fee) * parseFloat(this.sale.member.prescript));
 				}else{
 					p.discountFee = p.fee;
@@ -295,8 +282,8 @@ export class MaterialSaleComponent{
 			}
 		}
 		// 是否是诊所用户
-		if(this.sale.user.id != ''){
-			if(parseFloat(this.sale.selectedMemberJson.balance ? this.sale.selectedMemberJson.balance : '0.00') < saleFee){
+		if(this.sale.user != null && this.sale.user.id != ''){
+			if(parseFloat(this.sale.user.userBalance ? this.sale.user.userBalance : '0.00') < saleFee){
 				this.sale.balanceUse = '余额不足';
 			}else{
 				this.sale.balanceUse = '';
@@ -331,8 +318,7 @@ export class MaterialSaleComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			pay_way: this.sale.pay_way.indexOf('member_') == -1 ? this.sale.pay_way : 'member',
-			um_id: this.sale.pay_way.split('_')[1],
+			pay_way: this.sale.pay_way,
 			need_amount: this.selected.feeAll,
 			amount: this.selected.saleFee,
 			give_amount: 0,

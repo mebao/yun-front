@@ -31,7 +31,9 @@ export class UserListComponent{
 	modalConfirmTab: boolean;
 	selector: {
 		id: string,
-		members: any[],
+		start_amount: string,
+		give_scale: string,
+		upgradeMember: any,
 		member: string,
 		member_id: string,
 		text: string,
@@ -47,14 +49,11 @@ export class UserListComponent{
 		child_name: string,
 	}
 	url: string;
-	memberList: any[];
-	uMemberList: any[];
 	//充值
 	modalTabCharge: boolean;
+	upgradeMemberList: any[];
 	// 不可连续点击
 	btnCanEdit: boolean;
-	modalTabMember: boolean;
-	showAddMember: boolean;
 	// 购买活动卡
 	actcardList: any[];
 	modalActcardTab: boolean;
@@ -99,7 +98,9 @@ export class UserListComponent{
 		this.modalConfirmTab = false;
 		this.selector = {
 			id: '',
-			members: [],
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: '',
@@ -127,35 +128,13 @@ export class UserListComponent{
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		this.memberList = [];
-		this.uMemberList = [];
-
 		//充值
 		this.modalTabCharge = false;
+		this.upgradeMemberList = [];
 
 		// this.search();
 
-		//获取会员列表
-		var memberUrl = this.url + '&status=1';
-		this.adminService.memberlist(memberUrl).then((data) => {
-			if(data.status == 'no'){
-				this._message.error(data.errorMsg);
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].string = JSON.stringify(results.list[i]);
-					}
-				}
-				this.memberList = results.list;
-			}
-		}).catch(() => {
-			this._message.error('服务器错误');
-		});
-
 		this.btnCanEdit = false;
-		this.modalTabMember = false;
-		this.showAddMember = false;
 
 		// 获取活动卡列表
 		this.actcardList = [];
@@ -170,16 +149,6 @@ export class UserListComponent{
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.users.length > 0){
-					for(var i = 0; i < results.users.length; i++){
-						results.users[i].membersLength = results.users[i].members.length;
-						if(results.users[i].members.length > 0){
-							for(var j = 0; j < results.users[i].members.length; j++){
-								results.users[i].members[j].use = results.users[i].members[j].canUse == '0' ? false : true;
-							}
-						}
-					}
-				}
 				this.users = results.users;
 				this.hasData = true;
 				this.loadingShow = false;
@@ -219,7 +188,9 @@ export class UserListComponent{
 	delete(_id) {
 		this.selector = {
 			id: _id,
-			members: [],
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: '确认删除该用户？',
@@ -256,55 +227,117 @@ export class UserListComponent{
 		});
 	}
 
+	// 会员卡升级
+	upgradeMember(user) {
+		this.loadingShow = true;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+		}
+		this.adminService.memberup(user.id, params).then((data) => {
+			this.loadingShow = false;
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				this._message.success('会员升级成功');
+				this.search();
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
 	//充值
 	closeCharge() {
 		this.modalTabCharge = false;
 		this.selector = {
 			id: '',
-			members: [],
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: '',
 			userBalance: '',
 			amount: '',
 			give_amount: '',
-			pay_way: '',
+			pay_way: this.selector.pay_way == '' ? null : '',
 			actcard: {},
 		}
 	}
 
 	charge(user) {
-		this.modalTabCharge = true;
-		this.selector = {
-			id: user.id,
-			members: user.members,
-			member: '',
-			member_id: '',
-			text: user.name,
-			userBalance: user.userBalance ? user.userBalance : 0,
-			amount: '',
-			give_amount: '',
-			pay_way: '',
-			actcard: {},
+		if(user.memberId != null && user.isNew == 0){
+			this._message.error('老会员类型，暂不支持继续充值');
+		}else{
+			this.loadingShow = true;
+			// 通过用户起始金额，获取升级会员等级
+			var urlOptions = '?username=' + this.adminService.getUser().username
+				+ '&token=' + this.adminService.getUser().token
+				+ '&clinic_id=' + this.adminService.getUser().clinicId
+				+ '&start_amount=' + user.start_amount;
+			this.adminService.memberstart(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
+				}else{
+					this.loadingShow = false;
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.upgradeMemberList = results.list;
+					this.modalTabCharge = true;
+					this.selector = {
+						id: user.id,
+						start_amount: user.start_amount,
+						give_scale: user.give_scale,
+						upgradeMember: {},
+						member: user.memberName,
+						member_id: user.memberId,
+						text: user.name,
+						userBalance: user.userBalance ? user.userBalance : '0.00',
+						amount: '',
+						give_amount: '',
+						pay_way: this.selector.pay_way == '' ? null : '',
+						actcard: {},
+					}
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+			});
 		}
+	}
+
+	changeAmount() {
+		this.resetGiveAmount();
+	}
+
+	resetGiveAmount() {
+		var hasUpgrade = false;
+		var give_scale = this.selector.give_scale;
+		if(this.upgradeMemberList.length > 0){
+			for(var i = 0; i < this.upgradeMemberList.length; i++){
+				if(!hasUpgrade){
+					if(parseFloat(this.selector.amount) >= ((parseFloat(this.upgradeMemberList[i].startAmount) * 100 - parseFloat(this.selector.start_amount) * 100) / 100)){
+						hasUpgrade = true;
+						this.selector.upgradeMember = this.upgradeMemberList[i];
+					}
+				}
+			}
+			if(hasUpgrade){
+				give_scale = this.selector.upgradeMember.giveScale;
+			}
+		}
+		this.selector.give_amount = (parseFloat(this.selector.amount) * 100 * parseFloat(give_scale) / 10000).toString();
 	}
 
 	confirmCharge() {
 		this.btnCanEdit = true;
-		// 若是会员存在，则修改
-		// if(!this.adminService.isFalse(this.selector.member)){
-		//
-		// }else{
-			this.doCharge();
-		// }
+		this.doCharge();
 	}
 
 	validate() {
-		if(this.adminService.isFalse(this.selector.member)){
-			this._message.error('会员类型不可为空');
-			this.btnCanEdit = false;
-			return false;
-		}
 		if(this.adminService.isFalse(this.selector.amount)){
 			this._message.error('支付金额不可为空');
 			this.btnCanEdit = false;
@@ -328,22 +361,6 @@ export class UserListComponent{
 			this.btnCanEdit = false;
 			return false;
 		}
-		// 会员支付时，判断会员余额是否充足
-		if(this.selector.pay_way.indexOf('member') != 1){
-			if(this.selector.members.length > 0){
-				var selectedPayMember = {};
-				for(var i = 0; i < this.selector.members.length; i++){
-					if(this.selector.members[i].umId == this.selector.pay_way.split('_')[1]){
-						selectedPayMember = this.selector.members[i];
-					}
-				}
-				if(parseFloat(this.selector.amount) > parseFloat(selectedPayMember['balance'])){
-					this._message.error(selectedPayMember['memberName'] + '余额不足');
-					this.btnCanEdit = false;
-					return false;
-				}
-			}
-		}
 		return true;
 	}
 
@@ -362,11 +379,10 @@ export class UserListComponent{
 			amount: this.selector.amount,
 			give_amount: this.selector.give_amount.toString(),
 			pay_way: this.selector.pay_way.indexOf('member_') != -1 ? 'member' : this.selector.pay_way,
-			// 为会员充值
-			um_id: this.selector.member,
-			// 选择会员支付方式
-			pay_umid: this.selector.pay_way.indexOf('member_') != -1 ? this.selector.pay_way.split('_')[1] : null,
 			type: '2',
+			// 升级后的会员等级
+			member_id: this.selector.upgradeMember.id ? this.selector.upgradeMember['id'] : null,
+			member_name: this.selector.upgradeMember.id ? this.selector.upgradeMember['name'] : null,
 		}
 
 		this.adminService.userrecharge(params).then((data) => {
@@ -389,7 +405,9 @@ export class UserListComponent{
 	setUpMember(user) {
 		this.selector = {
 			id: user.id,
-			members: user.members,
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: user.name,
@@ -399,106 +417,10 @@ export class UserListComponent{
 			pay_way: '',
 			actcard: {},
 		}
-		this.uMemberList = [];
-		if(this.memberList.length > 0){
-			for(var i = 0; i < this.memberList.length; i++){
-				if(user.members.length > 0){
-					var userHas = false;
-					for(var j = 0; j < user.members.length; j++){
-						if(this.memberList[i].id == user.members[j].memberId){
-							userHas = true;
-						}
-					}
-					if(!userHas){
-						this.uMemberList.push(this.memberList[i]);
-					}
-				}else{
-					this.uMemberList = JSON.parse(JSON.stringify(this.memberList));
-				}
-			}
-		}
-		if(user.members.length > 0){
-			this.showAddMember = false;
-		}else{
-			this.showAddMember = true;
-		}
-		this.modalTabMember = true;
 	}
 
-	closeMember() {
-		this.modalTabMember = false;
-		this.closeCharge();
-	}
-
-	addMember() {
-		this.showAddMember = true;
-	}
-
-	confirmMember() {
-		this.btnCanEdit = true;
-		if(this.adminService.isFalse(this.selector.member)){
-			this._message.error('会员类型不可为空');
-			this.btnCanEdit = false;
-			return false;
-		}
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			member_id: JSON.parse(this.selector.member).id,
-			member_name: JSON.parse(this.selector.member).name,
-		}
-		this.setmember(this.selector.id, params, 'add', '');
-	}
-
-	updateMember(uMember) {
-		this.loadingShow = true;
-		this.btnCanEdit = true;
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			clinic_id: this.adminService.getUser().clinicId,
-			member_id: uMember.memberId,
-			member_name: uMember.memberName,
-			um_id: uMember.umId,
-			can_use: uMember.canUse == '1' ? '0' : '1',
-		}
-		this.setmember(this.selector.id, params, 'update', uMember);
-	}
-
-	setmember(userId, params, type, uMember) {
-		this.adminService.setmember(userId, params).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				if(type == 'update'){
-					this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
-				}
-				this._message.error(data.errorMsg);
-				this.btnCanEdit = false;
-			}else{
-				this.search();
-				if(type == 'add'){
-					this.closeMember();
-				}else{
-					this._message.success('会员状态修改成功');
-				}
-				this.btnCanEdit = false;
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-			if(type == 'update'){
-				this.selector.members[this.selector.members.indexOf(uMember)].use = uMember.canUse == '0' ? false : true;
-			}
-			this._message.error('服务器错误');
-			this.btnCanEdit = false;
-		});
-	}
-
-	changeMember() {
-		// 切换购买的会员类型
-		if(!this.adminService.isFalse(this.selector.member)){
-			this.selector.member_id = this.selector.member;
-			this.selector.pay_way = this.selector.pay_way == null ? '' : null;
-		}
+	changeActcard() {
+		this.selector.amount = this.selector.actcard.price;
 	}
 
 	// 购买活动卡
@@ -515,15 +437,13 @@ export class UserListComponent{
 		});
 	}
 
-	changeActcard() {
-		this.selector.amount = this.selector.actcard.price;
-	}
-
 	closeActcard() {
 		this.modalActcardTab = false;
 		this.selector = {
 			id: '',
-			members: [],
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: '',
@@ -539,7 +459,9 @@ export class UserListComponent{
 		this.modalActcardTab = true;
 		this.selector = {
 			id: user.id,
-			members: user.members,
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
 			member: '',
 			member_id: '',
 			text: user.name,
@@ -552,7 +474,7 @@ export class UserListComponent{
 	}
 
 	confirmActcard() {
-		if(!this.selector.actcard.id){
+		if(!this.selector.actcard){
 			this._message.error('活动卡不可为空');
 			return;
 		}
@@ -565,16 +487,7 @@ export class UserListComponent{
 			return;
 		}
 		if(this.selector.pay_way.indexOf('member') != -1){
-			var um_id = this.selector.pay_way.split('_')[1];
-			var canPay = false;
-			for(var index in this.selector.members){
-				if(this.selector.members[index].umId == um_id){
-					if(parseFloat(this.selector.members[index].balance) >= parseFloat(this.selector.amount)){
-						canPay = true;
-					}
-				}
-			}
-			if(!canPay){
+			if(parseFloat(this.selector.userBalance == null ? '0' : this.selector.userBalance) < parseFloat(this.selector.amount)){
 				this._message.error('会员余额不足');
 				return;
 			}
@@ -591,7 +504,6 @@ export class UserListComponent{
 			need_amount: this.selector.actcard.price,
 			give_amount: '0',
 			pay_way: this.selector.pay_way.indexOf('member') != -1 ? 'member' : this.selector.pay_way,
-			um_id: this.selector.pay_way.indexOf('member') != -1 ? this.selector.pay_way.split('_')[1] : null,
 		}
         this.adminService.useractcard(params).then((data) => {
             if(data.status == 'no'){

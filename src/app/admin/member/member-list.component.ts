@@ -86,7 +86,9 @@ export class MemberListComponent{
 				this.serviceList = results.servicelist;
 				this.search();
 			}
-		});
+		}).catch(() => {
+            this._message.error('服务器错误');
+        });
 	}
 
 	search() {
@@ -165,7 +167,10 @@ export class MemberListComponent{
 				this.hasData = true;
 				this.loadingShow = false;
 			}
-		});
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+        });
 	}
 
 	add() {

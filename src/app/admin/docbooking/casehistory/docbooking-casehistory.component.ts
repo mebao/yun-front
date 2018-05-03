@@ -873,19 +873,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.weekbooks.length > 0){
-					for(var i = 0; i < results.weekbooks.length; i++){
-						var memberList = [];
-						if(results.weekbooks[i].members.length > 0){
-							for(var j = 0; j < results.weekbooks[i].members.length; j++){
-								if(results.weekbooks[i].members[j].canUse == '1'){
-									memberList.push(results.weekbooks[i].members[j]);
-								}
-							}
-						}
-						results.weekbooks[i].memberList = memberList;
-					}
-				}
 				this.historyList = results.weekbooks;
 				this.hasHistoryData = true;
 			}

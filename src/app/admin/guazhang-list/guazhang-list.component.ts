@@ -39,7 +39,9 @@ export class GuazhangList{
         text: string,
         second_way: string,
         userBalance: string,
-        members: any[],
+        memberId: string,
+        memberName: string,
+        balanceCanPay: boolean,
     }
     btnCanEdit: boolean;
 
@@ -86,7 +88,9 @@ export class GuazhangList{
             text: '',
             second_way: '',
             userBalance: '',
-            members: [],
+            memberId: '',
+            memberName: '',
+            balanceCanPay: false,
         }
         this.btnCanEdit = false;
 
@@ -151,7 +155,9 @@ export class GuazhangList{
             text: '',
             second_way: '',
             userBalance: '',
-            members: [],
+            memberId: '',
+            memberName: '',
+            balanceCanPay: false,
         }
         this.modalConfirmTab = false;
     }
@@ -176,8 +182,7 @@ export class GuazhangList{
             token: this.adminService.getUser().token,
             id: this.selector.id,
             amount: this.selector.amount,
-            second_way: this.selector.second_way.indexOf('member_') == -1 ? this.selector.second_way : 'member',
-            um_id: this.selector.second_way.indexOf('member_') == -1 ? null : this.selector.second_way.split('_')[1],
+            second_way: this.selector.second_way,
         }
         this.adminService.payguazhang(this.selector.id, params).then((data) => {
             if(data.status == 'no'){
@@ -208,14 +213,13 @@ export class GuazhangList{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
                     this.selector.userBalance = results.users[0].userBalance;
-                    for(var i = 0; i < results.users[0].members.length; i++){
-                        if(parseFloat(results.users[0].members[i].balance) >= parseFloat(guzhang)){
-                            results.users[0].members[i].canBalance = true;
-                        }else{
-                            results.users[0].members[i].canBalance = false;
-                        }
+                    this.selector.memberId = results.users[0].memberId;
+                    this.selector.memberName = results.users[0].memberName;
+                    if(parseFloat(results.users[0].userBalance) >= parseFloat(guzhang)){
+                        this.selector.balanceCanPay = true;
+                    }else{
+                        this.selector.balanceCanPay = false;
                     }
-                    this.selector.members = results.users[0].members;
                 }
                 this.loadingShow = false;
                 this.modalConfirmTab = true;

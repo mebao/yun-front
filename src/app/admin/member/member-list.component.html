@@ -40,19 +40,21 @@
 		<thead nz-thead>
 			<tr>
 				<th nz-th>会员名</th>
-				<th nz-th>科室折扣</th>
+				<!-- <th nz-th>科室折扣</th>
 				<th nz-th>科室折扣详情</th>
 				<th nz-th class="text-center">辅助治疗折扣</th>
 				<th nz-th>辅助治疗折扣详情</th>
 				<th nz-th class="text-center">检查折扣</th>
 				<th nz-th>药品折扣</th>
-				<th nz-th>其他折扣</th>
+				<th nz-th>其他折扣</th> -->
+				<th nz-th>赠送金额折扣</th>
+				<th nz-th>充值金额</th>
 				<th nz-th>状态</th>
 				<th nz-th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
-			<ng-container *ngFor="let member of memberList; let indexMember=index;">
+			<!-- <ng-container *ngFor="let member of memberList; let indexMember=index;">
 				<tr nz-tbody-tr *ngFor="let info of member.infoList; let indexInfo=index; let lastInfo=last;">
 					<td nz-td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.name}}</td>
 					<td nz-td [attr.rowspan]="member.infoList.length" *ngIf="indexInfo == '0'">{{member.service}}{{member.service && member.service != '' ? '%' : ''}}</td>
@@ -71,7 +73,16 @@
 						<button *ngIf="moduleAuthority.edit" (click)="update(member)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 					</td>
 				</tr>
-			</ng-container>
+			</ng-container> -->
+			<tr nz-tbody-tr *ngFor="let member of memberList">
+				<td>{{member.name}}</td>
+				<td>{{member.giveScale}}</td>
+				<td>{{member.startAmount}}</td>
+				<td>{{member.status == '1' ? '可用' : '停用'}}</td>
+				<td>
+					<button *ngIf="moduleAuthority.edit" (click)="update(member)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+				</td>
+			</tr>
 		</tbody>
 	</nz-table>
 </div>

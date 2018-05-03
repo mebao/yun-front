@@ -62,8 +62,8 @@
 				<div class="pure-u-6-24 booking-tab pad10" *ngFor="let service of booking.services">
 					<nz-tooltip>
 						<div nz-tooltip class="tab" [ngClass]="{'in': booking.status == '4', 'complete': booking.status == '5'}">
-							<div class="info pad10" [ngClass]="{'active': booking.memberList.length > 0}">
-								<img *ngIf="booking.memberList.length > 0" class="vip-icon" src="../assets/images/vip.png" />
+							<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
+								<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/vip.png" />
 								<div class="flex">
 									<div class="flex-1"></div>
 									<div class="status">
@@ -113,12 +113,8 @@
 								</a>
 							</div>
 						</div>
-						<ng-template #nzTemplate *ngIf="booking.memberList.length > 0">
-							<ng-container *ngFor="let member of booking.memberList">
-								<ng-container *ngIf="member.canUse == '1'">
-									<div>{{member.memberName}}（{{member.balance ? member.balance : '0.00'}}元）</div>
-								</ng-container>
-							</ng-container>
+						<ng-template #nzTemplate>
+							<div>{{booking.memberName}}（{{booking.userBalance ? booking.userBalance : '0.00'}}元）</div>
 	      				</ng-template>
 					</nz-tooltip>
 				</div>

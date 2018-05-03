@@ -1,142 +1,169 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-member">
 	<top-bar [data]="topBar"></top-bar>
-	<div>
-		<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-			<fieldset>
-				<div class="pure-g">
-					<div class="pure-u-1-5"></div>
-					<div class="pure-u-3-5">
-						<div class="pure-control-group">
-							<label for="name">
-								<span>会员名</span>
-							</label>
-							<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="memberInfo.name" placeholder="请输入会员名" required="">
-							<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
-								<div [hidden]="!name.errors.required">
-									会员名不可为空
-								</div>
-							</div>
-						</div>
-						<div class="pure-control-group">
-							<label for="service">
-								<span>科室折扣（会员折扣为百分比，如50，实际为50%，即5折，下同。科室折扣用于具体科室折扣未设置时收费使用）</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="service" name="service" #service="ngModel" [(ngModel)]="memberInfo.service" placeholder="请输入科室折扣" required="" class="flex-1">
-								<select disabled class="w40p">
-									<option>%</option>
-								</select>
-							</div>
-							<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
-								<div [hidden]="!service.errors.required">
-									科室折扣不可为空
-								</div>
-							</div>
-						</div>
-						<ng-container *ngFor="let service of serviceList; let index=index;">
-							<div class="pure-control-group">
-								<label for="service_{{service.serviceId}}">{{service.serviceName}}科室折扣</label>
-								<div class="flex flex-tab">
-									<input type="number" id="service_{{service.serviceId}}" name="service_{{service.serviceId}}" [(ngModel)]="service.discount" placeholder="请输入{{service.serviceName}}科室折扣" required="" class="flex-1">
-									<select disabled class="w40p">
-										<option>%</option>
-									</select>
-								</div>
-							</div>
-						</ng-container>
-						<div class="pure-control-group">
-							<label for="assist">
-								<span>辅助治疗（辅助治疗用于具体辅助治疗未设置时收费使用）</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="assist" name="assist" #assist="ngModel" [(ngModel)]="memberInfo.assist" placeholder="请输入辅助治疗折扣" required="" class="flex-1">
-								<select disabled class="w40p">
-									<option>%</option>
-								</select>
-							</div>
-							<div *ngIf="assist.errors && (assist.dity || assist.touched)" class="alert alert-danger">
-								<div [hidden]="!assist.errors.required">
-									辅助治疗折扣不可为空
-								</div>
-							</div>
-						</div>
-						<ng-container *ngFor="let assist of assistList; let index=index;">
-							<div class="pure-control-group">
-								<label for="assist_{{assist.id}}">{{assist.name}}辅助治疗折扣</label>
-								<div class="flex flex-tab">
-									<input type="number" id="assist_{{assist.id}}" name="assist_{{assist.id}}" [(ngModel)]="assist.discount" placeholder="请输入{{assist.name}}辅助治疗折扣" required="" class="flex-1">
-									<select disabled class="w40p">
-										<option>%</option>
-									</select>
-								</div>
-							</div>
-						</ng-container>
-						<div class="pure-control-group">
-							<label for="check">
-								<span>检查折扣</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="check" name="check" #check="ngModel" [(ngModel)]="memberInfo.check" placeholder="请输入检查折扣" required="" class="flex-1">
-								<select disabled class="w40p">
-									<option>%</option>
-								</select>
-							</div>
-							<div *ngIf="check.errors && (check.dity || check.touched)" class="alert alert-danger">
-								<div [hidden]="!check.errors.required">
-									检查折扣不可为空
-								</div>
-							</div>
-						</div>
-						<div class="pure-control-group">
-							<label for="prescript">
-								<span>药品折扣</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="prescript" name="prescript" #prescript="ngModel" [(ngModel)]="memberInfo.prescript" placeholder="请输入药品折扣" required="" class="flex-1">
-								<select disabled class="w40p">
-									<option>%</option>
-								</select>
-							</div>
-							<div *ngIf="prescript.errors && (prescript.dity || prescript.touched)" class="alert alert-danger">
-								<div [hidden]="!prescript.errors.required">
-									药品折扣不可为空
-								</div>
-							</div>
-						</div>
-						<div class="pure-control-group">
-							<label for="other">
-								<span>其他折扣</span>
-							</label>
-							<div class="flex flex-tab">
-								<input type="number" id="other" name="other" #other="ngModel" [(ngModel)]="memberInfo.other" placeholder="请输入其他折扣" required="" class="flex-1">
-								<select disabled class="w40p">
-									<option>%</option>
-								</select>
-							</div>
-							<div *ngIf="other.errors && (other.dity || other.touched)" class="alert alert-danger">
-								<div [hidden]="!other.errors.required">
-									其他折扣不可为空
-								</div>
-							</div>
-						</div>
-						<div *ngIf="editType == 'update'" class="pure-control-group">
-							<label for="status">
-								<span>状态</span>
-							</label>
-							<select id="status" name="status" [(ngModel)]="memberInfo.status">
-								<option value="1">可用</option>
-								<option value="0">停用</option>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-1-5"></div>
-				</div>
-			</fieldset>
-			<div class="text-center">
-				<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+    <form nz-form [formGroup]="validateForm">
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>会员名：</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+	            <nz-input formControlName="name" [nzType]="'text'" [nzPlaceHolder]="'请输入会员名'" [nzSize]="'large'"></nz-input>
+	            <div nz-form-explain *ngIf="getFormControl('name').dirty && getFormControl('name').hasError('required')">会员名不可为空</div>
+	        </div>
+	    </div>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>赠送折扣：</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="give_scale" [nzPlaceHolder]="'请输入赠送折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('give_scale').dirty && getFormControl('give_scale').hasError('required')">赠送折扣不可为空</div>
+	        </div>
+	    </div>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>起始金额：</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+	            <nz-input-number formControlName="start_amount" [nzPlaceHolder]="'请输入起始金额'" [nzMin]="0" [nzSize]="'large'" [nzStep]="0.01" class="w100"></nz-input-number>
+	            <div nz-form-explain *ngIf="getFormControl('start_amount').dirty && getFormControl('start_amount').hasError('required')">起始金额不可为空</div>
+	        </div>
+	    </div>
+	    <div nz-form-item nz-row *ngIf="editType == 'update'">
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>状态</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-select class="w100"
+					formControlName="status"
+					[nzPlaceHolder]="'请选择状态'"
+					[nzSize]="'large'">
+					<nz-option [nzLabel]="'可用'" [nzValue]="'1'"></nz-option>
+					<nz-option [nzLabel]="'停用'" [nzValue]="'0'"></nz-option>
+				</nz-select>
+	            <div nz-form-explain *ngIf="getFormControl('status').dirty && getFormControl('status').hasError('required')">状态不可为空</div>
+	        </div>
+	    </div>
+	    <!-- <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7"></div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-alert
+					[nzType]="'info'"
+					[nzMessage]="'折扣提醒'"
+		      		[nzDescription]="'会员折扣为百分比，如50，实际为50%，即5折，下同。科室折扣用于具体科室折扣未设置时收费使用'" nzShowIcon></nz-alert>
 			</div>
-		</form>
-	</div>
+		</div>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>科室折扣：</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="service" [nzPlaceHolder]="'请输入科室折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('service').dirty && getFormControl('service').hasError('required')">科室折扣不可为空</div>
+	        </div>
+	    </div>
+		<ng-container *ngFor="let service of serviceList; let index=index;">
+		    <div nz-form-item nz-row>
+		        <div nz-form-label nz-col [nzSpan]="7">
+		            <label nz-form-item-required>{{service.serviceName}}科室折扣：</label>
+		        </div>
+		        <div nz-col [nzSpan]="12" nz-form-control>
+					<nz-input-group [nzSize]="'large'" nzCompact>
+		            	<nz-input-number formControlName="service_{{service.serviceId}}" [nzPlaceHolder]="'请输入' + service.serviceName + '科室折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+				      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+				        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+				      	</nz-select>
+				    </nz-input-group>
+		            <div nz-form-explain *ngIf="getFormControl('service_' + service.serviceId).dirty && getFormControl('service_' + service.serviceId).hasError('required')">{{service.serviceName}}科室折扣不可为空</div>
+		        </div>
+		    </div>
+		</ng-container>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>辅助治疗：</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="assist" [nzPlaceHolder]="'请输入辅助治疗折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('assist').dirty && getFormControl('assist').hasError('required')">辅助治疗折扣不可为空</div>
+	        </div>
+	    </div>
+		<ng-container *ngFor="let assist of assistList; let index=index;">
+		    <div nz-form-item nz-row>
+		        <div nz-form-label nz-col [nzSpan]="7">
+		            <label nz-form-item-required>{{assist.name}}辅助治疗折扣</label>
+		        </div>
+		        <div nz-col [nzSpan]="12" nz-form-control>
+					<nz-input-group [nzSize]="'large'" nzCompact>
+		            	<nz-input-number formControlName="assist_{{assist.id}}" [nzPlaceHolder]="'请输入' + assist.name + '辅助治疗折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+				      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+				        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+				      	</nz-select>
+				    </nz-input-group>
+		            <div nz-form-explain *ngIf="getFormControl('assist_' + assist.id).dirty && getFormControl('assist_' + assist.id).hasError('required')">{{assist.name}}辅助治疗折扣不可为空</div>
+		        </div>
+		    </div>
+		</ng-container>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>检查折扣</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="check" [nzPlaceHolder]="'请输入检查折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('check').dirty && getFormControl('check').hasError('required')">检查折扣不可为空</div>
+	        </div>
+	    </div>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>药品折扣</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="prescript" [nzPlaceHolder]="'请输入药品折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('prescript').dirty && getFormControl('prescript').hasError('required')">药品折扣不可为空</div>
+	        </div>
+	    </div>
+	    <div nz-form-item nz-row>
+	        <div nz-form-label nz-col [nzSpan]="7">
+	            <label nz-form-item-required>其他折扣</label>
+	        </div>
+	        <div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-group [nzSize]="'large'" nzCompact>
+	            	<nz-input-number formControlName="other" [nzPlaceHolder]="'请输入其他折扣'" [nzMin]="0" class="w70 mr0"></nz-input-number>
+			      	<nz-select formControlName="unit" [nzDisabled]="true" class="w30">
+			        	<nz-option [nzLabel]="'%'" [nzValue]="'%'"></nz-option>
+			      	</nz-select>
+			    </nz-input-group>
+	            <div nz-form-explain *ngIf="getFormControl('other').dirty && getFormControl('other').hasError('required')">其他折扣不可为空</div>
+	        </div>
+	    </div> -->
+	    <div nz-row>
+	        <div nz-col [nzSpan]="12" [nzOffset]="7">
+				<button (click)="create()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit" [disabled]="!validateForm.valid">{{editType == 'create' ? '保存' : '保存'}}</button>
+			</div>
+		</div>
+	</form>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

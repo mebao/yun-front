@@ -70,26 +70,6 @@
             	</div>
           	</div>
     	</div>
-    	<div nz-col [nzSpan]="8" *ngIf="sale.type == '1'">
-          	<div nz-form-item>
-            	<div nz-form-label>
-              		<label for="member">会员卡：</label>
-            	</div>
-            	<div nz-form-control class="mt5">
-					<nz-select
-						class="w100"
-						[nzSize]="'large'"
-						[nzPlaceHolder]="'请选择会员卡'"
-						[ngModel]="sale.selectedMember"
-						(ngModelChange)="sale.selectedMember=$event;changeMember()"
-						nzAllowClear>
-						<ng-container *ngIf="sale.user != null">
-							<nz-option *ngFor="let member of sale.user.memberList" [nzValue]="member" [nzLabel]="member.memberName"></nz-option>
-						</ng-container>
-					</nz-select>
-            	</div>
-          	</div>
-    	</div>
 	</div>
 	<div class="mt20">
 		<nz-collapseset>
@@ -186,9 +166,9 @@
 			</div>
 			<div *ngIf="sale.member.id != ''" class="flex mt10">
 				<div class="w100p">会员类型：</div>
-				<div class="flex-1">{{sale.member.name + '（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）'}}</div>
+				<div class="flex-1">{{sale.member.name + '（' + (sale.user.userBalance ? sale.user.userBalance : '0.00') + '）'}}</div>
 			</div>
-			<div *ngIf="sale.member.id != ''" class="flex mt10">
+			<div *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''" class="flex mt10">
 				<div class="w100p">药品折扣：</div>
 				<div class="flex-1">{{sale.member.prescript}}</div>
 			</div>
@@ -203,8 +183,8 @@
 						<th>单位</th>
 						<th>价格</th>
 						<th>总价格</th>
-						<th *ngIf="sale.user && sale.user.id != ''">是否可打折</th>
-						<th *ngIf="sale.user && sale.user.id != ''">折后价格</th>
+						<th *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''">是否可打折</th>
+						<th *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''">折后价格</th>
 					</tr>
 				</thead>
 				<tbody nz-tbody>
@@ -215,8 +195,8 @@
 						<td>{{p.unit}}</td>
 						<td>{{p.price}}</td>
 						<td>{{p.fee}}</td>
-						<td *ngIf="sale.user && sale.user.id != ''">{{p.canDiscount == '1' ? '可打折' : '不可打折'}}</td>
-						<td *ngIf="sale.user && sale.user.id != ''">{{p.discountFee}}</td>
+						<td *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''">{{p.canDiscount == '1' ? '可打折' : '不可打折'}}</td>
+						<td *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''">{{p.discountFee}}</td>
 					</tr>
 				</tbody>
 			</nz-table>
@@ -225,7 +205,7 @@
 			<div class="w100p">总价格：</div>
 			<div class="flex-1">{{selected.feeAll}}</div>
 		</div>
-		<div *ngIf="sale.user && sale.user.id != ''" class="flex pt10 pb10">
+		<div *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''" class="flex pt10 pb10">
 			<div class="w100p">折后价格：</div>
 			<div class="flex-1">{{selected.saleFee}}</div>
 		</div>
@@ -240,7 +220,7 @@
 					[nzPlaceHolder]="'请选择支付方式'"
 					[ngModel]="sale.pay_way"
 					(ngModelChange)="sale.pay_way=$event">
-					<nz-option *ngIf="sale.user && sale.user.id != '' && sale.selectedMemberJson.umId" [nzValue]="'member_' + sale.selectedMemberJson.umId" [nzLabel]="sale.member.name + '支付' + (sale.balanceUse == '' ? ('（' + (sale.selectedMemberJson.balance ? sale.selectedMemberJson.balance : '0.00') + '）') : ('（' + sale.balanceUse + '）'))" [nzDisabled]="sale.balanceUse != ''"></nz-option>
+					<nz-option *ngIf="sale.user != null && sale.user.id != ''" [nzValue]="'member'" [nzLabel]="'余额支付' + (sale.balanceUse == '' ? ('（' + (sale.user.userBalance ? sale.user.userBalance : '0.00') + '）') : ('（' + sale.balanceUse + '）'))" [nzDisabled]="sale.balanceUse != ''"></nz-option>
 					<nz-option [nzValue]="'ali'" [nzLabel]="'支付宝支付'"></nz-option>
 					<nz-option [nzValue]="'wechat'" [nzLabel]="'微信支付'"></nz-option>
 					<nz-option [nzValue]="'card'" [nzLabel]="'刷卡支付'"></nz-option>
@@ -262,3 +242,4 @@
 		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
 	</ng-template>
 </nz-modal>
+<loading [show]="loadingShow"></loading>

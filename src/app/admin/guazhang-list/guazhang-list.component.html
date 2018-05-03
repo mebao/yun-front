@@ -89,11 +89,7 @@
 				<div class="pure-group-control mt10">
 					<label for="second_way">支付方式：</label>
 					<select name="second_way" [(ngModel)]="selector.second_way">
-						<ng-container *ngFor="let member of selector.members">
-							<ng-container *ngIf="member.canUse == '1'">
-								<option value="member_{{member.umId}}" [disabled]="!member.canBalance">{{member.memberName}}支付{{member.canBalance ? ('（余额：' + member.balance + ')') : '（余额不足）'}}</option>
-							</ng-container>
-						</ng-container>
+						<option value="member" [disabled]="!selector.balanceCanPay">余额支付{{selector.balanceCanPay ? '' : '（余额不足）'}}</option>
 						<option value="ali">支付宝支付</option>
 						<option value="wechat">微信支付</option>
 						<option value="wc_zhuan">微信转账</option>

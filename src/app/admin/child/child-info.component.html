@@ -102,11 +102,11 @@
 						</div> -->
 						<div class="pure-u-12-24 info flex">
 							<label class="w110pp">会员：</label>
-							<div>{{userInfo.memberName}}</div>
+							<div>{{userInfo.memberId != null ? userInfo.memberName : '非会员'}}</div>
 						</div>
 						<div class="pure-u-12-24 info flex">
 							<label class="w110pp">余额：</label>
-							<div>{{userInfo.balance}}</div>
+							<div>{{userInfo.userBalance == null ? '0.00' : userInfo.userBalance}}</div>
 						</div>
 					</div>
 				</div>

@@ -5,7 +5,7 @@
 		<button (click)="goUrl('./admin/createUser')" nz-button [nzType]="'primary'" [nzSize]="'large'">新增用户</button>
 	</div>
 	<div nz-row class="mt10 mb10">
-		<div nz-col [nzSpan]="6" [nzOffset]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="name">家长姓名：</label>
@@ -15,7 +15,7 @@
 				</div>
 			</div>
 		</div>
-		<div nz-col [nzSpan]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="mobile">手机号码：</label>
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 		</div>
-		<div nz-col [nzSpan]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="child_name">宝宝姓名：</label>
@@ -47,196 +47,153 @@
 				<th nz-th>手机号码</th>
 				<th nz-th>性别</th>
 				<th nz-th>会员</th>
-				<th nz-th>会员状态</th>
+				<th nz-th>会员类型</th>
 				<th nz-th>余额</th>
 				<th nz-th>活动卡</th>
 				<th nz-th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
-			<ng-container *ngFor="let user of users; let index=index;">
-				<tr nz-tbody-tr *ngIf="user.members.length == 0">
-					<td>{{index + 1}}</td>
-					<td>{{user.name}}</td>
-					<td>{{user.mobile}}</td>
-					<td>{{user.gender == 'M' ? '男' : '女'}}</td>
-					<td></td>
-					<td></td>
-					<td>{{user.userBalance ? user.userBalance : 0}}</td>
-					<td>
-						<div *ngFor="let actcard of user.actCards">
-							{{actcard.activityName}}（剩余：{{actcard.num}}次）
+			<tr nz-tbody-tr *ngFor="let user of users; let index=index;">
+				<td>{{index + 1}}</td>
+				<td>{{user.name}}</td>
+				<td>{{user.mobile}}</td>
+				<td>{{user.gender == 'M' ? '男' : '女'}}</td>
+				<td>{{user.memberId != null ? user.memberName : ''}}</td>
+				<td>{{user.isNew == 0 ? (user.memberId != null ? '老会员' : '') : '新会员'}}</td>
+				<td>{{user.userBalance ? user.userBalance : '0.00'}}</td>
+				<td>
+					<div *ngFor="let actcard of user.actCards">
+						{{actcard.activityName}}（剩余：{{actcard.num}}次）
+					</div>
+				</td>
+				<td>
+					<div nz-row>
+						<div nz-col [nzSpan]="12" class="mb10">
+							<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
 						</div>
-					</td>
-					<td>
-						<div nz-row>
-							<div nz-col [nzSpan]="12" class="mb10">
-								<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
-							</div>
-							<div nz-col [nzSpan]="12" class="mb10">
-								<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
-							</div>
-							<div nz-col [nzSpan]="12" class="mb10">
-							<!-- 添加会员种类 -->
-								<button (click)="setUpMember(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">设置会员</button>
-							</div>
-							<div nz-col [nzSpan]="12" class="mb10">
-								<button (click)="setUpActcard(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">购买活动卡</button>
-							</div>
-							<div nz-col [nzSpan]="12" class="mb10">
-								<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
-							</div>
+						<div nz-col [nzSpan]="12" class="mb10">
+							<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
 						</div>
-					</td>
-				</tr>
-				<ng-container *ngIf="user.members.length > 0">
-					<tr nz-tbody-tr *ngFor="let member of user.members; let indexMember=index;">
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{index + 1}}</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.name}}</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.mobile}}</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.gender == 'M' ? '男' : '女'}}</td>
-						<td>{{member.memberName + '（' + (member.balance ? member.balance : '0.00') + '）'}}</td>
-						<td>{{member.canUse == '1' ? '可用' : '停用'}}</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">{{user.userBalance ? user.userBalance : 0}}</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">
-							<div *ngFor="let actcard of user.actCards">
-								{{actcard.activityName}}（剩余：{{actcard.num}}次）
-							</div>
-						</td>
-						<td *ngIf="indexMember == '0'" [attr.rowspan]="user.membersLength">
-							<div nz-row>
-								<div nz-col [nzSpan]="12" class="mb10">
-									<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
-								</div>
-								<div nz-col [nzSpan]="12" class="mb10">
-									<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
-								</div>
-								<div nz-col [nzSpan]="12" class="mb10">
-								<!-- 添加会员种类 -->
-									<button (click)="setUpMember(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">设置会员</button>
-								</div>
-								<div nz-col [nzSpan]="12" class="mb10">
-									<button (click)="setUpActcard(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">购买活动卡</button>
-								</div>
-								<div nz-col [nzSpan]="12" class="mb10">
-									<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</ng-container>
-			</ng-container>
+						<div nz-col [nzSpan]="12" class="mb10">
+							<button (click)="setUpActcard(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">购买活动卡</button>
+						</div>
+						<div *ngIf="user.memberId != null && user.isNew == 0" nz-col [nzSpan]="12" class="mb10">
+							<button (click)="upgradeMember(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">会员升级</button>
+						</div>
+						<div nz-col [nzSpan]="12" class="mb10">
+							<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+						</div>
+					</div>
+				</td>
+			</tr>
 		</tbody>
 	</nz-table>
 </div>
-<div class="modal" *ngIf="modalTabCharge">
-	<div class="modal-mask" (click)="closeCharge()"></div>
-	<div class="container">
-		<div class="title">充值</div>
-		<div class="content pad10 pure-form">
-			<div class="pure-control-group flex">
-				<label for="text" class="w100p">用户：</label>
-				<div class="flex-1 p-group">{{selector.text}}</div>
+<nz-modal [nzVisible]="modalTabCharge" [nzWidth]="900" [nzTitle]="'充值'" [nzContent]="contentCharge" [nzFooter]="footerCharge" (nzOnCancel)="closeCharge()">
+	<ng-template #contentCharge>
+		<div nz-row>
+			<div nz-col [nzSpan]="12">
+				<nz-table #nzTable [nzDataSource]="upgradeMemberList" [nzBordered]="true" [nzIsPagination]="false">
+					<thead nz-thead>
+						<tr>
+							<th>会员类型</th>
+							<th>充值金额</th>
+							<th>折扣比例</th>
+						</tr>
+					</thead>
+					<tbody nz-tbody>
+						<tr *ngFor="let member of upgradeMemberList">
+							<td>{{member.name}}</td>
+							<td>{{member.startAmount}}</td>
+							<td>{{member.giveScale}} %</td>
+						</tr>
+					</tbody>
+				</nz-table>
 			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="userBalance" class="w100p">余额：</label>
-				<div class="flex-1 p-group">{{selector.userBalance}}</div>
-			</div>
-			<div class="pure-control-group flex">
-				<label for="member" class="w100p">会员类型：</label>
-				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1" (change)="changeMember()">
-					<ng-container *ngFor="let uMember of selector.members">
-						<ng-container *ngIf="uMember.canUse == '1'">
-							<option value="{{uMember.umId}}">{{uMember.memberName}}</option>
-						</ng-container>
-					</ng-container>
-				</select>
-			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="amount" class="w100p">支付金额：</label>
-				<input type="number" id="amount" step="0.01" name="amount" [(ngModel)]="selector.amount" class="flex-1" placeholder="请输入支付金额">
-			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="give_amount" class="w100p">赠送金额：</label>
-				<input type="number" id="give_amount" step="0.01" name="give_amount" [(ngModel)]="selector.give_amount" class="flex-1" placeholder="请输入赠送金额">
-			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="pay_way" class="w100p">支付方式：</label>
-				<select id="pay_way" name="pay_way" class="flex-1" [(ngModel)]="selector.pay_way">
-					<ng-container *ngFor="let uMember of selector.members">
-						<ng-container *ngIf="uMember.canUse == '1' && selector.member_id != uMember.umId">
-							<option value="member_{{uMember.umId}}" [disabled]="uMember.balance == null || uMember.balance == '0.00'">{{uMember.memberName}}支付（余额：{{uMember.balance ? uMember.balance : '0.00'}}）</option>
-						</ng-container>
-					</ng-container>
-					<option value="ali">支付宝支付</option>
-					<option value="wechat">微信支付</option>
-					<option value="wc_zhuan">微信转账</option>
-					<option value="card">刷卡支付</option>
-					<option value="money">现金支付</option>
-				</select>
-			</div>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeCharge()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
-			<button (click)="confirmCharge()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">确认</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalTabMember">
-	<div class="modal-mask" (click)="closeMember()"></div>
-	<div class="container">
-		<div class="title">会员</div>
-		<div class="content pad10 pure-form">
-			<div class="pure-control-group flex">
-				<label for="text" class="w100p">用户：</label>
-				<div class="flex-1 p-group">{{selector.text}}</div>
-			</div>
-			<div class="pure-control-group flex mt10">
-				<label for="userBalance" class="w100p">余额：</label>
-				<div class="flex-1 p-group">{{selector.userBalance}}</div>
-			</div>
-			<div *ngIf="selector.members.length > 0" class="pure-control-group flex mt10">
-				<label for="userBalance" class="w100p">已有会员：</label>
-				<div class="flex-1 p-group">
-					<table class="pure-table pure-table-horizontal w100">
-						<thead>
-							<tr>
-								<th>会员名称</th>
-								<th>状态</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let uMember of selector.members">
-								<td>{{uMember.memberName}}</td>
-								<td>
-									<nz-switch [(ngModel)]="uMember.use" (click)="updateMember(uMember)">
-										<span checked>可用</span>
-        								<span unchecked>停用</span>
-									</nz-switch>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			<div nz-col [nzSpan]="12">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+						<label>用户：</label>
+					</div>
+					<div nz-col [nzSpan]="12" nz-form-control>
+						{{selector.text}}
+					</div>
 				</div>
-			</div>
-			<div *ngIf="showAddMember" class="pure-control-group flex">
-				<label for="member" class="w100p">会员类型：</label>
-				<select id="member" name="member" [(ngModel)]="selector.member" class="flex-1">
-					<ng-container *ngFor="let member of uMemberList">
-						<option value="{{member.string}}">{{member.name}}</option>
-					</ng-container>
-				</select>
-			</div>
-			<div *ngIf="!showAddMember && selector.members.length < 1" class="mt10">
-				<button (click)="addMember()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增会员</button>
+				<div nz-form-item nz-row class="mt5">
+					<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+						<label>余额：</label>
+					</div>
+					<div nz-col [nzSpan]="12" nz-form-control>
+						{{selector.userBalance}}
+					</div>
+				</div>
+				<div nz-form-item nz-row class="mt5">
+					<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+						<label>会员：</label>
+					</div>
+					<div nz-col [nzSpan]="12" nz-form-control>
+						{{selector.member_id != null ? selector.member : '非会员'}}
+					</div>
+				</div>
+				<div nz-form-item nz-row class="mt5">
+					<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+						<label>赠送折扣：</label>
+					</div>
+					<div nz-col [nzSpan]="12" nz-form-control>
+						{{selector.give_scale}} %
+					</div>
+				</div>
+				<div nz-form-item nz-row class="mt5">
+					<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+						<label>累计金额：</label>
+					</div>
+					<div nz-col [nzSpan]="12" nz-form-control>
+						{{selector.start_amount}}
+					</div>
+				</div>
+		        <div nz-form-item nz-row class="mt10">
+		            <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+		                <label nz-form-item-required>充值金额：</label>
+		            </div>
+		            <div nz-col [nzSpan]="12" nz-form-control>
+		                <nz-input-number [(ngModel)]="selector.amount" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入充值金额'" [nzSize]="'large'" class="w100" (keyup)="changeAmount()" (nzBlur)="resetGiveAmount()"></nz-input-number>
+		            </div>
+		        </div>
+		        <div nz-form-item nz-row class="mt10">
+		            <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+		                <label nz-form-item-required>赠送金额：</label>
+		            </div>
+		            <div nz-col [nzSpan]="12" nz-form-control>
+		                <nz-input-number [(ngModel)]="selector.give_amount" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入赠送金额'" [nzSize]="'large'" class="w100" [nzDisabled]="true"></nz-input-number>
+		            </div>
+		        </div>
+		        <div nz-form-item nz-row class="mt10">
+		            <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+		                <label nz-form-item-required>支付方式：</label>
+		            </div>
+		            <div nz-col [nzSpan]="12" nz-form-control>
+						<nz-select
+							class="w100"
+							[nzSize]="'large'"
+							[nzPlaceHolder]="'请选择支付方式'"
+							[(ngModel)]="selector.pay_way">
+							<nz-option [nzValue]="'ali'" [nzLabel]="'支付宝支付'"></nz-option>
+							<nz-option [nzValue]="'wechat'" [nzLabel]="'微信支付'"></nz-option>
+							<nz-option [nzValue]="'wc_zhuan'" [nzLabel]="'微信转账'"></nz-option>
+							<nz-option [nzValue]="'card'" [nzLabel]="'刷卡支付'"></nz-option>
+							<nz-option [nzValue]="'money'" [nzLabel]="'现金支付'"></nz-option>
+						</nz-select>
+		            </div>
+		        </div>
 			</div>
 		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeMember()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
-			<button (click)="confirmMember()" *ngIf="showAddMember" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">确认</button>
-		</div>
-	</div>
-</div>
+	</ng-template>
+	<ng-template #footerCharge>
+		<button (click)="closeCharge()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
+		<button (click)="confirmCharge()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">确认</button>
+	</ng-template>
+</nz-modal>
 <nz-modal [nzVisible]="modalActcardTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentActcard" [nzFooter]="footerActcard" (nzOnCancel)="closeActcard()" [nzMaskClosable]="false">
 	<ng-template #contentActcard>
 		<div nz-row>
@@ -250,9 +207,9 @@
             <div nz-col [nzSpan]="12" nz-form-control>
 				<nz-select class="w100"
 					[(ngModel)]="selector.actcard"
+					(ngModelChange)="changeActcard()"
 					[nzPlaceHolder]="'请选择活动卡'"
-					[nzSize]="'large'"
-					(ngModelChange)="changeActcard()">
+					[nzSize]="'large'">
 					<ng-container *ngFor="let actcard of actcardList">
 						<nz-option [nzLabel]="actcard.name + '（售价：' + actcard.price + '）'" [nzValue]="actcard"></nz-option>
 					</ng-container>
@@ -276,9 +233,7 @@
 					[(ngModel)]="selector.pay_way"
 					[nzPlaceHolder]="'请选择支付方式'"
 					[nzSize]="'large'">
-					<ng-container *ngFor="let member of selector.members">
-						<nz-option *ngIf="member.canUse == '1'" [nzLabel]="member.memberName" [nzValue]="'member_' + member.umId"></nz-option>
-					</ng-container>
+					<nz-option [nzLabel]="'余额支付'" [nzValue]="'member'"></nz-option>
 					<nz-option [nzLabel]="'支付宝支付'" [nzValue]="'ali'"></nz-option>
 					<nz-option [nzLabel]="'微信支付'" [nzValue]="'wechat'"></nz-option>
 					<nz-option [nzLabel]="'微信转账'" [nzValue]="'wc_zhuan'"></nz-option>
