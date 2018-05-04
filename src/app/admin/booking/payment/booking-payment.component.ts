@@ -498,7 +498,7 @@ export class BookingPaymentComponent{
 										this.userInfo.member.member = true;
 										this.userInfo.member.name = userResults.users[0].memberName;
 										this.userInfo.member.isNew = userResults.users[0].isNew;
-										if(this.userInfo.member.isNew == 0 && this.dataCode == '1'){
+										if(this.userInfo.member.isNew == 0 || (this.dataCode == '1' && this.bookingInfo.status == '5')){
 											this.getMemberDiscount(userResults.users[0].memberId);
 										}else{
 											this.dataCode = '2';
