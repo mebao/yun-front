@@ -53,7 +53,7 @@
 			<tbody>
 				<ng-container *ngFor="let record of recordList; let index=index;">
 					<ng-container *ngFor="let item of commonList">
-						<tr *ngIf="(item.id == 1 && record.payWay == 'guazhang') || (item.id == 2 && record.secondWay == 'guazhang')">
+						<tr *ngIf="(searchInfo.selectType == '1' && ((item.id == 1 && record.payWay == 'guazhang') || (item.id == 2 && record.secondWay == 'guazhang'))) || searchInfo.selectType == '2'">
 							<td>{{record.userName}}</td>
 							<td>{{(item.id == 1 ? record.amount : record.secondAmount) | toDecimal2}}</td>
 							<td>{{item.id == 1 ? record.wayText : record.secondWayText}}</td>

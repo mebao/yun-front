@@ -30,6 +30,7 @@ export class GuazhangList{
 		b_amount: string,
 		l_amount: string,
         second_type: string,
+        selectType: string,
 	}
 	commonList: any[];
     modalConfirmTab: boolean;
@@ -74,6 +75,7 @@ export class GuazhangList{
 			b_amount: '',
 			l_amount: '',
             second_type: '1',
+            selectType: '1',
 		}
 
 		this.commonList = [
@@ -133,6 +135,9 @@ export class GuazhangList{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.recordList = results.list;
+
+                this.searchInfo.selectType = this.searchInfo.second_type;
+
 				this.hasData = true;
 				this.loadingShow = false;
 			}
