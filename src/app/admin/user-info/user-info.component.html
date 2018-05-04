@@ -131,7 +131,7 @@
 							<div class="mt10">
 								<button (click)="booking(child)" class="pure-button pure-button-primary">预约</button>
 							</div>
-							<div class="mt10">
+							<div *ngIf="moduleAuthority.info_delete" class="mt10">
 								<button (click)="delete(child)" class="pure-button button-error">删除</button>
 							</div>
 						</td>
