@@ -117,9 +117,9 @@
 									nzAllowClear>
 									<ng-container *ngFor="let batch of ms.batchList">
 										<ng-container *ngIf="batch.stock != '0'">
-										<!-- <ng-container *ngIf="batch.isPrescribed != '0'"> -->
-											<nz-option [nzValue]="batch" [nzLabel]="batch.batch + '（库存：' + batch.stock ++ ms.ms.unit + '）'"></nz-option>
-										<!-- </ng-container> -->
+											<ng-container *ngIf="batch.isPrescribed != '0'">
+												<nz-option [nzValue]="batch" [nzLabel]="batch.batch + '（库存：' + batch.stock ++ ms.ms.unit + '）'"></nz-option>
+											</ng-container>
 										</ng-container>
 									</ng-container>
 								</nz-select>

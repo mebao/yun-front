@@ -235,7 +235,7 @@ export class HeaderNavComponent {
 		}else if(message.typeId == '2'){
 			//会员余额提醒
 			this.router.navigate(['./admin/userInfo'], {queryParams: {id: message.messageUrl}});
-		}else if(message.typeId == '3'){
+		}else if(message.typeId == '3' || message.typeId == '5'){
 			// 预约就诊提醒
 			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
 		}

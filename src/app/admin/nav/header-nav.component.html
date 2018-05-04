@@ -38,7 +38,7 @@
 						<tr *ngFor="let message of messageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
 							<td>{{message.message}}</td>
 							<td>
-								<ng-container *ngIf="message.typeId == '2' || message.typeId == '3'">
+								<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
 									<button (click)="goDetail(message)" class="pure-button pure-button-primary" [disabled]="messageBtn">查看</button>
 								</ng-container>
 								<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">
