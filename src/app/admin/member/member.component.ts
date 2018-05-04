@@ -46,7 +46,6 @@ export class MemberComponent{
             // prescript: [ '', [ Validators.required ]],
             // other: [ '', [ Validators.required ]],
             unit: [ '%', [ Validators.required ]],
-            status: [ '', [ Validators.required ]],
         });
 	}
 
@@ -107,7 +106,7 @@ export class MemberComponent{
             this.validateForm.controls.name.setValue(member.name);
             this.validateForm.controls.give_scale.setValue(member.giveScale);
             this.validateForm.controls.start_amount.setValue(member.startAmount);
-            this.validateForm.controls.status.setValue(member.status);
+			this.validateForm.addControl('status', new FormControl(member.status, Validators.required));
             // this.validateForm.controls.service.setValue(member.service);
             // this.validateForm.controls.assist.setValue(member.assist);
             // this.validateForm.controls.check.setValue(member.check);

@@ -35,7 +35,8 @@
 						[nzPlaceHolder]="'请选择用户'"
 						[ngModel]="sale.user"
 						(ngModelChange)="sale.user=$event;changeUser()"
-						nzAllowClear>
+						nzAllowClear
+						nzShowSearch>
 						<ng-container *ngFor="let user of userList">
 							<nz-option [nzLabel]="user.name" [nzValue]="user"></nz-option>
 						</ng-container>
@@ -117,7 +118,7 @@
 									nzAllowClear>
 									<ng-container *ngFor="let batch of ms.batchList">
 										<ng-container *ngIf="batch.stock != '0'">
-											<ng-container *ngIf="batch.isPrescribed != '0'">
+											<ng-container *ngIf="batch.isPrescribed == '0'">
 												<nz-option [nzValue]="batch" [nzLabel]="batch.batch + '（库存：' + batch.stock + ms.ms.unit + '）'"></nz-option>
 											</ng-container>
 										</ng-container>
@@ -166,7 +167,11 @@
 			</div>
 			<div *ngIf="sale.member.id != ''" class="flex mt10">
 				<div class="w100p">会员类型：</div>
-				<div class="flex-1">{{sale.member.name + '（' + (sale.user.userBalance ? sale.user.userBalance : '0.00') + '）'}}</div>
+				<div class="flex-1">{{sale.member.name}}</div>
+			</div>
+			<div class="flex" class="mt10">
+				<div class="w100p">余额：</div>
+				<div class="flex-1">{{sale.user.userBalance ? sale.user.userBalance : '0.00'}}</div>
 			</div>
 			<div *ngIf="sale.user && sale.user.isNew == 0 && sale.member.id != ''" class="flex mt10">
 				<div class="w100p">药品折扣：</div>
