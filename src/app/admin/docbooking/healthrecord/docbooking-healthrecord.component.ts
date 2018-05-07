@@ -542,7 +542,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		var healthrecordUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -578,7 +577,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 								var healthrecord =  [];
 								this.initEdit(doctorBooking,healthrecord);
 							}
-							this.loadingShow = false;
 						}
 					}).catch(() => {
 						this.toastTab('服务器错误', 'error');
@@ -592,15 +590,14 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				if(this.pageType == 'history'){
 					this.editType = 'view';
 				}
-				this.loadingShow = false;
 			}
 		}).catch(() => {
-			this.loadingShow = false;
 			this.toastTab('服务器错误', 'error');
 		});
 	}
 
 	initEdit(doctorBooking,healthrecord){
+		this.loadingShow = false;
 		var todayDate = this.adminService.getDayByDate(new Date());
 		if(this.editType == 'update' || this.pageType == 'examine'){
 			this.info = {
@@ -852,15 +849,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			var childcontrastUrl = '?child_id=' + this.booking.childId;
 			 this.adminService.childcontrast(childcontrastUrl).then((data) => {
 				if(data.status == 'no'){
-					this.loadingShow = false;
 					this.toastTab(data.errorMsg, 'error');
 				}else{
 					var childcontrast = JSON.parse(JSON.stringify(data.results));
 					this.doctorBookingRecordTemplet(childcontrast);
-					this.loadingShow = false;
 				}
 			}).catch(() => {
-				this.loadingShow = false;
 				this.toastTab('服务器错误', 'error');
 			});
 

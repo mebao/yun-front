@@ -439,6 +439,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	}
 
 	initEdit(doctorBooking,casehistory) {
+		this.loadingShow = false;
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -581,16 +582,13 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			var childcontrastUrl = '?child_id=' + doctorBooking.childId;
 			 this.adminService.childcontrast(childcontrastUrl).then((data) => {
 				if(data.status == 'no'){
-					this.loadingShow = false;
 					this.toastTab(data.errorMsg, 'error');
 				}else{
 					// sessionStorage.setItem('childcontrast', JSON.stringify(data.results));
 					var childcontrast = JSON.parse(JSON.stringify(data.results));
 					this.initTemplet(childcontrast);
-					this.loadingShow = false;
 				}
 			}).catch(() => {
-				this.loadingShow = false;
 				this.toastTab('服务器错误', 'error');
 			});
 		}
@@ -600,7 +598,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.cprtemplate = '';
 		this.adminService.cprtemplate(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -610,10 +607,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 					}
 				}
 				this.cprtemplateList = results.template;
-				this.loadingShow = false;
 			}
 		}).catch(() => {
-			this.loadingShow = false;
 			this.toastTab('服务器错误', 'error');
 		});
 
@@ -625,7 +620,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -661,7 +655,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 								var casehistory =  [];
 								this.initEdit(doctorBooking,casehistory);
 							}
-
 						}
 					}).catch(() => {
 		                this.toastTab('服务器错误', 'error');
@@ -679,7 +672,6 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.prescriptList = [];
 				this.prescription = [];
 				this.getPrescriptData();
-				this.loadingShow = false;
 			}
 		}).catch(() => {
 			this.loadingShow = false;
