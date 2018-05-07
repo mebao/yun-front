@@ -30,8 +30,9 @@
 	</div>
 	<div class="list-tab mt10">
 		<div class="pure-g title-tab">
-			<div class="pure-u-1-24 title"></div>
+			<!-- <div class="pure-u-1-24 title"></div> -->
 			<div class="pure-u-2-24 title">姓名</div>
+			<!-- <div class="pure-u-1-24 title">科室</div> -->
 			<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 				<div>{{title.date}}</div>
 				<div>{{title.title}}</div>
@@ -39,10 +40,15 @@
 		</div>
 		<div class="doctor-list">
 			<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
-				<div class="pure-u-1-24 img-tab pad10 text-center">
+				<!-- <div class="pure-u-1-24 img-tab pad10 text-center">
 					<img src="{{(!scheduling.avatarUrl || scheduling.avatarUrl == '') ? '../assets/images/img.png' : scheduling.avatarUrl}}" />
-				</div>
+				</div> -->
 				<div class="pure-u-2-24 info text-center pt20 name">{{scheduling.realName}}</div>
+				<!-- <div class="pure-u-1-24 info text-center pt20 name">
+					<div *ngFor="let service of scheduling.serviceList">
+						{{service}}
+					</div>
+				</div> -->
 				<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;" [ngClass]="{'active': index % 2 == 1}">
 					<div *ngFor="let config of day.dutyConfigList">
 						{{config}}

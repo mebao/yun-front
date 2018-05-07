@@ -178,6 +178,7 @@ export class WorkbenchReceptionComponent{
 			bookingUrl += '&doctorId=' + JSON.parse(this.searchInfo.doctor).id;
 		}
 		if(this.searchInfo.service != ''){
+			dutyUrl += '&service_id=' + JSON.parse(this.searchInfo.service).serviceId;
 			bookingUrl += '&service_id=' + JSON.parse(this.searchInfo.service).serviceId;
 		}
 		this.getList(dutyUrl);
