@@ -97,24 +97,30 @@ label {
     transition: all .3s;
 }
 
-/*左右布局*/
-.container{
-	height: 100%;
-	left-nav{
+/*左右布局 + 换肤功能*/
+@mixin theme($bgColor: #F7F7F7){
+	.container{
 		height: 100%;
-	}
-	.right-content{
-		background-color: #F7F7F7;
-		overflow-x: auto;
-		overflow-y: auto;
-		.content-section{
-			margin: 50px 20px 40px;
-			background-color: #fff;
-			border: 1px solid #E6E9ED;
-			padding: 10px 15px;
-            min-width: 1150px;
+		left-nav{
+			height: 100%;
+		}
+		.right-content{
+			background-color: $bgColor;
+			overflow-x: auto;
+			overflow-y: auto;
+			.content-section{
+				margin: 50px 20px 40px;
+				background-color: #fff;
+				border: 1px solid #E6E9ED;
+				padding: 10px 15px;
+	            min-width: 1150px;
+			}
 		}
 	}
+}
+
+body {
+  	@include theme();
 }
 
 // 左右模块
