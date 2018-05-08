@@ -15,9 +15,6 @@ export class DialogService {
     */
     confirm(message?: string): Observable<boolean> {
         const confirmation = window.confirm(message || 'Is it OK?');
-
-        console.log(confirmation);
-
         return of(confirmation);
     };
 }

@@ -45,6 +45,5 @@ export class AdminComponent{
 	changeTheme(_theme) {
 		this.theme = _theme;
 		localStorage.setItem('yun-theme', _theme);
-		console.log(_theme);
 	}
 }

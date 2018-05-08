@@ -31,6 +31,13 @@ export class HeaderNavComponent {
 	modalTabMessage: boolean;
 	loadingShow: boolean;
 	messageTabType: string;
+	modalConfirmMessage: boolean;
+	selectedMessage: {
+		message: any,
+		index: string,
+		type: string,
+		feedback: string,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -79,6 +86,14 @@ export class HeaderNavComponent {
 				this.getPushPayMessage();
 			}
 		}
+
+		this.modalConfirmMessage = false;
+		this.selectedMessage = {
+			message: {},
+			index: '',
+			type: '',
+			feedback: '',
+		}
 	}
 
 	logout() {
@@ -101,18 +116,18 @@ export class HeaderNavComponent {
 	}
 
 	showTab(_type) {
-		console.log(123);
 		if(_type == 'showSetup'){
 			this.showSetup = !this.showSetup;
 		}else{
 			this.messageTabType = _type;
 			this.loadingShow = true;
 			this.messageList = [];
-			if(_type == 'showMessage'){
+			if(_type.indexOf('showMessage') != -1){
 				var urlOptions = '?username=' + this.adminService.getUser().username
 					+ '&token=' + this.adminService.getUser().token
 					+ '&clinic_id=' + this.adminService.getUser().clinicId
-					+ '&mtlist=' + this.adminService.getUser().messageTypes;
+					+ '&mtlist=' + this.adminService.getUser().messageTypes
+					+ (_type == 'showMessage_myself' ? '&myself=1' : '');
 				this.adminService.searchmessage(urlOptions).then((data) => {
 					if(data.status == 'no'){
 						this.loadingShow = false;
@@ -201,6 +216,26 @@ export class HeaderNavComponent {
 		});
 	}
 
+	closeModalComplateM() {
+		this.modalConfirmMessage = false;
+		this.selectedMessage = {
+			message: {},
+			index: '',
+			type: '',
+			feedback: '',
+		}
+	}
+
+	showModalMessage(message, index, type) {
+		this.selectedMessage = {
+			message: message,
+			index: index,
+			type: type,
+			feedback: '',
+		}
+		this.modalConfirmMessage = true;
+	}
+
 	complate(message, index, type) {
 		this.modalTabMessage = false;
 		this.loadingShow = true;
@@ -209,6 +244,7 @@ export class HeaderNavComponent {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			id: message.id,
+			feedback: type == '' ? this.selectedMessage.feedback : null,
 		}
 		this.adminService.finishmessage(message.id, params).then((data) => {
 			if(data.status == 'no'){
@@ -221,6 +257,7 @@ export class HeaderNavComponent {
 				}else{
 					this.loadingShow = false;
 					this.messageList.splice(index, 1);
+					this.closeModalComplateM();
 				}
 				this._message.success('消息已完成');
 			}
@@ -228,6 +265,7 @@ export class HeaderNavComponent {
 		}).catch(() => {
 			this.loadingShow = false;
 			this.messageBtn = false;
+			this.closeModalComplateM();
 			this._message.error('服务器错误');
 		});
 	}

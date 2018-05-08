@@ -16,7 +16,13 @@
       			<li nz-menu-item (click)="goUrl('setupMessage')">消息订阅</li>
         	</ul>
       	</li>
-		<li nz-menu-item (click)="showTab('showMessage')">消息</li>
+		<li nz-submenu>
+        	<span title>消息</span>
+        	<ul>
+      			<li nz-menu-item  (click)="showTab('showMessage')">待处理消息</li>
+      			<li nz-menu-item  (click)="showTab('showMessage_myself')">我完成的消息</li>
+        	</ul>
+      	</li>
 		<li nz-menu-item *ngIf="hasShowPayMessage" (click)="showTab('showPayMessage')">
 			<nz-badge [nzCount]="payMessageList.length">
 		      	<ng-template #content>
@@ -29,18 +35,20 @@
 </nz-header>
 <nz-modal [nzVisible]="modalTabMessage" [nzWidth]="900" [nzTitle]="'消息'" [nzContent]="contentMessage" [nzFooter]="footerMessage" (nzOnCancel)="closeMessage()">
     <ng-template #contentMessage>
-		<ng-container *ngIf="messageTabType == 'showMessage'">
+		<ng-container *ngIf="messageTabType == 'showMessage' || messageTabType == 'showMessage_myself'">
 			<nz-table #nzTable [nzDataSource]="messageList" [nzBordered]="true" [nzIsPagination]="false">
 				<thead nz-thead>
 					<tr>
 						<th>消息内容</th>
+						<th>时间</th>
 						<th>查看</th>
-						<th>完成</th>
+						<th *ngIf="messageTabType == 'showMessage'">完成</th>
 					</tr>
 				</thead>
 				<tbody nz-tbody>
 					<tr *ngFor="let message of messageList; let index=index;">
 						<td>{{message.message}}</td>
+						<td>{{message.dateCreated}}</td>
 						<td>
 							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
 								<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>
@@ -49,8 +57,8 @@
 								-
 							</ng-container>
 						</td>
-						<td>
-							<button (click)="complate(message, index, '')" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">完成</button>
+						<td *ngIf="messageTabType == 'showMessage'">
+							<button (click)="showModalMessage(message, index, '')" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">完成</button>
 						</td>
 					</tr>
 				</tbody>
@@ -61,6 +69,7 @@
 				<thead nz-thead>
 					<tr>
 						<th>消息内容</th>
+						<th>时间</th>
 						<th>查看</th>
 						<th>完成</th>
 					</tr>
@@ -68,6 +77,7 @@
 				<tbody nz-tbody>
 					<tr *ngFor="let message of payMessageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
 						<td>{{message.message}}</td>
+						<td>{{message.dateCreated}}</td>
 						<td>
 							<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>
 						</td>
@@ -83,6 +93,20 @@
         <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeMessage()">
           	关闭
         </button>
+    </ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalConfirmMessage" [nzTitle]="'完成消息'" [nzContent]="modalContent" (nzOnCancel)="closeModalComplateM()" (nzOnOk)="complate(this.selectedMessage.message, selectedMessage.index, selectedMessage.type)">
+    <ng-template #modalContent>
+        <p>消息内容：</p>
+        <p class="mt10">{{selectedMessage.message.message}}</p>
+		<div nz-form-item>
+	        <div nz-form-label class="mt10">
+	          	<label nz-form-item-required>消息反馈：</label>
+	        </div>
+	        <div nz-form-control class="mt10">
+	          	<nz-input [nzType]="'textarea'" [(ngModel)]="selectedMessage.feedback" [nzSize]="'large'" [nzPlaceHolder]="'请输入消息反馈'"></nz-input>
+	        </div>
+      </div>
     </ng-template>
 </nz-modal>
 <loading [show]="loadingShow"></loading>

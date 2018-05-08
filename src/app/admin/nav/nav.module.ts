@@ -1,5 +1,6 @@
 import { NgModule }             from '@angular/core';
 import { CommonModule }         from '@angular/common';
+import { FormsModule }          from '@angular/forms';
 import { RouterModule }         from '@angular/router';
 
 import { NgZorroAntdModule }    from 'ng-zorro-antd';
@@ -27,6 +28,7 @@ import { MouseInDirective }     from '../../directive/mouse-in';
     ],
     imports: [
         CommonModule,
+        FormsModule,
         RouterModule,
         NgZorroAntdModule,
         AngCommonModule,
