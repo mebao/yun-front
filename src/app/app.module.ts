@@ -3,6 +3,8 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
 import { NgModule }                       from '@angular/core';
 import { FormsModule }                    from '@angular/forms';
 import { HttpModule }                     from '@angular/http';
+import { HttpClientModule }               from '@angular/common/http';
+import { HttpClientXsrfModule }           from '@angular/common/http';
 
 import { AppComponent }                   from './app.component';
 
@@ -30,6 +32,11 @@ import { ForgetpwdComponent }             from './admin/login/forgetpwd.componen
 		BrowserAnimationsModule,
 		FormsModule,
 		HttpModule,
+		HttpClientModule,
+	    HttpClientXsrfModule.withOptions({
+	      	cookieName: 'My-Xsrf-Cookie',
+	      	headerName: 'My-Xsrf-Header',
+	    }),
 		AppRoutingModule,
 		AdminModule,
 		LoginRoutingModule,

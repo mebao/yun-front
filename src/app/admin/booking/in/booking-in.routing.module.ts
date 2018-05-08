@@ -2,6 +2,7 @@ import { NgModule }                 from '@angular/core';
 import { RouterModule }             from '@angular/router';
 
 import { AuthGuardRole }            from './../../auth-guard-role.service';
+import { CanDeactivateGuard }       from './../../can-deactivate-guard.service';
 
 import { BookingInComponent }       from './booking-in.component';
 
@@ -12,6 +13,7 @@ import { BookingInComponent }       from './booking-in.component';
     imports: [RouterModule.forChild([
         {
             path: '',
+            canDeactivate: [CanDeactivateGuard],
             canActivate: [AuthGuardRole],
             component: BookingInComponent,
         }

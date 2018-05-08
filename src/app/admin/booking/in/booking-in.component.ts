@@ -1,5 +1,8 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router }                             from '@angular/router';
+import { Observable }                         from 'rxjs';
+
+import { DialogService }                      from '../../dialog.service';
 
 import { AdminService }                       from '../../admin.service';
 
@@ -62,6 +65,7 @@ export class BookingInComponent{
 		booking_fee: string,
 		referee: string,
 	};
+	bookingInfoOld: any;
 	servicelist: any[];
 	doctorlist: any[];
 	doctorDutys: {
@@ -93,8 +97,10 @@ export class BookingInComponent{
 	loadingShow: boolean;
 	// 推荐人列表
 	adminList: any[];
+	intervalObj: any;
 
 	constructor(
+		private dialogService: DialogService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -185,7 +191,30 @@ export class BookingInComponent{
 		this.modalTabAgain = false;
 		this.bookingAgainText = '';
 		this.loadingShow = false;
+		// this.intervalChange();
 	}
+
+	intervalChange() {
+		var n = 0;
+		this.intervalObj = setInterval(() => {
+			n++;
+			console.log('第' + n + '次检测');
+	    	if (JSON.stringify(this.bookingInfo) != JSON.stringify(this.bookingInfoOld)) {
+	      		this.editIn();
+	    	}
+		}, 5000);
+	}
+
+	canDeactivate(): Observable<boolean> | boolean {
+    	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    	if (JSON.stringify(this.bookingInfo) == JSON.stringify(this.bookingInfoOld)) {
+      		return true;
+    	}
+
+    	// Otherwise ask the user with the dialog service and return its
+    	// observable which resolves to true or false when the user decides
+    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+  	}
 
 	// 添加宝宝
 	addChild() {
@@ -267,6 +296,7 @@ export class BookingInComponent{
 			booking_fee: '',
 			referee: '',
 		}
+		this.bookingInfoOld = JSON.parse(JSON.stringify(this.bookingInfo));
 	}
 
 	getBooking() {
@@ -567,24 +597,24 @@ export class BookingInComponent{
 	}
 
 	//登记
-	editIn(f) {
+	editIn() {
 		this.canEdit = true;
 		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
 			this.toastTab('宝宝不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
-		if(f.value.service == ''){
+		if(this.bookingInfo.service == ''){
 			this.toastTab('科室不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
-		if(f.value.type == 'ZJ' && f.value.user_doctor == ''){
+		if(this.bookingInfo.type == 'ZJ' && this.bookingInfo.user_doctor == ''){
 			this.toastTab('预约医生不可为空', 'error');
 			this.canEdit = false;
 			return;
 		}
-		if(f.value.booking_date == ''){
+		if(this.bookingInfo.booking_date == ''){
 			this.toastTab('预约日期不可为空', 'error');
 			this.canEdit = false;
 			return;
@@ -638,7 +668,7 @@ export class BookingInComponent{
 		}else{
 			this.loadingShow = true;
 			//修改预约并登记
-			this.updateBooking(f);
+			this.updateBooking();
 		}
 	}
 
@@ -702,16 +732,16 @@ export class BookingInComponent{
 		this.router.navigate(['./admin/paymentBookingFee'], {queryParams: {id: this.successBookingId, type: 'bookingIn'}});
 	}
 
-	updateBooking(f) {
+	updateBooking() {
 		var updateParam = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			type: this.bookingInfo.type,
 			clinic_id: this.adminService.getUser().clinicId,
-			service_id: JSON.parse(f.value.service).serviceId,
-			user_doctor_id: JSON.parse(f.value.user_doctor).doctorId,
-			user_doctor_name: JSON.parse(f.value.user_doctor).doctorName,
-			booking_date: JSON.parse(f.value.booking_date).dutyDate,
+			service_id: JSON.parse(this.bookingInfo.service).serviceId,
+			user_doctor_id: JSON.parse(this.bookingInfo.user_doctor).doctorId,
+			user_doctor_name: JSON.parse(this.bookingInfo.user_doctor).doctorName,
+			booking_date: JSON.parse(this.bookingInfo.booking_date).dutyDate,
 			time: this.bookingInfo.timeInfo,
 			remark: this.adminService.trim(this.bookingInfo.remark),
 		}

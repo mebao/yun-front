@@ -9,6 +9,8 @@ import { AdminComponent }                  from './admin.component';
 import { AdminRoutingModule }              from './admin-routing.module';
 
 import { AuthGuardRole }                   from './auth-guard-role.service';
+import { CanDeactivateGuard }              from './can-deactivate-guard.service';
+import { DialogService }                   from './dialog.service';
 
 //nav
 import { NavModule }                       from './nav/nav.module';
@@ -35,6 +37,7 @@ import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { Message }                         from './setup/message.component';
 
 import { AdminService }                    from './admin.service';
+import { NewService }                      from './new.service';
 import { DoctorService }                   from './doctor/doctor.service';
 
 @NgModule({
@@ -64,8 +67,11 @@ import { DoctorService }                   from './doctor/doctor.service';
 	],
 	providers: [
 		AdminService,
+		NewService,
 		DoctorService,
 		AuthGuardRole,
+		CanDeactivateGuard,
+		DialogService,
 		SelectivePreloadingStrategy,
 	]
 })

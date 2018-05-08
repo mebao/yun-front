@@ -3,6 +3,7 @@ import { Router, ActivatedRoute }                     from '@angular/router';
 
 // import { slideInDownAnimation }                       from '../../animations';
 import { AdminService }                               from '../admin.service';
+import { NewService }                                 from '../new.service';
 
 import { ToastService }                               from '../../common/nll-toast/toast.service';
 import { ToastConfig, ToastType }                     from '../../common/nll-toast/toast-model';
@@ -56,6 +57,7 @@ export class WorkbenchReceptionComponent{
 
 	constructor(
 		public adminService: AdminService,
+		public newService: NewService,
 		private router: Router,
         private toastService: ToastService
 	) {
@@ -92,6 +94,9 @@ export class WorkbenchReceptionComponent{
 	}
 
 	ngOnInit(): void{
+		// this.newService.getData().subscribe((data: any) => {
+		// 	console.log(data);
+    	// });
 		this.topBar = {
 			title: '前台工作台',
 			back: false,
