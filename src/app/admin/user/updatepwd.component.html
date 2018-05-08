@@ -1,26 +1,27 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-user-updatepwd">
 	<top-bar [data]="topBar"></top-bar>
-	<form class="pure-form pure-form-stacked form-tab pure-tab">
-		<fieldset>
-			<div class="pure-g">
-				<div class="pure-u-1-5"></div>
-                <div class="pure-u-3-5">
-                    <div class="pure-control-group">
-                        <label for="password">新密码：</label>
-                        <input type="password" id="passwrod" name="password" [(ngModel)]="info.password" class="w100" placeholder="请输入新密码">
-                    </div>
-                    <div class="pure-control-group">
-                        <label for="repassword">重复新密码：</label>
-                        <input type="password" id="repassword" name="repassword" [(ngModel)]="info.repassword" class="w100" placeholder="请输入重复新密码">
-                    </div>
-                </div>
-				<div class="pure-u-1-5"></div>
+    <form nz-form [formGroup]="validateForm">
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>新密码</label>
             </div>
-			<div class="text-center">
-				<button (click)="updatepwd(); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10" [disabled]="btnCanEdit || info.password.length == 0 || info.repassword.length == 0">保存</button>
-			</div>
-		</fieldset>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'请输入新密码'" [nzSize]="'large'"></nz-input>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label nz-form-item-required>重复新密码</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input formControlName="repassword" [nzType]="'password'" [nzPlaceHolder]="'请输入重复新密码'" [nzSize]="'large'"></nz-input>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="12" [nzOffset]="7">
+				<button (click)="updatepwd(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'"  [nzLoading]="isLoadingSave">保存</button>
+            </div>
+        </div>
 	</form>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

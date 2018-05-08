@@ -1,19 +1,23 @@
-import { Component, OnInit }            from '@angular/core';
-import { Router }                       from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 
-import { AuthService }                  from '../../auth.service';
-import { AdminService }                 from '../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
+
+import { AuthService } from '../../auth.service';
+import { AdminService } from '../admin.service';
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.scss']
 })
 export class LoginComponent{
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	admininfo: {
 		clinicId: string,
 		clinicName: string,
@@ -26,6 +30,8 @@ export class LoginComponent{
 		realname: string,
 		messageTypes: string,
 	}
+    isLoadingSave: boolean;
+    validateForm: FormGroup;
 	clinicRole: {
 		//前台工作台
 		workbenchReception: {
@@ -239,18 +245,19 @@ export class LoginComponent{
 	}
 
 	constructor(
+        private fb: FormBuilder,
+        private _message: NzMessageService,
 		public authService: AuthService,
 		public adminService: AdminService,
 		public router: Router,
-	) {}
+	) {
+        this.validateForm = this.fb.group({
+            username: [ '', [ Validators.required ]],
+            password: [ '', [ Validators.required ]],
+        });
+	}
 
 	ngOnInit(): void {
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
-
 		this.admininfo = {
 			clinicId: '',
 			clinicName: '',
@@ -448,24 +455,26 @@ export class LoginComponent{
 		}
 	}
 
-	login(username, password): void{
-		username = username.trim();
+	login(): void{
+		var username = this.validateForm.controls.username.value.trim();
 		if(username == ''){
-			this.toastTab('用户名不可为空', 'error');
+			this._message.error('用户名不可为空');
 			return;
 		}
 		if(!username.match(/^\w+$/)){
-			this.toastTab('用户名只能由字母、数字和下划线组成', 'error');
+			this._message.error('用户名只能由字母、数字和下划线组成');
 			return;
 		};
-		password = password.trim();
+		var password = this.validateForm.controls.password.value.trim();
 		if(password == ''){
-			this.toastTab('密码不可为空','error');
+			this._message.error('密码不可为空');
 			return;
 		}
+        this.isLoadingSave = true;
 		this.authService.login(username, password).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+                this.isLoadingSave = false;
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				//用户信息存储在cookie中
@@ -523,27 +532,13 @@ export class LoginComponent{
 
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this.isLoadingSave = false;
+            this._message.error('服务器错误');
         });
 	}
 
 	// 忘记密码
 	forgetpwd() {
 		this.router.navigate(['./forgetpwd']);
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

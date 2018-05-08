@@ -1,6 +1,14 @@
-import { Component }                               from '@angular/core';
+import { Component } from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 
-import { AdminService }                            from '../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
+
+import { AdminService } from '../admin.service';
 
 @Component({
     selector: 'admin-updatepwd',
@@ -12,93 +20,80 @@ export class UpdatepwdComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-    info: {
-        password: string,
-        repassword: string,
-    }
-    btnCanEdit: boolean;
+    isLoadingSave: boolean;
+    validateForm: FormGroup;
 
     constructor(
+        private fb: FormBuilder,
+        private _message: NzMessageService,
         private adminService: AdminService,
-    ) {}
+    ) {
+        this.validateForm = this.fb.group({
+            password: [ '' ],
+            repassword: [ '' ],
+        });
+    }
 
     ngOnInit() {
         this.topBar = {
     		title: '修改密码',
     		back: true,
     	};
-    	this.toast = {
-    		show: 0,
-    		text: '',
-    		type:  '',
-    	};
 
-        this.info = {
-            password: '',
-            repassword: '',
-        }
-        this.btnCanEdit = false;
+        this.isLoadingSave = false;
+    }
+
+    getFormControl(name) {
+        return this.validateForm.controls[ name ];
     }
 
     updatepwd() {
-        this.btnCanEdit = true;
-        if(!this.info.password.match(/^\w+$/)){
-            this.toastTab('新密码只能由字母、数字和下划线组成', 'error');
-            this.btnCanEdit = false;
+        this.isLoadingSave = true;
+        if(this.validateForm.controls.password.value.trim() == ''){
+            this._message.error('新密码不可为空');
+            this.isLoadingSave = false;
             return;
         }
-        if(!this.info.repassword.match(/^\w+$/)){
-            this.toastTab('新密码只能由字母、数字和下划线组成', 'error');
-            this.btnCanEdit = false;
+        if(this.validateForm.controls.repassword.value.trim() == ''){
+            this._message.error('重复密码不可为空');
+            this.isLoadingSave = false;
             return;
         }
-        if(this.info.password != this.info.repassword){
-            this.toastTab('重复密码不一致', 'error');
-            this.btnCanEdit = false;
+        if(!this.validateForm.controls.password.value.match(/^\w+$/)){
+            this._message.error('新密码只能由字母、数字和下划线组成');
+            this.isLoadingSave = false;
+            return;
+        }
+        if(!this.validateForm.controls.repassword.value.match(/^\w+$/)){
+            this._message.error('新密码只能由字母、数字和下划线组成');
+            this.isLoadingSave = false;
+            return;
+        }
+        if(this.validateForm.controls.password.value != this.validateForm.controls.repassword.value){
+            this._message.error('重复密码不一致');
+            this.isLoadingSave = false;
             return;
         }
 
         var params = {
             username: this.adminService.getUser().username,
             token: this.adminService.getUser().token,
-            password: this.info.password,
+            password: this.validateForm.controls.password.value,
         }
 
         this.adminService.updatepwd(params).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
-                this.btnCanEdit = false;
+                this._message.error(data.errorMsg);
+                this.isLoadingSave = false;
             }else{
-                this.toastTab('密码修改成功', '');
-                this.info = {
-                    password: '',
-                    repassword: '',
-                }
-                this.btnCanEdit = false;
+                this._message.success('密码修改成功');
+                this.validateForm.controls.password.setValue('');
+                this.validateForm.controls.repassword.setValue('');
+                this.isLoadingSave = false;
             }
         }).catch(() => {
-            this.toastTab('服务器错误', 'error');
-            this.btnCanEdit = false;
+            this._message.error('服务器错误');
+            this.isLoadingSave = false;
         });
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

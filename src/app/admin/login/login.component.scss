@@ -1,0 +1,31 @@
+.login-page{
+	padding: 112px 0 24px;
+	background: url('../../../assets/images/bg_login_default.jpg') no-repeat;
+	background-size: 100% auto;
+	height: 100%;
+	.page-container{
+		display: block;
+		width: 368px;
+		margin: 0 auto;
+		.logo {
+		    height: 44px;
+		    margin-right: 16px;
+		}
+		.title{
+			font-size: 33px;
+		    color: rgba(0,0,0,.85);
+		    font-weight: 600;
+		    position: relative;
+		    vertical-align: middle;
+		}
+		form{
+			padding-top: 40px;
+		}
+		.login-form-forgot {
+	      float: right;
+	    }
+	    .login-form-button {
+	      width: 100%;
+	    }
+	}
+}
