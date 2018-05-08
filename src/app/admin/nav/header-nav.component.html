@@ -1,90 +1,88 @@
-<div class="header-nav flex">
-	<div class="title">{{clinicName}}</div>
-	<div class="flex-1 right-tab text-right">
-		<div class="item pl20 pr20">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</div>
-		<div *ngIf="hasShowPayMessage" class="item message-tab">
-			<div class="tab-title pl20 pr20" (click)="showTab('showPayMessage')">
-				支付消息
-				<span *ngIf="payMessageList.length > 0" class="num">{{payMessageList.length}}</span>
-			</div>
-		</div>
-		<div class="item message-tab">
-			<div class="tab-title pl20 pr20" (click)="showTab('showMessage')">消息</div>
-		</div>
-		<div mouseIn class="item setup-tab" [ngClass]="{'show': showSetup}" (mouseHandler)="handlerTab($event, 'showSetup')">
-			<div class="tab-title pl20 pr20" (click)="showTab('showSetup')">设置</div>
-			<div class="setup-list">
-				<div (click)="goUrl('setupMessage')">消息订阅</div>
-			</div>
-		</div>
-		<div (click)="logout()" class="item cursor-p pl20 pr20">退出</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalTabMessage">
-	<div class="modal-mask" (click)="closeMessage()"></div>
-	<div class="container">
-		<div class="title">消息</div>
-		<div class="content pad10 admin-booking-info">
-			<ng-container *ngIf="messageTabType == 'showMessage'">
-				<table *ngIf="messageList.length > 0" class="pure-table w100">
-					<thead>
-						<tr>
-							<th>消息内容</th>
-							<th>查看</th>
-							<th>完成</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let message of messageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-							<td>{{message.message}}</td>
-							<td>
-								<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
-									<button (click)="goDetail(message)" class="pure-button pure-button-primary" [disabled]="messageBtn">查看</button>
-								</ng-container>
-								<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">
-									-
-								</ng-container>
-							</td>
-							<td>
-								<button (click)="complate(message, index, '')" class="pure-button pure-button-primary" [disabled]="messageBtn">完成</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="messageList.length == 0">
-					<nodata title="暂无消息"></nodata>
-				</div>
-			</ng-container>
-			<ng-container *ngIf="messageTabType == 'showPayMessage'">
-				<table *ngIf="payMessageList.length > 0" class="pure-table w100">
-					<thead>
-						<tr>
-							<th>消息内容</th>
-							<th>查看</th>
-							<th>完成</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let message of payMessageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
-							<td>{{message.message}}</td>
-							<td>
-								<button (click)="goDetail(message)" class="pure-button pure-button-primary" [disabled]="messageBtn">查看</button>
-							</td>
-							<td>
-								<button (click)="complate(message, index, 'pay')" class="pure-button pure-button-primary" [disabled]="messageBtn">完成</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div *ngIf="payMessageList.length == 0">
-					<nodata title="暂无消息"></nodata>
-				</div>
-			</ng-container>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeMessage()" class="pure-button pure-button">关闭</button>
-		</div>
-	</div>
-</div>
+<nz-header>
+	<div class="clinic-title">{{clinicName}}</div>
+	<ul nz-menu [nzMode]="'horizontal'" style="line-height: 64px;">
+		<li nz-menu-item (click)="logout()">退出</li>
+		<li nz-submenu>
+        	<span title>主题</span>
+        	<ul>
+      			<li nz-menu-item (click)="changeTheme('')">默认</li>
+      			<li nz-menu-item (click)="changeTheme('theme_green')">绿色</li>
+      			<li nz-menu-item (click)="changeTheme('theme_red')">红色</li>
+        	</ul>
+      	</li>
+		<li nz-submenu>
+        	<span title>设置</span>
+        	<ul>
+      			<li nz-menu-item (click)="goUrl('setupMessage')">消息订阅</li>
+        	</ul>
+      	</li>
+		<li nz-menu-item (click)="showTab('showMessage')">消息</li>
+		<li nz-menu-item *ngIf="hasShowPayMessage" (click)="showTab('showPayMessage')">
+			<nz-badge [nzCount]="payMessageList.length">
+		      	<ng-template #content>
+		        	支付消息
+		      	</ng-template>
+		    </nz-badge>
+		</li>
+		<li nz-menu-item class="username">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</li>
+	</ul>
+</nz-header>
+<nz-modal [nzVisible]="modalTabMessage" [nzWidth]="900" [nzTitle]="'消息'" [nzContent]="contentMessage" [nzFooter]="footerMessage" (nzOnCancel)="closeMessage()">
+    <ng-template #contentMessage>
+		<ng-container *ngIf="messageTabType == 'showMessage'">
+			<nz-table #nzTable [nzDataSource]="messageList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
+					<tr>
+						<th>消息内容</th>
+						<th>查看</th>
+						<th>完成</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let message of messageList; let index=index;">
+						<td>{{message.message}}</td>
+						<td>
+							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
+								<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>
+							</ng-container>
+							<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">
+								-
+							</ng-container>
+						</td>
+						<td>
+							<button (click)="complate(message, index, '')" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">完成</button>
+						</td>
+					</tr>
+				</tbody>
+			</nz-table>
+		</ng-container>
+		<ng-container *ngIf="messageTabType == 'showPayMessage'">
+			<nz-table [nzDataSource]="payMessageList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
+					<tr>
+						<th>消息内容</th>
+						<th>查看</th>
+						<th>完成</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let message of payMessageList; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+						<td>{{message.message}}</td>
+						<td>
+							<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>
+						</td>
+						<td>
+							<button (click)="complate(message, index, 'pay')" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">完成</button>
+						</td>
+					</tr>
+				</tbody>
+			</nz-table>
+		</ng-container>
+    </ng-template>
+    <ng-template #footerMessage>
+        <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeMessage()">
+          	关闭
+        </button>
+    </ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>
-<nll-toast-box></nll-toast-box>

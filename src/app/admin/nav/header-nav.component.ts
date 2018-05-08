@@ -1,10 +1,9 @@
-import { Component, Input, OnInit, ChangeDetectorRef, NgZone }             from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef, NgZone, Output, EventEmitter } from '@angular/core';
 import { Router }                               from '@angular/router';
 
 import { AdminService }                         from '../admin.service';
 
-import { ToastService }                         from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }               from '../../common/nll-toast/toast-model';
+import { NzMessageService, NzModalService }     from 'ng-zorro-antd';
 
 import { config }                               from '../../config';
 
@@ -18,6 +17,9 @@ import { config }                               from '../../config';
 export class HeaderNavComponent {
 	@Input() title: string;
 	@Input() username: string;
+	// web主题
+	@Input() theme: string;
+	@Output() onVotedTheme = new EventEmitter<string>();
 	clinicRole: string;
 	clinicName: string;
 	messageList: any[];
@@ -32,7 +34,8 @@ export class HeaderNavComponent {
 
 	constructor(
 		public adminService: AdminService,
-        private toastService: ToastService,
+        private _message: NzMessageService,
+		private confirmServ: NzModalService,
 		private router: Router,
 		private changeDetectorRef: ChangeDetectorRef,
 		private _ngZone: NgZone
@@ -79,13 +82,26 @@ export class HeaderNavComponent {
 	}
 
 	logout() {
-		this.adminService.delCookie('user');
-		sessionStorage.removeItem('userClinicRoles');
-		sessionStorage.removeItem('userClinicRolesInfos');
-		this.router.navigate(['./login']);
+		var that = this;
+		this.confirmServ.confirm({
+	      	title: '提示',
+	      	content: '确认退出？',
+	      	okText: '确定',
+	      	cancelText: '取消',
+			onOk() {
+				that.adminService.delCookie('user');
+				sessionStorage.removeItem('userClinicRoles');
+				sessionStorage.removeItem('userClinicRolesInfos');
+				that.router.navigate(['./login']);
+	      	},
+	      	onCancel() {
+
+	      	}
+		});
 	}
 
 	showTab(_type) {
+		console.log(123);
 		if(_type == 'showSetup'){
 			this.showSetup = !this.showSetup;
 		}else{
@@ -100,8 +116,7 @@ export class HeaderNavComponent {
 				this.adminService.searchmessage(urlOptions).then((data) => {
 					if(data.status == 'no'){
 						this.loadingShow = false;
-						const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-						this.toastService.toast(toastCfg);
+						this._message.error(data.errorMsg);
 					}else{
 						var results = JSON.parse(JSON.stringify(data.results));
 						for(var i = 0; i < results.messages.length; i++){
@@ -113,8 +128,7 @@ export class HeaderNavComponent {
 					}
 				}).catch(() => {
 					this.loadingShow = false;
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error('服务器错误');
 				});
 			}else{
 				this.getPayMessage('modalTabMessage');
@@ -136,8 +150,7 @@ export class HeaderNavComponent {
 		this.adminService.searchmessage(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				for(var i = 0; i < results.messages.length; i++){
@@ -153,8 +166,7 @@ export class HeaderNavComponent {
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -201,8 +213,7 @@ export class HeaderNavComponent {
 		this.adminService.finishmessage(message.id, params).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				if(type == 'pay'){
 					this.payMessageList.splice(index, 1);
@@ -211,15 +222,13 @@ export class HeaderNavComponent {
 					this.loadingShow = false;
 					this.messageList.splice(index, 1);
 				}
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '消息已完成', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.success('消息已完成');
 			}
 			this.messageBtn = false;
 		}).catch(() => {
 			this.loadingShow = false;
 			this.messageBtn = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -243,5 +252,9 @@ export class HeaderNavComponent {
 
 	goUrl(_url) {
 		this.router.navigate(['./admin/' + _url]);
+	}
+
+	changeTheme(_theme) {
+		this.onVotedTheme.emit(_theme);
 	}
 }

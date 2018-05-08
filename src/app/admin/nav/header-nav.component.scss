@@ -1,120 +1,28 @@
-.header-nav{
-    background-color: #EDEDED;
-    height: 50px;
-    border-bottom: 1px solid #D9DEE4;
-    .title{
-        line-height: 50px;
+:host ::ng-deep {
+    .clinic-title{
+        background-color: #EDEDED;
+        height: 64px;
+        line-height: 64px;
         font-size: 1.3em;
         padding: 0 20px;
-        color: #173267;
+        float: left;
     }
-    .right-tab{
-        .item{
-            display: inline-block;
-            line-height: 50px;
-            font-size: 1.3em;
-            color: #173267;
-            border-left: 1px solid #afafaf;
-            &:first-child{
-                border-left: none;
-            }
-        }
-        .setup-tab{
-            position: relative;
-            left: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            .tab-title{
-                font-size: 1.3em;
-            }
-            &.show{
-                .setup-list{
-                    display: block;
-                }
-            }
-            .setup-list{
-                display: none;
-                position: absolute;
-                left: 0;
-                right: 0;
-                text-align: center;
-                background-color: #ededed;
-                border: 1px solid #c2c2c2;
-            }
-        }
-        .message-tab{
-            position: relative;
-            left: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            .tab-title{
-                font-size: 1.3em;
-                .num{
-                    position: absolute;
-                    top: 5px;
-                    right: 0;
-                    padding: 0px 10px 0px 10px;
-                    background-color: rgba(255, 0, 0, 0.7);
-                    color: #fff;
-                    line-height: 20px;
-                    border-radius: 8px;
-                }
-            }
-            &.show{
-                .message-list{
-                    display: block;
-                }
-            }
-            .message-list{
-                display: none;
-                position: absolute;
-                right: -7px;
-                width: 300px;
-                background-color: #ededed;
-                border: 1px solid #c2c2c2;
-                overflow: auto;
-                text-align: left;
-                max-height: 180px;
-                z-index: 999999;
-                cursor: auto;
-                .message-item{
-                    border: 1px solid #fff;
-                    .flex-1{
-                        overflow: hidden;
-                    }
-                    .animate{
-                        white-space: nowrap;
-                        animation: 15s wordsLoop linear infinite normal;
-                        display: inline-block;
-                        min-width: 100%;
-                    }
-                }
-                &.pay{
-                    width: 400px;
-                }
-            }
-        }
+    ul.ant-menu-horizontal{
+        background-color: #EDEDED;
     }
-}
-
-@keyframes wordsLoop {
-    0% {
-        transform: translateX(0px);
-        -webkit-transform: translateX(0px);
+    .ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu{
+        float: right;
+        border-left: 1px solid #afafaf;
+        font-size: 20px;
     }
-    100% {
-        transform: translateX(-100%);
-        -webkit-transform: translateX(-100%);
+    .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected{
+        border-bottom: inherit;
+        color: inherit;
     }
-}
-
-@-webkit-keyframes wordsLoop {
-    0% {
-        transform: translateX(0px);
-        -webkit-transform: translateX(0px);
+    .ant-menu-item, .ant-menu-submenu-title span, .ant-badge{
+        font-size: 20px;
     }
-    100% {
-        transform: translateX(-100%);
-        -webkit-transform: translateX(-100%);
+    .username.ant-menu-item{
+        cursor: auto;
     }
 }
