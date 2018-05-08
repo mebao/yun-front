@@ -818,7 +818,7 @@ export class BookingPaymentComponent{
 				if(this.bookingInfo.status == '5' && this.fee.tranInfo != null){
 					// 判断支付类型中，是否有活动卡支付，如果有，则服务单价更新为：fee/number
 					if(this.fee.tranInfo.payWay == 'activity' || this.fee.tranInfo.secondWay == 'activity'){
-						this.fee.feeInfo.serviceFeeList[i].price = (parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * 100 / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
+						this.fee.feeInfo.serviceFeeList[i].price = (this.adminService.stopl(this.fee.feeInfo.serviceFeeList[i].fee, 2) / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
 						this.fee.feeInfo.serviceFeeList[i].hasActcardPay = true;
 					}
 				}
@@ -1621,10 +1621,10 @@ export class BookingPaymentComponent{
 
 	// 实时更新stillNeedPay
 	changeMoney(type) {
-		var give_amount = parseFloat(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount) * 100;
-		var first_monen = parseFloat(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money) * 100;
-		var second_money = parseFloat(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money) * 100;
-		var stillNeedPay = (parseFloat(this.fee.fee) * 100) - give_amount - first_monen - second_money;
+		var give_amount = this.adminService.stopl(this.adminService.isFalse(this.payInfo.give_amount) ? '0' : this.payInfo.give_amount, 2);
+		var first_monen = this.adminService.stopl(this.adminService.isFalse(this.payInfo.payway.money) ? '0' : this.payInfo.payway.money, 2);
+		var second_money = this.adminService.stopl(this.adminService.isFalse(this.payInfo.payway_second.money) ? '0' : this.payInfo.payway_second.money, 2);
+		var stillNeedPay = (this.adminService.stopl(this.fee.fee, 2)) - give_amount - first_monen - second_money;
 		if(stillNeedPay / 100 < 0){
 			this._message.error('金额输入错误，请重新输入');
 			if(type == 'give_amount'){
@@ -1878,15 +1878,15 @@ export class BookingPaymentComponent{
 		// 验证金额是否一致
 		var hasMoney = 0;
 		if(this.payInfo.payway.way != ''){
-			hasMoney += parseFloat(this.payInfo.payway.money) * 100;
+			hasMoney += this.adminService.stopl(this.payInfo.payway.money, 2);
 		}
 		if(this.payInfo.payway_second.way != ''){
-			hasMoney += parseFloat(this.payInfo.payway_second.money) * 100;
+			hasMoney += this.adminService.stopl(this.payInfo.payway_second.money, 2);
 		}
 		if(!this.adminService.isFalse(this.payInfo.give_amount)){
-			hasMoney += parseFloat(this.payInfo.give_amount) * 100;
+			hasMoney += this.adminService.stopl(this.payInfo.give_amount, 2);
 		}
-		if(hasMoney != parseFloat(this.fee.fee) * 100){
+		if(hasMoney != this.adminService.stopl(this.fee.fee, 2)){
 			this._message.error('支付金额与消费金额不一致');
 			this.btnCanEdit = false;
 			return;

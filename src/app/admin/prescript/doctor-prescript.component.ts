@@ -612,14 +612,18 @@ export class DoctorPrescriptComponent{
 						return;
 					}
 					p.price = this.validateForm.controls['batch' + i].value.price;
-					if(Number(p.num) > Number(this.validateForm.controls['batch' + i].value.stock)){
-						this.selected = {
-							text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，库存' + this.validateForm.controls['batch' + i].value.stock + p.unit + '，所选药品数量超过库存现有量',
-						}
-						this.modalConfirmTab = true;
-						this.isLoadingSave = false;
-						return;
-					}
+
+					//判断可用或未出药（判断所选数量是否超过现有库存）
+                    if(this.adminService.isFalse(this.mPrescriptList[i].isOut) || (this.mPrescriptList[i].isOut == '0' && this.secondType == 'update')){
+    					if(Number(p.num) > Number(this.validateForm.controls['batch' + i].value.stock)){
+    						this.selected = {
+    							text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，库存' + this.validateForm.controls['batch' + i].value.stock + p.unit + '，所选药品数量超过库存现有量',
+    						}
+    						this.modalConfirmTab = true;
+    						this.isLoadingSave = false;
+    						return;
+    					}
+                    }
 					p.remark = this.validateForm.controls['remark' + i].value ? this.validateForm.controls['remark' + i].value : '';
 
 					//判断可用或未出药

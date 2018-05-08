@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 	template: `
 		<div class="body-container theme {{theme}}">
 			<ng-container *ngIf="layout == 'left-right'">
-				<div class="container flex">
+				<div class="page-container flex">
 					<left-nav></left-nav>
 					<div class="right-content flex-1">
 						<header-nav [theme]="theme" (onVotedTheme)="changeTheme($event)"></header-nav>

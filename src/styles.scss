@@ -99,7 +99,8 @@ label {
 
 /*左右布局 + 换肤功能*/
 @mixin theme($bgColor: #F7F7F7){
-	.container{
+	height: 100%;
+	.page-container{
 		height: 100%;
 		left-nav{
 			height: 100%;
@@ -119,8 +120,16 @@ label {
 	}
 }
 
-body {
+.body-container.theme {
   	@include theme();
+}
+
+.body-container.theme.theme_green {
+  	@include theme(green);
+}
+
+.body-container.theme.theme_red {
+  	@include theme(red);
 }
 
 // 左右模块

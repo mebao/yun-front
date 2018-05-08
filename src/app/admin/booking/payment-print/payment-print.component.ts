@@ -636,7 +636,7 @@ export class PaymentPrintComponent{
 				if(this.bookingInfo.status == '5' && this.fee.tranInfo != null){
 					// 判断支付类型中，是否有活动卡支付，如果有，则服务单价更新为：fee/number
 					if(this.fee.tranInfo.payWay == 'activity' || this.fee.tranInfo.secondWay == 'activity'){
-						this.fee.feeInfo.serviceFeeList[i].price = (parseFloat(this.fee.feeInfo.serviceFeeList[i].fee) * 100 / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
+						this.fee.feeInfo.serviceFeeList[i].price = (this.adminService.stopl(this.fee.feeInfo.serviceFeeList[i].fee, 2) / parseFloat(this.fee.feeInfo.serviceFeeList[i].number)) / 100;
 					}
 				}
 				var fee_service = parseFloat(this.fee.feeInfo.serviceFeeList[i].price) * parseFloat(this.fee.feeInfo.serviceFeeList[i].number) * parseFloat(this.fee.feeInfo.serviceFeeList[i].serviceDiscount) / 100;

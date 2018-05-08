@@ -1668,4 +1668,8 @@ export class AdminService{
 	        return val1.length - val2.length;
 	    }
 	}
+
+	stopl(str, digit) {
+		return Math.round(parseFloat(str) * Math.pow(10, digit));
+	}
 }

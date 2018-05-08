@@ -319,7 +319,7 @@ export class UserListComponent{
 		if(this.upgradeMemberList.length > 0){
 			for(var i = 0; i < this.upgradeMemberList.length; i++){
 				if(!hasUpgrade){
-					if(parseFloat(this.selector.amount) >= ((parseFloat(this.upgradeMemberList[i].startAmount) * 100 - parseFloat(this.selector.start_amount) * 100) / 100)){
+					if(parseFloat(this.selector.amount) >= ((this.adminService.stopl(this.upgradeMemberList[i].startAmount, 2) - parseFloat(this.selector.start_amount) * 100) / 100)){
 						hasUpgrade = true;
 						this.selector.upgradeMember = this.upgradeMemberList[i];
 					}
@@ -329,7 +329,7 @@ export class UserListComponent{
 				give_scale = this.selector.upgradeMember.giveScale;
 			}
 		}
-		this.selector.give_amount = (parseFloat(this.selector.amount) * 100 * parseFloat(give_scale) / 10000).toString();
+		this.selector.give_amount = (this.adminService.stopl(this.selector.amount, 2) * parseFloat(give_scale) / 10000).toString();
 	}
 
 	confirmCharge() {
