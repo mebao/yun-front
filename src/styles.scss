@@ -98,7 +98,7 @@ label {
 }
 
 /*左右布局 + 换肤功能*/
-@mixin theme($bgColor: #F7F7F7){
+@mixin theme($bgColor: #fff){
 	height: 100%;
 	.page-container{
 		height: 100%;
@@ -106,12 +106,12 @@ label {
 			height: 100%;
 		}
 		.right-content{
-			background-color: $bgColor;
+			background-color: #F7F7F7;
 			overflow-x: auto;
 			overflow-y: auto;
 			.content-section{
 				margin: 50px 20px 40px;
-				background-color: #fff;
+				background-color: $bgColor;
 				border: 1px solid #E6E9ED;
 				padding: 10px 15px;
 	            min-width: 1150px;
@@ -125,7 +125,7 @@ label {
 }
 
 .body-container.theme.theme_green {
-  	@include theme(green);
+  	@include theme(#A2BB98);
 }
 
 .body-container.theme.theme_red {
