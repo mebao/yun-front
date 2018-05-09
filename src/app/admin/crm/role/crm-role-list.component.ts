@@ -8,6 +8,12 @@ import { AdminService }                      from '../../admin.service';
 @Component({
 	selector: 'admin-crm-role-list',
 	templateUrl: './crm-role-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class CrmRoleListComponent{
 	topBar: {

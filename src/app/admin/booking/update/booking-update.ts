@@ -8,6 +8,12 @@ import { AdminService }               from '../../admin.service';
 @Component({
     selector: 'admin-booking-update',
     templateUrl: './booking-update.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 
 export class BookingUpdate implements OnInit{

@@ -8,6 +8,12 @@ import { AdminService }                       from '../../admin.service';
 @Component({
 	selector: 'admin-booking-followups-list',
 	templateUrl: './booking-followups-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class BookingFollowupsListComponent{
 	topBar: {

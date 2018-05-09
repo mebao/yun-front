@@ -8,6 +8,12 @@ import { AdminService }                from '../../admin.service';
 @Component({
     selector: 'admin-booking-examine-record',
     templateUrl: './booking-examine-record.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 
 export class BookingExamineRecord{

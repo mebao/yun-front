@@ -8,6 +8,12 @@ import { AdminService }                    from '../admin.service';
 @Component({
 	selector: 'app-actcard-list',
 	templateUrl: './actcard-list.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class ActcardList{
 	topBar: {

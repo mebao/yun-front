@@ -8,6 +8,12 @@ import { AdminService }                          from '../admin.service';
 @Component({
 	selector: 'app-child-service-list',
 	templateUrl: './child-service-list.component.html'
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class ChildServiceListComponent implements OnInit{
 	topBar: {

@@ -28,4 +28,7 @@
 		background-color: #39A99D;
 		color: #fff;
 	}
+	.ant-form-item-label label:after{
+	    display: none;
+	}
 }
