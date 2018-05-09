@@ -1,194 +1,238 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-create-booking">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="pure-g">
-		<form class="pure-form pure-form-stacked form-tab w100">
-			<fieldset>
-				<div class="pure-g pure-tab">
-					<div class="pure-u-8-24">
-						<div class="pure-control-group">
-							<label for="referee">
-								<span>推荐人</span>
-							</label>
-							<select id="referee" name="referee" [(ngModel)]="bookingInfo.referee" [disabled]="editType == 'update'">
-								<ng-container *ngFor="let admin of adminList">
-									<option value="{{admin.string}}">{{admin.realName}}</option>
-								</ng-container>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-8-24">
-						<div *ngIf="editType != 'update' && !listChild.childId" class="pure-control-group">
-							<label for="child">
-								<span>预约宝宝</span>
-								<span class="required">*</span>
-							</label>
-							<div class="flex">
-								<select-search [title]="selectSearchTitle" [selectedValue]="selectSearchValue" [selectList]="childlist" (onVoted)="onVoted($event)"></select-search>
-								<button *ngIf="this.moduleAuthority.see" (click)="$event.preventDefault();addChild()" class="pure-button pure-button-primary ml20">添加宝宝</button>
-							</div>
-						</div>
-						<div *ngIf="editType == 'update' || listChild.childId" class="pure-control-group">
-							<label for="child">
-								<span>预约宝宝</span>
-								<span class="required">*</span>
-							</label>
-							<select id="child" name="child" disabled="">
-								<option value="">{{bookingInfo.child_name}}</option>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-8-24">
-						<div class="pure-control-group">
-							<label for="service">
-								<span>预约科室</span>
-								<span class="required">*</span>
-							</label>
-							<select id="service" name="service" (change)="serviceChange($event.target.value)" [(ngModel)]="bookingInfo.service" #service="ngModel" required="">
-								<ng-container *ngFor="let service of servicelist">
-									<option value="{{service.string}}">{{service.serviceName}}</option>
-								</ng-container>
-							</select>
-							<div *ngIf="service.errors && (service.dity || service.touched)" class="alert alert-danger">
-								<div [hidden]="!service.errors.required">
-									科室不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pure-u-8-24">
-						<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-							<label for="user_doctor">
-								<span>预约医生</span>
-								<span class="required">*</span>
-							</label>
-							<select id="user_doctor" name="user_doctor" [(ngModel)]="bookingInfo.user_doctor" #user_doctor="ngModel" (change)="doctorChange('changeBookingFee')" required="">
-								<ng-container *ngFor="let doctor of doctorlist">
-									<option value="{{doctor.string}}">{{doctor.doctorName}}：{{doctor.fee}}</option>
-								</ng-container>
-							</select>
-							<div *ngIf="user_doctor.errors && (user_doctor.dity || user_doctor.touched)" class="alert alert-danger">
-								<div [hidden]="!user_doctor.errors.required">
-									预约医生不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pure-u-8-24">
-						<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-							<label for="booking_fee">
-								<span>预约金</span>
-								<span class="required">*</span>
-							</label>
-							<input type="number" step="0.01" id="booking_fee" name="booking_fee" [(ngModel)]="bookingInfo.booking_fee" #booking_fee="ngModel" [disabled]="!(this.editType == 'create' || this.bookingInfo.status == '1')" required="">
-							<div *ngIf="booking_fee.errors && (booking_fee.dity || booking_fee.touched)" class="alert alert-danger">
-								<div [hidden]="!booking_fee.errors.required">
-									预约金不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pure-u-8-24">
-						<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-							<label for="booking_date">
-								<span>预约日期</span>
-								<span class="required">*</span>
-							</label>
-							<select id="booking_date" name="booking_date" [(ngModel)]="bookingInfo.booking_date" #booking_date="ngModel" (change)="dateChange()" required="">
-								<ng-container *ngFor="let date of doctorDutys">
-									<option value="{{date.string}}">{{date.dutyDate}}{{date.weekDay}}</option>
-								</ng-container>
-							</select>
-							<div *ngIf="booking_date.errors && (booking_date.dity || booking_date.touched)" class="alert alert-danger">
-								<div [hidden]="!booking_date.errors.required">
-									预约日期不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pure-u-24-24">
-						<div class="pure-control-group" *ngIf="bookingInfo.type == 'ZJ'">
-							<label for="time" class="time">
-								<span>预约时间段（请先选择日期）</span>
-								<span class="required">*</span>
-								<span class="can">：可预约</span>
-								<span class="can item"></span>
-								<!-- <span class="overdue">已过期</span>
-								<span class="overdue item"></span> -->
-								<span class="already">已预约</span>
-								<span class="already item">
-									<span class="icon">x</span>
-								</span>
-								<span class="selected">已选择</span>
-								<span class="selected item"></span>
-							</label>
-							<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
-								<ng-container *ngFor="let time of timelist; let index=index;">
-									<div class="">
-										<div
-											(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
-											class="item"
-											[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can' && !(bookingInfo.bookingDate1 == booking.bookingDate2 && time.value == booking.time), 'can': time.type == 'can' || (bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'overdue': time.type == 'overdue' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'already': time.type == 'already' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)}">
-											<div class="flex">
-												<div class="radioTab mr10">
-													<ng-container *ngIf="time.type == 'already' && time.value != bookingInfo.timeInfo && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)">
-														x
-													</ng-container>
-												</div>
-												<div class="flex-1">{{time.value}}</div>
-											</div>
-										</div>
-									</div>
-									<div *ngIf="index % 8 != 7" style="width: calc((100% - 744px) / 7)"></div>
-								</ng-container>
-							</div>
-							<div *ngIf="timelist.length == 0">
-								请先选择预约时间
-							</div>
-						</div>
-					</div>
+	<div nz-row [nzGutter]="30">
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label>推荐人</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择推荐人'"
+						[(ngModel)]="bookingInfo.referee"
+						nzShowSearch
+						[disabled]="editType == 'update'">
+						<nz-option
+							*ngFor="let admin of adminList"
+							[nzLabel]="admin.realName"
+							[nzValue]="admin.string">
+						</nz-option>
+					</nz-select>
+            	</div>
+          	</div>
+    	</div>
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						<span>预约宝宝</span>
+						<span class="required">*</span>
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<div nz-row [nzGutter]="8" *ngIf="editType != 'update' && !listChild.childId">
+            			<div nz-col [nzSpan]="this.moduleAuthority.see ? 16 : 24">
+							<nz-select
+								class="w100"
+								[nzSize]="'large'"
+								[nzPlaceHolder]="'请选择宝宝'"
+								[ngModel]="bookingInfo.child"
+								(ngModelChange)="getUserInfo($event)"
+								nzShowSearch>
+								<nz-option
+									*ngFor="let child of childlist"
+									[nzLabel]="child.value"
+									[nzValue]="child.key">
+								</nz-option>
+							</nz-select>
+            			</div>
+            			<div nz-col [nzSpan]="8" *ngIf="this.moduleAuthority.see">
+							<button (click)="$event.preventDefault();addChild()" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100">添加宝宝</button>
+            			</div>
+          			</div>
+					<nz-input *ngIf="editType == 'update' || listChild.childId" [(ngModel)]="bookingInfo.child_name" [nzSize]="'large'" [nzDisabled]="true"></nz-input>
 				</div>
-				<div class="pure-g pure-tab">
-					<div class="pure-u-8-24">
-						<div class="pure-control-group">
-							<label for="remark">备注（最多200字）</label>
-							<textarea id="remark" name="remark" rows="4" maxlength="200" [(ngModel)]="bookingInfo.remark" class="auto"></textarea>
-						</div>
-					</div>
-				</div>
-			</fieldset>
-			<div class="text-center">
-				<!-- <button *ngIf="editType == 'update'" (click)="cancalUpdate()" class="pure-button mr10">取消</button> -->
-				<button (click)="create()" class="pure-button pure-button-primary button-max" [disabled]="canEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
 			</div>
-		</form>
+		</div>
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						<span>预约科室</span>
+						<span class="required">*</span>
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<div nz-row [nzGutter]="8">
+            			<div nz-col [nzSpan]="editType != 'update' && bookingInfo.service_name == '儿童保健' ? 12 : 24">
+							<nz-select
+								class="w100"
+								[nzSize]="'large'"
+								[nzPlaceHolder]="'请选择科室'"
+								[ngModel]="bookingInfo.service"
+								(ngModelChange)="bookingInfo.service=$event;serviceChange(bookingInfo.service)"
+								nzShowSearch>
+								<nz-option
+									*ngFor="let service of servicelist"
+									[nzLabel]="service.serviceName"
+									[nzValue]="service.string">
+								</nz-option>
+							</nz-select>
+						</div>
+            			<div nz-col [nzSpan]=[12] *ngIf="editType != 'update' && bookingInfo.service_name == '儿童保健'">
+							<nz-switch [(ngModel)]="bookingInfo.service_asq">
+					        	<span checked>添加ASQ</span>
+					        	<span unchecked>不添加ASQ</span>
+					      	</nz-switch>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div nz-row [nzGutter]="30" class="mt10">
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						<span>预约医生</span>
+						<span class="required">*</span>
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<nz-select
+						class="w100"
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择医生'"
+						[ngModel]="bookingInfo.user_doctor"
+						(ngModelChange)="bookingInfo.user_doctor=$event;doctorChange('changeBookingFee')"
+						nzShowSearch>
+						<nz-option
+							*ngFor="let doctor of doctorlist"
+							[nzLabel]="doctor.doctorName + '：' + doctor.fee"
+							[nzValue]="doctor.string">
+						</nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</div>
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						<span>预约金</span>
+						<span class="required">*</span>
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<nz-input-number [nzMin]="0" [nzStep]="0.01" [nzSize]="'large'" [(ngModel)]="bookingInfo.booking_fee" [nzDisabled]="!(this.editType == 'create' || this.bookingInfo.status == '1')" class="w100" [nzPlaceHolder]="'请输入预约金'"></nz-input-number>
+				</div>
+			</div>
+		</div>
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						<span>预约日期</span>
+						<span class="required">*</span>
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<nz-select
+						class="w100"
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择日期'"
+						[ngModel]="bookingInfo.booking_date"
+						(ngModelChange)="bookingInfo.booking_date=$event;dateChange()"
+						nzShowSearch>
+						<nz-option
+							*ngFor="let date of doctorDutys"
+							[nzLabel]="date.dutyDate + date.weekDay"
+							[nzValue]="date.string">
+						</nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="bookingInfo.type == 'ZJ'" class="mt10 mb10">
+		<label for="time" class="time">
+			<span>预约时间段（请先选择日期）</span>
+			<span class="required">*</span>
+			<span class="can">：可预约</span>
+			<span class="can item"></span>
+			<!-- <span class="overdue">已过期</span>
+			<span class="overdue item"></span> -->
+			<span class="already">已预约</span>
+			<span class="already item">
+				<span class="icon">x</span>
+			</span>
+			<span class="selected">已选择</span>
+			<span class="selected item"></span>
+		</label>
+		<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
+			<ng-container *ngFor="let time of timelist; let index=index;">
+				<div class="">
+					<div
+						(click)="selectTime(time, bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)"
+						class="item"
+						[ngClass]="{'active': time.value == bookingInfo.timeInfo, 'disabled': time.type != 'can' && !(bookingInfo.bookingDate1 == booking.bookingDate2 && time.value == booking.time), 'can': time.type == 'can' || (bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'overdue': time.type == 'overdue' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time), 'already': time.type == 'already' && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)}">
+						<div class="flex">
+							<div class="radioTab mr10">
+								<ng-container *ngIf="time.type == 'already' && time.value != bookingInfo.timeInfo && !(bookingInfo.bookingDate == booking.bookingDate && time.value == booking.time)">
+									x
+								</ng-container>
+							</div>
+							<div class="flex-1">{{time.value}}</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="index % 8 != 7" style="width: calc((100% - 780px) / 7)"></div>
+			</ng-container>
+		</div>
+		<div *ngIf="timelist.length == 0">
+			请先选择预约时间
+		</div>
+	</div>
+	<div nz-row [nzGutter]="30">
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item>
+            	<div nz-form-label>
+              		<label nz-form-item-required>
+						备注（最多200字）
+					</label>
+            	</div>
+            	<div nz-form-control class="mt10">
+					<nz-input [(ngModel)]="bookingInfo.remark" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入备注'"></nz-input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-center mt10 mb10">
+		<!-- <button *ngIf="editType == 'update'" (click)="cancalUpdate()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button> -->
+		<button (click)="create()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading" class="w100p">{{editType == 'create' ? '保存' : '保存'}}</button>
 	</div>
 </div>
-<div class="modal" *ngIf="modalTabAgain">
-	<div class="modal-mask"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			{{bookingAgainText}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeAgain()" class="pure-button">取消</button>
-			<button (click)="confirmAgain()" class="pure-button pure-button-primary">继续预约</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalTabType">
-	<div class="modal-mask"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			预约成功
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeType()" class="pure-button">继续预约</button>
-			<button (click)="confirmType()" class="pure-button pure-button-primary">去支付</button>
-		</div>
-	</div>
-</div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<nz-modal [nzVisible]="modalTabAgain" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentAgain" [nzFooter]="footerAgain" [nzMaskClosable]="false" (nzOnCancel)="closeAgain()">
+	<ng-template #contentAgain>
+    	<p>{{bookingAgainText}}</p>
+	</ng-template>
+	<ng-template #footerAgain>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeAgain()">取消</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmAgain()" [disabled]="btnCanEdit">继续预约</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalTabType" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentType" [nzFooter]="footerType" [nzMaskClosable]="false" (nzOnCancel)="closeType()">
+	<ng-template #contentType>
+    	<p>预约成功</p>
+	</ng-template>
+	<ng-template #footerType>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeType()">继续预约</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmType()" [disabled]="btnCanEdit">去支付</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

@@ -2,6 +2,8 @@ import { Component, OnInit }                        from '@angular/core';
 import { ActivatedRoute, Params, Router }           from '@angular/router';
 import { Location }                                 from '@angular/common';
 
+import { NzMessageService }                         from 'ng-zorro-antd';
+
 import { AdminService }                             from '../admin.service';
 
 @Component({
@@ -24,6 +26,7 @@ export class BookingComponent implements OnInit{
 		service: string,
 		service_name: string,
 		service_fee: string,
+		service_asq: boolean,
 		booking_date: string,
 		// 日期
 		bookingDate: string,
@@ -68,11 +71,6 @@ export class BookingComponent implements OnInit{
 	timelist: any[];
 	editType: string;
 	ptDutys: any[];
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	selectSearchTitle: string;
 	selectSearchValue: string;
 	childlist: any[];
@@ -94,7 +92,7 @@ export class BookingComponent implements OnInit{
 		time: boolean,
 	}
 	// 不可连续点击
-	canEdit: boolean;
+	isSaveLoading: boolean;
 	hasBookingList: any[];
 	modalTabAgain: boolean;
 	bookingAgainText: string;
@@ -107,6 +105,7 @@ export class BookingComponent implements OnInit{
 	adminList: any[];
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -118,11 +117,6 @@ export class BookingComponent implements OnInit{
 			title: '预约',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		// 获取用户是否含有用户管理权限
 		this.moduleAuthority = {
@@ -155,6 +149,7 @@ export class BookingComponent implements OnInit{
 			service: '',
 			service_name: '',
 			service_fee: '',
+			service_asq: false,
 			booking_date: '',
 			bookingDate: '',
 			timeInfo: '',
@@ -261,7 +256,7 @@ export class BookingComponent implements OnInit{
 				 + '&id=' + this.id;
 			this.adminService.searchbooking(urlOptions).then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.booking = results.weekbooks[0];
@@ -300,7 +295,7 @@ export class BookingComponent implements OnInit{
 					// }
 				}
 			}).catch(() => {
-                this.toastTab('服务器错误', 'error');
+                this._message.error('服务器错误');
             });
 		}else{
 			//创建
@@ -309,7 +304,7 @@ export class BookingComponent implements OnInit{
 				this.bookingInfo.child = JSON.stringify(this.listChild);
 				this.bookingInfo.child_name = this.listChild.childName;
 				//获取家长信息
-				this.onVoted(this.bookingInfo.child);
+				this.getUserInfo(this.bookingInfo.child);
 			}
 			this.editType = 'create';
 			this.getData();
@@ -326,7 +321,7 @@ export class BookingComponent implements OnInit{
 		this.bookingAgainText = '';
 		this.successBookingId = '';
 
-		this.canEdit = false;
+		this.isSaveLoading = false;
 		this.modalTabType = false;
 		this.loadingShow = false;
 	}
@@ -343,7 +338,7 @@ export class BookingComponent implements OnInit{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.adminlist.length > 0){
@@ -360,7 +355,7 @@ export class BookingComponent implements OnInit{
 				this.adminList = results.adminlist;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		//查询诊所科室
@@ -369,7 +364,7 @@ export class BookingComponent implements OnInit{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -396,7 +391,7 @@ export class BookingComponent implements OnInit{
 				this.servicelist = results.servicelist;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		//查询宝宝列表
@@ -405,7 +400,7 @@ export class BookingComponent implements OnInit{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.searchchild(searchchildUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				for(var i =0; i < results.child.length; i++){
@@ -416,7 +411,7 @@ export class BookingComponent implements OnInit{
 				this.childlist = results.child;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		//普通预约dutys
@@ -480,7 +475,7 @@ export class BookingComponent implements OnInit{
 		//根据科室查询医生可预约日期
 		this.adminService.searchdoctorservice(urlOptions).then((data) =>　{
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.doctors.length > 0){
@@ -514,7 +509,7 @@ export class BookingComponent implements OnInit{
 				this.doctorlist = results.doctors;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -638,7 +633,7 @@ export class BookingComponent implements OnInit{
 	}
 
 	//切换宝宝
-	onVoted(_value) {
+	getUserInfo(_value) {
 		this.bookingInfo.child = _value;
 		//根据宝宝信息查询家长信息
 		var urlOptions = '?username=' + this.adminService.getUser().username
@@ -646,7 +641,7 @@ export class BookingComponent implements OnInit{
 			 + '&child_id=' + JSON.parse(_value).childId;
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				// for(var i =0; i < results.users.length; i++){
@@ -664,7 +659,7 @@ export class BookingComponent implements OnInit{
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 	}
@@ -684,62 +679,62 @@ export class BookingComponent implements OnInit{
 	// }
 
 	create(): void{
-		this.canEdit = true;
+		this.isSaveLoading = true;
 		// if(f.value.type == ''){
-		// 	this.toastTab('预约类型不可为空', 'error');
+		// 	this._message.error('预约类型不可为空');
 		// 	return;
 		// }
 		if(this.bookingInfo.creator == ''){
-			this.toastTab('预约用户不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('预约用户不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		if(this.bookingInfo.child == ''){
-			this.toastTab('宝宝不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('宝宝不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		if(this.bookingInfo.service == ''){
-			this.toastTab('科室不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('科室不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		if(this.bookingInfo.type == 'ZJ' && this.bookingInfo.user_doctor == ''){
-			this.toastTab('预约医生不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('预约医生不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		if(this.bookingInfo.booking_date == ''){
-			this.toastTab('预约日期不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('预约日期不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		if(this.bookingInfo.timeInfo == ''){
-			this.toastTab('预约时间段不可为空', 'error');
-			this.canEdit = false;
+			this._message.error('预约时间段不可为空');
+			this.isSaveLoading = false;
 			return;
 		}
 		// if(this.childs.length == 0 && f.value.child_name == ''){
-		// 	this.toastTab('宝宝姓名不可为空', 'error');
+		// 	this._message.error('宝宝姓名不可为空');
 		// 	return;
 		// }
 		// if(this.childs.length == 0 && f.value.gender == ''){
-		// 	this.toastTab('性别不可为空', 'error');
+		// 	this._message.error('性别不可为空');
 		// 	return;
 		// }
 		// if(this.childs.length == 0 && f.value.birth_date == ''){
-		// 	this.toastTab('出生年月不可为空', 'error');
+		// 	this._message.error('出生年月不可为空');
 		// 	return;
 		// }
 		if(this.editType == 'create' || this.bookingInfo.status == '1'){
 			if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
-				this.toastTab('预约金不可为空', 'error');
-				this.canEdit = false;
+				this._message.error('预约金不可为空');
+				this.isSaveLoading = false;
 				return;
 			}
 			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.user_doctor).fee)){
-				this.toastTab('预约金应大于等于0，小于科室费', 'error');
-				this.canEdit = false;
+				this._message.error('预约金应大于等于0，小于科室费');
+				this.isSaveLoading = false;
 				return;
 			}
 			this.loadingShow = true;
@@ -755,8 +750,8 @@ export class BookingComponent implements OnInit{
 				this.adminService.checkbooking(url).then((data) => {
 					if(data.status == 'no'){
 						this.loadingShow = false;
-						this.toastTab(data.errorMsg, 'error');
-						this.canEdit = false;
+						this._message.error(data.errorMsg);
+						this.isSaveLoading = false;
 					}else{
 						var results = JSON.parse(JSON.stringify(data.results));
 						if(results.id != ''){
@@ -769,8 +764,8 @@ export class BookingComponent implements OnInit{
 					}
 				}).catch(() => {
 					this.loadingShow = false;
-	                this.toastTab('服务器错误', 'error');
-					this.canEdit = false;
+	                this._message.error('服务器错误');
+					this.isSaveLoading = false;
 	            });
 			}else{
 				this.confirmBooking();
@@ -782,7 +777,7 @@ export class BookingComponent implements OnInit{
 	}
 
 	closeAgain() {
-		this.canEdit = false;
+		this.isSaveLoading = false;
 		this.modalTabAgain = false;
 	}
 
@@ -814,31 +809,32 @@ export class BookingComponent implements OnInit{
 			booking_fee: (this.editType == 'create' || this.bookingInfo.status == '1') ? this.bookingInfo.booking_fee.toString() : null,
 			referee_id: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).id,
 			referee_name: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).name,
+			has_asq: this.bookingInfo.service_asq ? '1' : null,
 		}
 		if(this.editType == 'update'){
 			this.adminService.updatebooking(this.id, param).then((data) => {
 				if(data.status == 'no'){
 					this.loadingShow = false;
-					this.toastTab(data.errorMsg, 'error');
-					this.canEdit = false;
+					this._message.error(data.errorMsg);
+					this.isSaveLoading = false;
 				}else{
 					this.loadingShow = false;
-					this.toastTab('修改成功', '');
+					this._message.success('修改成功');
 					setTimeout(() => {
 						this.location.back();
 					}, 2000);
 				}
 			}).catch(() => {
 				this.loadingShow = false;
-                this.toastTab('服务器错误', 'error');
-				this.canEdit = false;
+                this._message.error('服务器错误');
+				this.isSaveLoading = false;
             });
 		}else{
 			this.adminService.bookingcreate(param).then((data) => {
 				if(data.status == 'no'){
 					this.loadingShow = false;
-					this.toastTab(data.errorMsg, 'error');
-					this.canEdit = false;
+					this._message.error(data.errorMsg);
+					this.isSaveLoading = false;
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.successBookingId = results.bookingId;
@@ -847,8 +843,8 @@ export class BookingComponent implements OnInit{
 				}
 			}).catch(() => {
 				this.loadingShow = false;
-                this.toastTab('服务器错误', 'error');
-				this.canEdit = false;
+                this._message.error('服务器错误');
+				this.isSaveLoading = false;
             });
 		}
 	}
@@ -876,20 +872,4 @@ export class BookingComponent implements OnInit{
 	cancalUpdate() {
 		this.router.navigate(['./admin/bookingList']);
 	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
-
 }

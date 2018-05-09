@@ -2,6 +2,8 @@ import { Component, OnInit }                  from '@angular/core';
 import { Router }                             from '@angular/router';
 import { Observable }                         from 'rxjs';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { DialogService }                      from '../../dialog.service';
 
 import { AdminService }                       from '../../admin.service';
@@ -18,11 +20,6 @@ export class BookingInComponent{
 	};
 	bookinglist: any[];
 	modalTab: boolean;
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	moduleAuthority: {
 		// 用户管理
 		see: boolean,
@@ -51,6 +48,7 @@ export class BookingInComponent{
 		service: string,
 		service_name: string,
 		service_fee: string,
+		service_asq: boolean,
 		booking_date: string,
 		// 日期
 		bookingDate: string,
@@ -100,6 +98,7 @@ export class BookingInComponent{
 	intervalObj: any;
 
 	constructor(
+		private _message: NzMessageService,
 		private dialogService: DialogService,
 		public adminService: AdminService,
 		private router: Router,
@@ -110,11 +109,7 @@ export class BookingInComponent{
 			title: '登记',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
+		this.bookinglist = [];
 		this.doctorDutys = {
 			dutyDate: '',
 			string: '',
@@ -157,7 +152,7 @@ export class BookingInComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.searchchild(searchchildUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				for(var i =0; i < results.child.length; i++){
@@ -168,7 +163,7 @@ export class BookingInComponent{
 				this.childlist = results.child;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 		this.initPage = {
 			doctor: true,
@@ -198,7 +193,6 @@ export class BookingInComponent{
 		var n = 0;
 		this.intervalObj = setInterval(() => {
 			n++;
-			console.log('第' + n + '次检测');
 	    	if (JSON.stringify(this.bookingInfo) != JSON.stringify(this.bookingInfoOld)) {
 	      		this.editIn();
 	    	}
@@ -283,6 +277,7 @@ export class BookingInComponent{
 			service: '',
 			service_name: '',
 			service_fee: '',
+			service_asq: false,
 			booking_date: '',
 			bookingDate: '',
 			timeInfo: '',
@@ -308,7 +303,7 @@ export class BookingInComponent{
 			 + '&status=2' + '&bdate_big=' + todayDate + '&bdate_less=' + todayDate;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
@@ -319,7 +314,7 @@ export class BookingInComponent{
 				this.bookinglist = results.weekbooks;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -330,7 +325,7 @@ export class BookingInComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.adminlist.length > 0){
@@ -344,7 +339,7 @@ export class BookingInComponent{
 				this.adminList = results.adminlist;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		//查询诊所科室
@@ -353,7 +348,7 @@ export class BookingInComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -364,7 +359,7 @@ export class BookingInComponent{
 				this.servicelist = results.servicelist;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -428,7 +423,7 @@ export class BookingInComponent{
 		//根据科室查询医生可预约日期
 		this.adminService.searchdoctorservice(urlOptions).then((data) =>　{
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.doctors.length > 0){
@@ -458,7 +453,7 @@ export class BookingInComponent{
 				this.doctorlist = results.doctors;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -474,6 +469,11 @@ export class BookingInComponent{
 				var nowDate = this.adminService.getDayByDate(new Date);
 				if(doctor.doctorDutys[i].dutyDate == nowDate){
 					this.doctorDutys = doctor.doctorDutys[i];
+					if(this.bookingInfo.booking_date == null){
+						this.bookingInfo.booking_date = '';
+					}else{
+						this.bookingInfo.booking_date = null
+					}
 				}
 				// 是否首次进入
 				if(this.initPage.date){
@@ -574,7 +574,7 @@ export class BookingInComponent{
 	}
 
 	//切换宝宝
-	onVoted(_value) {
+	getUserInfo(_value) {
 		this.bookingInfo.child = _value;
 		this.bookingInfo.child_name = JSON.parse(_value).childName;
 		//根据宝宝信息查询家长信息
@@ -583,7 +583,7 @@ export class BookingInComponent{
 			 + '&child_id=' + JSON.parse(_value).childId;
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
@@ -591,7 +591,7 @@ export class BookingInComponent{
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 	}
@@ -600,27 +600,27 @@ export class BookingInComponent{
 	editIn() {
 		this.canEdit = true;
 		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
-			this.toastTab('宝宝不可为空', 'error');
+			this._message.error('宝宝不可为空');
 			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.service == ''){
-			this.toastTab('科室不可为空', 'error');
+			this._message.error('科室不可为空');
 			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.type == 'ZJ' && this.bookingInfo.user_doctor == ''){
-			this.toastTab('预约医生不可为空', 'error');
+			this._message.error('预约医生不可为空');
 			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.booking_date == ''){
-			this.toastTab('预约日期不可为空', 'error');
+			this._message.error('预约日期不可为空');
 			this.canEdit = false;
 			return;
 		}
 		if(this.bookingInfo.timeInfo == ''){
-			this.toastTab('预约时间段不可为空', 'error');
+			this._message.error('预约时间段不可为空');
 			this.canEdit = false;
 			return;
 		}
@@ -628,12 +628,12 @@ export class BookingInComponent{
 		if(this.booking.refNo == ''){
 			//创建预约，添加预约金
 			if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
-				this.toastTab('预约金不可为空', 'error');
+				this._message.error('预约金不可为空');
 				this.canEdit = false;
 				return;
 			}
 			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-				this.toastTab('预约金应大于等于0，小于科室费', 'error');
+				this._message.error('预约金应大于等于0，小于科室费');
 				return;
 			}
 			this.loadingShow = true;
@@ -648,7 +648,7 @@ export class BookingInComponent{
 			this.adminService.checkbooking(url).then((data) => {
 				if(data.status == 'no'){
 					this.loadingShow = false;
-					this.toastTab(data.errorMsg, 'error');
+					this._message.error(data.errorMsg);
 					this.canEdit = false;
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
@@ -662,7 +662,7 @@ export class BookingInComponent{
 				}
 			}).catch(() => {
 				this.loadingShow = false;
-                this.toastTab('服务器错误', 'error');
+                this._message.error('服务器错误');
 				this.canEdit = false;
             });
 		}else{
@@ -703,11 +703,12 @@ export class BookingInComponent{
 			booking_fee: this.bookingInfo.booking_fee.toString(),
 			referee_id: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).id,
 			referee_name: this.bookingInfo.referee == '' ? null : JSON.parse(this.bookingInfo.referee).name,
+			has_asq: this.bookingInfo.service_asq ? '1' : null,
 		}
 		this.adminService.bookingcreate(param).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.canEdit = false;
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -717,7 +718,7 @@ export class BookingInComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
 			this.canEdit = false;
         });
 	}
@@ -748,14 +749,14 @@ export class BookingInComponent{
 		this.adminService.updatebooking(this.booking.bookingId, updateParam).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.canEdit = false;
 			}else{
 				this.bookingIn();
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
 			this.canEdit = false;
         });
 	}
@@ -769,11 +770,11 @@ export class BookingInComponent{
 		this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.canEdit = false;
 			}else{
 				this.loadingShow = false;
-				this.toastTab('登记成功', '');
+				this._message.success('登记成功');
 				this.getBooking();
 				//登记成功后，清空选中预约信息
 				this.initData();
@@ -781,23 +782,8 @@ export class BookingInComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
 			this.canEdit = false;
         });
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

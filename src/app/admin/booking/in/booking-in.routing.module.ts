@@ -13,7 +13,7 @@ import { BookingInComponent }       from './booking-in.component';
     imports: [RouterModule.forChild([
         {
             path: '',
-            canDeactivate: [CanDeactivateGuard],
+            // canDeactivate: [CanDeactivateGuard],
             canActivate: [AuthGuardRole],
             component: BookingInComponent,
         }
