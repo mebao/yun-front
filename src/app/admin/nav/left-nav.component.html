@@ -495,7 +495,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.transactionRecordList.use != ''"
 			routerLink="./transactionRecordList"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('transactionRecordList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>交易记录</span>
@@ -504,7 +505,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.transactionStatistics.use != ''"
 			routerLink="./transactionStatistics"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('transactionStatistics')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>交易统计</span>

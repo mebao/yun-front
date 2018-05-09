@@ -8,48 +8,95 @@
 			<div class="item" (click)="changeType('4')" [ngClass]="{'active': searchInfo.type == '4'}">药品零售</div>
 			<div class="item" (click)="changeType('6')" [ngClass]="{'active': searchInfo.type == '6'}">活动卡售卖</div>
 			<div class="flex-1 text-right">
-				<button (click)="search('export')" class="pure-button pure-button-primary">导出</button>
+				<button (click)="search('export')" nz-button [nzType]="'primary'" [nzSize]="'large'">导出</button>
 			</div>
 		</div>
-		<div class="flex pure-form search-tab max mt10">
-			<div class="pure-control-group search-tab max mr10">
-				<label for="doctor_id">医生：</label>
-				<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
-					<ng-container *ngFor="let doctor of doctorlist">
-						<option value="{{doctor.id}}">{{doctor.realName}}</option>
-					</ng-container>
-				</select>
+		<div nz-row class="mt10 mb10">
+			<div nz-col [nzSpan]="8">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+						<label>医生：</label>
+					</div>
+					<div nz-form-control nz-col [nzSpan]="14">
+						<nz-select
+							class="w100"
+							nzAllowClear
+							[nzSize]="'large'"
+							[nzPlaceHolder]="'请选择医生'"
+							[(ngModel)]="searchInfo.doctor_id"
+							nzShowSearch>
+							<nz-option
+								*ngFor="let doctor of doctorlist"
+								[nzLabel]="doctor.realName"
+								[nzValue]="doctor.id">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
 			</div>
-			<div class="pure-control-group mr10">
-				<label for="user_name">家长姓名：</label>
-				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入家长姓名">
+			<div nz-col [nzSpan]="8">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+						<label>家长姓名：</label>
+					</div>
+					<div nz-form-control nz-col [nzSpan]="14">
+						<nz-input [(ngModel)]="searchInfo.user_name" [nzPlaceHolder]="'请输入家长姓名'" [nzSize]="'large'"></nz-input>
+					</div>
+				</div>
 			</div>
-			<div class="pure-control-group mr10">
-				<label for="service_id">科室：</label>
-				<select id="service_id" name="service_id" [(ngModel)]="searchInfo.service_id">
-					<option value="">请选择科室</option>
-					<ng-container *ngFor="let service of servicelist">
-						<option value="{{service.serviceId}}">{{service.serviceName}}</option>
-					</ng-container>
-				</select>
+			<div nz-col [nzSpan]="8">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+						<label>科室：</label>
+					</div>
+					<div nz-form-control nz-col [nzSpan]="14">
+						<nz-select
+							class="w100"
+							nzAllowClear
+							[nzSize]="'large'"
+							[nzPlaceHolder]="'请选择科室'"
+							[(ngModel)]="searchInfo.service_id"
+							nzShowSearch>
+							<nz-option
+								*ngFor="let service of servicelist"
+								[nzLabel]="service.serviceName"
+								[nzValue]="service.serviceId">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
 			</div>
-			<div class="flex-1"></div>
 		</div>
-		<div class="flex pure-form mt10 search-tab max">
-			<div class="pure-control-group mr10 flex">
-				<label for="b_time">预约时间：</label>
-				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.b_time_text" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
+		<div nz-row class="mt10 mb10">
+			<div nz-col [nzSpan]="8" [nzOffset]="8">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+						<label>预约时间：</label>
+					</div>
+					<div nz-form-control nz-col [nzSpan]="14">
+						<nz-datepicker (ngModelChange)="_startDate=$event"
+						[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+					</div>
+				</div>
 			</div>
-			<div class="pure-control-group mr10 flex">
-				<label for="l_time" class="text-center">至</label>
-				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.l_time_text" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
+			<div nz-col [nzSpan]="8">
+				<div nz-form-item nz-row>
+					<div nz-form-label nz-col [nzSpan]="10" class="text-center">
+						<label>至</label>
+					</div>
+					<div nz-form-control nz-col [nzSpan]="14">
+						<nz-datepicker (ngModelChange)="_endDate=$event"
+						[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+					</div>
+				</div>
 			</div>
-			<div class="flex-1"></div>
-			<button (click)="search('')" class="pure-button pure-button-primary">搜索</button>
+		</div>
+		<div class="text-right mt10 mb10">
+			<button (click)="search('')" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 		</div>
 		<div *ngIf="searchInfo.type == '1,3'">
-			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-				<thead>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
 					<tr>
 						<th>姓名</th>
 						<th>应收金额</th>
@@ -66,7 +113,7 @@
 						<th>操作</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody nz-tbody>
 					<tr *ngFor="let tran of tranList; let index=index;">
 						<td>{{tran.childName ? tran.childName : tran.userName}}</td>
 						<td>{{tran.needAmount}}</td>
@@ -81,10 +128,10 @@
 						<td>{{tran.time}}</td>
 						<td>{{tran.total}}</td>
 						<td>
-							<button (click)="info(tran)" class="pure-button pure-button-primary">详情</button>
+							<button (click)="info(tran)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
 						</td>
 					</tr>
-					<tr class="bg-gray">
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
 						<td>总计</td>
 						<td>{{total.needAmount}}</td>
 						<td>{{total.discount}}</td>
@@ -100,11 +147,11 @@
 						<td>--</td>
 					</tr>
 				</tbody>
-			</table>
+			</nz-table>
 		</div>
 		<div *ngIf="searchInfo.type == '2'">
-			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-				<thead>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
 					<tr>
 						<th>姓名</th>
 						<th>赠送金额</th>
@@ -116,7 +163,7 @@
 						<th>总收入</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody nz-tbody>
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.giveAmount}}</td>
@@ -127,7 +174,7 @@
 						<td>{{tran.time}}</td>
 						<td>{{tran.total}}</td>
 					</tr>
-					<tr class="bg-gray">
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
 						<td>总计</td>
 						<td>{{total.giveAmount}}</td>
 						<td>{{total.paidUp}}</td>
@@ -138,11 +185,11 @@
 						<td>{{total.total}}</td>
 					</tr>
 				</tbody>
-			</table>
+			</nz-table>
 		</div>
 		<div *ngIf="searchInfo.type == '4' || searchInfo.type == '6'">
-			<table *ngIf="tranList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-				<thead>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
+				<thead nz-thead>
 					<tr>
 						<th>姓名</th>
 						<th>应收金额</th>
@@ -154,7 +201,7 @@
 						<th>总收入</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody nz-tbody>
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.needAmount}}</td>
@@ -165,7 +212,7 @@
 						<td>{{tran.time}}</td>
 						<td>{{tran.total}}</td>
 					</tr>
-					<tr class="bg-gray">
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
 						<td>总计</td>
 						<td>{{total.needAmount}}</td>
 						<td>{{total.paidUp}}</td>
@@ -176,40 +223,20 @@
 						<td>{{total.total}}</td>
 					</tr>
 				</tbody>
-			</table>
-		</div>
-		<div *ngIf="hasData && tranList.length == 0" class="mt10">
-			<nodata title="未查询到交易信息"></nodata>
+			</nz-table>
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="modalInfoTab">
-	<div class="modal-mask" (click)="closeInfo()"></div>
-	<div class="container">
-		<div class="title">详情</div>
-		<div class="content pad10">
-			<div class="pure-form">
-				<div class="pure-control-group">
-					<label>预约时间：{{selector.bookingDate}}</label>
-				</div>
-				<div class="pure-control-group mt10">
-					<label>接诊医生：{{selector.doctorName}}</label>
-				</div>
-				<div class="pure-control-group mt10">
-					<label>就诊科室：{{selector.serviceName}}</label>
-				</div>
-				<div class="pure-control-group mt10">
-					<label>推荐人：{{selector.refereeName}}</label>
-				</div>
-				<div class="pure-control-group mt10">
-					<label>备注：{{selector.remark}}</label>
-				</div>
-			</div>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeInfo()" class="pure-button">关闭</button>
-		</div>
-	</div>
-</div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<nz-modal [nzVisible]="modalInfoTab" [nzWidth]="900" [nzTitle]="'详情'" [nzContent]="contentInfo" [nzFooter]="footerInfo" (nzOnCancel)="closeInfo()">
+	<ng-template #contentInfo>
+		<p>预约时间：{{selector.bookingDate}}</p>
+		<p class="mt10">接诊医生：{{selector.doctorName}}</p>
+		<p class="mt10">就诊科室：{{selector.serviceName}}</p>
+		<p class="mt10">推荐人：{{selector.refereeName}}</p>
+		<p class="mt10">备注：{{selector.remark}}</p>
+	</ng-template>
+	<ng-template #footerInfo>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeInfo()">关闭</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

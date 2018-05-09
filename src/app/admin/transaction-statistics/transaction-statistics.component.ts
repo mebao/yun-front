@@ -1,5 +1,7 @@
 import { Component }                              from '@angular/core';
 
+import { NzMessageService }                       from 'ng-zorro-antd';
+
 import { AdminService }                           from '../admin.service';
 import { config }                                 from '../../config';
 
@@ -11,11 +13,6 @@ export class TransactionStatisticsComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	loadingShow: boolean;
 	hasData: boolean;
@@ -39,17 +36,13 @@ export class TransactionStatisticsComponent{
 		doctor_id: string,
 		service_id: string,
 		user_name: string,
-		b_time: string,
-		b_time_text: string,
-		b_time_num: number,
-		l_time: string,
-		l_time_text: string,
-		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
 		type: string,
 		pay_way: string,
 	}
+    _startDate = null;
+    _endDate = null;
 	commonList: any[];
 	modalInfoTab: boolean = false;
 	selector: {
@@ -61,6 +54,7 @@ export class TransactionStatisticsComponent{
 	}
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 	) {}
 
@@ -69,11 +63,6 @@ export class TransactionStatisticsComponent{
 			title: '交易统计',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.loadingShow = false;
 
@@ -97,16 +86,26 @@ export class TransactionStatisticsComponent{
 			doctor_id: '',
 			service_id: '',
 			user_name: '',
-			b_time: todayDate,
-			b_time_text: this.adminService.dateFormat(todayDate),
-			b_time_num: new Date(todayDate).getTime(),
-			l_time: todayDate,
-			l_time_text: this.adminService.dateFormat(todayDate),
-			l_time_num: new Date(todayDate).getTime(),
 			b_amount: '',
 			l_amount: '',
 			type: '1,3',
 			pay_way: '',
+		}
+        this._startDate = new Date();
+        this._endDate = new Date();
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-transactionStatistics'));
+        if(sessionSearch){
+			this.searchInfo = {
+	            user_name: sessionSearch.user_name,
+	            b_amount: sessionSearch.b_amount,
+	            l_amount: sessionSearch.l_amount,
+	            type: sessionSearch.type,
+	            pay_way: sessionSearch.pay_way,
+	            service_id: sessionSearch.service_id,
+	            doctor_id: sessionSearch.doctor_id,
+            }
+            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
+            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
 		this.commonList = [
@@ -140,36 +139,47 @@ export class TransactionStatisticsComponent{
 
 	search(type) {
 		this.loadingShow = true;
+		sessionStorage.setItem('search-transactionStatistics', JSON.stringify({
+            user_name: this.searchInfo.user_name,
+            b_amount: this.searchInfo.b_amount,
+            l_amount: this.searchInfo.l_amount,
+            type: this.searchInfo.type,
+            pay_way: this.searchInfo.pay_way,
+            service_id: this.searchInfo.service_id,
+            doctor_id: this.searchInfo.doctor_id,
+            _startDate: this._startDate,
+            _endDate: this._endDate,
+        }));
 		var urlOptions = this.url;
-		if(this.searchInfo.user_name != ''){
+		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-		if(this.searchInfo.b_time != ''){
-			urlOptions += '&b_time=' + this.searchInfo.b_time;
-		}
-		if(this.searchInfo.l_time != ''){
-			urlOptions += '&l_time=' + this.searchInfo.l_time;
-		}
-		if(this.searchInfo.b_amount != ''){
+        if(this._startDate){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        }
+        if(this._endDate){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+        }
+		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
 		}
-		if(this.searchInfo.l_amount != ''){
+		if(this.searchInfo.l_amount && this.searchInfo.l_amount != ''){
 			urlOptions += '&l_amount=' + this.searchInfo.l_amount;
 		}
-		if(this.searchInfo.type != ''){
+		if(this.searchInfo.type && this.searchInfo.type != ''){
 			if(this.searchInfo.type == '1,3'){
 				urlOptions += '&typelist=' + this.searchInfo.type;
 			}else{
 				urlOptions += '&type=' + this.searchInfo.type;
 			}
 		}
-		if(this.searchInfo.pay_way != ''){
+		if(this.searchInfo.pay_way && this.searchInfo.pay_way != ''){
 			urlOptions += '&pay_way=' + this.searchInfo.pay_way;
 		}
-		if(this.searchInfo.service_id != ''){
+		if(this.searchInfo.service_id && this.searchInfo.service_id != ''){
 			urlOptions += '&service_id=' + this.searchInfo.service_id;
 		}
-		if(this.searchInfo.doctor_id != ''){
+		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}
 
@@ -181,11 +191,25 @@ export class TransactionStatisticsComponent{
 		}
 	}
 
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
+
 	getData(urlOptions) {
 		this.adminService.transtatistics(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length>0){
@@ -225,14 +249,8 @@ export class TransactionStatisticsComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
-	}
-
-	// 选择时间
-	changeDate(_value, key) {
-		this.searchInfo[key] = JSON.parse(_value).value;
-		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
 	//医生列表
@@ -241,14 +259,14 @@ export class TransactionStatisticsComponent{
 			 + this.adminService.getUser().clinicId + '&role=2';
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -258,7 +276,7 @@ export class TransactionStatisticsComponent{
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -271,7 +289,7 @@ export class TransactionStatisticsComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -297,18 +315,4 @@ export class TransactionStatisticsComponent{
 		}
 	}
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

@@ -1,99 +1,146 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-transaction-record">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="mt10">
-		<div class="flex pure-form search-tab max">
-			<div class="pure-control-group mr10">
-				<label for="user_name">家长姓名：</label>
-				<input type="text" id="user_name" name="user_name" [(ngModel)]="searchInfo.user_name" placeholder="请输入家长姓名">
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>家长姓名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.user_name" [nzPlaceHolder]="'请输入家长姓名'" [nzSize]="'large'"></nz-input>
+				</div>
 			</div>
-			<div class="pure-control-group mr10 flex">
-				<label for="b_time">预约时间：</label>
-				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.b_time_text" [endDate]="searchInfo.l_time_num" (onVoted)="changeDate($event, 'b_time')"></select-date>
-			</div>
-			<div class="pure-control-group mr10 flex">
-				<label for="l_time" class="text-center">至</label>
-				<select-date title="请选择日期" [showClear]="true" [dateText]="searchInfo.l_time_text" [startDate]="searchInfo.b_time_num" (onVoted)="changeDate($event, 'l_time')"></select-date>
-			</div>
-			<div class="flex-1"></div>
 		</div>
-		<div class="flex pure-form mt10 search-tab max">
-			<div class="pure-control-group mr10">
-				<label for="type">交易类型：</label>
-				<select id="type" name="type" [(ngModel)]="searchInfo.type">
-					<option value=""></option>
-					<option value="1">支付费用</option>
-					<option value="2">会员充值</option>
-					<option value="3">支付预约金</option>
-					<option value="4">药品零售</option>
-					<option value="5">购买其他会员</option>
-					<option value="6">活动卡售卖</option>
-				</select>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>预约时间：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="_startDate=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+				</div>
 			</div>
-			<div class="pure-control-group mr10">
-				<label for="b_amount">金额：</label>
-				<input type="number" id="b_amount" step="0.01" name="b_amount" [(ngModel)]="searchInfo.b_amount" placeholder="请输入金额">
-			</div>
-			<div class="pure-control-group mr10">
-				<label for="l_amount" class="text-center">至</label>
-				<input type="number" id="l_amount" step="0.01" name="l_amount" [(ngModel)]="searchInfo.l_amount" placeholder="请输入金额">
-			</div>
-			<div class="flex-1"></div>
 		</div>
-		<div class="flex pure-form mt10 search-tab max">
-			<div class="pure-control-group mr10">
-				<label for="pay_way">支付方式：</label>
-				<select id="pay_way" name="pay_way" [(ngModel)]="searchInfo.pay_way">
-					<option value=""></option>
-					<option value="ali">支付宝支付</option>
-					<option value="wechat">微信支付</option>
-					<option value="card">刷卡支付</option>
-					<option value="member">会员余额支付</option>
-					<option value="money">现金支付</option>
-					<option value="activity">活动卡支付</option>
-				</select>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-center">
+					<label>至</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="_endDate=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+				</div>
 			</div>
-			<div class="flex-1"></div>
-			<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-		</div>
-		<table *ngIf="recordList.length > 0" class="pure-table pure-table-horizontal w100 mt10">
-			<thead>
-				<tr>
-					<th>家长姓名</th>
-					<th>金额</th>
-					<th>赠送金额</th>
-					<th>支付方式</th>
-					<th>操作人</th>
-					<th>状态</th>
-					<th>支付类型</th>
-					<th class="th-width">备注</th>
-					<th>交易时间</th>
-				</tr>
-			</thead>
-			<tbody>
-				<ng-container *ngFor="let record of recordList; let index=index;">
-					<ng-container *ngFor="let item of commonList">
-						<tr *ngIf="!(item.id == 2 && !record.secondWay)">
-							<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.userName}}</td>
-							<td>{{item.id == 1 ? record.amount : record.secondAmount}}</td>
-							<td>{{item.id == 1 ? record.giveAmount : ''}}</td>
-							<td>{{item.id == 1 ? record.wayText : record.secondWayText}}</td>
-							<td>{{item.id == 1 ? (record.payWay != 'guazhang' ? record.adminName : (record.secondType == '1' ? '' : record.secondAdminName)) : (record.secondType == '0' ? record.adminName : (record.secondType == '1' ? '' : record.secondAdminName))}}</td>
-							<td>{{(record.secondType == '0' || record.secondType == '2' ? '已支付' : (item.id == 1 ? (record.payWay != 'guazhang' ? '已支付' : '未支付') : (record.secondWay != 'guazhang' ? '已支付' : '未支付')))}}</td>
-							<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.typeText}}</td>
-							<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">
-								<div class="length-text">{{record.remark}}</div>
-							</td>
-							<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.time}}</td>
-						</tr>
-					</ng-container>
-				</ng-container>
-			</tbody>
-		</table>
-		<div *ngIf="hasData && recordList.length == 0" class="mt10">
-			<nodata title="未查询到病人交易记录"></nodata>
 		</div>
 	</div>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>交易类型：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择交易类型'"
+						[(ngModel)]="searchInfo.type"
+						nzShowSearch>
+						<nz-option [nzLabel]="'支付费用'" [nzValue]="'1'"></nz-option>
+						<nz-option [nzLabel]="'会员充值'" [nzValue]="'2'"></nz-option>
+						<nz-option [nzLabel]="'支付预约金'" [nzValue]="'3'"></nz-option>
+						<nz-option [nzLabel]="'药品零售'" [nzValue]="'4'"></nz-option>
+						<nz-option [nzLabel]="'购买其他会员'" [nzValue]="'5'"></nz-option>
+						<nz-option [nzLabel]="'活动卡售卖'" [nzValue]="'6'"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</div>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>金额：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input-number class="w100" [nzStep]="0.01" [(ngModel)]="searchInfo.b_amount" [nzPlaceHolder]="'请输入金额'" [nzSize]="'large'"></nz-input-number>
+				</div>
+			</div>
+		</div>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-center">
+					<label>至</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input-number class="w100" [nzStep]="0.01" [(ngModel)]="searchInfo.l_amount" [nzPlaceHolder]="'请输入金额'" [nzSize]="'large'"></nz-input-number>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>支付方式：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择支付方式'"
+						[(ngModel)]="searchInfo.pay_way"
+						nzShowSearch>
+						<nz-option [nzLabel]="'支付宝支付'" [nzValue]="'ali'"></nz-option>
+						<nz-option [nzLabel]="'微信支付'" [nzValue]="'wechat'"></nz-option>
+						<nz-option [nzLabel]="'刷卡支付'" [nzValue]="'card'"></nz-option>
+						<nz-option [nzLabel]="'会员余额支付'" [nzValue]="'member'"></nz-option>
+						<nz-option [nzLabel]="'现金支付'" [nzValue]="'money'"></nz-option>
+						<nz-option [nzLabel]="'活动卡支付'" [nzValue]="'activity'"></nz-option>
+					</nz-select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="recordList" [nzBordered]="true" [nzIsPagination]="false">
+		<thead nz-thead>
+			<tr>
+				<th>家长姓名</th>
+				<th>金额</th>
+				<th>赠送金额</th>
+				<th>支付方式</th>
+				<th>操作人</th>
+				<th>状态</th>
+				<th>支付类型</th>
+				<th class="th-width">备注</th>
+				<th>交易时间</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<ng-container *ngFor="let record of recordList; let index=index;">
+				<ng-container *ngFor="let item of commonList">
+					<tr *ngIf="!(item.id == 2 && !record.secondWay)">
+						<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.userName}}</td>
+						<td>{{item.id == 1 ? record.amount : record.secondAmount}}</td>
+						<td>{{item.id == 1 ? record.giveAmount : ''}}</td>
+						<td>{{item.id == 1 ? record.wayText : record.secondWayText}}</td>
+						<td>{{item.id == 1 ? (record.payWay != 'guazhang' ? record.adminName : (record.secondType == '1' ? '' : record.secondAdminName)) : (record.secondType == '0' ? record.adminName : (record.secondType == '1' ? '' : record.secondAdminName))}}</td>
+						<td>{{(record.secondType == '0' || record.secondType == '2' ? '已支付' : (item.id == 1 ? (record.payWay != 'guazhang' ? '已支付' : '未支付') : (record.secondWay != 'guazhang' ? '已支付' : '未支付')))}}</td>
+						<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.typeText}}</td>
+						<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">
+							<div class="length-text">{{record.remark}}</div>
+						</td>
+						<td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.time}}</td>
+					</tr>
+				</ng-container>
+			</ng-container>
+		</tbody>
+	</nz-table>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>
