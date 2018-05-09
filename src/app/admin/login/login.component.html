@@ -26,9 +26,11 @@
 		        </div>
 		  	</div>
 		  	<div nz-form-item>
-		        <div nz-form-control>
+		        <div nz-form-control class="mb10">
 		          	<a (click)="forgetpwd()" class="login-form-forgot">找回密码？</a>
-		          	<button (click)="login()" nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">登录</button>
+				</div>
+		        <div nz-form-control>
+		          	<button (click)="login()" nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">登录</button>
 		        </div>
 		  	</div>
 		</form>

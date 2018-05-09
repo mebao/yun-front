@@ -1,29 +1,51 @@
-.forgetpwd-page{
-    input{
-        box-shadow: none;
-    }
-    .left-right-tab{
-        border-right: 1px solid #ccc;
-        input{
-            border-radius: 0;
-            border-top: none;
-            border-right: none;
-        }
+.forgetpwd-page ::ng-deep {
+	padding: 112px 0 24px;
+	background: url('../../../assets/images/bg_login_default.jpg') no-repeat;
+	background-size: 100% auto;
+	height: 100%;
+	.page-container{
+		display: block;
+		width: 600px;
+		margin: 0 auto;
+		.logo {
+		    height: 44px;
+		    margin-right: 16px;
+		}
+		.title{
+			font-size: 33px;
+		    color: rgba(0,0,0,.85);
+		    font-weight: 600;
+		    position: relative;
+		    vertical-align: middle;
+		}
+		form{
+			padding-top: 40px;
+		}
+		label{
+			color: #fff;
+		}
+		.login-form-forgot {
+	      float: right;
+	    }
         .code-img{
-            width: 120px;
+            width: 100%;
+			height: 40px;
             img{
                 width: 100%;
                 height: 100%;
                 cursor: pointer;
             }
         }
-        .sms{
-            width: 120px;
-            text-align: right;
-            border-top: 1px solid #ccc;
-            button{
-                margin: 0;
-            }
-        }
-    }
+	}
+	.ant-input-lg{
+		height: 40px;
+	}
+	.ant-input{
+		font-size: 16px;
+	}
+	.ant-btn-lg{
+		font-size: 16px;
+		height: 40px;
+		width: 100%;
+	}
 }

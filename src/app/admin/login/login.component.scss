@@ -1,4 +1,4 @@
-.login-page{
+.login-page ::ng-deep{
 	padding: 112px 0 24px;
 	background: url('../../../assets/images/bg_login_default.jpg') no-repeat;
 	background-size: 100% auto;
@@ -27,5 +27,15 @@
 	    .login-form-button {
 	      width: 100%;
 	    }
+	}
+	.ant-input-lg{
+		height: 40px;
+	}
+	.ant-input{
+		font-size: 16px;
+	}
+	.ant-btn-lg{
+		font-size: 16px;
+		height: 40px;
 	}
 }
