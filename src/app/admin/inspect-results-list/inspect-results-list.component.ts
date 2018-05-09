@@ -1,21 +1,24 @@
 import { Component, OnInit }                      from '@angular/core';
 import { Router }                                 from '@angular/router';
 
+import { NzMessageService }                       from 'ng-zorro-antd';
+
 import { AdminService }                           from '../admin.service';
 
 @Component({
 	selector: 'admin-inspect-results-list',
 	templateUrl: './inspect-results-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class InspectResultsListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -26,22 +29,18 @@ export class InspectResultsListComponent{
 	hasData: boolean;
 	userCheckList: any[];
 	checkProjestList: any[];
-	info: {
+	searchInfo: {
 		check_name: string,
 		doctor_name: string,
 		child_name: string,
 		ischeck: string,
-		today: string,
-		b_date: string,
-		b_date_num: number,
-		b_date_text: string,
-		e_date: string,
-		e_date_num: number,
-		e_date_text: string,
 	}
+    _startDate = null;
+    _endDate = null;
 	url: string;
 
 	constructor(
+		private _message: NzMessageService,
 		private adminService: AdminService,
 		private router: Router,
 	) {}
@@ -50,12 +49,6 @@ export class InspectResultsListComponent{
 		this.topBar = {
 			title: '检查项目列表',
 			back: false,
-		}
-
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -77,23 +70,25 @@ export class InspectResultsListComponent{
 
 		this.loadingShow = false;
 
+		this.searchInfo = {
+			check_name: '',
+			doctor_name: '',
+			child_name: '',
+			ischeck: '0',
+		}
+		this._startDate = new Date();
+		this._endDate = new Date();
 		var todayDate = this.adminService.getDayByDate(new Date());
-		if(JSON.parse(sessionStorage.getItem('search-inspectResultsList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-inspectResultsList'));
-		}else{
-			this.info = {
-				check_name: '',
-				doctor_name: '',
-				child_name: '',
-				ischeck: '0',
-				today: '',
-				b_date: todayDate,
-				b_date_text: this.adminService.dateFormat(todayDate),
-				b_date_num: new Date(todayDate).getTime(),
-				e_date: todayDate,
-				e_date_text: this.adminService.dateFormat(todayDate),
-				e_date_num: new Date(todayDate).getTime(),
-			}
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-inspectResultsList'));
+        if(sessionSearch){
+			this.searchInfo = {
+                check_name: sessionSearch.check_name,
+                doctor_name: sessionSearch.doctor_name,
+                child_name: sessionSearch.child_name,
+                ischeck: sessionSearch.ischeck,
+            }
+            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
+            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
 		this.hasData = false;
@@ -106,13 +101,13 @@ export class InspectResultsListComponent{
 
 		this.adminService.checkprojects(this.url).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.checkProjestList = results.list;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 		this.search();
 	}
@@ -121,7 +116,7 @@ export class InspectResultsListComponent{
 		this.adminService.usercheckprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var newList = [];
@@ -156,44 +151,55 @@ export class InspectResultsListComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
-	}
-
-	// 选择日期
-	changeDate(_value, key) {
-		this.info[key] = JSON.parse(_value).value;
-		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-		this.info[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
 	}
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-inspectResultsList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-inspectResultsList', JSON.stringify({
+            check_name: this.searchInfo.check_name,
+            doctor_name: this.searchInfo.doctor_name,
+            child_name: this.searchInfo.child_name,
+            ischeck: this.searchInfo.ischeck,
+            _startDate: this._startDate,
+            _endDate: this._endDate,
+        }));
 		var urlOptions = this.url;
-		if(this.info.check_name != ''){
-			urlOptions += '&check_name=' + this.info.check_name;
+		if(this.searchInfo.check_name && this.searchInfo.check_name != ''){
+			urlOptions += '&check_name=' + this.searchInfo.check_name;
 		}
-		if(this.info.doctor_name != ''){
-			urlOptions += '&doctor_name=' + this.info.doctor_name;
+		if(this.searchInfo.doctor_name && this.searchInfo.doctor_name != ''){
+			urlOptions += '&doctor_name=' + this.searchInfo.doctor_name;
 		}
-		if(this.info.child_name != ''){
-			urlOptions += '&child_name=' + this.info.child_name;
+		if(this.searchInfo.child_name && this.searchInfo.child_name != ''){
+			urlOptions += '&child_name=' + this.searchInfo.child_name;
 		}
-		if(this.info.ischeck != ''){
-			urlOptions += '&ischeck=' + this.info.ischeck;
+		if(this.searchInfo.ischeck && this.searchInfo.ischeck != ''){
+			urlOptions += '&ischeck=' + this.searchInfo.ischeck;
 		}
-		if(this.info.today != ''){
-			urlOptions += '&today=' + this.info.today;
-		}
-		if(this.info.b_date != ''){
-			urlOptions += '&b_date=' + this.info.b_date;
-		}
-		if(this.info.e_date != ''){
-			urlOptions += '&e_date=' + this.info.e_date;
-		}
+        if(this._startDate){
+            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this._startDate));
+        }
+        if(this._endDate){
+            urlOptions += '&e_date=' + this.adminService.getDayByDate(new Date(this._endDate));
+        }
 		this.getData(urlOptions);
 	}
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
 
 	check(_id) {
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});
@@ -202,20 +208,5 @@ export class InspectResultsListComponent{
 	//宝宝详情
 	childInfo(_id) {
 		window.open('./admin/child/info?id=' + _id);
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

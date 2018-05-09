@@ -7,6 +7,12 @@ import { AdminService }                           from '../admin.service';
 @Component({
 	selector: 'admin-transaction-record-list',
 	templateUrl: './transaction-record-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class TransactionRecordListComponent{
 	topBar: {

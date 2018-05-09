@@ -1,13 +1,18 @@
 import { Component }                   from '@angular/core';
 
-import { AdminService }                from '../../admin.service';
+import { NzMessageService }            from 'ng-zorro-antd';
 
-import { ToastService }                from '../../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
+import { AdminService }                from '../../admin.service';
 
 @Component({
     selector: 'admin-booking-assist-list',
     templateUrl: './booking-assist-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 
 export class BookingAssistList{
@@ -19,22 +24,18 @@ export class BookingAssistList{
     hasData: boolean;
     assistList: any[];
     bookingAssistList: any[];
-    info: {
+    searchInfo: {
         assist_id: string,
         doctor_name: string,
         child_name: string,
-        bdate_big: string,
-        bdate_big_num: number,
-        bdate_big_text: string,
-        bdate_less: string,
-        bdate_less_num: number,
-        bdate_less_text: string,
     }
+    _startDate = null;
+    _endDate = null;
     url: string;
 
     constructor(
+        private _message: NzMessageService,
         private adminService: AdminService,
-        private toastService: ToastService
     ) {}
 
     ngOnInit() {
@@ -46,17 +47,23 @@ export class BookingAssistList{
         this.loadingShow = false;
 
         var todayDate = this.adminService.getDayByDate(new Date());
-        this.info = {
+        this.searchInfo = {
             assist_id: '',
             doctor_name: '',
             child_name: '',
-            bdate_big: todayDate,
-            bdate_big_text: this.adminService.dateFormat(todayDate),
-            bdate_big_num: new Date(todayDate).getTime(),
-            bdate_less: todayDate,
-            bdate_less_text: this.adminService.dateFormat(todayDate),
-            bdate_less_num: new Date(todayDate).getTime(),
         }
+        this._startDate = new Date();
+        this._endDate = new Date();
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingAssistList'));
+        if(sessionSearch){
+			this.searchInfo = {
+                assist_id: sessionSearch.assist_id,
+                doctor_name: sessionSearch.doctor_name,
+                child_name: sessionSearch.child_name,
+            }
+            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
+            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
+		}
 
         this.hasData = false;
         this.assistList = [];
@@ -69,15 +76,13 @@ export class BookingAssistList{
         var searchassistUrl = this.url + '&status=1'
         this.adminService.searchassist(searchassistUrl).then((data) => {
             if(data.status == 'no'){
-        		const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-        		this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.assistList = results.list;
             }
         }).catch((data) => {
-    		const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-    		this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
         this.search();
     }
@@ -86,8 +91,7 @@ export class BookingAssistList{
         this.adminService.bookingassist(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.loadingShow = false;
-                const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-                this.toastService.toast(toastCfg);
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 var newList = [];
@@ -123,37 +127,51 @@ export class BookingAssistList{
             }
         }).catch(() => {
             this.loadingShow = false;
-            const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-            this.toastService.toast(toastCfg);
+            this._message.error('服务器错误');
         });
-    }
-
-    // 选择日期
-    changeDate(_value, key) {
-        this.info[key] = JSON.parse(_value).value;
-        this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
     }
 
     search() {
         this.loadingShow = true;
+		sessionStorage.setItem('search-bookingAssistList', JSON.stringify({
+            assist_id: this.searchInfo.assist_id,
+            doctor_name: this.searchInfo.doctor_name,
+            child_name: this.searchInfo.child_name,
+            _startDate: this._startDate,
+            _endDate: this._endDate,
+        }));
         var urlOptions = this.url;
-        if(this.info.assist_id != ''){
-            urlOptions += '&assist_id=' + this.info.assist_id;
+        if(this.searchInfo.assist_id && this.searchInfo.assist_id != ''){
+            urlOptions += '&assist_id=' + this.searchInfo.assist_id;
         }
-        if(this.info.doctor_name != ''){
-            urlOptions += '&doctor_name=' + this.info.doctor_name;
+        if(this.searchInfo.doctor_name && this.searchInfo.doctor_name != ''){
+            urlOptions += '&doctor_name=' + this.searchInfo.doctor_name;
         }
-        if(this.info.child_name != ''){
-            urlOptions += '&child_name=' + this.info.child_name;
+        if(this.searchInfo.child_name && this.searchInfo.child_name != ''){
+            urlOptions += '&child_name=' + this.searchInfo.child_name;
         }
-        if(this.info.bdate_big != ''){
-            urlOptions += '&bdate_big=' + this.info.bdate_big;
+        if(this._startDate){
+            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this._startDate));
         }
-        if(this.info.bdate_less != ''){
-            urlOptions += '&bdate_less=' + this.info.bdate_less;
+        if(this._endDate){
+            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this._endDate));
         }
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
 
     //宝宝详情
     childInfo(_id) {

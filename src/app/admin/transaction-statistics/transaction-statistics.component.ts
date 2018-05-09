@@ -8,6 +8,12 @@ import { config }                                 from '../../config';
 @Component({
 	selector: 'admin-transaction-statistics',
 	templateUrl: './transaction-statistics.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 export class TransactionStatisticsComponent{
 	topBar: {

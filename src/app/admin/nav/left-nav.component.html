@@ -78,7 +78,8 @@
 		<li nz-menu-item
 			*ngIf="clinicRole.bookingAssistList.use != ''"
 			routerLink="./bookingAssistList"
-			routerLinkActive="ant-menu-item-selected">
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingAssistList')">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
 				<span>辅助治疗</span>

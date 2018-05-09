@@ -1,80 +1,115 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-booking-assist-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="flex pure-form search-tab max mt10">
-		<div class="flex-1"></div>
-		<div class="pure-control-group mr10">
-			<label for="assist_id">辅助项目：</label>
-			<select id="assist_id" name="assist_id" [(ngModel)]="info.assist_id">
-				<option value=""></option>
-				<ng-container *ngFor="let assist of assistList">
-					<option value="{{assist.id}}">{{assist.name}}</option>
-				</ng-container>
-			</select>
+  	<div nz-row [nzGutter]="30">
+    	<div nz-col [nzSpan]="8">
+          	<div nz-form-item nz-row>
+            	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+              		<label>辅助项目：</label>
+            	</div>
+            	<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择宝宝'"
+						[(ngModel)]="searchInfo.assist_id"
+						nzShowSearch>
+						<nz-option
+							*ngFor="let assist of assistList"
+							[nzLabel]="assist.name"
+							[nzValue]="assist.id">
+						</nz-option>
+					</nz-select>
+            	</div>
+          	</div>
+    	</div>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>医生姓名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.doctor_name" [nzPlaceHolder]="'请输入医生名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="doctor_name">医生姓名：</label>
-			<input type="text" id="doctor_name" name="doctor_name" [(ngModel)]="info.doctor_name" placeholder="请输入医生名">
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>宝宝姓名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.child_name" [nzPlaceHolder]="'请输入宝宝名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="child_name">宝宝姓名：</label>
-			<input type="text" id="child_name" name="child_name" [(ngModel)]="info.child_name" placeholder="请输入宝宝名">
-		</div>
-		<div class="w64p"></div>
 	</div>
-	<div class="flex pure-form search-tab max mt5">
-		<div class="flex-1"></div>
-		<div class="pure-control-group mr10 flex">
-			<label for="bdate_big">时间：</label>
-			<select-date title="请选择日期" [dateText]="info.bdate_big_text" [endDate]="info.bdate_less_num" [showClear]="true" (onVoted)="changeDate($event, 'bdate_big')"></select-date>
+  	<div nz-row [nzGutter]="30" class="mt10">
+		<div nz-col [nzSpan]="8" [nzOffset]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="_startDate">时间：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="_startDate=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+				</div>
+			</div>
 		</div>
-		<div class="pure-control-group mr10 flex">
-			<label for="bdate_less">至：</label>
-			<select-date title="请选择日期" [dateText]="info.bdate_less_text" [startDate]="info.bdate_big_num" [showClear]="true" (onVoted)="changeDate($event, 'bdate_less')"></select-date>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="_endDate">至：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="_endDate=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+				</div>
+			</div>
 		</div>
-		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
 	</div>
-	<div>
-		<div *ngIf="bookingAssistList.length > 0" class="pure-g">
-			<ng-container *ngFor="let bookingAssist of bookingAssistList">
-				<div class="pure-u-6-24 card-tab pad10">
-					<div class="info pad10 flex max">
-						<!-- <div class="img-tab-default mr10">
-							<img (click)="childInfo(bookingAssist.infoList[0].childId)" src="{{bookingAssist.infoList[0].childUrl == '' || bookingAssist.infoList[0].childUrl == null ? '../assets/images/img.png' : bookingAssist.infoList[0].childUrl}}" class="cursor-p">
-						</div> -->
-						<div class="flex-1">
-							<div class="flex">
-								<div class="">宝宝姓名：</div>
-								<div class="flex-1">
-									{{bookingAssist.infoList[0].childName}}
-								</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
+		<ng-container *ngFor="let bookingAssist of bookingAssistList">
+			<div nz-col [nzSpan]="8" class=" card-tab pad10">
+				<div class="info pad10 flex max">
+					<!-- <div class="img-tab-default mr10">
+						<img (click)="childInfo(bookingAssist.infoList[0].childId)" src="{{bookingAssist.infoList[0].childUrl == '' || bookingAssist.infoList[0].childUrl == null ? '../assets/images/img.png' : bookingAssist.infoList[0].childUrl}}" class="cursor-p">
+					</div> -->
+					<div class="flex-1">
+						<div class="flex">
+							<div class="">宝宝姓名：</div>
+							<div class="flex-1">
+								{{bookingAssist.infoList[0].childName}}
 							</div>
-							<div class="flex pt10 pb10">
-								<div class="">开单医生：</div>
-								<div class="flex-1">
-									{{bookingAssist.infoList[0].doctorName}}
-								</div>
+						</div>
+						<div class="flex pt10 pb10">
+							<div class="">开单医生：</div>
+							<div class="flex-1">
+								{{bookingAssist.infoList[0].doctorName}}
 							</div>
-							<div class="flex">
-								<div class="">时间：</div>
-								<div class="flex-1">
-									{{bookingAssist.infoList[0].bookingDate}}
-								</div>
+						</div>
+						<div class="flex">
+							<div class="">时间：</div>
+							<div class="flex-1">
+								{{bookingAssist.infoList[0].bookingDate}}
 							</div>
-							<div *ngFor="let info of bookingAssist.infoList" class="flex pt10">
-								<div class="flex-1">
-									{{info.name}}（{{info.number}}次）
-								</div>
+						</div>
+						<div *ngFor="let info of bookingAssist.infoList" class="flex pt10">
+							<div class="flex-1">
+								{{info.name}}（{{info.number}}次）
 							</div>
 						</div>
 					</div>
 				</div>
-			</ng-container>
-		</div>
-		<div *ngIf="hasData && bookingAssistList.length == 0" class="mt10">
-			<nodata title="未查询到辅助治疗"></nodata>
-		</div>
+			</div>
+		</ng-container>
+	</div>
+	<div *ngIf="hasData && bookingAssistList.length == 0" class="mt10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'未查询到辅助治疗'"></nz-alert>
 	</div>
 </div>
 <loading [show]="loadingShow"></loading>
-<nll-toast-box></nll-toast-box>
