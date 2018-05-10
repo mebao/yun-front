@@ -13,6 +13,9 @@ import { AdminService }                      from '../../admin.service';
 		.ant-form-item-label label:after{
 		    display: none;
 		}
+		.ant-form-item{
+			margin-bottom: 0;
+		}
 	`
   	]
 })
