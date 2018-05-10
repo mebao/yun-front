@@ -3,6 +3,8 @@ import { Router, ActivatedRoute }             from '@angular/router';
 
 import { AdminService }                       from '../../admin.service';
 import { DoctorService }                      from '../../doctor/doctor.service';
+import { DialogService }                      from '../../dialog.service';
+import { Observable }                         from 'rxjs';
 
 import { UploadService }                      from '../../../common/nll-upload/upload.service';
 
@@ -239,6 +241,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	doctorlist: any[];
 	servicelist: [{}];
 	createType:string;
+	infoOld:any;
+	intervalObj: any;
 
 	constructor(
 		private adminService: AdminService,
@@ -246,6 +250,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		private route: ActivatedRoute,
 		private router: Router,
 		private uploadService: UploadService,
+		private dialogService: DialogService,
 	) {}
 
 	ngOnInit(): void{
@@ -369,6 +374,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			files: [],
 			checkId:'',
 		}
+		this.infoOld = JSON.parse(JSON.stringify(this.info));
 		this.baseInfo = {
 			height: '',
 			medium_height: '',
@@ -533,7 +539,34 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.getDoctorList();
 		this.getServiceList();
 		this.createType = '';
+		//this.intervalChange();
 	}
+
+	intervalChange() {
+		var n = 0;
+		this.intervalObj = setInterval(() => {
+			n++;
+			console.log('第' + n + '次检测');
+	    	if (JSON.stringify(this.info) != JSON.stringify(this.infoOld)) {
+				if(this.pageType == 'examine'){
+					this.create('examine');
+				}else{
+					this.create('');
+				}
+	    	}
+		}, 5000);
+	}
+
+	canDeactivate(): Observable<boolean> | boolean {
+    	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    	if (JSON.stringify(this.info) == JSON.stringify(this.infoOld)) {
+      		return true;
+    	}
+
+    	// Otherwise ask the user with the dialog service and return its
+    	// observable which resolves to true or false when the user decides
+    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+  	}
 
 	searchhealthrecord(doctorBooking){
 		// 儿保记录
@@ -859,6 +892,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			});
 
 		}
+		this.infoOld = JSON.parse(JSON.stringify(this.info));
 	}
 
 	doctorBookingRecordTemplet(childcontrast){
@@ -1000,6 +1034,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}
 				}
 			}
+			this.infoOld = JSON.parse(JSON.stringify(this.info));
 		}
 		// 若就诊管理中，添加了小孩临时信息，则直接使用
 		if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
@@ -1029,6 +1064,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							this.info.head_circum = results.childInfo.headCircum;
 						}
 					}
+					this.infoOld = JSON.parse(JSON.stringify(this.info));
 				}
 			}).catch(() => {
 				this.toastTab('服务器错误', 'error');
@@ -1056,6 +1092,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							this.info.body_temperature = results.list[0].bodyTemperature;
 						}
 					}
+					this.infoOld = JSON.parse(JSON.stringify(this.info));
 				}
 			}).catch(() => {
 				this.toastTab('服务器错误', 'error');
@@ -1280,6 +1317,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 
 	// 身高对比
     changeHeight() {
+		if(this.info.height == null){
+			this.info.height = '';
+		}
+		if(this.info.medium_height == null){
+			this.info.medium_height = '';
+		}
         if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
             this.toastTab('身高应大于0', 'error');
             return;
@@ -1298,6 +1341,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 
     // 体重对比
     changeWeight() {
+		if(this.info.weight == null){
+			this.info.weight = '';
+		}
+		if(this.info.medium_weight == null){
+			this.info.medium_weight = '';
+		}
         if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
             this.toastTab('体重应大于0', 'error');
             return;
@@ -1328,6 +1377,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this.toastTab(info + '应大于0', 'error');
 			return false;
+		}
+		if(this.info[type] == null){
+			this.info[type] = '';
 		}
 		return true;
 	}
@@ -1748,6 +1800,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	}
 
 	complete() {
+		this.infoOld = JSON.parse(JSON.stringify(this.info));
 		this.loadingShow = false;
 		if(this.pageType == 'examine'){
 			if(this.createType == ''){

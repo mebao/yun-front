@@ -1,5 +1,8 @@
 import { Component, OnInit }                 from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
+import { Observable }                        from 'rxjs';
+
+import { DialogService }                     from '../dialog.service';
 
 import { AdminService }                      from '../admin.service';
 
@@ -25,6 +28,7 @@ export class InspectResultsComponent{
 	}
 	id: string;
 	checkProjectList: any[];
+	checkProjectListOld: any;
 	// 默认选择模块
 	selectTab: string;
 	bookingInfo: {
@@ -36,11 +40,14 @@ export class InspectResultsComponent{
 	token: string;
 	// 不可连续点击
 	btnCanEdit: boolean;
+	firstClick: boolean;
+	intervalObj: any;
 
 	constructor(
 		private adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
+		private dialogService: DialogService,
 	) {}
 
 	ngOnInit() {
@@ -89,7 +96,36 @@ export class InspectResultsComponent{
 		this.getData('');
 
 		this.btnCanEdit = false;
+		this.firstClick = false;
+		//this.intervalChange();
 	}
+
+	intervalChange() {
+		var n = 0;
+		this.intervalObj = setInterval(() => {
+			n++;
+			console.log('第' + n + '次检测');
+	    	if (JSON.stringify(this.checkProjectList) != JSON.stringify(this.checkProjectListOld)) {
+				for(var i=0;i<this.checkProjectList.length;i++){console.log(this.checkProjectList[i].id, this.selectTab);
+					if(this.checkProjectList[i].id == this.selectTab){
+						this.save(i);
+					}
+				}
+	    	}
+		}, 5000);
+	}
+
+	canDeactivate(): Observable<boolean> | boolean {
+    	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    	if (JSON.stringify(this.checkProjectList) == JSON.stringify(this.checkProjectListOld)) {
+      		return true;
+    	}
+
+    	// Otherwise ask the user with the dialog service and return its
+    	// observable which resolves to true or false when the user decides
+    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+  	}
+
 
 	getData(_selectTab) {
 		var urlOptions = '?username=' + this.adminService.getUser().username
@@ -116,6 +152,9 @@ export class InspectResultsComponent{
 							// 创建时，用于判断是否存在移除项
 							results.list[i].hasRemoveResult = false;
 							for(var j = 0; j < results.list[i].resultList.length; j++){
+								if(results.list[i].resultList[j].values == null){
+									results.list[i].resultList[j].values = '';
+								}
 								// 新建时，可以通过移除、添加相关选项
 								results.list[i].resultList[j].use = true;
 								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
@@ -159,6 +198,7 @@ export class InspectResultsComponent{
 				}
 				this.checkProjectList = results.list;
 				this.loadingShow = false;
+				this.checkProjectListOld = JSON.parse(JSON.stringify(this.checkProjectList));
 			}
 		}).catch(() => {
 			this.loadingShow = false;
@@ -216,19 +256,40 @@ export class InspectResultsComponent{
     }
 
 	changeTab(check) {
-		if(this.buttonType == 'save'){
-			this.getData(check.id);
-			// this.buttonType = 'update';
-		}
-		this.buttonType = 'save';
-		if(check.resultList.length > 0){
-			for(var i = 0; i < check.resultList.length; i++){
-				if(check.resultList[i].values && check.resultList[i].values != ''){
-					this.buttonType = 'update';
+		if(this.firstClick){
+			if (JSON.stringify(this.checkProjectList) != JSON.stringify(this.checkProjectListOld)) {
+				//window.confirm('数据尚未保存，是否离开?');
+			}else{
+				if(this.buttonType == 'save'){
+					this.getData(check.id);
+					// this.buttonType = 'update';
+				}
+				this.buttonType = 'save';
+				if(check.resultList.length > 0){
+					for(var i = 0; i < check.resultList.length; i++){
+						if(check.resultList[i].values && check.resultList[i].values != ''){
+							this.buttonType = 'update';
+						}
+					}
+				}
+				this.selectTab = check.id;
+			}
+		}else{
+			if(this.buttonType == 'save'){
+				this.getData(check.id);
+				// this.buttonType = 'update';
+			}
+			this.buttonType = 'save';
+			if(check.resultList.length > 0){
+				for(var i = 0; i < check.resultList.length; i++){
+					if(check.resultList[i].values && check.resultList[i].values != ''){
+						this.buttonType = 'update';
+					}
 				}
 			}
+			this.selectTab = check.id;
+			this.firstClick = true;
 		}
-		this.selectTab = check.id;
 	}
 
 	changeButton() {
@@ -363,6 +424,7 @@ export class InspectResultsComponent{
 						this.toastTab('检查结果添加成功', '');
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
+						this.checkProjectListOld = JSON.parse(JSON.stringify(this.checkProjectList));
 					}
 				}).catch(() => {
 	                this.toastTab('服务器错误', 'error');
@@ -377,6 +439,7 @@ export class InspectResultsComponent{
 						this.toastTab('检查结果修改成功', '');
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
+						this.checkProjectListOld = JSON.parse(JSON.stringify(this.checkProjectList));
 					}
 				}).catch(() => {
 	                this.toastTab('服务器错误', 'error');

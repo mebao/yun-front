@@ -4,6 +4,7 @@ import { NgModule }                         from '@angular/core';
 import { AdminComponent }                   from './admin.component';
 import { AuthGuard }                        from '../auth-guard.service';
 import { AuthGuardRole }                    from './auth-guard-role.service';
+import { CanDeactivateGuard }               from './can-deactivate-guard.service';
 
 import { SelectivePreloadingStrategy }      from '../selective-preloading-strategy';
 
@@ -226,11 +227,13 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'doctorPrescript',
+						canDeactivate: [CanDeactivateGuard],
 						canActivate: [AuthGuardRole],
 						component: DoctorPrescriptComponent
 					},
 					{
 						path: 'doctorTcmPrescript',
+						canDeactivate: [CanDeactivateGuard],
 						canActivate: [AuthGuardRole],
 						component: DoctorTcmPrescript
 					},

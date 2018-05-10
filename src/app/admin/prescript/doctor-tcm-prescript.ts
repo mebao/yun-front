@@ -7,6 +7,9 @@ import {
     Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable }                            from 'rxjs';
+
+import { DialogService }                         from '../dialog.service';
 
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -36,6 +39,7 @@ export class DoctorTcmPrescript{
     tcmList: any[];
     docTcmList: any[];
     docPreTcmTab: boolean;
+    tcmListOld: any;
 
     constructor(
         private fb: FormBuilder,
@@ -44,6 +48,7 @@ export class DoctorTcmPrescript{
         private route: ActivatedRoute,
         private _message: NzMessageService,
 		private location: Location,
+        private dialogService: DialogService,
     ) {
         this.validateForm = this.fb.group({
             num: [ '', [ Validators.required ]],
@@ -84,6 +89,17 @@ export class DoctorTcmPrescript{
         this.docPreTcmTab = false;
         this.getDocTcmList();
     }
+
+    canDeactivate(): Observable<boolean> | boolean {
+    	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    	if (JSON.stringify(this.validateForm.value) == JSON.stringify(this.tcmListOld)) {
+      		return true;
+    	}
+
+    	// Otherwise ask the user with the dialog service and return its
+    	// observable which resolves to true or false when the user decides
+    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+  	}
 
     addField(tcm, e?: MouseEvent) {
         if (e) {
@@ -147,6 +163,7 @@ export class DoctorTcmPrescript{
     }
 
     getTcmList() {
+        this.tcmListOld=JSON.parse(JSON.stringify(this.validateForm.value));
         this.loadingShow = true;
         this.as.searchtcm(this.url).then((data) => {
             if(data.status == 'no'){
@@ -214,6 +231,7 @@ export class DoctorTcmPrescript{
                     }
                 }
                 this.addField(docTcm);
+                this.tcmListOld=JSON.parse(JSON.stringify(this.validateForm.value));
             }
         }
     }
@@ -265,6 +283,7 @@ export class DoctorTcmPrescript{
                 this._message.error(data.errorMsg);
             }else{
                 this._message.success('中药处方保存成功');
+                this.tcmListOld=JSON.parse(JSON.stringify(this.validateForm.value));
                 setTimeout(() => {
         			this.location.back();
                 }, 2000);

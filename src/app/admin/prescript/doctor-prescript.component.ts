@@ -8,6 +8,9 @@ import {
 import { Router, ActivatedRoute }                from '@angular/router';
 
 import { NzMessageService }                      from 'ng-zorro-antd';
+import { Observable }                            from 'rxjs';
+
+import { DialogService }                         from '../dialog.service';
 
 import { AdminService }                          from '../admin.service';
 
@@ -72,6 +75,7 @@ export class DoctorPrescriptComponent{
     mPrescriptInfoList: any[];
     // 删除的药品
     mPrescriptDelList: any[];
+    mPrescriptListOld: any;
 
 	constructor(
 		public adminService: AdminService,
@@ -79,6 +83,7 @@ export class DoctorPrescriptComponent{
 		private router: Router,
 		private _message: NzMessageService,
         private fb: FormBuilder,
+        private dialogService: DialogService,
 	) {
         this.validateForm = this.fb.group({
 			remark: [ '', [ Validators.required ]],
@@ -285,11 +290,13 @@ export class DoctorPrescriptComponent{
 	                        item.others = itemInfo;
                         }
 					}
+                    this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
                     //修改时，需要获取药品、批次数据
                     if(this.editType == 'update'){
                         for(var index in this.mPrescriptInfoList){
                             this.addField(this.mPrescriptInfoList[index]);
                         }
+                        this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
                     }
         			// 如果加药，
         			if(this.secondType == 'continueAdd'){
@@ -317,6 +324,18 @@ export class DoctorPrescriptComponent{
 		this.createTab = false;
 		this.form = '';
 	}
+
+    canDeactivate(): Observable<boolean> | boolean {
+        console.log(this.validateForm.value,this.mPrescriptListOld);
+    	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    	if (JSON.stringify(this.validateForm.value) == JSON.stringify(this.mPrescriptListOld)) {
+      		return true;
+    	}
+
+    	// Otherwise ask the user with the dialog service and return its
+    	// observable which resolves to true or false when the user decides
+    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+  	}
 
     addField(medical, e?: MouseEvent) {
         if (e) {
@@ -375,11 +394,13 @@ export class DoctorPrescriptComponent{
     }
 
     removeField(i) {
+        console.log(i);
         this.mPrescriptDelList.push(i);
         if (this.mPrescriptList.length > 0) {
             const index = this.mPrescriptList.indexOf(i);
             this.mPrescriptList.splice(index, 1);
             if(this.secondType != 'back'){
+                this.validateForm.removeControl(i.bakNum);
                 this.validateForm.removeControl(i.medical);
                 this.validateForm.removeControl(i.batch);
                 this.validateForm.removeControl(i.oneNum);
@@ -658,6 +679,7 @@ export class DoctorPrescriptComponent{
 							this.isLoadingSave = false;
 						}else{
 							this._message.success('开方成功');
+                            this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
 							setTimeout(() => {
 								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
@@ -683,6 +705,7 @@ export class DoctorPrescriptComponent{
 							this.isLoadingSave = false;
 						}else{
 							this._message.success('药方修改成功');
+                            this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
 							setTimeout(() => {
 								this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 							}, 2000);
