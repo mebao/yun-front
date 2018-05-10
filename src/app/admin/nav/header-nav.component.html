@@ -47,6 +47,7 @@
 					<tr>
 						<th>消息内容</th>
 						<th>时间</th>
+						<th *ngIf="messageTabType == 'showMessage_myself'" class="w15">反馈信息</th>
 						<th>查看</th>
 						<th *ngIf="messageTabType == 'showMessage'">完成</th>
 					</tr>
@@ -55,6 +56,9 @@
 					<tr *ngFor="let message of messageList; let index=index;">
 						<td>{{message.message}}</td>
 						<td>{{message.dateCreated}}</td>
+						<td *ngIf="messageTabType == 'showMessage_myself'">
+							<div class="length-text">{{message.feedback}}</div>
+						</td>
 						<td>
 							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
 								<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>

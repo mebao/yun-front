@@ -26,4 +26,9 @@
     .username.ant-menu-item{
         cursor: auto;
     }
+    .length-text{
+        max-height: 100px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }

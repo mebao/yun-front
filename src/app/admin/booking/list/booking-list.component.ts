@@ -3,8 +3,7 @@ import { Router, ActivatedRoute }      from '@angular/router';
 
 import { AdminService }                from '../../admin.service';
 
-import { ToastService }                from '../../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }      from '../../../common/nll-toast/toast-model';
+import { NzMessageService, NzModalService }     from 'ng-zorro-antd';
 
 import { ENgxPrintComponent }          from "e-ngx-print";
 
@@ -111,9 +110,10 @@ export class BookingListComponent implements OnInit{
 	printStyle: string;
 
 	constructor(
+		private confirmServ: NzModalService,
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		public router: Router,
-        private toastService: ToastService,
 		private elRef: ElementRef,
 	) {
 		this.printStyle =
@@ -289,8 +289,7 @@ export class BookingListComponent implements OnInit{
 		this.userList = [];
 		// this.adminService.searchuser(this.url).then((data) => {
 		// 	if(data.status == 'no'){
-		// 		const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		// 		this.toastService.toast(toastCfg);
+		// 		this._message.error(data.errorMsg);
 		// 	}else{
 		// 		var results = JSON.parse(JSON.stringify(data.results));
 		// 		if(results.users.length > 0){
@@ -303,16 +302,14 @@ export class BookingListComponent implements OnInit{
 		// 		this.userList = results.users;
 		// 	}
 		// }).catch((err) => {
-		// 	const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-		// 	this.toastService.toast(toastCfg);
+		// 		this._message.error('服务器错误');
 		// });
 
 		// 宝宝
 		this.childList = [];
 		this.adminService.searchchild(this.url).then((data) => {
 			if(data.status == 'no'){
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.child.length > 0){
@@ -325,8 +322,7 @@ export class BookingListComponent implements OnInit{
 				this.childList = results.child;
 			}
 		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 
 		this.selectorBooking = {
@@ -394,16 +390,14 @@ export class BookingListComponent implements OnInit{
 		var adminlistUrl = this.url + '&role=2';
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -412,8 +406,7 @@ export class BookingListComponent implements OnInit{
 		this.adminService.servicelist(this.url).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
@@ -433,8 +426,7 @@ export class BookingListComponent implements OnInit{
 			}
 		}).catch((err) => {
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -444,8 +436,7 @@ export class BookingListComponent implements OnInit{
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var todayTime = new Date(this.adminService.getDayByDate(new Date())).getTime();
 				if(type == 'week'){
@@ -620,8 +611,7 @@ export class BookingListComponent implements OnInit{
 			}
 		}).catch((err) => {
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -736,14 +726,12 @@ export class BookingListComponent implements OnInit{
 
 	changeBackFee() {
 		if(parseFloat(this.booking.backFee) < 0){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于0', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可小于0');
 			this.booking.backFee = '';
 			return;
 		}
 		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.yyj.amount)){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可大于已付金额');
 			this.booking.backFee = '';
 			return;
 		}
@@ -752,29 +740,25 @@ export class BookingListComponent implements OnInit{
 	confirmBack() {
 		this.btnCanEdit = true;
 		if(this.adminService.isFalse(this.booking.backFee)){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可为空');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) < 0){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于0', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可小于0');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.tranInfo.id ? this.booking.tranInfo.amount : this.booking.yyj.amount)){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可大于已付金额');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.booking.backRemark) || this.booking.backRemark == ''){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '失约原因不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('失约原因不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -785,14 +769,12 @@ export class BookingListComponent implements OnInit{
 			if(data.status == 'no'){
 				this.btnCanEdit = false;
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				this.modalBackBookingFee = false;
 				this.modalTab = false;
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.success('金额退还成功');
 				this.btnCanEdit = false;
 				this.initBooking();
 				this.search();
@@ -800,8 +782,7 @@ export class BookingListComponent implements OnInit{
 		}).catch((err) => {
 			this.btnCanEdit = false;
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -872,8 +853,7 @@ export class BookingListComponent implements OnInit{
 	// 确认取消
 	confirm(){
 		if(this.adminService.trim(this.selectorBooking.cancel_cause) == ''){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '取消原因不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('取消原因不可为空');
 			return false;
 		}
 		this.modalConfirmTab = false;
@@ -883,16 +863,13 @@ export class BookingListComponent implements OnInit{
 				 + '&token=' + this.adminService.getUser().token + '&cancel_cause=' + this.selectorBooking.cancel_cause;
 			this.adminService.bookingcancelled(urlOptions).then((data) => {
 				if(data.status == 'no'){
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
-					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.success('预约单取消成功');
 					this.search();
 				}
 			}).catch((err) => {
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}else{
 			// 取消登记
@@ -904,17 +881,51 @@ export class BookingListComponent implements OnInit{
 			}
 			this.adminService.updatebookstatus(this.selectorBooking.bookingId, params).then((data) => {
 				if(data.status == 'no'){
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
-					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '取消登记成功', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error('取消登记成功');
 					this.search();
 				}
 			}).catch(() => {
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}
+	}
+
+	sendSms(booking) {
+		this.modalTab = false;
+		var that = this;
+		this.confirmServ.confirm({
+			title: '提示',
+			content: '确认发送短信通知？',
+			okText: '确定',
+			cancelText: '取消',
+			onOk() {
+				that.comfirmSendSms(booking.bookingId);
+			},
+			onCancel() {
+				that.modalTab = true;
+			}
+		});
+	}
+
+	comfirmSendSms(bookingId) {
+		this.loadingShow = true;
+		var urlOptions = bookingId + '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token;
+		this.adminService.bookingsms(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				this.loadingShow = false;
+				this.close();
+				this._message.success('短信发送成功');
+				this.search();
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 }

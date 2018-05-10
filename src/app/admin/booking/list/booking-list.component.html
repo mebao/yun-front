@@ -202,6 +202,12 @@
 									</div>
 								</div>
 							</ng-container>
+							<div class="flex">
+								<div class="w90p">短信提醒：</div>
+								<div class="flex-1">
+									{{booking.hasSms == '1' ? '已发送' : '未发送'}}
+								</div>
+							</div>
 						</div>
 						<div class="flex">
 							<a *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3')" class="edit flex-1 pad10 text-center" (click)="cancel(booking, 'booking')">
@@ -237,6 +243,9 @@
 							        (printComplete)="printComplete()">
 	    						</e-ngx-print>
 							</a>
+							<a *ngIf="booking.hasSms == '0'" class="edit flex-1 pad10 text-center" (click)="sendSms(booking)">
+								发送短信
+							</a>
 						</div>
 					</div>
 					<ng-template #nzTemplate>
@@ -250,125 +259,130 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="modalTab">
-	<div class="modal-mask" (click)="close()"></div>
-	<div class="container">
-		<div class="title">预约信息</div>
-		<div class="content pad10">
-			<table class="pure-table pure-table-horizontal w100">
-				<thead>
-					<tr>
-						<th>宝宝姓名</th>
-						<th>年龄</th>
-						<th>医生</th>
-						<th>科室</th>
-						<th>时间</th>
-						<th class="th-width">备注</th>
-						<th>状态</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<ng-container *ngFor="let showBooking of showBookinglist" class="cursor-p">
-						<tr *ngFor="let service of showBooking.services; let indexService=index;">
-							<div style="display:none;">
-								<div id="print_div" #print_div>
-									<div class="container" id="container">
-										<div class="flex">
-											<div class="flex-1 font-bold">
-											Name：{{showBooking.childName}}
-											</div>
-											<div>
-											Gender：{{showBooking.genderText}}
-											</div>
-										</div>
-										<div class="font-bold">
-										Age：{{showBooking.age}}
+<nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'预约信息'" [nzContent]="contentTab" [nzFooter]="footerTab" (nzOnCancel)="close()">
+	<ng-template #contentTab>
+		<nz-table #nzTable [nzDataSource]="showBookinglist" [nzBordered]="true" [nzIsPagination]="false">
+			<thead nz-thead>
+				<tr>
+					<th>宝宝姓名</th>
+					<th>年龄</th>
+					<th>医生</th>
+					<th>科室</th>
+					<th>时间</th>
+					<th>短信提醒</th>
+					<!-- <th class="th-width">备注</th> -->
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody nz-tbody>
+				<ng-container *ngFor="let showBooking of showBookinglist" class="cursor-p">
+					<tr *ngFor="let service of showBooking.services; let indexService=index;">
+						<div style="display:none;">
+							<div id="print_div" #print_div>
+								<div class="container" id="container">
+									<div class="flex">
+										<div class="flex-1 font-bold">
+										Name：{{showBooking.childName}}
 										</div>
 										<div>
-										DOB：{{showBooking.birthDate}}
+										Gender：{{showBooking.genderText}}
 										</div>
-										<div  class="font-bold">
-										Date：{{showBooking.bookingDate}} {{showBooking.time}}
-										</div>
-										<div class="font-bold">
-										Dr：{{service.userDoctorName}}
-										</div>
-										<div>
-										Dept：{{service.serviceName}}
-										</div>
-										<div>
-											Ref No：{{showBooking.refNo}}
-										</div>
-										<div class="flex">
-											<div class="flex-1">
-												Bal：{{showBooking.userBalance}}元
-											</div>
-											<div *ngIf="showBooking.tuina != null">
-												M：{{showBooking.tuina}}次
-											</div>
-										</div>
-										<!-- <div *ngIf="showBooking.tuina != null">
-											M：{{showBooking.tuina}}次
-										</div> -->
 									</div>
+									<div class="font-bold">
+									Age：{{showBooking.age}}
+									</div>
+									<div>
+									DOB：{{showBooking.birthDate}}
+									</div>
+									<div  class="font-bold">
+									Date：{{showBooking.bookingDate}} {{showBooking.time}}
+									</div>
+									<div class="font-bold">
+									Dr：{{service.userDoctorName}}
+									</div>
+									<div>
+									Dept：{{service.serviceName}}
+									</div>
+									<div>
+										Ref No：{{showBooking.refNo}}
+									</div>
+									<div class="flex">
+										<div class="flex-1">
+											Bal：{{showBooking.userBalance}}元
+										</div>
+										<div *ngIf="showBooking.tuina != null">
+											M：{{showBooking.tuina}}次
+										</div>
+									</div>
+									<!-- <div *ngIf="showBooking.tuina != null">
+										M：{{showBooking.tuina}}次
+									</div> -->
 								</div>
 							</div>
-							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
-							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
-							<td>{{service.userDoctorName}}</td>
-							<td>{{service.serviceName}}</td>
-							<td>
-								<span>{{showBooking.bookingDate}}</span>
-								<span>{{showBooking.time}}</span>
-							</td>
-							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
-								<div class="length-text">{{showBooking.remark}}</div>
-							</td>
-							<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.status == '2' ? (showBooking.tranInfo.id ? '已支付全额' : showBooking.statusText) : showBooking.statusText}}</td>
-							<td>
-								<div>
-									<button *ngIf="moduleAuthority.info" (click)="info(showBooking)" class="pure-button pure-button-primary">详情</button>
-								</div>
-								<div *ngIf="moduleAuthority.add && showBooking.status == '1' && use" class="mt10">
-									<button (click)="paymentBookingFee(showBooking)" class="pure-button pure-button-primary">支付</button>
-								</div>
-								<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2' || showBooking.status == '3')" class="mt10">
-									<button class="pure-button button-error" (click)="cancel(showBooking, 'booking')">
-										取消
-									</button>
-								</div>
-								<div *ngIf="moduleAuthority.update && showBooking.status == '2'" class="mt10">
-									<button (click)="backBookingFee(showBooking)" class="pure-button button-error">
-										{{showBooking.tranInfo.id ? '退还金额' : '退还预约金'}}
-									</button>
-								</div>
-								<div *ngIf="moduleAuthority.update && (showBooking.status == '3')" class="mt10">
-									<button class="pure-button button-error" (click)="cancel(showBooking, 'status')">
-										取消登记
-									</button>
-								</div>
-								<div class="mt10">
-									<e-ngx-print
-								        [btnText]="'打印'"
-								        [btnClass]="{'pure-button': true, 'pure-button-primary': true}"
-								        [printHTML]="print_div"
-								        [printStyle]="printStyle"
-								        [printCSS]="printCSS"
-								        (printComplete)="printComplete()">
-		    						</e-ngx-print>
-								</div>
-							</td>
-						</tr>
-					</ng-container>
-				</tbody>
-			</table>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button pure-button">关闭</button>
-		</div>
-	</div>
-</div>
+						</div>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
+						<td>{{service.userDoctorName}}</td>
+						<td>{{service.serviceName}}</td>
+						<td>
+							<span>{{showBooking.bookingDate}}</span>
+							<span>{{showBooking.time}}</span>
+						</td>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
+							{{showBooking.hasSms == '1' ? '已发送' : '未发送'}}
+						</td>
+						<!-- <td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
+							<div class="length-text">{{showBooking.remark}}</div>
+						</td> -->
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.status == '2' ? (showBooking.tranInfo.id ? '已支付全额' : showBooking.statusText) : showBooking.statusText}}</td>
+						<td>
+							<div>
+								<button *ngIf="moduleAuthority.info" (click)="info(showBooking)" class="pure-button pure-button-primary">详情</button>
+							</div>
+							<div *ngIf="moduleAuthority.add && showBooking.status == '1' && use" class="mt10">
+								<button (click)="paymentBookingFee(showBooking)" class="pure-button pure-button-primary">支付</button>
+							</div>
+							<div *ngIf="moduleAuthority.update && (showBooking.status == '1' || showBooking.status == '2' || showBooking.status == '3')" class="mt10">
+								<button class="pure-button button-error" (click)="cancel(showBooking, 'booking')">
+									取消
+								</button>
+							</div>
+							<div *ngIf="moduleAuthority.update && showBooking.status == '2'" class="mt10">
+								<button (click)="backBookingFee(showBooking)" class="pure-button button-error">
+									{{showBooking.tranInfo.id ? '退还金额' : '退还预约金'}}
+								</button>
+							</div>
+							<div *ngIf="moduleAuthority.update && (showBooking.status == '3')" class="mt10">
+								<button class="pure-button button-error" (click)="cancel(showBooking, 'status')">
+									取消登记
+								</button>
+							</div>
+							<div class="mt10">
+								<e-ngx-print
+									[btnText]="'打印'"
+									[btnClass]="{'pure-button': true, 'pure-button-primary': true}"
+									[printHTML]="print_div"
+									[printStyle]="printStyle"
+									[printCSS]="printCSS"
+									(printComplete)="printComplete()">
+								</e-ngx-print>
+							</div>
+							<div *ngIf="showBooking.hasSms == '0'" class="mt10">
+								<button class="pure-button pure-button-primary" (click)="sendSms(showBooking)">
+									发送短信
+								</button>
+							</div>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</nz-table>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()">关闭</button>
+	</ng-template>
+</nz-modal>
 <div class="modal" *ngIf="modalTabInfo">
 	<div class="modal-mask" (click)="closeInfo()"></div>
 	<div class="container">

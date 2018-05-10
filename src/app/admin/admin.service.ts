@@ -1428,6 +1428,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 发送预约短信提醒
+	bookingsms(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/bookingsms/' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
