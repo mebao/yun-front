@@ -23,7 +23,7 @@ export class BookingListComponent implements OnInit{
 		info: boolean,
 		add: boolean,
 		update: boolean,
-		semdSms: boolean,
+		sendSms: boolean,
 	}
 	loadingShow: boolean;
 	selectedTab: number;
@@ -162,7 +162,7 @@ export class BookingListComponent implements OnInit{
 			info: false,
 			add: false,
 			update: false,
-			semdSms: false,
+			sendSms: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
