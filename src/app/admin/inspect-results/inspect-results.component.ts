@@ -105,21 +105,28 @@ export class InspectResultsComponent{
 		this.intervalObj = setInterval(() => {
 			n++;
 			console.log('第' + n + '次检测');
-	    	if (JSON.stringify(this.checkProjectList) != JSON.stringify(this.checkProjectListOld)) {
-				for(var i=0;i<this.checkProjectList.length;i++){console.log(this.checkProjectList[i].id, this.selectTab);
-					if(this.checkProjectList[i].id == this.selectTab){
+			for(var i=0;i<this.checkProjectList.length;i++){
+				if(this.checkProjectList[i].id == this.selectTab){
+					if (JSON.stringify(this.checkProjectList[i]) == JSON.stringify(this.checkProjectListOld[i])) {
 						this.save(i);
 					}
 				}
-	    	}
+			}
 		}, 5000);
 	}
 
 	canDeactivate(): Observable<boolean> | boolean {
+
     	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-    	if (JSON.stringify(this.checkProjectList) == JSON.stringify(this.checkProjectListOld)) {
-      		return true;
-    	}
+		if(this.checkProjectListOld.length>0){
+			for(var i=0;i<this.checkProjectListOld.length;i++){
+				if(this.checkProjectListOld[i].id == this.selectTab){
+					if (JSON.stringify(this.checkProjectList[i]) == JSON.stringify(this.checkProjectListOld[i])) {
+						return true;
+					}
+				}
+			}
+		}
 
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
@@ -155,6 +162,7 @@ export class InspectResultsComponent{
 								if(results.list[i].resultList[j].values == null){
 									results.list[i].resultList[j].values = '';
 								}
+								results.list[i].resultList[j].compare = '';
 								// 新建时，可以通过移除、添加相关选项
 								results.list[i].resultList[j].use = true;
 								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
@@ -257,22 +265,31 @@ export class InspectResultsComponent{
 
 	changeTab(check) {
 		if(this.firstClick){
-			if (JSON.stringify(this.checkProjectList) != JSON.stringify(this.checkProjectListOld)) {
-				//window.confirm('数据尚未保存，是否离开?');
-			}else{
-				if(this.buttonType == 'save'){
-					this.getData(check.id);
-					// this.buttonType = 'update';
-				}
-				this.buttonType = 'save';
-				if(check.resultList.length > 0){
-					for(var i = 0; i < check.resultList.length; i++){
-						if(check.resultList[i].values && check.resultList[i].values != ''){
-							this.buttonType = 'update';
+			if(this.checkProjectListOld.length>0){
+				console.log(this.checkProjectListOld);
+				for(var i=0;i<this.checkProjectListOld.length;i++){
+					if(this.checkProjectListOld[i].id == this.selectTab){
+						if (JSON.stringify(this.checkProjectList[i]) != JSON.stringify(this.checkProjectListOld[i])) {
+							if(window.confirm('数据尚未保存，是否离开?')){
+								this.selectTab = check.id;
+							}
+						}else{
+							if(this.buttonType == 'save'){
+								this.getData(check.id);
+								// this.buttonType = 'update';
+							}
+							this.buttonType = 'save';
+							if(check.resultList.length > 0){
+								for(var j = 0; j < check.resultList.length; j++){
+									if(check.resultList[j].values && check.resultList[j].values != ''){
+										this.buttonType = 'update';
+									}
+								}
+							}
+							this.selectTab = check.id;
 						}
-					}
+					 }
 				}
-				this.selectTab = check.id;
 			}
 		}else{
 			if(this.buttonType == 'save'){
