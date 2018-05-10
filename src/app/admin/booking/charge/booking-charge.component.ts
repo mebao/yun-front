@@ -1,6 +1,8 @@
 import { Component }                          from '@angular/core';
 import { Router }                             from '@angular/router';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { AdminService }                       from '../../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class BookingChargeComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -33,23 +30,16 @@ export class BookingChargeComponent{
 		mobile: string,
 		creator_name: string,
 		child_name: string,
-		cdate_less: string,
-		cdate_less_num: number,
-		cdate_less_text: string,
-		cdate_big: string,
-		cdate_big_num: number,
-		cdate_big_text: string,
-		bdate_less: string,
-		bdate_less_num: number,
-		bdate_less_text: string,
-		bdate_big: string,
-		bdate_big_num: number,
-		bdate_big_text: string,
 	}
+	cdate_less = null;
+	cdate_big = null;
+	bdate_less = null;
+	bdate_big = null;
 	bookinglist: any[];
 	hasData: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		public router: Router,
 	) {}
@@ -59,11 +49,6 @@ export class BookingChargeComponent{
 			title: '收费列表',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		//权限
 		this.moduleAuthority = {
@@ -85,29 +70,30 @@ export class BookingChargeComponent{
 
 		this.hasData = false;
 
-		var todayDate = this.adminService.getDayByDate(new Date());
-		if(JSON.parse(sessionStorage.getItem('search-bookingCharge'))){
-			this.searchInfo = JSON.parse(sessionStorage.getItem('search-bookingCharge'));
-		}else{
+		this.searchInfo = {
+			doctor_id: '',
+			service_id: '',
+			mobile: '',
+			creator_name: '',
+			child_name: '',
+		}
+		this.cdate_less = null;
+		this.cdate_big = null;
+		this.bdate_less = new Date();
+		this.bdate_big = new Date();
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingCharge'));
+        if(sessionSearch){
 			this.searchInfo = {
-				doctor_id: '',
-				service_id: '',
-				mobile: '',
-				creator_name: '',
-				child_name: '',
-				cdate_less: '',
-				cdate_less_num: 0,
-				cdate_less_text: '',
-				cdate_big: '',
-				cdate_big_num: 0,
-				cdate_big_text: '',
-				bdate_less: todayDate,
-				bdate_less_num: new Date(todayDate).getTime(),
-				bdate_less_text: this.adminService.dateFormat(todayDate),
-				bdate_big: todayDate,
-				bdate_big_num: new Date(todayDate).getTime(),
-				bdate_big_text: this.adminService.dateFormat(todayDate),
-			}
+	            doctor_id: sessionSearch.doctor_id,
+	            service_id: sessionSearch.service_id,
+	            mobile: sessionSearch.mobile,
+	            creator_name: sessionSearch.creator_name,
+	            child_name: sessionSearch.child_name,
+            }
+            this.cdate_less = sessionSearch.cdate_less ? new Date(sessionSearch.cdate_less) : null;
+            this.cdate_big = sessionSearch.cdate_big ? new Date(sessionSearch.cdate_big) : null;
+            this.bdate_less = sessionSearch.bdate_less ? new Date(sessionSearch.bdate_less) : null;
+            this.bdate_big = sessionSearch.bdate_big ? new Date(sessionSearch.bdate_big) : null;
 		}
 
 		this.loadingShow = false;
@@ -126,14 +112,14 @@ export class BookingChargeComponent{
 			 + this.adminService.getUser().clinicId + '&role=2';
 		this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
 				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -142,14 +128,14 @@ export class BookingChargeComponent{
 		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.servicelist = results.servicelist;
 				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -158,7 +144,7 @@ export class BookingChargeComponent{
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
@@ -178,27 +164,37 @@ export class BookingChargeComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
 	//查询
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-bookingCharge', JSON.stringify(this.searchInfo));
+		sessionStorage.setItem('search-bookingCharge', JSON.stringify({
+            doctor_id: this.searchInfo.doctor_id,
+            service_id: this.searchInfo.service_id,
+            mobile: this.searchInfo.mobile,
+            creator_name: this.searchInfo.creator_name,
+            child_name: this.searchInfo.child_name,
+            cdate_less: this.cdate_less,
+            cdate_big: this.cdate_big,
+            bdate_less: this.bdate_less,
+            bdate_big: this.bdate_big,
+        }));
 		//列表
 		var urlOptionsList = this.getUrlOptios();
-		if(this.searchInfo.cdate_less && this.searchInfo.cdate_less != ''){
-			urlOptionsList += '&cdate_less=' + this.searchInfo.cdate_less;
+		if(this.cdate_less){
+			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.cdate_less));
 		}
-		if(this.searchInfo.cdate_big && this.searchInfo.cdate_big != ''){
-			urlOptionsList += '&cdate_big=' + this.searchInfo.cdate_big;
+		if(this.cdate_big){
+			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.cdate_big));
 		}
-		if(this.searchInfo.bdate_less && this.searchInfo.bdate_less != ''){
-			urlOptionsList += '&bdate_less=' + this.searchInfo.bdate_less;
+		if(this.bdate_less){
+			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.bdate_less));
 		}
-		if(this.searchInfo.bdate_big && this.searchInfo.bdate_big != ''){
-			urlOptionsList += '&bdate_big=' + this.searchInfo.bdate_big;
+		if(this.bdate_big){
+			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.bdate_big));
 		}
 		this.getList(urlOptionsList);
 	}
@@ -224,31 +220,37 @@ export class BookingChargeComponent{
 		return urlOptions;
 	}
 
-	// 选择日期
-	changeDate(_value, key) {
-		this.searchInfo[key] = JSON.parse(_value).value;
-		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-		this.searchInfo[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
-	}
+    _disabledCdateLess = (endValue) => {
+        if (!endValue || !this.cdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.cdate_big.getTime();
+    };
+
+    _disabledCdateBig = (startValue) => {
+        if (!startValue || !this.cdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.cdate_less.getTime();
+    };
+
+    _disabledBdateLess = (endValue) => {
+        if (!endValue || !this.bdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.bdate_big.getTime();
+    };
+
+    _disabledBdateBig = (startValue) => {
+        if (!startValue || !this.bdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.bdate_less.getTime();
+    };
 
 	//付款
 	payment(booking) {
 		sessionStorage.setItem('bookingInfo', JSON.stringify(booking));
 		this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: booking.bookingId}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -175,7 +175,7 @@
 			<span class="selected">已选择</span>
 			<span class="selected item"></span>
 		</label>
-		<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap">
+		<div *ngIf="timelist.length > 0" class="time-list flex flex-wrap mt10">
 			<ng-container *ngFor="let time of timelist; let index=index;">
 				<div class="">
 					<div
@@ -195,8 +195,8 @@
 				<div *ngIf="index % 8 != 7" style="width: calc((100% - 780px) / 7)"></div>
 			</ng-container>
 		</div>
-		<div *ngIf="timelist.length == 0">
-			请先选择预约时间
+		<div *ngIf="timelist.length == 0" class="mt10">
+			<nz-alert [nzType]="'info'" [nzMessage]="'请先选择预约时间'"></nz-alert>
 		</div>
 		<!-- <select id="time" name="time" [(ngModel)]="bookingInfo.timeInfo" #timeInfo="ngModel">
 			<ng-container *ngFor="let time of timelist">

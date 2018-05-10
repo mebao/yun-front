@@ -1,10 +1,18 @@
 import { Component }                      from '@angular/core';
 
+import { NzMessageService }               from 'ng-zorro-antd';
+
 import { AdminService }                   from '../admin.service';
 
 @Component({
     selector: 'admin-guazhang-list',
-    templateUrl: './guazhang-list.component.html'
+    templateUrl: './guazhang-list.component.html',
+	styles: [ `
+		.ant-form-item-label label:after{
+		    display: none;
+		}
+	`
+  	]
 })
 
 export class GuazhangList{
@@ -12,26 +20,19 @@ export class GuazhangList{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	loadingShow: boolean;
 	hasData: boolean;
 	recordList: any[];
 	url: string;
 	searchInfo: {
 		user_name: string,
-		b_time: string,
-		b_time_num: number,
-		l_time: string,
-		l_time_num: number,
 		b_amount: string,
 		l_amount: string,
         second_type: string,
         selectType: string,
 	}
+    _startDate = null;
+    _endDate = null;
 	commonList: any[];
     modalConfirmTab: boolean;
     selector: {
@@ -47,6 +48,7 @@ export class GuazhangList{
     btnCanEdit: boolean;
 
 	constructor(
+        private _message: NzMessageService,
 		public adminService: AdminService,
 	) {}
 
@@ -55,11 +57,6 @@ export class GuazhangList{
 			title: '挂账收费',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.loadingShow = false;
 
@@ -68,14 +65,24 @@ export class GuazhangList{
 
 		this.searchInfo = {
 			user_name: '',
-			b_time: '',
-			b_time_num: 0,
-			l_time: '',
-			l_time_num: 0,
 			b_amount: '',
 			l_amount: '',
             second_type: '1',
             selectType: '1',
+		}
+        this._startDate = new Date();
+        this._endDate = new Date();
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-guazhangList'));
+        if(sessionSearch){
+			this.searchInfo = {
+	            user_name: sessionSearch.user_name,
+	            b_amount: sessionSearch.b_amount,
+	            l_amount: sessionSearch.l_amount,
+	            second_type: sessionSearch.second_type,
+	            selectType: sessionSearch.selectType,
+            }
+            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
+            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
 		this.commonList = [
@@ -105,16 +112,25 @@ export class GuazhangList{
 
 	search() {
         this.loadingShow = true;
+		sessionStorage.setItem('search-guazhangList', JSON.stringify({
+            user_name: this.searchInfo.user_name,
+            b_amount: this.searchInfo.b_amount,
+            l_amount: this.searchInfo.l_amount,
+            second_type: this.searchInfo.second_type,
+            selectType: this.searchInfo.selectType,
+            _startDate: this._startDate,
+            _endDate: this._endDate,
+        }));
 		var urlOptions = this.url;
 		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-		if(this.searchInfo.b_time && this.searchInfo.b_time != ''){
-			urlOptions += '&b_time=' + this.searchInfo.b_time;
-		}
-		if(this.searchInfo.l_time && this.searchInfo.l_time != ''){
-			urlOptions += '&l_time=' + this.searchInfo.l_time;
-		}
+        if(this._startDate){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        }
+        if(this._endDate){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+        }
 		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
 		}
@@ -127,11 +143,25 @@ export class GuazhangList{
 		this.getData(urlOptions);
 	}
 
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this._endDate) {
+            return false;
+        }
+        return startValue.getTime() > this._endDate.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this._startDate) {
+            return false;
+        }
+        return endValue.getTime() < this._startDate.getTime();
+    };
+
 	getData(urlOptions) {
 		this.adminService.searchtran(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.recordList = results.list;
@@ -143,14 +173,8 @@ export class GuazhangList{
 			}
 		}).catch(() => {
             this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
-	}
-
-	// 选择时间
-	changeDate(_value, key) {
-		this.searchInfo[key] = JSON.parse(_value).value;
-		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
 	}
 
     closeConfirm() {
@@ -158,7 +182,7 @@ export class GuazhangList{
             id: '',
             amount: '',
             text: '',
-            second_way: '',
+            second_way: this.selector.second_way == '' ? null : '',
             userBalance: '',
             memberId: '',
             memberName: '',
@@ -171,13 +195,14 @@ export class GuazhangList{
         this.loadingShow = true;
         this.selector.id = record.id;
         this.selector.amount = record.payWay == 'guazhang' ? record.amount : record.secondAmount;
+        this.selector.second_way = this.selector.second_way == '' ? null : '';
         this.getUserInfo(record.userId,this.selector.amount);
     }
 
     confirm() {
         this.btnCanEdit = true;
         if(this.adminService.isFalse(this.selector.second_way)){
-            this.toastTab('支付方式不可为空', 'error');
+            this._message.error('支付方式不可为空');
             this.btnCanEdit = false;
             return;
         }
@@ -191,15 +216,15 @@ export class GuazhangList{
         }
         this.adminService.payguazhang(this.selector.id, params).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
                 this.btnCanEdit = false;
             }else{
-                this.toastTab('支付成功', '');
+                this._message.success('支付成功');
                 this.btnCanEdit = false;
                 this.search();
             }
         }).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
             this.btnCanEdit = false;
         });
     }
@@ -213,7 +238,7 @@ export class GuazhangList{
         this.adminService.searchuser(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.loadingShow = false;
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
@@ -231,22 +256,7 @@ export class GuazhangList{
             }
         }).catch(() => {
             this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }
