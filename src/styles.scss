@@ -98,7 +98,7 @@ label {
 }
 
 /*左右布局 + 换肤功能*/
-@mixin theme($bgColor: #fff){
+@mixin theme($bgColor: #fff, $titleColor: inherit){
 	height: 100%;
 	.page-container{
 		height: 100%;
@@ -114,7 +114,40 @@ label {
 				background-color: $bgColor;
 				border: 1px solid #E6E9ED;
 				padding: 10px 15px;
-	            min-width: 1150px;
+        		min-width: 1150px;
+		        .title.flex-1 {
+		          color: $titleColor;
+		        }
+		        .second-title {
+		          color: $titleColor;
+		        }
+		        .list-tab.mt10 {
+		          background-color: #fff;
+		        }
+		        .ant-table-wrapper {
+		          background: #fff;
+		        }
+		        .week-tab {
+		           background-color: #fff;
+		         }
+		        .pure-table {
+		          background-color: #FFF;
+		        }
+		        .ant-tabs-nav .ant-tabs-tab-active,.ant-tabs-tab:hover {
+		          color: $titleColor;
+		        }
+		        .section{
+		          background-color: #FFF;
+		          label{
+		            color: #000;
+		          }
+		        }
+		        a.edit {
+		          color: $titleColor !important;
+		        }
+		        label{
+		          color: $titleColor;
+		        }
 			}
 		}
 	}
@@ -125,11 +158,35 @@ label {
 }
 
 .body-container.theme.theme_green {
-  	@include theme(#A2BB98);
+  	@include theme(#A2BB98, #FFF);
 }
 
-.body-container.theme.theme_red {
-  	@include theme(red);
+.body-container.theme.theme_green2 {
+  	@include theme(rgb(204, 232, 207));
+}
+
+.body-container.theme.theme_gray {
+  	@include theme(#6e6e6e, #FFF);
+}
+
+.body-container.theme.theme_blue {
+  	@include theme(rgb(135,204,255), #FFF);
+}
+
+.body-container.theme.theme_4 {
+  	@include theme(rgb(107,142,35), #FFF);
+}
+
+.body-container.theme.theme_brown {
+  	@include theme(rgb(140,100,50), #FFF);
+}
+
+.body-container.theme.theme_brown2 {
+  	@include theme(rgb(210,180,140), #FFF);
+}
+
+.body-container.theme.theme_yellow {
+  	@include theme(rgb(180,180,112), #FFF);
 }
 
 // 左右模块
