@@ -526,6 +526,7 @@ export class DoctorPrescriptComponent{
                     this.isLoadingSave = false;
                 }else{
                     this._message.success('退药成功');
+                    this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
                     setTimeout(() => {
                         this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
                     }, 2000);

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import {
     FormBuilder,
     FormGroup,
@@ -27,6 +28,7 @@ export class UpdatepwdComponent{
         private fb: FormBuilder,
         private _message: NzMessageService,
         private adminService: AdminService,
+        private router: Router,
     ) {
         this.validateForm = this.fb.group({
             password: [ '' ],
@@ -87,9 +89,10 @@ export class UpdatepwdComponent{
                 this.isLoadingSave = false;
             }else{
                 this._message.success('密码修改成功');
-                this.validateForm.controls.password.setValue('');
-                this.validateForm.controls.repassword.setValue('');
-                this.isLoadingSave = false;
+				this.adminService.delCookie('user');
+				sessionStorage.removeItem('userClinicRoles');
+				sessionStorage.removeItem('userClinicRolesInfos');
+				this.router.navigate(['./login']);
             }
         }).catch(() => {
             this._message.error('服务器错误');

@@ -186,18 +186,7 @@ export class BookingInComponent{
 		this.modalTabAgain = false;
 		this.bookingAgainText = '';
 		this.loadingShow = false;
-		// this.intervalChange();
 		sessionStorage.setItem('canDeactivate', 'bookingIn');
-	}
-
-	intervalChange() {
-		var n = 0;
-		this.intervalObj = setInterval(() => {
-			n++;
-	    	if (JSON.stringify(this.bookingInfo) != JSON.stringify(this.bookingInfoOld)) {
-	      		this.editIn();
-	    	}
-		}, 5000);
 	}
 
 	canDeactivate(): Observable<boolean> | boolean {

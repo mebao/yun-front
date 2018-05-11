@@ -2,7 +2,8 @@
 <div class="content-section admin-user-updatepwd">
 	<top-bar [data]="topBar"></top-bar>
     <form nz-form [formGroup]="validateForm">
-        <div nz-form-item nz-row>
+		<nz-alert [nzType]="'info'" [nzMessage]="'密码修改后需要重新登录'"></nz-alert>
+        <div nz-form-item nz-row class="mt20">
             <div nz-form-label nz-col [nzSpan]="7">
                 <label nz-form-item-required>新密码</label>
             </div>

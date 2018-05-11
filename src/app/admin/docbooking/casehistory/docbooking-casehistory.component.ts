@@ -197,8 +197,12 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	doctorlist: any[];
 	servicelist: [{}];
 	createType: string;
+	// 最初数据
 	infoOld: any;
-	intervalObj: any;
+	// 实时监控数据
+	infoTime: any;
+	timeSaveInterval: any;
+	timeCheckInterval: any;
 
 	constructor(
 		private adminService: AdminService,
@@ -208,6 +212,11 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		private uploadService: UploadService,
 		private dialogService: DialogService,
 	) {}
+
+	ngOnDestroy(){
+    	window.clearInterval(this.timeSaveInterval);
+    	window.clearInterval(this.timeCheckInterval);
+	}
 
 	ngOnInit(): void{
 		this.topBar = {
@@ -276,6 +285,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			checkId: '',
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
+		this.infoTime = JSON.parse(JSON.stringify(this.info));
 		this.baseInfo = {
 			height: '',
 			mid_height: '',
@@ -442,14 +452,15 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.btnCanEdit = false;
 		this.getDoctorList();
 		this.getServiceList();
-		//this.intervalChange();
+
+		sessionStorage.setItem('canDeactivate', 'casehistory');
 	}
 
-	intervalChange() {
-		var n = 0;
-		this.intervalObj = setInterval(() => {
-			n++;
-			console.log('第' + n + '次检测');
+	saveInterval() {
+		var saveNum = 0;
+		return setInterval(() => {
+			saveNum++
+			console.log('保存');
 	    	if (JSON.stringify(this.info) != JSON.stringify(this.infoOld)) {
 				if(this.pageType == 'examine'){
 					this.create('examine');
@@ -460,6 +471,23 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}, 5000);
 	}
 
+	intervalChange() {
+		window.clearInterval(this.timeSaveInterval);
+		window.clearInterval(this.timeCheckInterval);
+		var checkNum = 0;
+		this.timeSaveInterval = this.saveInterval();
+		this.timeCheckInterval = setInterval(() => {
+			checkNum++;
+			console.log('检测');
+    		if (JSON.stringify(this.info) != JSON.stringify(this.infoTime)) {
+				this.infoTime = JSON.parse(JSON.stringify(this.info));
+				window.clearInterval(this.timeSaveInterval);
+				console.log('清除定时器，重新验证');
+				this.timeSaveInterval = this.saveInterval();
+			}
+		}, 1000);
+	}
+
 	canDeactivate(): Observable<boolean> | boolean {
     	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
     	if (JSON.stringify(this.info) == JSON.stringify(this.infoOld)) {
@@ -468,7 +496,11 @@ export class DocbookingCasehistoryComponent implements OnInit{
 
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
-    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+    	if(sessionStorage.getItem('canDeactivate') == 'casehistory_canDeactivate'){
+			return true;
+		}else{
+    		return this.dialogService.confirm('病例尚未保存，是否离开?');
+		}
   	}
 
 	initEdit(doctorBooking,casehistory) {
@@ -645,6 +677,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			this.toastTab('服务器错误', 'error');
 		});
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
+		this.infoTime = JSON.parse(JSON.stringify(this.info));
 	}
 
 	searchCaseHistory(doctorBooking){
@@ -666,6 +699,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.hasCasehistoryData = true;
 				if(this.hasCasehistoryData && this.casehistoryList.length == 0){
 					this.editType = 'create';
+					// 开启定时器
+					this.intervalChange();
 					// 病历模板
 					this.casetempletList = [];
 					this.selectedTemplet = '';
@@ -762,6 +797,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				}
 			}
 			this.infoOld = JSON.parse(JSON.stringify(this.info));
+			this.infoTime = JSON.parse(JSON.stringify(this.info));
 		}
 		// 若就诊管理中，添加了小孩临时信息，则直接使用
 		if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
@@ -792,6 +828,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						}
 					}
 					this.infoOld = JSON.parse(JSON.stringify(this.info));
+					this.infoTime = JSON.parse(JSON.stringify(this.info));
 				}
 			}).catch(() => {
 				this.toastTab('服务器错误', 'error');
@@ -820,6 +857,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						}
 					}
 					this.infoOld = JSON.parse(JSON.stringify(this.info));
+					this.infoTime = JSON.parse(JSON.stringify(this.info));
 				}
 			}).catch(() => {
 				this.toastTab('服务器错误', 'error');
@@ -1057,6 +1095,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		//sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 		//this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
 		this.editType = 'create';
+		// 开启定时器
+		this.intervalChange();
 		this.initEdit(this.booking,[]);
 	}
 
@@ -1076,6 +1116,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		//sessionStorage.setItem('casehistory', JSON.stringify(casehistory));
 		//this.router.navigate(['./admin/bookingCasehistory'], {queryParams: {id: this.id, doctor: this.doctorId, childId: this.booking.childId, type: 'update'}});
 		this.editType = 'update';
+		// 开启定时器
+		this.intervalChange();
 		this.initEdit(this.booking,casehistory);
 		this.btnCanEdit = false;
 	}
@@ -1094,6 +1136,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.info.checkList = results.list;
 				this.infoOld = JSON.parse(JSON.stringify(this.info));
+				this.infoTime = JSON.parse(JSON.stringify(this.info));
 			}
 		}).catch(() => {
 			this.toastTab('服务器错误', 'error');
@@ -1348,6 +1391,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			});
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
+		this.infoTime = JSON.parse(JSON.stringify(this.info));
 	}
 
 	showFile(file) {
