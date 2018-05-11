@@ -162,7 +162,9 @@ export class InspectResultsComponent{
 								if(results.list[i].resultList[j].values == null){
 									results.list[i].resultList[j].values = '';
 								}
-								results.list[i].resultList[j].compare = '';
+								if(results.list[i].resultList[j].compare == null){
+									results.list[i].resultList[j].compare = '';
+								}
 								// 新建时，可以通过移除、添加相关选项
 								results.list[i].resultList[j].use = true;
 								if(results.list[i].resultList[0].values && results.list[i].resultList[0].values != ''){
@@ -196,12 +198,12 @@ export class InspectResultsComponent{
 						// 获取最新检查结果
 						if(_selectTab != '' && _selectTab == results.list[i].id){
 							this.buttonType = 'update';
-							this.changeTab(results.list[i]);
+							this.changeTab(results.list[i],'isNew');
 						}
 					}
 					if(_selectTab == ''){
 						this.buttonType = 'update';
-						this.changeTab(results.list[0]);
+						this.changeTab(results.list[0],'');
 					}
 				}
 				this.checkProjectList = results.list;
@@ -263,15 +265,31 @@ export class InspectResultsComponent{
     	}
     }
 
-	changeTab(check) {
+	changeTab(check,type) {
+		if(type=="isNew"){
+			this.firstClick = false;
+		}
+		//console.log(this.checkProjectListOld,this.checkProjectList,this.selectTab);
 		if(this.firstClick){
 			if(this.checkProjectListOld.length>0){
-				console.log(this.checkProjectListOld);
 				for(var i=0;i<this.checkProjectListOld.length;i++){
 					if(this.checkProjectListOld[i].id == this.selectTab){
 						if (JSON.stringify(this.checkProjectList[i]) != JSON.stringify(this.checkProjectListOld[i])) {
 							if(window.confirm('数据尚未保存，是否离开?')){
+								if(this.buttonType == 'save'){
+									this.getData(check.id);
+									// this.buttonType = 'update';
+								}
+								this.buttonType = 'save';
+								if(check.resultList.length > 0){
+									for(var j = 0; j < check.resultList.length; j++){
+										if(check.resultList[j].values && check.resultList[j].values != ''){
+											this.buttonType = 'update';
+										}
+									}
+								}
 								this.selectTab = check.id;
+								return false;
 							}
 						}else{
 							if(this.buttonType == 'save'){
@@ -287,6 +305,7 @@ export class InspectResultsComponent{
 								}
 							}
 							this.selectTab = check.id;
+							return false;
 						}
 					 }
 				}

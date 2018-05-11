@@ -10,7 +10,7 @@
 		</div>
 		<div class="pure-u-4-5 right-tab">
 			<div class="second-bar-tab flex">
-				<div class="item" (click)="changeTab(check)" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
+				<div class="item" (click)="changeTab(check,'')" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
 			</div>
 			<div *ngFor="let check of checkProjectList; let indexCheck=index;">
 				<div *ngIf="selectTab == check.id">

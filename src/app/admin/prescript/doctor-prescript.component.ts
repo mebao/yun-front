@@ -731,6 +731,7 @@ export class DoctorPrescriptComponent{
 						this._message.error(data.errorMsg);
 					}else{
 						this._message.success('药品添加成功');
+                        this.mPrescriptListOld = JSON.parse(JSON.stringify(this.validateForm.value));
 						setTimeout(() => {
 							this.router.navigate(['./admin/docbooking'], {queryParams: {id: this.id, doctorId: this.doctorId}});
 						}, 2000);
