@@ -187,6 +187,7 @@ export class BookingInComponent{
 		this.bookingAgainText = '';
 		this.loadingShow = false;
 		// this.intervalChange();
+		sessionStorage.setItem('canDeactivate', 'bookingIn');
 	}
 
 	intervalChange() {
@@ -204,10 +205,13 @@ export class BookingInComponent{
     	if (JSON.stringify(this.bookingInfo) == JSON.stringify(this.bookingInfoOld)) {
       		return true;
     	}
-
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
-    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+    	if(sessionStorage.getItem('canDeactivate') == 'bookingIn_canDeactivate'){
+			return true;
+		}else{
+    		return this.dialogService.confirm('数据尚未保存，是否离开?');
+		}
   	}
 
 	// 添加宝宝
@@ -251,7 +255,6 @@ export class BookingInComponent{
 			// {key: 31, type: 'overdue', value: '23:30'},
 		];
 		this.adminList = [];
-
 		this.booking = {
 			age: '',
 			bookingDate: '',
@@ -291,6 +294,9 @@ export class BookingInComponent{
 			booking_fee: '',
 			referee: '',
 		}
+		this.bookingInfo.service = null;
+		this.bookingInfo.user_doctor = null;
+		this.bookingInfo.booking_date = null;
 		this.bookingInfoOld = JSON.parse(JSON.stringify(this.bookingInfo));
 	}
 

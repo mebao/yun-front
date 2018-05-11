@@ -894,7 +894,7 @@ export class BookingListComponent implements OnInit{
 		}
 	}
 
-	sendSms(booking) {
+	sendSms(booking, type) {
 		this.modalTab = false;
 		var that = this;
 		this.confirmServ.confirm({
@@ -906,7 +906,9 @@ export class BookingListComponent implements OnInit{
 				that.comfirmSendSms(booking.bookingId);
 			},
 			onCancel() {
-				that.modalTab = true;
+				if(type == 'week'){
+					that.modalTab = true;
+				}
 			}
 		});
 	}

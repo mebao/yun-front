@@ -210,7 +210,7 @@
 					</div>
 				</div>
 			</form>
-			<div class="text-center">
+			<div class="text-center mt20">
 				<button *ngIf="this.secondType != '' && this.secondType != 'continueAdd' && this.secondType != 'update'" (click)="confirmCreate(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">退药</button>
 				<button *ngIf="this.secondType == '' || this.secondType == 'continueAdd' || this.secondType == 'update'" (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">保存</button>
 			</div>

@@ -1243,8 +1243,12 @@ export class AuthGuardRole implements CanActivate{
 					this.router.navigate(['./admin/noPermissions']);
 					return false;
 				}else{
+					// 多次路由跳转导致canDeactivate会执行两次，通过session解决
+					var canDeactivate = sessionStorage.getItem('canDeactivate');
+					if(canDeactivate && canDeactivate.indexOf('canDeactivate') == -1){
+						sessionStorage.setItem('canDeactivate', canDeactivate + '_canDeactivate');
+					}
 					sessionStorage.setItem('userClinicRolesInfos', JSON.stringify(authority));
-
 					//url中是否有参数
 					if(authority.url.indexOf('?') == -1){
 						this.router.navigate(['.' + authority.url]);

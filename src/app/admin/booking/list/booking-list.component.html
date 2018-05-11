@@ -243,7 +243,7 @@
 							        (printComplete)="printComplete()">
 	    						</e-ngx-print>
 							</a>
-							<a *ngIf="booking.hasSms == '0' && moduleAuthority.sendSms" class="edit flex-1 pad10 text-center" (click)="sendSms(booking)">
+							<a *ngIf="booking.hasSms == '0' && moduleAuthority.sendSms" class="edit flex-1 pad10 text-center" (click)="sendSms(booking, 'list')">
 								发送短信
 							</a>
 						</div>
@@ -369,7 +369,7 @@
 								</e-ngx-print>
 							</div>
 							<div *ngIf="showBooking.hasSms == '0' && moduleAuthority.sendSms" class="mt10">
-								<button class="pure-button pure-button-primary" (click)="sendSms(showBooking)">
+								<button class="pure-button pure-button-primary" (click)="sendSms(showBooking, 'week')">
 									发送短信
 								</button>
 							</div>

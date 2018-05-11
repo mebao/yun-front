@@ -116,7 +116,7 @@ export class BookingChargeComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
-				this.doctorlist.unshift({id: '', realName: '请选择医生'});
+				// this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch(() => {
             this._message.error('服务器错误');
@@ -132,7 +132,7 @@ export class BookingChargeComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.servicelist = results.servicelist;
-				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
+				// this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
 			}
 		}).catch(() => {
             this._message.error('服务器错误');
