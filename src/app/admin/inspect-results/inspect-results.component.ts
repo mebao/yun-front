@@ -97,22 +97,7 @@ export class InspectResultsComponent{
 
 		this.btnCanEdit = false;
 		this.firstClick = false;
-		//this.intervalChange();
-	}
-
-	intervalChange() {
-		var n = 0;
-		this.intervalObj = setInterval(() => {
-			n++;
-			console.log('第' + n + '次检测');
-			for(var i=0;i<this.checkProjectList.length;i++){
-				if(this.checkProjectList[i].id == this.selectTab){
-					if (JSON.stringify(this.checkProjectList[i]) == JSON.stringify(this.checkProjectListOld[i])) {
-						this.save(i);
-					}
-				}
-			}
-		}, 5000);
+		sessionStorage.setItem('canDeactivate', 'inspectResults');
 	}
 
 	canDeactivate(): Observable<boolean> | boolean {
@@ -130,7 +115,11 @@ export class InspectResultsComponent{
 
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
-    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+    	if(sessionStorage.getItem('canDeactivate') == 'inspectResults_canDeactivate'){
+			return true;
+		}else{
+    		return this.dialogService.confirm('数据尚未保存，是否离开?');
+		}
   	}
 
 

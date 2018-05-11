@@ -88,6 +88,7 @@ export class DoctorTcmPrescript{
         this.docTcmList = [];
         this.docPreTcmTab = false;
         this.getDocTcmList();
+		sessionStorage.setItem('canDeactivate', 'doctorTcmPrescript');
     }
 
     canDeactivate(): Observable<boolean> | boolean {
@@ -98,7 +99,11 @@ export class DoctorTcmPrescript{
 
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
-    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+    	if(sessionStorage.getItem('canDeactivate') == 'doctorTcmPrescript_canDeactivate'){
+			return true;
+		}else{
+    		return this.dialogService.confirm('处方尚未保存，是否离开?');
+		}
   	}
 
     addField(tcm, e?: MouseEvent) {

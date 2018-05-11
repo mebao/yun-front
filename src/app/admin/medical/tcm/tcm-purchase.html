@@ -19,7 +19,7 @@
                 <div nz-form-explain *ngIf="getFormControl('supplier').dirty && getFormControl('supplier').hasError('required')">供应商不可为空</div>
             </div>
         </div>
-        <div nz-form-item nz-row>
+        <div nz-form-item nz-row class="mt10">
             <div nz-form-label nz-col [nzSpan]="7">
                 <label nz-form-item-required>发货时间：</label>
             </div>
@@ -29,7 +29,7 @@
             </div>
         </div>
 		<ng-container *ngFor="let tcmPurchase of tcmPurchaseList; let index=index;">
-	        <div nz-form-item nz-row>
+	        <div nz-form-item nz-row class="mt10">
 	            <div nz-form-label nz-col [nzSpan]="7">
 	                <label>药材-{{tcmPurchase.id + 1}}：</label>
 	            </div>
@@ -50,7 +50,7 @@
 				<i *ngIf="tcmPurchase.id != 0" class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(tcmPurchase, $event)"></i>
 	        </div>
 		</ng-container>
-		<div nz-form-item nz-row>
+		<div nz-form-item nz-row class="mt10">
       		<div nz-form-control nz-col [nzSpan]="12" [nzOffset]="7">
         		<button nz-button [nzType]="'dashed'" [nzSize]="'large'" class="w100" (click)="addField(null, $event)">
           			<i class="anticon anticon-plus"></i>
@@ -58,7 +58,7 @@
         		</button>
       		</div>
     	</div>
-        <div nz-form-item nz-row>
+        <div nz-form-item nz-row class="mt10">
             <div nz-form-label nz-col [nzSpan]="7">
                 <label nz-form-item-required>总费用：</label>
             </div>
@@ -67,7 +67,7 @@
                 <div nz-form-explain *ngIf="getFormControl('fee').dirty && getFormControl('fee').hasError('required')">总费用不可为空</div>
             </div>
         </div>
-        <div nz-form-item nz-row>
+        <div nz-form-item nz-row class="mt10">
             <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
                 <button (click)="save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave" [disabled]="!validateForm.valid">保存</button>
             </div>

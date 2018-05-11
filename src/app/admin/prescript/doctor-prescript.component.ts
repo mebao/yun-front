@@ -323,6 +323,7 @@ export class DoctorPrescriptComponent{
 		this.isLoadingSave = false;
 		this.createTab = false;
 		this.form = '';
+		sessionStorage.setItem('canDeactivate', 'doctorPrescript');
 	}
 
     canDeactivate(): Observable<boolean> | boolean {
@@ -334,7 +335,11 @@ export class DoctorPrescriptComponent{
 
     	// Otherwise ask the user with the dialog service and return its
     	// observable which resolves to true or false when the user decides
-    	return this.dialogService.confirm('数据尚未保存，是否离开?');
+    	if(sessionStorage.getItem('canDeactivate') == 'doctorPrescript_canDeactivate'){
+			return true;
+		}else{
+    		return this.dialogService.confirm('药方尚未保存，是否离开?');
+		}
   	}
 
     addField(medical, e?: MouseEvent) {
