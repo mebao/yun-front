@@ -1151,6 +1151,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		if(this.info.mid_height == null){
 			this.info.mid_height = '';
 		}
+		if(this.info.compare_height == null){
+			this.info.compare_height = '';
+		}
 		if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
 			this.toastTab('身高应大于0', 'error');
 			return;
@@ -1174,6 +1177,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		}
 		if(this.info.mid_weight == null){
 			this.info.mid_weight = '';
+		}
+		if(this.info.compare_weight == null){
+			this.info.compare_weight = '';
 		}
 		if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
 			this.toastTab('体重应大于0', 'error');
@@ -1216,7 +1222,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.info.time = JSON.parse(_value).value;
 	}
 
-	validateNumber(type, info) {
+	validateNumber(type, info) {console.log(1111);
 		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this.toastTab(info + '应大于0', 'error');
 			return false;

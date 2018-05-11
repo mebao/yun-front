@@ -1364,6 +1364,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		if(this.info.medium_height == null){
 			this.info.medium_height = '';
 		}
+		if(this.info.compare_height == null){
+			this.info.compare_height = '';
+		}
         if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
             this.toastTab('身高应大于0', 'error');
             return;
@@ -1387,6 +1390,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
 		if(this.info.medium_weight == null){
 			this.info.medium_weight = '';
+		}
+		if(this.info.compare_weight == null){
+			this.info.compare_weight = '';
 		}
         if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
             this.toastTab('体重应大于0', 'error');
