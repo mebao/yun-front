@@ -18,15 +18,18 @@ export class AuthGuardRole implements CanActivate{
 	}
 
 	checkUserClinicRoles(url: string): boolean{
-		// 验证url为''和'/admin'------没有默认首页
-		if((this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') && (url == '' || url == '/admin' || url == '/admin/home')){
-			this.router.navigate(['./admin/workbench/reception']);
-			return false;
-		}
-		// 那段角色，是超级管理员0还是普通角色
-		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
-			return true;
+		// login页面，如果存在用户信息，则直接进入管理页面
+		if(url.indexOf('login') == -1){
+			// 验证url为''和'/admin'------没有默认首页
+			if((this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') && (url == '' || url == '/admin' || url == '/admin/home')){
+				this.router.navigate(['./admin/workbench/reception']);
+				return false;
+			}
+			// 那段角色，是超级管理员0还是普通角色
+			// 如果是超级管理员，获取所有权限
+			if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+				return true;
+			}
 		}
 		//判断sessionStorage中是否含有userClinicRoles信息，没有,需再次请求
 		var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
@@ -1178,6 +1181,7 @@ export class AuthGuardRole implements CanActivate{
 				];
 
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
+
 				// 验证url为''和'/admin'------没有默认首页
 				if(url == '' || url == '/admin' || url == '/admin/home'){
 					if(userClinicRoles.length > 0){
@@ -1202,6 +1206,12 @@ export class AuthGuardRole implements CanActivate{
 						this.router.navigate(['./admin/noPermissions']);
 					}
 					return false;
+				}
+
+				// login页面，如果存在用户信息，则直接进入管理页面
+				if(url.indexOf('login') != -1){
+					this.router.navigate(['.' + authorityList[0].firstUrl]);
+					return true;
 				}
 
 				var authority = {

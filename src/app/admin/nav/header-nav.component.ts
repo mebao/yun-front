@@ -56,35 +56,7 @@ export class HeaderNavComponent {
 		this.messageList = [];
 		this.messageBtn = false;
 
-		switch(this.theme) {
-			case '':
-				this.theme_name = '默认';
-				break;
-			case 'theme_green':
-				this.theme_name = '绿色';
-				break;
-			case 'theme_green2':
-				this.theme_name = '淡绿色';
-				break;
-			case 'theme_gray':
-				this.theme_name = '深灰色';
-				break;
-			case 'theme_blue':
-				this.theme_name = '蓝色';
-				break;
-			case 'theme_4':
-				this.theme_name = '4';
-				break;
-			case 'theme_brown':
-				this.theme_name = '棕色';
-				break;
-			case 'theme_brown2':
-				this.theme_name = '淡棕色';
-				break;
-			case 'theme_yellow':
-				this.theme_name = '淡黄色';
-				break;
-		}
+		this.changeThemeName(this.theme);
 
 		this.showSetup = false;
 		this.modalTabMessage = false;
@@ -124,6 +96,38 @@ export class HeaderNavComponent {
 			index: '',
 			type: '',
 			feedback: '',
+		}
+	}
+
+	changeThemeName(theme) {
+		switch(theme) {
+			case '':
+				this.theme_name = '默认';
+				break;
+			case 'theme_green':
+				this.theme_name = '绿色';
+				break;
+			case 'theme_green2':
+				this.theme_name = '淡绿色';
+				break;
+			case 'theme_gray':
+				this.theme_name = '深灰色';
+				break;
+			case 'theme_blue':
+				this.theme_name = '蓝色';
+				break;
+			case 'theme_4':
+				this.theme_name = '4';
+				break;
+			case 'theme_brown':
+				this.theme_name = '棕色';
+				break;
+			case 'theme_brown2':
+				this.theme_name = '淡棕色';
+				break;
+			case 'theme_yellow':
+				this.theme_name = '淡黄色';
+				break;
 		}
 	}
 
@@ -325,5 +329,6 @@ export class HeaderNavComponent {
 
 	changeTheme(_theme) {
 		this.onVotedTheme.emit(_theme);
+		this.changeThemeName(_theme);
 	}
 }

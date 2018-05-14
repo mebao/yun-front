@@ -250,6 +250,9 @@
 					</div>
 					<ng-template #nzTemplate>
 						<div>{{booking.memberName}}（{{booking.userBalance ? booking.userBalance : '0.00'}}元）</div>
+						<div *ngFor="let actcard of booking.actCards">
+							{{actcard.activityName}}（剩余：{{actcard.num}}次）
+						</div>
 				    </ng-template>
     			</nz-tooltip>
 			</div>
