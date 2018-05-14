@@ -327,7 +327,6 @@ export class DoctorPrescriptComponent{
 	}
 
     canDeactivate(): Observable<boolean> | boolean {
-        console.log(this.validateForm.value,this.mPrescriptListOld);
     	// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
     	if (JSON.stringify(this.validateForm.value) == JSON.stringify(this.mPrescriptListOld)) {
       		return true;
@@ -399,7 +398,6 @@ export class DoctorPrescriptComponent{
     }
 
     removeField(i) {
-        console.log(i);
         this.mPrescriptDelList.push(i);
         if (this.mPrescriptList.length > 0) {
             const index = this.mPrescriptList.indexOf(i);

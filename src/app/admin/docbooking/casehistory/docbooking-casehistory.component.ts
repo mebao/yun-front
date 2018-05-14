@@ -460,15 +460,14 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		var saveNum = 0;
 		return setInterval(() => {
 			saveNum++
-			console.log('保存');
 	    	if (JSON.stringify(this.info) != JSON.stringify(this.infoOld)) {
 				if(this.pageType == 'examine'){
-					this.create('examine');
+					this.create('');
 				}else{
 					this.create('');
 				}
 	    	}
-		}, 5000);
+		}, 60000);
 	}
 
 	intervalChange() {
@@ -478,14 +477,12 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.timeSaveInterval = this.saveInterval();
 		this.timeCheckInterval = setInterval(() => {
 			checkNum++;
-			console.log('检测');
     		if (JSON.stringify(this.info) != JSON.stringify(this.infoTime)) {
 				this.infoTime = JSON.parse(JSON.stringify(this.info));
 				window.clearInterval(this.timeSaveInterval);
-				console.log('清除定时器，重新验证');
 				this.timeSaveInterval = this.saveInterval();
 			}
-		}, 1000);
+		}, 5000);
 	}
 
 	canDeactivate(): Observable<boolean> | boolean {
@@ -1222,7 +1219,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.info.time = JSON.parse(_value).value;
 	}
 
-	validateNumber(type, info) {console.log(1111);
+	validateNumber(type, info) {
 		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this.toastTab(info + '应大于0', 'error');
 			return false;

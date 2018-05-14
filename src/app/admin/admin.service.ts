@@ -1437,6 +1437,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 网络电话拨打
+	calluser(params): Promise<Data>{
+		var url = this.url + '/mebcrm/calluser';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 挂断网络电话
+	hangupuser(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/hangupuser' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

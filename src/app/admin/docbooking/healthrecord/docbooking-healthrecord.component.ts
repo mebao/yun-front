@@ -556,15 +556,14 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		var saveNum = 0;
 		return setInterval(() => {
 			saveNum++
-			console.log('保存');
 	    	if (JSON.stringify(this.info) != JSON.stringify(this.infoOld)) {
 				if(this.pageType == 'examine'){
-					this.create('examine');
+					this.create('');
 				}else{
 					this.create('');
 				}
 	    	}
-		}, 5000);
+		}, 60000);
 	}
 
 	intervalChange() {
@@ -574,14 +573,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.timeSaveInterval = this.saveInterval();
 		this.timeCheckInterval = setInterval(() => {
 			checkNum++;
-			console.log('检测');
     		if (JSON.stringify(this.info) != JSON.stringify(this.infoTime)) {
 				this.infoTime = JSON.parse(JSON.stringify(this.info));
 				window.clearInterval(this.timeSaveInterval);
-				console.log('清除定时器，重新验证');
 				this.timeSaveInterval = this.saveInterval();
 			}
-		}, 1000);
+		}, 5000);
 	}
 
 	canDeactivate(): Observable<boolean> | boolean {

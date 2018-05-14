@@ -207,6 +207,45 @@ export class UserInfoComponent{
         });
 	}
 
+	// calluser() {
+	// 	var params = {
+	// 		username: this.adminService.getUser().username,
+	// 		token: this.adminService.getUser().token,
+	// 		clinic_id: this.adminService.getUser().clinicId,
+	// 		mobile: this.userInfo.mobile,
+	// 		user_id: this.userInfo.id,
+	// 	}
+	//
+	// 	this.adminService.calluser(params).then((data) => {
+	// 		if(data.status == 'no'){
+	// 			this.toastTab(data.errorMsg, 'error');
+	// 		}else{
+	// 			var results = JSON.parse(JSON.stringify(data.results));
+	// 			sessionStorage.setItem('call_sid', results.call_sid);
+	// 			this.toastTab('网络电话拨打成功', '');
+	// 		}
+	// 	}).catch(() => {
+	// 		this.toastTab('服务器错误', 'error');
+	// 	});
+	// }
+	//
+	// hangupuser() {
+	// 	var urlOptions = '?username=' + this.adminService.getUser().username
+	// 		+ '&token=' + this.adminService.getUser().token
+	// 		+ '&clinic_id=' + this.adminService.getUser().clinicId
+	// 		+ '&callSid=' + sessionStorage.getItem('call_sid');
+	//
+	// 	this.adminService.hangupuser(urlOptions).then((data) => {
+	// 		if(data.status == 'no'){
+	// 			this.toastTab(data.errorMsg, 'error');
+	// 		}else{
+	// 			this.toastTab('网络电话已挂断', '');
+	// 		}
+	// 	}).catch(() => {
+	// 		this.toastTab('服务器错误', 'error');
+	// 	});
+	// }
+
 	selectedFile(_file, key) {
 		var fff = [];
     	var fileJson = _file.target['files'];
