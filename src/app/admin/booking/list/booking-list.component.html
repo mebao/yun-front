@@ -12,7 +12,7 @@
 			<select id="statuslist" name="statuslist" [(ngModel)]="searchInfo.statuslist">
 				<option value="">所有</option>
 				<option value="1">未支付</option>
-				<option value="0,2,3,4,5">已支付</option>
+				<option value="2,3,4,5,11">已支付</option>
 			</select>
 		</div>
 		<div class="pure-control-group mr10">
@@ -26,8 +26,22 @@
 		</div>
 		<div class="w64p"></div>
 	</div>
-	<div class="flex pure-form search-tab mt5">
+	<div class="flex pure-form search-tab max mt5">
 		<div class="flex-1"></div>
+		<div class="pure-control-group mr10 flex">
+			<label for="status">预约状态：</label>
+			<select id="status" name="status" [(ngModel)]="searchInfo.status">
+				<option value="">所有</option>
+				<option value="-1">已失约</option>
+				<option value="0">已取消</option>
+				<option value="1">待支付预约金</option>
+				<option value="2">已支付预约金</option>
+				<option value="3">已登记</option>
+				<option value="4">就诊中</option>
+				<option value="11">就诊结束</option>
+				<option value="5">已完成</option>
+			</select>
+		</div>
 		<div class="pure-control-group mr10 flex">
 			<label for="creator_name">宝宝姓名：</label>
 			<select-search [title]="'请选择宝宝'" [selectList]="childList" [showClear]="true" (onVoted)="selectChild($event)"></select-search>
@@ -107,6 +121,9 @@
 		</div>
 	</div>
 	<div class="bookinglist" *ngIf="selectedTab == 1">
+		<div class="mt10">
+			<nz-alert *ngIf="bookinglist.length > 0" [nzType]="'info'" [nzMessage]="'共查询到预约' + bookinglist.length + '条'"></nz-alert>
+		</div>
 		<div class="pure-g">
 			<div class="pure-u-8-24 booking-tab pad10" *ngFor="let booking of bookinglist">
 				<div style="display:none;">

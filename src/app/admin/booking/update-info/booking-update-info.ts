@@ -509,6 +509,10 @@ export class BookingUpdateInfo{
                     name: clinicdata.payWays[pay],
                 });
             }
+            this.payList.push({
+                id: 'activity',
+                name: '活动卡支付'
+            });
         }
     }
 

@@ -117,6 +117,12 @@
 								{{userCheck.infoList[0].doctorName}}
 							</div>
 						</div>
+						<div class="flex pb10">
+							<div class="w90p">开单时间：</div>
+							<div class="flex-1">
+								{{userCheck.infoList[0].time}}
+							</div>
+						</div>
 					</div>
 				</div>
 				<a *ngIf="moduleAuthority.edit" class="edit pad10 text-center" (click)="check(userCheck.bookingId)">

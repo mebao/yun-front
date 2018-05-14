@@ -30,6 +30,10 @@ export class AuthGuardRole implements CanActivate{
 			if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
 				return true;
 			}
+		}else{
+			if(!(this.adminService.getUser())){
+				return true;
+			}
 		}
 		//判断sessionStorage中是否含有userClinicRoles信息，没有,需再次请求
 		var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
@@ -1209,7 +1213,7 @@ export class AuthGuardRole implements CanActivate{
 				}
 
 				// login页面，如果存在用户信息，则直接进入管理页面
-				if(url.indexOf('login') != -1){
+				if(url.indexOf('login') != -1 && this.adminService.getUser()){
 					this.router.navigate(['.' + authorityList[0].firstUrl]);
 					return true;
 				}

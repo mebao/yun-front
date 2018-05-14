@@ -8,7 +8,7 @@ import { LoginComponent }                    from './login.component';
 import { ForgetpwdComponent }                from './forgetpwd.component';
 
 const loginRoutes: Routes = [
-	{path: 'login', canActivate: [AuthGuard, AuthGuardRole], component: LoginComponent},
+	{path: 'login', canActivate: [AuthGuardRole], component: LoginComponent},
 	{path: 'forgetpwd', component: ForgetpwdComponent},
 ]
 
