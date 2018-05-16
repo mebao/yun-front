@@ -1,16 +1,158 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-transaction-statistics">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="mt10">
-		<div class="second-bar-tab flex">
-			<div class="item" (click)="changeType('1,3')" [ngClass]="{'active': searchInfo.type == '1,3'}">接诊费用</div>
-			<div class="item" (click)="changeType('2')" [ngClass]="{'active': searchInfo.type == '2'}">会员充值</div>
-			<div class="item" (click)="changeType('4')" [ngClass]="{'active': searchInfo.type == '4'}">药品零售</div>
-			<div class="item" (click)="changeType('6')" [ngClass]="{'active': searchInfo.type == '6'}">活动卡售卖</div>
-			<div class="flex-1 text-right">
-				<button (click)="search('export')" nz-button [nzType]="'primary'" [nzSize]="'large'">导出</button>
-			</div>
-		</div>
+	<nz-tabset [nzTabBarExtraTemplate]="tabBarExtraContent">
+      	<nz-tab (nzClick)="changeType('1,3')">
+        	<ng-template #nzTabHeading>
+         		接诊费用
+        	</ng-template>
+			<ng-container *ngTemplateOutlet="searchContent"></ng-container>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+				<thead nz-thead>
+					<tr>
+						<th>姓名</th>
+						<th>应收金额</th>
+						<th>折扣金额</th>
+						<th>减免金额</th>
+						<th>预约金</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>挂账</th>
+						<th>交易时间</th>
+						<th>总收入</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let tran of tranList; let index=index;">
+						<td>{{tran.childName ? tran.childName : tran.userName}}</td>
+						<td>{{tran.needAmount}}</td>
+						<td>{{tran.discount}}</td>
+						<td>{{tran.giveAmount}}</td>
+						<td>{{tran.bookingFee}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.gua + (tran.gua == '0.00' ? '' : (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : '')))}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+						<td>
+							<button (click)="info(tran)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+						</td>
+					</tr>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.discount}}</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.bookingFee}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td>{{total.gua}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+				<span noResult>暂无交易统计信息</span>
+			</nz-table>
+      	</nz-tab>
+		<nz-tab (nzClick)="changeType('2')">
+        	<ng-template #nzTabHeading>
+         		会员充值
+        	</ng-template>
+			<ng-container *ngTemplateOutlet="searchContent"></ng-container>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+				<thead nz-thead>
+					<tr>
+						<th>姓名</th>
+						<th>赠送金额</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>交易时间</th>
+						<th>总收入</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let tran of tranList">
+						<td>{{tran.userName}}</td>
+						<td>{{tran.giveAmount}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+					</tr>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
+				</tbody>
+				<span noResult>暂无交易统计信息</span>
+			</nz-table>
+		</nz-tab>
+		<nz-tab (nzClick)="changeType(i)" *ngFor="let i of ['4', '6']">
+        	<ng-template #nzTabHeading>
+         		{{i == '4' ? '药品零售' : '活动卡售卖'}}
+        	</ng-template>
+			<ng-container *ngTemplateOutlet="searchContent"></ng-container>
+			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+				<thead nz-thead>
+					<tr>
+						<th>姓名</th>
+						<th>应收金额</th>
+						<th>实收金额</th>
+						<th>现金</th>
+						<th>线上支付</th>
+						<th>余额支付</th>
+						<th>交易时间</th>
+						<th>总收入</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let tran of tranList">
+						<td>{{tran.userName}}</td>
+						<td>{{tran.needAmount}}</td>
+						<td>{{tran.paidUp}}</td>
+						<td>{{tran.cash}}</td>
+						<td>{{tran.online}}</td>
+						<td>{{tran.balance}}</td>
+						<td>{{tran.time}}</td>
+						<td>{{tran.total}}</td>
+					</tr>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.paidUp}}</td>
+						<td>{{total.cash}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
+				</tbody>
+				<span noResult>暂无交易统计信息</span>
+			</nz-table>
+		</nz-tab>
+      	<ng-template #tabBarExtraContent>
+			<button (click)="search('export')" nz-button [nzType]="'primary'" [nzSize]="'large'">导出</button>
+      	</ng-template>
+    </nz-tabset>
+	<ng-template #searchContent>
 		<div nz-row class="mt10 mb10">
 			<div nz-col [nzSpan]="8">
 				<div nz-form-item nz-row>
@@ -68,7 +210,7 @@
 			</div>
 		</div>
 		<div nz-row class="mt10 mb10">
-			<div nz-col [nzSpan]="8" [nzOffset]="8">
+			<div nz-col [nzSpan]="8">
 				<div nz-form-item nz-row>
 					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 						<label>预约时间：</label>
@@ -94,138 +236,7 @@
 		<div class="text-right mt10 mb10">
 			<button (click)="search('')" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 		</div>
-		<div *ngIf="searchInfo.type == '1,3'">
-			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
-				<thead nz-thead>
-					<tr>
-						<th>姓名</th>
-						<th>应收金额</th>
-						<th>折扣金额</th>
-						<th>减免金额</th>
-						<th>预约金</th>
-						<th>实收金额</th>
-						<th>现金</th>
-						<th>线上支付</th>
-						<th>余额支付</th>
-						<th>挂账</th>
-						<th>交易时间</th>
-						<th>总收入</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody nz-tbody>
-					<tr *ngFor="let tran of tranList; let index=index;">
-						<td>{{tran.childName ? tran.childName : tran.userName}}</td>
-						<td>{{tran.needAmount}}</td>
-						<td>{{tran.discount}}</td>
-						<td>{{tran.giveAmount}}</td>
-						<td>{{tran.bookingFee}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
-						<td>{{tran.online}}</td>
-						<td>{{tran.balance}}</td>
-						<td>{{tran.gua + (tran.gua == '0.00' ? '' : (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : '')))}}</td>
-						<td>{{tran.time}}</td>
-						<td>{{tran.total}}</td>
-						<td>
-							<button (click)="info(tran)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
-						</td>
-					</tr>
-					<tr class="bg-gray" *ngIf="tranList.length > 0">
-						<td>总计</td>
-						<td>{{total.needAmount}}</td>
-						<td>{{total.discount}}</td>
-						<td>{{total.giveAmount}}</td>
-						<td>{{total.bookingFee}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
-						<td>{{total.online}}</td>
-						<td>{{total.balance}}</td>
-						<td>{{total.gua}}</td>
-						<td >--</td>
-						<td>{{total.total}}</td>
-						<td>--</td>
-					</tr>
-				</tbody>
-			</nz-table>
-		</div>
-		<div *ngIf="searchInfo.type == '2'">
-			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
-				<thead nz-thead>
-					<tr>
-						<th>姓名</th>
-						<th>赠送金额</th>
-						<th>实收金额</th>
-						<th>现金</th>
-						<th>线上支付</th>
-						<th>余额支付</th>
-						<th>交易时间</th>
-						<th>总收入</th>
-					</tr>
-				</thead>
-				<tbody nz-tbody>
-					<tr *ngFor="let tran of tranList">
-						<td>{{tran.userName}}</td>
-						<td>{{tran.giveAmount}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
-						<td>{{tran.online}}</td>
-						<td>{{tran.balance}}</td>
-						<td>{{tran.time}}</td>
-						<td>{{tran.total}}</td>
-					</tr>
-					<tr class="bg-gray" *ngIf="tranList.length > 0">
-						<td>总计</td>
-						<td>{{total.giveAmount}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
-						<td>{{total.online}}</td>
-						<td>{{total.balance}}</td>
-						<td >--</td>
-						<td>{{total.total}}</td>
-					</tr>
-				</tbody>
-			</nz-table>
-		</div>
-		<div *ngIf="searchInfo.type == '4' || searchInfo.type == '6'">
-			<nz-table #nzTable [nzDataSource]="tranList" [nzBordered]="true" [nzIsPagination]="false">
-				<thead nz-thead>
-					<tr>
-						<th>姓名</th>
-						<th>应收金额</th>
-						<th>实收金额</th>
-						<th>现金</th>
-						<th>线上支付</th>
-						<th>余额支付</th>
-						<th>交易时间</th>
-						<th>总收入</th>
-					</tr>
-				</thead>
-				<tbody nz-tbody>
-					<tr *ngFor="let tran of tranList">
-						<td>{{tran.userName}}</td>
-						<td>{{tran.needAmount}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
-						<td>{{tran.online}}</td>
-						<td>{{tran.balance}}</td>
-						<td>{{tran.time}}</td>
-						<td>{{tran.total}}</td>
-					</tr>
-					<tr class="bg-gray" *ngIf="tranList.length > 0">
-						<td>总计</td>
-						<td>{{total.needAmount}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
-						<td>{{total.online}}</td>
-						<td>{{total.balance}}</td>
-						<td >--</td>
-						<td>{{total.total}}</td>
-					</tr>
-				</tbody>
-			</nz-table>
-		</div>
-	</div>
+	</ng-template>
 </div>
 <nz-modal [nzVisible]="modalInfoTab" [nzWidth]="900" [nzTitle]="'详情'" [nzContent]="contentInfo" [nzFooter]="footerInfo" (nzOnCancel)="closeInfo()">
 	<ng-template #contentInfo>

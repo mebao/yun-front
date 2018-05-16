@@ -18,3 +18,8 @@ label {
 .ant-form-item{
     margin-bottom: 0;
 }
+.ant-form-item-required{
+    .required{
+        color: red;
+    }
+}
