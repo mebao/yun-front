@@ -1,6 +1,8 @@
 import { Component }                       from '@angular/core';
 import { Router, ActivatedRoute }          from '@angular/router';
 
+import { NzMessageService }                from 'ng-zorro-antd';
+
 import { AdminService }                    from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class ChildInfoComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	loadingShow: boolean;
 	userInfo: {
@@ -50,9 +47,11 @@ export class ChildInfoComponent{
 	}
 	otherChildList: any[];
 	url: string;
-	selectTab: string;
+	calling: boolean;
+	pageType: string;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -60,14 +59,9 @@ export class ChildInfoComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '病人库',
+			title: '宝宝详情',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.loadingShow = true;
 
@@ -102,10 +96,11 @@ export class ChildInfoComponent{
 		};
 		this.otherChildList = [];
 
-		this.selectTab = '1';
+		this.calling = false;
 
 		this.route.queryParams.subscribe((params) => {
 			this.childInfo.childId = params.id;
+			this.pageType = params.pageType;
 		});
 
 		this.url = '?username=' + this.adminService.getUser().username
@@ -115,7 +110,7 @@ export class ChildInfoComponent{
 		this.adminService.searchuser(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.users.length > 0){
@@ -146,22 +141,60 @@ export class ChildInfoComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
+	calluser() {
+		if(localStorage.getItem('call_sid')){
+			this._message.error('正在结束上次未关闭通话');
+			this.hangupuser('pre');
+		}else{
+			this.loadingShow = true;
+			var params = {
+				username: this.adminService.getUser().username,
+				token: this.adminService.getUser().token,
+				clinic_id: this.adminService.getUser().clinicId,
+				mobile: this.userInfo.mobile,
+				user_id: this.userInfo.id,
 			}
-	    }, 2000);
+
+			this.adminService.calluser(params).then((data) => {
+				this.loadingShow = false;
+				if(data.status == 'no'){
+					this._message.error(data.errorMsg);
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					localStorage.setItem('call_sid', results.call_sid);
+					this._message.success('网络电话拨打成功');
+					this.calling = true;
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+			});
+		}
+	}
+
+	hangupuser(type) {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&callSid=' + localStorage.getItem('call_sid');
+
+		this.adminService.hangupuser(urlOptions).then((data) => {
+			this.loadingShow = false;
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				localStorage.removeItem('call_sid');
+				this._message.success('网络电话已挂断' + (type == '' ? '' : '，请重新拨打电话'));
+				this.calling = false;
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 }

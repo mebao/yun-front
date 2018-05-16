@@ -1,119 +1,129 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-child-info">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="pure-g">
-		<div class="pure-u-1-5 child-tab pr10">
-			<div class="text-center">
-				<div class="img-tab-default">
-					<img src="{{(!childInfo.imageUrl || childInfo.imageUrl == '') ? '../assets/images/img.png' : childInfo.imageUrl}}">
-				</div>
-			</div>
-			<div class="info">
-				姓名：{{childInfo.childName}}
-			</div>
-			<div class="info">
-				性别：{{childInfo.gender}}
-			</div>
-			<div class="info">
-				年龄：{{childInfo.age}}
-			</div>
+	<div nz-row [nzGutter]="30">
+		<div nz-col [nzSpan]="6">
+            <nz-card class="w100">
+                <ng-template #title>
+                    宝宝详情
+                </ng-template>
+                <ng-template #extra *ngIf="pageType == 'call'">
+                    <button *ngIf="!calling" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
+                    <button *ngIf="calling" (click)="hangupuser('')" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
+                </ng-template>
+                <ng-template #body>
+					<div class="text-center">
+						<div class="img-tab-default">
+							<img src="{{(!childInfo.imageUrl || childInfo.imageUrl == '') ? '../assets/images/img.png' : childInfo.imageUrl}}">
+						</div>
+					</div>
+					<div class="mt10">
+						姓名：{{childInfo.childName}}
+					</div>
+					<div class="mt10">
+						性别：{{childInfo.gender}}
+					</div>
+					<div class="mt10">
+						年龄：{{childInfo.age}}
+					</div>
+				</ng-template>
+			</nz-card>
 		</div>
-		<div class="pure-u-4-5">
-			<div class="second-bar-tab flex">
-				<div class="item" [ngClass]="{'active': selectTab == '1'}">基本信息</div>
-			</div>
-			<div *ngIf="selectTab == '1'">
-				<div class="section">
-					<div class="title">基本信息</div>
-					<div class="pure-g">
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">姓名：</label>
-							<div>{{childInfo.childName}}</div>
+		<div nz-col [nzSpan]="18">
+            <nz-card class="w100">
+                <ng-template #title>
+                    基本信息
+                </ng-template>
+                <ng-template #body>
+					<div nz-row [nzGutter]="30">
+						<div nz-col [nzSpan]="12">
+							<p>姓名：{{childInfo.childName}}</p>
 						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">性别：</label>
-							<div>{{childInfo.gender}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">出生年月：</label>
-							<div>{{childInfo.birthday}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">年龄：</label>
-							<div>{{childInfo.age}}</div>
-						</div>
-						<!-- <div class="pure-u-12-24 info flex">
-							<label class="w110pp">手机号：</label>
-							<div>{{userInfo.mobile}}</div>
-						</div> -->
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">昵称：</label>
-							<div>{{childInfo.nickName}}</div>
+						<div nz-col [nzSpan]="12">
+							<p>性别：{{childInfo.gender}}</p>
 						</div>
 					</div>
-				</div>
-				<div class="section">
-					<div class="title">其他信息</div>
-					<div class="pure-g">
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">身高（cm）：</label>
-							<div>{{childInfo.height}}</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>出生年月：{{childInfo.birthday}}</p>
 						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">体重（kg）：</label>
-							<div>{{childInfo.weight}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">头围（cm）：</label>
-							<div>{{childInfo.headCircum}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">血型：</label>
-							<div>{{childInfo.bloodTypeText}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">星座：</label>
-							<div>{{childInfo.horoscopeText}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">生肖：</label>
-							<div>{{childInfo.shengxiaoText}}</div>
-						</div>
-						<div class="pure-u-24-24 info flex">
-							<label class="w110pp">备注：</label>
-							<div>{{childInfo.remark}}</div>
+						<div nz-col [nzSpan]="12">
+							<p>年龄：{{childInfo.age}}</p>
 						</div>
 					</div>
-				</div>
-				<div class="section">
-					<div class="title">家长：</div>
-					<div class="pure-g">
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">姓名：</label>
-							<div>{{userInfo.name}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">性别：</label>
-							<div>{{userInfo.gender == 'F' ? '男' : '女'}}</div>
-						</div>
-						<!-- <div class="pure-u-12-24 info flex">
-							<label class="w110pp">手机号：</label>
-							<div>{{userInfo.mobile}}</div>
-						</div> -->
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">会员：</label>
-							<div>{{userInfo.memberId != null ? userInfo.memberName : '非会员'}}</div>
-						</div>
-						<div class="pure-u-12-24 info flex">
-							<label class="w110pp">余额：</label>
-							<div>{{userInfo.userBalance == null ? '0.00' : userInfo.userBalance}}</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>昵称：{{childInfo.nickName}}</p>
 						</div>
 					</div>
-				</div>
-				<div *ngIf="otherChildList.length > 0" class="section">
-					<div class="title">兄弟姐妹：</div>
-					<table class="pure-table pure-table-horizontal w100">
-						<thead>
+				</ng-template>
+			</nz-card>
+            <nz-card class="w100 mt20">
+                <ng-template #title>
+                    其他信息
+                </ng-template>
+                <ng-template #body>
+					<div nz-row [nzGutter]="30">
+						<div nz-col [nzSpan]="12">
+							<p>身高（cm）：{{childInfo.height}}</p>
+						</div>
+						<div nz-col [nzSpan]="12">
+							<p>体重（kg）：{{childInfo.weight}}</p>
+						</div>
+					</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>头围（cm）：{{childInfo.headCircum}}</p>
+						</div>
+						<div nz-col [nzSpan]="12">
+							<p>血型：{{childInfo.bloodTypeText}}</p>
+						</div>
+					</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>星座：{{childInfo.horoscopeText}}</p>
+						</div>
+						<div nz-col [nzSpan]="12">
+							<p>生肖：{{childInfo.shengxiaoText}}</p>
+						</div>
+					</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>备注：{{childInfo.remark}}</p>
+						</div>
+					</div>
+				</ng-template>
+			</nz-card>
+            <nz-card class="w100 mt20">
+                <ng-template #title>
+                    家长
+                </ng-template>
+                <ng-template #body>
+					<div nz-row [nzGutter]="30">
+						<div nz-col [nzSpan]="12">
+							<p>姓名：{{userInfo.name}}</p>
+						</div>
+						<div nz-col [nzSpan]="12">
+							<p>性别：{{userInfo.gender == 'F' ? '男' : '女'}}</p>
+						</div>
+					</div>
+					<div nz-row [nzGutter]="30" class="mt10">
+						<div nz-col [nzSpan]="12">
+							<p>会员：{{userInfo.memberId != null ? userInfo.memberName : '非会员'}}</p>
+						</div>
+						<div nz-col [nzSpan]="12">
+							<p>余额：{{userInfo.userBalance == null ? '0.00' : userInfo.userBalance}}</p>
+						</div>
+					</div>
+				</ng-template>
+			</nz-card>
+            <nz-card *ngIf="otherChildList.length > 0" class="w100 mt20">
+                <ng-template #title>
+                    兄弟姐妹
+                </ng-template>
+                <ng-template #body>
+					<nz-table #nzTable [nzDataSource]="otherChildList" [nzBordered]="true" [nzIsPagination]="false">
+						<thead nz-thead>
 							<tr>
 								<th>头像</th>
 								<th>年龄</th>
@@ -129,7 +139,7 @@
 								<th>体重（kg）</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody nz-tbody>
 							<tr *ngFor="let child of otherChildList; let index=index;">
 								<td class="img-tab">
 									<img src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}">
@@ -147,11 +157,10 @@
 								<td>{{child.weight}}</td>
 							</tr>
 						</tbody>
-					</table>
-				</div>
-			</div>
+					</nz-table>
+				</ng-template>
+			</nz-card>
 		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

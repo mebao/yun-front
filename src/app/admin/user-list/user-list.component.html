@@ -81,6 +81,9 @@
 						<div *ngIf="user.memberId != null && user.isNew == 0" nz-col [nzSpan]="12" class="mb10">
 							<button (click)="upgradeMember(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">会员升级</button>
 						</div>
+						<!-- <div nz-col [nzSpan]="12" class="mb10">
+							<button (click)="call(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">网络电话</button>
+						</div> -->
 						<div nz-col [nzSpan]="12" class="mb10">
 							<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 						</div>

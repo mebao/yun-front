@@ -139,6 +139,10 @@ export class ChildListComponent{
 		window.open('./admin/child/info?id=' + _id);
 	}
 
+	call(child) {
+		window.open('./admin/child/info?id=' + child.childId + '&pageType=call');
+	}
+
 	//预约
 	goBooking(child) {
 		sessionStorage.setItem('childList-childName', child.childName);

@@ -520,4 +520,8 @@ export class UserListComponent{
             this._message.error('服务器错误');
         });
 	}
+
+	call(user) {
+		window.open('./admin/userInfo?id=' + user.id + '&pageType=call');
+	}
 }
