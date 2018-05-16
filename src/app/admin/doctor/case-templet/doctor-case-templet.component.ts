@@ -1,25 +1,21 @@
 import { Component }                         from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
+import { NzMessageService }                  from 'ng-zorro-antd';
 
 import { AdminService }                      from '../../admin.service';
 import { DoctorService }                     from './../doctor.service';
 
-import { NzMessageService }                  from 'ng-zorro-antd';
 
 @Component({
     selector: 'doctor-case-templet',
     templateUrl: './doctor-case-templet.component.html',
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 
 export class DoctorCaseTempletComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type: string,
 	};
 	loadingShow: boolean;
     hasData: boolean;
@@ -42,12 +38,6 @@ export class DoctorCaseTempletComponent{
     ) {}
 
 	ngOnInit() {
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
-
 		this.topBar = {
 			title: '病历模板',
 			back: true,
@@ -301,19 +291,4 @@ export class DoctorCaseTempletComponent{
             });
         }
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

@@ -1,12 +1,9 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-doctor-list">
 	<top-bar [data]="topBar"></top-bar>
-    <div class="flex">
-        <button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增儿保记录模板</button>
-        <div class="flex-1"></div>
-    </div>
+    <button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增儿保记录模板</button>
 	<div class="mt10">
-		<nz-table #nzTable [nzDataSource]="recordtempletList" [nzBordered]="true" [nzIsPagination]="false"  *ngIf="recordtempletList.length > 0" class="list" class="w100">
+		<nz-table *ngIf="hasData" #nzTable [nzDataSource]="recordtempletList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 			<thead nz-thead>
 				<tr>
 					<th nz-th>模板名</th>
@@ -24,11 +21,8 @@
 					</td>
 				</tr>
 			</tbody>
+			<span noResult>暂无儿保记录模板信息</span>
 		</nz-table>
-		<div *ngIf="hasData && recordtempletList.length == 0" class="mt10">
-			<nodata title="未查询到儿保记录模板信息"></nodata>
-		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

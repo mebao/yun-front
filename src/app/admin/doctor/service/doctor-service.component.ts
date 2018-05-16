@@ -1,12 +1,19 @@
 import { Component, OnInit }                    from '@angular/core';
 import { Router, ActivatedRoute }               from '@angular/router';
+import {
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 
 import { AdminService }                         from '../../admin.service';
 import { NzMessageService }                  	from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-doctor-service',
-	templateUrl: './doctor-service.component.html'
+	templateUrl: './doctor-service.component.html',
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 export class DoctorServiceComponent{
 	topBar: {
@@ -14,74 +21,65 @@ export class DoctorServiceComponent{
 		back: boolean,
 	};
 	type: string;
-	doctor_id: string;
+    // 医生id
+    doctorId: string;
+    // 医生关联科室的id
 	doctorService_id: string;
+    // 医生关联的科室，在科室列表中的id
+    serviceId: string;
+    // 科室列表
 	childServiceList: any[];
-	doctorlist: any[];
-	fee: string;
-	service: string;
-	serviceId: string;
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-	serviceModel: {
-		service: string,
-		doctor_id: string,
-		fee: string,
-		booking_fee: string,
-	}
+    validateForm: FormGroup;
 	// 不可连续点击
 	btnCanEdit: boolean;
+    _isSpinning: boolean;
 
 	constructor(
+        private fb: FormBuilder,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
 		private _message: NzMessageService,
-	) {}
+	) {
+        this.validateForm = this.fb.group({
+            service: [ '', [ Validators.required ]],
+            fee: [ '', [ Validators.required ]],
+            booking_fee: [ '', [ Validators.required ]],
+        });
+	}
 
 	ngOnInit(): void {
 		this.topBar = {
 			title: '医生科室',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
-		this.serviceModel = {
-			service: '',
-			doctor_id: '',
-			fee: '',
-			booking_fee: '',
-		}
+		this.doctorId = '';
 
 		//获取医生科室id
 		this.route.queryParams.subscribe((params) => {
-			this.serviceModel.doctor_id = params['doctor_id'];
+			this.doctorId = params['doctor_id'];
 			this.doctorService_id = params['doctorService_id'];
 		});
 
-		if(this.serviceModel.doctor_id && this.doctorService_id){
+        this._isSpinning = true;
+		if(this.doctorId && this.doctorService_id){
 			//类型
 			this.type = 'update';
 			var adminServiceUrl = '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
-				 + '&doctor_id=' + this.serviceModel.doctor_id;
+				 + '&doctor_id=' + this.doctorId;
 			this.adminService.doctorservice(adminServiceUrl).then((data) => {
 				if(data.status == 'no'){
+                    this._isSpinning = false;
 					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.servicelist.length > 0){
 						for(var i = 0; i < results.servicelist.length; i++){
 							if(this.doctorService_id == results.servicelist[i].id){
-								this.serviceModel.fee = results.servicelist[i].fee;
-								this.serviceModel.booking_fee = results.servicelist[i].bookingFee;
+								this.validateForm.controls.fee.setValue(results.servicelist[i].fee);
+								this.validateForm.controls.booking_fee.setValue(results.servicelist[i].bookingFee);
 								this.serviceId = results.servicelist[i].serviceId;
 								this.getData();
 							}
@@ -89,7 +87,8 @@ export class DoctorServiceComponent{
 					}
 				}
 			}).catch(() => {
-				this._message.error('服务器错误');
+                this._isSpinning = false;
+				this._message.error('服务器错误1');
             });
 		}else{
 			this.type = 'create';
@@ -99,6 +98,10 @@ export class DoctorServiceComponent{
 		this.btnCanEdit = false;
 	}
 
+    getFormControl(name) {
+        return this.validateForm.controls[ name ];
+    }
+
 	getData() {
 		//获取宝宝科室
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
@@ -106,61 +109,38 @@ export class DoctorServiceComponent{
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
+                this._isSpinning = false;
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.servicelist.length > 0){
 					for (var i = 0; i < results.servicelist.length; i++) {
-						results.servicelist[i].string = JSON.stringify(results.servicelist[i]);
-						if(this.serviceModel.doctor_id && this.doctorService_id && this.serviceId == results.servicelist[i].serviceId){
+						if(this.doctorId && this.doctorService_id && this.serviceId == results.servicelist[i].serviceId){
 							//修改
-							this.serviceModel.service = results.servicelist[i].string;
+							this.validateForm.controls.service.setValue(results.servicelist[i]);
 						}
 					}
 				}
 				this.childServiceList = results.servicelist;
+                this._isSpinning = false;
 			}
 		}).catch(() => {
-			this._message.error('服务器错误');
+            this._isSpinning = false;
+			this._message.error('服务器错误2');
         });
 	}
 
-	submit(f) {
+	submit() {
 		this.btnCanEdit = true;
-		if(f.value.service == ''){
-			this._message.error('科室不可为空');
-			this.btnCanEdit = false;
-			return;
-		}
-		if(this.adminService.isFalse(f.value.fee)){
-			this._message.error('费用不可为空');
-			this.btnCanEdit = false;
-			return;
-		}
-		if(Number(f.value.fee) < 0){
-			this._message.error('费用应大于等于0');
-			this.btnCanEdit = false;
-			return;
-		}
-		if(this.adminService.isFalse(f.value.booking_fee)){
-			this._message.error('预约金不可为空');
-			this.btnCanEdit = false;
-			return;
-		}
-		if(Number(f.value.booking_fee) < 0){
-			this._message.error('预约金应大于等于0');
-			this.btnCanEdit = false;
-			return;
-		}
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
-			service_id: JSON.parse(this.serviceModel.service).serviceId,
-			service_name: JSON.parse(this.serviceModel.service).serviceName,
+			service_id: this.validateForm.controls.service.value.serviceId,
+			service_name: this.validateForm.controls.service.value.serviceName,
 			clinic_id: this.adminService.getUser().clinicId,
-			user_doctor_id: this.serviceModel.doctor_id,
-			fee: f.value.fee.toString(),
-			booking_fee: f.value.booking_fee.toString(),
+			user_doctor_id: this.doctorId,
+			fee: this.validateForm.controls.fee.value.toString(),
+			booking_fee: this.validateForm.controls.booking_fee.value.toString(),
 			id: this.type == 'update' ? this.doctorService_id : null,
 		}
 
@@ -175,27 +155,12 @@ export class DoctorServiceComponent{
 					this._message.success('创建成功');
 				}
 				setTimeout(() => {
-					this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': this.serviceModel.doctor_id}});
+					this.router.navigate(['./admin/doctor/service/list'], {queryParams: {'id': this.doctorId}});
 				}, 2000);
 			}
 		}).catch(() => {
 			this._message.error('服务器错误');
 			this.btnCanEdit = false;
         });
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

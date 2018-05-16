@@ -1,6 +1,8 @@
 import { Component }                         from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
 
+import { NzMessageService }                  from 'ng-zorro-antd';
+
 import { AdminService }                      from '../../admin.service';
 import { DoctorService }                     from './../doctor.service';
 
@@ -14,17 +16,13 @@ export class DoctorCaseTempletListComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type: string,
-	};
 	loadingShow: boolean;
     id: string;
     hasData: boolean;
     casetempletList: any[];
 
     constructor(
+        private _message: NzMessageService,
         public adminService: AdminService,
         public doctorService: DoctorService,
         private router: Router,
@@ -32,12 +30,6 @@ export class DoctorCaseTempletListComponent{
     ) {}
 
 	ngOnInit() {
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
-
 		this.topBar = {
 			title: '病历模板列表',
 			back: true,
@@ -62,7 +54,7 @@ export class DoctorCaseTempletListComponent{
         this.doctorService.searchcasetemplet(url).then((data) => {
             if(data.status == 'no'){
 		        this.loadingShow = false;
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 this.casetempletList = results.list;
@@ -71,7 +63,7 @@ export class DoctorCaseTempletListComponent{
             }
         }).catch(() => {
             this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
     }
 
@@ -93,28 +85,13 @@ export class DoctorCaseTempletListComponent{
 
         this.doctorService.casetempletstatus(id, params).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
-                this.toastTab('状态修改成功', '');
+                this._message.success('状态修改成功');
                 this.getData();
             }
         }).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

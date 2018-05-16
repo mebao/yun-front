@@ -2,7 +2,7 @@
 <div class="content-section">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="mt10">
-		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增处方</button>
+		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增中药处方</button>
 	</div>
 	<div nz-row class="mt10 mb10">
 		<div nz-col [nzSpan]="6" [nzOffset]="18">
@@ -19,7 +19,7 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
-	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false">
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
 				<th nz-th>处方名</th>
@@ -50,6 +50,7 @@
 				</tr>
 			</ng-container>
 		</tbody>
+		<span noResult>暂无中药处方信息</span>
 	</nz-table>
 </div>
 <loading [show]="loadingShow"></loading>

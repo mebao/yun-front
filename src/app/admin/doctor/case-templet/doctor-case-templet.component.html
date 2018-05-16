@@ -1,81 +1,78 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-doctor-list">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="" nz-row>
+	<div nz-row>
 		<div nz-col [nzSpan]="5"></div>
 		<div nz-col [nzSpan]="14">
-			<div class="">
-				<div class="">
-					<label for="name">模板名</label>
-					<nz-input [nzSize]="'large'" class="mt10" [(ngModel)]="name" placeholder="请输入模板名" [nzDisabled]="editType == 'update'"></nz-input>
-				</div>
-				<div class="mt10" >
-					<label for="ck">模板内容</label>
-					<ng-container *ngFor="let ck of ckList; let index=index;">
-						<div *ngIf="ck.use" class="mb10 flex mt10">
-							<div class="flex-1">
-								<nz-select
-							      class="w100"
-								  [nzSize]="'large'"
-							      [nzPlaceHolder]="'请选择模板内容'"
-							      [(ngModel)]="ck.value"
-								  (ngModelChange)="selectedck($event, ck.key)"
-							      [nzNotFoundContent]="'无法找到'"
-							      nzShowSearch [disabled]="true">
-								      <nz-option
-								        *ngFor="let cks of casetempletKeys"
-								        [nzLabel]="cks.name"
-								        [nzValue]="cks.key">
-								      </nz-option>
-							  	</nz-select>
-							</div>
-							<div class="flex-1">
-								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="ck.ckValue" placeholder="请输入描述" [nzDisabled]="ck.ckValueDisabled" nz-input>
-							</div>
-							<div class="w100p text-right">
-								<button (click)="removeCk(ck.key)" nz-button [nzSize]="'large'">移除</button>
-							</div>
+			<div>
+				<label for="name">模板名</label>
+				<nz-input [nzSize]="'large'" class="mt10" [(ngModel)]="name" placeholder="请输入模板名" [nzDisabled]="editType == 'update'"></nz-input>
+			</div>
+			<div class="mt10" >
+				<label for="ck">模板内容</label>
+				<ng-container *ngFor="let ck of ckList; let index=index;">
+					<div *ngIf="ck.use" class="mb10 flex mt10">
+						<div class="flex-1">
+							<nz-select
+						      class="w100"
+							  [nzSize]="'large'"
+						      [nzPlaceHolder]="'请选择模板内容'"
+						      [(ngModel)]="ck.value"
+							  (ngModelChange)="selectedck($event, ck.key)"
+						      [nzNotFoundContent]="'无法找到'"
+						      nzShowSearch [disabled]="true">
+							      <nz-option
+							        *ngFor="let cks of casetempletKeys"
+							        [nzLabel]="cks.name"
+							        [nzValue]="cks.key">
+							      </nz-option>
+						  	</nz-select>
 						</div>
-					</ng-container>
-					<!-- <button (click)="addCk()"  nz-button [nzType]="'primary'" [nzSize]="'large'">添加模板内容</button> -->
-				</div>
-				<div class="text-center mt10">
-					<button (click)="add()"  nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
-				</div>
-				<div class="mt10" *ngIf="hasRemove">
-					<label for="ck">模板未添加字段</label>
-					<ng-container *ngFor="let ck of ckList; let index=index;">
-						<div *ngIf="ck.use === false" class="mb10 flex mt10">
-							<div class="flex-1">
-								<nz-select
-							      class="w100"
-								  [nzSize]="'large'"
-							      [nzPlaceHolder]="'请选择模板内容'"
-							      [(ngModel)]="ck.value"
-								  (ngModelChange)="selectedck($event, ck.key)"
-							      [nzNotFoundContent]="'无法找到'"
-							      nzShowSearch [disabled]="true">
-								      <nz-option
-								        *ngFor="let cks of casetempletKeys"
-								        [nzLabel]="cks.name"
-								        [nzValue]="cks.key">
-								      </nz-option>
-							  	</nz-select>
-							</div>
-							<div class="flex-1">
-								<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="ck.ckValue" placeholder="请输入描述" [nzDisabled]="ck.ckValueDisabled" nz-input>
-							</div>
-							<div class="w100p text-right">
-								<button (click)="addCk(ck.key)" nz-button [nzSize]="'large'">添加</button>
-							</div>
+						<div class="flex-1">
+							<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="ck.ckValue" placeholder="请输入描述" [nzDisabled]="ck.ckValueDisabled" nz-input>
 						</div>
-					</ng-container>
-					<!-- <button (click)="addCk()"  nz-button [nzType]="'primary'" [nzSize]="'large'">添加模板内容</button> -->
-				</div>
+						<div class="w100p text-right">
+							<button (click)="removeCk(ck.key)" nz-button [nzSize]="'large'">移除</button>
+						</div>
+					</div>
+				</ng-container>
+				<!-- <button (click)="addCk()"  nz-button [nzType]="'primary'" [nzSize]="'large'">添加模板内容</button> -->
+			</div>
+			<div class="text-center mt10">
+				<button (click)="add()"  nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+			</div>
+			<div class="mt10" *ngIf="hasRemove">
+				<label for="ck">模板未添加字段</label>
+				<ng-container *ngFor="let ck of ckList; let index=index;">
+					<div *ngIf="ck.use === false" class="mb10 flex mt10">
+						<div class="flex-1">
+							<nz-select
+						      class="w100"
+							  [nzSize]="'large'"
+						      [nzPlaceHolder]="'请选择模板内容'"
+						      [(ngModel)]="ck.value"
+							  (ngModelChange)="selectedck($event, ck.key)"
+						      [nzNotFoundContent]="'无法找到'"
+						      nzShowSearch [disabled]="true">
+							      <nz-option
+							        *ngFor="let cks of casetempletKeys"
+							        [nzLabel]="cks.name"
+							        [nzValue]="cks.key">
+							      </nz-option>
+						  	</nz-select>
+						</div>
+						<div class="flex-1">
+							<input type="text" id="" [nzSize]="'large'" name="nnn{{index}}" [(ngModel)]="ck.ckValue" placeholder="请输入描述" [nzDisabled]="ck.ckValueDisabled" nz-input>
+						</div>
+						<div class="w100p text-right">
+							<button (click)="addCk(ck.key)" nz-button [nzSize]="'large'">添加</button>
+						</div>
+					</div>
+				</ng-container>
+				<!-- <button (click)="addCk()"  nz-button [nzType]="'primary'" [nzSize]="'large'">添加模板内容</button> -->
 			</div>
 		</div>
 		<div nz-col [nzSpan]="5"></div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

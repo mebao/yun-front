@@ -15,7 +15,7 @@
             </nz-select>
         </div>
 	</div>
-	<nz-table #nzTable [nzDataSource]="doctorServiceList" [nzBordered]="true" [nzIsPagination]="false" *ngIf="doctorServiceList.length > 0" class="w100 mt10">
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="doctorServiceList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true" class="w100 mt10">
 		<thead nz-thead>
 			<tr>
 				<th nz-th>科室名</th>
@@ -38,19 +38,12 @@
 				</td>
 			</tr>
 		</tbody>
+		<span noResult>暂无医生科室信息</span>
 	</nz-table>
-	<div *ngIf="hasData && doctorServiceList.length == 0" class="mt10">
-		<nodata title="未查询到医生科室"></nodata>
-	</div>
 </div>
-<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" [nzFooter]="footerConfirm" (nzOnCancel)="closeConfirm()">
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()" [nzConfirmLoading]="btnCanEdit">
 	<ng-template #contentConfirm>
     	<p>{{selector.text}}</p>
 	</ng-template>
-	<ng-template #footerConfirm>
-		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
-		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm()" [disabled]="btnCanEdit">确认</button>
-	</ng-template>
 </nz-modal>
 <loading [show]="loadingShow"></loading>
-<nll-toast-box></nll-toast-box>

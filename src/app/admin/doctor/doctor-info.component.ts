@@ -1,6 +1,8 @@
 import { Component, OnInit }             from '@angular/core';
 import { Router, ActivatedRoute }        from '@angular/router';
 
+import { NzMessageService }              from 'ng-zorro-antd';
+
 import { AdminService }                  from '../admin.service';
 
 @Component({
@@ -27,11 +29,6 @@ export class DoctorInfoComponent{
 	servicelist: any[];
 	dutylist: any[];
 	stopCondition: boolean;
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	hasData: boolean;
 	hasDoctor: boolean;
 	selectedTab: string;
@@ -39,6 +36,7 @@ export class DoctorInfoComponent{
 	bookingList: any[];
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -53,11 +51,6 @@ export class DoctorInfoComponent{
 		this.loadingShow = true;
 
 		this.stopCondition = false;
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 		this.hasData = false;
 		this.selectedTab = '1';
 		this.bookingList = [];
@@ -82,7 +75,7 @@ export class DoctorInfoComponent{
 		this.adminService.doctordutys(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.doctors.length > 0){
@@ -129,14 +122,14 @@ export class DoctorInfoComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		// 本周预约
 		var bookingUrl = this.url + '&doctorId=' + this.doctor_id + '&weekindex=0';
 		this.adminService.doctorbooking(bookingUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var weekDayList = this.adminService.getWeekByNumber(0);
@@ -159,7 +152,7 @@ export class DoctorInfoComponent{
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -169,20 +162,5 @@ export class DoctorInfoComponent{
 
 	goInfo(_id) {
 		this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

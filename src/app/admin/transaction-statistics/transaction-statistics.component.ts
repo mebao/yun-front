@@ -264,7 +264,6 @@ export class TransactionStatisticsComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
-				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch(() => {
             this._message.error('服务器错误');

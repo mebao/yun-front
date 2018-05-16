@@ -1,25 +1,21 @@
 import { Component }                         from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
+import { NzMessageService }                  from 'ng-zorro-antd';
 
 import { AdminService }                      from '../../admin.service';
 import { DoctorService }                     from './../doctor.service';
 
-import { NzMessageService }                  from 'ng-zorro-antd';
 
 @Component({
     selector: 'doctor-record-templet',
     templateUrl: './doctor-record-templet.component.html',
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 
 export class DoctorRecordTempletComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type: string,
 	};
 	loadingShow: boolean;
     hasData: boolean;
@@ -42,12 +38,6 @@ export class DoctorRecordTempletComponent{
     ) {}
 
 	ngOnInit() {
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
-
 		this.topBar = {
 			title: '儿保记录模板',
 			back: true,
@@ -288,7 +278,7 @@ export class DoctorRecordTempletComponent{
 
             this.doctorService.updaterecordtemplet(JSON.parse(sessionStorage.getItem('recordtemplet')).id, updateParams).then((data) => {
                 if(data.status == 'no'){
-                    this.toastTab(data.errorMsg, 'error');
+                    this._message.error(data.errorMsg);
                     this.btnCanEdit = false;
                 }else{
                     this._message.success('模板修改成功');
@@ -297,24 +287,9 @@ export class DoctorRecordTempletComponent{
                     }, 2000);
                 }
             }).catch(() => {
-                this.toastTab('服务器错误', 'error');
+                this._message.error('服务器错误');
                 this.btnCanEdit = false;
             });
         }
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }
