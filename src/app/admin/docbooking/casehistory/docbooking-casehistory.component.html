@@ -379,6 +379,13 @@
 						<!-- pageType 空为医生接站， history为查看 -->
 						<div *ngIf="pageType != 'history'">
 							<div class="text-right">
+								<e-ngx-print *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')"
+									[btnText]="'打印'"
+									[btnClass]="{'pure-button': true, 'pure-button-primary': true}"
+									[printHTML]="print_div"
+									[printStyle]="printStyle"
+									[printCSS]="printCSS">
+								</e-ngx-print>
 								<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
 								<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')" (click)="updateCaseHistory(casehistory)" class="pure-button pure-button-primary">修改</button>
 							</div>
@@ -595,6 +602,222 @@
 								</div>
 							</div>
 					  	</div>
+						<div style="display:none;">
+							<div id="print_div" #print_div>
+								<div class="pure-tab" *ngIf="editType == 'view'">
+									<div class="section">
+										<div *ngIf="casehistory.bodyTemperature != null || casehistory.height != null || casehistory.midHeight != null || casehistory.weight != null || casehistory.midWeight != null || casehistory.headCircum != null || casehistory.breastCircum != null || casehistory.teeth != null || casehistory.topicComment != null || casehistory.checkResult != null || casehistory.presentIllness != null || casehistory.previousHistory != null || casehistory.allergy != null || casehistory.familyHistory != null || casehistory.breedHistory != null || casehistory.growthHistory != null || casehistory.physicalCheck != null" class="title">基本信息</div>
+										<div class="pure-g">
+											<div *ngIf="casehistory.height != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">身高：</label>
+												<div class="flex-1">
+													<span>{{casehistory.height == '0.00' ? '' : casehistory.height}}</span>
+													<span *ngIf="casehistory.height != '0.00'" class="pl5">cm</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.midHeight != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">中等值：</label>
+												<div class="flex-1">
+													{{casehistory.midHeight == '0.00' ? '' : casehistory.midHeight}}
+													<span *ngIf="casehistory.midHeight != '0.00'" class="pl5">cm</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.midHeight != null && casehistory.height != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">身高对比：</label>
+												<div class="flex-1">{{casehistory.compareHeight}}</div>
+											</div>
+											<div *ngIf="casehistory.weight != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">体重：</label>
+												<div class="flex-1">
+													{{casehistory.weight == '0.00' ? '' : casehistory.weight}}
+													<span *ngIf="casehistory.weight != '0.00'" class="pl5">Kg</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.midWeight != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">中等值：</label>
+												<div class="flex-1">
+													{{casehistory.midWeight == '0.00' ? '' : casehistory.midWeight}}
+													<span *ngIf="casehistory.midWeight != '0.00'" class="pl5">Kg</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.midWeight != null && casehistory.weight != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">体重对比：</label>
+												<div class="flex-1">{{casehistory.compareWeight}}</div>
+											</div>
+											<div *ngIf="casehistory.bodyTemperature != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">体温：</label>
+												<div class="flex-1">
+													{{casehistory.bodyTemperature == '0' ? '' : casehistory.bodyTemperature}}
+													<span *ngIf="casehistory.bodyTemperature != '0'" class="pl5">°C</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.headCircum != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">头围：</label>
+												<div class="flex-1">
+													{{casehistory.headCircum == '0.00' ? '' : casehistory.headCircum}}
+													<span *ngIf="casehistory.headCircum != '0.00'" class="pl5">cm</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.breastCircum != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">胸围：</label>
+												<div class="flex-1">
+													{{casehistory.breastCircum == '0.00' ? '' : casehistory.breastCircum}}
+													<span *ngIf="casehistory.breastCircum != '0.00'" class="pl5">cm</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.teeth != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">出牙数：</label>
+												<div class="flex-1">{{casehistory.teeth == '0' ? '' : casehistory.teeth}}</div>
+											</div>
+											<div *ngIf="casehistory.topicComment != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">主诉：</label>
+												<div class="flex-1">{{casehistory.topicComment}}</div>
+											</div>
+											<div *ngIf="casehistory.checkResult != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">检查结果：</label>
+												<div class="flex-1">{{casehistory.checkResult}}</div>
+											</div>
+											<div *ngIf="casehistory.presentIllness != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">现病史：</label>
+												<div class="flex-1">{{casehistory.presentIllness}}</div>
+											</div>
+											<div *ngIf="casehistory.previousHistory != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">既往史：</label>
+												<div class="flex-1">{{casehistory.previousHistory}}</div>
+											</div>
+											<div *ngIf="casehistory.allergy != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">过敏史：</label>
+												<div class="flex-1">{{casehistory.allergy}}</div>
+											</div>
+											<div *ngIf="casehistory.familyHistory != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">家族史：</label>
+												<div class="flex-1">{{casehistory.familyHistory}}</div>
+											</div>
+											<div *ngIf="casehistory.breedHistory != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">孕育史：</label>
+												<div class="flex-1">{{casehistory.breedHistory}}</div>
+											</div>
+											<div *ngIf="casehistory.growthHistory != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">生长发育史：</label>
+												<div class="flex-1">{{casehistory.growthHistory}}</div>
+											</div>
+											<div *ngIf="casehistory.physicalCheck != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">体格检查：</label>
+												<div class="flex-1">{{casehistory.physicalCheck}}</div>
+											</div>
+										</div>
+									</div>
+									<div *ngIf="casehistory.nervousSystem != null || casehistory.limbs != null || casehistory.breathe != null || casehistory.bloodPressure != null || casehistory.faceNeck != null || casehistory.heartLung != null || casehistory.abdomen != null" class="section">
+										<div class="title flex cursor-p" (click)="changeExamination()">
+											<span class="flex-1">体格检查详情</span>
+											<!-- <span *ngIf="!showExamination">
+												隐藏
+												<i class="anticon anticon-down"></i>
+											</span>
+											<span *ngIf="showExamination">
+												展开
+												<i class="anticon anticon-right"></i>
+											</span> -->
+										</div>
+										<div class="pure-g">
+											<div *ngIf="casehistory.breathe != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">呼吸：</label>
+												<div class="flex-1">
+													{{casehistory.breathe == '0' ? '' : casehistory.breathe}}
+													<span *ngIf="casehistory.breathe != '0'" class="pl5">次/分</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.bloodPressure != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">血压：</label>
+												<div class="flex-1">
+													{{casehistory.bloodPressure == '0' ? '' : casehistory.bloodPressure}}
+													<span *ngIf="casehistory.bloodPressure != '0'" class="pl5">mmHg</span>
+												</div>
+											</div>
+											<div *ngIf="casehistory.faceNeck != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">面、颈部：</label>
+												<div class="flex-1">{{casehistory.faceNeck}}</div>
+											</div>
+											<div *ngIf="casehistory.heartLung != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">心肺：</label>
+												<div class="flex-1">{{casehistory.heartLung}}</div>
+											</div>
+											<div *ngIf="casehistory.abdomen != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">腹部：</label>
+												<div class="flex-1">{{casehistory.abdomen}}</div>
+											</div>
+											<div *ngIf="casehistory.limbs != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">脊柱及四肢：</label>
+												<div class="flex-1">{{casehistory.limbs}}</div>
+											</div>
+											<div *ngIf="casehistory.nervousSystem != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">神经系统：</label>
+												<div class="flex-1">{{casehistory.nervousSystem}}</div>
+											</div>
+										</div>
+									</div>
+									<div *ngIf="casehistory.checkList.length > 0" class="section">
+										<div class="title">检测项目</div>
+										<div class="flex flex-wrap">
+											<div *ngFor="let check of casehistory.checkList" class="mr20 info">
+												<label>{{check.checkName}}</label>
+											</div>
+										</div>
+									</div>
+									<div class="section">
+										<div class="title">诊疗记录</div>
+										<div class="pure-g">
+											<div class="pure-u-24-24 bt info flex">
+												<label class="w60p">文件：</label>
+												<div class="flex-1 flex">
+													<div *ngIf="casehistory.files.length == 0">暂无文件</div>
+													<div class="file-item" *ngFor="let file of casehistory.files">
+												        <div class="show-tab cursor-pointer" (click)="showFile(file)">
+												            <img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+															<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+												        </div>
+												    </div>
+												</div>
+											</div>
+											<div *ngIf="casehistory.diagnosis != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">诊断：</label>
+												<div class="flex-1">{{casehistory.diagnosis}}</div>
+											</div>
+											<div *ngIf="casehistory.advise != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">建议：</label>
+												<div class="flex-1">{{casehistory.advise}}</div>
+											</div>
+											<ng-container *ngIf="prescriptList.length > 0">
+												<div class="pure-u-24-24 bt info flex">
+													<label class="w150pp">处方：</label>
+												</div>
+												<div *ngFor="let info of prescriptList[0].info; let index=index;" class="pure-u-24-24 bt info" [ngClass]="{'bt-ef': index != 0}">
+													<div class="flex">
+														<div class="flex-1">
+															{{index + 1}}：
+															{{info.pname}}：
+															{{info.format}}
+														</div>
+														<div class="w100p">{{info.num + info.unit}}</div>
+														<div class="w100p">{{info.days}}天</div>
+													</div>
+													<div class="ml50">
+														用法：
+														<span>{{info.frequency}}</span>
+														<span>一次{{info.oneNum + info.oneUnit}}</span>
+														<span>{{info.usage}}</span>
+													</div>
+												</div>
+											</ng-container>
+											<div class="pure-u-24-24 bt info flex">
+												<label class="w150pp">就诊日期：</label>
+												<div class="flex-1">{{casehistory.time}}</div>
+											</div>
+										</div>
+									</div>
+							  	</div>
+							</div>
+						</div>
 					</div>
 					<div *ngIf="editType == 'view' && pageType == 'examine' && info.checkId == null" class="text-center mt20">
 						<button (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">审核通过</button>

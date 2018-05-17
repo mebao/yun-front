@@ -4,6 +4,7 @@ import { FormsModule }                            from '@angular/forms';
 
 // nav
 import { NavModule }                              from '../../nav/nav.module';
+import { ENgxPrintModule }                        from 'e-ngx-print';
 
 // common
 import { AngCommonModule }                        from '../../../common/ang-common.module';
@@ -25,6 +26,7 @@ import { DocbookingCasehistoryComponent }         from './docbooking-casehistory
         NavModule,
         AngCommonModule,
         DocbookingCasehistoryRoutingModule,
+        ENgxPrintModule,
     ]
 })
 

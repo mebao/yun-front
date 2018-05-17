@@ -203,6 +203,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	infoTime: any;
 	timeSaveInterval: any;
 	timeCheckInterval: any;
+	printCSS:any;
+	printStyle:any;
 
 	constructor(
 		private adminService: AdminService,
@@ -211,7 +213,37 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		private router: Router,
 		private uploadService: UploadService,
 		private dialogService: DialogService,
-	) {}
+	) {
+		this.printCSS = ['../../../../assets/css/pure.min.css','../../../../assets/css/_flex.scss'];
+
+		this.printStyle =
+		`
+		*{
+			box-sizing: border-box;
+			margin:0px;
+			font-size:16px;
+			font-family:"黑体";
+			color:#333;
+		}
+		.pure-tab{
+			page-break-before: always;
+		}
+		.section{
+			margin-top: 20px;
+	    	border: 1px solid #f5f5f5;
+		}
+		.pure-tab .pure-u-8-24.bt,.pure-tab .pure-u-24-24.bt{
+			border-top: 1px solid #efefef;
+		}
+		.title{
+			background-color: #dedede;
+			padding: 10px;
+		}
+		.info{
+			padding:10px;
+		}
+		`;
+	}
 
 	ngOnDestroy(){
     	window.clearInterval(this.timeSaveInterval);

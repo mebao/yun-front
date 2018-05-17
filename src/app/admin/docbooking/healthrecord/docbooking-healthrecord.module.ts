@@ -1,6 +1,7 @@
 import { NgModule }                               from '@angular/core';
 import { CommonModule }                           from '@angular/common';
 import { FormsModule }                            from '@angular/forms';
+import { ENgxPrintModule }                      from 'e-ngx-print';
 
 // nav
 import { NavModule }                              from '../../nav/nav.module';
@@ -25,6 +26,7 @@ import { DocbookingHealthrecordComponent }        from './docbooking-healthrecor
         NavModule,
         AngCommonModule,
         DocbookingHealthrecordRoutingModule,
+        ENgxPrintModule,
     ]
 })
 
