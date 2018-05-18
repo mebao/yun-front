@@ -16,7 +16,14 @@
 				<div *ngIf="selectTab == check.id">
 					<div class="pt10 pb10 flex">
 						<div class="flex-1">开单医生：{{check.doctorName}}</div>
-						<button (click)="print(check)" class="pure-button">打印</button>
+						<e-ngx-print
+							[btnText]="'打印'"
+							[btnClass]="{'pure-button': true}"
+							[printHTML]="print_div"
+							[printStyle]="printStyle"
+							[printCSS]="printCSS">
+						</e-ngx-print>
+						<!-- <button (click)="print(check)" class="pure-button">打印</button> -->
 					</div>
 					<form #f="ngForm" class="pure-form">
 						<table class="pure-table pure-table-horizontal w100 table-tab">
@@ -43,7 +50,7 @@
 										<ng-container *ngIf="result.isUpload == '0'">
 											<td>{{result.code}}</td>
 											<td>
-												<input type="text" name="values_{{indexResult}}" [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
+												<input type="text" name="values_{{indexResult}}" maxlength="50"  [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
 											</td>
 											<td>
 												<div class="length-text">{{result.references}}</div>
@@ -102,7 +109,7 @@
 							<div class="flex">
 								<div class="pure-control-group flex-1">
 									<label for="remark">备注（最多100字）</label>
-									<textarea id="remark" name="remark" maxlength="200" [(ngModel)]="check.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
+									<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="check.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
 								</div>
 								<div class="flex-1"></div>
 							</div>
@@ -112,6 +119,67 @@
 							<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
 						</div>
 					</form>
+				</div>
+				<!--打印-->
+				<div style="display:none;">
+					<div id="print_div" #print_div  class="container">
+						<ng-container>
+					        <h1 class="title text-center">{{check.checkName}}</h1>
+							<div class="mb10">
+								<span class="name text-right mr10">
+						            开单医生：{{check.doctorName}}
+						        </span>
+						        <span class="name text-right mr10">
+						            宝宝姓名：{{check.childName}}
+						        </span>
+								<span class="name text-right">
+						            开单时间：{{check.time}}
+						        </span>
+							</div>
+					        <table class="pure-table pure-table-horizontal w100 table-tab mb50">
+					            <thead>
+					                <tr>
+					                    <th class="w20">项目</th>
+					                    <th class="w10">代码</th>
+					                    <th class="w20">检查结果</th>
+					                    <th class="w30">参考值</th>
+					                    <th class="w10">单位</th>
+					                    <th class="w10">性质</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                <tr *ngFor="let result of check.resultList; let indexResult=index;">
+					                    <td>{{result.checkInfoName}}</td>
+					                    <td>{{result.code}}</td>
+					                    <!-- 文本填写亦或图片上传 -->
+					                    <ng-container *ngIf="result.isUpload == '0'">
+					                        <td>
+					                            {{result.values}}
+					                        </td>
+					                        <td>
+					                            <div class="length-text">{{result.references}}</div>
+					                        </td>
+					                        <td>{{result.unit}}</td>
+					                        <td class="text-center">
+					                            <i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
+					                            <i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
+					                        </td>
+					                    </ng-container>
+					                    <ng-container *ngIf="result.isUpload == '1'">
+					                        <td colspan="4">
+					                            <img *ngIf="result.values && result.values.lastIndexOf('.pdf') == -1" src="{{result.values ? result.values : '../assets/images/result.png'}}">
+					                            <div *ngIf="result.values && result.values.lastIndexOf('.pdf') != -1" class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
+					                        </td>
+					                    </ng-container>
+					                </tr>
+					            </tbody>
+					        </table>
+							<div class="mt10" *ngIf="check.remark != null">
+								<label for="remark">备注：</label>
+								<span>{{check.remark}}</span>
+							</div>
+					    </ng-container>
+					</div>
 				</div>
 			</div>
 		</div>

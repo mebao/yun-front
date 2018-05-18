@@ -42,13 +42,57 @@ export class InspectResultsComponent{
 	btnCanEdit: boolean;
 	firstClick: boolean;
 	intervalObj: any;
+	printCSS: any;
+	printStyle: any;
 
 	constructor(
 		private adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
 		private dialogService: DialogService,
-	) {}
+	) {
+		this.printCSS = ['../../../../assets/css/pure.min.css','../../../../assets/css/_flex.scss'];
+		this.printStyle =
+		`
+		.container{
+			width:100%;
+		}
+		table{
+			width:100%;
+			font-size:14px!important;
+		}
+		table th{
+			font-weight:bold;
+		}
+		.title{
+			font-size: 24px;
+		}
+		img{
+			height: 100px;
+		}
+		.text-center{
+			text-align:center;
+		}
+		.mb10{
+			margin-bottom:10px;
+		}
+		.mr10{
+			margin-right:10px;
+		}
+		.w10{
+			width:10%!important;
+		}
+		.w20{
+			width:20%!important;
+		}
+		.w30{
+			width:30%!important;
+		}
+		.mt10{
+			margin-top:10px;
+		}
+		`;
+	}
 
 	ngOnInit() {
 		this.topBar = {

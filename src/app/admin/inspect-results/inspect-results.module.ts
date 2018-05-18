@@ -3,6 +3,7 @@ import { CommonModule }                      from '@angular/common';
 import { FormsModule }                       from '@angular/forms';
 
 import { NavModule }                         from '../nav/nav.module';
+import { ENgxPrintModule }                   from 'e-ngx-print';
 
 import { AngCommonModule }                   from '../../common/ang-common.module';
 
@@ -26,6 +27,7 @@ import { InspectResultsPrint }               from './inspect-results-print';
         NavModule,
         AngCommonModule,
         InspectResultsRoutingModule,
+        ENgxPrintModule,
     ]
 })
 
