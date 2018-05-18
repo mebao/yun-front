@@ -55,6 +55,10 @@ const adminRoutes: Routes = [
 						loadChildren: './medical/medical.module#MedicalModule',
 					},
 					{
+						path: 'mout',
+						loadChildren: './mout/mout.module#MoutModule',
+					},
+					{
 						path: 'schedulingIndex',
 						loadChildren: './scheduling/scheduling.module#SchedulingModule',
 					},
@@ -94,10 +98,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'setupInspect',
 						loadChildren: './inspect/inspect.module#InspectModule',
-					},
-					{
-						path: 'inspectResultsList',
-						loadChildren: './inspect-results-list/inspect-results-list.module#InspectResultsListModule',
 					},
 					{
 						path: 'inspectResults',

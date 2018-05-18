@@ -872,11 +872,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'inspectResultsList',
-						firstUrl: '/admin/inspectResultsList',
+						firstUrl: '/admin/inspectResults/list',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/inspectResultsList',
+								url: '/admin/inspectResults/list',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

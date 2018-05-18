@@ -383,7 +383,7 @@ export class LoginComponent{
 			inspectResultsList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/inspectResultsList',
+				url: '/admin/inspectResults/list',
 				infos: [],
 			},
 			bookingAssistList: {

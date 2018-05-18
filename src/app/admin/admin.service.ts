@@ -1473,6 +1473,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询诊所手动出库记录
+	searchdelivery(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchdelivery' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 诊所人员手动出库
+	handoutstock(params): Promise<Data>{
+		var url = this.url + '/mebcrm/handoutstock';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

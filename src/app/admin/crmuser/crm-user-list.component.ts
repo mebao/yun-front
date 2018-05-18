@@ -8,7 +8,7 @@ import { AdminService }                       from '../admin.service';
 @Component({
 	selector: 'app-crm-user-list',
 	templateUrl: './crm-user-list.component.html',
-	styleUrls: ['./crm-user-list.component.scss'],
+	styleUrls: ['../../../assets/css/ant-common.scss'],
 })
 export class CrmUserListComponent{
 	topBar: {

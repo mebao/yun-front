@@ -1,29 +1,22 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-crm-role">
 	<top-bar [data]="topBar"></top-bar>
-	<div>
-		<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-			<fieldset>
-				<div class="pure-g">
-					<div class="pure-u-8-24 pr10">
-						<div class="pure-control-group">
-							<label for="name">
-								<span>角色名</span>
-							</label>
-							<input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="roleInfo.name" placeholder="请输入角色名" required="">
-							<div *ngIf="name.errors && (name.dity || name.touched)" class="alert alert-danger">
-								<div [hidden]="!name.errors.required">
-									角色名不可为空
-								</div>
-							</div>
-						</div>
-					</div>
+    <form nz-form [formGroup]="validateForm">
+		<div nz-row>
+			<div nz-col [nzOffset]="6" [nzSpan]="12">
+			    <div nz-form-item>
+			        <div nz-form-label>
+			            <label>角色名：</label>
+			        </div>
+			        <div nz-form-control>
+						<nz-input formControlName="name" [nzPlaceHolder]="'请输入角色名'" [nzSize]="'large'"></nz-input>
+			            <div nz-form-explain *ngIf="getFormControl('name').dirty && getFormControl('name').hasError('required')">角色名不可为空</div>
+			        </div>
+			    </div>
+				<div class="text-center mt10">
+					<button (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit" [disabled]="!validateForm.valid">保存</button>
 				</div>
-			</fieldset>
-			<div class="text-center">
-				<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>

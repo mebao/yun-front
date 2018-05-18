@@ -67,7 +67,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.inspectResultsList.use != ''"
-			routerLink="./inspectResultsList"
+			routerLink="./inspectResults/list"
 			routerLinkActive="ant-menu-item-selected"
 			(click)="goPage('inspectResultsList')">
 			<span title>
@@ -445,6 +445,15 @@
 					</ul>
 				</li>
 			</ul>
+		</li>
+		<li nz-menu-item
+			routerLink="./mout/list"
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('moutList')">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>手动出库管理</span>
+			</span>
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.userList.use != ''"

@@ -11,7 +11,7 @@ import { AdminService }                       from '../../admin.service';
 @Component({
 	selector: 'app-booking-in',
 	templateUrl: './booking-in.component.html',
-	styleUrls: ['./booking-in.component.scss'],
+	styleUrls: ['./booking-in.component.scss', '../../../../assets/css/ant-common.scss'],
 })
 export class BookingInComponent{
 	topBar: {

@@ -1,142 +1,96 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-crm-user">
 	<top-bar [data]="topBar"></top-bar>
-	<form #f="ngForm" class="pure-form pure-form-stacked form-tab pure-tab">
-		<fieldset>
-			<div class="pure-g">
-				<div class="pure-u-1-5">
-					<div class="flex">
-						<div class="w90p mr10 mt10">
-							<a class="upload-tab">
-								<img id="imgEle" src="../assets/images/img.png">
-								<input type="hidden" id="file" name="file" ngModel>
-								<input class="upload" type="file" (change)="selectedFile($event)">
-							</a>
-						</div>
-						<div class="flex-1"></div>
+	<nz-spin [nzSpinning]="_isSpinning">
+		<div nz-row>
+			<div nz-col [nzSpan]="6">
+				<div class="flex">
+					<div class="w90p mr10 mt10">
+						<a class="upload-tab">
+							<img id="imgEle" src="../assets/images/img.png">
+							<input type="hidden" id="file" name="file" ngModel>
+							<input class="upload" type="file" (change)="selectedFile($event)">
+						</a>
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div>
+			<div nz-col [nzSpan]="12">
+				<div nz-form-item>
+					<div nz-form-label>
+						<label><span class="required">*</span>手机号码（默认为账号密码）：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-input [(ngModel)]="userInfo.mobile" [nzPlaceHolder]="'请输入电话号码'" [nzSize]="'large'"></nz-input>
 					</div>
 				</div>
-				<div class="pure-u-3-5">
-					<div class="pure-control-group">
-						<label for="mobile">
-							<span>手机号码(默认为账号密码)</span>
-							<span class="required">*</span>
-						</label>
-						<input type="text" id="mobile" class="form-control" required minlength="11" maxlength="11" name="mobile" [(ngModel)]="user.mobile" #mobile="ngModel"  placeholder="请输入电话号码">
-						<div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
-						    <div [hidden]="!mobile.errors.required">
-						    	手机号码不可为空
-						    </div>
-						    <div [hidden]="!mobile.errors.minlength">
-						    	手机号码至少11位
-						    </div>
-						    <div [hidden]="!mobile.errors.maxlength">
-						    	手机号码最多11位
-						    </div>
-						</div>
+				<div nz-form-item class="mt10">
+					<div nz-form-label>
+						<label><span class="required">*</span>真实姓名：</label>
 					</div>
-					<!-- <div class="pure-control-group">
-						<label for="user_name">
-							<span>用户名(用作登陆,只能由字母、数字和下划线组成,最多18位)</span>
-							<span class="required">*</span>
-						</label>
-						<input id="user_name" type="text" maxlength="18" name="user_name" [(ngModel)]="user.user_name" #user_name="ngModel" placeholder="请输入用户名" required="" [disabled]="editType == 'update'">
-						<div *ngIf="user_name.errors && (user_name.dirty || user_name.touched)" class="alert alert-danger">
-						    <div [hidden]="!user_name.errors.required">
-						    	用户名不可为空
-						    </div>
-						</div>
-					</div> -->
-					<div class="pure-control-group">
-						<label for="real_name">
-							<span>真实姓名</span>
-							<span class="required">*</span>
-						</label>
-						<input id="real_name" type="text" name="real_name" [(ngModel)]="user.real_name" #real_name="ngModel" placeholder="请输入真实姓名" required="">
-						<div *ngIf="real_name.errors && (real_name.dirty || real_name.touched)" class="alert alert-danger">
-						    <div [hidden]="!real_name.errors.required">
-						    	真实姓名不可为空
-						    </div>
-						</div>
+					<div nz-form-control class="mt5">
+						<nz-input [(ngModel)]="userInfo.real_name" [nzPlaceHolder]="'请输入真实姓名'" [nzSize]="'large'"></nz-input>
 					</div>
-					<div *ngIf="editType == 'create'" class="pure-control-group">
-						<label for="role">
-							<span>类型</span>
-							<span class="required">*</span>
-						</label>
-						<select id="role" name="role" [(ngModel)]="user.role" #role="ngModel" (change)="roleChange($event.target.value)" required="">
-							<ng-container *ngFor="let role of roles">
-								<option value="{{role.id}}">{{role.name}}</option>
+				</div>
+				<div *ngIf="editType == 'create'" nz-form-item class="mt10">
+					<div nz-form-label>
+						<label><span class="required">*</span>类型：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-select [(ngModel)]="userInfo.role" [nzSize]="'large'" [nzPlaceHolder]="'请选择类型'" (nzOpenChange)="roleChange($event)" class="w100">
+							<ng-container *ngFor="let role of roleList">
+								<nz-option [nzLabel]="role.name" [nzValue]="role.id"></nz-option>
 							</ng-container>
-						</select>
-						<div *ngIf="role.errors && (role.dirty || role.touched)" class="alert alert-danger">
-						    <div [hidden]="!role.errors.required">
-						    	类型不可为空
-						    </div>
-						</div>
+						</nz-select>
 					</div>
-					<div *ngIf="user.role != '9'" class="pure-control-group">
-						<label for="clinic_role">
-							<span>角色</span>
-							<span class="required">*</span>
-						</label>
-						<select id="clinic_role" name="clinic_role" [(ngModel)]="user.clinic_role" #clinic_role="ngModel" required>
+				</div>
+				<div *ngIf="this.userInfo.role != '9'" nz-form-item class="mt10">
+					<div nz-form-label>
+						<label><span class="required">*</span>角色：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-select [(ngModel)]="userInfo.clinic_role" [nzSize]="'large'" [nzPlaceHolder]="'请选择角色'" class="w100">
 							<ng-container *ngFor="let clinicRole of clinicRoleList">
-								<option value="{{clinicRole.string}}">{{clinicRole.name}}</option>
+								<nz-option [nzLabel]="clinicRole.name" [nzValue]="clinicRole"></nz-option>
 							</ng-container>
-						</select>
-						<div *ngIf="clinic_role.errors && (clinic_role.dity || clinic_role.touched)" class="alert alert-danger">
-							<div [hidden]="!clinic_role.errors.required">
-								角色不可为空
-							</div>
-						</div>
-					</div>
-					<div class="pure-control-group" *ngIf="addDoctor">
-						<label for="gender">
-							<span>性别</span>
-							<span class="required">*</span>
-						</label>
-						<select id="gender" name="gender" [(ngModel)]="user.gender" #gender="ngModel" required="">
-							<option value="M">男</option>
-							<option value="F">女</option>
-						</select>
-						<div *ngIf="gender.errors && (gender.dirty || gender.touched)" class="alert alert-danger">
-						    <div [hidden]="!gender.errors.required">
-						    	性别不可为空
-						    </div>
-						</div>
-					</div>
-					<!-- <div class="pure-control-group" *ngIf="addDoctor">
-						<label for="academical_title">
-							<span>学术职称</span>
-						</label>
-						<select id="academical_title" name="academical_title" [(ngModel)]="user.academical_title">
-							<ng-container *ngFor="let academic of academicTitle">
-								<option value="{{academic.id}}">{{academic.name}}</option>
-							</ng-container>
-						</select>
-					</div> -->
-					<div class="pure-control-group" *ngIf="addDoctor">
-						<label for="clinical_title">
-							<span>医生职称</span>
-						</label>
-						<select id="clinical_title" name="clinical_title" [(ngModel)]="user.clinical_title">
-							<ng-container *ngFor="let clinical of clinicalTitle">
-								<option value="{{clinical.id}}">{{clinical.name}}</option>
-							</ng-container>
-						</select>
-					</div>
-					<div class="pure-control-group" *ngIf="addDoctor">
-						<label for="description">医生简介（最多500字）</label>
-						<textarea maxlength="500" id="description" name="description" [(ngModel)]="user.description" #description="ngModel" class="w100" placeholder="请输入医生简介"></textarea>
+						</nz-select>
 					</div>
 				</div>
-				<div class="pure-u-1-5"></div>
+				<div *ngIf="addDoctor" nz-form-item class="mt10">
+					<div nz-form-label>
+						<label><span class="required">*</span>性别：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-select [(ngModel)]="userInfo.gender" [nzSize]="'large'" [nzPlaceHolder]="'请选择性别'" class="w100">
+							<nz-option [nzLabel]="'男'" [nzValue]="'M'"></nz-option>
+							<nz-option [nzLabel]="'女'" [nzValue]="'F'"></nz-option>
+						</nz-select>
+					</div>
+				</div>
+				<div *ngIf="addDoctor" nz-form-item class="mt10">
+					<div nz-form-label>
+						<label>医生职称：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-select [(ngModel)]="userInfo.clinical_title" [nzSize]="'large'" [nzPlaceHolder]="'请选择医生职称'" class="w100">
+							<ng-container *ngFor="let clinical of clinicalTitleList">
+								<nz-option [nzLabel]="clinical.name" [nzValue]="clinical.id"></nz-option>
+							</ng-container>
+						</nz-select>
+					</div>
+				</div>
+				<div *ngIf="addDoctor" nz-form-item class="mt10">
+					<div nz-form-label>
+						<label>医生简介（最多500字）：</label>
+					</div>
+					<div nz-form-control class="mt5">
+						<nz-input [(ngModel)]="userInfo.description" [nzType]="'textarea'" [nzPlaceHolder]="'请输入医生简介'" [nzSize]="'large'"></nz-input>
+					</div>
+				</div>
+				<div class="text-center mt10">
+					<button (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+				</div>
 			</div>
-			<div class="text-center">
-				<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max mt10" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
-			</div>
-		</fieldset>
-	</form>
+		</div>
+	</nz-spin>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
