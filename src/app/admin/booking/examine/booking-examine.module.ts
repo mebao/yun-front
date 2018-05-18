@@ -8,16 +8,19 @@ import { NavModule }                          from '../../nav/nav.module';
 
 import { AngCommonModule }                    from '../../../common/ang-common.module';
 
-import { BookingExamineCaseRoutingModule }    from './booking-examine-case.routing.module';
+import { BookingExamineRoutingModule }        from './booking-examine.routing.module';
 
 import { BookingExamineCase }                 from './booking-examine-case';
+import { BookingExamineRecord }               from './booking-examine-record';
 
 @NgModule({
     declarations: [
         BookingExamineCase,
+        BookingExamineRecord,
     ],
     exports: [
         BookingExamineCase,
+        BookingExamineRecord,
     ],
     imports: [
         CommonModule,
@@ -25,10 +28,10 @@ import { BookingExamineCase }                 from './booking-examine-case';
         NgZorroAntdModule,
         NavModule,
         AngCommonModule,
-        BookingExamineCaseRoutingModule,
+        BookingExamineRoutingModule,
     ]
 })
 
-export class BookingExamineCaseModule{
+export class BookingExamineModule{
 
 }

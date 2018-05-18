@@ -1889,7 +1889,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			}
 			if(this.healthrecordList[0].checkId == null){
 				setTimeout(() => {
-					this.router.navigate(['./admin/bookingExamineHealth']);
+					this.router.navigate(['./admin/booking/examine/health']);
 				}, 2000);
 			}else{
 				this.toastTab(this.editType == 'create' ? '儿保创建成功' : '儿保修改成功', '');

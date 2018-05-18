@@ -48,6 +48,7 @@ export class BookingListComponent implements OnInit{
 		bdate_big_text: string,
 		statuslist: string,
 		status: string,
+		has_sms: string,
 	}
 	bookinglist: any[];
 	weeklist: any[];
@@ -204,6 +205,7 @@ export class BookingListComponent implements OnInit{
 			bdate_big_text: this.adminService.dateFormat(todayDate),
 			statuslist: '',
 			status: '',
+			has_sms: '',
 		}
 
 		this.use = true;
@@ -794,6 +796,9 @@ export class BookingListComponent implements OnInit{
 		var urlOptions = this.url;
 		if(this.searchInfo.status && this.searchInfo.status != ''){
 			urlOptions += '&status=' + this.searchInfo.status;
+		}
+		if(this.searchInfo.has_sms && this.searchInfo.has_sms != ''){
+			urlOptions += '&has_sms=' + this.searchInfo.has_sms;
 		}
 		if(this.searchInfo.statuslist && this.searchInfo.statuslist != ''){
 			urlOptions += '&statuslist=' + this.searchInfo.statuslist;

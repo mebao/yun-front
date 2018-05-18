@@ -7,15 +7,7 @@ import { AdminService }                from '../../admin.service';
 @Component({
     selector: 'admin-booking-assist-list',
     templateUrl: './booking-assist-list.component.html',
-	styles: [ `
-		.ant-form-item-label label:after{
-		    display: none;
-		}
-		.ant-form-item{
-			margin-bottom: 0;
-		}
-	`
-  	]
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 
 export class BookingAssistList{
@@ -31,10 +23,21 @@ export class BookingAssistList{
         assist_id: string,
         doctor_name: string,
         child_name: string,
+        is_finish: string,
     }
     _startDate = null;
     _endDate = null;
     url: string;
+    modalConfirmTab: boolean;
+    selectedInfo: {
+        assist: any,
+        text: string,
+    }
+    asssitMList: any[];
+    searchInfoM: {
+        startDate: Date,
+        endDate: Date,
+    }
 
     constructor(
         private _message: NzMessageService,
@@ -54,6 +57,7 @@ export class BookingAssistList{
             assist_id: '',
             doctor_name: '',
             child_name: '',
+            is_finish: '0',
         }
         this._startDate = new Date();
         this._endDate = new Date();
@@ -63,6 +67,7 @@ export class BookingAssistList{
                 assist_id: sessionSearch.assist_id,
                 doctor_name: sessionSearch.doctor_name,
                 child_name: sessionSearch.child_name,
+                is_finish: sessionSearch.is_finish,
             }
             this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
             this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
@@ -75,6 +80,11 @@ export class BookingAssistList{
         this.url = '?username=' + this.adminService.getUser().username
              + '&token=' + this.adminService.getUser().token
              + '&clinic_id=' + this.adminService.getUser().clinicId;
+        this.modalConfirmTab = false;
+        this.selectedInfo = {
+            assist: {},
+            text: '',
+        }
 
         var searchassistUrl = this.url + '&status=1'
         this.adminService.searchassist(searchassistUrl).then((data) => {
@@ -88,6 +98,11 @@ export class BookingAssistList{
             this._message.error('服务器错误');
         });
         this.search();
+        this.asssitMList = [];
+        this.searchInfoM = {
+            startDate: new Date(),
+            endDate: new Date(),
+        }
     }
 
     getData(urlOptions) {
@@ -153,6 +168,9 @@ export class BookingAssistList{
         if(this.searchInfo.child_name && this.searchInfo.child_name != ''){
             urlOptions += '&child_name=' + this.searchInfo.child_name;
         }
+        if(this.searchInfo.is_finish && this.searchInfo.is_finish != ''){
+            urlOptions += '&is_finish=' + this.searchInfo.is_finish;
+        }
         if(this._startDate){
             urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this._startDate));
         }
@@ -180,4 +198,76 @@ export class BookingAssistList{
     childInfo(_id) {
         window.open('./admin/child/info?id=' + _id);
     }
+
+    finish(info) {
+        this.selectedInfo = {
+            assist: info,
+            text: `确认完成-${info.childName}-（${info.number}次：${info.assistName}）`
+        }
+        this.modalConfirmTab = true;
+    }
+
+    closeConfirm() {
+        this.modalConfirmTab = false;
+        this.selectedInfo = {
+            assist: {},
+            text: ''
+        }
+    }
+
+    confirm() {
+        this.modalConfirmTab = false;
+        var params = {
+            username: this.adminService.getUser().username,
+            token: this.adminService.getUser().token,
+            clinic_id: this.adminService.getUser().clinicId,
+            id: this.selectedInfo.assist.id,
+        }
+        this.adminService.finishassist(this.selectedInfo.assist.id, params).then((data) => {
+            if(data.status == 'no'){
+                this._message.error(data.errorMsg);
+            }else{
+                this.search();
+                this._message.success('完成成功');
+            }
+        }).catch(() => {
+            this._message.error('服务器错误');
+        });
+    }
+
+    searchMList() {
+        var urlOptions = this.url;
+        this.getDataMedical(urlOptions);
+    }
+
+    getDataMedical(urlOptions) {
+        this.loadingShow = true;
+        this.adminService.countassist(urlOptions).then((data) => {
+            if(data.status == 'no'){
+                this.loadingShow = false;
+                this._message.error(data.errorMsg);
+            }else{
+                var results = JSON.parse(JSON.stringify(data.results));
+                this.asssitMList = results.list;
+                this.loadingShow = false;
+            }
+        }).catch(() => {
+            this.loadingShow = false;
+            this._message.error('服务器错误');
+        });
+    }
+
+    _disabledStartDateM = (startValue) => {
+        if (!startValue || !this.searchInfoM.endDate) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfoM.endDate.getTime();
+    };
+
+    _disabledEndDateM = (endValue) => {
+        if (!endValue || !this.searchInfoM.startDate) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfoM.startDate.getTime();
+    };
 }

@@ -1169,13 +1169,13 @@ export class AuthGuardRole implements CanActivate{
 						authority: [],
 						second: [
 							{
-								url: '/admin/bookingExamineCase',
+								url: '/admin/booking/examine/case',
 								authority: 'seeCase',
 								queryType: '',
 								queryParams: '',
 							},
 							{
-								url: '/admin/bookingExamineHealth',
+								url: '/admin/booking/examine/health',
 								authority: 'seeHealth',
 								queryType: '',
 								queryParams: '',

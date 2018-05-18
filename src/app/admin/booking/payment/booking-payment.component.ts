@@ -193,8 +193,18 @@ export class BookingPaymentComponent{
 	paymentType: string;
 	modalTabAddPay: boolean;
 	tranInfo: any;
-	// 药方弹窗，用于判断是否含有未出药
-	prescriptTabShow: boolean;
+	/**
+	 * 用于判断是否有未完成操作
+	 * 西药是否出药
+	 * 中药是否出药
+	 * 辅助治疗是否完成
+	 */
+	confirmTab: {
+		show: boolean,
+		type: string,
+		text: string,
+		buttonText: string,
+	}
 	// 选择他人活动卡
 	selectedInfo: {
 		user: any,
@@ -547,7 +557,12 @@ export class BookingPaymentComponent{
 
 		this.editMemberType = 'save';
 
-		this.prescriptTabShow = false;
+		this.confirmTab = {
+			show: false,
+			type: '',
+			text: '',
+			buttonText: '',
+		}
 
 		this.selectedInfo = {
 			user: {},
@@ -1719,10 +1734,82 @@ export class BookingPaymentComponent{
 						}
 					}
 					if(hasPrescript){
-						this.prescriptTabShow = true;
+						this.confirmTab = {
+							show: true,
+							type: 'prescript/list',
+							text: '尚有药品未出药，请出药后再支付',
+							buttonText: '去出药',
+						}
 					}else{
-						// 支付
-						this.pay();
+						// 验证中药是否出药
+						this.getTcmPrescript();
+					}
+				}else{
+					// 验证中药是否出药
+					this.getTcmPrescript();
+				}
+			}
+		}).catch((error) => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	getTcmPrescript() {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&booking_id=' + this.id + '&isout=1';
+		this.adminService.searchtcmprescript(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.loadingShow = false;
+				if(results.list.length > 0){
+					if(results.list[0].apotId == null){
+						this.confirmTab = {
+							show: true,
+							type: 'prescript/tcmList',
+							text: '尚有中药未出药，请出药后再支付',
+							buttonText: '去出药',
+						}
+					}else{
+						// 验证辅助治疗是否完成
+						this.getAssistList();
+					}
+				}else{
+					// 验证辅助治疗是否完成
+					this.getAssistList();
+				}
+			}
+		}).catch((error) => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	getAssistList() {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&booking_id=' + this.id + '&is_finish=0';
+		this.adminService.bookingassist(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.loadingShow = false;
+				if(results.list.length > 0){
+					this.confirmTab = {
+						show: true,
+						type: 'bookingAssistList',
+						text: '尚有辅助治疗未完成，请完成后再支付',
+						buttonText: '去完成',
 					}
 				}else{
 					// 支付
@@ -1735,12 +1822,17 @@ export class BookingPaymentComponent{
 		});
 	}
 
-	closePrescriptTab() {
-		this.prescriptTabShow = false;
+	closeConfirmTab() {
+		this.confirmTab = {
+			show: false,
+			type: '',
+			text: '',
+			buttonText: '',
+		}
 	}
 
-	goPrescript() {
-		this.router.navigate(['./admin/prescript/list']);
+	goConfirm() {
+		this.router.navigate(['./admin/' + this.confirmTab.type]);
 	}
 
 	closeAddPay() {

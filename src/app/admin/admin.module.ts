@@ -28,7 +28,6 @@ import { NoPermissionsComponent }          from '../error/no-permissions.compone
 import {SelectivePreloadingStrategy}       from '../selective-preloading-strategy';
 
 import { HomeComponent }                   from './home/home.component';
-import { BookingComponent }                from './booking/booking.component';
 import { UploadComponent }                 from './user/upload.component';
 import { DoctorPrescriptComponent }        from './prescript/doctor-prescript.component';
 import { DoctorTcmPrescript }              from './prescript/doctor-tcm-prescript';
@@ -55,7 +54,6 @@ import { DoctorService }                   from './doctor/doctor.service';
 	declarations: [
 		AdminComponent,
 		HomeComponent,
-		BookingComponent,
 		PageNotFoundComponent,
 		NoPermissionsComponent,
 		UploadComponent,

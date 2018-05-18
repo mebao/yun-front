@@ -29,6 +29,22 @@
 	<div class="flex pure-form search-tab max mt5">
 		<div class="flex-1"></div>
 		<div class="pure-control-group mr10 flex">
+			<label for="creator_name">宝宝姓名：</label>
+			<select-search [title]="'请选择宝宝'" [selectList]="childList" [showClear]="true" (onVoted)="selectChild($event)"></select-search>
+		</div>
+		<div class="pure-control-group search-tab max mr10">
+			<label for="doctor_id">医生：</label>
+			<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
+				<ng-container *ngFor="let doctor of doctorlist">
+					<option value="{{doctor.id}}">{{doctor.realName}}</option>
+				</ng-container>
+			</select>
+		</div>
+		<div class="w64p"></div>
+	</div>
+	<div class="flex pure-form search-tab max mt2">
+		<div class="flex-1"></div>
+		<div class="pure-control-group mr10">
 			<label for="status">预约状态：</label>
 			<select id="status" name="status" [(ngModel)]="searchInfo.status">
 				<option value="">所有</option>
@@ -42,16 +58,12 @@
 				<option value="5">已完成</option>
 			</select>
 		</div>
-		<div class="pure-control-group mr10 flex">
-			<label for="creator_name">宝宝姓名：</label>
-			<select-search [title]="'请选择宝宝'" [selectList]="childList" [showClear]="true" (onVoted)="selectChild($event)"></select-search>
-		</div>
-		<div class="pure-control-group search-tab max mr10">
-			<label for="doctor_id">医生：</label>
-			<select id="doctor_id" name="doctor_id" [(ngModel)]="searchInfo.doctor_id">
-				<ng-container *ngFor="let doctor of doctorlist">
-					<option value="{{doctor.id}}">{{doctor.realName}}</option>
-				</ng-container>
+		<div class="pure-control-group mr10">
+			<label for="has_sms">短信状态：</label>
+			<select id="has_sms" name="has_sms" [(ngModel)]="searchInfo.has_sms">
+				<option value="">全部</option>
+				<option value="0">未发送</option>
+				<option value="1">已发送</option>
 			</select>
 		</div>
 		<div *ngIf="selectedTab == 1" class="w64p"></div>
@@ -174,7 +186,7 @@
 				<nz-tooltip>
 					<div nz-tooltip class="tab" [ngClass]="{'cancel': booking.status == '0' || booking.status == '-1', 'in': (booking.status != '0' && booking.status != '-1' && booking.status != '1' && booking.status != '2')}">
 						<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
-							<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/vip.png" />
+							<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/{{booking.memberName.indexOf('太阳') != -1 ? 'icon_son.png' : booking.memberName.indexOf('月亮') != -1 ? 'icon_moon.png' : booking.memberName.indexOf('星星') != -1 ? 'icon_star.png' : 'vip.png'}}" />
 							<div class="flex">
 								<div class="flex-1"></div>
 								<div class="status">

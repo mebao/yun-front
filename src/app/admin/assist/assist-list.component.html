@@ -5,7 +5,7 @@
 	    <button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增辅助治疗</button>
 	</div>
 	<div nz-row class="mt10 mb10">
-		<div nz-col [nzSpan]="6" [nzOffset]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="name">辅助治疗名：</label>
@@ -15,7 +15,7 @@
 				</div>
 			</div>
 		</div>
-		<div nz-col [nzSpan]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="type">类型：</label>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-		<div nz-col [nzSpan]="6">
+		<div nz-col [nzSpan]="8">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="status">状态：</label>
@@ -60,21 +60,44 @@
 				<th nz-th>辅助治疗名</th>
 				<th nz-th>辅助治疗类型</th>
 				<th nz-th>辅助治疗价格</th>
+				<th nz-th>药品</th>
+				<th nz-th>计量</th>
+				<th nz-th>实际计量</th>
 				<th nz-th>状态</th>
 				<th nz-th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
-			<tr *ngFor="let assist of assistList">
-				<td>{{assist.name}}</td>
-				<td>{{assist.typeText}}</td>
-				<td>{{assist.price}}</td>
-				<td>{{assist.status == '1' ? '可用' : '停用'}}</td>
-				<td>
-					<button *ngIf="moduleAuthority.edit" (click)="update(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-					<button *ngIf="moduleAuthority.edit" (click)="updateStatus(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改状态</button>
-				</td>
-			</tr>
+			<ng-container *ngFor="let assist of assistList">
+				<tr *ngIf="assist.supplie_info.length == 0">
+					<td>{{assist.name}}</td>
+					<td>{{assist.typeText}}</td>
+					<td>{{assist.price}}</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>{{assist.status == '1' ? '可用' : '停用'}}</td>
+					<td>
+						<button *ngIf="moduleAuthority.edit" (click)="update(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+						<button *ngIf="moduleAuthority.edit" (click)="updateStatus(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改状态</button>
+					</td>
+				</tr>
+				<ng-container *ngIf="assist.supplie_info.length > 0">
+					<tr *ngFor="let supplie_info of assist.supplie_info; let indexInfo=index;">
+						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.name}}</td>
+						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.typeText}}</td>
+						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.price}}</td>
+						<td>{{supplie_info.name}}</td>
+						<td>{{supplie_info.num + supplie_info.unit}}</td>
+						<td>{{supplie_info.show_num + supplie_info.show_unit}}</td>
+						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.status == '1' ? '可用' : '停用'}}</td>
+						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">
+							<button *ngIf="moduleAuthority.edit" (click)="update(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+							<button *ngIf="moduleAuthority.edit" (click)="updateStatus(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改状态</button>
+						</td>
+					</tr>
+				</ng-container>
+			</ng-container>
 		</tbody>
 	</nz-table>
 </div>

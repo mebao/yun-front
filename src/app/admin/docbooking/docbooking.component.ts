@@ -983,7 +983,7 @@ export class DocbookingComponent implements OnInit{
 		}
 		this.addAssistInfo.editType = 'update';
 		this.addAssistInfo.editProjectId = assist.id;
-		this.addAssistInfo.project = assist.name;
+		this.addAssistInfo.project = assist.assistName;
 		this.addAssistInfo.price = assist.price;
 		this.addAssistInfo.number = assist.number;
 		this.addAssistInfo.fee = assist.fee;
@@ -1018,16 +1018,16 @@ export class DocbookingComponent implements OnInit{
 			return;
 		}
 
+		console.log(this.addAssistInfo);
+
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			booking_id: this.id,
-			project_id: JSON.parse(this.addAssistInfo.project).id,
-			project_name: JSON.parse(this.addAssistInfo.project).name,
-			price: this.addAssistInfo.price,
-			number: this.addAssistInfo.number,
-			fee: this.addAssistInfo.fee,
+			child_id: this.booking.childId,
+			assist_id: JSON.parse(this.addAssistInfo.project).id,
+			num: this.addAssistInfo.number,
 			remarks: this.adminService.trim(this.addAssistInfo.remarks),
 			id: this.addAssistInfo.editType == 'update' ? this.addAssistInfo.editProjectId : null,
 		}

@@ -1048,15 +1048,15 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="prescriptTabShow">
-	<div class="modal-mask" (click)="closePrescriptTab()"></div>
+<div class="modal" *ngIf="confirmTab.show">
+	<div class="modal-mask" (click)="closeConfirmTab()"></div>
 	<div class="container">
 		<div class="title">提示</div>
 		<div class="content pad10">
-			尚有药品未出药，请出药后再支付
+			{{confirmTab.text}}
 		</div>
 		<div class="button-tab pad10 text-right">
-			<button (click)="goPrescript()" nz-button [nzType]="'primary'" [nzSize]="'large'">去出药</button>
+			<button (click)="goConfirm()" nz-button [nzType]="'primary'" [nzSize]="'large'">{{confirmTab.buttonText}}</button>
 		</div>
 	</div>
 </div>

@@ -1,118 +1,189 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-booking-assist-list">
 	<top-bar [data]="topBar"></top-bar>
-  	<div nz-row [nzGutter]="30">
-    	<div nz-col [nzSpan]="8">
-          	<div nz-form-item nz-row>
-            	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-              		<label>辅助项目：</label>
-            	</div>
-            	<div nz-form-control nz-col [nzSpan]="14">
-					<nz-select
-						class="w100"
-						nzAllowClear
-						[nzSize]="'large'"
-						[nzPlaceHolder]="'请选择辅助项目'"
-						[(ngModel)]="searchInfo.assist_id"
-						nzShowSearch>
-						<nz-option
-							*ngFor="let assist of assistList"
-							[nzLabel]="assist.name"
-							[nzValue]="assist.id">
-						</nz-option>
-					</nz-select>
-            	</div>
-          	</div>
-    	</div>
-		<div nz-col [nzSpan]="8">
-			<div nz-form-item nz-row>
-				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-					<label>医生姓名：</label>
-				</div>
-				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-input [(ngModel)]="searchInfo.doctor_name" [nzPlaceHolder]="'请输入医生名'" [nzSize]="'large'"></nz-input>
-				</div>
-			</div>
-		</div>
-		<div nz-col [nzSpan]="8">
-			<div nz-form-item nz-row>
-				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-					<label>宝宝姓名：</label>
-				</div>
-				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-input [(ngModel)]="searchInfo.child_name" [nzPlaceHolder]="'请输入宝宝名'" [nzSize]="'large'"></nz-input>
-				</div>
-			</div>
-		</div>
-	</div>
-  	<div nz-row [nzGutter]="30" class="mt10">
-		<div nz-col [nzSpan]="8" [nzOffset]="8">
-			<div nz-form-item nz-row>
-				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-					<label for="_startDate">时间：</label>
-				</div>
-				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-datepicker (ngModelChange)="_startDate=$event"
-					[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
-				</div>
-			</div>
-		</div>
-		<div nz-col [nzSpan]="8">
-			<div nz-form-item nz-row>
-				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-					<label for="_endDate">至：</label>
-				</div>
-				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-datepicker (ngModelChange)="_endDate=$event"
-					[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="text-right mt10 mb10">
-		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
-	</div>
-	<div *ngIf="hasData && bookingAssistList.length > 0" class="mt10">
-		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到辅助治疗' + bookingAssistList.length + '条'"></nz-alert>
-	</div>
-	<div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
-		<ng-container *ngFor="let bookingAssist of bookingAssistList">
-			<div nz-col [nzSpan]="8" class=" card-tab pad10">
-				<div class="info pad10 flex max">
-					<!-- <div class="img-tab-default mr10">
-						<img (click)="childInfo(bookingAssist.infoList[0].childId)" src="{{bookingAssist.infoList[0].childUrl == '' || bookingAssist.infoList[0].childUrl == null ? '../assets/images/img.png' : bookingAssist.infoList[0].childUrl}}" class="cursor-p">
-					</div> -->
-					<div class="flex-1">
-						<div class="flex">
-							<div class="">宝宝姓名：</div>
-							<div class="flex-1">
-								{{bookingAssist.infoList[0].childName}}
-							</div>
+
+	<nz-tabset>
+      	<nz-tab>
+        	<ng-template #nzTabHeading>
+         		辅助治疗列表
+        	</ng-template>
+		  	<div nz-row [nzGutter]="30">
+		    	<div nz-col [nzSpan]="8">
+		          	<div nz-form-item nz-row>
+		            	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+		              		<label>辅助项目：</label>
+		            	</div>
+		            	<div nz-form-control nz-col [nzSpan]="14">
+							<nz-select
+								class="w100"
+								nzAllowClear
+								[nzSize]="'large'"
+								[nzPlaceHolder]="'请选择辅助项目'"
+								[(ngModel)]="searchInfo.assist_id"
+								nzShowSearch>
+								<nz-option
+									*ngFor="let assist of assistList"
+									[nzLabel]="assist.name"
+									[nzValue]="assist.id">
+								</nz-option>
+							</nz-select>
+		            	</div>
+		          	</div>
+		    	</div>
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label>医生姓名：</label>
 						</div>
-						<div class="flex pt10 pb10">
-							<div class="">开单医生：</div>
-							<div class="flex-1">
-								{{bookingAssist.infoList[0].doctorName}}
-							</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-input [(ngModel)]="searchInfo.doctor_name" [nzPlaceHolder]="'请输入医生名'" [nzSize]="'large'"></nz-input>
 						</div>
-						<div class="flex">
-							<div class="">时间：</div>
-							<div class="flex-1">
-								{{bookingAssist.infoList[0].bookingDate}}
-							</div>
+					</div>
+				</div>
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label>宝宝姓名：</label>
 						</div>
-						<div *ngFor="let info of bookingAssist.infoList" class="flex pt10">
-							<div class="flex-1">
-								{{info.name}}（{{info.number}}次）
-							</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-input [(ngModel)]="searchInfo.child_name" [nzPlaceHolder]="'请输入宝宝名'" [nzSize]="'large'"></nz-input>
 						</div>
 					</div>
 				</div>
 			</div>
-		</ng-container>
-	</div>
-	<div *ngIf="hasData && bookingAssistList.length == 0" class="mt10">
-		<nz-alert [nzType]="'info'" [nzMessage]="'未查询到辅助治疗'"></nz-alert>
-	</div>
+		  	<div nz-row [nzGutter]="30" class="mt10">
+		    	<div nz-col [nzSpan]="8">
+		          	<div nz-form-item nz-row>
+		            	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+		              		<label>状态：</label>
+		            	</div>
+		            	<div nz-form-control nz-col [nzSpan]="14">
+							<nz-select
+								class="w100"
+								[nzSize]="'large'"
+								[nzPlaceHolder]="'请选择状态'"
+								[(ngModel)]="searchInfo.is_finish">
+								<nz-option [nzLabel]="'未完成'" [nzValue]="'0'"></nz-option>
+								<nz-option [nzLabel]="'已完成'" [nzValue]="'1'"></nz-option>
+								<nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+							</nz-select>
+		            	</div>
+		          	</div>
+		    	</div>
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label for="_startDate">时间：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-datepicker (ngModelChange)="_startDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-center">
+							<label for="_endDate">至</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-datepicker (ngModelChange)="_endDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-right mt10 mb10">
+				<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+			</div>
+			<div *ngIf="hasData && bookingAssistList.length > 0" class="mt10">
+				<nz-alert [nzType]="'info'" [nzMessage]="'共查询到辅助治疗' + bookingAssistList.length + '条'"></nz-alert>
+			</div>
+			<div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
+				<ng-container *ngFor="let bookingAssist of bookingAssistList">
+					<div nz-col [nzSpan]="8" class=" card-tab pad10">
+						<div class="info pad10 flex max">
+							<!-- <div class="img-tab-default mr10">
+								<img (click)="childInfo(bookingAssist.infoList[0].childId)" src="{{bookingAssist.infoList[0].childUrl == '' || bookingAssist.infoList[0].childUrl == null ? '../assets/images/img.png' : bookingAssist.infoList[0].childUrl}}" class="cursor-p">
+							</div> -->
+							<div class="flex-1">
+								<p>宝宝姓名：{{bookingAssist.infoList[0].childName}}</p>
+								<p class="mt10">开单医生：{{bookingAssist.infoList[0].doctorName}}</p>
+								<p class="mt10">开单时间：{{bookingAssist.infoList[0].bookingDate}}</p>
+								<div nz-row *ngFor="let info of bookingAssist.infoList" class="mt10">
+									<div nz-col [nzSpan]="12">{{info.assistName}}（{{info.number}}次：{{info.finishId ? info.finishName + '已完成' : '未完成'}}）</div>
+									<div nz-col [nzSpan]="12" class="text-right">
+										<button *ngIf="!info.finishId" (click)="finish(info)" nz-button [nzType]="'default'" [nzSize]="'large'">完成</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+			<div *ngIf="hasData && bookingAssistList.length == 0" class="mt10">
+				<nz-alert [nzType]="'info'" [nzMessage]="'未查询到辅助治疗'"></nz-alert>
+			</div>
+		</nz-tab>
+      	<nz-tab (nzClick)="searchMList()">
+        	<ng-template #nzTabHeading>
+         		辅助治疗药品列表
+        	</ng-template>
+		  	<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+							<label for="startDate">时间：</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-datepicker (ngModelChange)="searchInfoM.startDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="searchInfoM.startDate" [nzDisabledDate]="_disabledStartDateM" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+				<div nz-col [nzSpan]="8">
+					<div nz-form-item nz-row>
+						<div nz-form-label nz-col [nzSpan]="10" class="text-center">
+							<label for="endDate">至</label>
+						</div>
+						<div nz-form-control nz-col [nzSpan]="14">
+							<nz-datepicker (ngModelChange)="searchInfoM.endDate=$event"
+							[nzSize]="'large'" class="w100" [ngModel]="searchInfoM.endDate" [nzDisabledDate]="_disabledEndDateM" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-right mt10 mb10">
+				<button (click)="searchMList()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+			</div>
+			<div class="mt10 mb10">
+				<nz-alert [nzType]="'info'" [nzMessage]="'共查询到药品' + asssitMList.length + '条'"></nz-alert>
+			</div>
+			<nz-table #nzTable [nzDataSource]="asssitMList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+				<thead nz-thead>
+					<tr>
+						<th>药品名称</th>
+						<th>批次</th>
+						<th>数量</th>
+						<th>单位</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let medical of asssitMList">
+						<td>{{medical.name}}</td>
+						<td>{{medical.batch}}</td>
+						<td>{{medical.num}}</td>
+						<td>{{medical.unit}}</td>
+					</tr>
+				</tbody>
+				<span noResult>暂无药品信息</span>
+			</nz-table>
+		</nz-tab>
+	</nz-tabset>
 </div>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()">
+	<ng-template #contentConfirm>
+    	<p>{{selectedInfo.text}}</p>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

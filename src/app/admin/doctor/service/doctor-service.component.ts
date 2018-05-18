@@ -6,9 +6,9 @@ import {
     FormControl,
     Validators,
 } from '@angular/forms';
+import { NzMessageService }                  	from 'ng-zorro-antd';
 
 import { AdminService }                         from '../../admin.service';
-import { NzMessageService }                  	from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-doctor-service',
@@ -36,10 +36,10 @@ export class DoctorServiceComponent{
 
 	constructor(
         private fb: FormBuilder,
+        private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private _message: NzMessageService,
 	) {
         this.validateForm = this.fb.group({
             service: [ '', [ Validators.required ]],

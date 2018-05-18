@@ -477,7 +477,8 @@
 					<thead>
 						<tr>
 							<th>辅助治疗<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
-							<th>辅助治疗类型<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
+							<th>药品</th>
+							<th>计量</th>
 							<th>单价<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
 							<th>数量<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
 							<th>费用<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
@@ -486,57 +487,114 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let assist of assistList">
-							<td>{{assist.name}}</td>
-							<td>{{assist.typeText}}</td>
-							<td>{{assist.price}}</td>
-							<td>
-								<!-- 查看 -->
-								<ng-container *ngIf="addAssistInfo.editType != 'update'">
-									{{assist.number}}
-								</ng-container>
-								<!-- 修改 -->
-								<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-									<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
-								</ng-container>
-							</td>
-							<td>
-								<!-- 查看 -->
-								<ng-container *ngIf="addAssistInfo.editType != 'update'">
-									{{assist.fee}}
-								</ng-container>
-								<!-- 修改 -->
-								<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-									<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
-								</ng-container>
-							</td>
-							<td>
-								<!-- 查看 -->
-								<ng-container *ngIf="addAssistInfo.editType != 'update'">
-									<div class="length-text">
-										{{assist.remarks}}
-									</div>
-								</ng-container>
-								<!-- 修改 -->
-								<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-									<textarea name="remarks" maxlength="200" [(ngModel)]="addAssistInfo.remarks" placeholder="请输入备注"></textarea>
-								</ng-container>
-							</td>
-							<td>
-								<!-- pageType 空为医生接诊， history为查看 -->
-								<div *ngIf="pageType != 'history'">
-									<!-- 订单未完成，可操作 -->
-									<ng-container *ngIf="booking.status != '5'">
-										<ng-container *ngIf="canEdit">
-											<button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" class="pure-button pure-button-primary">修改</button>
-												<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" class="pure-button button-error">删除</button>
-											<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" class="pure-button">取消</button>
-											<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">保存</button>
-										</ng-container>
+						<ng-container *ngFor="let assist of assistList">
+							<tr *ngIf="assist.drugs.length == 0">
+								<td>{{assist.assistName}}</td>
+								<td></td>
+								<td></td>
+								<td>{{assist.price}}</td>
+								<td>
+									<!-- 查看 -->
+									<ng-container *ngIf="addAssistInfo.editType != 'update'">
+										{{assist.number}}
 									</ng-container>
-								</div>
-							</td>
-						</tr>
+									<!-- 修改 -->
+									<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+										<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
+									</ng-container>
+								</td>
+								<td>
+									<!-- 查看 -->
+									<ng-container *ngIf="addAssistInfo.editType != 'update'">
+										{{assist.fee}}
+									</ng-container>
+									<!-- 修改 -->
+									<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+										<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
+									</ng-container>
+								</td>
+								<td>
+									<!-- 查看 -->
+									<ng-container *ngIf="addAssistInfo.editType != 'update'">
+										<div class="length-text">
+											{{assist.remarks}}
+										</div>
+									</ng-container>
+									<!-- 修改 -->
+									<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+										<textarea name="remarks" maxlength="200" [(ngModel)]="addAssistInfo.remarks" placeholder="请输入备注"></textarea>
+									</ng-container>
+								</td>
+								<td>
+									<!-- pageType 空为医生接诊， history为查看 -->
+									<div *ngIf="pageType != 'history'">
+										<!-- 订单未完成，可操作 -->
+										<ng-container *ngIf="booking.status != '5'">
+											<ng-container *ngIf="canEdit">
+												<!-- <button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" class="pure-button pure-button-primary">修改</button> -->
+												<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" class="pure-button button-error">删除</button>
+												<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" class="pure-button">取消</button>
+												<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">保存</button>
+											</ng-container>
+										</ng-container>
+									</div>
+								</td>
+							</tr>
+							<ng-container *ngIf="assist.drugs.length > 0">
+								<tr *ngFor="let drug of assist.drugs; let indexDrug=index;">
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.assistName}}</td>
+									<td>{{drug.durgName}}</td>
+									<td>{{drug.durgNum + drug.durgUnit}}</td>
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.price}}</td>
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
+										<!-- 查看 -->
+										<ng-container *ngIf="addAssistInfo.editType != 'update'">
+											{{assist.number}}
+										</ng-container>
+										<!-- 修改 -->
+										<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+											<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
+										</ng-container>
+									</td>
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
+										<!-- 查看 -->
+										<ng-container *ngIf="addAssistInfo.editType != 'update'">
+											{{assist.fee}}
+										</ng-container>
+										<!-- 修改 -->
+										<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+											<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
+										</ng-container>
+									</td>
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
+										<!-- 查看 -->
+										<ng-container *ngIf="addAssistInfo.editType != 'update'">
+											<div class="length-text">
+												{{assist.remarks}}
+											</div>
+										</ng-container>
+										<!-- 修改 -->
+										<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+											<textarea name="remarks" maxlength="200" [(ngModel)]="addAssistInfo.remarks" placeholder="请输入备注"></textarea>
+										</ng-container>
+									</td>
+									<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
+										<!-- pageType 空为医生接诊， history为查看 -->
+										<div *ngIf="pageType != 'history'">
+											<!-- 订单未完成，可操作 -->
+											<ng-container *ngIf="booking.status != '5'">
+												<ng-container *ngIf="canEdit">
+													<!-- <button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" class="pure-button pure-button-primary">修改</button> -->
+													<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" class="pure-button button-error">删除</button>
+													<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" class="pure-button">取消</button>
+													<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">保存</button>
+												</ng-container>
+											</ng-container>
+										</div>
+									</td>
+								</tr>
+							</ng-container>
+						</ng-container>
 					</tbody>
 				</table>
 				<div *ngIf="hasAssistData && assistList.length == 0" class="mt10">
@@ -1037,7 +1095,7 @@
 						<tr *ngFor="let history of historyList">
 							<td>{{history.services.length > 0 ? history.services[0].serviceName : ''}}</td>
 							<td>{{history.services.length > 0 ? history.services[0].userDoctorName : ''}}</td>
-							<td class="vip-icon-text">{{history.childName}}<img *ngIf="history.memberId != null" class="vip-icon" src="../assets/images/vip.png" /></td>
+							<td class="vip-icon-text">{{history.childName}}<img *ngIf="history.memberId != null" class="vip-icon" src="../assets/images/{{history.memberName.indexOf('太阳') != -1 ? 'icon_son.png' : history.memberName.indexOf('月亮') != -1 ? 'icon_moon.png' : history.memberName.indexOf('星星') != -1 ? 'icon_star.png' : 'vip.png'}}" /></td>
 							<!-- <td>{{history.mobile}}</td> -->
 							<td>
 								<span>{{history.bookingDate}}</span>

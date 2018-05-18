@@ -449,7 +449,7 @@ export class LoginComponent{
 			bookingExamine: {
 				use: '',
 				authority: ['seeCase'],
-				url: '/admin/bookingExamineCase',
+				url: '/admin/booking/examine/case',
 				infos: [],
 			}
 		}

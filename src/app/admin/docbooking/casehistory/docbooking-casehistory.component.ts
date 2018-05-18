@@ -1553,7 +1553,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			}
 			if(this.casehistoryList[0].checkId == null){
 				setTimeout(() => {
-					this.router.navigate(['./admin/bookingExamineCase']);
+					this.router.navigate(['./admin/booking/examine/case']);
 				}, 2000);
 			}else{
 				this.toastTab(this.editType == 'create' ? '病历创建成功' : '病历修改成功', '');

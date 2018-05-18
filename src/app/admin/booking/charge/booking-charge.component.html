@@ -119,7 +119,7 @@
 			<nz-tooltip>
 				<div nz-tooltip class="tab" [ngClass]="{'complete': booking.status == '5', 'in': booking.status == '11'}">
 					<div class="info pad10" [ngClass]="{'active': booking.memberId != null}">
-						<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/vip.png" />
+						<img *ngIf="booking.memberId != null" class="vip-icon" src="../assets/images/{{booking.memberName.indexOf('太阳') != -1 ? 'icon_son.png' : booking.memberName.indexOf('月亮') != -1 ? 'icon_moon.png' : booking.memberName.indexOf('星星') != -1 ? 'icon_star.png' : 'vip.png'}}" />
 						<div class="flex">
 							<div class="flex-1"></div>
 							<div class="status">

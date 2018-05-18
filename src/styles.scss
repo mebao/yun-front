@@ -977,10 +977,14 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 
 .vip-icon{
 	position: absolute;
-    top: -5px;
-    left: -3px;
-    width: 30px;
-	height:30px;
+    // top: -5px;
+    // left: -3px;
+    // width: 30px;
+	// height:30px;
+	top: 0px;
+    left: 0px;
+    width: 40px;
+    height: 40px;
 }
 .vip-icon-text{
 	position:relative;

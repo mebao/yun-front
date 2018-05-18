@@ -1455,6 +1455,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 完成此辅助治疗
+	finishassist(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/finishassist/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 统计需手动出库辅助治疗药物
+	countassist(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/countassist' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

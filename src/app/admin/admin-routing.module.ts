@@ -40,8 +40,7 @@ const adminRoutes: Routes = [
 					},
 					{
 						path: 'booking',
-						canActivate: [AuthGuardRole],
-						component: BookingComponent
+						loadChildren: './booking/booking.module#BookingModule',
 					},
 					{
 						path: 'workbench',
@@ -151,14 +150,6 @@ const adminRoutes: Routes = [
 					{
 						path: 'bookingReceive',
 						loadChildren: './booking/receive/booking-receive.module#BookingReceiveModule',
-					},
-					{
-						path: 'bookingExamineCase',
-						loadChildren: './booking/examine-case/booking-examine-case.module#BookingExamineCaseModule',
-					},
-					{
-						path: 'bookingExamineHealth',
-						loadChildren: './booking/examine-record/booking-examine-record.module#BookingExamineRecordModule',
 					},
 					{
 						path: 'bookingAssistList',
