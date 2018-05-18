@@ -161,8 +161,8 @@
 					                        </td>
 					                        <td>{{result.unit}}</td>
 					                        <td class="text-center">
-					                            <i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
-					                            <i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
+					                            <div *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB">低</div>
+					                            <div *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54">高</div>
 					                        </td>
 					                    </ng-container>
 					                    <ng-container *ngIf="result.isUpload == '1'">
