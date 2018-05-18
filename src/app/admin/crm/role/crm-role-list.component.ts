@@ -135,6 +135,6 @@ export class CrmRoleListComponent{
 
 	updateAuthority(role) {
 		sessionStorage.setItem('role', role.name);
-		this.router.navigate(['./admin/roleAuthorityList'], {queryParams: {id: role.id}});
+		this.router.navigate(['./admin/crmRole/authorityList'], {queryParams: {id: role.id}});
 	}
 }

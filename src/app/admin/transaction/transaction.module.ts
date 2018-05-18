@@ -8,16 +8,19 @@ import { NavModule }                            from '../nav/nav.module';
 
 import { AngCommonModule }                      from '../../common/ang-common.module';
 
-import { TransactionRecordListRoutingModule }   from './transaction-record-list.routing.module';
+import { TransactionRoutingModule }             from './transaction.routing.module';
 
 import { TransactionRecordListComponent }       from './transaction-record-list.component';
+import { TransactionStatisticsComponent }       from './transaction-statistics.component';
 
 @NgModule({
     declarations: [
         TransactionRecordListComponent,
+        TransactionStatisticsComponent,
     ],
     exports: [
         TransactionRecordListComponent,
+        TransactionStatisticsComponent,
     ],
     imports: [
         CommonModule,
@@ -25,10 +28,10 @@ import { TransactionRecordListComponent }       from './transaction-record-list.
         NgZorroAntdModule,
         NavModule,
         AngCommonModule,
-        TransactionRecordListRoutingModule,
+        TransactionRoutingModule,
     ]
 })
 
-export class TransactionRecordListModule{
+export class TransactionModule{
 
 }

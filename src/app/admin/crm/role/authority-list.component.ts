@@ -4,11 +4,11 @@ import { Router, ActivatedRoute }              from '@angular/router';
 import { AdminService }                        from '../../admin.service';
 
 @Component({
-    selector: 'admin-role-authority-list',
-    templateUrl: './role-authority-list.component.html',
-    styleUrls: ['./role-authority-list.component.scss'],
+    selector: 'admin-crm-role-authority-list',
+    templateUrl: './authority-list.component.html',
+    styleUrls: ['./authority-list.component.scss'],
 })
-export class RoleAuthorityListComponent{
+export class CrmRoleAuthorityListComponent{
 	topBar: {
 		title: string,
 		back: boolean,

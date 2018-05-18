@@ -14,15 +14,18 @@ import { CrmRoleRoutingModule }           from './crm-role.routing.module';
 
 import { CrmRoleComponent }               from './crm-role.component';
 import { CrmRoleListComponent }           from './crm-role-list.component';
+import { CrmRoleAuthorityListComponent }  from './authority-list.component';
 
 @NgModule({
     declarations: [
         CrmRoleComponent,
         CrmRoleListComponent,
+        CrmRoleAuthorityListComponent,
     ],
     exports: [
         CrmRoleComponent,
         CrmRoleListComponent,
+        CrmRoleAuthorityListComponent,
     ],
     imports: [
         CommonModule,

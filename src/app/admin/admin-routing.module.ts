@@ -107,10 +107,10 @@ const adminRoutes: Routes = [
 						path: 'childService',
 						loadChildren: './child-service/child-service.module#ChildServiceModule',
 					},
-					{
-						path: 'clinicService',
-						loadChildren: './clinic-service/clinic-service.module#ClinicServiceModule',
-					},
+					// {
+					// 	path: 'clinicService',
+					// 	loadChildren: './clinic-service/clinic-service.module#ClinicServiceModule',
+					// },
 					{
 						path: 'clinicroom',
 						loadChildren: './clinicroom/clinicroom.module#ClinicroomModule',
@@ -128,12 +128,8 @@ const adminRoutes: Routes = [
 						loadChildren: './user-info/user-info.module#UserInfoModule',
 					},
 					{
-						path: 'transactionRecordList',
-						loadChildren: './transaction-record-list/transaction-record-list.module#TransactionRecordListModule'
-					},
-					{
-						path: 'transactionStatistics',
-						loadChildren: './transaction-statistics/transaction-statistics.module#TransactionStatisticsModule',
+						path: 'transaction',
+						loadChildren: './transaction/transaction.module#TransactionModule'
 					},
 					{
 						path: 'bookingList',
@@ -237,14 +233,10 @@ const adminRoutes: Routes = [
 						path: 'crmRole',
 						loadChildren: './crm/role/crm-role.module#CrmRoleModule',
 					},
-					{
-						path: 'roleAuthorityList',
-						loadChildren: './crm/role-authority-list/role-authority-list.module#RoleAuthorityListModule',
-					},
-					{
-						path: 'givefeeList',
-						loadChildren: './givefee-list/givefee-list.module#GivefeeListModule',
-					},
+					// {
+					// 	path: 'givefeeList',
+					// 	loadChildren: './givefee-list/givefee-list.module#GivefeeListModule',
+					// },
 					{
 						path: 'guazhangList',
 						loadChildren: './guazhang-list/guazhang-list.module#GuazhangListModule',

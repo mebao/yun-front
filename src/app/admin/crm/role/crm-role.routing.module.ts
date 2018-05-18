@@ -5,6 +5,7 @@ import { AuthGuardRole }                  from '../../auth-guard-role.service';
 
 import { CrmRoleComponent }               from './crm-role.component';
 import { CrmRoleListComponent }           from './crm-role-list.component';
+import { CrmRoleAuthorityListComponent }  from './authority-list.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -17,6 +18,11 @@ import { CrmRoleListComponent }           from './crm-role-list.component';
             path: 'list',
             canActivate: [AuthGuardRole],
             component: CrmRoleListComponent,
+        },
+        {
+            path: 'authorityList',
+            canActivate: [AuthGuardRole],
+            component: CrmRoleAuthorityListComponent,
         },
     ])]
 })

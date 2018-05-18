@@ -1073,7 +1073,7 @@ export class AuthGuardRole implements CanActivate{
 								queryParams: '',
 							},
 							{
-								url: '/admin/roleAuthorityList',
+								url: '/admin/crmRole/authorityList',
 								authority: 'authority',
 								queryType: '',
 								queryParams: '',
@@ -1107,11 +1107,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'transactionRecordList',
-						firstUrl: '/admin/transactionRecordList',
+						firstUrl: '/admin/transaction/recordList',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/transactionRecordList',
+								url: '/admin/transaction/recordList',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',
@@ -1120,11 +1120,11 @@ export class AuthGuardRole implements CanActivate{
 					},
 					{
 						firstKey: 'transactionStatistics',
-						firstUrl: '/admin/transactionStatistics',
+						firstUrl: '/admin/transaction/statistics',
 						authority: ['see'],
 						second: [
 							{
-								url: '/admin/transactionStatistics',
+								url: '/admin/transaction/statistics',
 								authority: 'see',
 								queryType: '',
 								queryParams: '',

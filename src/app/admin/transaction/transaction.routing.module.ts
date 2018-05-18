@@ -4,6 +4,7 @@ import { RouterModule }                     from '@angular/router';
 import { AuthGuardRole }                    from './../auth-guard-role.service';
 
 import { TransactionRecordListComponent }   from './transaction-record-list.component';
+import { TransactionStatisticsComponent }   from './transaction-statistics.component';
 
 @NgModule({
     exports: [
@@ -11,13 +12,18 @@ import { TransactionRecordListComponent }   from './transaction-record-list.comp
     ],
     imports: [RouterModule.forChild([
         {
-            path: '',
+            path: 'recordList',
+            canActivate: [AuthGuardRole],
+            component: TransactionRecordListComponent
+        },
+        {
+            path: 'statistics',
             canActivate: [AuthGuardRole],
             component: TransactionRecordListComponent
         }
     ])]
 })
 
-export class TransactionRecordListRoutingModule{
+export class TransactionRoutingModule{
 
 }

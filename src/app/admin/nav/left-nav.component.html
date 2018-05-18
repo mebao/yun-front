@@ -496,7 +496,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.transactionRecordList.use != ''"
-			routerLink="./transactionRecordList"
+			routerLink="./transaction/recordList"
 			routerLinkActive="ant-menu-item-selected"
 			(click)="goPage('transactionRecordList')">
 			<span title>
@@ -506,7 +506,7 @@
 		</li>
 		<li nz-menu-item
 			*ngIf="clinicRole.transactionStatistics.use != ''"
-			routerLink="./transactionStatistics"
+			routerLink="./transaction/statistics"
 			routerLinkActive="ant-menu-item-selected"
 			(click)="goPage('transactionStatistics')">
 			<span title>

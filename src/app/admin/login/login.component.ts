@@ -431,13 +431,13 @@ export class LoginComponent{
 			transactionRecordList: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/transactionRecordList',
+				url: '/admin/transaction/recordList',
 				infos: [],
 			},
 			transactionStatistics: {
 				use: '',
 				authority: ['see'],
-				url: '/admin/transactionStatistics',
+				url: '/admin/transaction/statistics',
 				infos: [],
 			},
 			givefeeList: {
