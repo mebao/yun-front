@@ -9,7 +9,7 @@ import { AdminService }                             from '../admin.service';
 @Component({
 	selector: 'app-create-booking',
 	templateUrl : './booking.component.html',
-	styleUrls: ['./booking.component.scss'],
+	styleUrls: ['./booking.component.scss', '../../../assets/css/ant-common.scss'],
 })
 export class BookingComponent implements OnInit{
 	topBar: {

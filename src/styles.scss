@@ -480,7 +480,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 		.info{
 			background-color: #39A99D;
 			color: #fff;
-			height: 135px;
+			height: 150px;
 			overflow-x: hidden;
 			overflow-y: auto;
 		}
@@ -490,6 +490,7 @@ input[type=text][disabled], input[type=number][disabled], input[type=date][disab
 			border-color: #39A99D;
 			color: #39A99D;
 			display: block;
+			padding: 10px 5px 10px;
 		}
 		&.cancel{
 			.info{

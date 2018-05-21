@@ -5,7 +5,7 @@
 		<button (click)="goCreate()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增宝宝科室</button>
 	</div>
 	<div nz-row>
-		<div nz-col [nzSpan]="6" [nzOffset]="18">
+		<div nz-col [nzSpan]="8" [nzOffset]="16">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="type">状态：</label>
@@ -47,34 +47,28 @@
 			</nz-card>
 		</div>
 	</div> -->
-	<div *ngIf="childServiceList.length > 0" class="pure-g">
-		<div class="pure-u-6-24 child-service-tab pad10" *ngFor="let childService of childServiceList" [ngClass]="{'cancel': childService.status == 0}">
+	<div *ngIf="childServiceList.length > 0" nz-row [nzGutter]="30">
+		<div nz-col [nzSpan]="8" class="child-service-tab pad10" *ngFor="let childService of childServiceList" [ngClass]="{'cancel': childService.status == 0}">
 			<div class="info pad10">
-				<div class="flex">
-					<div>科室名：</div>
-					<div class="flex-1">
-						{{childService.serviceName}}
-					</div>
-				</div>
-				<div class="flex pt10">
+				<p>科室名：{{childService.serviceName}}</p>
+				<div class="flex mt10">
 					<div>科室说明：</div>
 					<div class="flex-1">
 						{{childService.description}}
 					</div>
 				</div>
-				<div class="flex pt10">
-					<div>状态：</div>
-					<div class="flex-1">
-						{{childService.status == 0 ? '停用' : '可用'}}
-					</div>
-				</div>
+				<p class="mt10">状态：{{childService.status == 0 ? '停用' : '可用'}}</p>
+				<p class="mt10">用户自主预约：{{childService.mobileBooking == 0 ? '未开放' : '已开放'}}</p>
 			</div>
 			<div class="flex">
-				<a *ngIf="moduleAuthority.edit" class="flex-1 edit pad10 text-center" (click)="update(childService.serviceId)">
+				<a *ngIf="moduleAuthority.edit" class="flex-1 edit text-center" (click)="update(childService)">
 					修改
 				</a>
-				<a *ngIf="moduleAuthority.edit" class="flex-1 edit pad10 text-center" (click)="updateStatus(childService.serviceId,childService.status)">
-					<span>{{childService.status == 0 ? '可用' : '停用'}}</span>
+				<a *ngIf="moduleAuthority.edit" class="flex-1 edit text-center" (click)="updateInfo(childService, 'status')">
+					<span>{{(childService.status == 0 ? '可用' : '停用') + '状态'}}</span>
+				</a>
+				<a *ngIf="moduleAuthority.edit" class="flex-1 edit text-center" (click)="updateInfo(childService, 'booking')">
+					<span>{{(childService.mobileBooking == 0 ? '开放' : '关闭') + '自主预约'}}</span>
 				</a>
 			</div>
 		</div>
@@ -83,4 +77,9 @@
 		<nodata title="未查询到科室信息"></nodata>
 	</div>
 </div>
+<nz-modal [nzVisible]="selectedInfo.showTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()">
+	<ng-template #contentConfirm>
+    	<p>{{selectedInfo.text}}</p>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>

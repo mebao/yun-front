@@ -1182,6 +1182,25 @@ export class AuthGuardRole implements CanActivate{
 							}
 						]
 					},
+					{
+						firstKey: 'moutList',
+						firstUrl: '/admin/mout/list',
+						authority: [],
+						second: [
+							{
+								url: '/admin/mout/list',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/mout',
+								authority: 'edit',
+								queryType: '',
+								queryParams: '',
+							}
+						]
+					},
 				];
 
 				var userClinicRoles = JSON.parse(sessionStorage.getItem('userClinicRoles'));
@@ -1223,17 +1242,17 @@ export class AuthGuardRole implements CanActivate{
 					url: '',
 					infos: [],
 				};
+				//通过url找到所属firstKey
+				//url与firstKey需要完全匹配，url: 1=>'admin/booking' 2=>'admin/booking?id=1'
+				var urlString = '';
+				//不含参
+				if(url.indexOf('?') == -1){
+					urlString = url;
+				}else{
+					urlString = url.slice(0, url.indexOf('?'));
+				}
 				for(var i = 0; i < authorityList.length; i++){
 					for(var j = 0; j < authorityList[i].second.length; j++){
-						//通过url找到所属firstKey
-						//url与firstKey需要完全匹配，url: 1=>'admin/booking' 2=>'admin/booking?id=1'
-						var urlString = '';
-						//不含参
-						if(url.indexOf('?') == -1){
-							urlString = url;
-						}else{
-							urlString = url.slice(0, url.indexOf('?'));
-						}
 						if(urlString == authorityList[i].second[j].url){
 							//修改和新增有的是同一个url，所以通过参数类型来判断
 							if(authorityList[i].second[j].queryParams != ''){

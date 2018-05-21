@@ -8,15 +8,7 @@ import { AdminService }                           from '../../admin.service';
 @Component({
 	selector: 'app-medical-supplier-list',
 	templateUrl: './medical-supplier-list.component.html',
-	styles: [ `
-		.ant-form-item-label label:after{
-		    display: none;
-		}
-		.ant-form-item{
-			margin-bottom: 0;
-		}
-	`
-  	]
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 export class MedicalSupplierListComponent{
 	topBar: {

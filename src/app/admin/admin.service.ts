@@ -1491,6 +1491,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询收费列表
+	feelist(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/feelist' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

@@ -9,7 +9,7 @@ import { AdminService }                              from '../admin.service';
 @Component({
 	selector: 'app-prescript-list',
 	templateUrl: './prescript-list.component.html',
-	styleUrls: ['./prescript-list.component.scss'],
+	styleUrls: ['./prescript-list.component.scss', '../../../assets/css/ant-common.scss'],
 })
 export class PrescriptListComponent{
 	@ViewChild('print1') printComponent1: ENgxPrintComponent;

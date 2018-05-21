@@ -19,7 +19,7 @@ import { TransactionStatisticsComponent }   from './transaction-statistics.compo
         {
             path: 'statistics',
             canActivate: [AuthGuardRole],
-            component: TransactionRecordListComponent
+            component: TransactionStatisticsComponent
         }
     ])]
 })

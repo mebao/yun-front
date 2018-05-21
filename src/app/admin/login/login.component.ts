@@ -241,7 +241,13 @@ export class LoginComponent{
 			authority: any[],
 			url: string,
 			infos: any[],
-		}
+		},
+        moutList: {
+            use: string,
+            authority: any[],
+            url: string,
+            infos: any[],
+        }
 	}
 
 	constructor(
@@ -451,7 +457,13 @@ export class LoginComponent{
 				authority: ['seeCase'],
 				url: '/admin/booking/examine/case',
 				infos: [],
-			}
+			},
+            moutList: {
+                use: '',
+                authority: ['see'],
+                url: '/admin/mout/list',
+                infos: [],
+            }
 		}
 	}
 

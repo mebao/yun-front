@@ -8,7 +8,7 @@ import { AdminService }                       from '../../admin.service';
 @Component({
 	selector: 'admin-booking-receive',
 	templateUrl: './booking-receive.component.html',
-	styleUrls: ['./booking-receive.component.scss'],
+	styleUrls: ['./booking-receive.component.scss', '../../../../assets/css/ant-common.scss'],
 })
 export class BookingReceiveComponent{
 	topBar: {

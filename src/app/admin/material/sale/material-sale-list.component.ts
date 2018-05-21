@@ -8,15 +8,7 @@ import { AdminService }                              from '../../admin.service';
 @Component({
 	selector: 'app-material-sale-list',
 	templateUrl: './material-sale-list.component.html',
-	styles: [ `
-		.ant-form-item-label label:after{
-		    display: none;
-		}
-		.ant-form-item{
-			margin-bottom: 0;
-		}
-	`
-  	]
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 export class MaterialSaleListComponent{
 	topBar: {

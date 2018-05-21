@@ -15,6 +15,11 @@ export class BookingAssistList{
         title: string,
         back: boolean,
     };
+	// 权限
+	moduleAuthority: {
+		see: boolean,
+		edit: boolean,
+	}
     loadingShow: boolean;
     hasData: boolean;
     assistList: any[];
@@ -49,6 +54,24 @@ export class BookingAssistList{
             title: '辅助治疗',
             back: false,
         }
+        
+		//权限
+		this.moduleAuthority = {
+			see: false,
+			edit: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
+		}
 
         this.loadingShow = false;
 

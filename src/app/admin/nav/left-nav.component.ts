@@ -222,6 +222,11 @@ export class LeftNavComponent{
 			use: string,
 			authority: any[],
 			infos: any[],
+		},
+		moutList: {
+			use: string,
+			authority: any[],
+			infos: any[],
 		}
 	}
 
@@ -479,6 +484,11 @@ export class LeftNavComponent{
 				}
 			},
 			message: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			moutList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

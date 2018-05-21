@@ -8,15 +8,7 @@ import { AdminService }                          from '../admin.service';
 @Component({
 	selector: 'app-child-service-list',
 	templateUrl: './child-service-list.component.html',
-	styles: [ `
-		.ant-form-item-label label:after{
-		    display: none;
-		}
-		.ant-form-item{
-			margin-bottom: 0;
-		}
-	`
-  	]
+	styleUrls: ['../../../assets/css/ant-common.scss']
 })
 export class ChildServiceListComponent implements OnInit{
 	topBar: {
@@ -33,6 +25,12 @@ export class ChildServiceListComponent implements OnInit{
 	hasData: boolean;
 	searchInfo: {
 		status: string,
+	}
+	selectedInfo: {
+		showTab: boolean,
+		service: any,
+		type: string,
+		text: string,
 	}
 
 	constructor(
@@ -73,6 +71,13 @@ export class ChildServiceListComponent implements OnInit{
 			status: '1'
 		}
 
+		this.selectedInfo = {
+			showTab: false,
+			service: {},
+			type: '',
+			text: '',
+		}
+
 		this.getData();
 	}
 
@@ -98,28 +103,61 @@ export class ChildServiceListComponent implements OnInit{
 		});
 	}
 
-	update(_id){
-		this.router.navigate(['./admin/childService'], {queryParams: {id: _id}});
+	update(service){
+		this.router.navigate(['./admin/childService'], {queryParams: {id: service.serviceId}});
 	}
 
-	updateStatus(_id, status){
-		var param = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-			status: status == 1 ? '0' : '1'
-		}
-		this.adminService.clinicservicestatus(_id,param).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this._message.error(data.errorMsg);
+	updateInfo(service, type){
+		var text = '是否确认';
+		if(type == 'status'){
+			if(service.status == '0'){
+				text += '-状态-可用';
 			}else{
-				this._message.success('状态修改成功');
-                this.getData();
+				text += '-状态-停用';
 			}
-		}).catch(() => {
+		}else{
+			if(service.mobileBooking == '0'){
+				text += '-开放-自主预约';
+			}else{
+				text += '-关闭-自主预约';
+			}
+		}
+		this.selectedInfo = {
+			showTab: true,
+			service: service,
+			type: type,
+			text: text,
+		}
+	}
+
+	closeConfirm() {
+		this.selectedInfo = {
+			showTab: false,
+			service: {},
+			type: '',
+			text: '',
+		}
+	}
+
+	confirm() {var param = {
+		username: this.adminService.getUser().username,
+		token: this.adminService.getUser().token,
+		status: this.selectedInfo.type == 'status' ? (this.selectedInfo.service.status == 1 ? '0' : '1') : null,
+		mobile_booking: this.selectedInfo.type == 'booking' ? (this.selectedInfo.service.mobileBooking == '1' ? '0' : '1') : null,
+	}
+	this.adminService.clinicservicestatus(this.selectedInfo.service.serviceId, param).then((data) => {
+		if(data.status == 'no'){
 			this.loadingShow = false;
-			this._message.error('服务器错误');
-		});
+			this._message.error(data.errorMsg);
+		}else{
+			this._message.success((this.selectedInfo.type == 'status' ? '状态' : '自主预约') + '修改成功');
+			this.closeConfirm();
+			this.getData();
+		}
+	}).catch(() => {
+		this.loadingShow = false;
+		this._message.error('服务器错误');
+	});
 	}
 
 	goCreate() {

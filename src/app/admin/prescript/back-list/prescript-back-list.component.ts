@@ -8,7 +8,7 @@ import { AdminService }                              from '../../admin.service';
 @Component({
 	selector: 'app-prescript-back-list',
 	templateUrl: './prescript-back-list.component.html',
-	styleUrls: ['./prescript-back-list.component.scss'],
+	styleUrls: ['./prescript-back-list.component.scss', '../../../../assets/css/ant-common.scss'],
 })
 export class PrescriptBackListComponent{
 	topBar: {

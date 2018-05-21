@@ -8,7 +8,7 @@ import { AdminService }                       from '../admin.service';
 @Component({
 	selector: 'app-user-list',
 	templateUrl: './user-list.component.html',
-	styleUrls: ['./user-list.component.scss'],
+	styleUrls: ['./user-list.component.scss', '../../../assets/css/ant-common.scss'],
 })
 export class UserListComponent{
 	topBar: {

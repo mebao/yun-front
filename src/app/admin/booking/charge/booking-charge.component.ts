@@ -8,7 +8,7 @@ import { AdminService }                       from '../../admin.service';
 @Component({
 	selector: 'admin-booking-charge',
 	templateUrl: './booking-charge.component.html',
-	styleUrls: ['./booking-charge.component.scss'],
+	styleUrls: ['./booking-charge.component.scss', '../../../../assets/css/ant-common.scss'],
 })
 export class BookingChargeComponent{
 	topBar: {
@@ -141,23 +141,12 @@ export class BookingChargeComponent{
 
 	//预约列表
 	getList(urlOptions) {
-		this.adminService.searchbooking(urlOptions).then((data) => {
+		this.adminService.feelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.weekbooks.length > 0){
-					for(var i = 0; i < results.weekbooks.length; i++){
-						var allFee = 0;
-						if(results.weekbooks[i].fees.length > 0){
-							for(var j = 0; j < results.weekbooks[i].fees.length; j++){
-								allFee += Number(results.weekbooks[i].fees[j].fee);
-							}
-						}
-						results.weekbooks[i].allFee = parseFloat(allFee.toString());
-					}
-				}
 				this.bookinglist = results.weekbooks;
 				this.hasData = true;
 				this.loadingShow = false;
@@ -201,7 +190,7 @@ export class BookingChargeComponent{
 
 	getUrlOptios() {
 		var urlOptions = this.url;
-		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId + '&statuslist=5,11';
+		urlOptions += '&clinic_id=' + this.adminService.getUser().clinicId;
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptions += '&doctor_id=' + this.searchInfo.doctor_id;
 		}

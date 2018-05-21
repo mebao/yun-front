@@ -13,12 +13,12 @@ import { MoutList }               from './mout-list';
     imports: [RouterModule.forChild([
         {
             path: '',
-            // canActivate: [AuthGuardRole],
+            canActivate: [AuthGuardRole],
             component: Mout,
         },
         {
             path: 'list',
-            // canActivate: [AuthGuardRole],
+            canActivate: [AuthGuardRole],
             component: MoutList,
         }
     ])]
