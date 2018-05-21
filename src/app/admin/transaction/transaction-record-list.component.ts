@@ -3,6 +3,7 @@ import { Component }                              from '@angular/core';
 import { NzMessageService }                       from 'ng-zorro-antd';
 
 import { AdminService }                           from '../admin.service';
+import { config }                                 from '../../config';
 
 @Component({
 	selector: 'admin-transaction-record-list',
@@ -28,6 +29,7 @@ export class TransactionRecordListComponent{
     _startDate = null;
     _endDate = null;
 	commonList: any[];
+	amount: string;
 
 	constructor(
 		private _message: NzMessageService,
@@ -73,15 +75,16 @@ export class TransactionRecordListComponent{
 			{id: 1},
 			{id: 2},
 		]
+		this.amount = '';
 
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		this.search();
+		this.search('');
 	}
 
-	search() {
+	search(type) {
 		this.loadingShow = true;
 		sessionStorage.setItem('search-transactionRecordList', JSON.stringify({
             user_name: this.searchInfo.user_name,
@@ -114,7 +117,13 @@ export class TransactionRecordListComponent{
 		if(this.searchInfo.pay_way && this.searchInfo.pay_way != ''){
 			urlOptions += '&pay_way=' + this.searchInfo.pay_way;
 		}
-		this.getData(urlOptions);
+
+		if(type == ''){
+			this.getData(urlOptions);
+		}else{
+			window.location.href = config.baseHTTP + '/mebcrm/tranexport'+ urlOptions;
+			this.loadingShow = false;
+		}
 	}
 
     _disabledStartDate = (startValue) => {
@@ -143,6 +152,7 @@ export class TransactionRecordListComponent{
 						results.list[i].amount = this.adminService.toDecimal2(results.list[i].amount);
 					}
 				}
+				this.amount = results.amount;
 				this.recordList = results.list;
 				this.hasData = true;
 				this.loadingShow = false;

@@ -26,7 +26,7 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
-	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="childList" [nzBordered]="true" [nzIsPagination]="false">
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="childList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
 				<th nz-th class="w70p"></th>
@@ -64,6 +64,7 @@
 				</td>
 			</tr>
 		</tbody>
+		<span noResult>暂无病人信息</span>
 	</nz-table>
 </div>
 <loading [show]="loadingShow"></loading>

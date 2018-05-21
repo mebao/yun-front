@@ -1,11 +1,14 @@
 import { Component, OnInit }             from '@angular/core';
 import { Router, ActivatedRoute }        from '@angular/router';
 
+import { NzMessageService }              from 'ng-zorro-antd';
+
 import { AdminService }                  from '../../admin.service';
 
 @Component({
 	selector: 'app-create-user',
-	templateUrl: './create-user.component.html'
+	templateUrl: './create-user.component.html',
+	styleUrls: ['../../../../assets/css/ant-common.scss'],
 })
 export class CreateUserComponent{
 	topBar: {
@@ -18,12 +21,23 @@ export class CreateUserComponent{
 		mobile: string,
 		gender: string,
 	}
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-	childlist: any[];
+	child: {
+		type: string,
+		name: string,
+		nickname: string,
+		gender: string,
+		birth_date: Date,
+		blood_type: string,
+		height: string,
+		weight: string,
+		horoscope: string,
+		shengxiao: string,
+		imageUrl: string,
+		leg_length: string,
+		head_circum: string,
+		waist_circum: string,
+		breast_circum: string,
+	}
 	bloodTypeList: any[];
 	horoscopeList: any[];
 	shengxiaoList: any[];
@@ -33,6 +47,7 @@ export class CreateUserComponent{
 	btnCanEdit: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -42,19 +57,30 @@ export class CreateUserComponent{
 			title: '创建用户',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.user = {
 			name: '',
 			mobile: '',
 			gender: '',
 		}
+		this.child = {
+			type: '',
+			name: '',
+			nickname: '',
+			gender: '',
+			birth_date: null,
+			blood_type: '',
+			height: '',
+			weight: '',
+			horoscope: '',
+			shengxiao: '',
+			imageUrl: '',
+			leg_length: '',
+			head_circum: '',
+			waist_circum: '',
+			breast_circum: '',
+		}
 
-		this.childlist = [];
 		this.bloodTypeList = [];
 		this.horoscopeList = [];
 		this.shengxiaoList = [];
@@ -69,13 +95,13 @@ export class CreateUserComponent{
 		}else{
 			this.adminService.clinicdata().then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.setClinicData(results);
 				}
 			}).catch(() => {
-                this.toastTab('服务器错误', 'error');
+                this._message.error('服务器错误');
             });
 		}
 
@@ -83,12 +109,12 @@ export class CreateUserComponent{
 		var tokenUrl  = '?type=childCircle';
 		this.adminService.qiniutoken(tokenUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		this.btnCanEdit = false;
@@ -106,7 +132,14 @@ export class CreateUserComponent{
 		}
 	}
 
-	selectedFile(_file, key) {
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !new Date()) {
+            return false;
+        }
+        return startValue.getTime() > new Date().getTime();
+    };
+
+	selectedFile(_file) {
 		var fff = [];
     	var fileJson = _file.target['files'];
     	for(var index in fileJson){
@@ -122,7 +155,7 @@ export class CreateUserComponent{
 		        formData.append('key', (new Date()).getTime() + Math.floor(Math.random() * 100)+'.'+file.name.substr(file.name.lastIndexOf('.')+1));
 
 		        var reader = new FileReader();
-		        var imgEle = document.getElementById('imgEle_' + key);
+		        var imgEle = document.getElementById('imgEle');
 		        reader.readAsDataURL(file);
 		        reader.onload = function(f) {
 		        	imgEle.setAttribute('src', reader.result);
@@ -133,7 +166,7 @@ export class CreateUserComponent{
 		        xhr.onreadystatechange = function () {
 		            if (xhr.readyState == 4) {
 		                if (xhr.status == 200) {
-		                    var fileEle = document.getElementById('file_' + key);
+		                    var fileEle = document.getElementById('file');
 		                    fileEle.setAttribute('value', JSON.parse(xhr.responseText).key);
 		                } else {
 
@@ -145,182 +178,169 @@ export class CreateUserComponent{
     	}
     }
 
-	// 选择日期
-	changeDate(value, key) {
-		this.childlist[key].birth_date = JSON.parse(value).value;
-	}
-
-	create(f): void {
+	create(): void {
 		this.btnCanEdit = true;
-		f.value.name = this.adminService.trim(f.value.name);
-		f.value.mobile = this.adminService.trim(f.value.mobile);
-		if(f.value.name == ''){
-			this.toastTab('姓名不可为空', 'error');
+		this.user.name = this.user.name.trim();
+		this.user.mobile = this.user.mobile.trim();
+		if(this.user.name == ''){
+			this._message.error('姓名不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.name.length > 10){
-			this.toastTab('姓名最多十位', 'error');
+		if(this.user.name.length > 10){
+			this._message.error('姓名最多十位');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.mobile == ''){
-			this.toastTab('手机号码不可为空', 'error');
+		if(this.user.mobile == ''){
+			this._message.error('手机号码不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.mobile.length != 11 || !this.adminService.checkMobile(f.value.mobile)){
-			this.toastTab('手机号码不正确', 'error');
+		if(this.user.mobile.length != 11 || !this.adminService.checkMobile(this.user.mobile)){
+			this._message.error('手机号码不正确');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.gender == ''){
-			this.toastTab('性别不可为空', 'error');
+		if(this.user.gender == ''){
+			this._message.error('性别不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
 		//宝宝信息
-		var childData = [];
-		if(this.childlist.length > 0){
+		var childInfo = {};
+		if(this.child.type != ''){
 			var childNum = 0;
-			for(var i = 0; i < this.childlist.length; i++){
-				if(this.childlist[i].use){
-					childNum++;
-					var child = {};
-					child['username'] = this.adminService.getUser().username;
-					child['token'] = this.adminService.getUser().token;
-					child['clinic_id'] = this.adminService.getUser().clinicId;
-					child['user_id'] = '';
-					f.value['name_' + this.childlist[i].key] = this.adminService.trim(f.value['name_' + this.childlist[i].key]);
-					f.value['nickname_' + this.childlist[i].key] = this.adminService.trim(f.value['nickname_' + this.childlist[i].key]);
-					//判断姓名
-					if(f.value['name_' + this.childlist[i].key]){
-						child['name'] = f.value['name_' + this.childlist[i].key];
-					}else{
-						this.toastTab('宝宝的姓名不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					//判断性别
-					if(f.value['gender_' + this.childlist[i].key]){
-						child['gender'] = f.value['gender_' + this.childlist[i].key];
-					}else{
-						this.toastTab('宝宝的性别不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					//判断出生日期
-					if(!this.adminService.isFalse(this.childlist[i].birth_date)){
-						child['birth_date'] = this.childlist[i].birth_date;
-					}else{
-						this.toastTab('宝宝的出生日期不可为空', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					//判断头像(不必传)
-					if(document.getElementById('file_' + this.childlist[i].key).getAttribute('value') == ''){
-						child['remote_domain'] = '';
-						child['remote_file_key'] = '';
-					}else{
-						child['remote_domain'] = 'http://bcircle.meb.meb168.com';
-						child['remote_file_key'] = document.getElementById('file_' + this.childlist[i].key).getAttribute('value');
-					}
-					//判断血型
-					if(f.value['blood_type_' + this.childlist[i].key]){
-						child['blood_type'] = f.value['blood_type_' + this.childlist[i].key];
-					}
-					//判断星座
-					if(f.value['horoscope_' + this.childlist[i].key]){
-						child['horoscope'] = f.value['horoscope_' + this.childlist[i].key];
-					}
-					//判断生肖
-					if(f.value['shengxiao_' + this.childlist[i].key]){
-						child['shengxiao'] = f.value['shengxiao_' + this.childlist[i].key];
-					}
-					//判断身高
-					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key]) && parseFloat(f.value['height_' + this.childlist[i].key]) <= 0){
-						this.toastTab('宝宝身高不可小于等于0', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					if(!this.adminService.isFalse(f.value['height_' + this.childlist[i].key])){
-						child['height'] = f.value['height_' + this.childlist[i].key];
-					}
-					//判断体重
-					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key]) && parseFloat(f.value['weight_' + this.childlist[i].key]) <= 0){
-						this.toastTab('宝宝体重不可小于等于0', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					if(!this.adminService.isFalse(f.value['weight_' + this.childlist[i].key])){
-						child['weight'] = f.value['weight_' + this.childlist[i].key];
-					}
-					//判断昵称
-					if(f.value['nickname_' + this.childlist[i].key]){
-						child['nickname'] = f.value['nickname_' + this.childlist[i].key];
-					}
-					//判断头围
-					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key]) && parseFloat(f.value['head_circum_' + this.childlist[i].key]) <= 0){
-						this.toastTab('宝宝头围不可小于等于0', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					if(!this.adminService.isFalse(f.value['head_circum_' + this.childlist[i].key])){
-						child['head_circum'] = f.value['head_circum_' + this.childlist[i].key];
-					}
-					//判断胸围
-					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key]) && parseFloat(f.value['breast_circum_' + this.childlist[i].key]) <= 0){
-						this.toastTab('宝宝胸围不可小于等于0', 'error');
-						this.btnCanEdit = false;
-						return;
-					}
-					if(!this.adminService.isFalse(f.value['breast_circum_' + this.childlist[i].key])){
-						child['breast_circum'] = f.value['breast_circum_' + this.childlist[i].key];
-					}
-					childData.push(child);
-				}
+			childNum++;
+			childInfo['username'] = this.adminService.getUser().username;
+			childInfo['token'] = this.adminService.getUser().token;
+			childInfo['clinic_id'] = this.adminService.getUser().clinicId;
+			childInfo['user_id'] = '';
+			this.child.name = this.child.name.trim();
+			this.child.nickname = this.child.nickname.trim();
+			//判断姓名
+			if(this.child.name){
+				childInfo['name'] = this.child.name;
+			}else{
+				this._message.error('宝宝的姓名不可为空');
+				this.btnCanEdit = false;
+				return;
+			}
+			//判断性别
+			if(this.child.gender){
+				childInfo['gender'] = this.child.gender;
+			}else{
+				this._message.error('宝宝的性别不可为空');
+				this.btnCanEdit = false;
+				return;
+			}
+			//判断出生日期
+			if(!this.adminService.isFalse(this.child.birth_date)){
+				childInfo['birth_date'] = this.adminService.getDayByDate(new Date(this.child.birth_date));
+			}else{
+				this._message.error('宝宝的出生日期不可为空');
+				this.btnCanEdit = false;
+				return;
+			}
+			//判断头像(不必传)
+			if(document.getElementById('file').getAttribute('value') == ''){
+				childInfo['remote_domain'] = '';
+				childInfo['remote_file_key'] = '';
+			}else{
+				childInfo['remote_domain'] = 'http://bcircle.meb.meb168.com';
+				childInfo['remote_file_key'] = document.getElementById('file').getAttribute('value');
+			}
+			//判断血型
+			if(this.child.blood_type){
+				childInfo['blood_type'] = this.child.blood_type;
+			}
+			//判断星座
+			if(this.child.horoscope){
+				childInfo['horoscope'] = this.child.horoscope;
+			}
+			//判断生肖
+			if(this.child.shengxiao){
+				childInfo['shengxiao'] = this.child.shengxiao;
+			}
+			//判断身高
+			if(!this.adminService.isFalse(this.child.height) && parseFloat(this.child.height) <= 0){
+				this._message.error('宝宝身高不可小于等于0');
+				this.btnCanEdit = false;
+				return;
+			}
+			if(!this.adminService.isFalse(this.child.height)){
+				childInfo['height'] = this.child.height;
+			}
+			//判断体重
+			if(!this.adminService.isFalse(this.child.weight) && parseFloat(this.child.weight) <= 0){
+				this._message.error('宝宝体重不可小于等于0');
+				this.btnCanEdit = false;
+				return;
+			}
+			if(!this.adminService.isFalse(this.child.weight)){
+				childInfo['weight'] = this.child.weight;
+			}
+			//判断昵称
+			if(this.child.nickname){
+				childInfo['nickname'] = this.child.nickname;
+			}
+			//判断头围
+			if(!this.adminService.isFalse(this.child.head_circum) && parseFloat(this.child.head_circum) <= 0){
+				this._message.error('宝宝头围不可小于等于0');
+				this.btnCanEdit = false;
+				return;
+			}
+			if(!this.adminService.isFalse(this.child.head_circum)){
+				childInfo['head_circum'] = this.child.head_circum;
+			}
+			//判断胸围
+			if(!this.adminService.isFalse(this.child.breast_circum) && parseFloat(this.child.breast_circum) <= 0){
+				this._message.error('宝宝胸围不可小于等于0');
+				this.btnCanEdit = false;
+				return;
+			}
+			if(!this.adminService.isFalse(this.child.breast_circum)){
+				childInfo['breast_circum'] = this.child.breast_circum;
 			}
 		}
 		var param = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
-			mobile: f.value.mobile,
-			gender: f.value.gender,
-			name: f.value.name,
+			mobile: this.user.mobile,
+			gender: this.user.gender,
+			name: this.user.name,
 		}
 		this.adminService.createUser(param).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(childData.length > 0){
-					for(var i = 0; i < childData.length; i++){
-						childData[i]['user_id'] = results.userid;
-						this.adminService.crmchild(childData[i]).then((data) => {
-							if(data.status == 'no'){
-								this.toastTab(data.errorMsg, 'error');
-								this.btnCanEdit = false;
-							}else{
-								this.toastTab('用户创建成功', '');
-								setTimeout(() =>　{
-									this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
-								}, 2000);
-							}
-						}).catch(() => {
-			                this.toastTab('服务器错误', 'error');
+				if(childInfo['name']){
+					childInfo['user_id'] = results.userid;
+					this.adminService.crmchild(childInfo).then((data) => {
+						if(data.status == 'no'){
+							this._message.error(data.errorMsg);
 							this.btnCanEdit = false;
-			            });
-					}
+						}else{
+							this._message.success('用户创建成功');
+							setTimeout(() =>　{
+								this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
+							}, 2000);
+						}
+					}).catch(() => {
+		                this._message.error('服务器错误');
+						this.btnCanEdit = false;
+		            });
 				}else{
-					this.toastTab('用户创建成功', '');
+					this._message.success('用户创建成功');
 					setTimeout(() =>　{
 						this.router.navigate(['./admin/userInfo'], {queryParams: {id: results.userid}});
 					}, 2000);
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
 			this.btnCanEdit = false;
         });
 	}
@@ -330,43 +350,42 @@ export class CreateUserComponent{
 	}
 
 	addChild() {
-		var key = this.childlist.length;
-		if(this.childlist.length > 0){
-			for(var i = 0; i < this.childlist.length; i++){
-				this.childlist[i].show = false;
-			}
-		}
-		this.childlist.push({key: key, show: true, use: true});
-	}
-
-	hideTab(_key) {
-		for(var i = 0; i < this.childlist.length; i++){
-			if(this.childlist[i].key == _key){
-				this.childlist[i].show = !this.childlist[i].show;
-			}
+		this.child = {
+			type: 'add',
+			name: '',
+			nickname: '',
+			gender: '',
+			birth_date: null,
+			blood_type: '',
+			height: '',
+			weight: '',
+			horoscope: '',
+			shengxiao: '',
+			imageUrl: '',
+			leg_length: '',
+			head_circum: '',
+			waist_circum: '',
+			breast_circum: '',
 		}
 	}
 
 	removeChild(_key) {
-		for(var i = 0; i < this.childlist.length; i++){
-			if(this.childlist[i].key == _key){
-				this.childlist[i].use = false;
-			}
+		this.child = {
+			type: '',
+			name: '',
+			nickname: '',
+			gender: '',
+			birth_date: null,
+			blood_type: '',
+			height: '',
+			weight: '',
+			horoscope: '',
+			shengxiao: '',
+			imageUrl: '',
+			leg_length: '',
+			head_circum: '',
+			waist_circum: '',
+			breast_circum: '',
 		}
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

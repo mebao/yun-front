@@ -28,10 +28,10 @@ export class GuazhangList{
 	}
     _startDate = null;
     _endDate = null;
-	commonList: any[];
     modalConfirmTab: boolean;
     selector: {
         id: string,
+        user: string,
         amount: string,
         text: string,
         second_way: string,
@@ -80,14 +80,10 @@ export class GuazhangList{
             this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
-		this.commonList = [
-			{id: 1},
-			{id: 2},
-		]
-
         this.modalConfirmTab = false;;
         this.selector = {
             id: '',
+            user: '',
             amount: '',
             text: '',
             second_way: '',
@@ -153,7 +149,7 @@ export class GuazhangList{
     };
 
 	getData(urlOptions) {
-		this.adminService.searchtran(urlOptions).then((data) => {
+		this.adminService.searchguazhang(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this._message.error(data.errorMsg);
@@ -175,6 +171,7 @@ export class GuazhangList{
     closeConfirm() {
         this.selector = {
             id: '',
+            user: '',
             amount: '',
             text: '',
             second_way: this.selector.second_way == '' ? null : '',
@@ -189,7 +186,8 @@ export class GuazhangList{
     pay(record) {
         this.loadingShow = true;
         this.selector.id = record.id;
-        this.selector.amount = record.payWay == 'guazhang' ? record.amount : record.secondAmount;
+        this.selector.user = record.userName;
+        this.selector.amount = record.amount;
         this.selector.second_way = this.selector.second_way == '' ? null : '';
         this.getUserInfo(record.userId,this.selector.amount);
     }

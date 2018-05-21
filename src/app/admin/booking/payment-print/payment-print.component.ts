@@ -74,6 +74,7 @@ export class PaymentPrintComponent{
 			checkDiscount: string,
 			checkFee: string,
 			medicalFeeList: any[],
+			medicalFeeOriginalList: any[],
 			medicalOriginalFee: string,
 			medicalDiscount: string,
 			medicalFee: string,
@@ -203,7 +204,8 @@ export class PaymentPrintComponent{
 			text: '',
 			type: '',
 		};
-
+		// console.log(JSON.parse(sessionStorage.getItem('bookingInfo')));
+		console.log(sessionStorage.getItem('bookingInfo'));
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
 		//获取费用详情
@@ -224,6 +226,7 @@ export class PaymentPrintComponent{
 				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: [],
+				medicalFeeOriginalList: [],
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
@@ -539,6 +542,7 @@ export class PaymentPrintComponent{
 				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: results.feeinfo['药方药品费用'],
+				medicalFeeOriginalList: [],
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
@@ -588,6 +592,7 @@ export class PaymentPrintComponent{
 				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: results.feeinfo['药方药品费用'],
+				medicalFeeOriginalList: [],
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
@@ -723,6 +728,10 @@ export class PaymentPrintComponent{
 		var originalMedicalFee = 0;
 		if(this.fee.feeInfo.medicalFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.medicalFeeList.length; i++){
+				// 排除数量为0的药品
+				var medicalOriginal = JSON.parse(JSON.stringify(this.fee.feeInfo.medicalFeeList[i]));
+				medicalOriginal.info = [];
+				var hasMedicalInfo = false;
 				if(this.fee.feeInfo.medicalFeeList[i].info.length > 0){
 					for(var j = 0; j < this.fee.feeInfo.medicalFeeList[i].info.length; j++){
 						// 支付时的药品折扣
@@ -752,7 +761,15 @@ export class PaymentPrintComponent{
 						this.fee.feeInfo.medicalFeeList[i].info[j].medicalFee = this.adminService.toDecimal2(fee_medical);
 						this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num));
 						this.fee.feeInfo.medicalFeeList[i].info[j].medicalDiscountFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee) - parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].medicalFee));
+
+						if(Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) > 0){
+							hasMedicalInfo = true;
+							medicalOriginal.info.push(this.fee.feeInfo.medicalFeeList[i].info[j]);
+						}
 					}
+				}
+				if(hasMedicalInfo){
+					this.fee.feeInfo.medicalFeeOriginalList.push(medicalOriginal);
 				}
 			}
 		}
@@ -881,6 +898,7 @@ export class PaymentPrintComponent{
 				checkDiscount: '',
 				checkFee: '',
 				medicalFeeList: results.feeinfo['药方药品费用'],
+				medicalFeeOriginalList: [],
 				medicalOriginalFee: '',
 				medicalDiscount: '',
 				medicalFee: '',
@@ -964,6 +982,10 @@ export class PaymentPrintComponent{
 		var originalMedicalFee = 0;
 		if(this.fee.feeInfo.medicalFeeList.length > 0){
 			for(var i = 0; i < this.fee.feeInfo.medicalFeeList.length; i++){
+				// 排除数量为0的药品
+				var medicalOriginal = JSON.parse(JSON.stringify(this.fee.feeInfo.medicalFeeList[i]));
+				medicalOriginal.info = [];
+				var hasMedicalInfo = false;
 				if(this.fee.feeInfo.medicalFeeList[i].info.length > 0){
 					for(var j = 0; j < this.fee.feeInfo.medicalFeeList[i].info.length; j++){
 						//判断是否可以打折
@@ -979,7 +1001,15 @@ export class PaymentPrintComponent{
 						originalMedicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
 						this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num));
 						this.fee.feeInfo.medicalFeeList[i].info[j].medicalDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee) - parseFloat(	this.fee.feeInfo.medicalFeeList[i].info[j].medicalFee));
+						
+						if(Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) > 0){
+							hasMedicalInfo = true;
+							medicalOriginal.info.push(this.fee.feeInfo.medicalFeeList[i].info[j]);
+						}
 					}
+				}
+				if(hasMedicalInfo){
+					this.fee.feeInfo.medicalFeeOriginalList.push(medicalOriginal);
 				}
 			}
 		}

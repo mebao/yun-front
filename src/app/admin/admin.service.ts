@@ -1500,6 +1500,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询挂账
+	searchguazhang(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchguazhang' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

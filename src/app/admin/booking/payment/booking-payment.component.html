@@ -420,10 +420,10 @@
 								</nz-table>
 							</div>
 						</div>
-						<div *ngIf="fee.feeInfo.medicalFeeList.length > 0" class="section">
+						<div *ngIf="fee.feeInfo.medicalFeeOriginalList.length > 0" class="section">
 							<div class="title">西/中成药费用</div>
 							<div class="pad10">
-								<nz-table #nzTable [nzDataSource]="fee.feeInfo.medicalFeeList" [nzBordered]="true" [nzIsPagination]="false">
+								<nz-table #nzTable [nzDataSource]="fee.feeInfo.medicalFeeOriginalList" [nzBordered]="true" [nzIsPagination]="false">
 									<thead nz-thead>
 										<tr>
 											<th>药品</th>
@@ -441,7 +441,7 @@
 										</tr>
 									</thead>
 									<tbody nz-tbody>
-										<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList; let index=index;">
+										<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeOriginalList; let index=index;">
 											<tr nz-tbody-tr *ngFor="let info of medical.info">
 												<td>{{info.pname}}</td>
 												<td>{{info.price}}</td>

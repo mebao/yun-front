@@ -122,7 +122,7 @@
                     兄弟姐妹
                 </ng-template>
                 <ng-template #body>
-					<nz-table #nzTable [nzDataSource]="otherChildList" [nzBordered]="true" [nzIsPagination]="false">
+					<nz-table #nzTable [nzDataSource]="otherChildList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 						<thead nz-thead>
 							<tr>
 								<th>头像</th>
@@ -157,6 +157,7 @@
 								<td>{{child.weight}}</td>
 							</tr>
 						</tbody>
+						<span noResult>暂无兄弟姐妹信息</span>
 					</nz-table>
 				</ng-template>
 			</nz-card>

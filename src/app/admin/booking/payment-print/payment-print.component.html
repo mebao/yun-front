@@ -103,7 +103,7 @@
 				<div class="w20"></div>
 				<div class="w15">{{check.checkFee}}</div>
 			</div>
-			<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeList">
+			<ng-container *ngFor="let medical of fee.feeInfo.medicalFeeOriginalList">
 				<div class="flex" *ngFor="let info of medical.info">
 					<div class="w20">{{info.pname}}</div>
 					<div class="w10">{{info.price}}</div>

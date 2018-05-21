@@ -239,7 +239,6 @@ export class BookingChargeComponent{
 
 	//付款
 	payment(booking) {
-		sessionStorage.setItem('bookingInfo', JSON.stringify(booking));
 		this.router.navigate(['./admin/bookingPayment'], {queryParams: {id: booking.bookingId}});
 	}
 }
