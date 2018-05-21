@@ -371,7 +371,7 @@ export class InspectResultsComponent{
 			// 判断是否为空
 			if(!this.adminService.isFalse(result.values)){
 				if(parseFloat(result.values) < 0){
-					this.toastTab(result.checkInfoName + '检查结果应大于等于0', 'error');
+					this.toastTab(result.checkInfoKey + '检查结果应大于等于0', 'error');
 					return;
 				}
 				if(parseFloat(result.values) < parseFloat(result.low)){
@@ -433,6 +433,7 @@ export class InspectResultsComponent{
 				var result = {
 					user_cid: this.checkProjectList[indexCheck].id,
 					check_info_id: '',
+					check_info_key: '',
 					values: '',
 					remark: '',
 					compare: '',
@@ -449,7 +450,7 @@ export class InspectResultsComponent{
 							if(!this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && this.checkProjectList[indexCheck].resultList[i].values != ''){
 								result.values = this.checkProjectList[indexCheck].resultList[i].values;
 							}else{
-								this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+								this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空', 'error');
 								this.btnCanEdit = false;
 								return;
 							}
@@ -459,19 +460,20 @@ export class InspectResultsComponent{
 					}else{
 						// 非空判断
 						if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
-							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果不可为空', 'error');
+							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空', 'error');
 							this.btnCanEdit = false;
 							return;
 						}
 						// 若是数字类型，则大于0
 						if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
-							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoName + '检查结果应大于0', 'error');
+							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果应大于0', 'error');
 							this.btnCanEdit = false;
 							return;
 						}
 						result.values = this.checkProjectList[indexCheck].resultList[i].values;
 					}
 					result.check_info_id = this.checkProjectList[indexCheck].resultList[i].checkInfoId;
+					result.check_info_key = this.checkProjectList[indexCheck].resultList[i].checkInfoKey;
 					result.remark = this.checkProjectList[indexCheck].resultList[i].remark;
 					result.compare = this.checkProjectList[indexCheck].resultList[i].compare;
 					resultList.push(result);

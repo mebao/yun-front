@@ -45,7 +45,7 @@
 							<tbody>
 								<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
 									<tr *ngIf="result.use">
-										<td>{{result.checkInfoName}}</td>
+										<td>{{result.checkInfoKey}}</td>
 										<!-- 文本填写亦或图片上传 -->
 										<ng-container *ngIf="result.isUpload == '0'">
 											<td>{{result.code}}</td>
@@ -96,7 +96,7 @@
 								<tbody>
 									<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
 										<tr *ngIf="!result.use">
-											<td>{{result.checkInfoName}}</td>
+											<td>{{result.checkInfoKey}}</td>
 											<td>
 												<button (click)="addItem(indexCheck, indexResult)" class="pure-button pure-button-primary">添加</button>
 											</td>
@@ -149,7 +149,7 @@
 					            </thead>
 					            <tbody>
 					                <tr *ngFor="let result of check.resultList; let indexResult=index;">
-					                    <td>{{result.checkInfoName}}</td>
+					                    <td>{{result.checkInfoKey}}</td>
 					                    <td>{{result.code}}</td>
 					                    <!-- 文本填写亦或图片上传 -->
 					                    <ng-container *ngIf="result.isUpload == '0'">
