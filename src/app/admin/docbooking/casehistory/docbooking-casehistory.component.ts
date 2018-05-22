@@ -205,6 +205,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	timeCheckInterval: any;
 	printCSS:any;
 	printStyle:any;
+	hasTemplet:boolean;
 
 	constructor(
 		private adminService: AdminService,
@@ -261,6 +262,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 			text: '',
 			type: '',
 		}
+
+		this.hasTemplet = true;
 
 		this.info = {
 			child_id:'',
@@ -715,6 +718,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		var casehistoryUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 		this.adminService.searchcasehistory(casehistoryUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -737,6 +741,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						 + '&status=1';
 					this.doctorService.searchcasetemplet(searchcasetempletUrl).then((data) => {
 						if(data.status == 'no'){
+							this.loadingShow = false;
 							this.toastTab(data.errorMsg, 'error');
 						}else{
 							var results = JSON.parse(JSON.stringify(data.results));
@@ -751,9 +756,13 @@ export class DocbookingCasehistoryComponent implements OnInit{
 								sessionStorage.setItem('doctorBookingCaseTemplet', JSON.stringify(this.casetempletList[0]));
 								var casehistory =  [];
 								this.initEdit(doctorBooking,casehistory);
+							}else{
+								this.hasTemplet = false;
+								this.loadingShow = false;
 							}
 						}
 					}).catch(() => {
+						this.loadingShow = false;
 		                this.toastTab('服务器错误', 'error');
 		            });
 				}else{
@@ -1053,6 +1062,8 @@ export class DocbookingCasehistoryComponent implements OnInit{
 					this.searchCaseHistory(doctorBooking);
 					// 获取小孩儿保记录
 					this.getHistoryHealthRList();
+				}else{
+					this.loadingShow = false;
 				}
 			}
 		}).catch(() => {
