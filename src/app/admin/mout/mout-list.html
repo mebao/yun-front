@@ -39,6 +39,9 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
+	<div class="mt10 mb10">
+		<nz-alert [nzType]="'warning'" [nzMessage]="'辅助治疗药品出库后需前往辅助治疗药品列表，完成药品出库操作'"></nz-alert>
+	</div>
 	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="moutList" [nzBordered]="true" [nzIsPagination]="false">
 		<thead nz-thead>
 			<tr>

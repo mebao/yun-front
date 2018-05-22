@@ -348,8 +348,8 @@ export class BookingUpdateInfo{
 						if(results.list[i].info.length > 0){
 							for(var j = 0; j < results.list[i].info.length; j++){
 								results.list[i].info[j].expiringDate = this.as.dateFormat(results.list[i].info[j].expiringDate);
-								results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天' + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
-								results.list[i].info[j].msExplainPrint = '一次' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].usage + '，共' + results.list[i].info[j].days + '天';
+								results.list[i].info[j].msExplain = '单次：' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].frequency + '，' + results.list[i].info[j].usage + (results.list[i].info[j].days ? '，共' + results.list[i].info[j].days + '天' : '') + (results.list[i].info[j].remark != '' ? '，' + results.list[i].info[j].remark : '');
+								results.list[i].info[j].msExplainPrint = '一次' + results.list[i].info[j].oneNum + results.list[i].info[j].oneUnit + '，' + results.list[i].info[j].usage + (results.list[i].info[j].days ? '，共' + results.list[i].info[j].days + '天' : '');
 							}
 						}
 						prescriptList.push(results.list[i]);

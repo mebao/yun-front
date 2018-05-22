@@ -386,7 +386,7 @@ export class DoctorPrescriptComponent{
                 this.oneNumList.push({key: medical.oneNum, value: medical.oneNum});
                 this.oneNumOldList.push({key: medical.oneNum, value: medical.oneNum});
             }
-            if(this.numberList.indexOf({key: medical.days.to, value: medical.days}) == -1){
+            if(this.numberList.indexOf({key: medical.days, value: medical.days}) == -1){
                 this.numberList.push({key: medical.days, value: medical.days});
                 this.numberOldList.push({key: medical.days, value: medical.days});
             }
@@ -606,17 +606,17 @@ export class DoctorPrescriptComponent{
 						return;
 					}
 					p.frequency = this.validateForm.controls['frequency' + i].value;
-					if(this.adminService.isFalse(this.validateForm.controls['days' + i].value)){
-						this._message.error('第' + num + '条天数不可为空');
-						this.isLoadingSave = false;
-						return;
-					}
-					if(Number(this.validateForm.controls['days' + i].value) <=0 || Number(this.validateForm.controls['days' + i].value) % 1 != 0){
+					// if(this.adminService.isFalse(this.validateForm.controls['days' + i].value)){
+					// 	this._message.error('第' + num + '条天数不可为空');
+					// 	this.isLoadingSave = false;
+					// 	return;
+					// }
+					if(!this.adminService.isFalse(this.validateForm.controls['days' + i].value) && Number(this.validateForm.controls['days' + i].value) <=0 || Number(this.validateForm.controls['days' + i].value) % 1 != 0){
 						this._message.error('第' + num + '条天数应为大于0的整数');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.days = this.validateForm.controls['days' + i].value;
+					p.days = this.adminService.isFalse(this.validateForm.controls['days' + i].value) ? null :  this.validateForm.controls['days' + i].value;
 					if(this.adminService.isFalse(this.validateForm.controls['num' + i].value)){
 						this._message.error('第' + num + '条药单总量不可为空');
 						this.isLoadingSave = false;

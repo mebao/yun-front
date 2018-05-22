@@ -1509,6 +1509,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 手动出库后出库统计的辅助治疗药物
+	outassistdrug(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/outassistdrug/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

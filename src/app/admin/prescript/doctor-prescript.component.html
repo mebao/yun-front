@@ -131,11 +131,12 @@
 							<div nz-col [nzSpan]="6">
 								<div nz-form-item>
 									<div nz-form-label>
-										<label nz-form-item-required>天数：</label>
+										<label>天数：</label>
 									</div>
 									<div nz-form-control>
 										<nz-select [formControlName]="medical_info.days" [nzPlaceHolder]="'请选择天数'" [disabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"
 										nzShowSearch
+										nzAllowClear
 										(nzSearchChange)="searchNum($event)">
 											<ng-container *ngFor="let number of numberList">
 												<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>

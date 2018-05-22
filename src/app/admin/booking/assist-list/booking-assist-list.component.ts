@@ -18,7 +18,8 @@ export class BookingAssistList{
 	// 权限
 	moduleAuthority: {
 		see: boolean,
-		edit: boolean,
+		confirm: boolean,
+        confirmOut: boolean,
 	}
     loadingShow: boolean;
     hasData: boolean;
@@ -37,6 +38,8 @@ export class BookingAssistList{
     selectedInfo: {
         assist: any,
         text: string,
+        medical: any,
+        type: string,
     }
     asssitMList: any[];
     searchInfoM: {
@@ -54,11 +57,12 @@ export class BookingAssistList{
             title: '辅助治疗',
             back: false,
         }
-        
+
 		//权限
 		this.moduleAuthority = {
 			see: false,
-			edit: false,
+    		confirm: false,
+            confirmOut: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -107,6 +111,8 @@ export class BookingAssistList{
         this.selectedInfo = {
             assist: {},
             text: '',
+            medical: '',
+            type: '',
         }
 
         var searchassistUrl = this.url + '&status=1'
@@ -123,8 +129,8 @@ export class BookingAssistList{
         this.search();
         this.asssitMList = [];
         this.searchInfoM = {
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: null,
+            endDate: null,
         }
     }
 
@@ -225,7 +231,9 @@ export class BookingAssistList{
     finish(info) {
         this.selectedInfo = {
             assist: info,
-            text: `确认完成-${info.childName}-（${info.number}次：${info.assistName}）`
+            text: `确认完成-${info.childName}-（${info.number}次：${info.assistName}）`,
+            medical: {},
+            type: 'assist',
         }
         this.modalConfirmTab = true;
     }
@@ -234,28 +242,52 @@ export class BookingAssistList{
         this.modalConfirmTab = false;
         this.selectedInfo = {
             assist: {},
-            text: ''
+            text: '',
+            medical: {},
+            type: '',
         }
     }
 
     confirm() {
         this.modalConfirmTab = false;
-        var params = {
-            username: this.adminService.getUser().username,
-            token: this.adminService.getUser().token,
-            clinic_id: this.adminService.getUser().clinicId,
-            id: this.selectedInfo.assist.id,
-        }
-        this.adminService.finishassist(this.selectedInfo.assist.id, params).then((data) => {
-            if(data.status == 'no'){
-                this._message.error(data.errorMsg);
-            }else{
-                this.search();
-                this._message.success('完成成功');
+        if(this.selectedInfo.type == 'assist'){
+            // 完成辅助治疗
+            var params = {
+                username: this.adminService.getUser().username,
+                token: this.adminService.getUser().token,
+                clinic_id: this.adminService.getUser().clinicId,
+                id: this.selectedInfo.assist.id,
             }
-        }).catch(() => {
-            this._message.error('服务器错误');
-        });
+            this.adminService.finishassist(this.selectedInfo.assist.id, params).then((data) => {
+                if(data.status == 'no'){
+                    this._message.error(data.errorMsg);
+                }else{
+                    this.search();
+                    this._message.success('完成成功');
+                }
+            }).catch(() => {
+                this._message.error('服务器错误');
+            });
+        }else{
+            // 药品完成出库操作
+            var outParams = {
+                username: this.adminService.getUser().username,
+                token: this.adminService.getUser().token,
+                clinic_id: this.adminService.getUser().clinicId,
+                bdate_big: this.searchInfoM.startDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.startDate)) : null,
+                bdate_less: this.searchInfoM.endDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.endDate)) : null
+            }
+            this.adminService.outassistdrug(this.selectedInfo.medical.durgId, outParams).then((data) => {
+                if(data.status == 'no'){
+                    this._message.error(data.errorMsg);
+                }else{
+                    this._message.success('完成成功');
+                    this.searchMList();
+                }
+            }).catch(() => {
+                this._message.error('服务器错误');
+            });
+        }
     }
 
     searchMList() {
@@ -293,4 +325,14 @@ export class BookingAssistList{
         }
         return endValue.getTime() < this.searchInfoM.startDate.getTime();
     };
+
+    confirmOut(info) {
+        this.selectedInfo = {
+            assist: {},
+            text: `确认-${info.name}-（${info.num}${info.unit}）完成出库`,
+            medical: info,
+            type: 'out',
+        }
+        this.modalConfirmTab = true;
+    }
 }
