@@ -181,12 +181,9 @@ export class AssistComponent{
             }
             this.unitList.push(type);
         }
-
-        console.log(this.unitList);
     }
 
     create() {
-        console.log(this.validateForm.controls);
         this.btnCanEdit = true;
         var supplie_info = [];
         if(this.selectedMList.length > 0){

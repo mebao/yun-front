@@ -312,7 +312,7 @@
 		</ng-template>
 	</nz-card>
 </div>
-<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnComfirm)="confirm()">
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()">
 	<ng-template #contentConfirm>
     	<p>{{selector.text}}</p>
 	</ng-template>

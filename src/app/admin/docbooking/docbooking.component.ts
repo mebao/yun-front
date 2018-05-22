@@ -1018,8 +1018,6 @@ export class DocbookingComponent implements OnInit{
 			return;
 		}
 
-		console.log(this.addAssistInfo);
-
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,

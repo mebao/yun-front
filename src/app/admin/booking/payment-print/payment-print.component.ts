@@ -204,8 +204,6 @@ export class PaymentPrintComponent{
 			text: '',
 			type: '',
 		};
-		// console.log(JSON.parse(sessionStorage.getItem('bookingInfo')));
-		console.log(sessionStorage.getItem('bookingInfo'));
 		this.bookingInfo = JSON.parse(sessionStorage.getItem('bookingInfo'));
 
 		//获取费用详情
@@ -1001,7 +999,7 @@ export class PaymentPrintComponent{
 						originalMedicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
 						this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num));
 						this.fee.feeInfo.medicalFeeList[i].info[j].medicalDiscount = this.adminService.toDecimal2(parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].originalMedicalFee) - parseFloat(	this.fee.feeInfo.medicalFeeList[i].info[j].medicalFee));
-						
+
 						if(Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) > 0){
 							hasMedicalInfo = true;
 							medicalOriginal.info.push(this.fee.feeInfo.medicalFeeList[i].info[j]);

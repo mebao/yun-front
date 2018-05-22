@@ -413,6 +413,7 @@ export class UserInfoComponent{
 			this.btnUserCanEdit = false;
 			return;
 		}
+		this.loadingShow = true;
 		// 修改个人信息
 		var user = {
 			username: this.adminService.getUser().username,
@@ -423,6 +424,7 @@ export class UserInfoComponent{
 			gender: this.userInfo.gender,
 		}
 		this.adminService.createUser(user).then((data) => {
+			this.loadingShow = false;
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
 				this.btnUserCanEdit = false;
@@ -433,6 +435,7 @@ export class UserInfoComponent{
 				this.btnUserCanEdit = false;
 			}
 		}).catch(() => {
+			this.loadingShow = false;
             this._message.error('服务器错误');
 			this.btnUserCanEdit = false;
         });
@@ -545,9 +548,11 @@ export class UserInfoComponent{
 		if(this.childInfo.remark){
 			child['remark'] = this.childInfo.remark;
 		}
+		this.loadingShow = true;
 		if(this.editType == 'update'){
 			//修改宝宝
 			this.adminService.updatechild(child['id'], child).then((data) => {
+				this.loadingShow = false;
 				if(data.status == 'no'){
 					this._message.error(data.errorMsg);
 					this.btnCanEdit = false;
@@ -559,12 +564,14 @@ export class UserInfoComponent{
 					this.btnCanEdit = false;
 				}
 			}).catch(() => {
+				this.loadingShow = false;
                 this._message.error('服务器错误');
 				this.btnCanEdit = false;
             });
 		}else{
 			//新增宝宝
 			this.adminService.crmchild(child).then((data) => {
+				this.loadingShow = false;
 				if(data.status == 'no'){
 					this._message.error(data.errorMsg);
 					this.btnCanEdit = false;
@@ -575,6 +582,7 @@ export class UserInfoComponent{
 					this.btnCanEdit = false;
 				}
 			}).catch(() => {
+				this.loadingShow = false;
                 this._message.error('服务器错误');
 				this.btnCanEdit = false;
             });
@@ -594,15 +602,13 @@ export class UserInfoComponent{
 	}
 
 	confirm() {
+		this.loadingShow = true;
 		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
 		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token;
-		var params = {
-			username: this.adminService.getUser().username,
-			token: this.adminService.getUser().token,
-		}
 		this.adminService.deletechild(urlOptions).then((data) => {
+			this.loadingShow = false;
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
@@ -613,6 +619,7 @@ export class UserInfoComponent{
 				this.btnCanEdit = false;
 			}
 		}).catch(() => {
+			this.loadingShow = false;
             this._message.error('服务器错误');
 			this.btnCanEdit = false;
         });
