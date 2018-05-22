@@ -190,7 +190,7 @@ export class PaymentBookingFee{
                     this.paymentInfo.memberId = results.users[0].memberId;
                     this.paymentInfo.memberName = results.users[0].memberName;
                     // 判断是否是会员，如果是会员，则不可支付全额
-                    if(results.users[0].memberId != null){
+                    if(results.users[0].memberId == null){
                         this.paymentInfo.member = false;
                     }else{
                         this.paymentInfo.member = true;
