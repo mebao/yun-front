@@ -112,7 +112,7 @@
 								<p class="mt10">开单时间：{{bookingAssist.infoList[0].bookingDate}}</p>
 								<div nz-row *ngFor="let info of bookingAssist.infoList" class="mt10">
 									<div nz-col [nzSpan]="12">{{info.assistName}}（{{info.number}}次：{{info.finishId ? info.finishName + '已完成' : '未完成'}}）</div>
-									<div *ngIf="moduleAuthority.edit" nz-col [nzSpan]="12" class="text-right">
+									<div *ngIf="moduleAuthority.confirm" nz-col [nzSpan]="12" class="text-right">
 										<button *ngIf="!info.finishId" (click)="finish(info)" nz-button [nzType]="'default'" [nzSize]="'large'">完成</button>
 									</div>
 								</div>

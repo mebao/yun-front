@@ -3,7 +3,7 @@
 	<top-bar [data]="topBar"></top-bar>
 	<div nz-form-item>
 		<div nz-form-label>
-			<label nz-form-item-required>姓名<span class="required">*</span></label>
+			<label>姓名<span class="required">*</span></label>
 		</div>
 		<div nz-form-control class="mt5">
 			<nz-input [(ngModel)]="user.name" [nzPlaceHolder]="'请输入姓名'" [nzSize]="'large'"></nz-input>
@@ -11,7 +11,7 @@
 	</div>
 	<div nz-form-item class="mt10">
 		<div nz-form-label>
-			<label nz-form-item-required>手机号码<span class="required">*</span></label>
+			<label>手机号码<span class="required">*</span></label>
 		</div>
 		<div nz-form-control class="mt5">
 			<nz-input [(ngModel)]="user.mobile" [nzPlaceHolder]="'请输入手机号码'" [nzSize]="'large'"></nz-input>
@@ -19,7 +19,7 @@
 	</div>
 	<div nz-form-item class="mt10">
 		<div nz-form-label>
-			<label nz-form-item-required>性别<span class="required">*</span></label>
+			<label>性别<span class="required">*</span></label>
 		</div>
 		<div nz-form-control class="mt5">
 			<nz-select class="w100"
@@ -48,7 +48,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>
+							<label>
 								<span>姓名</span>
 								<span class="required">*</span>
 							</label>
@@ -61,7 +61,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>
+							<label>
 								<span>性别</span>
 								<span class="required">*</span>
 							</label>
@@ -80,7 +80,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>
+							<label>
 								<span>出生日期</span>
 								<span class="required">*</span>
 							</label>
@@ -93,7 +93,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>昵称</label>
+							<label>昵称</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-input [(ngModel)]="child.nickname" [nzPlaceHolder]="'请输入昵称'" [nzSize]="'large'"></nz-input>
@@ -103,7 +103,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>血型</label>
+							<label>血型</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-select class="w100"
@@ -120,7 +120,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>星座</label>
+							<label>星座</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-select class="w100"
@@ -137,7 +137,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>生肖</label>
+							<label>生肖</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-select class="w100"
@@ -155,7 +155,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label class="mt5">
-							<label nz-form-item-required>身高（cm）</label>
+							<label>身高（cm）</label>
 						</div>
 						<div nz-form-control>
 							<nz-input-number [nzMin]="0" [nzStep]="0.01" [(ngModel)]="child.height" [nzPlaceHolder]="'请输入身高'" [nzSize]="'large'" class="w100"></nz-input-number>
@@ -165,7 +165,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>体重（kg）</label>
+							<label>体重（kg）</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-input-number [nzMin]="0" [nzStep]="0.01" [(ngModel)]="child.weight" [nzPlaceHolder]="'请输入体重'" [nzSize]="'large'" class="w100"></nz-input-number>
@@ -175,7 +175,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>头围（cm）</label>
+							<label>头围（cm）</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-input-number [nzMin]="0" [nzStep]="0.01" [(ngModel)]="child.head_circum" [nzPlaceHolder]="'请输入头围'" [nzSize]="'large'" class="w100"></nz-input-number>
@@ -185,7 +185,7 @@
 				<div nz-col [nzSpan]="8" class="mb10">
 					<div nz-form-item>
 						<div nz-form-label>
-							<label nz-form-item-required>胸围（cm）</label>
+							<label>胸围（cm）</label>
 						</div>
 						<div nz-form-control class="mt5">
 							<nz-input-number [nzMin]="0" [nzStep]="0.01" [(ngModel)]="child.breast_circum" [nzPlaceHolder]="'请输入胸围'" [nzSize]="'large'" class="w100"></nz-input-number>
