@@ -1683,7 +1683,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             tongue_tie: this.info.tongue_tie != '' ? this.info.tongue_tie : this.info.tongue_tie_other,
             teeth_pit: this.info.teeth_pit != '' ? this.info.teeth_pit : this.info.teeth_pit_other,
             plaque: this.info.plaque != '' ? this.info.plaque : this.info.plaque_other,
-			teeth_num: this.info.teeth_num == '' ? this.info.teeth_num : this.info.teeth_num_other,
+			teeth_num: this.info.teeth_num != '' ? this.info.teeth_num : this.info.teeth_num_other,
             dental_caries: this.info.dental_caries != '' ? this.info.dental_caries : this.info.dental_caries_other,
             limb: this.info.limb != '' ? this.info.limb : this.info.limb_other,
             ribs: this.info.ribs != '' ? this.info.ribs : this.info.ribs_other,

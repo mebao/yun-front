@@ -590,8 +590,7 @@
 									<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
 										<label class="w150pp">出牙数：</label>
 										<div class="flex-1">
-											{{healthrecord.teeth_num == '0' ? '' : healthrecord.teeth_num}}
-											<span *ngIf="healthrecord.teeth_num != '' && healthrecord.teeth_num != '0'" class="pl5"></span>
+											{{healthrecord.teeth_num}}
 										</div>
 									</div>
 									<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
@@ -1004,8 +1003,7 @@
 												<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
 													<label class="w150pp">出牙数：</label>
 													<div class="flex-1">
-														{{healthrecord.teeth_num == '0' ? '' : healthrecord.teeth_num}}
-														<span *ngIf="healthrecord.teeth_num != '' && healthrecord.teeth_num != '0'" class="pl5"></span>
+														{{healthrecord.teeth_num}}
 													</div>
 												</div>
 												<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
@@ -1624,7 +1622,7 @@
 								<div class="pure-control-group flex">
 									<label for="teeth_num" class="w150pp">出牙数(颗)：</label>
 									<div class="flex-1 flex pt10">
-										<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'teeth_num')" [ngClass]="{'active': info.teeth_num == '未萌牙'}">
+										<div class="radio mr10 flex" (click)="changeRedio('未萌牙', 'teeth_num')" [ngClass]="{'active': info.teeth_num == '未萌牙'}">
 											<div class="radioTab mr10"></div>
 											<div class="flex-1">未萌牙</div>
 										</div>
