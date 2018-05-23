@@ -88,8 +88,8 @@
 						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.typeText}}</td>
 						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.price}}</td>
 						<td>{{supplie_info.name}}</td>
-						<td>{{supplie_info.num + supplie_info.unit}}</td>
 						<td>{{supplie_info.show_num + supplie_info.show_unit}}</td>
+						<td>{{supplie_info.num + supplie_info.unit}}</td>
 						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">{{assist.status == '1' ? '可用' : '停用'}}</td>
 						<td [attr.rowspan]="assist.supplie_info.length" *ngIf="indexInfo == 0">
 							<button *ngIf="moduleAuthority.edit" (click)="update(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>

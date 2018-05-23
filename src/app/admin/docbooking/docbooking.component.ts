@@ -928,6 +928,23 @@ export class DocbookingComponent implements OnInit{
 				this.toastTab(data.errorMsg, 'error');
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.list.length > 0){
+					for(var i = 0; i < results.list.length; i++){
+						var remarks = results.list[i].remarks ? results.list[i].remarks : '';
+						var drug = '';
+						if(results.list[i].drugs.length > 0){
+							for(var j = 0; j < results.list[i].drugs.length; j++){
+								results.list[i].drugs[j].oneNum = parseFloat(results.list[i].drugs[j].durgNum) / parseFloat(results.list[i].number);
+								drug += results.list[i].drugs[j].durgName + '（' + results.list[i].drugs[j].oneNum + results.list[i].drugs[j].durgUnit + '），';
+							}
+							if(drug.length > 0){
+								drug = drug.slice(0, drug.length - 1);
+							}
+							remarks += (remarks == '' ? '' : '，') + '单次配比：' + drug;
+						}
+						results.list[i].remarks = remarks;
+					}
+				}
 				this.assistList = results.list;
 				this.hasAssistData = true;
 			}

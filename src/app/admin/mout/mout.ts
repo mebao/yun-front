@@ -130,12 +130,12 @@ export class Mout{
             const index = this.selectedMList.indexOf(i);
 			this.selectedMList[index].batchList = this.validateForm.controls['sinfo' + index].value.others;
             this.selectedMList[index].unitSelectList = [{
-                key: this.validateForm.controls['sinfo' + index].value.oneUnit,
-                value: this.validateForm.controls['sinfo' + index].value.oneUnit,
+                key: this.validateForm.controls['sinfo' + index].value.unit,
+                value: this.validateForm.controls['sinfo' + index].value.unit,
             }];
             var batch = this.validateForm.controls['batch' + index].value;
             this.validateForm.controls['batch' + index].setValue(batch == null ? '' : null);
-            this.validateForm.controls['unit' + index].setValue(this.validateForm.controls['sinfo' + index].value.oneUnit);
+            this.validateForm.controls['unit' + index].setValue(this.validateForm.controls['sinfo' + index].value.unit);
             // 如果是物资，无批次，则默认选择第一个
             if(this.selectedMList[index].batchList.length > 0 && this.selectedMList[index].batchList[0].batch == null){
                 this.validateForm.controls['batch' + index].setValue(this.selectedMList[index].batchList[0]);

@@ -99,21 +99,37 @@
 			<div *ngIf="hasData && bookingAssistList.length > 0" class="mt10">
 				<nz-alert [nzType]="'info'" [nzMessage]="'共查询到辅助治疗' + bookingAssistList.length + '条'"></nz-alert>
 			</div>
-			<div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
+			<!-- <div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
 				<ng-container *ngFor="let bookingAssist of bookingAssistList">
 					<div nz-col [nzSpan]="8" class=" card-tab pad10">
 						<div class="info pad10 flex max">
-							<!-- <div class="img-tab-default mr10">
-								<img (click)="childInfo(bookingAssist.infoList[0].childId)" src="{{bookingAssist.infoList[0].childUrl == '' || bookingAssist.infoList[0].childUrl == null ? '../assets/images/img.png' : bookingAssist.infoList[0].childUrl}}" class="cursor-p">
-							</div> -->
 							<div class="flex-1">
 								<p>宝宝姓名：{{bookingAssist.infoList[0].childName}}</p>
 								<p class="mt10">开单医生：{{bookingAssist.infoList[0].doctorName}}</p>
 								<p class="mt10">开单时间：{{bookingAssist.infoList[0].bookingDate}}</p>
-								<div nz-row *ngFor="let info of bookingAssist.infoList" class="mt10">
-									<div nz-col [nzSpan]="12">{{info.assistName}}（{{info.number}}次：{{info.finishId ? info.finishName + '已完成' : '未完成'}}）</div>
-									<div *ngIf="moduleAuthority.confirm" nz-col [nzSpan]="12" class="text-right">
+								<div *ngFor="let info of bookingAssist.infoList" class="mt10 flex">
+									<div class="flex">{{info.assistName}}（{{info.number}}次：{{info.finishId ? info.finishName + '已完成' : '未完成'}}）</div>
+									<div *ngIf="moduleAuthority.confirm" class="ml20">
 										<button *ngIf="!info.finishId" (click)="finish(info)" nz-button [nzType]="'default'" [nzSize]="'large'">完成</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div> -->
+			<div *ngIf="bookingAssistList.length > 0" nz-row [nzGutter]="30">
+				<ng-container *ngFor="let bookingAssist of bookingAssistList">
+					<div nz-col [nzSpan]="8" class=" card-tab pad10">
+						<div class="info pad10 flex max">
+							<div class="flex-1">
+								<p>宝宝姓名：{{bookingAssist.childName}}</p>
+								<p class="mt10">开单医生：{{bookingAssist.doctorName}}</p>
+								<p class="mt10">开单时间：{{bookingAssist.bookingDate}}</p>
+								<div class="mt10 flex">
+									<div class="flex-1">{{bookingAssist.assistName}}（{{bookingAssist.number}}次：{{bookingAssist.finishId ? bookingAssist.finishName + '已完成' : '未完成'}}）</div>
+									<div *ngIf="moduleAuthority.confirm" class="ml20">
+										<button *ngIf="!bookingAssist.finishId" (click)="finish(bookingAssist)" nz-button [nzType]="'default'" [nzSize]="'large'">完成</button>
 									</div>
 								</div>
 							</div>
