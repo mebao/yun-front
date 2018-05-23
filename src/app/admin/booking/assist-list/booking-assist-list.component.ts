@@ -14,6 +14,10 @@ export class BookingAssistList{
     topBar: {
         title: string,
         back: boolean,
+        alert: {
+            type: string,
+            text: string,
+        }
     };
 	// 权限
 	moduleAuthority: {
@@ -56,6 +60,10 @@ export class BookingAssistList{
         this.topBar = {
             title: '辅助治疗',
             back: false,
+            alert: {
+                type: 'warning',
+                text: '辅助治疗药品需前往手动出库管理中出库',
+            }
         }
 
 		//权限

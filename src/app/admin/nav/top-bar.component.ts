@@ -12,6 +12,10 @@ export class TopBarComponent{
 		title: string,
 		back: boolean,
 		back_url: string,
+		alert: {
+			type: string,
+			text: string,
+		}
 	};
 
 	constructor(

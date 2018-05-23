@@ -173,9 +173,6 @@
 				<button (click)="searchMList()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 			</div>
 			<div class="mt10 mb10">
-				<nz-alert [nzType]="'warning'" [nzMessage]="'药品需前往手动出库管理中出库'"></nz-alert>
-			</div>
-			<div class="mt10 mb10">
 				<nz-alert [nzType]="'info'" [nzMessage]="'共查询到药品' + asssitMList.length + '条'"></nz-alert>
 			</div>
 			<nz-table #nzTable [nzDataSource]="asssitMList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">

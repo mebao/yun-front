@@ -1,6 +1,9 @@
 <div class="top-bar-page flex">
-	<div class="flex-1 title">{{data.title}}</div>
-	<div class="back-tab" *ngIf="data.back">
+	<div class="title mr20">{{data.title}}</div>
+	<div class="flex-1">
+		<nz-alert *ngIf="data.alert" [nzType]="data.alert.type" [nzMessage]="data.alert.text"></nz-alert>
+	</div>
+	<div class="back-tab ml20" *ngIf="data.back">
 		<button (click)="back()" nz-button [nzType]="'default'" [nzSize]="'large'">返回</button>
 	</div>
 </div>

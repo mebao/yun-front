@@ -14,6 +14,10 @@ export class MoutList{
 	topBar: {
 		title: string,
 		back: boolean,
+		alert: {
+			type: string,
+			text: string
+		}
 	};
 	// 权限
 	moduleAuthority: {
@@ -40,6 +44,10 @@ export class MoutList{
 		this.topBar = {
 			title: '手动出库管理',
 			back: false,
+			alert: {
+				type: 'warning',
+				text: '辅助治疗药品出库后需前往辅助治疗药品列表，完成药品出库操作'
+			}
 		}
 
 		this.moduleAuthority = {
