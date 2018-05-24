@@ -53,6 +53,7 @@ export class HeaderNavComponent {
 		this.username = this.adminService.getUser().realname;
 		this.clinicRole = this.adminService.getUser().clinicRoleName;
 		this.clinicName = this.adminService.getUser().clinicName;
+		document.title = this.clinicName;
 		this.messageList = [];
 		this.messageBtn = false;
 
@@ -272,7 +273,7 @@ export class HeaderNavComponent {
 	}
 
 	complate(message, index, type) {
-		this.modalTabMessage = false;
+		// this.modalTabMessage = false;
 		this.loadingShow = true;
 		this.messageBtn = true;
 		var params = {

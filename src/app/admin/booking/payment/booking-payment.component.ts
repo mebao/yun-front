@@ -387,7 +387,9 @@ export class BookingPaymentComponent{
 				if(results.weekbooks.length > 0){
 			 		this.bookingInfo = results.weekbooks[0];
 					sessionStorage.setItem('bookingInfo', JSON.stringify(results.weekbooks[0]));
+					this.getFeeData();
 				}else{
+					this.loadingShow = false;
 					this._message.error('数据错误');
 				}
 			}
@@ -396,7 +398,42 @@ export class BookingPaymentComponent{
 			this._message.error('服务器错误');
 		});
 
+		// 获取支付方式
+		this.paywayList = [];
+		var clinicdata = sessionStorage.getItem('clinicdata');
+		if(clinicdata && clinicdata != ''){
+			this.getPaywayList(JSON.parse(clinicdata));
+		}else{
+			this.adminService.clinicdata().then((data) => {
+				if(data.status == 'no'){
+					this._message.error(data.errorMsg);
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.getPaywayList(results);
+				}
+			}).catch(() => {
+				this._message.error('服务器错误');
+			});
+		}
 
+		this.btnCanEdit = false;
+
+		this.editMemberType = 'save';
+
+		this.confirmTab = {
+			show: false,
+			type: '',
+			text: '',
+			buttonText: '',
+		}
+
+		this.selectedInfo = {
+			user: {},
+			userList: [],
+		}
+	}
+
+	getFeeData() {
 		this.adminService.bookingfee(this.id + this.url).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
@@ -573,41 +610,6 @@ export class BookingPaymentComponent{
 			this.loadingShow = false;
 			this._message.error('服务器错误');
 		});
-
-		// 获取支付方式
-		this.paywayList = [];
-		var clinicdata = sessionStorage.getItem('clinicdata');
-		if(clinicdata && clinicdata != ''){
-			this.getPaywayList(JSON.parse(clinicdata));
-		}else{
-			this.adminService.clinicdata().then((data) => {
-				if(data.status == 'no'){
-					this._message.error(data.errorMsg);
-				}else{
-					var results = JSON.parse(JSON.stringify(data.results));
-					this.getPaywayList(results);
-				}
-			}).catch(() => {
-				this._message.error('服务器错误');
-			});
-		}
-
-		this.btnCanEdit = false;
-
-		this.editMemberType = 'save';
-
-		this.confirmTab = {
-			show: false,
-			type: '',
-			text: '',
-			buttonText: '',
-		}
-
-		this.selectedInfo = {
-			user: {},
-			userList: [],
-		}
-		this.getOtherUser();
 	}
 
 	getMemberDiscount(memberId) {
@@ -1285,7 +1287,7 @@ export class BookingPaymentComponent{
 							medicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) * parseFloat(userInfo.member.prescript);
 						}
 						originalMedicalFee += parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].price) * parseFloat(this.fee.feeInfo.medicalFeeList[i].info[j].num);
-						
+
 						if(Number(this.fee.feeInfo.medicalFeeList[i].info[j].num) > 0){
 							hasMedicalInfo = true;
 							medicalOriginal.info.push(this.fee.feeInfo.medicalFeeList[i].info[j]);
@@ -1453,7 +1455,8 @@ export class BookingPaymentComponent{
 		this.editMemberType = 'save';
 	}
 
-	getOtherUser() {
+	searchOtherUser($event) {
+		var urlOptions = this.url + '&name=' + $event;
 		this.adminService.searchuser(this.url).then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);

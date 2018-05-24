@@ -264,6 +264,7 @@ export class LoginComponent{
 	}
 
 	ngOnInit(): void {
+        document.title = '嘉宝云';
 		this.admininfo = {
 			clinicId: '',
 			clinicName: '',
@@ -502,6 +503,7 @@ export class LoginComponent{
 					realname: results.admininfo.realname,
 					messageTypes: results.admininfo.messageTypes,
 				}
+                document.title = results.admininfo.clinicName;
 				this.adminService.delCookie('user');
 				this.adminService.setCookie('user', JSON.stringify(this.admininfo), 1);
 				//角色信息存储在sessionStorage中

@@ -45,6 +45,7 @@ export class ForgetpwdComponent{
     }
 
 	ngOnInit(): void {
+        document.title = '嘉宝云';
         this.num = 1;
         this.sms = {
             text: '验证码',

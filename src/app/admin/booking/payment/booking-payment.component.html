@@ -848,6 +848,7 @@
 												[nzPlaceHolder]="'请选择家长'"
 												[ngModel]="selectedInfo.user"
 												(ngModelChange)="selectedOtherUser($event)"
+												(nzSearchChange)="searchOtherUser($event)"
 												nzShowSearch>
 												<nz-option
 													*ngFor="let user of selectedInfo.userList"
