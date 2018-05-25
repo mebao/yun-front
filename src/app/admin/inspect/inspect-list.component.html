@@ -9,6 +9,7 @@
 			<tr>
 				<th nz-th>项目名</th>
 				<th nz-th>项目价格</th>
+				<th nz-th>是否可打折</th>
 				<th nz-th>状态</th>
 				<th nz-th>操作</th>
 			</tr>
@@ -17,6 +18,7 @@
 			<tr nz-tbody-tr *ngFor="let project of projectlist">
 				<td nz-tbody-td>{{project.name}}</td>
 				<td nz-tbody-td>{{project.price}}</td>
+				<td nz-tbody-td>{{project.canDiscount == '1' ? '可优惠' : '不可优惠'}}</td>
 				<td nz-tbody-td>{{project.canUse == '1' ? '可用' : '停用'}}</td>
 				<td nz-tbody-td>
 					<button *ngIf="moduleAuthority.edit" (click)="update(project)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
@@ -25,5 +27,4 @@
 		</tbody>
 	</nz-table>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <loading [show]="loadingShow"></loading>

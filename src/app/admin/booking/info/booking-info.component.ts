@@ -1,14 +1,14 @@
 import { Component, OnInit }                from '@angular/core';
 import { Router, ActivatedRoute }           from '@angular/router';
 
-import { AdminService }                     from '../../admin.service';
+import { NzMessageService }                 from 'ng-zorro-antd';
 
-import { ToastService }                     from '../../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }           from '../../../common/nll-toast/toast-model';
+import { AdminService }                     from '../../admin.service';
 
 @Component({
 	selector: 'app-booking-info',
 	templateUrl: './booking-info.component.html',
+	styleUrls: ['../../../../assets/css/ant-common.scss'],
 })
 export class BookingInfoComponent{
 	topBar: {
@@ -66,10 +66,10 @@ export class BookingInfoComponent{
 	btnCanEdit: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
-        private toastService: ToastService,
 	) {}
 
 	ngOnInit(): void {
@@ -146,6 +146,7 @@ export class BookingInfoComponent{
 		}
 		this.modalConfirmTab = false;
 		this.btnCanEdit = false;
+		this.modalBackBookingFee = false;
 	}
 
 	getBooking(type) {
@@ -153,8 +154,7 @@ export class BookingInfoComponent{
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				// 时间格式变更
@@ -186,20 +186,16 @@ export class BookingInfoComponent{
 				this.booking.totalFee = total.toString();
 				this.loadingShow = false;
 				if(type == 'booking'){
-					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '预约单取消成功', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.success('预约单取消成功');
 				}else if(type == 'status'){
-					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '取消登记成功', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.success('取消登记成功');
 				}else if(type == 'backBookingFee'){
-					const toastCfg = new ToastConfig(ToastType.SUCCESS, '', '金额退还成功', 3000);
-					this.toastService.toast(toastCfg);
+					this._message.success('金额退还成功');
 				}
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -225,8 +221,7 @@ export class BookingInfoComponent{
 	// 确认取消
 	confirm(){
 		if(this.adminService.trim(this.selectorBooking.cancel_cause) == ''){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '取消原因不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('取消原因不可为空');
 			return false;
 		}
 		this.btnCanEdit = true;
@@ -240,8 +235,7 @@ export class BookingInfoComponent{
 				if(data.status == 'no'){
 					this.btnCanEdit = false;
 					this.loadingShow = false;
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
 					this.btnCanEdit = false;
 					this.getBooking(this.selectorBooking.type);
@@ -249,8 +243,7 @@ export class BookingInfoComponent{
 			}).catch((err) => {
 				this.btnCanEdit = false;
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}else{
 			// 取消登记
@@ -264,8 +257,7 @@ export class BookingInfoComponent{
 				if(data.status == 'no'){
 					this.btnCanEdit = false;
 					this.loadingShow = false;
-					const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-					this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
 					this.btnCanEdit = false;
 					this.getBooking(this.selectorBooking.type);
@@ -273,8 +265,7 @@ export class BookingInfoComponent{
 			}).catch(() => {
 				this.btnCanEdit = false;
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}
 	}
@@ -291,29 +282,25 @@ export class BookingInfoComponent{
 	confirmBack() {
 		this.btnCanEdit = true;
 		if(this.adminService.isFalse(this.booking.backFee)){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可为空');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) < 0){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可小于0', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可小于0');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(parseFloat(this.booking.backFee) > parseFloat(this.booking.tranInfo.id ? this.booking.tranInfo.amount : this.booking.yyj.amount)){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '退还金额不可大于已付金额', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('退还金额不可大于已付金额');
 			this.booking.backFee = '';
 			this.btnCanEdit = false;
 			return;
 		}
 		if(this.adminService.isFalse(this.booking.backRemark) || this.booking.backRemark == ''){
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '失约原因不可为空', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('失约原因不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -325,8 +312,7 @@ export class BookingInfoComponent{
 			if(data.status == 'no'){
 				this.btnCanEdit = false;
 				this.loadingShow = false;
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				this.btnCanEdit = false;
 				this.getBooking('backBookingFee');
@@ -334,8 +320,7 @@ export class BookingInfoComponent{
 		}).catch((err) => {
 			this.btnCanEdit = false;
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 }

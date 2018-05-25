@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding }             from '@angular/core';
 import { NgForm }                                     from '@angular/forms';
 
+import { NzMessageService }                           from 'ng-zorro-antd';
+
 import { AdminService }                               from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class SchedulingComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	loadingShow: boolean;
 	weektitle: any[];
@@ -45,8 +42,10 @@ export class SchedulingComponent{
 		text: string,
 	}
 
-	constructor(public adminService: AdminService) {
-		this.dutylist = [{id: 1, use: true}];
+	constructor(
+		private _message: NzMessageService,
+		public adminService: AdminService
+	) {
 	}
 
 	ngOnInit(): void{
@@ -54,13 +53,9 @@ export class SchedulingComponent{
 			title: '排班',
 			back: false,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
 		this.loadingShow = true;
+		this.schedulinglist = [];
 
 		this.changeData = {
 			_id: '',
@@ -84,6 +79,7 @@ export class SchedulingComponent{
 		this.getList(urlOptions);
 
 		this.dutytime = [];
+		this.dutylist = [];
 		this.modalConfirmTab = false;
 		this.selector = {
 			text: '',
@@ -103,7 +99,7 @@ export class SchedulingComponent{
 				this.dutytime.push(item);
 			}
 		}
-		this.dutylist = [{id: 1, use: true}];
+		this.dutylist = [];
 	}
 	initDuty(type) {
 		var duty = [];
@@ -132,7 +128,7 @@ export class SchedulingComponent{
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var adminduty = JSON.parse(JSON.stringify(data.results)).adminduty;
 				var todayTime = new Date().getTime();
@@ -186,7 +182,7 @@ export class SchedulingComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -208,7 +204,7 @@ export class SchedulingComponent{
 		this.getList(urlOptions);
 	}
 
-	create(f: NgForm) {
+	create() {
 		var dutyDemo = this.initDuty(this.changeData.interval);
 		//构造时间段
 		var dutylist = [];
@@ -216,27 +212,27 @@ export class SchedulingComponent{
 		for(var i = 0; i < this.dutylist.length; i++){
 			if(this.dutylist[i].use){
 				//开始时间未选择
-				if(!f.value['duty'+i+'start'] || f.value['duty'+i+'start'] == ''){
-					this.toastTab('第' + (dutylist.length + 1) + '条排班时间，开始时间不可为空', 'error');
+				if(!this.dutylist[i].start || this.dutylist[i].start == ''){
+					this._message.error('第' + (dutylist.length + 1) + '条排班时间，开始时间不可为空');
 					return;
 				}
 				//结束时间未选择
-				if(!f.value['duty'+i+'end'] || f.value['duty'+i+'end'] == ''){
-					this.toastTab('第' + (dutylist.length + 1) + '条排班时间，结束时间不可为空', 'error');
+				if(!this.dutylist[i].end || this.dutylist[i].end == ''){
+					this._message.error('第' + (dutylist.length + 1) + '条排班时间，结束时间不可为空');
 					return;
 				}
-				if(Number(f.value['duty'+i+'end'].split(',')[1]) > Number(f.value['duty'+i+'start'].split(',')[1])){
-					var duty = f.value['duty'+i+'start'].split(',')[0] + '-' + f.value['duty'+i+'end'].split(',')[0];
+				if(Number(this.dutylist[i].end.split(',')[1]) > Number(this.dutylist[i].start.split(',')[1])){
+					var duty = this.dutylist[i].start.split(',')[0] + '-' + this.dutylist[i].end.split(',')[0];
 					dutylist.push(duty);
 					dutyText += ' ' + duty;
 				}else{
 					//开始时间早于结束时间
-					this.toastTab('第' + (dutylist.length + 1) + '条排班时间，开始时间应晚于结束时间', 'error');
+					this._message.error('第' + (dutylist.length + 1) + '条排班时间，开始时间应晚于结束时间');
 					return;
 				}
 				//含有重叠时间段
-				var start = Number(f.value['duty'+i+'start'].split(',')[1]);
-				var end = Number(f.value['duty'+i+'end'].split(',')[1]);
+				var start = Number(this.dutylist[i].start.split(',')[1]);
+				var end = Number(this.dutylist[i].end.split(',')[1]);
 				for(var j = start; j < end; j++){
 					var hasBoolean = false;
 					for(var k = 0; k < dutyDemo.length; k++){
@@ -247,7 +243,7 @@ export class SchedulingComponent{
 						}
 					}
 					if(!hasBoolean){
-						this.toastTab('时间段存在时间重合，请选择合理的时间段', 'error');
+						this._message.error('时间段存在时间重合，请选择合理的时间段');
 						return;
 					}
 				}
@@ -275,7 +271,7 @@ export class SchedulingComponent{
 		}
 		this.adminService.schedulingConfig(param).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				//新增
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -293,22 +289,22 @@ export class SchedulingComponent{
 				if(type == 'add'){
 					this.adminService.adminScheduling(createParams).then((data) => {
 						if(data.status == 'no'){
-							this.toastTab(data.errorMsg, 'error');
+							this._message.error(data.errorMsg);
 						}else{
-							this.toastTab('排班成功', '');
+							this._message.success('排班成功');
 							//清空排班配置
 							this.dutylist = [{id: 1, use: true}];
 							this.getList(this.url + '&weekindex=' + this.weekNum);
 						}
 					}).catch(() => {
-		                this.toastTab('服务器错误', 'error');
+		                this._message.error('服务器错误');
 		            });
 				}else{
 					this.update(dateStr, results.id);
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -322,10 +318,10 @@ export class SchedulingComponent{
 		}
 		this.adminService.updateduty(this.changeData._id, deleteParams).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				if(type == 'delete'){
-					this.toastTab('删除成功', '');
+					this._message.success('删除成功');
 					//清空排班配置
 					this.dutylist = [{id: 1, use: true}];
 					this.getList(this.url + '&weekindex=' + this.weekNum);
@@ -335,7 +331,7 @@ export class SchedulingComponent{
 				}
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -348,15 +344,15 @@ export class SchedulingComponent{
 		}
 		this.adminService.updateduty(this.changeData._id, updateParams).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
-				this.toastTab('排班修改成功', '');
+				this._message.success('排班修改成功');
 				//清空排班配置
 				this.dutylist = [{id: 1, use: true}];
 				this.getList(this.url + '&weekindex=' + this.weekNum);
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -365,12 +361,11 @@ export class SchedulingComponent{
 		this.dutylist.push({id: _index, use: true});
 	}
 
-	delDuty(id): void{
-		for(var i = 0; i < this.dutylist.length; i++){
-			if(this.dutylist[i].id == id){
-				this.dutylist[i].use = false;
-			}
-		}
+	delDuty(i){
+        if (this.dutylist.length > 0) {
+            const index = this.dutylist.indexOf(i);
+            this.dutylist.splice(index, 1);
+        }
 	}
 
 	configChange(day, scheduling) {
@@ -447,28 +442,13 @@ export class SchedulingComponent{
 
 		this.adminService.copyduty(this.adminService.getUser().clinicId, params).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
-				this.toastTab('复制排版成功', '');
+				this._message.success('复制排班成功');
 				this.getList(this.url + '&weekindex=' + this.weekNum);
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

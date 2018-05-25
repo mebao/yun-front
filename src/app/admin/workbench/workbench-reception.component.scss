@@ -1,10 +1,20 @@
 .admin-workbench-reception{
-	.list-tab{
-		border: 1px solid #efefef;
-		.title-tab{
-			.title{
-				text-align: center;
-				padding: 5px;
+	.doctor-list{
+		.item{
+			border-top: 1px solid #efefef;
+			height: 67px;
+			&:hover{
+				background-color: #efefef;
+			}
+			.img-tab{
+				border-right: 1px solid #efefef;
+				img{
+					width: 40px;
+					height: 40px;
+					border-radius: 50%;
+				}
+			}
+			.info{
 				border-right: 1px solid #efefef;
 				&:last-child{
 					border-right: none;
@@ -12,76 +22,49 @@
 				&.active{
 					background-color: #efefef;
 				}
-			}
-		}
-		.doctor-list{
-			.item{
-				border-top: 1px solid #efefef;
+				&.name{
+					word-break: break-all;
+				}
+				.hoverTab{
+					display: none;
+				}
 				&:hover{
-					background-color: #efefef;
-				}
-				.img-tab{
-					border-right: 1px solid #efefef;
-					img{
-						width: 40px;
-						height: 40px;
-						border-radius: 50%;
-					}
-				}
-				.info{
-					border-right: 1px solid #efefef;
-					&:last-child{
-						border-right: none;
-					}
-					&.active{
-						background-color: #efefef;
-					}
-					&.name{
-						word-break: break-all;
-					}
+					// background-color: #dadada;
 					.hoverTab{
-						display: none;
-					}
-					&:hover{
-						background-color: #dadada;
-						.hoverTab{
-							display: inherit;
-							&.disabled{
-								cursor: not-allowed;
-								background-color: #fff;
-								color: #ababab;
-							}
+						display: inherit;
+						&.disabled{
+							cursor: not-allowed;
+							background-color: #fff;
+							color: #ababab;
 						}
 					}
-					.edit{
-					    padding: 5px 15px;
-					    border-radius: 4px;
-					    background-color: #D9534F;
-					    color: #efefef;
-					    cursor: pointer;
-					}
+				}
+				.edit{
+				    padding: 5px 10px;
+				    border-radius: 4px;
+				    background-color: #D9534F;
+				    color: #efefef;
+				    cursor: pointer;
 				}
 			}
 		}
 	}
 }
 
-.modal{
-	.right-tab{
-		overflow-x: hidden;
-		overflow-y: auto;
-		max-height: 300px;
-		.list-item{
+.right-tab{
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 300px;
+	.list-item{
+		padding: 5px 10px;
+		.item{
+			display: inline-block;
+			background-color: #39A99D;
 			padding: 5px 10px;
-			.item{
-				display: inline-block;
-				background-color: #39A99D;
-				padding: 5px 10px;
-				color: #fff;
-				border-radius: 4px;
-				margin-right: 10px;
-				margin-bottom: 10px;
-			}
+			color: #fff;
+			border-radius: 4px;
+			margin-right: 10px;
+			margin-bottom: 10px;
 		}
 	}
 }

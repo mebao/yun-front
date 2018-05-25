@@ -2,24 +2,21 @@ import { Component }                     from '@angular/core';
 import { ActivatedRoute, Router }        from '@angular/router';
 import { Location }                      from '@angular/common';
 
+import { NzMessageService }              from 'ng-zorro-antd';
+
 import { AdminService }                  from '../../admin.service';
 //<reference path="../../common/goeasy/goeasy.d.ts">
 
 @Component({
     selector: 'admin-payment-booking-fee',
     templateUrl: './payment-booking-fee.html',
-    styleUrls: ['./payment-booking-fee.scss'],
+	styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 
 export class PaymentBookingFee{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
     id: string;
     type: string;
@@ -65,6 +62,7 @@ export class PaymentBookingFee{
     loadingShow = false;
 
     constructor(
+        private _message: NzMessageService,
         public adminService: AdminService,
         private route: ActivatedRoute,
         private router: Router,
@@ -76,11 +74,6 @@ export class PaymentBookingFee{
             title: '支付预约金',
             back: true,
         }
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
 
         this.id = '';
         this.type = '';
@@ -121,7 +114,7 @@ export class PaymentBookingFee{
              + '&id=' + this.id;
         this.adminService.searchbooking(urlOptions).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.weekbooks.length > 0){
@@ -145,7 +138,7 @@ export class PaymentBookingFee{
                 }
             }
         }).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
         this.showTab = '0';
@@ -176,7 +169,7 @@ export class PaymentBookingFee{
         this.adminService.searchuser(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this.loadingShow = false;
-                this.toastTab(data.errorMsg, 'error');
+                this._message.error(data.errorMsg);
             }else{
                 var results = JSON.parse(JSON.stringify(data.results));
                 if(results.users.length > 0){
@@ -201,7 +194,7 @@ export class PaymentBookingFee{
             }
         }).catch(() => {
             this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
     }
 
@@ -213,7 +206,7 @@ export class PaymentBookingFee{
 
     payment() {
         if(this.paymentInfo.payType == ''){
-            this.toastTab('请先选择支付类型', 'error');
+            this._message.error('请先选择支付类型');
             return;
         }
         this.showTab = '1';
@@ -232,11 +225,12 @@ export class PaymentBookingFee{
     comfirm() {
         this.btnCanEdit = true;
         if(this.adminService.isFalse(this.paymentInfo.type)){
-            this.toastTab('支付方式不可为空', 'error');
+            this._message.error('支付方式不可为空');
             this.btnCanEdit = false;
             return;
         }
         if(this.paymentInfo.type.indexOf('member') != -1 || this.paymentInfo.type == 'card' || this.paymentInfo.type == 'money' || this.paymentInfo.type == 'wc_zhuan'){
+            this.loadingShow = true;
             // 支付
             var urlOptions = this.id + '?username=' + this.adminService.getUser().username
                  + '&token=' + this.adminService.getUser().token
@@ -244,21 +238,25 @@ export class PaymentBookingFee{
                  + '&type=' + this.paymentInfo.payType;
             this.adminService.memberbooking(urlOptions).then((data) => {
                 if(data.status == 'no'){
-                    this.toastTab(data.errorMsg, 'error');
+                    this.loadingShow = false;
                     this.btnCanEdit = false;
+                    this._message.error(data.errorMsg);
                 }else{
     		        if(this.type == 'booking'){
-                        this.toastTab('支付成功', '');
+                        this.loadingShow = false;
+                        this._message.success('支付成功');
                         setTimeout(() => {
                             this.router.navigate(['./admin/bookingList']);
                         }, 2000);
                     }else if(this.type == 'bookingConfirm'){
-                        this.toastTab('支付成功', '');
+                        this.loadingShow = false;
+                        this._message.success('支付成功');
                         setTimeout(() => {
                             this.router.navigate(['./admin/bookingConfirm']);
                         }, 2000);
                     }else if(this.type == 'bookingList'){
-                        this.toastTab('支付成功', '');
+                        this.loadingShow = false;
+                        this._message.success('支付成功');
                         setTimeout(() => {
                             this.router.navigate(['./admin/bookingList']);
                         }, 2000);
@@ -268,8 +266,9 @@ export class PaymentBookingFee{
                     }
                 }
             }).catch((data) => {
-                this.toastTab('服务器数据错误', 'error');
+                this.loadingShow = false;
                 this.btnCanEdit = false;
+                this._message.error('服务器数据错误');
             });
         }else{
             this.paymentInfo.qrcodeUrl = this.adminService.getUrl() + '/mebcrm/paybooking/' + this.id + '?username=' + this.adminService.getUser().username + '&token=' + this.adminService.getUser().token + '&pay_way=' + this.paymentInfo.type + '&type=' + this.paymentInfo.payType;
@@ -316,11 +315,13 @@ export class PaymentBookingFee{
         }
         this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
             if(data.status == 'no'){
-                this.toastTab(data.errorMsg, 'error');
+                this.loadingShow = false;
                 this.btnCanEdit = false;
+                this._message.error(data.errorMsg);
             }else{
+                this.loadingShow = false;
                 if(this.paymentInfo.type == '0'){
-                    this.toastTab('支付成功，已登记', '');
+                    this._message.success('支付成功，已登记');
                     setTimeout(() => {
                         this.confirm();
                     }, 2000);
@@ -330,8 +331,9 @@ export class PaymentBookingFee{
                 }
             }
         }).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this.loadingShow = false;
             this.btnCanEdit = false;
+            this._message.error('服务器错误');
         });
     }
 
@@ -346,19 +348,4 @@ export class PaymentBookingFee{
             this.router.navigate(['./admin/bookingIn']);
         }
     }
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

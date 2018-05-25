@@ -2,6 +2,8 @@ import { NgModule }                             from '@angular/core';
 import { CommonModule }                         from '@angular/common';
 import { FormsModule }                          from '@angular/forms';
 
+import { NgZorroAntdModule }                    from 'ng-zorro-antd';
+
 //nav
 import { NavModule }                            from '../nav/nav.module';
 
@@ -22,6 +24,7 @@ import { SchedulingComponent }                  from './scheduling.component';
     imports: [
         CommonModule,
         FormsModule,
+        NgZorroAntdModule,
         NavModule,
         AngCommonModule,
         SchedulingRoutingModule,

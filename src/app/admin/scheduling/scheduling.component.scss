@@ -1,52 +1,42 @@
 .admin-scheduling-page{
-	.list-tab{
-		border: 1px solid #efefef;
-		.title-tab .title{
-			padding: 5px;
-			border-right: 1px solid #efefef;
-			&:last-child{
-				border-right: none;
+	.doctor-list{
+		.item{
+			border-top: 1px solid #efefef;
+			.img-tab{
+				border-right: 1px solid #efefef;
+				img{
+					width: 40px;
+					height: 40px;
+					border-radius: 50%;
+				}
 			}
-		}
-		.doctor-list{
-			.item{
-				border-top: 1px solid #efefef;
-				.img-tab{
-					border-right: 1px solid #efefef;
-					img{
-						width: 40px;
-						height: 40px;
-						border-radius: 50%;
+			.info{
+				border-right: 1px solid #efefef;
+				&:last-child{
+					border-right: none;
+				}
+				&.name{
+					word-break: break-all;
+				}
+			}
+			.scheduling-tab{
+				.edit{
+					padding: 5px  10px;
+					border: 1px solid #c7c7c7;
+					cursor: pointer;
+					border-radius: 5px;
+					min-height: 28px;
+					&.disabled{
+						background-color: #efefef;
+						cursor: not-allowed;
 					}
 				}
-				.info{
-					border-right: 1px solid #efefef;
-					&:last-child{
-						border-right: none;
-					}
-					&.name{
-						word-break: break-all;
-					}
-				}
-				.scheduling-tab{
-					.edit{
-						padding: 5px  10px;
-						border: 1px solid #c7c7c7;
-						cursor: pointer;
-						border-radius: 5px;
-						min-height: 28px;
-						&.disabled{
-							background-color: #efefef;
-							cursor: not-allowed;
-						}
-					}
-				}
-				&:nth-child(even){
+			}
+			&:nth-child(even){
 
-				}
-				&:nth-child(odd){
-					background-color: #efefef;
-				}
+			}
+			&:nth-child(odd){
+				// background-color: #efefef;
 			}
 		}
 	}

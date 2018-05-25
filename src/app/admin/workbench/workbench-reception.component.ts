@@ -1,12 +1,11 @@
 import { Component, OnInit, HostBinding }             from '@angular/core';
 import { Router, ActivatedRoute }                     from '@angular/router';
 
+import { NzMessageService }                           from 'ng-zorro-antd';
+
 // import { slideInDownAnimation }                       from '../../animations';
 import { AdminService }                               from '../admin.service';
 import { NewService }                                 from '../new.service';
-
-import { ToastService }                               from '../../common/nll-toast/toast.service';
-import { ToastConfig, ToastType }                     from '../../common/nll-toast/toast-model';
 
 import { ENgxPrintComponent }          				  from "e-ngx-print";
 
@@ -44,7 +43,6 @@ export class WorkbenchReceptionComponent{
 	doctorDutyList: any[];
 	selected: {
 		doctor: string,
-		tab: string,
 		type: string,
 		doctorService: any[],
 	}
@@ -56,10 +54,10 @@ export class WorkbenchReceptionComponent{
 	printStyle: string;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		public newService: NewService,
 		private router: Router,
-        private toastService: ToastService
 	) {
 		this.printStyle =
 	        `
@@ -102,6 +100,7 @@ export class WorkbenchReceptionComponent{
 			back: false,
 		}
 		this.loadingShow = false;
+		this.schedulinglist = [];
 
 		this.hasDoctorBookingData = false;
 		this.doctorBookingList = [];
@@ -122,46 +121,31 @@ export class WorkbenchReceptionComponent{
 	 	var adminlistUrl = this.url + '&role=2';
 	 	this.adminService.adminlist(adminlistUrl).then((data) => {
 			if(data.status == 'no'){
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.adminlist.length > 0){
-					for(var i = 0; i < results.adminlist.length; i++){
-						results.adminlist[i].string = JSON.stringify(results.adminlist[i]);
-					}
-				}
 				this.doctorList = results.adminlist;
 			}
 		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 
 		//获取科室列表
 		this.serviceList = [];
 		this.adminService.servicelist(this.url).then((data) => {
 			if(data.status == 'no'){
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.servicelist.length > 0){
-					for(var i = 0; i < results.servicelist.length; i++){
-						results.servicelist[i].string = JSON.stringify(results.servicelist[i]);
-					}
-				}
 				this.serviceList = results.servicelist;
 			}
 		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 
 		this.doctorDutyList = [];
 		this.selected = {
 			doctor: '',
-			tab: '1',
 			type: '',
 			doctorService: [],
 		};
@@ -178,13 +162,13 @@ export class WorkbenchReceptionComponent{
 		this.loadingShow = true;
 		var dutyUrl = this.url + '&weekindex=' + this.weekNumConfig;
 		var bookingUrl = this.url + '&weekindex=' + this.weekNumConfig;
-		if(this.searchInfo.doctor != ''){
-			dutyUrl += '&doctor_id=' + JSON.parse(this.searchInfo.doctor).id;
-			bookingUrl += '&doctorId=' + JSON.parse(this.searchInfo.doctor).id;
+		if(this.searchInfo.doctor && this.searchInfo.doctor != ''){
+			dutyUrl += '&doctor_id=' + this.searchInfo.doctor['id'];
+			bookingUrl += '&doctorId=' + this.searchInfo.doctor['id'];
 		}
-		if(this.searchInfo.service != ''){
-			dutyUrl += '&service_id=' + JSON.parse(this.searchInfo.service).serviceId;
-			bookingUrl += '&service_id=' + JSON.parse(this.searchInfo.service).serviceId;
+		if(this.searchInfo.service && this.searchInfo.service != ''){
+			dutyUrl += '&service_id=' + this.searchInfo.service['serviceId'];
+			bookingUrl += '&service_id=' + this.searchInfo.service['serviceId'];
 		}
 		this.getList(dutyUrl);
 		this.getBookingList(bookingUrl);
@@ -194,8 +178,7 @@ export class WorkbenchReceptionComponent{
 		this.adminService.adminduty(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var adminduty = JSON.parse(JSON.stringify(data.results)).adminduty;
 				if(adminduty.length > 0){
@@ -236,16 +219,14 @@ export class WorkbenchReceptionComponent{
 			}
 		}).catch((err) => {
 			this.loadingShow = false;
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
 	getBookingList(urlOptions) {
 		this.adminService.doctorbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
-		        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-		        this.toastService.toast(toastCfg);
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var weekBookingTitle = [];
@@ -301,8 +282,7 @@ export class WorkbenchReceptionComponent{
 				this.doctorBookingList = doctorBookingList;
 			}
 		}).catch((err) => {
-			const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-			this.toastService.toast(toastCfg);
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -330,7 +310,6 @@ export class WorkbenchReceptionComponent{
 		this.doctorDutyList = [];
 		this.selected = {
 			doctor: booking.doctorName,
-			tab: type == 'all' ? '1' : '2',
 			type: type,
 			doctorService: booking.doctorService,
 		};
@@ -350,29 +329,25 @@ export class WorkbenchReceptionComponent{
 			doctordutysUrl = this.url + '&doctor_id=' + booking.doctorId;
 			this.adminService.doctordutys(doctordutysUrl).then((data) => {
 				if(data.status == 'no'){
-			        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-			        this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.structureDuty(results);
 				}
 			}).catch((err) => {
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}else{
 			doctordutysUrl = this.url + '&doctor_id=' + booking.doctorId + '&duty_date=' + this.adminService.dateFormatHasWord(day.date);
 			this.adminService.doctordaydutys(doctordutysUrl).then((data) => {
 				if(data.status == 'no'){
-			        const toastCfg = new ToastConfig(ToastType.ERROR, '', data.errorMsg, 3000);
-			        this.toastService.toast(toastCfg);
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.structureDuty(results);
 				}
 			}).catch((err) => {
-				const toastCfg = new ToastConfig(ToastType.ERROR, '', '服务器错误', 3000);
-				this.toastService.toast(toastCfg);
+				this._message.error('服务器错误');
 			});
 		}
 	}
@@ -411,10 +386,6 @@ export class WorkbenchReceptionComponent{
 			this.doctorDutyList = results.doctors[0].doctorDutys;
 		}
 		this.hasDutyData = true;
-	}
-
-	changeSelected(value) {
-		this.selected.tab = value;
 	}
 
 	info(_id) {

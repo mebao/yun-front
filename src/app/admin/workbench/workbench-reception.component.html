@@ -2,236 +2,262 @@
 <div class="content-section admin-workbench-reception">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-title">排班信息</div>
-	<div class="flex pure-form search-tab">
-		<div class="flex-1">
-			<button (click)="prec()" class="pure-button pure-button-primary">上一周</button>
-			<button (click)="now()" class="pure-button pure-button-primary">本周</button>
-			<button (click)="next()" class="pure-button pure-button-primary">下一周</button>
+	<div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="8">
+			<button (click)="prec()" nz-button [nzType]="'primary'" [nzSize]="'large'">上一周</button>
+			<button (click)="now()" nz-button [nzType]="'primary'" [nzSize]="'large'">本周</button>
+			<button (click)="next()" nz-button [nzType]="'primary'" [nzSize]="'large'">下一周</button>
 		</div>
-		<div class="pure-control-group mr10">
-			<label for="doctor">医生：</label>
-			<select id="doctor" name="doctor" [(ngModel)]="searchInfo.doctor">
-				<option value="">请选择医生</option>
-				<ng-container *ngFor="let doctor of doctorList">
-					<option [value]="doctor.string">{{doctor.realName}}</option>
-				</ng-container>
-			</select>
-		</div>
-		<div class="pure-control-group mr10">
-			<label for="service">科室：</label>
-			<select id="service" name="service" [(ngModel)]="searchInfo.service">
-				<option value="">请选择科室</option>
-				<ng-container *ngFor="let service of serviceList">
-					<option [value]="service.string">{{service.serviceName}}</option>
-				</ng-container>
-			</select>
-		</div>
-		<button (click)="search()" class="pure-button pure-button-primary">搜索</button>
-	</div>
-	<div class="list-tab mt10">
-		<div class="pure-g title-tab">
-			<!-- <div class="pure-u-1-24 title"></div> -->
-			<div class="pure-u-3-24 title">姓名</div>
-			<!-- <div class="pure-u-1-24 title">科室</div> -->
-			<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-				<div>{{title.date}}</div>
-				<div>{{title.title}}</div>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>医生：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择医生'"
+						[(ngModel)]="searchInfo.doctor"
+						nzShowSearch>
+						<nz-option
+							*ngFor="let doctor of doctorList"
+							[nzLabel]="doctor.realName"
+							[nzValue]="doctor">
+						</nz-option>
+					</nz-select>
+				</div>
 			</div>
 		</div>
-		<div class="doctor-list">
-			<div class="pure-g item" *ngFor="let scheduling of schedulinglist">
-				<!-- <div class="pure-u-1-24 img-tab pad10 text-center">
-					<img src="{{(!scheduling.avatarUrl || scheduling.avatarUrl == '') ? '../assets/images/img.png' : scheduling.avatarUrl}}" />
-				</div> -->
-				<div class="pure-u-3-24 info text-center pt20 name">{{scheduling.realName}}</div>
-				<!-- <div class="pure-u-1-24 info text-center pt20 name">
-					<div *ngFor="let service of scheduling.serviceList">
-						{{service}}
-					</div>
-				</div> -->
-				<div class="pure-u-3-24 info pad10 pt20 text-center" *ngFor="let day of scheduling.weekScheduling; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-					<div *ngFor="let config of day.dutyConfigList">
-						{{config}}
-					</div>
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label>科室：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-select
+						class="w100"
+						nzAllowClear
+						[nzSize]="'large'"
+						[nzPlaceHolder]="'请选择科室'"
+						[(ngModel)]="searchInfo.service"
+						nzShowSearch>
+						<nz-option
+							*ngFor="let service of serviceList"
+							[nzLabel]="service.serviceName"
+							[nzValue]="service">
+						</nz-option>
+					</nz-select>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="text-right mt10 mb10">
+		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<nz-table #nzTable [nzDataSource]="schedulinglist" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+		<thead nz-thead>
+			<tr>
+				<th>医生</th>
+				<ng-container *ngFor="let title of weektitle">
+					<th>
+						<div>{{title.date}}</div>
+						<div>{{title.title}}</div>
+					</th>
+				</ng-container>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<tr *ngFor="let scheduling of schedulinglist">
+				<td>{{scheduling.realName}}</td>
+				<ng-container>
+					<td *ngFor="let day of scheduling.weekScheduling">
+						<div *ngFor="let config of day.dutyConfigList">
+							{{config}}
+						</div>
+					</td>
+				</ng-container>
+			</tr>
+		</tbody>
+		<span noResult>暂无医生排班信息</span>
+	</nz-table>
 	<div class="second-title">医生预约信息</div>
-	<div *ngIf="doctorBookingList.length > 0" class="list-tab mt10">
-		<div class="pure-g title-tab">
-			<div class="pure-u-1-24 title"></div>
-			<div class="pure-u-2-24 title">医生</div>
-			<div class="pure-u-3-24 title" *ngFor="let title of weektitle; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-				<div>{{title.date}}</div>
-				<div>{{title.title}}</div>
-			</div>
-		</div>
-		<div class="doctor-list">
-			<div class="pure-g item" *ngFor="let doctorBooking of doctorBookingList">
-				<div class="pure-u-1-24 img-tab pad10 text-center">
-					<img src="{{(!doctorBooking.avatarUrl || doctorBooking.avatarUrl == '') ? '../assets/images/img.png' : doctorBooking.avatarUrl}}" />
-				</div>
-				<div class="pure-u-2-24 info text-center pt20 name">{{doctorBooking.doctorName}}</div>
-				<div class="pure-u-3-24 info pad10 pt20 text-center flex" *ngFor="let day of doctorBooking.bookingWeekList; let index=index;" [ngClass]="{'active': index % 2 == 1}">
-					<div class="flex-1"></div>
-					<!-- 当天无预约时，只展示排班信息 -->
-					<div *ngIf="day.bookingList.length == 0" (click)="showBooking(day, doctorBooking, 'duty')" class="hoverTab edit mr10">排班</div>
-					<!-- 当天有预约，同事展示预约详情和排班信息 -->
-					<div (click)="showBooking(day, doctorBooking, 'all')" *ngIf="day.num != '0'" class="edit mr10">{{day.num}}</div>
-					<div (click)="goBooking(doctorBooking, day)" class="hoverTab edit" [ngClass]="{'disabled': !day.use}">预约</div>
-					<div class="flex-1"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div *ngIf="hasDoctorBookingData && doctorBookingList.length == 0">
-		<nodata title="未查询到预约信息"></nodata>
-	</div>
+	<nz-table #nzTable [nzDataSource]="doctorBookingList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+		<thead nz-thead>
+			<tr>
+				<th>医生</th>
+				<ng-container *ngFor="let title of weektitle">
+					<th>
+						<div>{{title.date}}</div>
+						<div>{{title.title}}</div>
+					</th>
+				</ng-container>
+			</tr>
+		</thead>
+		<tbody nz-tbody class="doctor-list">
+			<tr *ngFor="let doctorBooking of doctorBookingList" class="item">
+				<td>{{doctorBooking.doctorName}}</td>
+				<ng-container>
+					<td *ngFor="let day of doctorBooking.bookingWeekList" class="info">
+						<div class="flex">
+							<div class="flex-1"></div>
+							<!-- 当天无预约时，只展示排班信息 -->
+							<div *ngIf="day.bookingList.length == 0" (click)="showBooking(day, doctorBooking, 'duty')" class="hoverTab edit mr10">排班</div>
+							<!-- 当天有预约，同事展示预约详情和排班信息 -->
+							<div (click)="showBooking(day, doctorBooking, 'all')" *ngIf="day.num != '0'" class="edit mr10">{{day.num}}</div>
+							<div (click)="goBooking(doctorBooking, day)" class="hoverTab edit" [ngClass]="{'disabled': !day.use}">预约</div>
+							<div class="flex-1"></div>
+						</div>
+					</td>
+				</ng-container>
+			</tr>
+		</tbody>
+		<span noResult>暂无医生预约信息</span>
+	</nz-table>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提醒</div>
-		<div class="content pad10 mt10 mb10">
-			{{modalConfirm.text}}
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalTab">
-	<div class="modal-mask" (click)="close()"></div>
-	<div class="container">
-		<div class="title">
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" [nzFooter]="footerConfirm" (nzOnCancel)="closeConfirm()">
+	<ng-template #contentConfirm>
+    	<p>{{modalConfirm.text}}</p>
+	</ng-template>
+	<ng-template #footerConfirm>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">关闭</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'信息'" [nzContent]="contentTab" [nzFooter]="footerTab" (nzOnCancel)="close()">
+	<ng-template #contentTab>
+		<div class="title mb10">
 			{{selected.doctor}}
 			<ng-container *ngIf="selected.doctorService.length > 0">
 				（<span *ngFor="let service of selected.doctorService; let last=last;">{{service.serviceName}}<span *ngIf="!last">，</span></span>）
 			</ng-container>
 		</div>
-		<div class="content pad10">
-			<div *ngIf="selected.type == 'all'" class="second-bar-tab flex">
-				<div (click)="changeSelected('1')" class="item" [ngClass]="{'active': selected.tab == '1'}">今日预约</div>
-				<div (click)="changeSelected('2')" class="item" [ngClass]="{'active': selected.tab == '2'}">排班</div>
+		<nz-tabset *ngIf="selected.type == 'all'">
+	 		<nz-tab>
+				<ng-template #nzTabHeading>
+		         	今日预约
+		        </ng-template>
+				<nz-table #nzTable [nzDataSource]="showBookinglist" [nzBordered]="true" [nzIsPagination]="false">
+					<thead nz-thead>
+						<tr>
+							<th>预约科室</th>
+							<th>宝宝姓名</th>
+							<th>手机号码</th>
+							<th>预约时间</th>
+							<th class="th-width">备注</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody nz-tbody>
+						<tr *ngFor="let showBooking of showBookinglist">
+							<td>{{showBooking.serviceName}}</td>
+							<td>{{showBooking.childName}}</td>
+							<td>{{showBooking.mobile}}</td>
+							<td>
+								<span>{{showBooking.bookingDate}}</span>
+								<span>{{showBooking.time}}</span>
+							</td>
+							<td>
+								<div class="td-text">{{showBooking.remark}}</div>
+							</td>
+							<td>
+								<button (click)="info(showBooking.bookingId)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+							</td>
+						</tr>
+					</tbody>
+				</nz-table>
+	 		</nz-tab>
+			<nz-tab>
+				<ng-template #nzTabHeading>
+		         	排班
+		        </ng-template>
+				<ng-container *ngTemplateOutlet="doctorDuty"></ng-container>
+	 		</nz-tab>
+   		</nz-tabset>
+		<ng-container *ngIf="selected.type != 'all'">
+			<ng-container *ngTemplateOutlet="doctorDuty"></ng-container>
+		</ng-container>
+		<ng-template #doctorDuty>
+			<div *ngIf="hasDutyData && doctorDutyList.length == 0">
+				<nz-alert [nzType]="'success'" [nzMessage]="'未查询到排班信息，请先排班'"></nz-alert>
 			</div>
-			<div class="mt10">
-				<div style="display:none;">
-					<div id="print_div_workbench" #print_div_workbench>
-						<ng-container *ngFor="let showBooking of showBookinglist">
-							<div class="print-container" id="print-container">
-								<div class="">
-									<div class="flex">
-										<div class="flex-1 font-bold">
-										Name：{{showBooking.childName}}
-										</div>
-										<div>
-										Gender：{{showBooking.genderText}}
-										</div>
-									</div>
-									<div class="font-bold">
-									Age：{{showBooking.age}}
-									</div>
-									<div>
-									DOB：{{showBooking.birthDate}}
-									</div>
-									<div  class="font-bold">
-									Date：{{showBooking.bookingDateText}} {{showBooking.time}}
-									</div>
-									<div class="font-bold">
-									Dr：{{showBooking.userDoctorName}}
-									</div>
-									<div>
-									Dept：{{showBooking.serviceName}}
-									</div>
-									<div>
-										Ref No：{{showBooking.refNo}}
-									</div>
-									<div class="flex">
-										<div class="flex-1">
-											Bal：{{showBooking.userBalance}}元
-										</div>
-										<div *ngIf="showBooking.tuina != null">
-											M：{{showBooking.tuina}}次
-										</div>
-									</div>
-									<!-- <div *ngIf="showBooking.tuina != null">
-										M：{{showBooking.tuina}}次
-									</div> -->
+			<div class="left-right-tab">
+				<div class="right-tab">
+					<div *ngFor="let duty of doctorDutyList" class="section">
+						<div class="title">
+							<span>{{duty.weekDay}}</span>
+							<span>{{duty.dutyDate}}</span>
+						</div>
+						<div class="list-item">
+							<div class="item" *ngFor="let item of duty.list">
+								<span>{{item.date}}</span>
+								<span>{{item.use}}</span>
 							</div>
 						</div>
-						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="selected.tab == '1'">
-					<table class="pure-table pure-table-horizontal w100">
-						<thead>
-							<tr>
-								<th>预约科室</th>
-								<th>宝宝姓名</th>
-								<!-- <th>家长姓名</th> -->
-								<th>手机号码</th>
-								<th>预约时间</th>
-								<th class="th-width">备注</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let showBooking of showBookinglist">
-								<td>{{showBooking.serviceName}}</td>
-								<td>{{showBooking.childName}}</td>
-								<!-- <td>{{showBooking.childName}}</td> -->
-								<td>{{showBooking.mobile}}</td>
-								<td>
-									<span>{{showBooking.bookingDate}}</span>
-									<span>{{showBooking.time}}</span>
-								</td>
-								<td>
-									<div class="length-text">{{showBooking.remark}}</div>
-								</td>
-								<td>
-									<button (click)="info(showBooking.bookingId)" class="pure-button pure-button-primary">详情</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div *ngIf="selected.tab == '2'" class="left-right-tab">
-					<div class="right-tab">
-						<div *ngIf="hasDutyData && doctorDutyList.length == 0">
-							<nodata title="未查询到排班信息，请先排班"></nodata>
-						</div>
-						<div *ngFor="let duty of doctorDutyList" class="section">
-							<div class="title">
-								<span>{{duty.weekDay}}</span>
-								<span>{{duty.dutyDate}}</span>
-							</div>
-							<div class="list-item">
-								<div class="item" *ngFor="let item of duty.list">
-									<span>{{item.date}}</span>
-									<span>{{item.use}}</span>
+			</div>
+		</ng-template>
+	</ng-template>
+	<ng-template #footerTab>
+		<button (click)="close()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
+		<span class="ml10">
+			<e-ngx-print
+				[btnText]="'打印'"
+				[btnClass]="{'ant-btn': true, 'ant-btn-primary': true, 'ant-btn-lg': true}"
+				[printHTML]="print_div_workbench"
+				[printStyle]="printStyle"
+				[printCSS]="printCSS"
+				(printComplete)="printComplete()">
+			</e-ngx-print>
+		</span>
+		<div style="display:none;">
+			<div id="print_div_workbench" #print_div_workbench>
+				<ng-container *ngFor="let showBooking of showBookinglist">
+					<div class="print-container" id="print-container">
+						<div class="">
+							<div class="flex">
+								<div class="flex-1 font-bold">
+									Name：{{showBooking.childName}}
+								</div>
+								<div>
+									Gender：{{showBooking.genderText}}
 								</div>
 							</div>
-						</div>
+							<div class="font-bold">
+								Age：{{showBooking.age}}
+							</div>
+							<div>
+								DOB：{{showBooking.birthDate}}
+							</div>
+							<div  class="font-bold">
+								Date：{{showBooking.bookingDateText}} {{showBooking.time}}
+							</div>
+							<div class="font-bold">
+								Dr：{{showBooking.userDoctorName}}
+							</div>
+							<div>
+								Dept：{{showBooking.serviceName}}
+							</div>
+							<div>
+								Ref No：{{showBooking.refNo}}
+							</div>
+							<div class="flex">
+								<div class="flex-1">
+									Bal：{{showBooking.userBalance}}元
+								</div>
+								<div *ngIf="showBooking.tuina != null">
+									M：{{showBooking.tuina}}次
+								</div>
+							</div>
+							<!-- <div *ngIf="showBooking.tuina != null">
+							M：{{showBooking.tuina}}次
+						</div> -->
 					</div>
 				</div>
-			</div>
-		</div>
-
-		<div class="button-tab pad10 text-right">
-			<button (click)="close()" class="pure-button">关闭</button>
-			<span class="ml10">
-				<e-ngx-print
-					[btnText]="'打印'"
-					[btnClass]="{'pure-button': true, 'pure-button-primary': true}"
-					[printHTML]="print_div_workbench"
-					[printStyle]="printStyle"
-					[printCSS]="printCSS"
-					(printComplete)="printComplete()">
-				</e-ngx-print>
-			</span>
+			</ng-container>
 		</div>
 	</div>
-</div>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>
-<nll-toast-box></nll-toast-box>

@@ -1,16 +1,18 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-booking-info">
 	<top-bar [data]="topBar"></top-bar>
-	<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && canEdit">
-		<button (click)="updateBooking()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">修改</button>
-		<button (click)="cancel('booking')" class="pure-button button-error" [disabled]="btnCanEdit">取消</button>
-		<button (click)="backBookingFee()" *ngIf="booking.status == '2'" class="pure-button button-error" [disabled]="btnCanEdit">{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}</button>
-		<button (click)="cancel('status')" *ngIf="booking.status == '3'" class="pure-button button-error" [disabled]="btnCanEdit">取消登记</button>
-	</div>
 	<nz-card class="w100 mt10">
 		<ng-template #title>
 			预约详情
 		</ng-template>
+		<ng-template #extra>
+			<ng-container *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && canEdit">
+				<button (click)="updateBooking()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">修改</button>
+				<button (click)="cancel('booking')" nz-button [nzType]="'danger'" [nzSize]="'large'" [disabled]="btnCanEdit">取消</button>
+				<button (click)="backBookingFee()" *ngIf="booking.status == '2'" nz-button [nzType]="'danger'" [nzSize]="'large'" [disabled]="btnCanEdit">{{booking.tranInfo.id ? '退还金额' : '退还预约金'}}</button>
+				<button (click)="cancel('status')" *ngIf="booking.status == '3'" nz-button [nzType]="'danger'" [nzSize]="'large'" [disabled]="btnCanEdit">取消登记</button>
+			</ng-container>
+      	</ng-template>
 		<ng-template #body>
 			<div nz-row [nzGutter]="30">
 				<div nz-col [nzSpan]="8">
@@ -67,76 +69,82 @@
 					备注：{{booking.remark}}
 				</div>
 			</div>
-		</ng-template>
-	</nz-card>
-	<div class="tab">
-		<div class="item flex">
-			<div class="info flex-1">
-				<table class="pure-table w100">
-					<thead>
+			<div class="mt20">
+				<nz-table #nzTable [nzDataSource]="booking.fees" [nzBordered]="true" [nzIsPagination]="false">
+					<thead nz-thead>
 						<tr>
-							<th>消费项目</th>
-							<th>费用</th>
-							<th>备注说明</th>
+							<th class="w30">消费项目</th>
+							<th class="w30">费用</th>
+							<th class="w40">备注说明</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr *ngFor="let fee of booking.fees; let index=index;" [ngClass]="{'pure-table-odd': index%2 != 0}">
+					<tbody nz-tbody>
+						<tr *ngFor="let fee of booking.fees">
 							<td>{{fee.projectName}}</td>
 							<td>{{fee.fee}}</td>
-							<td>{{fee.remark}}</td>
+							<td>
+								<div class="td-text">{{fee.remark}}</div>
+							</td>
 						</tr>
 					</tbody>
-				</table>
+				</nz-table>
+			</div>
+		</ng-template>
+	</nz-card>
+</div>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()" [nzConfirmLoading]="btnCanEdit">
+	<ng-template #contentConfirm>
+		<div nz-form-item>
+			<div nz-form-label>
+				<label>取消原因：</label>
+			</div>
+			<div nz-form-control class="mt5">
+				<nz-input [nzType]="'textarea'" [(ngModel)]="selectorBooking.cancel_cause" [nzSize]="'large'" [nzPlaceHolder]="'请输入取消原因'"></nz-input>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			<div class="pure-form">
-				<textarea id="cancel_cause" class="w100" name="cancel_cause" [(ngModel)]="selectorBooking.cancel_cause" placeholder="请输入取消原因"></textarea>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalBackBookingFee" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentBack" [nzFooter]="footerBack" (nzOnCancel)="closeBack()">
+	<ng-template #contentBack>
+		<div nz-row class="mt10">
+			<div nz-col [nzSpan]="7" class="text-right">
+				<label>{{booking.tranInfo.id ? '已支付全额' : '已支付预约金'}}：</label>
+			</div>
+			<div nz-col [nzSpan]="12">
+				{{(booking.tranInfo.id ? booking.tranInfo.amount : booking.yyj.amount) | toDecimal2}}
 			</div>
 		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button" [disabled]="btnCanEdit">关闭</button>
-			<button (click)="confirm()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
-		</div>
-	</div>
-</div>
-<div class="modal" *ngIf="modalBackBookingFee">
-	<div class="modal-mask" (click)="closeBack()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			<div class="pure-form">
-				<div class="pure-control-group flex">
-					<label class="w120p">{{booking.tranInfo.id ? '已支付全额' : '已支付预约金'}}：</label>
-					<label>{{(booking.tranInfo.id ? booking.tranInfo.amount : booking.yyj.amount) | toDecimal2}}</label>
-				</div>
-				<div class="pure-control-group flex mt5">
-					<label class="w120p">支付方式：</label>
-					<label>{{booking.tranInfo.id ? booking.tranInfo.wayText : booking.yyj.typeText}}</label>
-				</div>
-				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
-					<label for="backFee" class="w120p">{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
-					<input type="number" name="backFee" step="0.01" [(ngModel)]="booking.backFee">
-				</div>
-				<div *ngIf="booking.yyj.amount != '0.00'" class="pure-control-group flex mt5">
-					<label for="backRemark" class="w120p">失约原因：</label>
-					<textarea name="backRemark" [(ngModel)]="booking.backRemark" placeholder="请输入失约原因"></textarea>
-				</div>
-				<div *ngIf="booking.yyj.amount == '0.00'" class="mt5">不可退款</div>
+		<div nz-row class="mt10">
+			<div nz-col [nzSpan]="7" class="text-right">
+				<label>支付方式：</label>
+			</div>
+			<div nz-col [nzSpan]="12">
+				{{booking.tranInfo.id ? booking.tranInfo.wayText : booking.yyj.typeText}}
 			</div>
 		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeBack()" class="pure-button" [disabled]="btnCanEdit">取消</button>
-			<button *ngIf="booking.yyj.amount != '0.00'" (click)="confirmBack()" class="pure-button pure-button-primary" [disabled]="btnCanEdit">确认</button>
+		<div *ngIf="booking.yyj.amount != '0.00'" nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+				<label>{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
+			</div>
+			<div nz-form-control nz-col [nzSpan]="12">
+				<nz-input-number [nzMin]="0" [nzStep]="0.01" [nzSize]="'large'" [(ngModel)]="booking.backFee" class="w100"></nz-input-number>
+			</div>
 		</div>
-	</div>
-</div>
+		<div *ngIf="booking.yyj.amount != '0.00'" nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+				<label>失约原因：</label>
+			</div>
+			<div nz-form-control nz-col [nzSpan]="12">
+				<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="booking.backRemark" [nzPlaceHolder]="'请输入失约原因'"></nz-input>
+			</div>
+		</div>
+		<div *ngIf="booking.yyj.amount == '0.00'" class="mt10">
+			<nz-alert [nzType]="'info'" [nzMessage]="'已支付0.00元，不可退款'"></nz-alert>
+		</div>
+	</ng-template>
+	<ng-template #footerBack>
+		<button (click)="closeBack()" nz-button [nzType]="'default'" [nzSize]="'large'" [disabled]="btnCanEdit">取消</button>
+		<button *ngIf="booking.yyj.amount != '0.00'" (click)="confirmBack()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">确认</button>
+	</ng-template>
+</nz-modal>
 <loading [show]="loadingShow"></loading>
-<nll-toast-box></nll-toast-box>

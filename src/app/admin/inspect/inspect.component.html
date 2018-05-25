@@ -1,77 +1,66 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-clinicroom">
 	<top-bar [data]="topBar"></top-bar>
-	<div>
-		<form #f="ngForm" class="pure-form pure-form-stacked form-tab">
-			<fieldset>
-				<div class="pure-g">
-					<div *ngIf="editType == 'create'" class="pure-u-8-24 pr10">
-						<div class="pure-control-group">
-							<label for="project_id">
-								<span>项目名</span>
-								<span class="required">*</span>
-							</label>
-							<select id="project_id" name="project_id" [(ngModel)]="inspectInfo.project_id" #project_id="ngModel" required="">
-								<ng-container *ngFor="let project of projectlist">
-									<option value="{{project.id}}">{{project.name}}</option>
-								</ng-container>
-							</select>
-							<div *ngIf="project_id.errors && (project_id.dity || project_id.touched)" class="alert alert-danger">
-								<div [hidden]="!project_id.errors.required">
-									项目名不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div *ngIf="editType == 'update'" class="pure-u-8-24 pr10">
-						<div class="pure-control-group">
-							<label for="project_name">
-								<span>项目名</span>
-								<span class="required">*</span>
-							</label>
-							<select id="project_name" name="project_name" disabled="">
-								<option value="{{inspectInfo.project_name}}">{{inspectInfo.project_name}}</option>
-							</select>
-						</div>
-					</div>
-					<div class="pure-u-8-24 pr5 pl5">
-						<div class="pure-control-group">
-							<label for="price">
-								<span>项目价格</span>
-								<span class="required">*</span>
-							</label>
-							<input id="price" type="number" step="0.01" name="price" [(ngModel)]="inspectInfo.price" #price="ngModel" placeholder="请输入项目价格" required="">
-							<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">
-								<div [hidden]="!price.errors.required">
-									项目价格不可为空
-								</div>
-							</div>
-						</div>
-					</div>
-					<div *ngIf="editType == 'create'" class="pure-u-8-24 pl10">
-						<div class="pure-control-group">
-							<label for="can_discount">能否优惠</label>
-							<select id="can_discount" name="can_discount" [(ngModel)]="inspectInfo.can_discount">
-								<option value="0">不能</option>
-								<option value="1">能</option>
-							</select>
-						</div>
-					</div>
-					<div *ngIf="editType == 'update'" class="pure-u-8-24 pl10">
-						<div class="pure-control-group">
-							<label for="can_use">状态</label>
-							<select id="can_use" name="can_use" [(ngModel)]="inspectInfo.can_use">
-								<option value="0">停用</option>
-								<option value="1">启用</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</fieldset>
-			<div class="text-center">
-				<button (click)="create(f); $event.stopPropagation();" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
-			</div>
-		</form>
+	<div nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>检查：</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-select
+				class="w100"
+				[nzSize]="'large'"
+				[nzPlaceHolder]="'请选择检查'"
+				[(ngModel)]="inspectInfo.project_id"
+				nzShowSearch
+				[nzDisabled]="editType == 'update'">
+				<ng-container *ngFor="let project of projectlist">
+					<nz-option [nzLabel]="project.name" [nzValue]="project.id"></nz-option>
+				</ng-container>
+			</nz-select>
+		</div>
+	</div>
+	<div nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>价格：</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-input-number [nzMin]="0" [nzStep]="0.01" [nzSize]="'large'" [(ngModel)]="inspectInfo.price" [nzPlaceHolder]="'请输入价格'" class="w100"></nz-input-number>
+		</div>
+	</div>
+	<div nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>能否优惠：</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-select
+				class="w100"
+				[nzSize]="'large'"
+				[nzPlaceHolder]="'请选择能否优惠'"
+				[(ngModel)]="inspectInfo.can_discount">
+				<nz-option [nzLabel]="'不可优惠'" [nzValue]="'0'"></nz-option>
+				<nz-option [nzLabel]="'可优惠'" [nzValue]="'1'"></nz-option>
+			</nz-select>
+		</div>
+	</div>
+	<div *ngIf="editType == 'update'" nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>状态：</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-select
+				class="w100"
+				[nzSize]="'large'"
+				[nzPlaceHolder]="'请选择状态'"
+				[(ngModel)]="inspectInfo.can_use">
+				<nz-option [nzLabel]="'停用'" [nzValue]="'0'"></nz-option>
+				<nz-option [nzLabel]="'可用'" [nzValue]="'1'"></nz-option>
+			</nz-select>
+		</div>
+	</div>
+	<div nz-row class="mt10">
+		<div nz-col [nzSpan]="12" [nzOffset]="7">
+			<button (click)="create()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<loading [show]="loadingShow"></loading>

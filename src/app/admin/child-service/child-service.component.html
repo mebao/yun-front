@@ -1,36 +1,26 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-child-service">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="pure-g">
-		<div class="pure-u-1-5"></div>
-		<div class="pure-u-3-5">
-			<form #f="ngForm" class="pure-form pure-form-stacked">
-				<fieldset>
-					<div class="pure-control-group">
-						<label for="service_name">科室名</label>
-						<input id="service_name" type="text" [(ngModel)]="childService.serviceName" #service_name="ngModel" name="service_name" placeholder="请输入科室名" required="">
-						<div *ngIf="service_name.errors && (service_name.dity || service_name.touched)" class="alert alert-danger">
-							<div [hidden]="!service_name.errors.required">
-								科室名不可为空
-							</div>
-						</div>
-					</div>
-					<div class="pure-control-group">
-						<label for="description">科室说明（最多200字）</label>
-						<textarea id="description" maxlength="200" [(ngModel)]="childService.description" name="description" #description="ngModel" placeholder="请输入科室说明" required=""></textarea>
-						<div *ngIf="description.errors && (description.dity || description.touched)" class="alert alert-danger">
-							<div [hidden]="!description.errors.required">
-								科室说明不可为空
-							</div>
-						</div>
-					</div>
-				</fieldset>
-				<div class="text-center">
-					<button (click)="submit(f)" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
-				</div>
-			</form>
+	<div nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>科室名：</label>
 		</div>
-		<div class="pure-u-1-5"></div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-input [nzSize]="'large'" [(ngModel)]="childService.serviceName" [nzPlaceHolder]="'请输入科室名'"></nz-input>
+		</div>
+	</div>
+	<div nz-form-item nz-row class="mt10">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>科室说明（最多200字）：</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="childService.description" [nzPlaceHolder]="'请输入科室说明'"></nz-input>
+		</div>
+	</div>
+	<div nz-row class="mt10">
+		<div nz-col [nzSpan]="12" [nzOffset]="7">
+			<button (click)="submit()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
+<loading [show]="loadingShow"></loading>

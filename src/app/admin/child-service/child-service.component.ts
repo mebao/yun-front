@@ -1,11 +1,14 @@
 import { Component, OnInit }            from '@angular/core';
 import { ActivatedRoute, Router }       from '@angular/router';
 
+import { NzMessageService }             from 'ng-zorro-antd';
+
 import { AdminService }                 from '../admin.service';
 
 @Component({
 	selector: 'app-child-service',
-	templateUrl: './child-service.component.html'
+	templateUrl: './child-service.component.html',
+	styleUrls: ['../../../assets/css/ant-common.scss'],
 })
 export class ChildServiceComponent{
 	topBar: {
@@ -19,15 +22,12 @@ export class ChildServiceComponent{
 		serviceName: '',
 		description: '',
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	// 不可连续点击
 	btnCanEdit: boolean;
+	loadingShow: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		public adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -38,11 +38,7 @@ export class ChildServiceComponent{
 			title: '宝宝科室',
 			back: true,
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		};
+		this.loadingShow = true;
 
 		this.route.queryParams.subscribe(params => this.id = params['id']);
 		//判断id是否存在，新增和修改
@@ -50,39 +46,42 @@ export class ChildServiceComponent{
 			this.type = 'update';
 			var servicelistUrl = '?username=' + this.adminService.getUser().username
 				 + '&token=' + this.adminService.getUser().token
-				 + '&clinic_id=' + this.adminService.getUser().clinicId;
+				 + '&clinic_id=' + this.adminService.getUser().clinicId
+				 + '&id=' + this.id;
 			this.adminService.servicelist(servicelistUrl).then((data) => {
 				if(data.status == 'no'){
-					this.toastTab(data.errorMsg, 'error');
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
-					for(var i = 0; i < results.servicelist.length; i++){
-						if(results.servicelist[i].serviceId == this.id.toString()){
-							this.childService = results.servicelist[i];
-						}
+					if(results.servicelist.length > 0){
+						this.childService = results.servicelist[0];
 					}
+					this.loadingShow = false;
 				}
 			}).catch(() => {
-                this.toastTab('服务器错误', 'error');
+				this.loadingShow = false;
+                this._message.error('服务器错误');
             });
 		}else{
 			this.type = 'create';
+			this.loadingShow = false;
 		}
 
 		this.btnCanEdit = false;
 	}
 
-	submit(f) {
+	submit() {
 		this.btnCanEdit = true;
-		f.value.service_name = this.adminService.trim(f.value.service_name);
-		f.value.description = this.adminService.trim(f.value.description);
-		if(f.value.service_name == ''){
-			this.toastTab('科室名不可为空', 'error');
+		this.childService.serviceName = this.childService.serviceName.trim();
+		this.childService.description = this.childService.description.trim();
+		if(this.childService.serviceName == ''){
+			this._message.error('科室名不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
-		if(f.value.description == ''){
-			this.toastTab('科室说明不可为空', 'error');
+		if(this.childService.description == ''){
+			this._message.error('科室说明不可为空');
 			this.btnCanEdit = false;
 			return;
 		}
@@ -90,43 +89,28 @@ export class ChildServiceComponent{
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			service_name: f.value.service_name,
-			description: f.value.description,
+			service_name: this.childService.serviceName,
+			description: this.childService.description,
 			service_id: this.id ? this.id : null,
 		}
 		this.adminService.clinicservice(param).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
 				if(this.type == 'update'){
-					this.toastTab('修改成功', '');
+					this._message.success('修改成功');
 				}else{
-					this.toastTab('创建成功', '');
+					this._message.success('创建成功');
 				}
 				setTimeout(() => {
 					this.router.navigate(['./admin/childService/list']);
 				}, 2000);
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
 			this.btnCanEdit = false;
         });
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }
 

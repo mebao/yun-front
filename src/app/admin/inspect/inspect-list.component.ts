@@ -1,6 +1,8 @@
 import { Component, OnInit }               from '@angular/core';
 import { Router, ActivatedRoute }          from '@angular/router';
 
+import { NzMessageService }                from 'ng-zorro-antd';
+
 import { AdminService }                    from '../admin.service';
 
 @Component({
@@ -12,11 +14,6 @@ export class SetupInspectListComponent{
 		title: string,
 		back: boolean,
 	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
 	// 权限
 	moduleAuthority: {
 		see: boolean,
@@ -27,6 +24,7 @@ export class SetupInspectListComponent{
 	hasData: boolean;
 
 	constructor(
+		private _message: NzMessageService,
 		private adminService: AdminService,
 		private router: Router,
 	) {}
@@ -35,12 +33,6 @@ export class SetupInspectListComponent{
 		this.topBar = {
 			title: '检查项目列表',
 			back: false,
-		}
-
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -72,7 +64,7 @@ export class SetupInspectListComponent{
 		this.adminService.checkprojects(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.projectlist = results.list;
@@ -81,7 +73,7 @@ export class SetupInspectListComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -90,22 +82,6 @@ export class SetupInspectListComponent{
 	}
 
 	update(project) {
-		sessionStorage.setItem('inspect', JSON.stringify(project));
 		this.router.navigate(['./admin/setupInspect'], {queryParams: {id: project.id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -2,6 +2,8 @@ import { NgModule }                       from '@angular/core';
 import { CommonModule }                   from '@angular/common';
 import { FormsModule }                    from '@angular/forms';
 
+import { NgZorroAntdModule }              from 'ng-zorro-antd';
+
 //nav
 import { NavModule }                      from '../nav/nav.module';
 
@@ -23,10 +25,11 @@ import { ENgxPrintModule }                from "e-ngx-print";
     imports: [
         CommonModule,
         FormsModule,
-        WorkbenchRoutingModule,
+        NgZorroAntdModule,
         NavModule,
         AngCommonModule,
         ENgxPrintModule,
+        WorkbenchRoutingModule,
     ]
 })
 
