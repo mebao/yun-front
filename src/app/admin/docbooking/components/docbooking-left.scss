@@ -1,0 +1,8 @@
+.item{
+    padding: 10px 0;
+    border-bottom: 1px solid #d4d4d4;
+    text-align: justify;
+    &.text{
+        text-indent: 28px;
+    }
+}

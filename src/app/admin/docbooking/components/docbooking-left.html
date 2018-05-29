@@ -1,0 +1,464 @@
+<nz-card class="w100">
+    <ng-template #title>
+        预约详情
+    </ng-template>
+    <ng-template #body>
+        <div class="item">
+            姓名：{{booking.childName}}
+        </div>
+        <div class="item">
+            性别：{{booking.genderText}}
+        </div>
+        <div class="item">
+            出生日期：{{booking.birthDate}}
+        </div>
+        <div class="item">
+            当前年龄：{{booking.age}}
+        </div>
+        <div *ngIf="booking.actCards.length > 0" class="item flex">
+            <div>活动卡：</div>
+            <div class="flex-1">
+                <div *ngFor="let actcard of booking.actCards">{{actcard.activityName + '（剩余' + actcard.num + '次）'}}</div>
+            </div>
+        </div>
+        <div class="item flex">
+            <div>备注：</div>
+            <div class="flex-1">{{booking.remark}}</div>
+        </div>
+        <div class="item">
+            接诊医生：{{doctorInfo.realName}}
+        </div>
+        <ng-container *ngIf="pageType == 'history'">
+            <div class="item">
+                就诊时年龄：{{booking.bookingAge}}
+            </div>
+            <div class="item">
+                接诊开始时间：{{booking.services.length > 0 ? booking.services[0].begin : ''}}
+            </div>
+            <div class="item">
+                接诊结束时间：{{booking.services.length > 0 ? booking.services[0].end : ''}}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="pageType != 'history'">
+            <div class="mt20">
+                <button (click)="showHistory()" nz-button [nzType]="'primary'" [nzSize]="'large'">就诊记录</button>
+            </div>
+            <div *ngIf="actualOperator.use" nz-form-item class="mt10">
+                <div nz-form-label>
+                    <label>选择实际操作人</label>
+                </div>
+                <div nz-form-control class="mt10">
+                    <nz-select
+                        class="w100"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'请选择实际操作人'"
+                        [ngModel]="operator"
+                        (ngModelChange)="operator=$event;selectOperator()"
+                        nzShowSearch>
+                        <nz-option
+                            *ngFor="let admin of adminList"
+                            [nzLabel]="admin.value"
+                            [nzValue]="admin.key">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </ng-container>
+    </ng-template>
+</nz-card>
+<nz-card class="w100 mt20">
+    <ng-template #title>
+        儿保记录
+    </ng-template>
+    <ng-template #body>
+        <nz-tabset [nzSelectedIndex]="selectedTab">
+            <nz-tab (nzClick)="changeHistoryHealthRTab('1')">
+                <ng-template #nzTabHeading>
+                    第一次儿保记录
+                </ng-template>
+    			<ng-container *ngTemplateOutlet="historyTab"></ng-container>
+            </nz-tab>
+            <nz-tab (nzClick)="changeHistoryHealthRTab('0')">
+                <ng-template #nzTabHeading>
+                    最近一次儿保记录
+                </ng-template>
+    			<ng-container *ngTemplateOutlet="historyTab"></ng-container>
+            </nz-tab>
+        </nz-tabset>
+        <ng-template #historyTab>
+            <div *ngIf="historyHealthR.length > 0">
+                <div class="item">
+                    就诊日期：{{historyHealthR[0].bookingDate}}
+                </div>
+                <div *ngIf="historyHealthR[0].height != null && historyHealthR[0].height != '0.00'" class="item">
+                    身高：{{historyHealthR[0].height}}
+                    <span *ngIf="historyHealthR[0].height != '0.00'" class="pl5">cm</span>
+                </div>
+                <div *ngIf="historyHealthR[0].mediumHeight != null && historyHealthR[0].mediumHeight != '0.00'" class="item">
+                    中等值：{{historyHealthR[0].mediumHeight}}
+                    <span *ngIf="historyHealthR[0].mediumHeight != '0.00'" class="pl5">cm</span>
+                </div>
+                <div *ngIf="(historyHealthR[0].height != null && historyHealthR[0].height != '0.00') && (historyHealthR[0].mediumHeight != null && historyHealthR[0].mediumHeight != '0.00')" class="item">
+                    身高对比：{{historyHealthR[0].compareHeight}}
+                </div>
+                <div *ngIf="historyHealthR[0].weight != null && historyHealthR[0].weight != '0.00'" class="item">
+                    体重：{{historyHealthR[0].weight}}
+                    <span *ngIf="historyHealthR[0].weight != '0.00'" class="pl5">kg</span>
+                </div>
+                <div *ngIf="historyHealthR[0].mediumWeight != null && historyHealthR[0].mediumWeight != '0.00'" class="item">
+                    中等值：{{historyHealthR[0].mediumWeight}}
+                    <span *ngIf="historyHealthR[0].mediumWeight != '0.00'" class="pl5">kg</span>
+                </div>
+                <div *ngIf="(historyHealthR[0].weight != null && historyHealthR[0].weight != '0.00') && (historyHealthR[0].mediumWeight != null && historyHealthR[0].mediumWeight != '0.00')" class="item">
+                    体重对比：{{historyHealthR[0].compareWeight}}
+                </div>
+                <div *ngIf="historyHealthR[0].headCircum != null && historyHealthR[0].headCircum != '0.00'" class="item">
+                    头围：{{historyHealthR[0].headCircum}}
+                    <span *ngIf="historyHealthR[0].headCircum != '0.00'" class="pl5">cm</span>
+                </div>
+                <div *ngIf="historyHealthR[0].breastCircum != null && historyHealthR[0].breastCircum != '0.00'" class="item">
+                    胸围：{{historyHealthR[0].breastCircum}}
+                    <span *ngIf="historyHealthR[0].breastCircum != '0.00'" class="pl5">cm</span>
+                </div>
+                <div *ngIf="historyHealthR[0].bodyTemperature != null && historyHealthR[0].bodyTemperature != '0'" class="item">
+                    体温：{{historyHealthR[0].bodyTemperature}}
+                    <span *ngIf="historyHealthR[0].bodyTemperature != '' && historyHealthR[0].bodyTemperature != '0'" class="pl5">°C</span>
+                </div>
+                <div *ngIf="historyHealthR[0].pulse != null && historyHealthR[0].pulse != '0'" class="item">
+                    脉搏：{{historyHealthR[0].pulse}}
+                    <span *ngIf="historyHealthR[0].pulse != '' && historyHealthR[0].pulse != '0'" class="pl5">次/分钟</span>
+                </div>
+                <div *ngIf="historyHealthR[0].breathe != null && historyHealthR[0].breathe != '0'" class="item">
+                    呼吸：{{historyHealthR[0].breathe}}
+                    <span *ngIf="historyHealthR[0].breathe != '' && historyHealthR[0].breathe != '0'" class="pl5">次/分钟</span>
+                </div>
+                <div *ngIf="historyHealthR[0].bloodPressure != null && historyHealthR[0].bloodPressure != '0'" class="item">
+                    血压：{{historyHealthR[0].bloodPressure}}
+                    <span *ngIf="historyHealthR[0].bloodPressure != '' && historyHealthR[0].bloodPressure != '0'" class="pl5">mmHg</span>
+                </div>
+                <div *ngIf="historyHealthR[0].spirit != null && historyHealthR[0].spirit != ''" class="item">
+                    <div>精神及神志：</div>
+                    <div class="flex-1">{{historyHealthR[0].spirit}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].nutritionalStatus != null && historyHealthR[0].nutritionalStatus != ''" class="flex item">
+                    <div>营养状态：</div>
+                    <div class="flex-1">{{historyHealthR[0].nutritionalStatus}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].skin != null && historyHealthR[0].skin != '未见异常'" class="flex item">
+                    <div>皮肤：</div>
+                    <div class="flex-1">{{historyHealthR[0].skin}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].oralMucosa != null && historyHealthR[0].oralMucosa != '未见异常'" class="flex item">
+                    <div>口腔黏膜：</div>
+                    <div class="flex-1">{{historyHealthR[0].oralMucosa}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].hair != null && historyHealthR[0].hair != '未见异常'" class="flex item">
+                    <div>毛发：</div>
+                    <div class="flex-1">{{historyHealthR[0].hair}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].lymphNode != null && historyHealthR[0].lymphNode != '未见异常'" class="flex item">
+                    <div>浅表淋巴结：</div>
+                    <div class="flex-1">{{historyHealthR[0].lymphNode}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].head != null && historyHealthR[0].head != ''" class="flex item">
+                    <div>头颅：</div>
+                    <div class="flex-1">{{historyHealthR[0].head}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].bregmatic != null && historyHealthR[0].bregmatic != ''" class="flex item">
+                    <div>前囟：</div>
+                    <div class="flex-1">
+                        {{historyHealthR[0].bregmatic}}
+                        <span class="pl5">cm^2</span>
+                    </div>
+                </div>
+                <div *ngIf="historyHealthR[0].eyes != null && historyHealthR[0].eyes != '未见明显畸形'" class="flex item">
+                    <div>双眼（外眼部检查）：</div>
+                    <div class="flex-1">{{historyHealthR[0].eyes}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].ear != null && historyHealthR[0].ear != '未见明显畸形'" class="flex item">
+                    <div>耳：</div>
+                    <div class="flex-1">{{historyHealthR[0].ear}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].nose != null && historyHealthR[0].nose != '未见明显畸形'" class="flex item">
+                    <div>鼻：</div>
+                    <div class="flex-1">{{historyHealthR[0].nose}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].throat != null && historyHealthR[0].throat != '未见异常'" class="flex item">
+                    <div>咽喉：</div>
+                    <div class="flex-1">{{historyHealthR[0].throat}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].tonsil != null && historyHealthR[0].tonsil != '未见异常'" class="flex item">
+                    <div>扁桃体：</div>
+                    <div class="flex-1">{{historyHealthR[0].tonsil}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].gums != null && historyHealthR[0].gums != '未见异常'" class="flex item">
+                    <div>牙龈：</div>
+                    <div class="flex-1">{{historyHealthR[0].gums}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].tongue_tie != null && historyHealthR[0].tongue_tie != '未见异常'" class="flex item">
+                    <div>舌系带：</div>
+                    <div class="flex-1">{{historyHealthR[0].tongue_tie}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].teeth_pit != null && historyHealthR[0].teeth_pit != '未见异常'" class="flex item">
+                    <div>牙窝沟：</div>
+                    <div class="flex-1">{{historyHealthR[0].teeth_pit}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].plaque != null && historyHealthR[0].plaque != '未见异常'" class="flex item">
+                    <div>牙菌斑：</div>
+                    <div class="flex-1">{{historyHealthR[0].plaque}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].teeth_num != null && historyHealthR[0].teeth_num != '0'" class="flex item">
+                    <div>出牙数：</div>
+                    <div class="flex-1">
+                        {{historyHealthR[0].teeth_num}}
+                        <span *ngIf="historyHealthR[0].teeth_num != '' && historyHealthR[0].teeth_num != '0'" class="pl5">颗</span>
+                    </div>
+                </div>
+                <div *ngIf="historyHealthR[0].dental_caries != null && historyHealthR[0].dental_caries != '未见异常'" class="flex item">
+                    <div>龋齿：</div>
+                    <div class="flex-1">{{historyHealthR[0].dental_caries}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].thoracic != null && historyHealthR[0].thoracic != '未见异常'" class="flex item">
+                    <div>胸廓：</div>
+                    <div class="flex-1">{{historyHealthR[0].thoracic}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].heart != null && historyHealthR[0].heart != '未见异常'" class="flex item">
+                    <div>心脏：</div>
+                    <div class="flex-1">{{historyHealthR[0].heart}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].lung != null && historyHealthR[0].lung != '未见异常'" class="flex item">
+                    <div>双肺：</div>
+                    <div class="flex-1">{{historyHealthR[0].lung}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].kidney != null && historyHealthR[0].kidney != '未见异常'" class="flex item">
+                    <div>双肾：</div>
+                    <div class="flex-1">{{historyHealthR[0].kidney}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].abdomen != null && historyHealthR[0].abdomen != '未见异常'" class="flex item">
+                    <div>腹部：</div>
+                    <div class="flex-1">{{historyHealthR[0].abdomen}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].mammaryGland != null && historyHealthR[0].mammaryGland != '未见异常'" class="flex item">
+                    <div>乳腺：</div>
+                    <div class="flex-1">{{historyHealthR[0].mammaryGland}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].limb != null && historyHealthR[0].limb != '未见异常'" class="flex item">
+                    <div>脊柱及四肢：</div>
+                    <div class="flex-1">{{historyHealthR[0].limb}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].ribs != null && historyHealthR[0].ribs != '未见异常'" class="flex item">
+                    <div>肋骨：</div>
+                    <div class="flex-1">{{historyHealthR[0].ribs}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].hip_joint != null && historyHealthR[0].hip_joint != '未见异常'" class="flex item">
+                    <div>髋关节：</div>
+                    <div class="flex-1">{{historyHealthR[0].hip_joint}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].torticollis != null && historyHealthR[0].torticollis != '未见异常'" class="flex item">
+                    <div>斜颈：</div>
+                    <div class="flex-1">{{historyHealthR[0].torticollis}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].genitalia != null && historyHealthR[0].genitalia != '未见异常'" class="flex item">
+                    <div>外生殖器：</div>
+                    <div class="flex-1">{{historyHealthR[0].genitalia}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].anus != null && historyHealthR[0].anus != '未见异常'" class="flex item">
+                    <div>肛门：</div>
+                    <div class="flex-1">{{historyHealthR[0].anus}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].neurodevelopment != null && historyHealthR[0].neurodevelopment != '未见异常'" class="flex item">
+                    <div>神经发育：</div>
+                    <div class="flex-1">{{historyHealthR[0].neurodevelopment}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].bloodRoutineExamination != null && historyHealthR[0].bloodRoutineExamination != '红细胞数： ，白细胞总数： ，血小板总数： ，血红蛋白：'" class="flex item">
+                    <div>血常规：</div>
+                    <div class="flex-1">{{historyHealthR[0].bloodRoutineExamination}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].routineUrine != null && historyHealthR[0].routineUrine != '未见异常'" class="flex item">
+                    <div>尿常规：</div>
+                    <div class="flex-1">{{historyHealthR[0].routineUrine}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].stoolRoutineExamination != null && historyHealthR[0].stoolRoutineExamination != '隐血： 镜检：'" class="flex item">
+                    <div>大便常规：</div>
+                    <div class="flex-1">{{historyHealthR[0].stoolRoutineExamination}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].boneDensity != null && historyHealthR[0].boneDensity != '未见异常'" class="flex item">
+                    <div>骨密度：</div>
+                    <div class="flex-1">{{historyHealthR[0].boneDensity}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].BALP != null && historyHealthR[0].BALP != '未见异常'" class="flex item">
+                    <div>骨碱性磷酸酶：</div>
+                    <div class="flex-1">{{historyHealthR[0].BALP}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].traceElement != null && historyHealthR[0].traceElement != '
+            锌： ，铁： ，钙： ，镁： ，铜：'" class="flex item">
+                    <div>微量元素：</div>
+                    <div class="flex-1">{{historyHealthR[0].traceElement}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].heavyMetal != null && historyHealthR[0].heavyMetal != '铅： ，镉： ，锰：'" class="flex item">
+                    <div>铅、镉、锰：</div>
+                    <div class="flex-1">{{historyHealthR[0].heavyMetal}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].bloodType != null && historyHealthR[0].bloodType != ''" class="flex item">
+                    <div>ABO血型鉴定：</div>
+                    <div class="flex-1">{{historyHealthR[0].bloodType}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].feeding != null && historyHealthR[0].feeding != ''" class="flex item">
+                    <div>喂养指导：</div>
+                    <div class="flex-1">{{historyHealthR[0].feeding}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].life != null && historyHealthR[0].life != ''" class="flex item">
+                    <div>生活指导：</div>
+                    <div class="flex-1">{{historyHealthR[0].life}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].immunization != null && historyHealthR[0].immunization != ''" class="flex item">
+                    <div>免疫接种指导：</div>
+                    <div class="flex-1">{{historyHealthR[0].immunization}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].diseasePrevention != null && historyHealthR[0].diseasePrevention != ''" class="flex item">
+                    <div>疾病预防：</div>
+                    <div class="flex-1">{{historyHealthR[0].diseasePrevention}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].answeringQuestions != null && historyHealthR[0].answeringQuestions != ''" class="flex item">
+                    <div>答疑解惑：</div>
+                    <div class="flex-1">{{historyHealthR[0].answeringQuestions}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].files.length > 0" class="flex item">
+                    <div class="w60p">文件：</div>
+                    <div class="flex-1 flex">
+                        <div class="file-item" *ngFor="let file of historyHealthR[0].files">
+                            <div class="show-tab cursor-pointer" (click)="showFile(file)">
+                                <img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
+                                <div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="historyHealthR[0].record != null && historyHealthR[0].record != ''" class="flex item">
+                    <div>诊疗记录：</div>
+                    <div class="flex-1">{{historyHealthR[0].record}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].reviewDate != null && historyHealthR[0].reviewDate != ''" class="flex item">
+                    <div>复查日期：</div>
+                    <div class="flex-1">{{historyHealthR[0].reviewDate}}</div>
+                </div>
+            </div>
+            <div *ngIf="historyHealthR.length == 0">
+                <nz-alert [nzType]="'info'" [nzMessage]="selectedHistoryHealthRTab == '1' ? '暂无第一次儿保记录' : '暂无最近一次儿保记录'"></nz-alert>
+            </div>
+        </ng-template>
+    </ng-template>
+</nz-card>
+<nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'就诊记录'" [nzContent]="contentTab" [nzFooter]="footerTab" (nzOnCancel)="close()">
+	<ng-template #contentTab>
+      	<div nz-row [nzGutter]="30">
+        	<div nz-col [nzSpan]="12">
+              	<div nz-form-item nz-row>
+                	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+                  		<label>医生：</label>
+                	</div>
+                	<div nz-form-control nz-col [nzSpan]="14">
+    					<nz-select
+    						class="w100"
+    						nzAllowClear
+    						[nzSize]="'large'"
+    						[nzPlaceHolder]="'请选择医生'"
+    						[(ngModel)]="searchInfo.doctor_id"
+    						nzShowSearch>
+    						<nz-option
+    							*ngFor="let doctor of doctorList"
+    							[nzLabel]="doctor.realName"
+    							[nzValue]="doctor.id">
+    						</nz-option>
+    					</nz-select>
+                	</div>
+              	</div>
+        	</div>
+        	<div nz-col [nzSpan]="12">
+              	<div nz-form-item nz-row>
+                	<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+                  		<label>科室：</label>
+                	</div>
+                	<div nz-form-control nz-col [nzSpan]="14">
+    					<nz-select
+    						class="w100"
+    						nzAllowClear
+    						[nzSize]="'large'"
+    						[nzPlaceHolder]="'请选择科室'"
+    						[(ngModel)]="searchInfo.service_id"
+    						nzShowSearch>
+    						<nz-option
+    							*ngFor="let service of serviceList"
+    							[nzLabel]="service.serviceName"
+    							[nzValue]="service.serviceId">
+    						</nz-option>
+    					</nz-select>
+                	</div>
+              	</div>
+        	</div>
+        </div>
+      	<div nz-row [nzGutter]="30" class="mt10 mb10">
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="10" class="text-right">
+                        <label>预约时间：</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="14">
+                        <nz-datepicker (ngModelChange)="searchInfo.bdate_big=$event"
+                        [nzSize]="'large'" class="w100" [ngModel]="searchInfo.bdate_big" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="10" class="text-right">
+                        <label>至：</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="14">
+                        <nz-datepicker (ngModelChange)="searchInfo.bdate_less=$event"
+                        [nzSize]="'large'" class="w100" [ngModel]="searchInfo.bdate_less" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-right mt10 mb10">
+            <button (click)="showHistory()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+        </div>
+        <nz-spin [nzSpinning]="_isSpinning">
+    		<nz-table #nzTable [nzDataSource]="historyList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true" class="w100">
+    			<thead nz-thead>
+    				<tr>
+    					<th>预约科室</th>
+    					<th>接诊医生</th>
+    					<th>宝宝姓名</th>
+    					<th>预约时间</th>
+    					<th class="th-width">备注</th>
+    					<th>操作</th>
+    				</tr>
+    			</thead>
+    			<tbody nz-tbody>
+    				<tr *ngFor="let history of historyList">
+    					<td>{{history.services.length > 0 ? history.services[0].serviceName : ''}}</td>
+    					<td>{{history.services.length > 0 ? history.services[0].userDoctorName : ''}}</td>
+    					<td class="vip-icon-text">{{history.childName}}<img *ngIf="history.memberId != null" class="vip-icon" src="../assets/images/{{history.memberName.indexOf('太阳') != -1 ? 'icon_son.png' : history.memberName.indexOf('月亮') != -1 ? 'icon_moon.png' : history.memberName.indexOf('星星') != -1 ? 'icon_star.png' : 'vip.png'}}" /></td>
+    					<td>
+    						<span>{{history.bookingDate}}</span>
+    						<span>{{history.time}}</span>
+    					</td>
+    					<td>
+    						<div class="length-text">{{history.remark}}</div>
+    					</td>
+    					<td>
+    						<button (click)="goHistory(history)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+    					</td>
+    				</tr>
+    			</tbody>
+        		<span noResult>暂无就诊记录信息</span>
+    		</nz-table>
+        </nz-spin>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()">关闭</button>
+	</ng-template>
+</nz-modal>
+<modal-img url="{{modalImg.url}}" showImg="{{modalImg.showImg}}" (onVoted)="closeImg()"></modal-img>

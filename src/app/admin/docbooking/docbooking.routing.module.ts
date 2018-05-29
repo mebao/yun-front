@@ -17,10 +17,6 @@ import { DocbookingComponent }              from './docbooking.component';
             loadChildren: './visit/docbooking-visit.module#DocbookingVisitModule',
         },
         {
-            path: 'growthrecords',
-            loadChildren: './growthrecords/docbooking-growthrecords.module#DocbookingGrowthrecordsModule',
-        },
-        {
             path: 'casehistory',
             loadChildren: './casehistory/docbooking-casehistory.module#DocbookingCasehistoryModule',
         },

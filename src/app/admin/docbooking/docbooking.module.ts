@@ -9,6 +9,7 @@ import { NavModule }                        from '../nav/nav.module';
 
 // common
 import { AngCommonModule }                  from '../../common/ang-common.module';
+import { DocbookingLeftModule }             from './components/docbooking-left.module';
 
 import { DocbookingRoutingModule }          from './docbooking.routing.module';
 
@@ -27,6 +28,7 @@ import { DocbookingComponent }              from './docbooking.component';
         NgZorroAntdModule,
         NavModule,
         AngCommonModule,
+        DocbookingLeftModule,
         DocbookingRoutingModule,
     ]
 })

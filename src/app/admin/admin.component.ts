@@ -8,7 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 			<ng-container *ngIf="layout == 'left-right'">
 				<div class="page-container flex">
 					<left-nav></left-nav>
-					<div class="right-content flex-1">
+					<div class="right-content flex-1" #divTarget>
+						<nz-back-top [nzTarget]="divTarget"></nz-back-top>
 						<header-nav [theme]="theme" (onVotedTheme)="changeTheme($event)"></header-nav>
 						<router-outlet></router-outlet>
 					</div>

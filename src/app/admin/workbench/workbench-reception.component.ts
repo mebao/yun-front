@@ -12,7 +12,7 @@ import { ENgxPrintComponent }          				  from "e-ngx-print";
 @Component({
 	selector: 'app-scheduling',
 	templateUrl: './workbench-reception.component.html',
-	styleUrls: ['./workbench-reception.component.scss'],
+	styleUrls: ['./workbench-reception.component.scss', '../../../assets/css/ant-common.scss'],
 	// animations: [slideInDownAnimation],
 })
 export class WorkbenchReceptionComponent{

@@ -19,15 +19,17 @@ export class TransactionStatisticsComponent{
 	hasData: boolean;
 	tranList: any[];
 	total: {
+		act: string,
 		needAmount: string,
 		giveAmount: string,
 		paidUp: string,
 		bookingFee: string,
-		cash: string,
+		money: string,
 		online: string,
 		balance: string,
 		gua: string,
 		total: string,
+		truepay: string,
 		discount: string,
 	}
 	url: string;
@@ -70,15 +72,17 @@ export class TransactionStatisticsComponent{
 		this.hasData = false;
 		this.tranList = [];
 		this.total = {
+			act: '',
 			needAmount: '',
 			giveAmount: '',
 			paidUp: '',
 			bookingFee: '',
-			cash: '',
+			money: '',
 			online: '',
 			balance: '',
 			gua: '',
 			total: '',
+			truepay: '',
 			discount: '',
 		}
 
@@ -215,22 +219,25 @@ export class TransactionStatisticsComponent{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length>0){
 					this.total = {
+						act: this.adminService.toDecimal2(results.total.act),
 						needAmount: this.adminService.toDecimal2(results.total.needAmount),
 						giveAmount: this.adminService.toDecimal2(results.total.giveAmount),
 						paidUp: this.adminService.toDecimal2(results.total.paidUp),
 						bookingFee: this.adminService.toDecimal2(results.total.bookingFee),
-						cash: this.adminService.toDecimal2(results.total.cash),
+						money: this.adminService.toDecimal2(results.total.money),
 						online: this.adminService.toDecimal2(results.total.online),
 						balance: this.adminService.toDecimal2(results.total.balance),
 						gua: this.adminService.toDecimal2(results.total.gua),
 						total: this.adminService.toDecimal2(results.total.total),
+						truepay: this.adminService.toDecimal2(results.total.truepay),
 						discount: this.adminService.toDecimal2(results.total.discount),
 					}
 					for(var i=0;i<results.list.length;i++){
 						var numList = [
+							'act',
 							'balance',
 							'bookingFee',
-							'cash',
+							'money',
 							'discount',
 							'giveAmount',
 							'gua',
@@ -238,6 +245,7 @@ export class TransactionStatisticsComponent{
 							'online',
 							'paidUp',
 							'total',
+							'truepay',
 						]
 						for(var j = 0; j < numList.length; j++){
 							results.list[i][numList[j]] = this.adminService.toDecimal2(results.list[i][numList[j]]);

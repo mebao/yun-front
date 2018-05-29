@@ -19,6 +19,7 @@
 						<th>现金</th>
 						<th>线上支付</th>
 						<th>余额支付</th>
+						<th>会员卡</th>
 						<th>挂账</th>
 						<th>交易时间</th>
 						<th>总收入</th>
@@ -32,10 +33,11 @@
 						<td>{{tran.discount}}</td>
 						<td>{{tran.giveAmount}}</td>
 						<td>{{tran.bookingFee}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
+						<td>{{tran.truepay}}</td>
+						<td>{{tran.money}}</td>
 						<td>{{tran.online}}</td>
 						<td>{{tran.balance}}</td>
+						<td>{{tran.act}}</td>
 						<td>{{tran.gua + (tran.gua == '0.00' ? '' : (tran.guastatus == 1 ? '未支付': (tran.guastatus == 2 ? '已支付' : '')))}}</td>
 						<td>{{tran.time}}</td>
 						<td>{{tran.total}}</td>
@@ -49,10 +51,11 @@
 						<td>{{total.discount}}</td>
 						<td>{{total.giveAmount}}</td>
 						<td>{{total.bookingFee}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
 						<td>{{total.online}}</td>
 						<td>{{total.balance}}</td>
+						<td>{{total.act}}</td>
 						<td>{{total.gua}}</td>
 						<td >--</td>
 						<td>{{total.total}}</td>

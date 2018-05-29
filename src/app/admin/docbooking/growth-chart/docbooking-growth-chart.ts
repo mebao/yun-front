@@ -1,6 +1,8 @@
 import { Component, OnInit }                  from '@angular/core';
 import { Router, ActivatedRoute }             from '@angular/router';
 
+import { NzMessageService }                   from 'ng-zorro-antd';
+
 import { AdminService }                       from '../../admin.service';
 import { DoctorService }                      from '../../doctor/doctor.service';
 
@@ -16,11 +18,6 @@ export class DocbookingGrowthChart implements OnInit{
 		title: string,
 		back: boolean,
 		back_url: string,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	loadingShow: boolean;
 	url: string;
@@ -65,46 +62,24 @@ export class DocbookingGrowthChart implements OnInit{
 		remark: string,
 		genderText: string,
 	};
+	hasBookingData: boolean;
 	canEdit: boolean;
 	// pageType 空为医生接诊, history为查看
 	pageType: string;
-	// 就诊记录
-	historyHealthRList: any[];
-	historyHealthR: any[];
-	selectedHistoryHealthRTab: string;
-	historyList: any[];
-	hasHistoryData: boolean;
-	modalTab: boolean;
-
-	adminList: any[];
-	operator: string;
 	healthrecord_id: string;
-	qiniuToken: string;
-	upload_multiple: boolean;
-	acceptType: string;
-	selectFile: {
-		file: string,
-		url: string,
-		showImg: number,
-	}
 	modalConfirmTab: boolean;
-	searchInfo: {
-		doctor_id: string;
-		service_id: string;
-		bdate_less: string,
-		bdate_less_num: number,
-		bdate_less_text: string,
-		bdate_big: string,
-		bdate_big_num: number,
-		bdate_big_text: string,
-	};
-	doctorlist: any[];
-	servicelist: [{}];
+	// 实际操作人
+	actualOperator: {
+		use: boolean,
+		name: string,
+	}
+	operator: string;
 	// 宝宝成长曲线
 	heightGrowth: any;
 	weightGrowth: any;
 
 	constructor(
+		private _message: NzMessageService,
 		private adminService: AdminService,
 		private doctorService: DoctorService,
 		private route: ActivatedRoute,
@@ -118,23 +93,6 @@ export class DocbookingGrowthChart implements OnInit{
 			back: true,
 			back_url: './admin/bookingReceive',
 		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
-
-		this.searchInfo = {
-			doctor_id: '',
-			service_id: '',
-			bdate_less: '',
-			bdate_less_num: 0,
-			bdate_less_text: '',
-			bdate_big: '',
-			bdate_big_num: 0,
-			bdate_big_text: '',
-		}
-
 		this.loadingShow = true;
 
 		this.id = '';
@@ -166,6 +124,7 @@ export class DocbookingGrowthChart implements OnInit{
 			remark: '',
 			genderText: ''
 		};
+		this.hasBookingData = false;
 
 		this.route.queryParams.subscribe((params) => {
 			this.id = params['id'];
@@ -197,7 +156,7 @@ export class DocbookingGrowthChart implements OnInit{
 		var urlDoctor = this.url + '&id=' + this.doctorId;
 		this.adminService.adminlist(urlDoctor).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.adminlist.length > 0){
@@ -205,16 +164,8 @@ export class DocbookingGrowthChart implements OnInit{
 				}
 			}
 		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 		});
-
-		this.historyList = [];
-		this.hasHistoryData = false;
-		this.modalTab = false;
-
-		this.historyHealthRList = [];
-		this.historyHealthR = [];
-		this.selectedHistoryHealthRTab = '1';
 
         this.route.queryParams.subscribe((params) => {
             this.id = params.id;
@@ -222,18 +173,20 @@ export class DocbookingGrowthChart implements OnInit{
             //this.editType = params.type;
         });
 
-		this.healthrecord_id = '';
-		this.qiniuToken = '';
-		this.upload_multiple = true;
-		this.acceptType = 'image/*, application/pdf';
-		this.selectFile = {
-			file: '',
-			url: '',
-			showImg: 0,
+		// 若是登录账号为'嘉宝体检'，则需要选定操作人
+		this.actualOperator = {
+			use: this.adminService.getUser().realname == '嘉宝体检',
+			name: sessionStorage.getItem('actualOperator'),
 		}
+		this.operator = this.adminService.isFalse(this.actualOperator.name) ? '' : this.actualOperator.name;
+
+		this.healthrecord_id = '';
 		this.modalConfirmTab = false;
-		this.getDoctorList();
-		this.getServiceList();
+	}
+
+	// 选择实际操作人
+	selectOperator(_value) {
+		this.operator = _value;
 	}
 
 	initEdit(){
@@ -243,116 +196,12 @@ export class DocbookingGrowthChart implements OnInit{
 		}
 	}
 
-	//医生列表
-	getDoctorList(){
-		var adminlistUrl = this.url + '&clinic_id='
-			 + this.adminService.getUser().clinicId + '&role=2';
-		this.adminService.adminlist(adminlistUrl).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.doctorlist = results.adminlist;
-				this.doctorlist.unshift({id: '', realName: '请选择医生'});
-			}
-		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
-		});
-	}
-
-	//科室列表
-	getServiceList() {
-		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
-		this.adminService.servicelist(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.servicelist = results.servicelist;
-				this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
-			}
-		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
-		});
-	}
-
-	getHistoryHealthRList() {
-		var urlOptions = this.url + '&child_id=' + this.booking.childId + '&latestEarliest=1';
-		this.adminService.searchhealthrecord(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
-					}
-					this.historyHealthR.push(results.list[0]);
-				}
-				this.historyHealthRList = results.list;
-			}
-		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
-		});
-	}
-
-	// 搜索历史记录
-	searhShowHistory(urlOptions) {
-		this.modalTab = true;
-		this.hasHistoryData = false;
-		this.adminService.searchbooking(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.historyList = results.weekbooks;
-				this.hasHistoryData = true;
-			}
-		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
-		});
-	}
-
-	//查询
-	showHistory() {
-		//列表
-		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';;
-		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
-			urlOptionsList += '&doctor_id=' + this.searchInfo.doctor_id;
-		}
-		if(this.searchInfo.service_id && this.searchInfo.service_id != ''){
-			urlOptionsList += '&service_id=' + this.searchInfo.service_id;
-		}
-		if(this.searchInfo.bdate_less && this.searchInfo.bdate_less != ''){
-			urlOptionsList += '&bdate_less=' + this.searchInfo.bdate_less;
-		}
-		if(this.searchInfo.bdate_big && this.searchInfo.bdate_big != ''){
-			urlOptionsList += '&bdate_big=' + this.searchInfo.bdate_big;
-		}
-		this.searhShowHistory(urlOptionsList);
-	}
-
-	// 选择日期
-	changeDates(_value, key) {
-		this.searchInfo[key] = JSON.parse(_value).value;
-		this.searchInfo[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-		this.searchInfo[key + '_text'] = this.adminService.dateFormat(JSON.parse(_value).value);
-	}
-
-	close() {
-		this.modalTab = false;
-	}
-
-	goHistory(history) {
-		window.open('./admin/docbooking?id=' + history.bookingId + '&doctorId=' + history.services[0].userDoctorId + '&pageType=history');
-	}
-
 	getBookingData() {
 		//获取预约信息
 		var urlOptions = this.url + '&id=' + this.id;
 		this.adminService.searchbooking(urlOptions).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.weekbooks.length > 0){
@@ -378,6 +227,7 @@ export class DocbookingGrowthChart implements OnInit{
 						}
 					}
 					this.booking = results.weekbooks[0];
+					this.hasBookingData = true;
 					var fees = results.weekbooks[0].fees;
 					var total = 0;
 					if(fees.length > 0){
@@ -389,14 +239,12 @@ export class DocbookingGrowthChart implements OnInit{
 					sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
 					this.initEdit();
 
-					// 获取小孩儿保记录
-					this.getHistoryHealthRList();
 					// 获取宝宝成长曲线图
 					this.getChildgrowthchart();
 				}
 			}
 		}).catch(() => {
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 		});
 	}
 
@@ -406,38 +254,8 @@ export class DocbookingGrowthChart implements OnInit{
 		if(this.pageType == 'history'){
 			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId, pageType: this.pageType}});
 		}else{
+			this.loadingShow = true;
 			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
-		}
-	}
-
-	changeHistoryHealthRTab(_value) {
-		this.historyHealthR = [];
-		if(_value == '1'){
-			if(this.historyHealthRList.length > 0){
-				this.historyHealthR.push(this.historyHealthRList[0]);
-			}
-		}else{
-			if(this.historyHealthRList.length > 0){
-				this.historyHealthR.push(this.historyHealthRList[this.historyHealthRList.length - 1]);
-			}
-		}
-		this.selectedHistoryHealthRTab = _value;
-	}
-
-	showFile(file) {
-		if(file.mimeType == 'image'){
-			this.selectFile.url = file.fileUrl;
-			this.selectFile.showImg = 1;
-		}else{
-			window.open(file.fileUrl);
-		}
-	}
-
-	closeImg() {
-		this.selectFile = {
-			file: '',
-			url: '',
-			showImg: 0,
 		}
 	}
 
@@ -450,7 +268,7 @@ export class DocbookingGrowthChart implements OnInit{
 		this.adminService.childgrowthchart(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				var heightDataList = [];
@@ -627,22 +445,7 @@ export class DocbookingGrowthChart implements OnInit{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-			this.toastTab('服务器错误', 'error');
+			this._message.error('服务器错误');
 		});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }
