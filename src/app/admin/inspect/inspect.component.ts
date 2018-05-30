@@ -8,6 +8,7 @@ import { AdminService }                   from '../admin.service';
 @Component({
 	selector: 'admin-setup-inspect',
 	templateUrl: './inspect.component.html',
+	styleUrls: ['../../../assets/css/ant-common.scss']
 })
 export class SetupInspectComponent{
 	topBar: {

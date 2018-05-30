@@ -9,7 +9,8 @@ import { ENgxPrintComponent }          from "e-ngx-print";
 
 @Component({
 	selector: 'app-booking-list',
-	templateUrl: './booking-list.component.html'
+	templateUrl: './booking-list.component.html',
+	styleUrls: ['./booking-list.component.scss', '../../../../assets/css/ant-common.scss'],
 })
 export class BookingListComponent implements OnInit{
 	//@ViewChild('print1') printComponent1: ENgxPrintComponent;
@@ -36,16 +37,10 @@ export class BookingListComponent implements OnInit{
 		mobile: string,
 		child_id: string,
 		creator_name: string,
-		cdate_less: string,
-		cdate_less_num: number,
-		cdate_big: string,
-		cdate_big_num: number,
-		bdate_less: string,
-		bdate_less_num: number,
-		bdate_less_text: string,
-		bdate_big: string,
-		bdate_big_num: number,
-		bdate_big_text: string,
+		cdate_less: Date,
+		cdate_big: Date,
+		bdate_less: Date,
+		bdate_big: Date,
 		statuslist: string,
 		status: string,
 		has_sms: string,
@@ -186,23 +181,16 @@ export class BookingListComponent implements OnInit{
 		this.showBookinglist = [];
 		this.weeklist = [];
 
-		var todayDate = this.adminService.getDayByDate(new Date());
 		this.searchInfo = {
 			doctor_id: '',
 			service_id: '',
 			mobile: '',
 			child_id: '',
 			creator_name: '',
-			cdate_less: '',
-			cdate_less_num: 0,
-			cdate_big: '',
-			cdate_big_num: 0,
-			bdate_less: todayDate,
-			bdate_less_num: new Date(todayDate).getTime(),
-			bdate_less_text: this.adminService.dateFormat(todayDate),
-			bdate_big: todayDate,
-			bdate_big_num: new Date(todayDate).getTime(),
-			bdate_big_text: this.adminService.dateFormat(todayDate),
+			cdate_less: null,
+			cdate_big: null,
+			bdate_less: new Date(),
+			bdate_big: new Date(),
 			statuslist: '',
 			status: '',
 			has_sms: '',
@@ -400,7 +388,6 @@ export class BookingListComponent implements OnInit{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.doctorlist = results.adminlist;
-				this.doctorlist.unshift({id: '', realName: '请选择医生'});
 			}
 		}).catch((err) => {
 			this._message.error('服务器错误');
@@ -578,6 +565,7 @@ export class BookingListComponent implements OnInit{
 					}
 					this.weektitle = weektitle;
 					this.weeklist = weeklist;
+					console.log(this.weeklist);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.weekbooks.length > 0){
@@ -653,14 +641,6 @@ export class BookingListComponent implements OnInit{
 	// 	}
 	// }
 
-	selectChild(_value) {
-		if(_value != ''){
-			this.searchInfo.child_id = JSON.parse(_value).childId;
-		}else{
-			this.searchInfo.child_id = '';
-		}
-	}
-
 	//查询
 	search() {
 		//日历
@@ -668,20 +648,48 @@ export class BookingListComponent implements OnInit{
 		this.getList(urlOptions + '&weekindex=' + this.weekNum, 'week');
 		//列表
 		var urlOptionsList = this.getUrlOptios();
-		if(this.searchInfo.cdate_less && this.searchInfo.cdate_less != ''){
-			urlOptionsList += '&cdate_less=' + this.searchInfo.cdate_less;
+		if(this.searchInfo.cdate_less){
+			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_less));
 		}
-		if(this.searchInfo.cdate_big && this.searchInfo.cdate_big != ''){
-			urlOptionsList += '&cdate_big=' + this.searchInfo.cdate_big;
+		if(this.searchInfo.cdate_big){
+			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_big));
 		}
-		if(this.searchInfo.bdate_less && this.searchInfo.bdate_less != ''){
-			urlOptionsList += '&bdate_less=' + this.searchInfo.bdate_less;
+		if(this.searchInfo.bdate_less){
+			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_less));
 		}
-		if(this.searchInfo.bdate_big && this.searchInfo.bdate_big != ''){
-			urlOptionsList += '&bdate_big=' + this.searchInfo.bdate_big;
+		if(this.searchInfo.bdate_big){
+			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_big));
 		}
 		this.getList(urlOptionsList, 'list');
 	}
+
+    _disabledStartCDate = (startValue) => {
+        if (!startValue || !this.searchInfo.cdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.cdate_less.getTime();
+    };
+
+    _disabledEndCDate = (endValue) => {
+        if (!endValue || !this.searchInfo.cdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.cdate_big.getTime();
+    };
+
+    _disabledStartBDate = (startValue) => {
+        if (!startValue || !this.searchInfo.bdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.bdate_less.getTime();
+    };
+
+    _disabledEndBDate = (endValue) => {
+        if (!endValue || !this.searchInfo.bdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.bdate_big.getTime();
+    };
 
 	//查询今天
 	// today() {

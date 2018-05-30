@@ -65,13 +65,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		genderText: string,
 	};
 	hasBookingData: boolean;
-	canEdit: boolean;
 	// 儿保记录
 	healthrecordList: any[];
 	hasHealthrecordData: boolean;
 	// 儿保记录模板
 	recordtempletList: any[];
-	selectedTemplet: string;
+	selectedTemplet: any;
 	// pageType 空为医生接诊, history为查看
 	pageType: string;
 	info: {
@@ -218,16 +217,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		showImg: number,
 	}
 	modalConfirmTab: boolean;
-	searchInfo: {
-		doctor_id: string;
-		service_id: string;
-		bdate_less: string,
-		bdate_less_num: number,
-		bdate_less_text: string,
-		bdate_big: string,
-		bdate_big_num: number,
-		bdate_big_text: string,
-	};
 	createType:string;
 	// 最初数据
 	infoOld:any;
@@ -235,8 +224,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	infoTime: any;
 	timeSaveInterval: any;
 	timeCheckInterval: any;
-	printCSS:any;
-	printStyle:any;
+	// 打印
+	printCSS: any;
+	printStyle: any;
+
 	hasTemplet:boolean;
 
 	constructor(
@@ -418,16 +409,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			blood_pressure: '',
 			teeth_num: '',
 		}
-		this.searchInfo = {
-			doctor_id: '',
-			service_id: '',
-			bdate_less: '',
-			bdate_less_num: 0,
-			bdate_less_text: '',
-			bdate_big: '',
-			bdate_big_num: 0,
-			bdate_big_text: '',
-		}
 
 		this.loadingShow = true;
 
@@ -491,7 +472,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		var urlDoctor = this.url + '&id=' + this.doctorId;
 		this.adminService.adminlist(urlDoctor).then((data) => {
 			if(data.status == 'no'){
-				this.loadingShow = false;
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -500,7 +480,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				}
 			}
 		}).catch(() => {
-			this.loadingShow = false;
 			this._message.error('服务器错误');
 		});
 
@@ -582,13 +561,40 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
   	}
 
-	searchhealthrecord(doctorBooking){
+	getBookingData() {
+		//获取预约信息
+		var urlOptions = this.url + '&id=' + this.id;
+		this.adminService.searchbooking(urlOptions).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				if(results.weekbooks.length > 0){
+					this.booking = results.weekbooks[0];
+					this.hasBookingData = true;
+
+					// 获取儿保记录
+					this.getHealthrecordData();
+				}else{
+					this.loadingShow = false;
+					this._message.error('数据错误');
+				}
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	getHealthrecordData(){
 		// 儿保记录
 		this.hasHealthrecordData = false;
 
 		var healthrecordUrl = this.url + '&booking_id=' + this.id + '&unchecked=0';
 		this.adminService.searchhealthrecord(healthrecordUrl).then((data) => {
 			if(data.status == 'no'){
+				this.loadingShow = false;
 				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
@@ -600,45 +606,16 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				}
 				this.healthrecordList = results.list;
 				this.hasHealthrecordData = true;
-				if(this.hasHealthrecordData && this.healthrecordList.length == 0){
+				if(this.healthrecordList.length == 0){
 					this.editType = 'create';
 					// 开启定时器
 					this.intervalChange();
-					// 儿保记录模板
-					this.recordtempletList = [];
-					this.selectedTemplet = '';
-					var searchrecordtempletUrl = this.url + '&doctor_id=' + this.doctorId
-						 + '&status=1';
-					this.doctorService.searchrecordtemplet(searchrecordtempletUrl).then((data) => {
-						if(data.status == 'no'){
-							this.loadingShow = false;
-							this._message.error(data.errorMsg);
-						}else{
-							var results = JSON.parse(JSON.stringify(data.results));
-							if(results.list.length > 0){
-								for(var i = 0; i < results.list.length; i++){
-									results.list[i].string = JSON.stringify(results.list[i]);
-								}
-							}
-							this.recordtempletList = results.list;
-							if(this.recordtempletList.length > 0){
-								this.selectedTemplet = this.recordtempletList[0].string;
-								sessionStorage.setItem('doctorBookingRecordTemplet', JSON.stringify(this.recordtempletList[0]));
-								var healthrecord =  [];
-								this.initEdit(doctorBooking,healthrecord);
-							}else{
-								this.hasTemplet = false;
-								this.loadingShow = false;
-							}
-						}
-					}).catch(() => {
-						this.loadingShow = false;
-						this._message.error('服务器错误');
-					});
+					// 获取儿保记录模板
+					this.getHealthrecordTempletData();
 				}else{
 					this.editType = 'view';
 					var healthrecord =  results.list[0];
-					this.initEdit(doctorBooking,healthrecord);
+					this.structureData(healthrecord);
 				}
 				// 若是查看历史记录
 				if(this.pageType == 'history'){
@@ -646,33 +623,63 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				}
 			}
 		}).catch(() => {
+			this.loadingShow = false;
 			this._message.error('服务器错误');
 		});
 	}
 
-	initEdit(doctorBooking,healthrecord){
-		this.loadingShow = false;
+	getHealthrecordTempletData() {
+		this.recordtempletList = [];
+		this.selectedTemplet = {};
+		var searchrecordtempletUrl = this.url + '&doctor_id=' + this.doctorId
+			 + '&status=1';
+		this.doctorService.searchrecordtemplet(searchrecordtempletUrl).then((data) => {
+			if(data.status == 'no'){
+				this.loadingShow = false;
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.recordtempletList = results.list;
+				if(this.recordtempletList.length > 0){
+					// 默认选中第一个模板
+					this.selectedTemplet = this.recordtempletList[0];
+					var healthrecord =  [];
+					this.structureData(healthrecord);
+				}else{
+					this.hasTemplet = false;
+					this.loadingShow = false;
+				}
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	structureData(healthrecord){
 		var todayDate = this.adminService.getDayByDate(new Date());
-		if(this.editType == 'update' || this.pageType == 'examine'){
+		if(this.editType == 'view'){
+			this.loadingShow = false;
+		}else if(this.editType == 'update' || this.pageType == 'examine'){
 			this.info = {
 				id: healthrecord.id,
-				child_id: doctorBooking.childId,
-				booking_id: doctorBooking.bookingId,
-				name: doctorBooking.childName,
-				age: doctorBooking.age,
+				child_id: this.booking.childId,
+				booking_id: this.booking.bookingId,
+				name: this.booking.childName,
+				age: this.booking.age,
 				check_date: healthrecord.checkDate,
-				height: healthrecord.height == '0.00' ? '' : healthrecord.height,
-				medium_height: healthrecord.mediumHeight == '0.00' ? '' : healthrecord.mediumHeight,
+				height: healthrecord.height,
+				medium_height: healthrecord.mediumHeight,
 				compare_height: healthrecord.compareHeight,
-				weight: healthrecord.weight == '0.00' ? '' : healthrecord.weight,
-				medium_weight: healthrecord.mediumWeight == '0.00' ? '' : healthrecord.mediumWeight,
+				weight: healthrecord.weight,
+				medium_weight: healthrecord.mediumWeight,
 				compare_weight: healthrecord.compareWeight,
-				head_circum: healthrecord.headCircum == '0.00' ? '' : healthrecord.headCircum,
-				breast_circum: healthrecord.breastCircum == '0.00' ? '' : healthrecord.breastCircum,
-				body_temperature: healthrecord.bodyTemperature == '0' ? '' : healthrecord.bodyTemperature,
-				pulse: healthrecord.pulse == '0' ? '' : healthrecord.pulse,
-				breathe: healthrecord.breathe == '0' ? '' : healthrecord.breathe,
-				blood_pressure: healthrecord.bloodPressure == '0' ? '' : healthrecord.bloodPressure,
+				head_circum: healthrecord.headCircum,
+				breast_circum: healthrecord.breastCircum,
+				body_temperature: healthrecord.bodyTemperature,
+				pulse: healthrecord.pulse,
+				breathe: healthrecord.breathe,
+				blood_pressure: healthrecord.bloodPressure,
 				spirit: healthrecord.spirit,
 				spirit_other: healthrecord.spirit == '正常' ? '' : healthrecord.spirit,
 				nutritional_status: healthrecord.nutritionalStatus,
@@ -778,13 +785,14 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				blood_pressure: healthrecord.bloodPressure,
 				teeth_num: healthrecord.teeth_num,
 			}
-		}else if(this.editType=='create'){
+			this.loadingShow = false;
+		}else if(this.editType == 'create'){
 			this.info = {
 				id: '',
-				child_id: doctorBooking.childId,
-				booking_id: doctorBooking.bookingId,
-				name: doctorBooking.childName,
-				age: doctorBooking.age,
+				child_id: this.booking.childId,
+				booking_id: this.booking.bookingId,
+				name: this.booking.childName,
+				age: this.booking.age,
 				check_date: this.adminService.getDayByDate(new Date()),
 				height: null,
 				medium_height: null,
@@ -907,12 +915,14 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			var childcontrastUrl = '?child_id=' + this.booking.childId;
 			 this.adminService.childcontrast(childcontrastUrl).then((data) => {
 				if(data.status == 'no'){
+					this.loadingShow = false;
 					this._message.error(data.errorMsg);
 				}else{
 					var childcontrast = JSON.parse(JSON.stringify(data.results));
-					this.doctorBookingRecordTemplet(childcontrast);
+					this.structureTempletData(childcontrast);
 				}
 			}).catch(() => {
+				this.loadingShow = false;
 				this._message.error('服务器错误');
 			});
 
@@ -921,150 +931,150 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.infoTime = JSON.parse(JSON.stringify(this.info));
 	}
 
-	doctorBookingRecordTemplet(childcontrast){
-		var doctorBookingRecordTemplet = JSON.parse(sessionStorage.getItem('doctorBookingRecordTemplet'));
-		if(doctorBookingRecordTemplet != null){
-			if(doctorBookingRecordTemplet.recordkeys.length > 0){
-				for(var i = 0; i < doctorBookingRecordTemplet.recordkeys.length; i++){
-					if(doctorBookingRecordTemplet.recordkeys[i].value == null){
-						this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
+	structureTempletData(childcontrast){
+		var recordTemplet = this.selectedTemplet;
+		if(recordTemplet != null){
+			if(recordTemplet.recordkeys.length > 0){
+				for(var i = 0; i < recordTemplet.recordkeys.length; i++){
+					if(recordTemplet.recordkeys[i].value == null){
+						this.info[recordTemplet.recordkeys[i].key] = '';
 					}else{
-						if(this.info[doctorBookingRecordTemplet.recordkeys[i].key+'_other'] != 'undefined'){
-							this.info[doctorBookingRecordTemplet.recordkeys[i].key+'_other'] = doctorBookingRecordTemplet.recordkeys[i].value;
+						if(this.info[recordTemplet.recordkeys[i].key+'_other'] != 'undefined'){
+							this.info[recordTemplet.recordkeys[i].key+'_other'] = recordTemplet.recordkeys[i].value;
 						}
-							this.info[doctorBookingRecordTemplet.recordkeys[i].key]	= doctorBookingRecordTemplet.recordkeys[i].value;
+							this.info[recordTemplet.recordkeys[i].key]	= recordTemplet.recordkeys[i].value;
 					}
-					// this.info[doctorBookingRecordTemplet.recordkeys[i].key] = '';
-					this.baseInfo[doctorBookingRecordTemplet.recordkeys[i].key] = '';
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_height'){
+					// this.info[recordTemplet.recordkeys[i].key] = '';
+					this.baseInfo[recordTemplet.recordkeys[i].key] = '';
+					if(recordTemplet.recordkeys[i].key=='medium_height'){
 						if(childcontrast.info){
 							this.info.medium_height = childcontrast.info.height;
 						}else{
 							this.info.medium_height = '';
 						}
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='medium_weight'){
+					if(recordTemplet.recordkeys[i].key=='medium_weight'){
 						if(childcontrast.info){
 							this.info.medium_weight = childcontrast.info.weight;
 						}else{
 							this.info.medium_weight = '';
 						}
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='spirit' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='spirit' && recordTemplet.recordkeys[i].value == ''){
 							this.info.spirit = '正常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='skin' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='skin' && recordTemplet.recordkeys[i].value == ''){
 							this.info.skin = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='oral_mucosa' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='oral_mucosa' && recordTemplet.recordkeys[i].value == ''){
 							this.info.oral_mucosa = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='hair' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='hair' && recordTemplet.recordkeys[i].value == ''){
 							this.info.hair = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='lymph_node' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='lymph_node' && recordTemplet.recordkeys[i].value == ''){
 							this.info.lymph_node = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='heart' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='heart' && recordTemplet.recordkeys[i].value == ''){
 							this.info.heart = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='thoracic' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='thoracic' && recordTemplet.recordkeys[i].value == ''){
 							this.info.thoracic = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='lung' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='lung' && recordTemplet.recordkeys[i].value == ''){
 							this.info.lung = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='liver_spleen' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='liver_spleen' && recordTemplet.recordkeys[i].value == ''){
 							this.info.liver_spleen = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='kidney' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='kidney' && recordTemplet.recordkeys[i].value == ''){
 							this.info.kidney = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='abdomen' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='abdomen' && recordTemplet.recordkeys[i].value == ''){
 							this.info.abdomen = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='mammary_gland' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='mammary_gland' && recordTemplet.recordkeys[i].value == ''){
 							this.info.mammary_gland = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='ear' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='ear' && recordTemplet.recordkeys[i].value == ''){
 							this.info.ear = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='nose' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='nose' && recordTemplet.recordkeys[i].value == ''){
 							this.info.nose = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='throat' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='throat' && recordTemplet.recordkeys[i].value == ''){
 							this.info.throat = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='tonsil' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='tonsil' && recordTemplet.recordkeys[i].value == ''){
 							this.info.tonsil = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='eyes' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='eyes' && recordTemplet.recordkeys[i].value == ''){
 							this.info.eyes = '未见明显畸形';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='vision' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='vision' && recordTemplet.recordkeys[i].value == ''){
 							this.info.vision = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='gums' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='gums' && recordTemplet.recordkeys[i].value == ''){
 							this.info.gums = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='tongue_tie' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='tongue_tie' && recordTemplet.recordkeys[i].value == ''){
 							this.info.tongue_tie = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='teeth_pit' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='teeth_pit' && recordTemplet.recordkeys[i].value == ''){
 							this.info.teeth_pit = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='plaque' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='plaque' && recordTemplet.recordkeys[i].value == ''){
 							this.info.plaque = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='teeth_num' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='teeth_num' && recordTemplet.recordkeys[i].value == ''){
 							this.info.teeth_num = '未萌牙';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='dental_caries' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='dental_caries' && recordTemplet.recordkeys[i].value == ''){
 							this.info.dental_caries = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='limb' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='limb' && recordTemplet.recordkeys[i].value == ''){
 							this.info.limb = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='ribs' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='ribs' && recordTemplet.recordkeys[i].value == ''){
 							this.info.ribs = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='hip_joint' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='hip_joint' && recordTemplet.recordkeys[i].value == ''){
 							this.info.hip_joint = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='torticollis' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='torticollis' && recordTemplet.recordkeys[i].value == ''){
 							this.info.torticollis = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='genitalia' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='genitalia' && recordTemplet.recordkeys[i].value == ''){
 							this.info.genitalia = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='anus' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='anus' && recordTemplet.recordkeys[i].value == ''){
 							this.info.anus = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='neurodevelopment' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='neurodevelopment' && recordTemplet.recordkeys[i].value == ''){
 							this.info.neurodevelopment = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='blood_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='blood_routine_examination' && recordTemplet.recordkeys[i].value == ''){
 							this.info.blood_routine_examination = '红细胞数：     ，白细胞总数：     ，血小板总数：     ，血红蛋白：     ';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='routine_urine' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='routine_urine' && recordTemplet.recordkeys[i].value == ''){
 							this.info.routine_urine = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='stool_routine_examination' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='stool_routine_examination' && recordTemplet.recordkeys[i].value == ''){
 							this.info.stool_routine_examination = '隐血：\n镜检：';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='bone_density' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='bone_density' && recordTemplet.recordkeys[i].value == ''){
 							this.info.bone_density = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='BALP' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='BALP' && recordTemplet.recordkeys[i].value == ''){
 							this.info.BALP = '未见异常';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='trace_element' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='trace_element' && recordTemplet.recordkeys[i].value == ''){
 							this.info.trace_element = '锌：     ，铁：     ，钙：     ，镁：     ，铜：     ';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='heavy_metal' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='heavy_metal' && recordTemplet.recordkeys[i].value == ''){
 							this.info.heavy_metal = '铅：     ，镉：     ，锰：     ';
 					}
-					if(doctorBookingRecordTemplet.recordkeys[i].key=='nutritional_status' && doctorBookingRecordTemplet.recordkeys[i].value == ''){
+					if(recordTemplet.recordkeys[i].key=='nutritional_status' && recordTemplet.recordkeys[i].value == ''){
 							this.info.nutritional_status = '良好';
 					}
 				}
@@ -1073,7 +1083,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			this.infoTime = JSON.parse(JSON.stringify(this.info));
 		}
 		// 若就诊管理中，添加了小孩临时信息，则直接使用
-		if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure){
+		if(this.info.height != null || this.info.weight != null || this.info.breathe != null || this.info.body_temperature != null || this.info.blood_pressure != null){
 			var childinfoUrl = this.url + '&child_id=' + this.booking.childId;
 			this.adminService.getChildinfo(childinfoUrl).then((data) => {
 				if(data.status == 'no'){
@@ -1136,64 +1146,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				this._message.error('服务器错误');
 			});
 		}
+		this.loadingShow = false;
 	}
 
 	// 选择实际操作人
 	selectOperator(_value) {
 		this.operator = _value;
-	}
-
-	getBookingData() {
-		//获取预约信息
-		var urlOptions = this.url + '&id=' + this.id;
-		this.adminService.searchbooking(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this._message.error(data.errorMsg);
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.weekbooks.length > 0){
-					if((new Date().getTime() - 24*60*60*1000) > new Date(results.weekbooks[0].bookingDate).getTime()){
-						this.canEdit = false;
-					}else{
-						this.canEdit = true;
-					}
-					if(results.weekbooks[0].services.length > 0){
-						for(var i = 0; i < results.weekbooks[0].services.length; i++){
-							if(!this.adminService.isFalse(results.weekbooks[0].services[i].begin)){
-								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '年');
-								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace('-', '月');
-								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.replace(' ', '日 ');
-								results.weekbooks[0].services[i].begin = results.weekbooks[0].services[i].begin.slice(0, results.weekbooks[0].services[i].begin.indexOf(' '));
-							}
-							if(!this.adminService.isFalse(results.weekbooks[0].services[i].end)){
-								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '年');
-								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace('-', '月');
-								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.replace(' ', '日 ');
-								results.weekbooks[0].services[i].end = results.weekbooks[0].services[i].end.slice(0, results.weekbooks[0].services[i].end.indexOf(' '));
-							}
-						}
-					}
-					this.booking = results.weekbooks[0];
-					this.hasBookingData = true;
-					var fees = results.weekbooks[0].fees;
-					var total = 0;
-					if(fees.length > 0){
-						for(var i = 0; i < fees.length; i++){
-							total += Number(fees[i].fee);
-						}
-					}
-					this.booking.totalFee = this.adminService.toDecimal2(total.toString());
-					var doctorBooking = this.booking;
-					this.searchhealthrecord(doctorBooking);
-				}else{
-					this.loadingShow = false;
-				}
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-			this._message.error('服务器错误');
-		});
 	}
 
 	changeTab(_value, url) {
@@ -1207,20 +1165,17 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		}
 	}
 
-	// 新增儿保记录
-	addHealthrecord() {
-		if(this.selectedTemplet == ''){
+	// 切换模板
+	changeTemplate() {
+		if(!this.selectedTemplet.id){
 			this._message.error('请先选择模板');
 			return;
 		}
-		sessionStorage.setItem('doctorBookingRecordTemplet', this.selectedTemplet);
-		// sessionStorage.setItem('doctorBooking', JSON.stringify(this.booking));
-		//this.router.navigate(['./admin/bookingHealthrecord'], {queryParams: {id: this.id, doctorId: this.doctorId, childId: this.booking.childId, type: 'create'}});
 		this.editType = 'create';
 		// 开启定时器
 		this.intervalChange();
 		var healthrecord = [];
-		this.initEdit(this.booking,healthrecord);
+		this.structureData(healthrecord);
 	}
 
 	// 修改儿保记录
@@ -1235,21 +1190,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		this.editType = 'update';
 		// 开启定时器
 		this.intervalChange();
-		this.initEdit(this.booking,healthrecord);
+		this.structureData(healthrecord);
 		this.btnCanEdit = false;
 	}
 
 	// 身高对比
     changeHeight() {
-		if(this.info.height == null){
-			this.info.height = '';
-		}
-		if(this.info.medium_height == null){
-			this.info.medium_height = '';
-		}
-		if(this.info.compare_height == null){
-			this.info.compare_height = '';
-		}
         if(!this.adminService.isFalse(this.info.height) && parseFloat(this.info.height) < 0){
             this._message.error('身高应大于0');
             return;
@@ -1268,15 +1214,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 
     // 体重对比
     changeWeight() {
-		if(this.info.weight == null){
-			this.info.weight = '';
-		}
-		if(this.info.medium_weight == null){
-			this.info.medium_weight = '';
-		}
-		if(this.info.compare_weight == null){
-			this.info.compare_weight = '';
-		}
         if(!this.adminService.isFalse(this.info.weight) && parseFloat(this.info.weight) < 0){
             this._message.error('体重应大于0');
             return;
@@ -1307,9 +1244,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		if(!this.adminService.isFalse(this.info[type]) && Number(this.info[type]) < 0){
 			this._message.error(info + '应大于0');
 			return false;
-		}
-		if(this.info[type] == null){
-			this.info[type] = '';
 		}
 		return true;
 	}
@@ -1470,18 +1404,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
             child_id: this.info.child_id,
             booking_id: this.info.booking_id,
             check_date: this.adminService.dateFormatHasWord(this.booking.bookingDate),
-            height: this.info.height == '' ? '0' : (this.info.height == null ? (this.baseInfo.height == null ? null : '0') : this.info.height),
-            medium_height: this.info.medium_height == '' ? '0' : (this.info.medium_height == null ? (this.baseInfo.medium_height == null ? null : '0') : this.info.medium_height),
+            height: this.info.height == null ? (this.baseInfo.height == null ? null : '') : this.info.height,
+            medium_height: this.info.medium_height == null ? (this.baseInfo.medium_height == null ? null : '') : this.info.medium_height,
             compare_height: this.info.compare_height,
-            weight: this.info.weight == '' ? '0' : (this.info.weight == null ? (this.baseInfo.weight == null ? null : '0') : this.info.weight),
-            medium_weight: this.info.medium_weight == '' ? '0' : (this.info.medium_weight == null ? (this.baseInfo.medium_weight == null ? null : '0') : this.info.medium_weight),
+            weight: this.info.weight == null ? (this.baseInfo.weight == null ? null : '') : this.info.weight,
+            medium_weight: this.info.medium_weight == null ? (this.baseInfo.medium_weight == null ? null : '') : this.info.medium_weight,
             compare_weight: this.info.compare_weight,
-            head_circum: this.info.head_circum == '' ? '0' : (this.info.head_circum == null ? (this.baseInfo.head_circum == null ? null : '0') : this.info.head_circum),
-            breast_circum: this.info.breast_circum == '' ? '0' : (this.info.breast_circum == null ? (this.baseInfo.breast_circum == null ? null : '0') : this.info.breast_circum),
-            body_temperature: this.info.body_temperature == '' ? '0' : (this.info.body_temperature == null ? (this.baseInfo.body_temperature == null ? null : '0') : this.info.body_temperature),
-            pulse: this.info.pulse == '' ? '0' : (this.info.pulse == null ? (this.baseInfo.pulse == null ? null : '0') : this.info.pulse),
-            breathe: this.info.breathe == '' ? '0' : (this.info.breathe == null ? (this.baseInfo.breathe == null ? null : '0') : this.info.breathe),
-            blood_pressure: this.info.blood_pressure == '' ? '0' : (this.info.blood_pressure == null ? (this.baseInfo.blood_pressure == null ? null : '0') : this.info.blood_pressure),
+            head_circum: this.info.head_circum == null ? (this.baseInfo.head_circum == null ? null : '') : this.info.head_circum,
+            breast_circum: this.info.breast_circum == null ? (this.baseInfo.breast_circum == null ? null : '') : this.info.breast_circum,
+            body_temperature: this.info.body_temperature == null ? (this.baseInfo.body_temperature == null ? null : '') : this.info.body_temperature,
+            pulse: this.info.pulse == null ? (this.baseInfo.pulse == null ? null : '') : this.info.pulse,
+            breathe: this.info.breathe == null ? (this.baseInfo.breathe == null ? null : '') : this.info.breathe,
+            blood_pressure: this.info.blood_pressure == null ? (this.baseInfo.blood_pressure == null ? null : '') : this.info.blood_pressure,
             spirit: this.info.spirit !='' ? this.info.spirit : this.info.spirit_other,
             nutritional_status: this.info.nutritional_status,
             skin: this.info.skin != '' ? this.info.skin : this.info.skin_other,
@@ -1537,9 +1471,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
         }
 
         var urlOptions = '';
-        if(this.editType == 'create'){
-            urlOptions = '';
-        }else{
+        if(this.editType != 'create'){
 			urlOptions = '/' + JSON.parse(sessionStorage.getItem('healthrecord')).id;
 		}
 		if(type == '' && this.pageType != 'examine'){

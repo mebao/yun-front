@@ -46,7 +46,7 @@
 					</div>
 				</td>
 				<td>{{followups.childName}}</td>
-				<td [ngClass]="{'color-error': followups.statusCode == '1' && followups.days < 14 && followups.days >= 0}">{{followups.time}}</td>
+				<td><nz-tag [nzColor]="(followups.statusCode == '1' && followups.days < 14 && followups.days >= 0) ? '#f04134' : ''">{{followups.time}}</nz-tag></td>
 				<td><div class="length-text">{{followups.account}}</div></td>
 				<td><div class="length-text">{{followups.remarks}}</div></td>
 				<td><div class="length-text">{{followups.results}}</div></td>

@@ -2,6 +2,8 @@ import { Component, OnInit }                 from '@angular/core';
 import { Router, ActivatedRoute }            from '@angular/router';
 import { Observable }                        from 'rxjs';
 
+import { NzMessageService }                  from 'ng-zorro-antd';
+
 import { DialogService }                     from '../dialog.service';
 
 import { AdminService }                      from '../admin.service';
@@ -9,16 +11,12 @@ import { AdminService }                      from '../admin.service';
 @Component({
 	selector: 'admin-inspect-resutls',
 	templateUrl: './inspect-results.component.html',
+	styleUrls: ['../../../assets/css/ant-common.scss']
 })
 export class InspectResultsComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	loadingShow: boolean;
 	// modal-img
@@ -34,6 +32,9 @@ export class InspectResultsComponent{
 	bookingInfo: {
 		imageUrl: string,
 		childName: string,
+		userName: string,
+		doctorName: string,
+		time: string,
 	};
 	buttonType: string;
 	// 上传图片token
@@ -46,6 +47,7 @@ export class InspectResultsComponent{
 	printStyle: any;
 
 	constructor(
+		private _message: NzMessageService,
 		private adminService: AdminService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -99,11 +101,6 @@ export class InspectResultsComponent{
 			title: '检查',
 			back: true,
 		};
-		this.toast = {
-			show: 0,
-			text: '',
-			type:  '',
-		};
 		// modal-img
 		this.modalImg = {
 			url: '',
@@ -114,6 +111,9 @@ export class InspectResultsComponent{
 		this.bookingInfo = {
 			imageUrl: '',
 			childName: '',
+			userName: '',
+			doctorName: '',
+			time: '',
 		}
 		this.buttonType = 'update';
 
@@ -129,12 +129,12 @@ export class InspectResultsComponent{
 		var tokenUrl  = '?type=static';
 		this.adminService.qiniutoken(tokenUrl).then((data) => {
 			if(data.status == 'no'){
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				this.token = JSON.parse(JSON.stringify(data)).uptoken;
 			}
 		}).catch(() => {
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 
 		this.getData('');
@@ -177,13 +177,16 @@ export class InspectResultsComponent{
 		this.adminService.usercheckprojectinfo(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+				this._message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					this.bookingInfo = {
 						imageUrl: results.list[0].imageUrl,
 						childName: results.list[0].childName,
+						userName: results.list[0].userName,
+						doctorName: results.list[0].doctorName,
+						time: results.list[0].time,
 					}
 					for(var i = 0; i < results.list.length; i++){
 						results.list[i].resultListNum = results.list[i].resultList.length;
@@ -245,7 +248,7 @@ export class InspectResultsComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+            this._message.error('服务器错误');
         });
 	}
 
@@ -371,7 +374,7 @@ export class InspectResultsComponent{
 			// 判断是否为空
 			if(!this.adminService.isFalse(result.values)){
 				if(parseFloat(result.values) < 0){
-					this.toastTab(result.checkInfoKey + '检查结果应大于等于0', 'error');
+					this._message.error(result.checkInfoKey + '检查结果应大于等于0');
 					return;
 				}
 				if(parseFloat(result.values) < parseFloat(result.low)){
@@ -450,7 +453,7 @@ export class InspectResultsComponent{
 							if(!this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && this.checkProjectList[indexCheck].resultList[i].values != ''){
 								result.values = this.checkProjectList[indexCheck].resultList[i].values;
 							}else{
-								this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空', 'error');
+								this._message.error(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空');
 								this.btnCanEdit = false;
 								return;
 							}
@@ -460,13 +463,13 @@ export class InspectResultsComponent{
 					}else{
 						// 非空判断
 						if(this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values)){
-							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空', 'error');
+							this._message.error(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果不可为空');
 							this.btnCanEdit = false;
 							return;
 						}
 						// 若是数字类型，则大于0
 						if(this.checkProjectList[indexCheck].resultList[i].isNum && !this.adminService.isFalse(this.checkProjectList[indexCheck].resultList[i].values) && parseFloat(this.checkProjectList[indexCheck].resultList[i].values) < 0){
-							this.toastTab(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果应大于0', 'error');
+							this._message.error(this.checkProjectList[indexCheck].resultList[i].checkInfoKey + '检查结果应大于0');
 							this.btnCanEdit = false;
 							return;
 						}
@@ -488,32 +491,32 @@ export class InspectResultsComponent{
 			if(this.checkProjectList[indexCheck].editType == 'create'){
 				this.adminService.usercheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
+						this._message.error(data.errorMsg);
 						this.btnCanEdit = false;
 					}else{
 						this.getData(this.selectTab);
-						this.toastTab('检查结果添加成功', '');
+						this._message.success('检查结果添加成功');
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
 						this.checkProjectListOld = JSON.parse(JSON.stringify(this.checkProjectList));
 					}
 				}).catch(() => {
-	                this.toastTab('服务器错误', 'error');
+	                this._message.error('服务器错误');
 					this.btnCanEdit = false;
 	            });
 			}else{
 				this.adminService.updatecheckresult(this.checkProjectList[indexCheck].id, params).then((data) => {
 					if(data.status == 'no'){
-						this.toastTab(data.errorMsg, 'error');
+						this._message.error(data.errorMsg);
 					}else{
 						this.getData(this.selectTab);
-						this.toastTab('检查结果修改成功', '');
+						this._message.success('检查结果修改成功');
 						this.buttonType = 'update';
 						this.btnCanEdit = false;
 						this.checkProjectListOld = JSON.parse(JSON.stringify(this.checkProjectList));
 					}
 				}).catch(() => {
-	                this.toastTab('服务器错误', 'error');
+	                this._message.error('服务器错误');
 	            });
 			}
 		}
@@ -521,20 +524,5 @@ export class InspectResultsComponent{
 
 	print(check) {
 		window.open('./admin/inspectResults/print?id=' + check.id + '&layout=all');
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

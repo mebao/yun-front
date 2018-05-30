@@ -66,16 +66,16 @@
 											<div class="text-right">
 												<e-ngx-print *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')"
 													[btnText]="'打印'"
-													[btnClass]="{'pure-button': true, 'pure-button-primary': true}"
+													[btnClass]="{'ant-btn': true, 'ant-btn-primary': true, 'ant-btn-lg': true}"
 													[printHTML]="print_div"
 													[printStyle]="printStyle"
 													[printCSS]="printCSS">
 												</e-ngx-print>
-												<button *ngIf="editType == 'update'" (click)="cancel()" class="pure-button">取消</button>
-												<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')" (click)="updateHealthrecord(healthrecord)" class="pure-button pure-button-primary">修改</button>
+												<button *ngIf="editType == 'update'" (click)="cancel()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+												<button *ngIf="(pageType != 'examine' && editType != 'update') || (pageType == 'examine' && editType != 'update')" (click)="updateHealthrecord(healthrecord)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 											</div>
 										</div>
-										<div *ngIf="editType == 'view'">
+										<ng-template #viewTab>
 											<div
 												*ngIf="healthrecord.height != null || healthrecord.mediumHeight != null || healthrecord.weight != null || healthrecord.mediumWeight != null || healthrecord.headCircum != null || healthrecord.breastCircum != null"
 												class="section">
@@ -84,51 +84,51 @@
 													<div *ngIf="healthrecord.height != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">身高：</label>
 														<div class="flex-1">
-															{{healthrecord.height == '0.00' ? '' : healthrecord.height}}
-															<span *ngIf="healthrecord.height != '0.00'" class="pl5">cm</span>
+															{{healthrecord.height}}
+															<span *ngIf="healthrecord.height != ''" class="pl5">cm</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">中等值：</label>
 														<div class="flex-1">
-															{{healthrecord.mediumHeight == '0.00' ? '' : healthrecord.mediumHeight}}
-															<span *ngIf="healthrecord.mediumHeight != '0.00'" class="pl5">cm</span>
+															{{healthrecord.mediumHeight}}
+															<span *ngIf="healthrecord.mediumHeight != ''" class="pl5">cm</span>
 														</div>
 													</div>
-													<div *ngIf="healthrecord.height != null || healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
+													<div *ngIf="healthrecord.height != null && healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">身高对比：</label>
 														<div class="flex-1">{{healthrecord.compareHeight}}</div>
 													</div>
 													<div *ngIf="healthrecord.weight != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">体重：</label>
 														<div class="flex-1">
-															{{healthrecord.weight == '0.00' ? '' : healthrecord.weight}}
-															<span *ngIf="healthrecord.weight != '0.00'" class="pl5">kg</span>
+															{{healthrecord.weight}}
+															<span *ngIf="healthrecord.weight != ''" class="pl5">kg</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">中等值：</label>
 														<div class="flex-1">
-															{{healthrecord.mediumWeight == '0.00' ? '' : healthrecord.mediumWeight}}
-															<span *ngIf="healthrecord.mediumWeight != '0.00'" class="pl5">kg</span>
+															{{healthrecord.mediumWeight}}
+															<span *ngIf="healthrecord.mediumWeight != ''" class="pl5">kg</span>
 														</div>
 													</div>
-													<div *ngIf="healthrecord.weight != null || healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
+													<div *ngIf="healthrecord.weight != null && healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">体重对比：</label>
 														<div class="flex-1">{{healthrecord.compareWeight}}</div>
 													</div>
 													<div *ngIf="healthrecord.headCircum != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">头围：</label>
 														<div class="flex-1">
-															{{healthrecord.headCircum == '0.00' ? '' : healthrecord.headCircum}}
-															<span *ngIf="healthrecord.headCircum != '0.00'" class="pl5">cm</span>
+															{{healthrecord.headCircum}}
+															<span *ngIf="healthrecord.headCircum != ''" class="pl5">cm</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.breastCircum != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">胸围：</label>
 														<div class="flex-1">
-															{{healthrecord.breastCircum == '0.00' ? '' : healthrecord.breastCircum}}
-															<span *ngIf="healthrecord.breastCircum != '0.00'" class="pl5">cm</span>
+															{{healthrecord.breastCircum}}
+															<span *ngIf="healthrecord.breastCircum != ''" class="pl5">cm</span>
 														</div>
 													</div>
 												</div>
@@ -141,29 +141,29 @@
 													<div *ngIf="healthrecord.bodyTemperature != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">体温：</label>
 														<div class="flex-1">
-															{{healthrecord.bodyTemperature == '0' ? '' : healthrecord.bodyTemperature}}
-															<span *ngIf="healthrecord.bodyTemperature != '' && healthrecord.bodyTemperature != '0'" class="pl5">°C</span>
+															{{healthrecord.bodyTemperature}}
+															<span *ngIf="healthrecord.bodyTemperature != '' && healthrecord.bodyTemperature != ''" class="pl5">°C</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.pulse != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">脉搏：</label>
 														<div class="flex-1">
-															{{healthrecord.pulse == '0' ? '' : healthrecord.pulse}}
-															<span *ngIf="healthrecord.pulse != '' && healthrecord.pulse != '0'" class="pl5">次/分钟</span>
+															{{healthrecord.pulse}}
+															<span *ngIf="healthrecord.pulse != '' && healthrecord.pulse != ''" class="pl5">次/分钟</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.breathe != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">呼吸：</label>
 														<div class="flex-1">
-															{{healthrecord.breathe == '0' ? '' : healthrecord.breathe}}
-															<span *ngIf="healthrecord.breathe != '' && healthrecord.breathe != '0'" class="pl5">次/分钟</span>
+															{{healthrecord.breathe}}
+															<span *ngIf="healthrecord.breathe != '' && healthrecord.breathe != ''" class="pl5">次/分钟</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.bloodPressure != null" class="pure-u-8-24 bt info flex">
 														<label class="w150pp">血压：</label>
 														<div class="flex-1">
-															{{healthrecord.bloodPressure == '0' ? '' : healthrecord.bloodPressure}}
-															<span *ngIf="healthrecord.bloodPressure != '' && healthrecord.bloodPressure != '0'" class="pl5">mmHg</span>
+															{{healthrecord.bloodPressure}}
+															<span *ngIf="healthrecord.bloodPressure != '' && healthrecord.bloodPressure != ''" class="pl5">mmHg</span>
 														</div>
 													</div>
 													<div *ngIf="healthrecord.spirit != null" class="pure-u-24-24 bt info flex">
@@ -236,21 +236,6 @@
 													</div>
 												</div>
 											</div>
-											<!-- <div
-												*ngIf="healthrecord.eyes != null || healthrecord.vision != null"
-												class="section">
-												<div class="title">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
-												<div class="pure-g">
-													<div *ngIf="healthrecord.eyes != null" class="pure-u-24-24 bt info flex">
-														<label class="w150pp">双眼：</label>
-														<div class="flex-1">{{healthrecord.eyes}}</div>
-													</div>
-													<div *ngIf="healthrecord.vision != null" class="pure-u-24-24 bt info flex">
-														<label class="w150pp">外眼部检查：</label>
-														<div class="flex-1">{{healthrecord.vision}}</div>
-													</div>
-												</div>
-											</div> -->
 											<div
 												*ngIf="healthrecord.gums != null || healthrecord.tongue_tie != null || healthrecord.teeth_pit != null || healthrecord.plaque != null || healthrecord.teeth_num || healthrecord.dental_caries != null"
 												class="section">
@@ -483,446 +468,53 @@
 													</div>
 												</div>
 											</div>
+										</ng-template>
+										<div *ngIf="editType == 'view'">
+											<ng-container *ngTemplateOutlet="viewTab"></ng-container>
 										</div>
 										<!--打印部分-->
 										<div style="display:none;">
 											<div id="print_div" #print_div>
 												<div class="pure-tab">
 													<div *ngIf="editType == 'view'">
-														<div
-															*ngIf="healthrecord.height != null || healthrecord.mediumHeight != null || healthrecord.weight != null || healthrecord.mediumWeight != null || healthrecord.headCircum != null || healthrecord.breastCircum != null"
-															class="section">
-															<div class="title">基础体检 （根据孩子年龄测量基础指标，了解体格发育是否正常）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.height != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">身高：</label>
-																	<div class="flex-1">
-																		{{healthrecord.height == '0.00' ? '' : healthrecord.height}}
-																		<span *ngIf="healthrecord.height != '0.00'" class="pl5">cm</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">中等值：</label>
-																	<div class="flex-1">
-																		{{healthrecord.mediumHeight == '0.00' ? '' : healthrecord.mediumHeight}}
-																		<span *ngIf="healthrecord.mediumHeight != '0.00'" class="pl5">cm</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.height != null || healthrecord.mediumHeight != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">身高对比：</label>
-																	<div class="flex-1">{{healthrecord.compareHeight}}</div>
-																</div>
-																<div *ngIf="healthrecord.weight != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">体重：</label>
-																	<div class="flex-1">
-																		{{healthrecord.weight == '0.00' ? '' : healthrecord.weight}}
-																		<span *ngIf="healthrecord.weight != '0.00'" class="pl5">kg</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">中等值：</label>
-																	<div class="flex-1">
-																		{{healthrecord.mediumWeight == '0.00' ? '' : healthrecord.mediumWeight}}
-																		<span *ngIf="healthrecord.mediumWeight != '0.00'" class="pl5">kg</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.weight != null || healthrecord.mediumWeight != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">体重对比：</label>
-																	<div class="flex-1">{{healthrecord.compareWeight}}</div>
-																</div>
-																<div *ngIf="healthrecord.headCircum != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">头围：</label>
-																	<div class="flex-1">
-																		{{healthrecord.headCircum == '0.00' ? '' : healthrecord.headCircum}}
-																		<span *ngIf="healthrecord.headCircum != '0.00'" class="pl5">cm</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.breastCircum != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">胸围：</label>
-																	<div class="flex-1">
-																		{{healthrecord.breastCircum == '0.00' ? '' : healthrecord.breastCircum}}
-																		<span *ngIf="healthrecord.breastCircum != '0.00'" class="pl5">cm</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.bodyTemperature != null || healthrecord.pulse != null || healthrecord.breathe != null || healthrecord.bloodPressure != null || healthrecord.spirit != null || healthrecord.nutritionalStatus != null"
-															class="section">
-															<div class="title">生命体征 (通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.bodyTemperature != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">体温：</label>
-																	<div class="flex-1">
-																		{{healthrecord.bodyTemperature == '0' ? '' : healthrecord.bodyTemperature}}
-																		<span *ngIf="healthrecord.bodyTemperature != '' && healthrecord.bodyTemperature != '0'" class="pl5">°C</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.pulse != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">脉搏：</label>
-																	<div class="flex-1">
-																		{{healthrecord.pulse == '0' ? '' : healthrecord.pulse}}
-																		<span *ngIf="healthrecord.pulse != '' && healthrecord.pulse != '0'" class="pl5">次/分钟</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.breathe != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">呼吸：</label>
-																	<div class="flex-1">
-																		{{healthrecord.breathe == '0' ? '' : healthrecord.breathe}}
-																		<span *ngIf="healthrecord.breathe != '' && healthrecord.breathe != '0'" class="pl5">次/分钟</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.bloodPressure != null" class="pure-u-8-24 bt info flex">
-																	<label class="w150pp">血压：</label>
-																	<div class="flex-1">
-																		{{healthrecord.bloodPressure == '0' ? '' : healthrecord.bloodPressure}}
-																		<span *ngIf="healthrecord.bloodPressure != '' && healthrecord.bloodPressure != '0'" class="pl5">mmHg</span>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.spirit != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">精神及神志：</label>
-																	<div class="flex-1">{{healthrecord.spirit}}</div>
-																</div>
-																<div *ngIf="healthrecord.nutritionalStatus != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">营养状态：</label>
-																	<div class="flex-1">{{healthrecord.nutritionalStatus}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.skin != null || healthrecord.oralMucosa != null || healthrecord.hair != null || healthrecord.lymphNode != null || healthrecord.head != null || healthrecord.bregmatic != null"
-															class="section">
-															<div class="title">体表检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.skin != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">皮肤：</label>
-																	<div class="flex-1">{{healthrecord.skin}}</div>
-																</div>
-																<div *ngIf="healthrecord.oralMucosa != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">口腔黏膜：</label>
-																	<div class="flex-1">{{healthrecord.oralMucosa}}</div>
-																</div>
-																<div *ngIf="healthrecord.hair != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">毛发：</label>
-																	<div class="flex-1">{{healthrecord.hair}}</div>
-																</div>
-																<div *ngIf="healthrecord.lymphNode != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">浅表淋巴结：</label>
-																	<div class="flex-1">{{healthrecord.lymphNode}}</div>
-																</div>
-																<div *ngIf="healthrecord.head != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">头颅：</label>
-																	<div class="flex-1">{{healthrecord.head}}</div>
-																</div>
-																<div *ngIf="healthrecord.bregmatic != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">前囟：</label>
-																	<div class="flex-1">
-																		{{healthrecord.bregmatic}}
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.ear != null || healthrecord.nose != null || healthrecord.throat != null || healthrecord.tonsil != null"
-															class="section">
-															<div class="title">眼耳鼻喉检查 （有助于早期发现眼部、耳部外观及听力、鼻部外观、咽喉异常，尽早干预）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.eyes != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">双眼（外眼部检查）：</label>
-																	<div class="flex-1">{{healthrecord.eyes}}</div>
-																</div>
-																<div *ngIf="healthrecord.ear != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">耳：</label>
-																	<div class="flex-1">{{healthrecord.ear}}</div>
-																</div>
-																<div *ngIf="healthrecord.nose != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">鼻：</label>
-																	<div class="flex-1">{{healthrecord.nose}}</div>
-																</div>
-																<div *ngIf="healthrecord.throat != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">咽喉：</label>
-																	<div class="flex-1">{{healthrecord.throat}}</div>
-																</div>
-																<div *ngIf="healthrecord.tonsil != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">扁桃体：</label>
-																	<div class="flex-1">{{healthrecord.tonsil}}</div>
-																</div>
-															</div>
-														</div>
-														<!-- <div
-															*ngIf="healthrecord.eyes != null || healthrecord.vision != null"
-															class="section">
-															<div class="title">眼部检查 （有助于早期发现视力有问题的孩子，尽早干预）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.eyes != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">双眼：</label>
-																	<div class="flex-1">{{healthrecord.eyes}}</div>
-																</div>
-																<div *ngIf="healthrecord.vision != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">外眼部检查：</label>
-																	<div class="flex-1">{{healthrecord.vision}}</div>
-																</div>
-															</div>
-														</div> -->
-														<div
-															*ngIf="healthrecord.gums != null || healthrecord.tongue_tie != null || healthrecord.teeth_pit != null || healthrecord.plaque != null || healthrecord.teeth_num || healthrecord.dental_caries != null"
-															class="section">
-															<div class="title">口腔检查 （发现口腔异常情况，如：有无诞生牙及畸形）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.gums != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">牙龈：</label>
-																	<div class="flex-1">{{healthrecord.gums}}</div>
-																</div>
-																<div *ngIf="healthrecord.tongue_tie != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">舌系带：</label>
-																	<div class="flex-1">{{healthrecord.tongue_tie}}</div>
-																</div>
-																<div *ngIf="healthrecord.teeth_pit != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">牙窝沟：</label>
-																	<div class="flex-1">{{healthrecord.teeth_pit}}</div>
-																</div>
-																<div *ngIf="healthrecord.plaque != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">牙菌斑：</label>
-																	<div class="flex-1">{{healthrecord.plaque}}</div>
-																</div>
-																<div *ngIf="healthrecord.teeth_num != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">出牙数：</label>
-																	<div class="flex-1">
-																		{{healthrecord.teeth_num}}
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.dental_caries != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">龋齿：</label>
-																	<div class="flex-1">{{healthrecord.dental_caries}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.thoracic != null || healthrecord.heart != null || healthrecord.lung != null || healthrecord.kidney != null || healthrecord.abdomen != null || healthrecord.mammaryGland != null"
-															class="section">
-															<div class="title">内科检查 （通过物理检查排除内科疾病或发现内科疾病的征兆，以及了解外科系统的基本情况）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.thoracic != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">胸廓：</label>
-																	<div class="flex-1">{{healthrecord.thoracic}}</div>
-																</div>
-																<div *ngIf="healthrecord.heart != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">心脏：</label>
-																	<div class="flex-1">{{healthrecord.heart}}</div>
-																</div>
-																<div *ngIf="healthrecord.lung != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">双肺：</label>
-																	<div class="flex-1">{{healthrecord.lung}}</div>
-																</div>
-																<div *ngIf="healthrecord.kidney != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">双肾：</label>
-																	<div class="flex-1">{{healthrecord.kidney}}</div>
-																</div>
-																<div *ngIf="healthrecord.abdomen != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">腹部：</label>
-																	<div class="flex-1">{{healthrecord.abdomen}}</div>
-																</div>
-																<div *ngIf="healthrecord.mammaryGland != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">乳腺：</label>
-																	<div class="flex-1">{{healthrecord.mammaryGland}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.limb != null || healthrecord.ribs != null || healthrecord.hip_joint != null || healthrecord.torticollis != null"
-															class="section">
-															<div class="title">骨骼检查 （前期筛查孩子骨骼发育相关问题，尽早干预）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.limb != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">脊柱及四肢：</label>
-																	<div class="flex-1">{{healthrecord.limb}}</div>
-																</div>
-																<div *ngIf="healthrecord.ribs != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">肋骨：</label>
-																	<div class="flex-1">{{healthrecord.ribs}}</div>
-																</div>
-																<div *ngIf="healthrecord.hip_joint != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">髋关节：</label>
-																	<div class="flex-1">{{healthrecord.hip_joint}}</div>
-																</div>
-																<div *ngIf="healthrecord.torticollis != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">斜颈：</label>
-																	<div class="flex-1">{{healthrecord.torticollis}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.genitalia != null || healthrecord.anus != null"
-															class="section">
-															<div class="title">生殖器及肛门检查 （有助于早期发现男孩生殖系统异常，尽早干预）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.genitalia != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">外生殖器：</label>
-																	<div class="flex-1">{{healthrecord.genitalia}}</div>
-																</div>
-																<div *ngIf="healthrecord.anus != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">肛门：</label>
-																	<div class="flex-1">{{healthrecord.anus}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.neurodevelopment != null"
-															class="section">
-															<div class="title">神经发育筛查 （有助于发现孩子神经发育上相关问题，尽早干预）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.neurodevelopment != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">神经发育：</label>
-																	<div class="flex-1">{{healthrecord.neurodevelopment}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.bloodRoutineExamination != null || healthrecord.routineUrine != null || healthrecord.stoolRoutineExamination != null || healthrecord.boneDensity != null || healthrecord.BALP != null || healthrecord.traceElement != null || healthrecord.heavyMetal != null || healthrecord.bloodType != null"
-															class="section">
-															<div class="title">辅助治疗 （收费项目，由医生建议）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.bloodRoutineExamination != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">血常规：</label>
-																	<div class="flex-1">{{healthrecord.bloodRoutineExamination}}</div>
-																</div>
-																<div *ngIf="healthrecord.routineUrine != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">尿常规：</label>
-																	<div class="flex-1">{{healthrecord.routineUrine}}</div>
-																</div>
-																<div *ngIf="healthrecord.stoolRoutineExamination != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">大便常规：</label>
-																	<div class="flex-1">{{healthrecord.stoolRoutineExamination}}</div>
-																</div>
-																<div *ngIf="healthrecord.boneDensity != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">骨密度：</label>
-																	<div class="flex-1">{{healthrecord.boneDensity}}</div>
-																</div>
-																<div *ngIf="healthrecord.BALP != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">骨碱性磷酸酶：</label>
-																	<div class="flex-1">{{healthrecord.BALP}}</div>
-																</div>
-																<div *ngIf="healthrecord.traceElement != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">微量元素：</label>
-																	<div class="flex-1">{{healthrecord.traceElement}}</div>
-																</div>
-																<div *ngIf="healthrecord.heavyMetal != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">铅、镉、锰：</label>
-																	<div class="flex-1">{{healthrecord.heavyMetal}}</div>
-																</div>
-																<div *ngIf="healthrecord.bloodType != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">ABO血型鉴定：</label>
-																	<div class="flex-1">{{healthrecord.bloodType}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.feeding != null"
-															class="section">
-															<div class="title">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.feeding != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">喂养指导：</label>
-																	<div class="flex-1">{{healthrecord.feeding}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.life != null"
-															class="section">
-															<div class="title">生活指导（宝宝睡眠习惯、牙齿护理、社交活动、游戏玩乐等）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.life != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">生活指导：</label>
-																	<div class="flex-1">{{healthrecord.life}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.immunization != null"
-															class="section">
-															<div class="title">免疫接种指导（根据孩子接种史和家长意愿给予建议）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.immunization != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">免疫接种指导：</label>
-																	<div class="flex-1">{{healthrecord.immunization}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.diseasePrevention != null"
-															class="section">
-															<div class="title">疾病预防（常见病健康宣教）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.diseasePrevention != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">疾病预防：</label>
-																	<div class="flex-1">{{healthrecord.diseasePrevention}}</div>
-																</div>
-															</div>
-														</div>
-														<div
-															*ngIf="healthrecord.answeringQuestions != null"
-															class="section">
-															<div class="title">答疑解惑（针对家长所关注的孩子养育问题、成长问题进行解答）</div>
-															<div class="pure-g">
-																<div *ngIf="healthrecord.answeringQuestions != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">答疑解惑：</label>
-																	<div class="flex-1">{{healthrecord.answeringQuestions}}</div>
-																</div>
-															</div>
-														</div>
-														<div class="section">
-															<div class="title">诊疗记录</div>
-															<div class="pure-g">
-																<div class="pure-u-24-24 bt info flex">
-																	<label class="w60p">文件：</label>
-																	<div class="flex-1 flex">
-																		<div *ngIf="healthrecord.files.length == 0">暂无文件</div>
-																		<div class="file-item" *ngFor="let file of healthrecord.files">
-																			<div class="show-tab cursor-pointer" (click)="showFile(file)">
-																				<img *ngIf="file.mimeType == 'image'" src="{{file.fileUrl}}">
-																				<div *ngIf="file.mimeType != 'image'" class="info">{{file.fileName}}</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div *ngIf="healthrecord.record != null" class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">诊疗记录：</label>
-																	<div class="flex-1">{{healthrecord.record}}</div>
-																</div>
-																<div class="pure-u-24-24 bt info flex">
-																	<label class="w150pp">复查日期：</label>
-																	<div class="flex-1">{{healthrecord.reviewDate}}</div>
-																</div>
-															</div>
-														</div>
+														<ng-container *ngTemplateOutlet="viewTab"></ng-container>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div *ngIf="editType == 'view' && pageType == 'examine' && info.checkId == null" class="text-center mt20">
-										<button (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">审核通过</button>
+										<button (click)="create('examine')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100p" [disabled]="btnCanEdit">审核通过</button>
 									</div>
 								</div>
 								<div *ngIf="healthrecordList.length == 0 && editType == 'view'">
-									<nodata title="未查询到儿保记录信息"></nodata>
+									<nz-alert [nzType]="'info'" [nzMessage]="'暂无儿保记录信息'"></nz-alert>
 								</div>
-								<!-- <div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt10">
-									<nodata title="未查询到儿保记录"></nodata>
-								</div> -->
 								<!-- pageType 空为医生接诊， history为查看 -->
 								<div *ngIf="pageType != 'history'">
 									<div *ngIf="hasHealthrecordData && healthrecordList.length == 0" class="mt20 pure-form pure-form-stacked">
-										<div class="pure-control-group">
-											<label for="templet">模板（模板若为空，请前往医生列表，添加儿保记录模板）</label>
-											<select id="templet" name="templet" [(ngModel)]="selectedTemplet">
-												<ng-container *ngFor="let templetObj of recordtempletList">
-													<option value="{{templetObj.string}}">{{templetObj.name}}</option>
-												</ng-container>
-											</select>
+										<div nz-form-item>
+							            	<div nz-form-label>
+							              		<label>模板（模板若为空，请前往医生列表，添加儿保记录模板）</label>
+							            	</div>
+							            	<div nz-form-control>
+												<nz-select
+													class="w100"
+													[nzSize]="'large'"
+													[nzPlaceHolder]="'请选择模板'"
+													[(ngModel)]="selectedTemplet"
+													nzShowSearch>
+													<nz-option
+														*ngFor="let templetObj of recordtempletList"
+														[nzLabel]="templetObj.name"
+														[nzValue]="templetObj">
+													</nz-option>
+												</nz-select>
+							            	</div>
+							          	</div>
+										<div class="mt10">
+											<button (click)="changeTemplate()" nz-button [nzType]="'primary'" [nzSize]="'large'">切换模板</button>
 										</div>
-										<button (click)="addHealthrecord()" class="pure-button pure-button-primary mt10">切换模板</button>
 									</div>
 								</div>
 							</div>
@@ -1747,10 +1339,10 @@
 											</div>
 										</div>
 										<div class="text-center mt10">
-											<button (click)="create('')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
-											<button *ngIf="pageType == 'examine' && info.checkId == null" (click)="create('examine')" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存并审核通过</button>
+											<button (click)="create('')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100p" [disabled]="btnCanEdit">保存</button>
+											<button *ngIf="pageType == 'examine' && info.checkId == null" (click)="create('examine')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100p" [disabled]="btnCanEdit">保存并审核通过</button>
 										</div>
-										<button (click)="create('')" class="pure-button pure-button-primary button-max fixed-btn" [disabled]="btnCanEdit">{{editType == 'create' ? '保存' : '保存'}}</button>
+										<button (click)="create('')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100p fixed-btn" [disabled]="btnCanEdit">保存</button>
 									</fieldset>
 								</form>
 							</div>
@@ -1776,18 +1368,10 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			确认删除该文件
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirmDelete()" class="pure-button pure-button-primary">确认</button>
-		</div>
-	</div>
-</div>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirmDelete()">
+	<ng-template #contentConfirm>
+    	<p>确认删除该文件？</p>
+	</ng-template>
+</nz-modal>
 <modal-img url="{{selectFile.url}}" showImg="{{selectFile.showImg}}" (onVoted)="closeImg()"></modal-img>
 <loading [show]="loadingShow"></loading>

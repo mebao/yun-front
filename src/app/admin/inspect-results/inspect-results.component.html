@@ -1,190 +1,209 @@
 <!-- <header-nav></header-nav> -->
 <div class="content-section admin-inspect-resutls">
 	<top-bar [data]="topBar"></top-bar>
-	<div class="pure-g left-right-tab">
-		<div class="pure-u-1-5 left-tab pr20">
-			<div class="img-tab-default">
-				<img src="{{bookingInfo.imageUrl == '' || bookingInfo.imageUrl == null ? '../assets/images/img.png' : bookingInfo.imageUrl}}">
-			</div>
-			<div class="item">{{bookingInfo.childName}}</div>
+	<div nz-row [nzGutter]="30">
+		<div nz-col [nzSpan]="6">
+            <nz-card class="w100">
+                <ng-template #title>
+                    宝宝详情
+                </ng-template>
+                <ng-template #body>
+					<div class="img-tab-default">
+						<img src="{{bookingInfo.imageUrl == '' || bookingInfo.imageUrl == null ? '../assets/images/img.png' : bookingInfo.imageUrl}}">
+					</div>
+					<p class="mt10">姓名：{{bookingInfo.childName}}</p>
+					<p class="mt10">家长姓名：{{bookingInfo.userName}}</p>
+					<p class="mt10">开单医生：{{bookingInfo.doctorName}}</p>
+					<p class="mt10">开单时间：{{bookingInfo.time}}</p>
+				</ng-template>
+			</nz-card>
 		</div>
-		<div class="pure-u-4-5 right-tab">
-			<div class="second-bar-tab flex">
-				<div class="item" (click)="changeTab(check,'')" *ngFor="let check of checkProjectList" [ngClass]="{'active': selectTab == check.id}">{{check.checkName}}</div>
-			</div>
-			<div *ngFor="let check of checkProjectList; let indexCheck=index;">
-				<div *ngIf="selectTab == check.id">
-					<div class="pt10 pb10 flex">
-						<div class="flex-1">开单医生：{{check.doctorName}}</div>
-						<e-ngx-print
-							[btnText]="'打印'"
-							[btnClass]="{'pure-button': true}"
-							[printHTML]="print_div"
-							[printStyle]="printStyle"
-							[printCSS]="printCSS">
-						</e-ngx-print>
-						<!-- <button (click)="print(check)" class="pure-button">打印</button> -->
-					</div>
-					<form #f="ngForm" class="pure-form">
-						<table class="pure-table pure-table-horizontal w100 table-tab">
-							<thead>
-								<tr>
-									<th class="w20">项目</th>
-									<th class="w10">代码</th>
-									<th class="w20">
-										<span>检查结果</span>
-										<span class="required">*</span>
-									</th>
-									<th [ngClass]="{'w20': check.editType == 'create', 'w30': check.editType == 'update'}">参考值</th>
-									<th class="w10">单位</th>
-									<th class="w10">性质</th>
-									<!-- 创建时可操作 -->
-									<th *ngIf="check.editType == 'create'" class="w10">操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
-									<tr *ngIf="result.use">
-										<td>{{result.checkInfoKey}}</td>
-										<!-- 文本填写亦或图片上传 -->
-										<ng-container *ngIf="result.isUpload == '0'">
-											<td>{{result.code}}</td>
-											<td>
-												<input type="text" name="values_{{indexResult}}" maxlength="50"  [(ngModel)]="result.values" placeholder="请输入检查结果" [disabled]="buttonType == 'update'" (change)="changeResult(result, indexCheck, indexResult)" class="w100">
-											</td>
-											<td>
-												<div class="length-text">{{result.references}}</div>
-											</td>
-											<td>{{result.unit}}</td>
-											<td class="text-center">
-												<i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
-												<i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
-											</td>
-										</ng-container>
-										<ng-container *ngIf="result.isUpload == '1'">
-											<td>
-												<a *ngIf="buttonType != 'update'" class="upload-button-tab">
-													<button class="pure-button pure-button-primary">选择图片</button>
-													<input type="hidden" id="file_{{result.checkInfoId}}" name="file_{{result.checkInfoId}}" ngModel>
-													<input class="upload" type="file" (change)="selectedFile($event, result.checkInfoId)">
-												</a>
-											</td>
-											<td colspan="4">
-												<div class="upload-button-tab img">
-													<img *ngIf="buttonType == 'update' && result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'image', result.values)" id="imgEle_{{result.checkInfoId}}" src="{{result.values ? result.values : '../assets/images/result.png'}}" [ngStyle]="{'display': buttonType != 'update' && !result.isImg ? 'none' : 'inline'}" />
-													<div *ngIf="buttonType == 'update' && !result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'pdf', result.values)" id="fileEle_{{result.checkInfoId}}" class="info" [ngStyle]="{'display': buttonType != 'update' && result.isImg ? 'none' : 'inline'}">{{result.values ? result.values.substr(result.values.lastIndexOf('/') + 1) : ''}}</div>
-												</div>
-											</td>
-										</ng-container>
-										<!-- 创建时可操作 -->
-										<td *ngIf="check.editType == 'create'">
-											<button (click)="removeItem(indexCheck, indexResult)" class="pure-button pure-button-primary">移除</button>
-										</td>
-									</tr>
-								</ng-container>
-							</tbody>
-						</table>
-						<div *ngIf="check.hasRemoveResult">
-							<div class="bg-title mt10 mb10">可选项</div>
-							<table class="pure-table pure-table-horizontal w100 table-tab">
-								<thead>
-									<tr>
-										<th class="w50">项目</th>
-										<th class="w50">操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
-										<tr *ngIf="!result.use">
-											<td>{{result.checkInfoKey}}</td>
-											<td>
-												<button (click)="addItem(indexCheck, indexResult)" class="pure-button pure-button-primary">添加</button>
-											</td>
-										</tr>
-									</ng-container>
-								</tbody>
-							</table>
-						</div>
-						<div class="pure-form pure-form-stacked form-tab">
-							<div class="flex">
-								<div class="pure-control-group flex-1">
-									<label for="remark">备注（最多100字）</label>
-									<textarea id="remark" name="remark" maxlength="100" [(ngModel)]="check.remark" placeholder="请输入备注" [disabled]="buttonType == 'update'"></textarea>
+		<div nz-col [nzSpan]="18">
+            <nz-card class="w100">
+                <ng-template #title>
+                    检查详情
+                </ng-template>
+                <ng-template #body>
+					<nz-tabset>
+				      	<nz-tab *ngFor="let check of checkProjectList; let indexCheck=index;" (nzClick)="changeTab(check, '')">
+				        	<ng-template #nzTabHeading>
+					          	{{check.checkName}}
+				        	</ng-template>
+							<div *ngIf="selectTab == check.id">
+								<div class="pt10 pb10 text-right">
+									<e-ngx-print
+										[btnText]="'打印'"
+										[btnClass]="{'ant-btn': true, 'ant-btn-primary': true, 'ant-btn-lg': true}"
+										[printHTML]="print_div"
+										[printStyle]="printStyle"
+										[printCSS]="printCSS">
+									</e-ngx-print>
 								</div>
-								<div class="flex-1"></div>
+								<nz-table #nzTable [nzDataSource]="check.resultList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+									<thead nz-thead>
+										<tr>
+											<th class="w20">项目</th>
+											<th class="w10">代码</th>
+											<th class="w20">
+												<span>检查结果</span>
+												<span class="required">*</span>
+											</th>
+											<th [ngClass]="{'w20': check.editType == 'create', 'w30': check.editType == 'update'}">参考值</th>
+											<th class="w10">单位</th>
+											<th class="w10">性质</th>
+											<!-- 创建时可操作 -->
+											<th *ngIf="check.editType == 'create'" class="w10">操作</th>
+										</tr>
+									</thead>
+									<tbody nz-tbody>
+										<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
+											<tr *ngIf="result.use">
+												<td>{{result.checkInfoKey}}</td>
+												<!-- 文本填写亦或图片上传 -->
+												<ng-container *ngIf="result.isUpload == '0'">
+													<td>{{result.code}}</td>
+													<td>
+														<nz-input [nzSize]="'large'" (ngModelChange)="result.values=$event;changeResult(result, indexCheck, indexResult)" [ngModel]="result.values" [nzPlaceHolder]="'请输入检查结果'" [nzDisabled]="buttonType == 'update'"></nz-input>
+													</td>
+													<td>
+														<div class="length-text">{{result.references}}</div>
+													</td>
+													<td>{{result.unit}}</td>
+													<td class="text-center">
+														<i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
+														<i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
+													</td>
+												</ng-container>
+												<ng-container *ngIf="result.isUpload == '1'">
+													<td>
+														<a *ngIf="buttonType != 'update'" class="upload-button-tab">
+															<button nz-button [nzType]="'primary'" [nzSize]="'large'">选择图片</button>
+															<input type="hidden" id="file_{{result.checkInfoId}}" name="file_{{result.checkInfoId}}" ngModel>
+															<input class="upload" type="file" (change)="selectedFile($event, result.checkInfoId)">
+														</a>
+													</td>
+													<td colspan="4">
+														<div class="upload-button-tab img">
+															<img *ngIf="buttonType == 'update' && result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'image', result.values)" id="imgEle_{{result.checkInfoId}}" src="{{result.values ? result.values : '../assets/images/result.png'}}" [ngStyle]="{'display': buttonType != 'update' && !result.isImg ? 'none' : 'inline'}" />
+															<div *ngIf="buttonType == 'update' && !result.isImg || buttonType != 'update'" (click)="enlargeImg($event.target, 'pdf', result.values)" id="fileEle_{{result.checkInfoId}}" class="info" [ngStyle]="{'display': buttonType != 'update' && result.isImg ? 'none' : 'inline'}">{{result.values ? result.values.substr(result.values.lastIndexOf('/') + 1) : ''}}</div>
+														</div>
+													</td>
+												</ng-container>
+												<!-- 创建时可操作 -->
+												<td *ngIf="check.editType == 'create'">
+													<button (click)="removeItem(indexCheck, indexResult)" nz-button [nzType]="'danger'" [nzSize]="'large'">移除</button>
+												</td>
+											</tr>
+										</ng-container>
+									</tbody>
+									<span noResult>暂无检查项目信息</span>
+								</nz-table>
+								<div *ngIf="check.hasRemoveResult">
+									<div class="bg-title mt10 mb10">可选项</div>
+									<nz-table #nzTable [nzDataSource]="check.resultList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+										<thead nz-thead>
+											<tr>
+												<th class="w50">项目</th>
+												<th class="w50">操作</th>
+											</tr>
+										</thead>
+										<tbody nz-tbody>
+											<ng-container *ngFor="let result of check.resultList; let indexResult=index;">
+												<tr *ngIf="!result.use">
+													<td>{{result.checkInfoKey}}</td>
+													<td>
+														<button (click)="addItem(indexCheck, indexResult)" nz-button [nzType]="'primary'" [nzSize]="'large'">添加</button>
+													</td>
+												</tr>
+											</ng-container>
+										</tbody>
+										<span noResult>暂无检查项目信息</span>
+									</nz-table>
+								</div>
+								<div nz-row [nzGutter]="30" class="mt20">
+									<div nz-col [nzSpan]="12">
+										<div nz-form-item>
+							            	<div nz-form-label>
+							              		<label>备注（最多100字）</label>
+							            	</div>
+							            	<div nz-form-control class="mt10">
+												<nz-input [nzType]="'textarea'" [(ngModel)]="check.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" [nzDisabled]="buttonType == 'update'"></nz-input>
+							            	</div>
+							          	</div>
+									</div>
+								</div>
+								<div class="pt20 text-center">
+									<button (click)="changeButton()" *ngIf="buttonType == 'update'" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+									<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+								</div>
 							</div>
-						</div>
-						<div class="pt20 text-center">
-							<button (click)="changeButton(f)" *ngIf="buttonType == 'update'" class="pure-button pure-button-primary button-max">修改</button>
-							<button (click)="save(indexCheck)" *ngIf="buttonType == 'save'" class="pure-button pure-button-primary button-max" [disabled]="btnCanEdit">保存</button>
-						</div>
-					</form>
-				</div>
-				<!--打印-->
-				<div style="display:none;">
-					<div id="print_div" #print_div  class="container">
-						<ng-container>
-					        <h1 class="title text-center">{{check.checkName}}</h1>
-							<div class="mb10">
-								<span class="name text-right mr10">
-						            开单医生：{{check.doctorName}}
-						        </span>
-						        <span class="name text-right mr10">
-						            宝宝姓名：{{check.childName}}
-						        </span>
-								<span class="name text-right">
-						            开单时间：{{check.time}}
-						        </span>
+							<!--打印-->
+							<div style="display:none;">
+								<div id="print_div" #print_div  class="container">
+									<ng-container>
+										<h1 class="title text-center">{{check.checkName}}</h1>
+										<div class="mb10">
+											<span class="name text-right mr10">
+												开单医生：{{check.doctorName}}
+											</span>
+											<span class="name text-right mr10">
+												宝宝姓名：{{check.childName}}
+											</span>
+											<span class="name text-right">
+												开单时间：{{check.time}}
+											</span>
+										</div>
+										<table class="pure-table pure-table-horizontal w100 table-tab mb50">
+											<thead>
+												<tr>
+													<th class="w20">项目</th>
+													<th class="w10">代码</th>
+													<th class="w20">检查结果</th>
+													<th class="w30">参考值</th>
+													<th class="w10">单位</th>
+													<th class="w10">性质</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let result of check.resultList; let indexResult=index;">
+													<td>{{result.checkInfoKey}}</td>
+													<td>{{result.code}}</td>
+													<!-- 文本填写亦或图片上传 -->
+													<ng-container *ngIf="result.isUpload == '0'">
+														<td>
+															{{result.values}}
+														</td>
+														<td>
+															<div class="length-text">{{result.references}}</div>
+														</td>
+														<td>{{result.unit}}</td>
+														<td class="text-center">
+															<div *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB">低</div>
+															<div *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54">高</div>
+														</td>
+													</ng-container>
+													<ng-container *ngIf="result.isUpload == '1'">
+														<td colspan="4">
+															<img *ngIf="result.values && result.values.lastIndexOf('.pdf') == -1" src="{{result.values ? result.values : '../assets/images/result.png'}}">
+															<div *ngIf="result.values && result.values.lastIndexOf('.pdf') != -1" class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
+														</td>
+													</ng-container>
+												</tr>
+											</tbody>
+										</table>
+										<div class="mt10" *ngIf="check.remark != null">
+											<label for="remark">备注：</label>
+											<span>{{check.remark}}</span>
+										</div>
+									</ng-container>
+								</div>
 							</div>
-					        <table class="pure-table pure-table-horizontal w100 table-tab mb50">
-					            <thead>
-					                <tr>
-					                    <th class="w20">项目</th>
-					                    <th class="w10">代码</th>
-					                    <th class="w20">检查结果</th>
-					                    <th class="w30">参考值</th>
-					                    <th class="w10">单位</th>
-					                    <th class="w10">性质</th>
-					                </tr>
-					            </thead>
-					            <tbody>
-					                <tr *ngFor="let result of check.resultList; let indexResult=index;">
-					                    <td>{{result.checkInfoKey}}</td>
-					                    <td>{{result.code}}</td>
-					                    <!-- 文本填写亦或图片上传 -->
-					                    <ng-container *ngIf="result.isUpload == '0'">
-					                        <td>
-					                            {{result.values}}
-					                        </td>
-					                        <td>
-					                            <div class="length-text">{{result.references}}</div>
-					                        </td>
-					                        <td>{{result.unit}}</td>
-					                        <td class="text-center">
-					                            <div *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB">低</div>
-					                            <div *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54">高</div>
-					                        </td>
-					                    </ng-container>
-					                    <ng-container *ngIf="result.isUpload == '1'">
-					                        <td colspan="4">
-					                            <img *ngIf="result.values && result.values.lastIndexOf('.pdf') == -1" src="{{result.values ? result.values : '../assets/images/result.png'}}">
-					                            <div *ngIf="result.values && result.values.lastIndexOf('.pdf') != -1" class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
-					                        </td>
-					                    </ng-container>
-					                </tr>
-					            </tbody>
-					        </table>
-							<div class="mt10" *ngIf="check.remark != null">
-								<label for="remark">备注：</label>
-								<span>{{check.remark}}</span>
-							</div>
-					    </ng-container>
-					</div>
-				</div>
-			</div>
+				      	</nz-tab>
+				    </nz-tabset>
+				</ng-template>
+			</nz-card>
 		</div>
 	</div>
 </div>
-<modal-toast modalTab="{{toast.show}}" text="{{toast.text}}" type="{{toast.type}}"></modal-toast>
 <modal-img url="{{modalImg.url}}" showImg="{{modalImg.showImg}}" (onVoted)="closeImg()"></modal-img>
 <loading [show]="loadingShow"></loading>
