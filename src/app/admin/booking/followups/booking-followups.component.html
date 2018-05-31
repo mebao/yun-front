@@ -37,6 +37,14 @@
 			<nz-input [nzType]="'textarea'" [(ngModel)]="info.account" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'" [nzRows]="4"></nz-input>
 		</div>
 	</div>
+	<div nz-form-item nz-row [nzGutter]="30" class="mt20">
+		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
+			<label>备注说明（最长200字）</label>
+		</div>
+		<div nz-form-control nz-col [nzSpan]="12">
+			<nz-input [nzType]="'textarea'" [(ngModel)]="info.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'" [nzRows]="4"></nz-input>
+		</div>
+	</div>
 	<div *ngIf="editType == 'update'" nz-form-item nz-row [nzGutter]="30" class="mt20">
 		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
 			<label>随访结果（最长200字）<span class="required">*</span></label>
@@ -51,14 +59,6 @@
 		</div>
 		<div nz-form-control nz-col [nzSpan]="12">
 			<nz-datepicker [nzSize]="'large'" class="w100" [(ngModel)]="info.finish" [nzDisabledDate]="_disabledEndTime" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择执行随访日期'" [nzAllowClear]="false"></nz-datepicker>
-		</div>
-	</div>
-	<div nz-form-item nz-row [nzGutter]="30" class="mt20">
-		<div nz-form-label nz-col [nzSpan]="7" class="text-right">
-			<label>备注说明（最长200字）</label>
-		</div>
-		<div nz-form-control nz-col [nzSpan]="12">
-			<nz-input [nzType]="'textarea'" [(ngModel)]="info.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'" [nzRows]="4"></nz-input>
 		</div>
 	</div>
 	<div nz-row [nzGutter]="30" class="mt20">

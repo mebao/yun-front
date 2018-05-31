@@ -775,8 +775,8 @@ export class DocbookingComponent implements OnInit{
 	}
 
 	changeAssist() {
-		if(!this.adminService.isFalse(this.addAssistInfo.project)){
-			this.addAssistInfo.price = JSON.parse(this.addAssistInfo.project).price;
+		if(this.addAssistInfo.project['id']){
+			this.addAssistInfo.price = this.addAssistInfo.project['price'];
 			this.changeAssistNumber();
 		}
 	}
@@ -816,8 +816,8 @@ export class DocbookingComponent implements OnInit{
 		}else{
 			if(this.assistProjects.length > 0){
 				for(var i = 0; i < this.assistProjects.length; i++){
-					if(this.assistProjects[i].name == this.addAssistInfo.project){
-						this.addAssistInfo.project = this.assistProjects[i].string;
+					if(this.assistProjects[i].id == this.addAssistInfo.project['id']){
+						this.addAssistInfo.project = this.assistProjects[i];
 					}
 				}
 			}

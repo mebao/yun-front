@@ -392,7 +392,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			review_date_num: 0,
 			review_date_text: '',
 			files: [],
-			checkId:'',
+			checkId: null,
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
 		this.infoTime = JSON.parse(JSON.stringify(this.info));
@@ -896,7 +896,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				review_date_num: new Date(todayDate).getTime(),
 				review_date_text: '',
 				files: [],
-				checkId: '',
+				checkId: null,
 			}
 			this.baseInfo = {
 				height: null,

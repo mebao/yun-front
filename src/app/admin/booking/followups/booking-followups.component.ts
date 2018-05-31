@@ -80,7 +80,7 @@ export class BookingFollowupsComponent{
 				account: followups.account,
 				remarks: followups.remarks,
 				results: followups.results,
-				finish: followups.finish ? followups.finish : new Date,
+				finish: followups.finish ? new Date(followups.finish) : new Date(),
 			}
 		}
 

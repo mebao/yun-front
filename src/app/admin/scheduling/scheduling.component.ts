@@ -99,7 +99,7 @@ export class SchedulingComponent{
 				this.dutytime.push(item);
 			}
 		}
-		this.dutylist = [];
+		this.dutylist = [{id: 1, use: true}];
 	}
 	initDuty(type) {
 		var duty = [];
