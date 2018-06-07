@@ -297,16 +297,12 @@ export class BookingReceiveComponent {
 			} else {
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.loadingShow = false;
-				if (results.list.length > 0) {
-					this.phyexamList = results.list;
-					this.selectedInfo = {
-						booking: booking,
-						phyexam: '',
-					}
-					this.modalTab = true;
-				} else {
-					this._message.error('该预约不可添加体检套餐');
+				this.phyexamList = results.list;
+				this.selectedInfo = {
+					booking: booking,
+					phyexam: '',
 				}
+				this.modalTab = true;
 			}
 		}).catch(() => {
 			this.loadingShow = false;

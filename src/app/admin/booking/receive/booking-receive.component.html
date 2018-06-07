@@ -160,7 +160,7 @@
   (nzOnCancel)="close()">
   <ng-template #contentContent>
     <nz-radio-group [(ngModel)]="selectedInfo.phyexam" class="w100">
-      <nz-table #nzTable [nzDataSource]="phyexamList" [nzBordered]="true" [nzIsPagination]="false">
+      <nz-table #nzTable [nzDataSource]="phyexamList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
         <thead nz-thead>
           <tr>
             <th>套餐名</th>
@@ -195,12 +195,13 @@
             </td>
           </tr>
         </tbody>
+        <span noResult>该科室下暂无体检套餐信息</span>
       </nz-table>
     </nz-radio-group>
   </ng-template>
   <ng-template #footerContent>
     <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()">关闭</button>
-    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm()">确认</button>
+    <button *ngIf="phyexamList.length > 0" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm()">确认</button>
   </ng-template>
 </nz-modal>
 <loading [show]="loadingShow"></loading>
