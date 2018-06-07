@@ -294,7 +294,11 @@ export class BookingInComponent{
 		this.bookingInfo.service = null;
 		this.bookingInfo.user_doctor = null;
 		this.bookingInfo.booking_date = null;
+		this.doctorDutys.dutyDate = '';
+		this.doctorDutys.string = null;
+		this.doctorDutys.weekDay = '';
 		this.bookingInfoOld = JSON.parse(JSON.stringify(this.bookingInfo));
+		this.doctorlist = [];
 	}
 
 	getBooking() {
@@ -488,7 +492,7 @@ export class BookingInComponent{
 			}
 		}
 		if(!this.initPage.date){
-			this.bookingInfo.booking_date = (this.bookingInfo.booking_date == null ? '' : null);
+			this.bookingInfo.booking_date = (this.bookingInfo.booking_date == '' ? null : '');
 			this.timelist = [];
 			this.bookingInfo.timeInfo = '';
 		}

@@ -50,6 +50,7 @@ export class DocbookingComponent implements OnInit{
 		feeId: string,
 		editProjectId: string,
 		editType: string,
+		type: string,
 	};
 	//添加检查单
 	addCheckInfo: {
@@ -214,6 +215,7 @@ export class DocbookingComponent implements OnInit{
 			feeId: '',
 			editProjectId: '',
 			editType: '',
+			type: '',
 		}
 
 		//添加检查
@@ -525,6 +527,7 @@ export class DocbookingComponent implements OnInit{
 		this.addFeeInfo.remarks = '';
 		this.addFeeInfo.feeId = '';
 		this.addFeeInfo.editType = '';
+		this.addFeeInfo.type = '';
 	}
 
 	// 单价或者数量变化
@@ -571,6 +574,7 @@ export class DocbookingComponent implements OnInit{
 		this.addFeeInfo.feeId = fee.feeId;
 		this.addFeeInfo.editProjectId = fee.projectId;
 		this.addFeeInfo.editType = 'update';
+		this.addFeeInfo.type = fee.type;
 	}
 
 	editFee(f) {

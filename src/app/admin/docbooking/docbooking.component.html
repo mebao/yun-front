@@ -530,7 +530,7 @@
 												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.number}}</div>
 												<!-- 编辑 -->
 												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" class="w100"></nz-input-number>
+													<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" class="w100" [nzDisabled]="addFeeInfo.editType == 'update' && addFeeInfo.type == 'service'"></nz-input-number>
 												</div>
 											</td>
 											<td>
