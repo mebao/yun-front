@@ -151,6 +151,13 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
+		// 体检套餐管理
+		phyexamList: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		}
 		//检查项目
 		setupInspectList: {
 			use: string,
@@ -167,6 +174,13 @@ export class LoginComponent{
 		},
 		// 预约实验室检查
 		bookingAssistList: {
+			use: string,
+			authority: any[],
+			url: string,
+			infos: any[],
+		},
+		// 体检套餐
+		bookingPhyexamList: {
 			use: string,
 			authority: any[],
 			url: string,
@@ -381,6 +395,12 @@ export class LoginComponent{
 				url: '/admin/assist/list',
 				infos: [],
 			},
+			phyexamList: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/phyexam/list',
+				infos: [],
+			},
 			setupInspectList: {
 				use: '',
 				authority: ['see'],
@@ -397,6 +417,12 @@ export class LoginComponent{
 				use: '',
 				authority: ['see'],
 				url: '/admin/bookingAssistList',
+				infos: [],
+			},
+			bookingPhyexamList: {
+				use: '',
+				authority: ['see'],
+				url: '/admin/booking/phyexam/list',
 				infos: [],
 			},
 			bookingFollowupsList: {

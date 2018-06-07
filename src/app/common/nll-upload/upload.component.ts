@@ -14,6 +14,7 @@ export class UploadComponent{
     @Input() qiniuToken: string;
     @Input() multiple: boolean = false;
     @Input() acceptType: string;
+    @Input() uploadSize: number;
     @Output() overUpload = new EventEmitter<{
         status: string,
         fileList: any[],
@@ -68,7 +69,7 @@ export class UploadComponent{
                     // }
 		        }
     		}
-    	}
+        }
         this.uploadValue = this.uploadValue == undefined ? '' : undefined;
     }
 

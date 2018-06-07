@@ -9,16 +9,16 @@
 .flex-1{
     flex: 1;
 }
-button{
-    background-color: #0078e7;
-    color: #fff;
-    font-family: inherit;
-    font-size: 100%;
-    padding: .5em 1em;
-    border: transparent;
-    text-decoration: none;
-    border-radius: 2px;
-}
+// button{
+//     background-color: #0078e7;
+//     color: #fff;
+//     font-family: inherit;
+//     font-size: 100%;
+//     padding: .5em 1em;
+//     border: transparent;
+//     text-decoration: none;
+//     border-radius: 2px;
+// }
 button[disabled]{
     background-color: rgba(0, 120, 231, 0.3);
 }

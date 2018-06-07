@@ -1,0 +1,105 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section admin-phyexam">
+  <top-bar [data]="topBar"></top-bar>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>
+        <span class="required">*</span>科室：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-select class="w100" [(ngModel)]="info.service" [nzPlaceHolder]="'请输入科室'" [nzSize]="'large'">
+        <nz-option *ngFor="let service of serviceList" [nzLabel]="service.serviceName" [nzValue]="service.serviceId"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>
+        <span class="required">*</span>套餐名：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input [(ngModel)]="info.name" [nzPlaceHolder]="'请输入套餐名'" [nzSize]="'large'"></nz-input>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>
+        <span class="required">*</span>合适最小月龄：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input-number [nzMin]="0" [nzStep]="1" [(ngModel)]="info.month_min" [nzPlaceHolder]="'请输入合适最小月龄'" [nzSize]="'large'" class="w100"></nz-input-number>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>
+        <span class="required">*</span>合适最大月龄：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input-number [nzMin]="0" [nzStep]="1" [(ngModel)]="info.month_max" [nzPlaceHolder]="'请输入合适最大月龄'" [nzSize]="'large'" class="w100"></nz-input-number>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>
+        <span class="required">*</span>价格：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input-number [nzMin]="0" [nzStep]="0.01" [(ngModel)]="info.price" [nzPlaceHolder]="'请输入价格'" [nzSize]="'large'" class="w100"></nz-input-number>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>首次体验价格：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input-number [nzMin]="0" [nzSize]="0.01" [(ngModel)]="info.first_price" [nzPlaceHolder]="'请输入首次体验价格'" [nzSize]="'large'"
+        class="w100"></nz-input-number>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="mt20">
+    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+      <label>备注：</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input [nzType]="'textarea'" [nzRows]="3" [(ngModel)]="info.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+    </div>
+  </div>
+  <ng-container *ngFor="let hasP of hasProjectList; let index=index;">
+    <div nz-form-item nz-row class="mt20">
+      <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+        <label *ngIf="index == 0">
+          <span class="required">*</span>已选项目：</label>
+      </div>
+      <div nz-col [nzSpan]="12" nz-form-control>
+        <nz-select class="w100" [(ngModel)]="hasP.id" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'">
+          <nz-option [nzLabel]="hasP.name" [nzValue]="hasP.id"></nz-option>
+        </nz-select>
+      </div>
+      <div nz-col [nzSpan]="5" nz-form-control>
+        <button *ngIf="hasP.name != '健康档案'" (click)="removeP(index)" nz-button [nzType]="'danger'" [nzSize]="'large'" class="ml20">移除</button>
+      </div>
+    </div>
+  </ng-container>
+  <div nz-row class="mt40">
+    <div nz-col [nzOffset]="7" [nzSpan]="12">
+      <button (click)="save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">保存</button>
+    </div>
+  </div>
+  <ng-container *ngFor="let notP of notProjectList; let index=index;">
+    <div nz-form-item nz-row class="mt20">
+      <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+        <label *ngIf="index == 0">可选项目：</label>
+      </div>
+      <div nz-col [nzSpan]="12" nz-form-control>
+        <nz-select class="w100" [(ngModel)]="notP.id" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'">
+          <nz-option [nzLabel]="notP.name" [nzValue]="notP.id"></nz-option>
+        </nz-select>
+      </div>
+      <div nz-col [nzSpan]="5" nz-form-control>
+        <button (click)="addP(index)" nz-button [nzType]="'danger'" [nzSize]="'large'" class="ml20">添加</button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<loading [show]="loadingShow"></loading>

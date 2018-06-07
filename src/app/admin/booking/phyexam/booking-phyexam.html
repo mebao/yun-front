@@ -1,0 +1,311 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section admin-booking-phyexam">
+  <top-bar [data]="topBar"></top-bar>
+  <nz-tabset [nzSelectedIndex]="selectedIndex">
+    <nz-tab (nzClick)="changeIndex(0)">
+      <ng-template #nzTabHeading>
+        健康档案
+      </ng-template>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>生产状态：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <!-- 查看 -->
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.production_status_text}}
+          </ng-container>
+          <!-- 编辑 -->
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-radio-group [(ngModel)]="info.production_status" [nzSize]="'large'">
+              <label nz-radio [nzValue]="'足月'">
+                <span>足月</span>
+              </label>
+              <label nz-radio [nzValue]="'早产'">
+                <span>早产</span>
+              </label>
+            </nz-radio-group>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>生产方式：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.production_way_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-radio-group [(ngModel)]="info.production_way" [nzSize]="'large'">
+              <label nz-radio [nzValue]="'顺产'">
+                <span>顺产</span>
+              </label>
+              <label nz-radio [nzValue]="'剖宫产'">
+                <span>剖宫产</span>
+              </label>
+            </nz-radio-group>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>孕周：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.gestational_weeks_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-input-number [nzMin]="'0'" [nzStep]="1" [(ngModel)]="info.gestational_weeks" [nzSize]="'large'" [nzPlaceHolder]="'请输入孕周'"
+              class="w100"></nz-input-number>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>过敏史：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.allergic_history_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-input [nzType]="'textarea'" [(ngModel)]="info.allergic_history" [nzSize]="'large'" [nzRows]="textareaRows" [nzPlaceHolder]="'请输入过敏史'"></nz-input>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>喂养方式：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.feeding_way_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-radio-group [(ngModel)]="info.feeding_way" [nzSize]="'large'">
+              <label nz-radio [nzValue]="'母乳'">
+                <span>母乳</span>
+              </label>
+              <label nz-radio [nzValue]="'配方奶粉'">
+                <span>配方奶粉</span>
+              </label>
+            </nz-radio-group>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>每日奶量：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.daily_milk_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-input-number [nzMin]="'0'" [nzStep]="1" [(ngModel)]="info.daily_milk" [nzSize]="'large'" [nzPlaceHolder]="'请输入每日奶量'"
+              class="w100"></nz-input-number>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>是否接种：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.is_vaccinate_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-radio-group [(ngModel)]="info.is_vaccinate" [nzSize]="'large'">
+              <label nz-radio [nzValue]="'0'">
+                <span>未接种</span>
+              </label>
+              <label nz-radio [nzValue]="'1'">
+                <span>接种</span>
+              </label>
+            </nz-radio-group>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>
+            <span class="required">*</span>家族遗传疾病史：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.fhohd_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-input [nzType]="'textarea'" [(ngModel)]="info.fhohd" [nzSize]="'large'" [nzPlaceHolder]="'请输入家族遗传疾病史'"></nz-input>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>接种疫苗名：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.vaccinate_name_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-input [(ngModel)]="info.vaccinate_name" [nzSize]="'large'" [nzPlaceHolder]="'请输入接种疫苗名'"></nz-input>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-form-item nz-row class="mt20">
+        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+          <label>接种疫苗时间：</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <ng-container *ngIf="editTypeHealth == 'view'">
+            {{info.vaccinate_date_text}}
+          </ng-container>
+          <ng-container *ngIf="editTypeHealth == 'edit'">
+            <nz-datepicker (ngModelChange)="info.vaccinate_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.vaccinate_date"
+              [nzDisabledDate]="_disabledDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请输入接种疫苗时间'"></nz-datepicker>
+          </ng-container>
+        </div>
+      </div>
+      <div nz-row class="mt20">
+        <div nz-col [nzSpan]="12" [nzOffset]="7">
+          <button *ngIf="editTypeHealth == 'view'" (click)="changeTypeHealth()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+          <button *ngIf="editTypeHealth == 'edit'" (click)="cancelHealth()" nz-button [nzType]="'default'" [nzSize]="'large'" [nzLoading]="isSaveLoading">取消</button>
+          <button *ngIf="editTypeHealth == 'edit'" (click)="saveHealth()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading">保存</button>
+        </div>
+      </div>
+    </nz-tab>
+    <nz-tab (nzClick)="changeIndex(1)">
+      <ng-template #nzTabHeading>
+        体检项目
+      </ng-template>
+      <nz-alert *ngIf="menuList.length == 0" [nzType]="'info'" [nzMessage]="'请选择体检套餐'"></nz-alert>
+      <div *ngIf="selectedIndex == 1" nz-row [nzGutter]="30">
+        <div nz-col [nzSpan]="6">
+          <nz-affix [nzTarget]="target">
+            <nz-anchor [nzTarget]="target" [nzBounds]="50">
+              <ng-container *ngFor="let menu of menuList">
+                <nz-link *ngIf="menu.examName != '健康档案'" nzHref="#{{menu.examName}}" nzTitle="{{menu.examName}}"></nz-link>
+              </ng-container>
+            </nz-anchor>
+          </nz-affix>
+        </div>
+        <div nz-col [nzSpan]="18">
+          <nz-collapseset *ngIf="menuList.length > 0">
+            <ng-container *ngFor="let menu of menuList; let indexMenu=index;">
+              <nz-collapse *ngIf="menu.examName != '健康档案'" id="{{menu.examName}}" [nzTitle]="menu.examName" [nzActive]="'true'">
+                <ng-container *ngFor="let item of menu.exam; let indexItem=index;">
+                  <div nz-form-item nz-row class="mt20">
+                    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+                      <label>
+                        <span class="required">*</span>{{item.infoName}}{{item.unit ? '（' + item.unit + '）' : ''}}：</label>
+                    </div>
+                    <!-- 查看 -->
+                    <ng-container *ngIf="editTypePhyexam == 'view'">
+                      <!-- number -->
+                      <ng-container *ngIf="item.inputType == 'inputnumber'">
+                        <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
+                          {{item.result}}
+                        </div>
+                        <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
+                          <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
+                        </div>
+                        <div nz-col [nzSpan]="5">
+                          <div class="pl20">
+                            {{item.type ? '范围：' + item.scope : ''}}
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- input or radio -->
+                      <div nz-col [nzSpan]="12" nz-form-control>
+                        <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput' || item.inputType == 'radio_input'">
+                          <span>{{item.result}}</span>
+                        </ng-container>
+                      </div>
+                      <!-- file -->
+                      <div nz-col [nzSpan]="12" nz-form-control>
+                        <ng-container *ngIf="item.inputType == 'file'">
+                          <div *ngIf="item.result && item.result != ''" class="show-tab cursor-p" (click)="showFile(item.result)">
+                            <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
+                            <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                    <!-- 编辑 -->
+                    <ng-container *ngIf="editTypePhyexam == 'edit'">
+                      <!-- number -->
+                      <ng-container *ngIf="item.inputType == 'inputnumber'">
+                        <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
+                          <nz-input-number [(ngModel)]="item.result" (ngModelChange)="changeNumResult(indexMenu, indexItem)" [nzSize]="'large'" [nzPlaceHolder]="'请输入' + item.infoName"
+                            class="w100"></nz-input-number>
+                        </div>
+                        <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
+                          <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
+                        </div>
+                        <div nz-col [nzSpan]="5">
+                          <div class="pl20">
+                            {{item.type ? '范围：' + item.scope : ''}}
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- input -->
+                      <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput'">
+                        <div nz-col [nzSpan]="12" nz-form-control>
+                          <nz-input [nzType]="'textarea'" [nzRows]="item.rowNum" (keyup)="changeRow($event, indexMenu, indexItem)" [(ngModel)]="item.result"
+                            [nzSize]="'large'" [nzPlaceHolder]="'请输入' + item.infoName"></nz-input>
+                        </div>
+                      </ng-container>
+                      <!-- radio -->
+                      <ng-container *ngIf="item.inputType == 'radio_input'">
+                        <div nz-col [nzSpan]="12" nz-form-control>
+                          <nz-radio-group [(ngModel)]="item.result" [nzSize]="'large'">
+                            <ng-container *ngFor="let itemRadio of item.inputValue">
+                              <label nz-radio [nzValue]="itemRadio.key">
+                                <span>{{itemRadio.key}}</span>
+                              </label>
+                            </ng-container>
+                          </nz-radio-group>
+                        </div>
+                      </ng-container>
+                      <!-- file -->
+                      <ng-container *ngIf="item.inputType == 'file'">
+                        <div nz-col [nzSpan]="12" nz-form-control>
+                          <div *ngIf="item.result && item.result != ''" class="show-tab mb10">
+                            <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
+                            <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
+                          </div>
+                          <nll-upload [qiniuToken]="qiniuToken" [multiple]="false" [acceptType]="acceptType" [uploadSize]="1" (overUpload)="successUpload($event, indexMenu, indexItem)"
+                            (errorUpload)="errorUpload($event)"></nll-upload>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </nz-collapse>
+            </ng-container>
+          </nz-collapseset>
+          <div nz-row class="mt30 mt20">
+            <div nz-col [nzSpan]="12" [nzOffset]="7">
+              <button *ngIf="editTypePhyexam == 'view'" (click)="changeTypePhyexam()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+              <button *ngIf="editTypePhyexam == 'edit'" (click)="cancelPhyexam()" nz-button [nzType]="'default'" [nzSize]="'large'" [nzLoading]="isSaveLoading">取消</button>
+              <button *ngIf="editTypePhyexam == 'edit'" (click)="saveUpload()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>
+<loading [show]="loadingShow"></loading>
+<modal-img url="{{modalImg.url}}" showImg="{{modalImg.showImg}}" (onVoted)="closeImg()"></modal-img>

@@ -242,6 +242,10 @@ const adminRoutes: Routes = [
 						loadChildren: './guazhang-list/guazhang-list.module#GuazhangListModule',
 					},
 					{
+						path: 'phyexam',
+						loadChildren: './phyexam/phyexam.module#PhyexamModule',
+					},
+					{
 						path: 'repage',
 						component: Repage,
 					},

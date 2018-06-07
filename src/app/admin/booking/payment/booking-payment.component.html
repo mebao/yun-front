@@ -58,7 +58,7 @@
 									</thead>
 									<tbody nz-tbody>
 										<tr nz-tbody-tr *ngFor="let service of fee.feeInfo.serviceFeeList; let index=index;">
-											<td>{{service.serviceName}}</td>
+											<td>{{service.projectName}}</td>
 											<td>{{service.originalFee + (service.hasActcardPay ? '（活动卡价格）' : '')}}</td>
 											<td>
 												<div class="text-lg">{{service.remark}}</div>

@@ -127,6 +127,12 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
+		// 体检套餐管理
+		phyexamList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		}
 		//检查项目
 		setupInspectList: {
 			use: string,
@@ -141,6 +147,12 @@ export class LeftNavComponent{
 		},
 		// 预约辅助治疗
 		bookingAssistList: {
+			use: string,
+			authority: any[],
+			infos: any[],
+		},
+		// 体检套餐
+		bookingPhyexamList: {
 			use: string,
 			authority: any[],
 			infos: any[],
@@ -399,6 +411,11 @@ export class LeftNavComponent{
 				authority: ['see'],
 				infos: [],
 			},
+			phyexamList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
 			setupInspectList: {
 				use: '',
 				authority: ['see'],
@@ -410,6 +427,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			bookingAssistList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			bookingPhyexamList: {
 				use: '',
 				authority: ['see'],
 				infos: [],

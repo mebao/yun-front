@@ -1518,6 +1518,96 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询所有体检项目
+	allphyexam(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/allphyexam' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 创建体检套餐
+	physicalpackage(params): Promise<Data>{
+		var url = this.url + '/mebcrm/physicalpackage';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询诊所体检套餐
+	searchphypage(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchphypage' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询健康档案
+	childhealths(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/childhealths' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 创建健康档案
+	childhealth(params): Promise<Data>{
+		var url = this.url + '/mebcrm/childhealth';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 预约体检套餐具体项目
+	bookingphyinfo(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/bookingphyinfo/' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 预约体检套餐
+	bookingphypack(params): Promise<Data>{
+		var url = this.url + '/mebcrm/bookingphypack';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 查询预约的体检套餐
+	bookingphypage(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/bookingphypage' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 填写体检结果
+	phypackresult(params): Promise<Data>{
+		var url = this.url + '/mebcrm/phypackresult';
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 辅助治疗退次数
+	backassist(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/backassist/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

@@ -1,0 +1,21 @@
+:host /deep/ {
+  .ant-anchor-wrapper {
+    height: 600px;
+    overflow-y: auto;
+  }
+  .show-tab{
+    width: 90px;
+    height: 90px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+    .info{
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      word-wrap: break-word;
+    }
+  }
+}

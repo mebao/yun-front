@@ -1,6 +1,6 @@
-<div class="nll-upload-tab" *ngIf="uploadStatus == ''">
+<div class="nll-upload-tab" *ngIf="uploadStatus == '' && ((!uploadSize) || (uploadSize && this.fileList.length < uploadSize))">
     <a class="upload-button-tab">
-        <button>选择文件</button>
+        <button class="ant-btn ant-btn-primary ant-btn-lg">选择文件</button>
         <input class="upload" type="file" [multiple]="multiple" (change)="selectedFile($event)" accept="{{acceptType}}" [(ngModel)]="uploadValue">
     </a>
 </div>

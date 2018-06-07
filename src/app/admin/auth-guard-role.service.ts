@@ -852,6 +852,25 @@ export class AuthGuardRole implements CanActivate{
 						]
 					},
 					{
+						firstKey: 'phyexamList',
+						firstUrl: '/admin/phyexam/list',
+						authority: ['see'],
+						second: [
+							{
+								url: '/admin/phyexam/list',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/phyexam',
+								authority: 'edit',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
 						firstKey: 'setupInspectList',
 						firstUrl: '/admin/setupInspect/list',
 						authority: ['see'],
@@ -903,6 +922,25 @@ export class AuthGuardRole implements CanActivate{
 							{
 								url: '/admin/bookingAssistList',
 								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+						]
+					},
+					{
+						firstKey: 'bookingPhyexamList',
+						firstUrl: '/admin/booking/phyexam/list',
+						authority: ['see'],
+						second: [
+							{
+								url: '/admin/booking/phyexam/list',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
+							{
+								url: '/admin/booking/phyexam',
+								authority: 'edit',
 								queryType: '',
 								queryParams: '',
 							},

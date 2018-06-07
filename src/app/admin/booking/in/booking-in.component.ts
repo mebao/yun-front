@@ -17,6 +17,10 @@ export class BookingInComponent{
 	topBar: {
 		title: string,
 		back: boolean,
+		alert: {
+			type: string,
+			text: string,
+		}
 	};
 	bookinglist: any[];
 	modalTab: boolean;
@@ -108,6 +112,10 @@ export class BookingInComponent{
 		this.topBar = {
 			title: '登记',
 			back: false,
+            alert: {
+                type: 'warning',
+                text: '登记的预约功能只能用作当天已经来到诊所的用户，预约成功后，状态为已登记。',
+            }
 		}
 		this.bookinglist = [];
 		this.doctorDutys = {
@@ -275,7 +283,7 @@ export class BookingInComponent{
 			timeInfo: '',
 			user_doctor: '',
 			creator: '',
-			child: '',
+			child: null,
 			child_name: '',
 			gender: '',
 			birth_date: '',
@@ -619,18 +627,19 @@ export class BookingInComponent{
 			this.canEdit = false;
 			return;
 		}
-		//判断是新预约还是登记已经预约信息
+		// 判断是新预约还是登记已经预约信息
 		if(this.booking.refNo == ''){
-			//创建预约，添加预约金
-			if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
-				this._message.error('预约金不可为空');
-				this.canEdit = false;
-				return;
-			}
-			if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
-				this._message.error('预约金应大于等于0，小于科室费');
-				return;
-			}
+			// 创建预约，预约金为0
+			this.bookingInfo.booking_fee = '0';
+			// if(this.adminService.isFalse(this.bookingInfo.booking_fee)){
+			// 	this._message.error('预约金不可为空');
+			// 	this.canEdit = false;
+			// 	return;
+			// }
+			// if(parseFloat(this.bookingInfo.booking_fee) < 0 || parseFloat(this.bookingInfo.booking_fee) > parseFloat(JSON.parse(this.bookingInfo.service).fee)){
+			// 	this._message.error('预约金应大于等于0，小于科室费');
+			// 	return;
+			// }
 			this.loadingShow = true;
 			// 创建预约时，验证该患者是否已经预约
 			var todayDate = this.adminService.getDayByDate(new Date());
@@ -708,8 +717,9 @@ export class BookingInComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.successBookingId = results.bookingId;
-				this.loadingShow = false;
-				this.modalTabType = true;
+				// this.loadingShow = false;
+				// this.modalTabType = true;
+				this.bookingIn(results.bookingId);
 			}
 		}).catch(() => {
 			this.loadingShow = false;
@@ -747,7 +757,7 @@ export class BookingInComponent{
 				this._message.error(data.errorMsg);
 				this.canEdit = false;
 			}else{
-				this.bookingIn();
+				this.bookingIn(this.booking.bookingId);
 			}
 		}).catch(() => {
 			this.loadingShow = false;
@@ -756,13 +766,13 @@ export class BookingInComponent{
         });
 	}
 
-	bookingIn() {
+	bookingIn(bookingId) {
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			status: 3,
 		}
-		this.adminService.updatebookstatus(this.booking.bookingId ,params).then((data) => {
+		this.adminService.updatebookstatus(bookingId ,params).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this._message.error(data.errorMsg);

@@ -123,7 +123,7 @@
 				</div>
 			</div>
 		</div>
-    	<div nz-col [nzSpan]="8">
+    	<div *ngIf="booking.bookingId" nz-col [nzSpan]="8">
           	<div nz-form-item>
             	<div nz-form-label>
               		<label>

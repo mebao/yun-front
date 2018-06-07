@@ -1,0 +1,59 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section admin-phyexam-list">
+  <top-bar [data]="topBar"></top-bar>
+  <div *ngIf="moduleAuthority.edit" class="mt10 mb10">
+    <button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增体检套餐</button>
+  </div>
+  <div nz-row [nzGutter]="30">
+    <div nz-col [nzSpan]="8" [nzOffset]="16">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="10" class="text-right">
+          <label>套餐名：</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="14">
+          <nz-input [(ngModel)]="searchInfo.name" [nzSize]="'large'" [nzPlaceHolder]="'请输入套餐名'"></nz-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt10 mb10 text-right">
+    <button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+  </div>
+  <div class="mt10 mb10">
+    <nz-alert [nzType]="'info'" [nzMessage]="'共查询到体检套餐' + phyexamList.length + '条'"></nz-alert>
+  </div>
+  <nz-table *ngIf="hasData" #nzTable [nzDataSource]="phyexamList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+    <thead nz-thead>
+      <tr>
+        <th>套餐名</th>
+        <th>科室</th>
+        <th>合适最小月龄</th>
+        <th>合适最大月龄</th>
+        <th>价格</th>
+        <th>首次体验价格</th>
+        <th>备注</th>
+        <th>详细项目</th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let phyexam of phyexamList">
+        <td>{{phyexam.name}}</td>
+        <td>{{phyexam.serviceName}}</td>
+        <td>{{phyexam.monthMin}}</td>
+        <td>{{phyexam.monthMax}}</td>
+        <td>{{phyexam.price}}</td>
+        <td>{{phyexam.firstPrice}}</td>
+        <td>
+          <div class="td-text">{{phyexam.remark}}</div>
+        </td>
+        <td>
+          <div class="td-text">
+            <div *ngFor="let exam of phyexam.examList">{{exam.examName}}</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <span noResult>暂无体检套餐信息</span>
+  </nz-table>
+</div>
+<loading [show]="loadingShow"></loading>

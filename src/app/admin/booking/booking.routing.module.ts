@@ -19,6 +19,10 @@ import { BookingComponent }         from './booking.component';
             path: 'examine',
             loadChildren: './examine/booking-examine.module#BookingExamineModule',
         },
+        {
+            path: 'phyexam',
+            loadChildren: './phyexam/booking-phyexam.module#BookingPhyexamModule',
+        },
     ])]
 })
 

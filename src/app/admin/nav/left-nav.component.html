@@ -85,6 +85,16 @@
 				<span>辅助治疗</span>
 			</span>
 		</li>
+		<li nz-menu-item
+			*ngIf="clinicRole.bookingPhyexamList.use != ''"
+			routerLink="./booking/phyexam/list"
+			routerLinkActive="ant-menu-item-selected"
+			(click)="goPage('bookingPhyexamList')">
+			<span title>
+				<!-- <i class="anticon anticon-mail"></i> -->
+				<span>体检套餐</span>
+			</span>
+		</li>
 		<li nz-submenu *ngIf="clinicRole.prescriptList.use != ''">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
@@ -223,6 +233,16 @@
 					<span title>
 						<!-- <i class="anticon anticon-mail"></i> -->
 						<span>辅助治疗管理</span>
+					</span>
+				</li>
+				<li nz-menu-item
+					*ngIf="clinicRole.phyexamList.use != ''"
+					routerLink="./phyexam/list"
+					routerLinkActive="ant-menu-item-selected"
+					(click)="goPage('phyexamList')">
+					<span title>
+						<!-- <i class="anticon anticon-mail"></i> -->
+						<span>体检套餐管理</span>
 					</span>
 				</li>
 				<li nz-menu-item
