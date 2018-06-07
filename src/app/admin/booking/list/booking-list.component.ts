@@ -565,7 +565,6 @@ export class BookingListComponent implements OnInit{
 					}
 					this.weektitle = weektitle;
 					this.weeklist = weeklist;
-					console.log(this.weeklist);
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					if(results.weekbooks.length > 0){

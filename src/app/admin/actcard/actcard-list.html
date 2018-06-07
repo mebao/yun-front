@@ -22,11 +22,12 @@
 	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="actcardList" [nzBordered]="true" [nzIsPagination]="false">
 		<thead nz-thead>
 			<tr>
-				<th nz-th>活动卡名</th>
-				<th nz-th>科室</th>
-				<th nz-th>售价</th>
-				<th nz-th>可使用次数</th>
-				<th nz-th>操作</th>
+				<th>活动卡名</th>
+				<th>科室</th>
+				<th>售价</th>
+				<th>可使用次数</th>
+				<th class="w15">备注</th>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
@@ -35,6 +36,9 @@
 				<td>{{actcard.projectName}}</td>
 				<td>{{actcard.price}}</td>
 				<td>{{actcard.num}}</td>
+				<td>
+					<div class="td-text">{{actcard.num}}</div>
+				</td>
 				<td>
 					<button *ngIf="moduleAuthority.edit" (click)="update(actcard)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 				</td>

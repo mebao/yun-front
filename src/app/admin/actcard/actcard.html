@@ -48,8 +48,16 @@
             </div>
         </div>
         <div nz-form-item nz-row class="mt10">
+            <div nz-form-label nz-col [nzSpan]="7">
+                <label>备注：</label>
+            </div>
+            <div nz-col [nzSpan]="12" nz-form-control>
+                <nz-input formControlName="remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
+            </div>
+        </div>
+        <div nz-form-item nz-row class="mt10">
             <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
-                <button (click)="save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave" [disabled]="!validateForm.valid">保存</button>
+                <button (click)="$event.preventDefault();save()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave" [disabled]="!validateForm.valid">保存</button>
             </div>
         </div>
     </form>

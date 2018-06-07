@@ -31,7 +31,7 @@
 													[nzPlaceHolder]="'请选择实验室检查'"
 													[(ngModel)]="addCheckInfo.check"
 													nzShowSearch
-													[nzDisabled]="editType == 'update'">
+													[nzDisabled]="addCheckInfo.editType == 'update'">
 													<ng-container *ngFor="let check of checklist">
 														<ng-container *ngIf="check.canUse == '1'">
 															<nz-option [nzLabel]="check.name" [nzValue]="check"></nz-option>
@@ -265,8 +265,7 @@
 													[nzSize]="'large'"
 													[nzPlaceHolder]="'请选择辅助治疗'"
 													[ngModel]="addAssistInfo.project"
-													nzShowSearch
-													[nzDisabled]="editType == 'update'">
+													nzShowSearch>
 													<nz-option
 														*ngFor="let assist of assistProjects"
 														[nzLabel]="assist.name"
@@ -398,14 +397,14 @@
 												<td>
 													<div class="length-text">{{info.msExplain}}</div>
 												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
 													<div class="length-text">{{info.remark}}</div>
 												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
 													<div class="length-text">{{item.remark}}</div>
 												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
+												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.date}}</td>
+												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
 													<!-- pageType 空为医生接诊， history为查看 -->
 													<div *ngIf="pageType != 'history'">
 														<!-- 订单未完成，可操作 -->
@@ -459,13 +458,13 @@
 									<ng-container *ngFor="let docTcm of docTcmList;">
 										<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
 											<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.num}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.usage}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.frequency}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.num}}</td>
+											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.usage}}</td>
+											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.frequency}}</td>
+											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
 												<div class="td-text">{{docTcm.remark}}</div>
 											</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
 												<button *ngIf="!docTcm.apotId" (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 											</td>
 										</tr>
@@ -562,7 +561,7 @@
 														<!-- 编辑 -->
 														<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 															<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-															<button *ngIf="addFeeInfo.editType != ''" (click)="editFee(f)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+															<button *ngIf="addFeeInfo.editType != ''" (click)="editFee()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
 														</div>
 													</ng-container>
 												</div>
@@ -613,7 +612,7 @@
 												<label>费用<span class="required">*</span></label>
 											</div>
 											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="editType == 'update'" class="w100"></nz-input-number>
+												<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
 											</div>
 										</div>
 									</div>

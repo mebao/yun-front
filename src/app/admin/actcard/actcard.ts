@@ -40,6 +40,7 @@ export class Actcard{
             service: [ '', [ Validators.required ]],
             price: [ '', [ Validators.required ]],
             num: [ '', [ Validators.required ]],
+            remark: [ '' ],
         });
     }
 
@@ -94,6 +95,7 @@ export class Actcard{
                             service: [ results.list[0].projectId, [ Validators.required ]],
                             price: [ results.list[0].price, [ Validators.required ]],
                             num: [ results.list[0].num, [ Validators.required ]],
+                            remark: [ results.list[0].remark ],
                         });
                     }else{
                         this._message.error('数据错误');
@@ -120,6 +122,7 @@ export class Actcard{
             price: this.validateForm.controls.price.value,
             num: this.validateForm.controls.num.value,
             project_id: this.validateForm.controls.service.value,
+            remark: this.validateForm.controls.remark.value,
             id: this.id ? this.id : null,
         }
         this.as.actcard(params).then((data) => {

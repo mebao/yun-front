@@ -239,8 +239,8 @@
 			<tbody nz-tbody>
 				<ng-container *ngFor="let booking of bookinglist" class="cursor-p">
 					<tr *ngFor="let service of booking.services; let indexService=index;">
-						<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == '0'">{{booking.childName}}</td>
-						<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == '0'">{{booking.age}}</td>
+						<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == 0">{{booking.childName}}</td>
+						<td [attr.rowspan]="booking.servicesLength" *ngIf="indexService == 0">{{booking.age}}</td>
 						<td>{{service.userDoctorName}}</td>
 						<td>{{service.serviceName}}</td>
 						<td>
@@ -265,7 +265,7 @@
 	</ng-template>
 	<ng-template #footerAgain>
 		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeAgain()">取消</button>
-		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmAgain()" [disabled]="btnCanEdit">继续预约</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmAgain()">继续预约</button>
 	</ng-template>
 </nz-modal>
 <nz-modal [nzVisible]="modalTabType" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentType" [nzFooter]="footerType" [nzMaskClosable]="false" (nzOnCancel)="closeType()">
@@ -274,7 +274,7 @@
 	</ng-template>
 	<ng-template #footerType>
 		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeType()">继续预约</button>
-		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmType()" [disabled]="btnCanEdit">去支付</button>
+		<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmType()">去支付</button>
 	</ng-template>
 </nz-modal>
 <loading [show]="loadingShow"></loading>
