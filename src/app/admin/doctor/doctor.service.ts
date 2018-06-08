@@ -8,7 +8,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class DoctorService{
-	url = config.baseHTTP;
+	url = config.baseHTTP();
 
 	constructor(
         private http: Http,

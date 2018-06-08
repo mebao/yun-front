@@ -5,7 +5,7 @@ import { config }                                 from '../config';
 
 @Injectable()
 export class NewService{
-	url = config.baseHTTP;
+	url = config.baseHTTP();
 	constructor(
         private newHttp: HttpClient,
 	) {

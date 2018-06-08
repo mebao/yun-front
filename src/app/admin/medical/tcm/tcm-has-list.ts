@@ -145,6 +145,6 @@ export class TcmHasList{
         if(this.searchInfo.name_code != ''){
             urlOptions += '&name_code=' + this.searchInfo.name_code;
         }
-        window.location.href = config.baseHTTP + '/mebcrm/tcmexport'+ urlOptions;
+        window.location.href = config.baseHTTP() + '/mebcrm/tcmexport'+ urlOptions;
     }
 }

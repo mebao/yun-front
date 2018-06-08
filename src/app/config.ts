@@ -1,10 +1,32 @@
 export const config = {
-    baseHTTP: 'http://172.16.252.60/jiabaokangle',
-    // baseHTTP: 'http://wapapi.jiabaokangle.com',
-    // baseHTTP: 'http://wapapi.meb168.com',
-    // baseHTTP: 'http://km01.yunapi.meb168.com',
-    yebkHttp: 'http://172.16.252.60/yrbk',
-    // yebkHttp: 'http://meb.meb168.com',
-    // message_tran: 'zy_message_tran',
-    message_tran: 'km_message_tran',
+    baseHTTP(): string{
+        var host = window.location.host;
+        if(host.indexOf('localhost:4200') != -1 || host.indexOf('172.16.252.227') != -1){
+            return 'http://172.16.252.227/jiabaokangle';
+        }else if(host.indexOf('wapapi.meb168.com') != -1){
+            return 'http://wapapi.meb168.com';
+        }else if(host.indexOf('km01.yunapi.meb168.com') != -1){
+            return 'http://km01.yunapi.meb168.com';
+        }else if(host.indexOf('mebtestapi.meb168.com') != -1){
+            return 'http://mebtestapi.meb168.com';
+        }
+    },
+    yebkHttp(): string{
+        var host = window.location.host;
+        if(host.indexOf('localhost:4200') != -1 || host.indexOf('172.16.252.227') != -1){
+            return 'http://172.16.252.227/yrbk';
+        }else{
+            return 'http://mebapi.meb168.com';
+        }
+    },
+    message_tran(): string{
+        var host = window.location.host;
+        if(host.indexOf('localhost:4200') != -1 || host.indexOf('172.16.252.227') != -1 || host.indexOf('mebtestapi.meb168.com') != -1){
+            return 'test_message_tran';
+        }else if(host.indexOf('wapapi.meb168.com') != -1){
+            return 'zy_message_tran';
+        }else if(host.indexOf('km01.yunapi.meb168.com') != -1){
+            return 'km_message_tran';
+        }
+    },
 }

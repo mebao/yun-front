@@ -121,7 +121,7 @@ export class TransactionRecordListComponent{
 		if(type == ''){
 			this.getData(urlOptions);
 		}else{
-			window.location.href = config.baseHTTP + '/mebcrm/tranexport'+ urlOptions;
+			window.location.href = config.baseHTTP() + '/mebcrm/tranexport'+ urlOptions;
 			this.loadingShow = false;
 		}
 	}

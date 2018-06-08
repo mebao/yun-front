@@ -231,11 +231,11 @@ export class HeaderNavComponent {
 
 		// 开启通道前，先关闭通道
 		// goEasy.unsubscribe({
-		// 	channel: config.message_tran,
+		// 	channel: config.message_tran(),
 		// });
 
 		goEasy.subscribe({
-			channel: config.message_tran,
+			channel: config.message_tran(),
 			onMessage: function (message) {
 				var tran = JSON.parse(message.content);
 				that._ngZone.run(() =>

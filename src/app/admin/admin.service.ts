@@ -8,8 +8,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AdminService{
-	url = config.baseHTTP;
-	yebkUrl = config.yebkHttp;
+	url = config.baseHTTP();
+	yebkUrl = config.yebkHttp();
 
 	constructor(
 		private http: Http,

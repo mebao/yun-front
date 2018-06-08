@@ -11,7 +11,7 @@ import { config }  from './config';
 
 @Injectable()
 export class AuthService {
-	url = config.baseHTTP;
+	url = config.baseHTTP();
 
   	isLoggedIn: boolean = true;
 

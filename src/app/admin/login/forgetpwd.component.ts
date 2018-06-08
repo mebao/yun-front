@@ -21,7 +21,7 @@ import { config } from '../../config';
 
 export class ForgetpwdComponent{
     num: number;
-    codeImg = config.baseHTTP + '/mebcrm/getcode?id=1';
+    codeImg = config.baseHTTP() + '/mebcrm/getcode?id=1';
     sms: {
         text: string,
         disabled: boolean,
@@ -61,7 +61,7 @@ export class ForgetpwdComponent{
 
     changeCodeImg() {
         this.num++;
-        this.codeImg = config.baseHTTP + '/mebcrm/getcode?id=' + this.num;
+        this.codeImg = config.baseHTTP() + '/mebcrm/getcode?id=' + this.num;
     }
 
     // 发送验证码

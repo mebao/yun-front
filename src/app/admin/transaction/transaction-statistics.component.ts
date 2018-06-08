@@ -193,7 +193,7 @@ export class TransactionStatisticsComponent{
 		if(type == ''){
 			this.getData(urlOptions);
 		}else{
-			window.location.href = config.baseHTTP + '/mebcrm/transtatisticsexport'+ urlOptions;
+			window.location.href = config.baseHTTP() + '/mebcrm/transtatisticsexport'+ urlOptions;
 			this.loadingShow = false;
 		}
 	}
