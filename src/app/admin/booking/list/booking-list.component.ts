@@ -25,6 +25,7 @@ export class BookingListComponent implements OnInit{
 		add: boolean,
 		update: boolean,
 		sendSms: boolean,
+		callPhone: boolean,
 	}
 	loadingShow: boolean;
 	selectedTab: number;
@@ -55,6 +56,8 @@ export class BookingListComponent implements OnInit{
 	modalTab: boolean;
 	modalConfirmTab: boolean;
 	booking: {
+		mobile: string,
+		genderText: string,
 		age: string,
 		bookingDate: string,
 		bookingId: string,
@@ -106,6 +109,8 @@ export class BookingListComponent implements OnInit{
     // 禁止支付按钮连续提交
     btnCanEdit: boolean;
 	printStyle: string;
+	// 网络电话
+	calling: boolean;
 
 	constructor(
 		private confirmServ: NzModalService,
@@ -160,6 +165,7 @@ export class BookingListComponent implements OnInit{
 			add: false,
 			update: false,
 			sendSms: false,
+			callPhone: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -328,6 +334,8 @@ export class BookingListComponent implements OnInit{
 
 		this.modalBackBookingFee = false;
 		this.btnCanEdit = false;
+
+		this.calling = false;
 	}
 
 	printComplete() {
@@ -340,6 +348,8 @@ export class BookingListComponent implements OnInit{
 
 	initBooking() {
 		this.booking = {
+			mobile: '',
+			genderText: '',
 			age: '',
 			bookingDate: '',
 			bookingId: '',
@@ -943,6 +953,60 @@ export class BookingListComponent implements OnInit{
 				this.close();
 				this._message.success('短信发送成功');
 				this.search();
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	
+	calluser() {
+		if(localStorage.getItem('call_sid')){
+			this._message.error('正在结束上次未关闭通话');
+			this.hangupuser('pre');
+		}else{
+			this.loadingShow = true;
+			var params = {
+				username: this.adminService.getUser().username,
+				token: this.adminService.getUser().token,
+				clinic_id: this.adminService.getUser().clinicId,
+				mobile: this.booking.mobile,
+				user_id: this.booking.creatorId,
+			}
+
+			this.adminService.calluser(params).then((data) => {
+				this.loadingShow = false;
+				if(data.status == 'no'){
+					this._message.error(data.errorMsg);
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					localStorage.setItem('call_sid', results.call_sid);
+					this._message.success('网络电话拨打成功');
+					this.calling = true;
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+			});
+		}
+	}
+
+	hangupuser(type) {
+		this.loadingShow = true;
+		var urlOptions = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId
+			+ '&callSid=' + localStorage.getItem('call_sid');
+
+		this.adminService.hangupuser(urlOptions).then((data) => {
+			this.loadingShow = false;
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				localStorage.removeItem('call_sid');
+				this._message.success('网络电话已挂断' + (type == '' ? '' : '，请重新拨打电话'));
+				this.calling = false;
 			}
 		}).catch(() => {
 			this.loadingShow = false;

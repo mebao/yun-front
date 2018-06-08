@@ -23,6 +23,7 @@ export class UserListComponent{
 		delete: boolean,
 		member: boolean,
 		recharge: boolean,
+		callPhone: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
@@ -78,6 +79,7 @@ export class UserListComponent{
 			delete: false,
 			member: false,
 			recharge: false,
+			callPhone: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限

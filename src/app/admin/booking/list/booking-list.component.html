@@ -369,7 +369,6 @@
 							        [btnClass]="{'btn': true, 'btn-print': true}"
 							        [printHTML]="print_div"
 							        [printStyle]="printStyle"
-							        [printCSS]="printCSS"
 							        (printComplete)="printComplete()">
 	    						</e-ngx-print>
 							</a>
@@ -454,21 +453,21 @@
 								</div>
 							</div>
 						</div>
-						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.childName}}</td>
-						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.age}}</td>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == 0">{{showBooking.childName}}</td>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == 0">{{showBooking.age}}</td>
 						<td>{{service.userDoctorName}}</td>
 						<td>{{service.serviceName}}</td>
 						<td>
 							<span>{{showBooking.bookingDate}}</span>
 							<span>{{showBooking.time}}</span>
 						</td>
-						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == 0">
 							{{showBooking.hasSms == '1' ? '已发送' : '未发送'}}
 						</td>
 						<!-- <td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
 							<div class="length-text">{{showBooking.remark}}</div>
 						</td> -->
-						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">{{showBooking.status == '2' ? (showBooking.tranInfo.id ? '已支付全额' : showBooking.statusText) : showBooking.statusText}}</td>
+						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == 0">{{showBooking.status == '2' ? (showBooking.tranInfo.id ? '已支付全额' : showBooking.statusText) : showBooking.statusText}}</td>
 						<td>
 							<div>
 								<button *ngIf="moduleAuthority.info" (click)="info(showBooking)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
@@ -497,7 +496,6 @@
 									[btnClass]="{'ant-btn': true, 'ant-btn-primary': true, 'ant-btn-lg': true}"
 									[printHTML]="print_div"
 									[printStyle]="printStyle"
-									[printCSS]="printCSS"
 									(printComplete)="printComplete()">
 								</e-ngx-print>
 							</div>
@@ -519,8 +517,10 @@
 <nz-modal [nzVisible]="modalTabInfo" [nzWidth]="900" [nzTitle]="'预约详情'" [nzContent]="content" [nzFooter]="footer" (nzOnCancel)="closeInfo()">
 	<ng-template #content>
 		<div class="content pad10 admin-booking-info">
-			<div *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && use">
-				<button (click)="updateBooking()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+			<div class="mb10">
+				<button *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && use" (click)="updateBooking()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+				<button *ngIf="moduleAuthority.callPhone && !calling" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
+				<button *ngIf="moduleAuthority.callPhone && calling" (click)="hangupuser('')" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
 			</div>
 			<div class="tab">
 				<div class="item flex bb-default">

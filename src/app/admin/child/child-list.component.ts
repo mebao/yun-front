@@ -21,6 +21,7 @@ export class ChildListComponent{
 		info: boolean,
 		booking: boolean,
 		bookingHistory: boolean,
+		callPhone: boolean,
 	}
 	loadingShow: boolean;
 	childList: any[];
@@ -48,6 +49,7 @@ export class ChildListComponent{
 			info: false,
 			booking: false,
 			bookingHistory: false,
+			callPhone: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
