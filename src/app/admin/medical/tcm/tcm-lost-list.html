@@ -57,7 +57,7 @@
 						<th nz-th>药材名</th>
 						<th nz-th>报损数量</th>
 						<th nz-th>单位</th>
-						<th nz-th>报损原因</th>
+						<th nz-th class="w15">报损原因</th>
 						<th nz-th>总费用</th>
 						<th nz-th>报损时间</th>
 						<th nz-th>报损人</th>
@@ -69,10 +69,10 @@
 							<td nz-td>{{info.name}}</td>
 							<td nz-td>{{info.num}}</td>
 							<td nz-td>{{info.unit}}</td>
-							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == '0'">{{tcmLost.remark}}</td>
-							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == '0'">{{tcmLost.fee}}</td>
-							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == '0'">{{tcmLost.time}}</td>
-							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == '0'">{{tcmLost.adminName}}</td>
+							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == 0">{{tcmLost.remark}}</td>
+							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == 0">{{tcmLost.fee}}</td>
+							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == 0">{{tcmLost.time}}</td>
+							<td nz-td [attr.rowspan]="tcmLost.info.length" *ngIf="indexInfo == 0">{{tcmLost.adminName}}</td>
 						</tr>
 					</ng-container>
 				</tbody>

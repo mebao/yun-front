@@ -35,16 +35,16 @@
 		<tbody nz-tbody>
 			<ng-container *ngFor="let docTcm of docTcmList">
 				<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.name}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.name}}</td>
 					<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.total_num}}</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.usage}}</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.frequency}}</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">{{docTcm.days}}</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.total_num}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.usage}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.frequency}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.days}}</td>
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
 						<div class="td-text">{{docTcm.remark}}</div>
 					</td>
-					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == '0'">
+					<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
 						<button (click)="update(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
 					</td>
 				</tr>

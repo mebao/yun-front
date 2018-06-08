@@ -252,9 +252,8 @@
 									<td></td>
 									<td></td>
 									<td></td>
+									<td class="w15"></td>
 									<td></td>
-									<td>
-									</td>
 								</tr>
 								<ng-container *ngIf="item.info.length > 0">
 									<tr *ngFor="let info of item.info; let indexInfo=index;">
@@ -374,7 +373,7 @@
 								<th nz-th>支付方式</th>
 								<th nz-th>第二支付方式</th>
 								<th nz-th>第二支付金额</th>
-								<th nz-th>备注</th>
+								<th nz-th class="w10">备注</th>
 								<th nz-th>操作</th>
 							</tr>
 						</thead>
@@ -476,7 +475,7 @@
 								</td>
 								<td nz-td>
 									<ng-container *ngIf="updateTran.id == '' || updateTran.id != tran.id">
-										{{tran.type == '3' ? '-' : tran.remark}}
+										<div class="td-text">{{tran.type == '3' ? '-' : tran.remark}}</div>
 									</ng-container>
 									<ng-container *ngIf="updateTran.id == tran.id">
 										<ng-container *ngIf="tran.type == '3'">

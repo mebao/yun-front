@@ -44,6 +44,7 @@ export class ChildInfoComponent{
 		shengxiao: string,
 		shengxiaoText: string,
 		weight: string,
+		remark: string,
 	}
 	otherChildList: any[];
 	url: string;
@@ -93,6 +94,7 @@ export class ChildInfoComponent{
 			shengxiao: '',
 			shengxiaoText: '',
 			weight: '',
+			remark: '',
 		};
 		this.otherChildList = [];
 
