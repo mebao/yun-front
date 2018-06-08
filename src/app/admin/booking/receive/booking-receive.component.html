@@ -165,8 +165,7 @@
           <tr>
             <th>套餐名</th>
             <th>科室</th>
-            <th>合适最小月龄</th>
-            <th>合适最大月龄</th>
+            <th>合适月龄</th>
             <th>价格</th>
             <th>首次体验价格</th>
             <th>备注</th>
@@ -181,8 +180,7 @@
               </label>
             </td>
             <td>{{phyexam.serviceName}}</td>
-            <td>{{phyexam.monthMin}}</td>
-            <td>{{phyexam.monthMax}}</td>
+            <td>{{phyexam.monthMin + ' ~ ' + phyexam.monthMax}}</td>
             <td>{{phyexam.price}}</td>
             <td>{{phyexam.firstPrice}}</td>
             <td>

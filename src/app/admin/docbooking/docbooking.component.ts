@@ -118,7 +118,7 @@ export class DocbookingComponent implements OnInit{
 		price: string,
 		number: string,
 		fee: string,
-		remarks: string,
+		remark: string,
 	};
 	// 不可连续点击
 	btnCanEdit: boolean;
@@ -283,7 +283,7 @@ export class DocbookingComponent implements OnInit{
 			price: '',
 			number: '',
 			fee: '',
-			remarks: '',
+			remark: '',
 		}
 		this.getBookingAssistData();
 
@@ -733,7 +733,7 @@ export class DocbookingComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						var remarks = results.list[i].remarks ? results.list[i].remarks : '';
+						var remark = results.list[i].remark ? results.list[i].remark : '';
 						var drug = '';
 						if(results.list[i].drugs.length > 0){
 							for(var j = 0; j < results.list[i].oneDrugs.length; j++){
@@ -742,9 +742,9 @@ export class DocbookingComponent implements OnInit{
 							if(drug.length > 0){
 								drug = drug.slice(0, drug.length - 1);
 							}
-							remarks += (remarks == '' ? '' : '，') + '单次配比：' + drug;
+							remark += (remark == '' ? remark : '，') + '单次配比：' + drug;
 						}
-						results.list[i].remarks = remarks;
+						results.list[i].remark = remark;
 					}
 				}
 				this.assistList = results.list;
@@ -765,7 +765,7 @@ export class DocbookingComponent implements OnInit{
 		this.addAssistInfo.price = '';
 		this.addAssistInfo.number = '';
 		this.addAssistInfo.fee = '';
-		this.addAssistInfo.remarks = '';
+		this.addAssistInfo.remark = '';
 	}
 
 	removeAssist() {
@@ -775,7 +775,7 @@ export class DocbookingComponent implements OnInit{
 		this.addAssistInfo.price = '';
 		this.addAssistInfo.number = '';
 		this.addAssistInfo.fee = '';
-		this.addAssistInfo.remarks = '';
+		this.addAssistInfo.remark = '';
 	}
 
 	changeAssist() {
@@ -806,7 +806,7 @@ export class DocbookingComponent implements OnInit{
 		this.addAssistInfo.price = assist.price;
 		this.addAssistInfo.number = assist.number;
 		this.addAssistInfo.fee = assist.fee;
-		this.addAssistInfo.remarks = assist.remarks;
+		this.addAssistInfo.remark = assist.remark;
 	}
 
 	editAssist() {
@@ -845,7 +845,7 @@ export class DocbookingComponent implements OnInit{
 			child_id: this.booking.childId,
 			assist_id: this.addAssistInfo.project['id'],
 			num: this.addAssistInfo.number,
-			remarks: this.adminService.trim(this.addAssistInfo.remarks),
+			remark: this.adminService.trim(this.addAssistInfo.remark),
 			id: this.addAssistInfo.editType == 'update' ? this.addAssistInfo.editProjectId : null,
 		}
 

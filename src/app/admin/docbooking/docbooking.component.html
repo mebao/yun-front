@@ -169,12 +169,12 @@
 												<!-- 查看 -->
 												<ng-container *ngIf="addAssistInfo.editType != 'update'">
 													<div class="length-text">
-														{{assist.remarks}}
+														{{assist.remark}}
 													</div>
 												</ng-container>
 												<!-- 修改 -->
 												<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-													<textarea name="remarks" maxlength="200" [(ngModel)]="addAssistInfo.remarks" placeholder="请输入备注"></textarea>
+													<textarea name="remark" maxlength="200" [(ngModel)]="addAssistInfo.remark" placeholder="请输入备注"></textarea>
 												</ng-container>
 											</td>
 											<td>
@@ -222,12 +222,12 @@
 													<!-- 查看 -->
 													<ng-container *ngIf="addAssistInfo.editType != 'update'">
 														<div class="length-text">
-															{{assist.remarks}}
+															{{assist.remark}}
 														</div>
 													</ng-container>
 													<!-- 修改 -->
 													<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-														<textarea name="remarks" maxlength="200" [(ngModel)]="addAssistInfo.remarks" placeholder="请输入备注"></textarea>
+														<textarea name="remark" maxlength="200" [(ngModel)]="addAssistInfo.remark" placeholder="请输入备注"></textarea>
 													</ng-container>
 												</td>
 												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
@@ -311,7 +311,7 @@
 												<label>备注（最多200字）</label>
 											</div>
 											<div nz-form-control class="mt10">
-												<nz-input [nzType]="'textarea'" [(ngModel)]="addAssistInfo.remarks" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
+												<nz-input [nzType]="'textarea'" [(ngModel)]="addAssistInfo.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
 											</div>
 										</div>
 									</div>

@@ -207,8 +207,7 @@
                 <ng-container *ngFor="let item of menu.exam; let indexItem=index;">
                   <div nz-form-item nz-row class="mt20">
                     <div nz-form-label nz-col [nzSpan]="7" class="text-right">
-                      <label>
-                        <span class="required">*</span>{{item.infoName}}{{item.unit ? '（' + item.unit + '）' : ''}}：</label>
+                      <label>{{item.infoName}}{{item.unit ? '（' + item.unit + '）' : ''}}：</label>
                     </div>
                     <!-- 查看 -->
                     <ng-container *ngIf="editTypePhyexam == 'view'">

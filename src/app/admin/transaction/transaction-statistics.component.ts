@@ -20,6 +20,7 @@ export class TransactionStatisticsComponent{
 	tranList: any[];
 	total: {
 		act: string,
+		cash: string,
 		needAmount: string,
 		giveAmount: string,
 		paidUp: string,
@@ -73,6 +74,7 @@ export class TransactionStatisticsComponent{
 		this.tranList = [];
 		this.total = {
 			act: '',
+			cash: '',
 			needAmount: '',
 			giveAmount: '',
 			paidUp: '',
@@ -220,6 +222,7 @@ export class TransactionStatisticsComponent{
 				if(results.list.length>0){
 					this.total = {
 						act: this.adminService.toDecimal2(results.total.act),
+						cash: this.adminService.toDecimal2(results.total.cash),
 						needAmount: this.adminService.toDecimal2(results.total.needAmount),
 						giveAmount: this.adminService.toDecimal2(results.total.giveAmount),
 						paidUp: this.adminService.toDecimal2(results.total.paidUp),
