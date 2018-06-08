@@ -126,7 +126,7 @@
               ? '已支付' : '未支付') : (record.secondWay != 'guazhang' ? '已支付' : '未支付')))}}</td>
             <td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.typeText}}</td>
             <td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">
-              <div class="length-text">{{record.remark}}</div>
+              <div class="td-text">{{record.remark}}</div>
             </td>
             <td *ngIf="item.id == 1" [attr.rowspan]="!record.secondWay ? 1 : 2">{{record.time}}</td>
           </tr>

@@ -387,7 +387,7 @@
 			</div>
 		</div>
 		<div *ngIf="hasData && bookinglist.length == 0">
-			<nodata title="未查询到预约信息"></nodata>
+			<nz-alert [nzType]="'info'" [nzMessage]="'暂无预约信息'"></nz-alert>
 		</div>
 	</div>
 </div>
@@ -465,7 +465,7 @@
 							{{showBooking.hasSms == '1' ? '已发送' : '未发送'}}
 						</td>
 						<!-- <td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == '0'">
-							<div class="length-text">{{showBooking.remark}}</div>
+							<div class="td-text">{{showBooking.remark}}</div>
 						</td> -->
 						<td [attr.rowspan]="showBooking.servicesLength" *ngIf="indexService == 0">{{showBooking.status == '2' ? (showBooking.tranInfo.id ? '已支付全额' : showBooking.statusText) : showBooking.statusText}}</td>
 						<td>

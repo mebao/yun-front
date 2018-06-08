@@ -57,7 +57,7 @@
 						<td>{{message.message}}</td>
 						<td>{{message.dateCreated}}</td>
 						<td *ngIf="messageTabType == 'showMessage_myself'">
-							<div class="length-text">{{message.feedback}}</div>
+							<div class="td-text">{{message.feedback}}</div>
 						</td>
 						<td>
 							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">

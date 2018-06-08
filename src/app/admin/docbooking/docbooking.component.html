@@ -80,7 +80,7 @@
 														<td>{{result.code}}</td>
 														<td>{{result.values}}</td>
 														<td>
-															<div class="length-text">{{result.references}}</div>
+															<div class="td-text">{{result.references}}</div>
 														</td>
 														<td>{{result.unit}}</td>
 														<td class="text-center">
@@ -168,7 +168,7 @@
 											<td>
 												<!-- 查看 -->
 												<ng-container *ngIf="addAssistInfo.editType != 'update'">
-													<div class="length-text">
+													<div class="td-text">
 														{{assist.remark}}
 													</div>
 												</ng-container>
@@ -221,7 +221,7 @@
 												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
 													<!-- 查看 -->
 													<ng-container *ngIf="addAssistInfo.editType != 'update'">
-														<div class="length-text">
+														<div class="td-text">
 															{{assist.remark}}
 														</div>
 													</ng-container>
@@ -361,7 +361,7 @@
 											<td></td>
 											<td></td>
 											<td>
-												<div class="length-text">{{item.remark}}</div>
+												<div class="td-text">{{item.remark}}</div>
 											</td>
 											<td>{{item.date}}</td>
 											<td>
@@ -395,13 +395,13 @@
 												<td>{{info.unit}}</td>
 												<td>{{info.num}}</td>
 												<td>
-													<div class="length-text">{{info.msExplain}}</div>
+													<div class="td-text">{{info.msExplain}}</div>
 												</td>
 												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
-													<div class="length-text">{{info.remark}}</div>
+													<div class="td-text">{{info.remark}}</div>
 												</td>
 												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
-													<div class="length-text">{{item.remark}}</div>
+													<div class="td-text">{{item.remark}}</div>
 												</td>
 												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.date}}</td>
 												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
@@ -543,7 +543,7 @@
 											</td>
 											<td>
 												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="length-text">{{fee.remark}}</div>
+												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="td-text">{{fee.remark}}</div>
 												<!-- 编辑 -->
 												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
 													<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" class="w100"></nz-input>

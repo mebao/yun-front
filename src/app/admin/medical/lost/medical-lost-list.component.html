@@ -53,12 +53,12 @@
 						<td>{{info.typeText}}</td>
 						<td>{{info.batch}}</td>
 						<td>{{info.num}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-							<div class="length-text">{{item.remark}}</div>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
+							<div class="td-text">{{item.remark}}</div>
 						</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.fee}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.time}}</td>
-						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.fee}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.time}}</td>
+						<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.adminName}}</td>
 					</tr>
 				</ng-container>
 			</tbody>

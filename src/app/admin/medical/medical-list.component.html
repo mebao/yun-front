@@ -62,10 +62,10 @@
 					<td>{{medicalSupplie.canDiscount == '0' ? '不可' : '可以'}}</td>
 					<td>{{medicalSupplie.isPrescribed == '0' ? '非处方药' : '处方药'}}</td>
 					<td>
-						<div class="length-text">{{medicalSupplie.usage}}</div>
+						<div class="td-text">{{medicalSupplie.usage}}</div>
 					</td>
 					<td>
-						<div class="length-text">{{medicalSupplie.remark}}</div>
+						<div class="td-text">{{medicalSupplie.remark}}</div>
 					</td>
 					<td>
 						<button *ngIf="moduleAuthority.edit" (click)="update(medicalSupplie.id)" class="pure-button pure-button-primary">修改</button>

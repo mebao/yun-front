@@ -47,9 +47,9 @@
 				</td>
 				<td>{{followups.childName}}</td>
 				<td><nz-tag [nzColor]="(followups.statusCode == '1' && followups.days < 14 && followups.days >= 0) ? '#f04134' : ''">{{followups.time}}</nz-tag></td>
-				<td><div class="length-text">{{followups.account}}</div></td>
-				<td><div class="length-text">{{followups.remarks}}</div></td>
-				<td><div class="length-text">{{followups.results}}</div></td>
+				<td><div class="td-text">{{followups.account}}</div></td>
+				<td><div class="td-text">{{followups.remarks}}</div></td>
+				<td><div class="td-text">{{followups.results}}</div></td>
 				<td>{{followups.status}}</td>
 				<td>
 					<button *ngIf="moduleAuthority.edit && (followups.statusCode == '1' || followups.statusCode == '2')" (click)="update(followups)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>

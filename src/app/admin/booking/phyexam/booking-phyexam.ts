@@ -28,6 +28,7 @@ export class BookingPhyexam {
     loadingShow: boolean;
     isLoadingSave: boolean;
     info: {
+        id: string,
         production_status: string,
         production_way: string,
         gestational_weeks: string,
@@ -101,6 +102,7 @@ export class BookingPhyexam {
         // this.loadingShow = true;
         this.isLoadingSave = false;
         this.info = {
+            id: '',
             production_status: '',
             production_way: '',
             gestational_weeks: '',
@@ -154,6 +156,7 @@ export class BookingPhyexam {
                 var results = JSON.parse(JSON.stringify(data.results));
                 if (results.list.length > 0) {
                     this.info = {
+                        id: results.list[0].id,
                         production_status: results.list[0].productionStatus,
                         production_way: results.list[0].productionWay,
                         gestational_weeks: results.list[0].gestationalWeeks,
@@ -187,6 +190,7 @@ export class BookingPhyexam {
                             var results = JSON.parse(JSON.stringify(data.results));
                             if (results.list.length > 0) {
                                 this.info = {
+                                    id: null,
                                     production_status: results.list[0].productionStatus,
                                     production_way: results.list[0].productionWay,
                                     gestational_weeks: results.list[0].gestationalWeeks,
@@ -206,7 +210,7 @@ export class BookingPhyexam {
                                     is_vaccinate_text: results.list[0].isVaccinate,
                                     fhohd_text: results.list[0].fhohd,
                                     vaccinate_name_text: results.list[0].vaccinateName,
-                                    vaccinate_date_text: results.list[0].vaccinateDate ? this.as.getDayByDate(new Date(results.list[0].vaccinateDate)) : '',
+                                    vaccinate_date_text: results.list[0].vaccinateDate ? this.as.getDayByDate(new Date(results.list[0].vaccinateDate)) : null,
                                 }
                                 this.editTypeHealth = 'view';
                             } else {
@@ -250,7 +254,7 @@ export class BookingPhyexam {
         this.info.is_vaccinate = this.info.is_vaccinate_text;
         this.info.fhohd = this.info.fhohd_text;
         this.info.vaccinate_name = this.info.vaccinate_name_text;
-        this.info.vaccinate_date = new Date(this.info.vaccinate_date_text);
+        this.info.vaccinate_date = this.info.vaccinate_date_text ? new Date(this.info.vaccinate_date_text) : null;
         this.editTypeHealth = 'view';
     }
 
@@ -303,8 +307,9 @@ export class BookingPhyexam {
             daily_milk: this.info.daily_milk,
             is_vaccinate: this.info.is_vaccinate,
             vaccinate_name: this.info.vaccinate_name,
-            vaccinate_date: this.as.getDayByDate(new Date(this.info.vaccinate_date)),
+            vaccinate_date: this.info.vaccinate_date ? this.as.getDayByDate(new Date(this.info.vaccinate_date)) : null,
             fhohd: this.info.fhohd,
+            id: this.info.id,
         }
         this.as.childhealth(params).then((data) => {
             if (data.status == 'no') {
@@ -321,7 +326,8 @@ export class BookingPhyexam {
                 this.info.is_vaccinate_text = this.info.is_vaccinate;
                 this.info.fhohd_text = this.info.fhohd;
                 this.info.vaccinate_name_text = this.info.vaccinate_name;
-                this.info.vaccinate_date_text = this.as.getDayByDate(new Date(this.info.vaccinate_date));
+                this.info.vaccinate_date_text = this.info.vaccinate_date ? this.as.getDayByDate(new Date(this.info.vaccinate_date)) : null;
+                this.editTypeHealth = 'view';
                 this.getPhyInfo();
                 this.isSaveLoading = false;
             }
@@ -493,6 +499,7 @@ export class BookingPhyexam {
                 this._message.error(data.errorMsg);
             } else {
                 this._message.success('结果填写成功');
+                sessionStorage.setItem('bookingPhyexamData', JSON.stringify(this.menuList));
                 this.editTypePhyexam = 'view';
             }
         }).catch(() => {

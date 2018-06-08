@@ -169,7 +169,7 @@
         </div>
         <div nz-col [nzSpan]="12" nz-form-control>
           <ng-container *ngIf="editTypeHealth == 'view'">
-            {{info.vaccinate_date_text}}
+            {{info.vaccinate_date_text ? info.vaccinate_date_text : ''}}
           </ng-container>
           <ng-container *ngIf="editTypeHealth == 'edit'">
             <nz-datepicker (ngModelChange)="info.vaccinate_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.vaccinate_date"
@@ -201,6 +201,11 @@
           </nz-affix>
         </div>
         <div nz-col [nzSpan]="18">
+          <div class="mt10 mb10 text-right">
+            <button *ngIf="editTypePhyexam == 'view'" (click)="changeTypePhyexam()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+            <button *ngIf="editTypePhyexam == 'edit'" (click)="cancelPhyexam()" nz-button [nzType]="'default'" [nzSize]="'large'" [nzLoading]="isSaveLoading">取消</button>
+            <button *ngIf="editTypePhyexam == 'edit'" (click)="saveUpload()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading">保存</button>
+          </div>
           <nz-collapseset *ngIf="menuList.length > 0">
             <ng-container *ngFor="let menu of menuList; let indexMenu=index;">
               <nz-collapse *ngIf="menu.examName != '健康档案'" id="{{menu.examName}}" [nzTitle]="menu.examName" [nzActive]="'true'">

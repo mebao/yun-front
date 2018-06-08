@@ -119,7 +119,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<div class="length-text">{{item.remark}}</div>
+						<div class="td-text">{{item.remark}}</div>
 					</td>
 					<td>{{item.date}}</td>
 					<td>{{item.apotName}}</td>
@@ -130,22 +130,22 @@
 				</tr>
 				<ng-container *ngIf="item.info.length > 0">
 					<tr *ngFor="let info of item.info; let indexInfo=index;">
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.childName}}</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.age}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.doctorName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.childName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.age}}</td>
 						<td>{{info.pname}}</td>
 						<td>{{info.batch}}</td>
 						<td>{{info.num}}{{info.unit}}</td>
 						<td>
-							<div class="length-text">{{info.msExplain}}</div>
+							<div class="td-text">{{info.msExplain}}</div>
 						</td>
 						<td class="text-center" [ngClass]="{'canEdit': info.isOut == '0'}">{{info.isOut == '0' ? '未出药' : '已出药'}}</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">
-							<div class="length-text">{{item.remark}}</div>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">
+							<div class="td-text">{{item.remark}}</div>
 						</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.date}}</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.apotName}}</td>
-						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.date}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.apotName}}</td>
+						<td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">
 							<span *ngIf="item.outCode == 0">-</span>
 							<button *ngIf="moduleAuthority.edit && (item.outCode == 1 || item.outCode == 2)" (click)="selectPrescript(item.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">出药</button>
 						</td>
@@ -194,9 +194,9 @@
 					<ng-container *ngFor="let item of modalList;">
 						<ng-container *ngIf="item.info.length > 0">
 							<tr *ngFor="let info of item.info; let indexInfo=index;" nz-tbody-tr>
-								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.doctorName}}</td>
-								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.childName}}</td>
-								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == '0'">{{item.age}}</td>
+								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.doctorName}}</td>
+								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.childName}}</td>
+								<td nz-td [attr.rowspan]="item.info.length" *ngIf="indexInfo == 0">{{item.age}}</td>
 								<td nz-td>{{info.pname}}</td>
 								<td nz-td>{{info.batch}}</td>
 								<td nz-td>{{info.num}}{{info.unit}}</td>
@@ -286,7 +286,6 @@
 			<e-ngx-print #print1
 			[printHTML]="printInfo_div"
 			[printStyle]="printStyle"
-			[printCSS]="printCSS"
 			[showBtn]="false"  (printComplete)="printComplete()">
 			</e-ngx-print>
 			<button (click)="customPrint()" nz-button [nzType]="'primary'">

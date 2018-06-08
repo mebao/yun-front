@@ -55,7 +55,7 @@
 					<td>{{materialSupplie.price}}</td>
 					<td>{{materialSupplie.canDiscount == '0' ? '不可' : '可以'}}</td>
 					<td>
-						<div class="length-text">{{materialSupplie.usage}}</div>
+						<div class="td-text">{{materialSupplie.usage}}</div>
 					</td>
 					<td>
 						<button *ngIf="moduleAuthority.edit" (click)="update(materialSupplie.id)" class="pure-button pure-button-primary">修改</button>

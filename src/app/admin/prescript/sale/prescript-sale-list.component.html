@@ -65,19 +65,19 @@
 		<tbody nz-tbody>
 			<ng-container *ngFor="let item of saleList;">
 				<tr *ngFor="let info of item.info; let indexInfo=index;">
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.userName}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.mobile}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.idcard}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.userName}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.mobile}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.idcard}}</td>
 					<td>{{info.pname}}</td>
 					<td>{{info.num}}{{info.unit}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.needAmount}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.giveAmount}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.amount}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">
-						<div class="length-text">{{item.remark}}</div>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.needAmount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.giveAmount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.amount}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
+						<div class="td-text">{{item.remark}}</div>
 					</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.date}}</td>
-					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == '0'">{{item.adminName}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.date}}</td>
+					<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.adminName}}</td>
 				</tr>
 			</ng-container>
 		</tbody>

@@ -52,6 +52,7 @@ export class BookingInfoComponent{
 		backRemark: string,
 		refereeId: string,
 		refereeName: string,
+		genderText: string,
 	};
 	canEdit: boolean;
 	selectorBooking: {
@@ -125,6 +126,7 @@ export class BookingInfoComponent{
 			backRemark: '',
 			refereeId: '',
 			refereeName: '',
+			genderText: '',
 		};
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token

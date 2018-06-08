@@ -127,7 +127,7 @@
 				<label>{{booking.tranInfo.id ? '退还部分金额' : '退还部分预约金'}}：</label>
 			</div>
 			<div nz-form-control nz-col [nzSpan]="12">
-				<nz-input-number [nzMin]="0" [nzStep]="0.01" [nzSize]="'large'" [(ngModel)]="booking.backFee" class="w100"></nz-input-number>
+				<nz-input-number [nzMin]="0" [nzStep]="0.01" [nzSize]="'large'" [(ngModel)]="booking.backFee" [nzPlaceHolder]="'请输入退还金额'" class="w100"></nz-input-number>
 			</div>
 		</div>
 		<div *ngIf="booking.yyj.amount != '0.00'" nz-form-item nz-row class="mt10">
