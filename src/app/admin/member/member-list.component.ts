@@ -79,7 +79,7 @@ export class MemberListComponent{
 
 		// 获取诊所科室
 		this.serviceList = [];
-		this.adminService.servicelist(this.url).then((data) => {
+		this.adminService.servicelist(this.url + '&status=1').then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
 			}else{

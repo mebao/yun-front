@@ -406,7 +406,7 @@ export class BookingListComponent implements OnInit{
 
 	//科室列表
 	getServiceList() {
-		this.adminService.servicelist(this.url).then((data) => {
+		this.adminService.servicelist(this.url + '&status=1').then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
 				this._message.error(data.errorMsg);

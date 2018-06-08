@@ -283,7 +283,7 @@ export class TransactionStatisticsComponent{
 
 	//科室列表
 	getServiceList() {
-		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId;
+		var urlOptions = this.url + '&clinic_id=' + this.adminService.getUser().clinicId + '&status=1';
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;

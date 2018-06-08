@@ -130,7 +130,7 @@ export class DocbookingLeft{
 
 	//科室列表
 	getServiceList() {
-		var urlOptions = this.url;
+		var urlOptions = this.url + '&status=1';
 		this.adminService.servicelist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);

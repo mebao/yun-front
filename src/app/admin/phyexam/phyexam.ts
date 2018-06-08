@@ -85,7 +85,7 @@ export class Phyexam {
     }
 
     getServiceList() {
-        this.as.servicelist(this.url).then((data) => {
+        this.as.servicelist(this.url + '&status=1').then((data) => {
             if(data.status == 'no'){
                 this._message.error(data.errorMsg);
             }else{

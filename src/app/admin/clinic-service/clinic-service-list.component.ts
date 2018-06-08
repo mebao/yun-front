@@ -44,7 +44,8 @@
 //
 // 		var urlOptions = '?username=' + this.adminService.getUser().username
 // 			 + '&token=' + this.adminService.getUser().token
-// 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+// 			 + '&clinic_id=' + this.adminService.getUser().clinicId
+//           + '&status=1';
 // 		this.adminService.servicelist(urlOptions).then((data) => {
 // 			if(data.status == 'no'){
 // 				this.loadingShow = false;

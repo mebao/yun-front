@@ -106,7 +106,8 @@ export class DoctorServiceComponent{
 		//获取宝宝科室
 		var servicelistUrl = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+			 + '&clinic_id=' + this.adminService.getUser().clinicId
+			 + '&status=1';
 		this.adminService.servicelist(servicelistUrl).then((data) => {
 			if(data.status == 'no'){
                 this._isSpinning = false;

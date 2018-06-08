@@ -61,7 +61,8 @@ export class Actcard{
     getServiceList() {
         var urlOptions = '?username' + this.as.getUser().username
             + '&token=' + this.as.getUser().token
-            + '&clinic_id=' + this.as.getUser().clinicId;
+            + '&clinic_id=' + this.as.getUser().clinicId
+            + '&status=1';
         this.as.servicelist(urlOptions).then((data) => {
             if(data.status == 'no'){
                 this._message.error(data.errorMsg);

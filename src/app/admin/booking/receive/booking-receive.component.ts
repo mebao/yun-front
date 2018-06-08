@@ -141,7 +141,7 @@ export class BookingReceiveComponent {
 
 	//科室列表
 	getServiceList() {
-		this.adminService.servicelist(this.url).then((data) => {
+		this.adminService.servicelist(this.url + '&status=1').then((data) => {
 			if (data.status == 'no') {
 				this._message.error(data.errorMsg);
 			} else {
