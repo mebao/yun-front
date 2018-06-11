@@ -20,6 +20,7 @@ export class CreateUserComponent{
 		name: string,
 		mobile: string,
 		gender: string,
+		address: string,
 	}
 	child: {
 		type: string,
@@ -62,6 +63,7 @@ export class CreateUserComponent{
 			name: '',
 			mobile: '',
 			gender: '',
+			address: '',
 		}
 		this.child = {
 			type: '',
@@ -309,6 +311,7 @@ export class CreateUserComponent{
 			mobile: this.user.mobile,
 			gender: this.user.gender,
 			name: this.user.name,
+			address: this.user.address,
 		}
 		this.adminService.createUser(param).then((data) => {
 			if(data.status == 'no'){

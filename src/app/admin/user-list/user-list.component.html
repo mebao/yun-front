@@ -42,15 +42,16 @@
 	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="users" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
-				<th nz-th></th>
-				<th nz-th>家长姓名</th>
-				<th nz-th>手机号码</th>
-				<th nz-th>性别</th>
-				<th nz-th>会员</th>
-				<th nz-th>会员类型</th>
-				<th nz-th>余额</th>
-				<th nz-th>活动卡</th>
-				<th nz-th>操作</th>
+				<th></th>
+				<th>家长姓名</th>
+				<th>手机号码</th>
+				<th>性别</th>
+				<th class="w10">地址</th>
+				<th>会员</th>
+				<th>会员类型</th>
+				<th>余额</th>
+				<th>活动卡</th>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
@@ -59,6 +60,9 @@
 				<td>{{user.name}}</td>
 				<td>{{user.mobile}}</td>
 				<td>{{user.gender == 'M' ? '男' : '女'}}</td>
+				<td>
+					<div class="td-text">{{user.address}}</div>
+				</td>
 				<td>{{user.memberId != null ? user.memberName : ''}}</td>
 				<td>{{user.isNew == 0 ? (user.memberId != null ? '老会员' : '') : '新会员'}}</td>
 				<td>{{user.userBalance ? user.userBalance : '0.00'}}</td>

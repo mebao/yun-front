@@ -454,7 +454,7 @@ export class BookingAssistList {
             token: this.adminService.getUser().token,
             clinic_id: this.adminService.getUser().clinicId,
             id: this.backInfo.assist.id,
-            back_num: this.backInfo.back_num,
+            back_num: this.backInfo.back_num.toString(),
             pay_way: this.backInfo.pay_way,
             back_amount: this.backInfo.back_amount,
             remark: this.backInfo.remark.trim(),

@@ -12,8 +12,14 @@
 		</ng-template>
 		<ng-template #body>
 			<p>姓名：{{olduserInfo.name}}</p>
-			<!-- <p class="mt10">手机号码：{{olduserInfo.mobile}}</p> -->
+			<p class="mt10">手机号码：{{olduserInfo.mobile}}</p>
 			<p class="mt10">性别：{{olduserInfo.gender == 'M' ? '男' : '女'}}</p>
+			<div class="flex mt10">
+				<div>地址：</div>
+				<div class="flex-1">
+					{{olduserInfo.address}}
+				</div>
+			</div>
 			<p class="mt10">余额：{{olduserInfo.userBalance ? olduserInfo.userBalance : '0.00'}}</p>
 			<p class="mt10">会员：{{olduserInfo.memberId != null ? olduserInfo.memberName : '非会员'}}</p>
 		</ng-template>
@@ -25,7 +31,7 @@
 		<ng-template #body>
 			<div nz-form-item>
 	            <div nz-form-label>
-	                <label>姓名</label>
+	                <label><span class="required">*</span>姓名</label>
 	            </div>
 	            <div nz-form-control>
 	                <nz-input [(ngModel)]="userInfo.name" [nzPlaceHolder]="'请输入姓名'" [nzSize]="'large'"></nz-input>
@@ -33,15 +39,15 @@
 	        </div>
 			<div nz-form-item>
 	            <div nz-form-label>
-	                <label>手机号码</label>
+	                <label><span class="required">*</span>手机号码</label>
 	            </div>
 	            <div nz-form-control>
-	                <nz-input [(ngModel)]="userInfo.mobile" [nzPlaceHolder]="'请输入手机号码'" [nzSize]="'large'"></nz-input>
+					<input type="tel" maxlength="11" nz-input [(ngModel)]="userInfo.mobile" [nzSize]="'large'" placeholder="请输入手机号码">
 	            </div>
 	        </div>
 			<div nz-form-item>
 	            <div nz-form-label>
-	                <label>性别</label>
+	                <label><span class="required">*</span>性别</label>
 	            </div>
 	            <div nz-form-control>
 					<nz-select class="w100"
@@ -51,6 +57,14 @@
 						<nz-option [nzLabel]="'男'" [nzValue]="'M'"></nz-option>
 						<nz-option [nzLabel]="'女'" [nzValue]="'F'"></nz-option>
 					</nz-select>
+	            </div>
+	        </div>
+			<div nz-form-item>
+	            <div nz-form-label>
+	                <label>地址</label>
+	            </div>
+	            <div nz-form-control>
+					<textarea nz-input [(ngModel)]="userInfo.address" [nzSize]="'large'" maxlength="100" placeholder="请输入地址"></textarea>
 	            </div>
 	        </div>
 			<div class="mt10 text-center">

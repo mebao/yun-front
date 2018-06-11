@@ -27,6 +27,7 @@ export class ChildInfoComponent{
 	}
 	childInfo: {
 		age: string,
+		address: string,
 		birthday: string,
 		bloodType: string,
 		bloodTypeText: string,
@@ -77,6 +78,7 @@ export class ChildInfoComponent{
 		}
 		this.childInfo = {
 			age: '',
+			address: '',
 			birthday: '',
 			bloodType: '',
 			bloodTypeText: '',
@@ -136,6 +138,7 @@ export class ChildInfoComponent{
 							}else{
 								this.otherChildList.push(results.users[0].childs[i]);
 							}
+							this.childInfo.address = results.users[0].address;
 						}
 					}
 				}

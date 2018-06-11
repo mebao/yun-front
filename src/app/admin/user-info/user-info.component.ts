@@ -26,12 +26,14 @@ export class UserInfoComponent{
 		name: string,
 		mobile: string,
 		gender: string,
+		address: string,
 	}
 	olduserInfo: {
 		id: string,
 		name: string,
 		mobile: string,
 		gender: string,
+		address: string,
 		userBalance: string,
 		memberId: string,
 		memberName: string,
@@ -115,6 +117,7 @@ export class UserInfoComponent{
 			name: '',
 			mobile: '',
 			gender: '',
+			address: '',
 		}
 
 		this.olduserInfo = {
@@ -122,6 +125,7 @@ export class UserInfoComponent{
 			name: '',
 			mobile: '',
 			gender: '',
+			address: '',
 			userBalance: '',
 			memberId: '',
 			memberName: '',
@@ -422,6 +426,7 @@ export class UserInfoComponent{
 			name: this.userInfo.name,
 			mobile: this.userInfo.mobile,
 			gender: this.userInfo.gender,
+			address: this.userInfo.address,
 		}
 		this.adminService.createUser(user).then((data) => {
 			this.loadingShow = false;

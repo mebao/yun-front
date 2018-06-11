@@ -29,26 +29,30 @@
 	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="childList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
-				<th nz-th class="w70p"></th>
-				<th nz-th>姓名</th>
-				<th nz-th>性别</th>
-				<th nz-th>年龄</th>
-				<th nz-th>生日</th>
-				<th nz-th>操作</th>
+				<th class="w70p"></th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>年龄</th>
+				<th>生日</th>
+				<th class="w10">地址</th>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody nz-tbody>
 			<tr nz-tbody-tr *ngFor="let child of childList; let index=index;">
-				<td nz-td>
+				<td>
 					<div class="img-tab-default">
 						<img (click)="childInfo(child.childId)" src="{{(!child.imageUrl || child.imageUrl == '') ? '../assets/images/img.png' : child.imageUrl}}" class="cursor-p">
 					</div>
 				</td>
-				<td nz-td>{{child.childName}}</td>
-				<td nz-td>{{child.gender}}</td>
-				<td nz-td>{{child.age}}</td>
-				<td nz-td>{{child.birthday}}</td>
-				<td nz-td>
+				<td>{{child.childName}}</td>
+				<td>{{child.gender}}</td>
+				<td>{{child.age}}</td>
+				<td>{{child.birthday}}</td>
+				<td>
+					<div class="td-text">{{child.address}}</div>
+				</td>
+				<td>
 					<div *ngIf="moduleAuthority.info">
 						<button (click)="goInfo(child)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
 					</div>
