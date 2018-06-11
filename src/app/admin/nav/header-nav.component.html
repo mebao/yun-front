@@ -60,7 +60,7 @@
 							<div class="td-text">{{message.feedback}}</div>
 						</td>
 						<td>
-							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5'">
+							<ng-container *ngIf="message.typeId == '2' || message.typeId == '3' || message.typeId == '5' || message.typeId == '6'">
 								<button (click)="goDetail(message)" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="messageBtn">查看</button>
 							</ng-container>
 							<ng-container *ngIf="message.typeId == '1' || message.typeId == '4'">

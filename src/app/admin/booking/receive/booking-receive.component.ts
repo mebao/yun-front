@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -25,13 +25,15 @@ export class BookingReceiveComponent {
 	loadingShow: boolean;
 	url: string;
 	doctorlist: any[];
-	servicelist: [{}];
+	servicelist: any[];
+	childList: any[];
 	searchInfo: {
+		typeFrom: string,
 		doctor_id: string;
 		service_id: string;
 		mobile: string,
 		creator_name: string,
-		child_name: string,
+		child_id: string,
 	}
 	cdate_less = null;
 	cdate_big = null;
@@ -51,6 +53,7 @@ export class BookingReceiveComponent {
 		private _message: NzMessageService,
 		public adminService: AdminService,
 		public router: Router,
+		private route: ActivatedRoute,
 	) { }
 
 	ngOnInit(): void {
@@ -88,25 +91,51 @@ export class BookingReceiveComponent {
 			phyexam: {},
 		}
 
+		this.url = '?username=' + this.adminService.getUser().username
+			+ '&token=' + this.adminService.getUser().token
+			+ '&clinic_id=' + this.adminService.getUser().clinicId;
+
+		this.doctorlist = [];
+		this.servicelist = [];
+		this.childList = [];
+		this.getDoctorList();
+		this.getServiceList();
+		this.getChildList();
+
 		this.searchInfo = {
+			typeFrom: '',
 			doctor_id: '',
 			service_id: '',
 			mobile: '',
 			creator_name: '',
-			child_name: '',
+			child_id: '',
 		}
 		this.cdate_less = null;
 		this.cdate_big = null;
 		this.bdate_less = new Date();
 		this.bdate_big = new Date();
+
+		// 获取页面来源
+		this.route.queryParams.subscribe((params) => {
+			if(params.child_id){
+				this.searchInfo.typeFrom = 'message';
+				this.searchInfo.child_id = params.child_id;
+			}
+		});
+		if(this.searchInfo.typeFrom == 'message'){
+			this.bdate_less = null;
+			this.bdate_big = new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000));
+		}
+
 		var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingReceive'));
 		if (sessionSearch) {
 			this.searchInfo = {
+				typeFrom: '',
 				doctor_id: sessionSearch.doctor_id,
 				service_id: sessionSearch.service_id,
 				mobile: sessionSearch.mobile,
 				creator_name: sessionSearch.creator_name,
-				child_name: sessionSearch.child_name,
+				child_id: sessionSearch.child_id,
 			}
 			this.cdate_less = sessionSearch.cdate_less ? new Date(sessionSearch.cdate_less) : null;
 			this.cdate_big = sessionSearch.cdate_big ? new Date(sessionSearch.cdate_big) : null;
@@ -114,13 +143,7 @@ export class BookingReceiveComponent {
 			this.bdate_big = sessionSearch.bdate_big ? new Date(sessionSearch.bdate_big) : null;
 		}
 
-		this.url = '?username=' + this.adminService.getUser().username
-			+ '&token=' + this.adminService.getUser().token
-			+ '&clinic_id=' + this.adminService.getUser().clinicId;
-
 		this.search();
-		this.getDoctorList();
-		this.getServiceList();
 	}
 
 	//医生列表
@@ -148,6 +171,20 @@ export class BookingReceiveComponent {
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.servicelist = results.servicelist;
 				// this.servicelist.unshift({fee: '', id: '', serviceId: '', serviceName: '请选择科室'});
+			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+		});
+	}
+
+	// 宝宝列表
+	getChildList() {
+		this.adminService.searchchild(this.url).then((data) => {
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.childList = results.child;
 			}
 		}).catch(() => {
 			this._message.error('服务器错误');
@@ -192,7 +229,7 @@ export class BookingReceiveComponent {
 			service_id: this.searchInfo.service_id,
 			mobile: this.searchInfo.mobile,
 			creator_name: this.searchInfo.creator_name,
-			child_name: this.searchInfo.child_name,
+			child_id: this.searchInfo.child_id,
 			cdate_less: this.cdate_less,
 			cdate_big: this.cdate_big,
 			bdate_less: this.bdate_less,
@@ -275,8 +312,8 @@ export class BookingReceiveComponent {
 		if (this.searchInfo.creator_name && this.searchInfo.creator_name != '') {
 			urlOptions += '&creator_name=' + this.searchInfo.creator_name;
 		}
-		if (this.searchInfo.child_name && this.searchInfo.child_name != '') {
-			urlOptions += '&child_name=' + this.searchInfo.child_name;
+		if (this.searchInfo.child_id && this.searchInfo.child_id != '') {
+			urlOptions += '&child_id=' + this.searchInfo.child_id;
 		}
 		return urlOptions;
 	}

@@ -35,7 +35,10 @@
           <label>宝宝姓名：</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="14">
-          <nz-input [(ngModel)]="searchInfo.child_name" [nzPlaceHolder]="'请输入宝宝姓名'" [nzSize]="'large'"></nz-input>
+          <nz-select class="w100" nzAllowClear [nzSize]="'large'" [nzPlaceHolder]="'请选择宝宝'" [(ngModel)]="searchInfo.child_id" nzShowSearch>
+            <nz-option *ngFor="let child of childList" [nzLabel]="child.childName" [nzValue]="child.childId">
+            </nz-option>
+          </nz-select>
         </div>
       </div>
     </div>

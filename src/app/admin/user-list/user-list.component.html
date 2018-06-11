@@ -39,10 +39,12 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
+	<div class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到用户' + users.length + '条'"></nz-alert>
+	</div>
 	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="users" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
-				<th></th>
 				<th>家长姓名</th>
 				<th>手机号码</th>
 				<th>性别</th>
@@ -55,8 +57,7 @@
 			</tr>
 		</thead>
 		<tbody nz-tbody>
-			<tr nz-tbody-tr *ngFor="let user of users; let index=index;">
-				<td>{{index + 1}}</td>
+			<tr nz-tbody-tr *ngFor="let user of users">
 				<td>{{user.name}}</td>
 				<td>{{user.mobile}}</td>
 				<td>{{user.gender == 'M' ? '男' : '女'}}</td>

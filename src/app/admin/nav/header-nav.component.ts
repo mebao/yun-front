@@ -314,13 +314,17 @@ export class HeaderNavComponent {
 		this.modalTabMessage = false;
 		if(message.typeId == '0'){
 			// 支付提醒
-			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
+			this.router.navigate(['./admin/repage'], {queryParams: {from: 'bookingInfo', id: message.messageUrl}});
 		}else if(message.typeId == '2'){
 			//会员余额提醒
-			this.router.navigate(['./admin/userInfo'], {queryParams: {id: message.messageUrl}});
+			this.router.navigate(['./admin/repage'], {queryParams: {from: 'userInfo', id: message.messageUrl}});
 		}else if(message.typeId == '3' || message.typeId == '5'){
 			// 预约就诊提醒
-			this.router.navigate(['./admin/bookingInfo'], {queryParams: {id: message.messageUrl}});
+			this.router.navigate(['./admin/repage'], {queryParams: {from: 'bookingInfo', id: message.messageUrl}});
+		}else if(message.typeId == '6'){
+			// 接诊列表
+			sessionStorage.removeItem('search-bookingReceive');
+			this.router.navigate(['./admin/repage'], {queryParams: {from: 'bookingReceive', child_id: message.messageUrl}});
 		}
 	}
 
