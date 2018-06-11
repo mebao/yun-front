@@ -95,7 +95,7 @@ export class TransactionStatisticsComponent{
 			user_name: '',
 			b_amount: '',
 			l_amount: '',
-			type: '1,3',
+			type: '1,3,7',
 			pay_way: '',
 		}
         this._startDate = new Date();
@@ -174,7 +174,7 @@ export class TransactionStatisticsComponent{
 			urlOptions += '&l_amount=' + this.searchInfo.l_amount;
 		}
 		if(this.searchInfo.type && this.searchInfo.type != ''){
-			if(this.searchInfo.type == '1,3'){
+			if(this.searchInfo.type == '1,3,7'){
 				urlOptions += '&typelist=' + this.searchInfo.type;
 			}else{
 				urlOptions += '&type=' + this.searchInfo.type;

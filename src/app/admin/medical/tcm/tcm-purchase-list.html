@@ -59,16 +59,16 @@
 				<tbody nz-tbody>
 					<ng-container *ngFor="let tcmPurchase of tcmPurchaseList;">
 						<tr nz-tbody-tr *ngFor="let info of tcmPurchase.info; let indexInfo=index;">
-							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.supplierName}}</td>
-							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.aboutTime}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == 0">{{tcmPurchase.supplierName}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == 0">{{tcmPurchase.aboutTime}}</td>
 							<td nz-td>{{info.name}}</td>
 							<td nz-td>{{info.num}}</td>
 							<ng-container *ngIf="moduleAuthority.infoPut">
 								<td nz-td>{{info.bid}}</td>
-								<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.fee}}</td>
+								<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == 0">{{tcmPurchase.fee}}</td>
 							</ng-container>
-							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.purshaseTime}}</td>
-							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == '0'">{{tcmPurchase.adminName}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == 0">{{tcmPurchase.purshaseTime}}</td>
+							<td nz-td [attr.rowspan]="tcmPurchase.info.length" *ngIf="indexInfo == 0">{{tcmPurchase.adminName}}</td>
 						</tr>
 					</ng-container>
 				</tbody>
