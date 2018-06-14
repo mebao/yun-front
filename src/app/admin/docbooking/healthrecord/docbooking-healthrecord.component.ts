@@ -726,7 +726,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				plaque: healthrecord.plaque,
 				plaque_other: healthrecord.plaque == '未见异常' ? '' : healthrecord.plaque,
 				teeth_num: healthrecord.teeth_num,
-				teeth_num_other: healthrecord.teeth_num == '未萌牙' ? '' : healthrecord.teeth_num,
+				teeth_num_other: healthrecord.teeth_num == '未萌' ? '' : healthrecord.teeth_num,
 				dental_caries: healthrecord.dental_caries,
 				dental_caries_other: healthrecord.dental_caries == '未见异常' ? '' : healthrecord.dental_caries,
 				limb: healthrecord.limb,
@@ -996,6 +996,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					if(recordTemplet.recordkeys[i].key=='mammary_gland' && recordTemplet.recordkeys[i].value == ''){
 							this.info.mammary_gland = '未见异常';
 					}
+					if(recordTemplet.recordkeys[i].key=='head' && recordTemplet.recordkeys[i].value == ''){
+							this.info.head = '无畸形';
+					}
 					if(recordTemplet.recordkeys[i].key=='ear' && recordTemplet.recordkeys[i].value == ''){
 							this.info.ear = '未见明显畸形';
 					}
@@ -1027,7 +1030,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 							this.info.plaque = '未见异常';
 					}
 					if(recordTemplet.recordkeys[i].key=='teeth_num' && recordTemplet.recordkeys[i].value == ''){
-							this.info.teeth_num = '未萌牙';
+							this.info.teeth_num = '未萌';
 					}
 					if(recordTemplet.recordkeys[i].key=='dental_caries' && recordTemplet.recordkeys[i].value == ''){
 							this.info.dental_caries = '未见异常';

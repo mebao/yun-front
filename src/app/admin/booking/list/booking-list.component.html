@@ -365,11 +365,11 @@
 				                       (printComplete)="printComplete()">
 							    </e-ngx-print> -->
 								<e-ngx-print
-							        [btnText]="'打印'"
+							        [btnText]="booking.hasPrint == '0' ? '打印' : '已打印'"
 							        [btnClass]="{'btn': true, 'btn-print': true}"
 							        [printHTML]="print_div"
 							        [printStyle]="printStyle"
-							        (printComplete)="printComplete()">
+							        (printComplete)="printComplete(booking)">
 	    						</e-ngx-print>
 							</a>
 							<a *ngIf="booking.hasSms == '0' && moduleAuthority.sendSms" class="edit flex-1 pad10 text-center" (click)="sendSms(booking, 'list')">
@@ -492,11 +492,11 @@
 							</div>
 							<div class="mt10">
 								<e-ngx-print
-									[btnText]="'打印'"
+									[btnText]="showBooking.hasPrint == '0' ? '打印' : '已打印'"
 									[btnClass]="{'ant-btn': true, 'ant-btn-primary': true, 'ant-btn-lg': true}"
 									[printHTML]="print_div"
 									[printStyle]="printStyle"
-									(printComplete)="printComplete()">
+									(printComplete)="printComplete(showBooking)">
 								</e-ngx-print>
 							</div>
 							<div *ngIf="showBooking.hasSms == '0' && moduleAuthority.sendSms" class="mt10">
@@ -658,6 +658,11 @@
 	<ng-template #footerBack>
 		<button (click)="closeBack()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
 		<button *ngIf="booking.yyj.amount != '0.00'" (click)="confirmBack()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">确认</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="modalTabPrint" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentPrint" (nzOnCancel)="closePrint()" (nzOnOk)="confirmPrint()">
+	<ng-template #contentPrint>
+		<p>确认打印完成？</p>
 	</ng-template>
 </nz-modal>
 <loading [show]="loadingShow"></loading>

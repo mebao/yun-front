@@ -200,6 +200,11 @@ export class BookingAssistList {
                 this._message.error(data.errorMsg);
             } else {
                 var results = JSON.parse(JSON.stringify(data.results));
+                if(results.list.length > 0){
+                    for(var i = 0; i < results.list.length; i++){
+                        results.list[i].unFinishNUm = results.list[i].number  - results.list[i].backNum - results.list[i].finishNum;
+                    }
+                }
                 this.bookingAssistList = results.list;
                 this.hasData = true;
                 this.loadingShow = false;
@@ -298,10 +303,6 @@ export class BookingAssistList {
         }
         if(Number(this.selectedInfo.finishNum) < 0){
             this._message.error('完成次数不可为0');
-            return;
-        }
-        if(Number(this.selectedInfo.finishNum) > this.selectedInfo.assist.unFinishNum){
-            this._message.error('完成次数不可超过未完成次数');
             return;
         }
         this.modalFinishTab = false;

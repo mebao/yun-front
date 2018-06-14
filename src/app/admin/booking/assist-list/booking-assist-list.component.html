@@ -110,7 +110,7 @@
             <td>{{bookingAssist.backNum}}次</td>
             <td>
               <button (click)="showInfo(bookingAssist)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
-              <button *ngIf="moduleAuthority.confirm && bookingAssist.number != bookingAssist.finishNum" (click)="finish(bookingAssist)"
+              <button *ngIf="moduleAuthority.confirm && bookingAssist.unFinishNUm > 0" (click)="finish(bookingAssist)"
                 nz-button [nzType]="'primary'" [nzSize]="'large'">完成</button>
               <button *ngIf="moduleAuthority.back && bookingAssist.status == '5'" (click)="back(bookingAssist)" nz-button [nzType]="'danger'"
                 [nzSize]="'large'">退返</button>

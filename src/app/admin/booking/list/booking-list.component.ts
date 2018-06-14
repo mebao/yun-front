@@ -111,6 +111,8 @@ export class BookingListComponent implements OnInit{
 	printStyle: string;
 	// 网络电话
 	calling: boolean;
+	// 确认打印
+	modalTabPrint: boolean;
 
 	constructor(
 		private confirmServ: NzModalService,
@@ -336,10 +338,7 @@ export class BookingListComponent implements OnInit{
 		this.btnCanEdit = false;
 
 		this.calling = false;
-	}
-
-	printComplete() {
-
+		this.modalTabPrint = false;
 	}
 
 	// customPrint(print: string) {
@@ -1007,6 +1006,49 @@ export class BookingListComponent implements OnInit{
 				localStorage.removeItem('call_sid');
 				this._message.success('网络电话已挂断' + (type == '' ? '' : '，请重新拨打电话'));
 				this.calling = false;
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
+	}
+
+	// 确认打印
+	printComplete(booking) {
+		this.selectorBooking = {
+			text: '',
+			bookingId: booking.bookingId,
+			cancel_cause: '',
+			type: '',
+		}
+		this.modalTabPrint = true;
+	}
+
+	closePrint() {
+		this.selectorBooking = {
+			text: '',
+			bookingId: '',
+			cancel_cause: '',
+			type: '',
+		}
+		this.modalTabPrint = false;
+	}
+
+	confirmPrint() {
+		this.loadingShow = true;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+		};
+		this.adminService.updatebookprint(this.selectorBooking.bookingId, params).then((data) => {
+			this.loadingShow = false;
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				this.modalTabPrint = false;
+				this._message.success('确认打印完成');
+				this.search();
 			}
 		}).catch(() => {
 			this.loadingShow = false;

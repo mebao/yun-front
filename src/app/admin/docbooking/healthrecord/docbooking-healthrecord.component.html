@@ -864,9 +864,9 @@
 										<div class="pure-control-group flex">
 											<label for="teeth_num" class="w150pp">出牙数(颗)：</label>
 											<div class="flex-1 flex pt10">
-												<div class="radio mr10 flex" (click)="changeRedio('未萌牙', 'teeth_num')" [ngClass]="{'active': info.teeth_num == '未萌牙'}">
+												<div class="radio mr10 flex" (click)="changeRedio('未萌', 'teeth_num')" [ngClass]="{'active': info.teeth_num == '未萌'}">
 													<div class="radioTab mr10"></div>
-													<div class="flex-1">未萌牙</div>
+													<div class="flex-1">未萌</div>
 												</div>
 												<div class="flex-1" (click)="changeRedio('', 'teeth_num_other')">
 													<textarea maxlength="200" name="teeth_num_other" rows="1" #teeth_num_other="ngModel" [(ngModel)]="info.teeth_num_other" placeholder="其他" class="mt0 mb0 auto"></textarea>

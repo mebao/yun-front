@@ -1608,6 +1608,15 @@ export class AdminService{
 			.catch();
 	}
 
+	// 预约确认打印
+	updatebookprint(urlOptions, params): Promise<Data>{
+		var url = this.url + '/mebcrm/updatebookprint/' + urlOptions;
+		return this.http.post(url, JSON.stringify(params))
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}
