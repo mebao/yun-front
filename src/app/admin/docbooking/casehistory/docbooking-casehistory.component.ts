@@ -814,6 +814,9 @@ export class DocbookingCasehistoryComponent implements OnInit{
 						if(this.info.head_circum != null && results.childInfo.headCircum != null){
 							this.info.head_circum = results.childInfo.headCircum;
 						}
+						if(this.info.breast_circum != null && results.childInfo.breastCircum != null){
+							this.info.breast_circum = results.childInfo.breastCircum;
+						}
 					}
 					this.infoOld = JSON.parse(JSON.stringify(this.info));
 					this.infoTime = JSON.parse(JSON.stringify(this.info));

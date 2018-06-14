@@ -39,18 +39,24 @@ export class BookingAssistList {
     _startDate = null;
     _endDate = null;
     url: string;
-    modalConfirmTab: boolean;
+    // 完成次数
+    modalFinishTab: boolean;
     selectedInfo: {
         assist: any,
+        finishNum: string,
+    }
+    // 确认出库
+    modalConfirmTab: boolean;
+    confirmInfo: {
         text: string,
         medical: any,
-        type: string,
     }
     asssitMList: any[];
     searchInfoM: {
         startDate: Date,
         endDate: Date,
     }
+    // 退返
     backInfo: {
         showTab: boolean,
         assist: any,
@@ -60,6 +66,8 @@ export class BookingAssistList {
         remark: string,
     }
     paywayList: any[];
+    // 详情
+    modalInfoTab: boolean;
 
     constructor(
         private _message: NzMessageService,
@@ -126,12 +134,15 @@ export class BookingAssistList {
         this.url = '?username=' + this.adminService.getUser().username
             + '&token=' + this.adminService.getUser().token
             + '&clinic_id=' + this.adminService.getUser().clinicId;
-        this.modalConfirmTab = false;
+        this.modalFinishTab = false;
         this.selectedInfo = {
             assist: {},
+            finishNum: '',
+        }
+        this.modalConfirmTab = false;
+        this.confirmInfo = {
             text: '',
-            medical: '',
-            type: '',
+            medical: {},
         }
 
         var searchassistUrl = this.url + '&status=1'
@@ -178,6 +189,8 @@ export class BookingAssistList {
                 this._message.error('服务器错误');
             });
         }
+
+        this.modalInfoTab = false;
     }
 
     getData(urlOptions) {
@@ -187,33 +200,6 @@ export class BookingAssistList {
                 this._message.error(data.errorMsg);
             } else {
                 var results = JSON.parse(JSON.stringify(data.results));
-                // var newList = [];
-                // if(results.list.length > 0){
-                //     for(var i = 0; i < results.list.length; i++){
-                //         results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
-                //         // 判断该bookingId是否已经存在
-                //         if(newList.length > 0){
-                //             var hasBoolean = false;
-                //             for(var j = 0; j < newList.length; j++){
-                //                 if(results.list[i].bookingId == newList[j].bookingId){
-                //                     hasBoolean = true;
-                //                     newList[j].infoList.push(results.list[i]);
-                //                 }
-                //             }
-                //             if(!hasBoolean){
-                //                 newList.push({
-                //                     bookingId: results.list[i].bookingId,
-                //                     infoList: [results.list[i]],
-                //                 });
-                //             }
-                //         }else{
-                //             newList.push({
-                //                 bookingId: results.list[i].bookingId,
-                //                 infoList: [results.list[i]],
-                //             });
-                //         }
-                //     }
-                // }
                 this.bookingAssistList = results.list;
                 this.hasData = true;
                 this.loadingShow = false;
@@ -295,63 +281,48 @@ export class BookingAssistList {
     finish(info) {
         this.selectedInfo = {
             assist: info,
-            text: `确认完成-${info.childName}-（${info.number}次：${info.assistName}）`,
-            medical: {},
-            type: 'assist',
+            finishNum: '',
         }
-        this.modalConfirmTab = true;
+        this.modalFinishTab = true;
+        console.log(12);
     }
 
-    closeConfirm() {
-        this.modalConfirmTab = false;
-        this.selectedInfo = {
-            assist: {},
-            text: '',
-            medical: {},
-            type: '',
-        }
+    closeFinish() {
+        this.modalFinishTab = false;
     }
 
-    confirm() {
-        this.modalConfirmTab = false;
-        if (this.selectedInfo.type == 'assist') {
-            // 完成辅助治疗
-            var params = {
-                username: this.adminService.getUser().username,
-                token: this.adminService.getUser().token,
-                clinic_id: this.adminService.getUser().clinicId,
-                id: this.selectedInfo.assist.id,
-            }
-            this.adminService.finishassist(this.selectedInfo.assist.id, params).then((data) => {
-                if (data.status == 'no') {
-                    this._message.error(data.errorMsg);
-                } else {
-                    this.search();
-                    this._message.success('完成成功');
-                }
-            }).catch(() => {
-                this._message.error('服务器错误');
-            });
-        } else {
-            // 药品完成出库操作
-            var outParams = {
-                username: this.adminService.getUser().username,
-                token: this.adminService.getUser().token,
-                clinic_id: this.adminService.getUser().clinicId,
-                bdate_big: this.searchInfoM.startDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.startDate)) : null,
-                bdate_less: this.searchInfoM.endDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.endDate)) : null
-            }
-            this.adminService.outassistdrug(this.selectedInfo.medical.durgId, outParams).then((data) => {
-                if (data.status == 'no') {
-                    this._message.error(data.errorMsg);
-                } else {
-                    this._message.success('完成成功');
-                    this.searchMList();
-                }
-            }).catch(() => {
-                this._message.error('服务器错误');
-            });
+    finishAssist() {
+        // 完成辅助治疗
+        if(this.selectedInfo.finishNum == ''){
+            this._message.error('完成次数不可为空');
+            return;
         }
+        if(Number(this.selectedInfo.finishNum) < 0){
+            this._message.error('完成次数不可为0');
+            return;
+        }
+        if(Number(this.selectedInfo.finishNum) > this.selectedInfo.assist.unFinishNum){
+            this._message.error('完成次数不可超过未完成次数');
+            return;
+        }
+        this.modalFinishTab = false;
+        var params = {
+            username: this.adminService.getUser().username,
+            token: this.adminService.getUser().token,
+            clinic_id: this.adminService.getUser().clinicId,
+            id: this.selectedInfo.assist.id,
+            finish_num: this.selectedInfo.finishNum.toString(),
+        }
+        this.adminService.finishassist(this.selectedInfo.assist.id, params).then((data) => {
+            if (data.status == 'no') {
+                this._message.error(data.errorMsg);
+            } else {
+                this.search();
+                this._message.success('完成成功');
+            }
+        }).catch(() => {
+            this._message.error('服务器错误');
+        });
     }
 
     searchMList() {
@@ -391,13 +362,41 @@ export class BookingAssistList {
     };
 
     confirmOut(info) {
-        this.selectedInfo = {
-            assist: {},
+        this.confirmInfo = {
             text: `确认-${info.name}-（${info.num}${info.unit}）完成出库`,
             medical: info,
-            type: 'out',
         }
         this.modalConfirmTab = true;
+    }
+    
+    closeConfirm() {
+        this.modalConfirmTab = false;
+        this.confirmInfo = {
+            text: '',
+            medical: {},
+        }
+    }
+
+    confirm() {
+        this.modalFinishTab = false;
+        // 药品完成出库操作
+        var outParams = {
+            username: this.adminService.getUser().username,
+            token: this.adminService.getUser().token,
+            clinic_id: this.adminService.getUser().clinicId,
+            bdate_big: this.searchInfoM.startDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.startDate)) : null,
+            bdate_less: this.searchInfoM.endDate ? this.adminService.getDayByDate(new Date(this.searchInfoM.endDate)) : null
+        }
+        this.adminService.outassistdrug(this.confirmInfo.medical.durgId, outParams).then((data) => {
+            if (data.status == 'no') {
+                this._message.error(data.errorMsg);
+            } else {
+                this._message.success('完成成功');
+                this.searchMList();
+            }
+        }).catch(() => {
+            this._message.error('服务器错误');
+        });
     }
 
     back(assist) {
@@ -474,5 +473,21 @@ export class BookingAssistList {
             this.loadingShow = false;
             this._message.error('服务器错误');
         });
+    }
+
+    showInfo(assist) {
+        this.selectedInfo = {
+            assist: assist,
+            finishNum: '',
+        }
+        this.modalInfoTab = true;
+    }
+
+    closeInfo() {
+        this.selectedInfo = {
+            assist: {},
+            finishNum: '',
+        }
+        this.modalInfoTab = false;
     }
 }

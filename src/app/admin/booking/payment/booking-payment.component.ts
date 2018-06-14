@@ -1873,7 +1873,7 @@ export class BookingPaymentComponent{
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.loadingShow = false;
-				if(results.list.length > 0){
+				if(results.list.length > 0 && results.list[0].finishNum == '0'){
 					this.confirmTab = {
 						show: true,
 						type: 'bookingAssistList',

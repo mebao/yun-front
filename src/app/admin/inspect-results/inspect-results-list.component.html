@@ -91,6 +91,9 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
+	<div *ngIf="hasData && userCheckList.length > 0" class="mt10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到实验室检查' + userCheckList.length + '条'"></nz-alert>
+	</div>
 	<div *ngIf="userCheckList.length > 0" nz-row [nzGutter]="30">
 		<ng-container *ngFor="let userCheck of userCheckList">
 			<div nz-col [nzSpan]="8" class="card-tab pad10">
@@ -109,7 +112,7 @@
 							<div class="flex-1">
 								{{info.checkName}}
 							</div>
-							<div class="icon">{{info.checkDoctorId == null ? '未检查' : '已检查'}}</div>
+							<div class="icon">{{info.checkDoctorId == null ? '未检查' : '已检查（' + info.checkDoctorName + '）'}}</div>
 						</div>
 						<div class="flex pt10 pb10">
 							<div class="w90p">开单医生：</div>

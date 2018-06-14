@@ -293,7 +293,7 @@ export class BookingReceiveComponent {
 			this.router.navigate(['./admin/docbooking/healthrecord'], { queryParams: { id: booking.bookingId, doctorId: service.userDoctorId } });
 		} else {
 			//重置详情选中模块
-			sessionStorage.setItem('doctorBookingTab', '3');
+			sessionStorage.setItem('doctorBookingTab', '0');
 			this.router.navigate(['./admin/docbooking'], { queryParams: { id: booking.bookingId, doctorId: service.userDoctorId } });
 		}
 	}
@@ -380,6 +380,7 @@ export class BookingReceiveComponent {
 				this.loadingShow = false;
 				this.modalTab = false;
 				this._message.success('体检套餐添加成功');
+				this.search();
 			}
 		}).catch(() => {
 			this.loadingShow = false;

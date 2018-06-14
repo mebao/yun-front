@@ -11,71 +11,22 @@
 			        就诊详情
 			    </ng-template>
 			    <ng-template #body>
-					<nz-tabset [nzSelectedIndex]="8">
-			      		<nz-tab (nzClick)="changeTab(0, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			实验室检查
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(1, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			辅助治疗
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(2, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			西/中成药处方
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(3, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			中药处方
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(4, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			费用列表
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(5, 'docbooking')">
-			        		<ng-template #nzTabHeading>
-			          			随访
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(6, 'docbooking/casehistory')">
-			        		<ng-template #nzTabHeading>
-			          			病历
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(7, 'docbooking/healthrecord')">
-			        		<ng-template #nzTabHeading>
-			          			儿保记录
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab>
-			        		<ng-template #nzTabHeading>
-			          			成长曲线
-			        		</ng-template>
-							<div class="tab pure-tab">
-								<div echarts [options]="heightGrowth"></div>
-								<div echarts [options]="weightGrowth"></div>
-							</div>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(9, 'docbooking/growthEvaluation')">
-			        		<ng-template #nzTabHeading>
-			          			成长测评
-			        		</ng-template>
-
-			      		</nz-tab>
-			    	</nz-tabset>
+					<div style="border-bottom: 2px dashed #efefef;" class="pb20 mb20">
+						<button (click)="changeTab(0, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">实验室检查</button>
+						<button (click)="changeTab(1, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">辅助治疗</button>
+						<button (click)="changeTab(2, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">西/中成药处方</button>
+						<button (click)="changeTab(3, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">中药处方</button>
+						<button (click)="changeTab(4, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">随访</button>
+						<button (click)="changeTab(5, 'docbooking')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">费用列表</button>
+						<button (click)="changeTab(6, 'docbooking/casehistory')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">病例</button>
+						<button (click)="changeTab(7, 'docbooking/healthrecord')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">儿保记录</button>
+						<button nz-button [nzType]="'primary'" [nzSize]="'large'" class="mb10">成长曲线</button>
+						<button (click)="changeTab(9, 'docbooking/growthEvaluation')" nz-button [nzType]="'default'" [nzSize]="'large'" class="mb10">成长测评</button>
+					</div>
+					<div class="tab pure-tab">
+						<div echarts [options]="heightGrowth"></div>
+						<div echarts [options]="weightGrowth"></div>
+					</div>
 				</ng-template>
 			</nz-card>
 		</div>

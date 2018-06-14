@@ -41,6 +41,7 @@ export class DocbookingVisitComponent{
         breathe: string,
         blood_pressure: string,
         head_circum: string,
+        breast_circum: string,
     }
     _bookingDate = null;
 
@@ -114,7 +115,8 @@ export class DocbookingVisitComponent{
             body_temperature: '',
             breathe: '',
             blood_pressure: '',
-            head_circum:'',
+            head_circum: '',
+            breast_circum: '',
         }
     }
 
@@ -278,7 +280,8 @@ export class DocbookingVisitComponent{
             body_temperature: child.bodyTemperature,
             breathe: child.breathe,
             blood_pressure: child.bloodPressure,
-            head_circum:child.headCircum,
+            head_circum: child.headCircum,
+            breast_circum: child.breastCircum,
         }
         this.modalAddInfoTab = true;
     }
@@ -306,6 +309,9 @@ export class DocbookingVisitComponent{
         if(!this.adminService.isFalse(this.childInfo.head_circum) && (parseFloat(this.childInfo.head_circum) <= 0)){
             this._message.error('头围应大于0');
         }
+        if(!this.adminService.isFalse(this.childInfo.breast_circum) && (parseFloat(this.childInfo.breast_circum) <= 0)){
+            this._message.error('胸围应大于0');
+        }
         this.modalAddInfoTab = false;
         var params = {
             username: this.adminService.getUser().username,
@@ -317,6 +323,7 @@ export class DocbookingVisitComponent{
             breathe: this.adminService.isFalse(this.childInfo.breathe) ? null: this.childInfo.breathe.toString(),
             blood_pressure: this.adminService.isFalse(this.childInfo.blood_pressure) ? null: this.childInfo.blood_pressure.toString(),
             head_circum: this.adminService.isFalse(this.childInfo.head_circum) ? null: this.childInfo.head_circum.toString(),
+            breast_circum: this.adminService.isFalse(this.childInfo.breast_circum) ? null: this.childInfo.breast_circum.toString(),
         }
         this.adminService.childinfo(this.childInfo.child_id, params).then((data) => {
             if(data.status == 'no'){

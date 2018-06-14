@@ -111,6 +111,15 @@
 			</div>
 			<div nz-col [nzSpan]="7" [nzOffset]="1">cm</div>
 		</div>
+		<div nz-form-item nz-row class="mt10">
+			<div nz-form-label nz-col [nzSpan]="4" class="text-right">
+				<label>胸围：</label>
+			</div>
+			<div nz-col [nzSpan]="12" nz-form-control>
+				<nz-input-number class="w100" [(ngModel)]="childInfo.breast_circum" [nzMin]="0" [nzStep]="0.01" [nzPlaceHolder]="'请输入胸围'"></nz-input-number>
+			</div>
+			<div nz-col [nzSpan]="7" [nzOffset]="1">cm</div>
+		</div>
 	</ng-template>
 	<ng-template #footerAddInfo>
 		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeInfo()">取消</button>

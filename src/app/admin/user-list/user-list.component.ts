@@ -48,6 +48,8 @@ export class UserListComponent{
 		name: string,
 		mobile: string,
 		child_name: string,
+		member_id: string,
+		activity_id: string,
 	}
 	url: string;
 	//充值
@@ -58,6 +60,8 @@ export class UserListComponent{
 	// 购买活动卡
 	actcardList: any[];
 	modalActcardTab: boolean;
+	// 会员类型
+	memberList: any[];
 
 	constructor(
 		private _message: NzMessageService,
@@ -120,6 +124,8 @@ export class UserListComponent{
 				name: '',
 				mobile: '',
 				child_name: '',
+				member_id: '',
+				activity_id: '',
 			}
 		}
 
@@ -142,6 +148,9 @@ export class UserListComponent{
 		this.actcardList = [];
 		this.modalActcardTab = false;
 		this.getActcardList();
+
+		this.memberList = [];
+		this.getMemberList();
 	}
 
 	getData(urlOptions) {
@@ -174,8 +183,27 @@ export class UserListComponent{
 		if(this.searchInfo.child_name != ''){
 			urlOptions += '&child_name=' + this.searchInfo.child_name;
 		}
+		if(this.searchInfo.member_id && this.searchInfo.member_id != ''){
+			urlOptions += '&member_id=' + this.searchInfo.member_id;
+		}
+		if(this.searchInfo.activity_id && this.searchInfo.activity_id != ''){
+			urlOptions += '&activity_id=' + this.searchInfo.activity_id;
+		}
 
 		this.getData(urlOptions);
+	}
+
+	getMemberList() {
+		this.adminService.memberlist(this.url).then((data) => {
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.memberList = results.list;
+			}
+		}).catch(() => {
+			this._message.error('服务器错误');
+		});
 	}
 
 	goUrl(_url) {

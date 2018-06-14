@@ -346,6 +346,7 @@ export class BookingPhyexam {
     };
 
     getPhyInfo() {
+        this.hasFileNum = 0;
         var urlOptions = this.params.id + this.url + '&id=' + this.params.id;
         this.as.bookingphyinfo(urlOptions).then((data) => {
             if (data.status == 'no') {
@@ -355,28 +356,38 @@ export class BookingPhyexam {
                 var results = JSON.parse(JSON.stringify(data.results));
                 if (results.list.length > 0) {
                     if (results.list[0].infos.length > 0) {
+                        var firstExam = true;
                         for (var i = 0; i < results.list[0].infos.length; i++) {
-                            if (results.list[0].infos[i].exam && results.list[0].infos[i].exam.length > 0) {
-                                for (var j = 0; j < results.list[0].infos[i].exam.length; j++) {
-                                    if(results.list[0].infos[i].exam[j].result != ''){
-                                        this.editTypePhyexam = 'view';
-                                    }
-                                    results.list[0].infos[i].exam[j].rowNum = 1;
-                                    // input含有默认值
-                                    if (results.list[0].infos[i].exam[j].inputType == 'defaultinput' && results.list[0].infos[i].exam[j].result == '') {
-                                        results.list[0].infos[i].exam[j].result = results.list[0].infos[i].exam[j].inputValue;
-                                    }else if (results.list[0].infos[i].exam[j].inputType == 'radio_input') {
-                                        // radio
-                                        results.list[0].infos[i].exam[j].inputValue = JSON.parse(results.list[0].infos[i].exam[j].inputValue);
-                                    }else if (results.list[0].infos[i].exam[j].inputType == 'file') {
-                                        // file
-                                        this.hasFileNum++;
+                            if(results.list[0].infos[i].examName != '健康档案'){
+                                if(firstExam){
+                                    firstExam = false;
+                                    results.list[0].infos[i].selected = true;
+                                }else{
+                                    results.list[0].infos[i].selected = false;
+                                }
+                                if (results.list[0].infos[i].exam && results.list[0].infos[i].exam.length > 0) {
+                                    for (var j = 0; j < results.list[0].infos[i].exam.length; j++) {
+                                        if(results.list[0].infos[i].exam[j].result != ''){
+                                            this.editTypePhyexam = 'view';
+                                        }
+                                        results.list[0].infos[i].exam[j].rowNum = 1;
+                                        // input含有默认值
+                                        if (results.list[0].infos[i].exam[j].inputType == 'defaultinput' && results.list[0].infos[i].exam[j].result == '') {
+                                            results.list[0].infos[i].exam[j].result = results.list[0].infos[i].exam[j].inputValue;
+                                        }else if (results.list[0].infos[i].exam[j].inputType == 'radio_input') {
+                                            // radio
+                                            results.list[0].infos[i].exam[j].inputValue = JSON.parse(results.list[0].infos[i].exam[j].inputValue);
+                                        }else if (results.list[0].infos[i].exam[j].inputType == 'file') {
+                                            // file
+                                            this.hasFileNum++;
+                                        }
                                     }
                                 }
                             }
                         }
                         sessionStorage.setItem('bookingPhyexamData', JSON.stringify(results.list[0].infos));
                         this.menuList = results.list[0].infos;
+                        console.log(this.menuList);
                     }
                 }
                 this.loadingShow = false;
@@ -386,6 +397,13 @@ export class BookingPhyexam {
             this.loadingShow = false;
             this._message.error('服务器错误');
         });
+    }
+
+    selectMenu(index) {
+        for(var i = 0; i < this.menuList.length; i++){
+            this.menuList[i].selected = false;
+        }
+        this.menuList[index].selected = true;
     }
 
     // textarea enter增加row
@@ -457,16 +475,21 @@ export class BookingPhyexam {
         this.editTypePhyexam = 'edit';
     }
 
-    cancelPhyexam() {
+    cancelPhyexam(indexMenu) {
         this.menuList = JSON.parse(sessionStorage.getItem('bookingPhyexamData'));
+        this.selectMenu(indexMenu);
         this.editTypePhyexam = 'view';
     }
 
     saveUpload() {
         this.loadingShow = true;
         this.isSaveLoading = true;
-        this.successFile = 0;
-        this.uploadService.startUpload();
+        if(this.hasFileNum > 0){
+            this.successFile = 0;
+            this.uploadService.startUpload();
+        }else{
+            this.saveResult();
+        }
     }
 
     saveResult() {

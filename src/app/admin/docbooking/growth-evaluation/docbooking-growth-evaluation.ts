@@ -333,6 +333,11 @@ export class DocbookingGrowthEvaluation implements OnInit{
 			this.router.navigate(['./admin/' + url], {queryParams: {id: this.id, doctorId: this.doctorId}});
 		}
 	}
+	
+	// 选择实际操作人
+	selectOperator(_value) {
+		this.operator = _value;
+	}
 
 	closeConfirm() {
 		this.modalConfirmTab = false;

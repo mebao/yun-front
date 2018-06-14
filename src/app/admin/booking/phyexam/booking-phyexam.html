@@ -75,7 +75,7 @@
             {{info.allergic_history_text}}
           </ng-container>
           <ng-container *ngIf="editTypeHealth == 'edit'">
-            <nz-input [nzType]="'textarea'" [(ngModel)]="info.allergic_history" [nzSize]="'large'" [nzRows]="textareaRows" [nzPlaceHolder]="'请输入过敏史'"></nz-input>
+            <textarea nz-input rows="textareaRows" [(ngModel)]="info.allergic_history" [nzSize]="'large'" maxlength="100" placeholder="请输入过敏史"></textarea>
           </ng-container>
         </div>
       </div>
@@ -146,7 +146,7 @@
             {{info.fhohd_text}}
           </ng-container>
           <ng-container *ngIf="editTypeHealth == 'edit'">
-            <nz-input [nzType]="'textarea'" [(ngModel)]="info.fhohd" [nzSize]="'large'" [nzPlaceHolder]="'请输入家族遗传疾病史'"></nz-input>
+            <textarea nz-input rows="textareaRows" [(ngModel)]="info.fhohd" [nzSize]="'large'" maxlength="100" placeholder="请输入家族遗传疾病史"></textarea>
           </ng-container>
         </div>
       </div>
@@ -190,122 +190,112 @@
         体检项目
       </ng-template>
       <nz-alert *ngIf="menuList.length == 0" [nzType]="'info'" [nzMessage]="'请选择体检套餐'"></nz-alert>
-      <div *ngIf="selectedIndex == 1" nz-row [nzGutter]="30">
-        <div nz-col [nzSpan]="6">
-          <nz-affix [nzTarget]="target">
-            <nz-anchor [nzTarget]="target" [nzBounds]="50">
-              <ng-container *ngFor="let menu of menuList">
-                <nz-link *ngIf="menu.examName != '健康档案'" nzHref="#{{menu.examName}}" nzTitle="{{menu.examName}}"></nz-link>
-              </ng-container>
-            </nz-anchor>
-          </nz-affix>
-        </div>
-        <div nz-col [nzSpan]="18">
-          <div class="mt10 mb10 text-right">
-            <button *ngIf="editTypePhyexam == 'view'" (click)="changeTypePhyexam()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-            <button *ngIf="editTypePhyexam == 'edit'" (click)="cancelPhyexam()" nz-button [nzType]="'default'" [nzSize]="'large'" [nzLoading]="isSaveLoading">取消</button>
-            <button *ngIf="editTypePhyexam == 'edit'" (click)="saveUpload()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading">保存</button>
-          </div>
-          <nz-collapseset *ngIf="menuList.length > 0">
-            <ng-container *ngFor="let menu of menuList; let indexMenu=index;">
-              <nz-collapse *ngIf="menu.examName != '健康档案'" id="{{menu.examName}}" [nzTitle]="menu.examName" [nzActive]="'true'">
-                <ng-container *ngFor="let item of menu.exam; let indexItem=index;">
-                  <div nz-form-item nz-row class="mt20">
-                    <div nz-form-label nz-col [nzSpan]="7" class="text-right">
-                      <label>{{item.infoName}}{{item.unit ? '（' + item.unit + '）' : ''}}：</label>
-                    </div>
-                    <!-- 查看 -->
-                    <ng-container *ngIf="editTypePhyexam == 'view'">
-                      <!-- number -->
-                      <ng-container *ngIf="item.inputType == 'inputnumber'">
-                        <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
-                          {{item.result}}
-                        </div>
-                        <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
-                          <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
-                        </div>
-                        <div nz-col [nzSpan]="5">
-                          <div class="pl20">
-                            {{item.type ? '范围：' + item.scope : ''}}
-                          </div>
-                        </div>
-                      </ng-container>
-                      <!-- input or radio -->
-                      <div nz-col [nzSpan]="12" nz-form-control>
-                        <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput' || item.inputType == 'radio_input'">
-                          <span>{{item.result}}</span>
-                        </ng-container>
-                      </div>
-                      <!-- file -->
-                      <div nz-col [nzSpan]="12" nz-form-control>
-                        <ng-container *ngIf="item.inputType == 'file'">
-                          <div *ngIf="item.result && item.result != ''" class="show-tab cursor-p" (click)="showFile(item.result)">
-                            <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
-                            <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
-                          </div>
-                        </ng-container>
-                      </div>
-                    </ng-container>
-                    <!-- 编辑 -->
-                    <ng-container *ngIf="editTypePhyexam == 'edit'">
-                      <!-- number -->
-                      <ng-container *ngIf="item.inputType == 'inputnumber'">
-                        <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
-                          <nz-input-number [(ngModel)]="item.result" (ngModelChange)="changeNumResult(indexMenu, indexItem)" [nzSize]="'large'" [nzPlaceHolder]="'请输入' + item.infoName"
-                            class="w100"></nz-input-number>
-                        </div>
-                        <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
-                          <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
-                        </div>
-                        <div nz-col [nzSpan]="5">
-                          <div class="pl20">
-                            {{item.type ? '范围：' + item.scope : ''}}
-                          </div>
-                        </div>
-                      </ng-container>
-                      <!-- input -->
-                      <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput'">
-                        <div nz-col [nzSpan]="12" nz-form-control>
-                          <nz-input [nzType]="'textarea'" [nzRows]="item.rowNum" (keyup)="changeRow($event, indexMenu, indexItem)" [(ngModel)]="item.result"
-                            [nzSize]="'large'" [nzPlaceHolder]="'请输入' + item.infoName"></nz-input>
-                        </div>
-                      </ng-container>
-                      <!-- radio -->
-                      <ng-container *ngIf="item.inputType == 'radio_input'">
-                        <div nz-col [nzSpan]="12" nz-form-control>
-                          <nz-radio-group [(ngModel)]="item.result" [nzSize]="'large'">
-                            <ng-container *ngFor="let itemRadio of item.inputValue">
-                              <label nz-radio [nzValue]="itemRadio.key">
-                                <span>{{itemRadio.key}}</span>
-                              </label>
-                            </ng-container>
-                          </nz-radio-group>
-                        </div>
-                      </ng-container>
-                      <!-- file -->
-                      <ng-container *ngIf="item.inputType == 'file'">
-                        <div nz-col [nzSpan]="12" nz-form-control>
-                          <div *ngIf="item.result && item.result != ''" class="show-tab mb10">
-                            <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
-                            <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
-                          </div>
-                          <nll-upload [qiniuToken]="qiniuToken" [multiple]="false" [acceptType]="acceptType" [uploadSize]="1" (overUpload)="successUpload($event, indexMenu, indexItem)"
-                            (errorUpload)="errorUpload($event)"></nll-upload>
-                        </div>
-                      </ng-container>
-                    </ng-container>
-                  </div>
-                </ng-container>
-              </nz-collapse>
+      <div *ngIf="selectedIndex == 1 && menuList.length > 0">
+        <div style="border-bottom: 2px dashed #D9D9D9;" class="pb20 mb20">
+          <ng-container *ngFor="let menu of menuList; let index=index;">
+            <ng-container *ngIf="menu.examName != '健康档案'">
+              <button (click)="selectMenu(index)" nz-button [nzType]="menu.selected ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">{{menu.examName}}</button>
             </ng-container>
-          </nz-collapseset>
-          <div nz-row class="mt30 mt20">
-            <div nz-col [nzSpan]="12" [nzOffset]="7">
-              <button *ngIf="editTypePhyexam == 'view'" (click)="changeTypePhyexam()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-              <button *ngIf="editTypePhyexam == 'edit'" (click)="cancelPhyexam()" nz-button [nzType]="'default'" [nzSize]="'large'" [nzLoading]="isSaveLoading">取消</button>
-              <button *ngIf="editTypePhyexam == 'edit'" (click)="saveUpload()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSaveLoading">保存</button>
+          </ng-container>
+        </div>
+        <div *ngFor="let menu of menuList; let indexMenu=index;">
+          <ng-container *ngIf="menu.examName != '健康档案'">
+            <div [ngClass]="{'hidden': !menu.selected}">
+              <div class="mt10 mb10 text-right">
+                <button *ngIf="editTypePhyexam == 'view'" (click)="changeTypePhyexam()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+                <button *ngIf="editTypePhyexam == 'edit'" (click)="cancelPhyexam(indexMenu)" nz-button [nzType]="'default'" [nzSize]="'large'"
+                  [nzLoading]="isSaveLoading">取消</button>
+                <button *ngIf="editTypePhyexam == 'edit'" (click)="saveUpload(indexMenu)" nz-button [nzType]="'primary'" [nzSize]="'large'"
+                  [nzLoading]="isSaveLoading">保存</button>
+              </div>
+              <ng-container *ngFor="let item of menu.exam; let indexItem=index;">
+                <div nz-form-item nz-row class="mt20">
+                  <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+                    <label>{{item.infoName}}{{item.unit ? '（' + item.unit + '）' : ''}}：</label>
+                  </div>
+                  <!-- 查看 -->
+                  <ng-container *ngIf="editTypePhyexam == 'view'">
+                    <!-- number -->
+                    <ng-container *ngIf="item.inputType == 'inputnumber'">
+                      <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
+                        {{item.result}}
+                      </div>
+                      <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
+                        <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
+                      </div>
+                      <div nz-col [nzSpan]="5">
+                        <div class="pl20">
+                          {{item.type ? '范围：' + item.scope : ''}}
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- input or radio -->
+                    <div nz-col [nzSpan]="12" nz-form-control>
+                      <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput' || item.inputType == 'radio_input'">
+                        <span>{{item.result}}</span>
+                      </ng-container>
+                    </div>
+                    <!-- file -->
+                    <div nz-col [nzSpan]="12" nz-form-control>
+                      <ng-container *ngIf="item.inputType == 'file'">
+                        <div *ngIf="item.result && item.result != ''" class="show-tab cursor-p" (click)="showFile(item.result)">
+                          <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
+                          <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                  <!-- 编辑 -->
+                  <ng-container *ngIf="editTypePhyexam == 'edit'">
+                    <!-- number -->
+                    <ng-container *ngIf="item.inputType == 'inputnumber'">
+                      <div nz-col [nzSpan]="item.compare && item.compare != '' ? 6 : 12" nz-form-control>
+                        <nz-input-number [(ngModel)]="item.result" (ngModelChange)="changeNumResult(indexMenu, indexItem)" [nzSize]="'large'" [nzPlaceHolder]="'请输入' + item.infoName"
+                          class="w100"></nz-input-number>
+                      </div>
+                      <div nz-col [nzSpan]="6" *ngIf="item.compare && item.compare != ''" class="text-center">
+                        <i class="anticon" [ngClass]="{'anticon-arrow-down': item.compare == 'lower', 'color-red-0': item.compare == 'lower', 'anticon-arrow-up': item.compare == 'height', 'color-blue-0': item.compare == 'height'}"></i>
+                      </div>
+                      <div nz-col [nzSpan]="5">
+                        <div class="pl20">
+                          {{item.type ? '范围：' + item.scope : ''}}
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- input -->
+                    <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput'">
+                      <div nz-col [nzSpan]="12" nz-form-control>
+                        <textarea nz-input rows="item.rowNum" (keyup)="changeRow($event, indexMenu, indexItem)" [(ngModel)]="item.result" [nzSize]="'large'" maxlength="200" placeholder="{{'请输入' + item.infoName}}"></textarea>
+                      </div>
+                    </ng-container>
+                    <!-- radio -->
+                    <ng-container *ngIf="item.inputType == 'radio_input'">
+                      <div nz-col [nzSpan]="12" nz-form-control>
+                        <nz-radio-group [(ngModel)]="item.result" [nzSize]="'large'">
+                          <ng-container *ngFor="let itemRadio of item.inputValue">
+                            <label nz-radio [nzValue]="itemRadio.key">
+                              <span>{{itemRadio.key}}</span>
+                            </label>
+                          </ng-container>
+                        </nz-radio-group>
+                      </div>
+                    </ng-container>
+                    <!-- file -->
+                    <ng-container *ngIf="item.inputType == 'file'">
+                      <div nz-col [nzSpan]="12" nz-form-control>
+                        <div *ngIf="item.result && item.result != ''" class="show-tab mb10">
+                          <img *ngIf="item.result.indexOf('pdf') == -1" src="{{item.result}}">
+                          <div *ngIf="item.result.indexOf('pdf') != -1" class="info">{{item.result}}</div>
+                        </div>
+                        <nll-upload [qiniuToken]="qiniuToken" [multiple]="false" [acceptType]="acceptType" [uploadSize]="1" (overUpload)="successUpload($event, indexMenu, indexItem)"
+                          (errorUpload)="errorUpload($event)"></nll-upload>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
             </div>
-          </div>
+          </ng-container>
         </div>
       </div>
     </nz-tab>

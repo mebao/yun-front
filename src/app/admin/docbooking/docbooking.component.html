@@ -11,141 +11,205 @@
 			        就诊详情
 			    </ng-template>
 			    <ng-template #body>
-					<nz-tabset [nzSelectedIndex]="selectedTab">
-			      		<nz-tab (nzClick)="changeTab(0)">
-			        		<ng-template #nzTabHeading>
-			          			实验室检查
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'">
-								<div *ngIf="addCheckInfo.editType != ''" nz-row [nzGutter]="30">
-									<div nz-col [nzSpan]="8">
-							          	<div nz-form-item>
-							            	<div nz-form-label>
-							              		<label>实验室检查</label>
-							            	</div>
-							            	<div nz-form-control class="mt10">
-												<nz-select
-													class="w100"
-													[nzSize]="'large'"
-													[nzPlaceHolder]="'请选择实验室检查'"
-													[(ngModel)]="addCheckInfo.check"
-													nzShowSearch
-													[nzDisabled]="addCheckInfo.editType == 'update'">
-													<ng-container *ngFor="let check of checklist">
-														<ng-container *ngIf="check.canUse == '1'">
-															<nz-option [nzLabel]="check.name" [nzValue]="check"></nz-option>
-														</ng-container>
+					<div style="border-bottom: 2px dashed #efefef;" class="pb20 mb20">
+						<button (click)="changeTab(0)" nz-button [nzType]="selectedTab == 0 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">实验室检查</button>
+						<button (click)="changeTab(1)" nz-button [nzType]="selectedTab == 1 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">辅助治疗</button>
+						<button (click)="changeTab(2)" nz-button [nzType]="selectedTab == 2 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">西/中成药处方</button>
+						<button (click)="changeTab(3)" nz-button [nzType]="selectedTab == 3 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">中药处方</button>
+						<button (click)="changeTab(4)" nz-button [nzType]="selectedTab == 4 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">随访</button>
+						<button (click)="changeTab(5)" nz-button [nzType]="selectedTab == 5 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">费用列表</button>
+						<button (click)="goSection('docbooking/casehistory')" nz-button [nzType]="selectedTab == 6 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">病例</button>
+						<button (click)="goSection('docbooking/healthrecord')" nz-button [nzType]="selectedTab == 7 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">儿保记录</button>
+						<button (click)="goSection('docbooking/growthChart')" nz-button [nzType]="selectedTab == 8 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">成长曲线</button>
+						<button (click)="goSection('docbooking/growthEvaluation')" nz-button [nzType]="selectedTab == 9 ? 'primary' : 'default'" [nzSize]="'large'" class="mb10">成长测评</button>
+					</div>
+					<div *ngIf="selectedTab == 0">
+						<ng-template #nzTabHeading>
+							实验室检查
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div *ngIf="addCheckInfo.editType != ''" nz-row [nzGutter]="30">
+								<div nz-col [nzSpan]="8">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>实验室检查</label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-select
+												class="w100"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请选择实验室检查'"
+												[(ngModel)]="addCheckInfo.check"
+												nzShowSearch
+												[nzDisabled]="addCheckInfo.editType == 'update'">
+												<ng-container *ngFor="let check of checklist">
+													<ng-container *ngIf="check.canUse == '1'">
+														<nz-option [nzLabel]="check.name" [nzValue]="check"></nz-option>
 													</ng-container>
-												</nz-select>
-							            	</div>
-							          	</div>
+												</ng-container>
+											</nz-select>
+										</div>
 									</div>
 								</div>
-								<!-- 订单未完成，可操作 -->
-								<ng-container *ngIf="booking.status != '5'">
-									<div *ngIf="canEdit" class="mt10">
-										<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加检查</button>
-										<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-										<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+							</div>
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div *ngIf="canEdit" class="mt10">
+									<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加检查</button>
+									<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+								</div>
+							</ng-container>
+						</div>
+						<div *ngIf="checkDataList.length > 0" class="mt10">
+							<nz-tabset>
+								<nz-tab *ngFor="let check of checkDataList">
+									<ng-template #nzTabHeading>
+										{{check.checkName}}
+									</ng-template>
+									<!-- pageType 空为医生接诊， history为查看 -->
+									<div *ngIf="pageType != 'history' && booking.status != '5'" class="mt10 mb10 text-right">
+										<button (click)="deleteCheck(check)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 									</div>
-								</ng-container>
-							</div>
-							<div *ngIf="checkDataList.length > 0" class="mt10">
-								<nz-tabset>
-						      		<nz-tab *ngFor="let check of checkDataList">
-						        		<ng-template #nzTabHeading>
-						          			{{check.checkName}}
-						        		</ng-template>
-										<!-- pageType 空为医生接诊， history为查看 -->
-										<div *ngIf="pageType != 'history' && booking.status != '5'" class="mt10 mb10 text-right">
-											<button (click)="deleteCheck(check)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
-										</div>
-										<nz-table #nzTable [nzDataSource]="check.resultList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-											<thead nz-thead>
-												<tr>
-													<th class="w20">项目</th>
-													<th class="w10">代码</th>
-													<th class="w25">检查结果</th>
-													<th class="w25">参考值</th>
-													<th class="w10">单位</th>
-													<th class="w10">性质</th>
-												</tr>
-											</thead>
-											<tbody nz-tbody>
-												<tr *ngFor="let result of check.resultList">
-													<td>{{result.checkInfoName}}</td>
-													<!-- 检查结果为文字还是图片 -->
-													<ng-container *ngIf="result.isUpload == '0'">
-														<td>{{result.code}}</td>
-														<td>{{result.values}}</td>
-														<td>
-															<div class="td-text">{{result.references}}</div>
-														</td>
-														<td>{{result.unit}}</td>
-														<td class="text-center">
-															<i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
-															<i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
-														</td>
-													</ng-container>
-													<ng-container *ngIf="result.isUpload == '1'">
-														<td></td>
-														<td colspan="5">
-															<div *ngIf="result.values && result.values != ''" class="upload-button-tab img">
-																<img *ngIf="result.values.lastIndexOf('.pdf') == -1" (click)="enlargeImg($event.target, 'image', result.values)" src="{{result.values}}" />
-									                            <div *ngIf="result.values.lastIndexOf('.pdf') != -1" (click)="enlargeImg($event.target, 'file', result.values)"  class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
-															</div>
-														</td>
-													</ng-container>
-												</tr>
-											</tbody>
-											<span noResult>暂无实验室检查项目信息</span>
-										</nz-table>
-										<div class="pt10 pb10 flex">
-											<div>备注：</div>
-											<div class="flex-1" [innerHTML]="check.remark"></div>
-										</div>
-									</nz-tab>
-								</nz-tabset>
-							</div>
-							<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
-								<nz-alert [nzType]="'info'" [nzMessage]="'暂无实验室检查信息'"></nz-alert>
-							</div>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(1)">
-			        		<ng-template #nzTabHeading>
-			          			辅助治疗
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'">
-								<!-- 订单未完成，可操作 -->
-								<ng-container *ngIf="booking.status != '5'">
-									<div *ngIf="canEdit" class="mt10 mb20">
-										<button *ngIf="addAssistInfo.editType == ''" (click)="addAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加辅助治疗</button>
+									<nz-table #nzTable [nzDataSource]="check.resultList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+										<thead nz-thead>
+											<tr>
+												<th class="w20">项目</th>
+												<th class="w10">代码</th>
+												<th class="w25">检查结果</th>
+												<th class="w25">参考值</th>
+												<th class="w10">单位</th>
+												<th class="w10">性质</th>
+											</tr>
+										</thead>
+										<tbody nz-tbody>
+											<tr *ngFor="let result of check.resultList">
+												<td>{{result.checkInfoName}}</td>
+												<!-- 检查结果为文字还是图片 -->
+												<ng-container *ngIf="result.isUpload == '0'">
+													<td>{{result.code}}</td>
+													<td>{{result.values}}</td>
+													<td>
+														<div class="td-text">{{result.references}}</div>
+													</td>
+													<td>{{result.unit}}</td>
+													<td class="text-center">
+														<i *ngIf="result.compare == 'low'" class="anticon anticon-arrow-down" style="color: #458DCB"></i>
+														<i *ngIf="result.compare == 'high'" class="anticon anticon-arrow-up" style="color: #C92D54"></i>
+													</td>
+												</ng-container>
+												<ng-container *ngIf="result.isUpload == '1'">
+													<td></td>
+													<td colspan="5">
+														<div *ngIf="result.values && result.values != ''" class="upload-button-tab img">
+															<img *ngIf="result.values.lastIndexOf('.pdf') == -1" (click)="enlargeImg($event.target, 'image', result.values)" src="{{result.values}}" />
+															<div *ngIf="result.values.lastIndexOf('.pdf') != -1" (click)="enlargeImg($event.target, 'file', result.values)"  class="info">{{result.values.substr(result.values.lastIndexOf('/') + 1)}}</div>
+														</div>
+													</td>
+												</ng-container>
+											</tr>
+										</tbody>
+										<span noResult>暂无实验室检查项目信息</span>
+									</nz-table>
+									<div class="pt10 pb10 flex">
+										<div>备注：</div>
+										<div class="flex-1" [innerHTML]="check.remark"></div>
 									</div>
-								</ng-container>
-							</div>
-							<nz-table *ngIf="hasAssistData" #nzTable [nzDataSource]="assistList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-								<thead nz-thead>
-									<tr>
-										<th>辅助治疗<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
-										<th>药品</th>
-										<th>计量</th>
-										<th>单价<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
-										<th>次数<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
-										<th>费用<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
-										<th class="th-width">备注（最多200字）</th>
-										<th>操作</th>
+								</nz-tab>
+							</nz-tabset>
+						</div>
+						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
+							<nz-alert [nzType]="'info'" [nzMessage]="'暂无实验室检查信息'"></nz-alert>
+						</div>
+					</div>
+					<div *ngIf="selectedTab == 1">
+						<ng-template #nzTabHeading>
+							辅助治疗
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div *ngIf="canEdit" class="mt10 mb20">
+									<button *ngIf="addAssistInfo.editType == ''" (click)="addAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加辅助治疗</button>
+								</div>
+							</ng-container>
+						</div>
+						<nz-table *ngIf="hasAssistData" #nzTable [nzDataSource]="assistList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+							<thead nz-thead>
+								<tr>
+									<th>辅助治疗<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
+									<th>药品</th>
+									<th>计量</th>
+									<th>单价<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
+									<th>次数<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
+									<th>费用<span *ngIf="addAssistInfo.editType == 'update'" class="required">*</span></th>
+									<th class="th-width">备注（最多200字）</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody nz-tbody>
+								<ng-container *ngFor="let assist of assistList">
+									<tr *ngIf="assist.drugs.length == 0">
+										<td>{{assist.assistName}}</td>
+										<td></td>
+										<td></td>
+										<td>{{assist.price}}</td>
+										<td>
+											<!-- 查看 -->
+											<ng-container *ngIf="addAssistInfo.editType != 'update'">
+												{{assist.number}}
+											</ng-container>
+											<!-- 修改 -->
+											<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+												<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
+											</ng-container>
+										</td>
+										<td>
+											<!-- 查看 -->
+											<ng-container *ngIf="addAssistInfo.editType != 'update'">
+												{{assist.fee}}
+											</ng-container>
+											<!-- 修改 -->
+											<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+												<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
+											</ng-container>
+										</td>
+										<td>
+											<!-- 查看 -->
+											<ng-container *ngIf="addAssistInfo.editType != 'update'">
+												<div class="td-text">
+													{{assist.remark}}
+												</div>
+											</ng-container>
+											<!-- 修改 -->
+											<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
+												<textarea name="remark" maxlength="200" [(ngModel)]="addAssistInfo.remark" placeholder="请输入备注"></textarea>
+											</ng-container>
+										</td>
+										<td>
+											<!-- pageType 空为医生接诊， history为查看 -->
+											<div *ngIf="pageType != 'history'">
+												<!-- 订单未完成，可操作 -->
+												<ng-container *ngIf="booking.status != '5'">
+													<ng-container *ngIf="canEdit">
+														<!-- <button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button> -->
+														<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+														<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+														<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+													</ng-container>
+												</ng-container>
+											</div>
+										</td>
 									</tr>
-								</thead>
-								<tbody nz-tbody>
-									<ng-container *ngFor="let assist of assistList">
-										<tr *ngIf="assist.drugs.length == 0">
-											<td>{{assist.assistName}}</td>
-											<td></td>
-											<td></td>
-											<td>{{assist.price}}</td>
-											<td>
+									<ng-container *ngIf="assist.drugs.length > 0">
+										<tr *ngFor="let drug of assist.drugs; let indexDrug=index;">
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.assistName}}</td>
+											<td>{{drug.durgName}}</td>
+											<td>{{drug.durgNum + drug.durgUnit}}</td>
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.price}}</td>
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
 												<!-- 查看 -->
 												<ng-container *ngIf="addAssistInfo.editType != 'update'">
 													{{assist.number}}
@@ -155,7 +219,7 @@
 													<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
 												</ng-container>
 											</td>
-											<td>
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
 												<!-- 查看 -->
 												<ng-container *ngIf="addAssistInfo.editType != 'update'">
 													{{assist.fee}}
@@ -165,7 +229,7 @@
 													<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
 												</ng-container>
 											</td>
-											<td>
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
 												<!-- 查看 -->
 												<ng-container *ngIf="addAssistInfo.editType != 'update'">
 													<div class="td-text">
@@ -177,7 +241,7 @@
 													<textarea name="remark" maxlength="200" [(ngModel)]="addAssistInfo.remark" placeholder="请输入备注"></textarea>
 												</ng-container>
 											</td>
-											<td>
+											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
 												<!-- pageType 空为医生接诊， history为查看 -->
 												<div *ngIf="pageType != 'history'">
 													<!-- 订单未完成，可操作 -->
@@ -192,179 +256,166 @@
 												</div>
 											</td>
 										</tr>
-										<ng-container *ngIf="assist.drugs.length > 0">
-											<tr *ngFor="let drug of assist.drugs; let indexDrug=index;">
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.assistName}}</td>
-												<td>{{drug.durgName}}</td>
-												<td>{{drug.durgNum + drug.durgUnit}}</td>
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">{{assist.price}}</td>
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
-													<!-- 查看 -->
-													<ng-container *ngIf="addAssistInfo.editType != 'update'">
-														{{assist.number}}
-													</ng-container>
-													<!-- 修改 -->
-													<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-														<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
-													</ng-container>
-												</td>
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
-													<!-- 查看 -->
-													<ng-container *ngIf="addAssistInfo.editType != 'update'">
-														{{assist.fee}}
-													</ng-container>
-													<!-- 修改 -->
-													<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-														<input type="number" name="fee" [(ngModel)]="addAssistInfo.fee" disabled>
-													</ng-container>
-												</td>
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
-													<!-- 查看 -->
-													<ng-container *ngIf="addAssistInfo.editType != 'update'">
-														<div class="td-text">
-															{{assist.remark}}
-														</div>
-													</ng-container>
-													<!-- 修改 -->
-													<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-														<textarea name="remark" maxlength="200" [(ngModel)]="addAssistInfo.remark" placeholder="请输入备注"></textarea>
-													</ng-container>
-												</td>
-												<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
-													<!-- pageType 空为医生接诊， history为查看 -->
-													<div *ngIf="pageType != 'history'">
-														<!-- 订单未完成，可操作 -->
-														<ng-container *ngIf="booking.status != '5'">
-															<ng-container *ngIf="canEdit">
-																<!-- <button *ngIf="addAssistInfo.editType != 'update'" (click)="updateAddAssist(assist)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button> -->
-																<button *ngIf="addAssistInfo.editType != 'update'" (click)="deleteAssist(assist.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
-																<button *ngIf="addAssistInfo.editType == 'update'" (click)="removeAssist()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-																<button *ngIf="addAssistInfo.editType == 'update'" (click)="editAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
-															</ng-container>
-														</ng-container>
-													</div>
-												</td>
-											</tr>
-										</ng-container>
 									</ng-container>
-								</tbody>
-								<span noResult>暂无辅助治疗信息</span>
-							</nz-table>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'">
-								<div *ngIf="addAssistInfo.editType == 'add'" nz-row [nzGutter]="30" class="mt20">
-									<div nz-col [nzSpan]="5">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>辅助治疗<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-select
-													class="w100"
-													(ngModelChange)="addAssistInfo.project=$event;changeAssist()"
-													[nzSize]="'large'"
-													[nzPlaceHolder]="'请选择辅助治疗'"
-													[ngModel]="addAssistInfo.project"
-													nzShowSearch>
-													<nz-option
-														*ngFor="let assist of assistProjects"
-														[nzLabel]="assist.name"
-														[nzValue]="assist">
-													</nz-option>
-												</nz-select>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>单价<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.price" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>数量<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [ngModel]="addAssistInfo.number" (ngModelChange)="addAssistInfo.number=$event;changeAssistNumber()" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>费用<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="7">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>备注（最多200字）</label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input [nzType]="'textarea'" [(ngModel)]="addAssistInfo.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 订单未完成，可操作 -->
-								<ng-container *ngIf="booking.status != '5'">
-									<div *ngIf="canEdit" class="mt10">
-										<button *ngIf="addAssistInfo.editType == 'add'" (click)="removeAssist()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-										<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
-									</div>
 								</ng-container>
-							</div>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(2)">
-			        		<ng-template #nzTabHeading>
-			          			西/中成药处方
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看（非查看并且未完成，可操作） -->
-							<div *ngIf="pageType != 'history' && booking.status != '5'">
-								<div *ngIf="hasPrescriptData && prescriptList.length == 0">
-									<div *ngIf="canEdit" class="mt10 mb20">
-										<button (click)="prescript()" nz-button [nzType]="'primary'" [nzSize]="'large'">开方</button>
+							</tbody>
+							<span noResult>暂无辅助治疗信息</span>
+						</nz-table>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div *ngIf="addAssistInfo.editType == 'add'" nz-row [nzGutter]="30" class="mt20">
+								<div nz-col [nzSpan]="5">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>辅助治疗<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-select
+												class="w100"
+												(ngModelChange)="addAssistInfo.project=$event;changeAssist()"
+												[nzSize]="'large'"
+												[nzPlaceHolder]="'请选择辅助治疗'"
+												[ngModel]="addAssistInfo.project"
+												nzShowSearch>
+												<nz-option
+													*ngFor="let assist of assistProjects"
+													[nzLabel]="assist.name"
+													[nzValue]="assist">
+												</nz-option>
+											</nz-select>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>单价<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.price" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>数量<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [ngModel]="addAssistInfo.number" (ngModelChange)="addAssistInfo.number=$event;changeAssistNumber()" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>费用<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="7">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>备注（最多200字）</label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input [nzType]="'textarea'" [(ngModel)]="addAssistInfo.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
+										</div>
 									</div>
 								</div>
 							</div>
-							<nz-table *ngIf="hasPrescriptData" #nzTable [nzDataSource]="prescriptList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-								<thead nz-thead>
-									<tr>
-										<th>药品名</th>
-										<th>批次</th>
-										<th>药品单位</th>
-										<th>药品数量</th>
-										<th class="th-width">用法说明</th>
-										<th class="th-width">注意事项</th>
-										<th class="th-width">备注</th>
-										<th>日期</th>
-										<th>操作</th>
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div *ngIf="canEdit" class="mt10">
+									<button *ngIf="addAssistInfo.editType == 'add'" (click)="removeAssist()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+								</div>
+							</ng-container>
+						</div>
+					</div>
+					<div *ngIf="selectedTab == 2">
+						<ng-template #nzTabHeading>
+							西/中成药处方
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看（非查看并且未完成，可操作） -->
+						<div *ngIf="pageType != 'history' && booking.status != '5'">
+							<div *ngIf="hasPrescriptData && prescriptList.length == 0">
+								<div *ngIf="canEdit" class="mt10 mb20">
+									<button (click)="prescript()" nz-button [nzType]="'primary'" [nzSize]="'large'">开方</button>
+								</div>
+							</div>
+						</div>
+						<nz-table *ngIf="hasPrescriptData" #nzTable [nzDataSource]="prescriptList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+							<thead nz-thead>
+								<tr>
+									<th>药品名</th>
+									<th>批次</th>
+									<th>药品单位</th>
+									<th>药品数量</th>
+									<th class="th-width">用法说明</th>
+									<th class="th-width">注意事项</th>
+									<th class="th-width">备注</th>
+									<th>日期</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody nz-tbody>
+								<ng-container *ngFor="let item of prescriptList; let indexItem=index;">
+									<tr *ngIf="item.info.length == 0">
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>
+											<div class="td-text">{{item.remark}}</div>
+										</td>
+										<td>{{item.date}}</td>
+										<td>
+											<!-- pageType 空为医生接诊， history为查看 -->
+											<div *ngIf="pageType != 'history'">
+												<!-- 订单未完成，可操作 -->
+												<ng-container *ngIf="booking.status != '5'">
+													<div *ngIf="!item.apotId">
+														<button (click)="updatePrescript(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+													</div>
+													<div *ngIf="!item.apotId" class="mt10">
+														<button (click)="deletePrescript(item.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+													</div>
+													<div *ngIf="item.apotId && (item.isBack == 2 || item.isBack == 0)">
+														<button (click)="continueAdd(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">加药</button>
+													</div>
+													<div *ngIf="item.apotId && item.isBack == 0 && (item.outCode == 0)" class="mt10">
+														<button (click)="backdrug(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">退药</button>
+													</div>
+												</ng-container>
+											</div>
+										</td>
 									</tr>
-								</thead>
-								<tbody nz-tbody>
-									<ng-container *ngFor="let item of prescriptList; let indexItem=index;">
-										<tr *ngIf="item.info.length == 0">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+									<ng-container *ngIf="item.info.length > 0">
+										<tr *ngFor="let info of item.info; let indexInfo=index;">
 											<td>
+												<div>{{info.pname}}</div>
+												<div>规格：{{info.format}}</div>
+											</td>
+											<td>{{info.batch}}</td>
+											<td>{{info.unit}}</td>
+											<td>{{info.num}}</td>
+											<td>
+												<div class="td-text">{{info.msExplain}}</div>
+											</td>
+											<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
+												<div class="td-text">{{info.remark}}</div>
+											</td>
+											<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
 												<div class="td-text">{{item.remark}}</div>
 											</td>
-											<td>{{item.date}}</td>
-											<td>
+											<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.date}}</td>
+											<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
 												<!-- pageType 空为医生接诊， history为查看 -->
 												<div *ngIf="pageType != 'history'">
 													<!-- 订单未完成，可操作 -->
@@ -385,318 +436,253 @@
 												</div>
 											</td>
 										</tr>
-										<ng-container *ngIf="item.info.length > 0">
-											<tr *ngFor="let info of item.info; let indexInfo=index;">
-												<td>
-													<div>{{info.pname}}</div>
-													<div>规格：{{info.format}}</div>
-												</td>
-												<td>{{info.batch}}</td>
-												<td>{{info.unit}}</td>
-												<td>{{info.num}}</td>
-												<td>
-													<div class="td-text">{{info.msExplain}}</div>
-												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
-													<div class="td-text">{{info.remark}}</div>
-												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
-													<div class="td-text">{{item.remark}}</div>
-												</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">{{item.date}}</td>
-												<td [attr.rowspan]="item.infoLength" *ngIf="indexInfo == 0">
-													<!-- pageType 空为医生接诊， history为查看 -->
-													<div *ngIf="pageType != 'history'">
-														<!-- 订单未完成，可操作 -->
-														<ng-container *ngIf="booking.status != '5'">
-															<div *ngIf="!item.apotId">
-																<button (click)="updatePrescript(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-															</div>
-															<div *ngIf="!item.apotId" class="mt10">
-																<button (click)="deletePrescript(item.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
-															</div>
-															<div *ngIf="item.apotId && (item.isBack == 2 || item.isBack == 0)">
-																<button (click)="continueAdd(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">加药</button>
-															</div>
-															<div *ngIf="item.apotId && item.isBack == 0 && (item.outCode == 0)" class="mt10">
-																<button (click)="backdrug(item)" nz-button [nzType]="'primary'" [nzSize]="'large'">退药</button>
-															</div>
-														</ng-container>
-													</div>
-												</td>
-											</tr>
-										</ng-container>
 									</ng-container>
-								</tbody>
-								<span noResult>暂无西/中成药处方信息</span>
-							</nz-table>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(3)">
-			        		<ng-template #nzTabHeading>
-			          			中药处方
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看（非查看并且未完成，可操作） -->
-							<div *ngIf="pageType != 'history' && booking.status != '5'">
-								<div *ngIf="hasDocTcmData && docTcmList.length == 0">
-									<div *ngIf="canEdit" class="mt10 mb20">
-										<button (click)="tcmPrescript()" nz-button [nzType]="'primary'" [nzSize]="'large'">开中药处方</button>
-									</div>
-								</div>
-							</div>
-							<nz-table #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-								<thead nz-thead>
-									<tr>
-										<th nz-th>药材名</th>
-										<th nz-th>总服数</th>
-										<th nz-th>用法</th>
-										<th nz-th>频率</th>
-										<th nz-th class="w15">备注</th>
-										<th nz-th>操作</th>
-									</tr>
-								</thead>
-								<tbody nz-tbody>
-									<ng-container *ngFor="let docTcm of docTcmList;">
-										<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
-											<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.num}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.usage}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.frequency}}</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
-												<div class="td-text">{{docTcm.remark}}</div>
-											</td>
-											<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
-												<button *ngIf="!docTcm.apotId" (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-											</td>
-										</tr>
-									</ng-container>
-								</tbody>
-								<span noResult>暂无中药处方信息</span>
-							</nz-table>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(4)">
-			        		<ng-template #nzTabHeading>
-			          			费用列表
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'">
-								<div *ngIf="canEdit && booking.status != '5'" class="mt10 mb20">
-									<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加其它费用</button>
-								</div>
-							</div>
-							<nz-table #nzTable [nzDataSource]="booking.fees" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-								<thead nz-thead>
-									<tr>
-										<th class="w20">
-											<span>消费项目</span>
-											<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
-										</th>
-										<th class="w10">
-											<span>单价</span>
-											<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
-										</th>
-										<th class="w10">
-											<span>数量</span>
-											<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
-										</th>
-										<th class="w10">
-											<span>费用</span>
-											<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
-										</th>
-										<th class="w30">备注说明<span *ngIf="addFeeInfo.editType == 'update'">（最多200字）</span></th>
-										<th class="w20">操作</th>
-									</tr>
-								</thead>
-								<tbody nz-tbody>
-									<tr *ngFor="let fee of booking.fees">
-										<ng-container *ngIf="fee.type != 'booking'">
-											<td>
-												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.projectName}}</div>
-												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input [nzSize]="'large'" [(ngModel)]="addFeeInfo.project_name" [nzPlaceHolder]="'请输入消费项目名'" [nzDisabled]="addFeeInfo.editType == 'update'"></nz-input>
-												</div>
-											</td>
-											<td>
-												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.price}}</div>
-												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.price" (ngModelChange)="addFeeInfo.price=$event;changeFee()" [nzPlaceHolder]="'请输入单价'" [nzDisabled]="addFeeInfo.editType == 'update'" class="w100"></nz-input-number>
-												</div>
-											</td>
-											<td>
-												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.number}}</div>
-												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" class="w100" [nzDisabled]="addFeeInfo.editType == 'update' && addFeeInfo.type == 'service'"></nz-input-number>
-												</div>
-											</td>
-											<td>
-												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.originFee}}</div>
-												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input-number [nzStep]="1" [nzSize]="'large'" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzDisabled]="addFeeInfo.editType == 'update'" class="w100"></nz-input-number>
-												</div>
-											</td>
-											<td>
-												<!-- 展示 -->
-												<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="td-text">{{fee.remark}}</div>
-												<!-- 编辑 -->
-												<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-													<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" class="w100"></nz-input>
-												</div>
-											</td>
-											<td>
-												<!-- pageType 空为医生接诊， history为查看 -->
-												<div *ngIf="pageType != 'history'">
-													<!-- 订单未完成，可操作 -->
-													<ng-container *ngIf="booking.status != '5'">
-														<!-- 展示 -->
-														<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">
-															<button (click)="updateFee(fee)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-														</div>
-														<!-- 编辑 -->
-														<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-															<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-															<button *ngIf="addFeeInfo.editType != ''" (click)="editFee()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
-														</div>
-													</ng-container>
-												</div>
-											</td>
-										</ng-container>
-									</tr>
-								</tbody>
-							</nz-table>
-							<div class="mt10">
-								<nz-alert [nzType]="'info'" [nzMessage]="'总费用：' + booking.totalFee + '元'"></nz-alert>
-							</div>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'">
-								<div *ngIf="addFeeInfo.editType == 'create'" nz-row [nzGutter]="30" class="mt20">
-									<div nz-col [nzSpan]="5">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>消费项目名<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input [(ngModel)]="addFeeInfo.project_name" [nzPlaceHolder]="'请输入消费项目名'" [nzSize]="'large'" class="w100"></nz-input>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>单价<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.price" (ngModelChange)="addFeeInfo.price=$event;changeFee()" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>数量<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="4">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>费用<span class="required">*</span></label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
-											</div>
-										</div>
-									</div>
-									<div nz-col [nzSpan]="7">
-										<div nz-form-item>
-											<div nz-form-label>
-												<label>备注说明（最多200字）</label>
-											</div>
-											<div nz-form-control class="mt10">
-												<nz-input [nzType]="'textarea'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'"></nz-input>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 订单未完成，可操作 -->
-								<ng-container *ngIf="booking.status != '5'">
-									<div *ngIf="canEdit" class="mt10">
-										<button *ngIf="addFeeInfo.editType == 'create'" (click)="removeFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-										<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
-									</div>
 								</ng-container>
+							</tbody>
+							<span noResult>暂无西/中成药处方信息</span>
+						</nz-table>
+					</div>
+					<div *ngIf="selectedTab == 3">
+						<ng-template #nzTabHeading>
+							中药处方
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看（非查看并且未完成，可操作） -->
+						<div *ngIf="pageType != 'history' && booking.status != '5'">
+							<div *ngIf="hasDocTcmData && docTcmList.length == 0">
+								<div *ngIf="canEdit" class="mt10 mb20">
+									<button (click)="tcmPrescript()" nz-button [nzType]="'primary'" [nzSize]="'large'">开中药处方</button>
+								</div>
 							</div>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="changeTab(5)">
-			        		<ng-template #nzTabHeading>
-			          			随访
-			        		</ng-template>
-							<!-- pageType 空为医生接诊， history为查看 -->
-							<div *ngIf="pageType != 'history'" class="mt10 mb20">
-								<button (click)="addFollowups()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增随访</button>
+						</div>
+						<nz-table #nzTable [nzDataSource]="docTcmList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+							<thead nz-thead>
+								<tr>
+									<th nz-th>药材名</th>
+									<th nz-th>总服数</th>
+									<th nz-th>用法</th>
+									<th nz-th>频率</th>
+									<th nz-th class="w15">备注</th>
+									<th nz-th>操作</th>
+								</tr>
+							</thead>
+							<tbody nz-tbody>
+								<ng-container *ngFor="let docTcm of docTcmList;">
+									<tr nz-tbody-tr *ngFor="let info of docTcm.infos; let indexInfo=index;">
+										<td nz-td>{{info.tcmName + "：" + info.num + info.unit}}</td>
+										<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.num}}</td>
+										<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.usage}}</td>
+										<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">{{docTcm.frequency}}</td>
+										<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
+											<div class="td-text">{{docTcm.remark}}</div>
+										</td>
+										<td nz-td [attr.rowspan]="docTcm.infos.length" *ngIf="indexInfo == 0">
+											<button *ngIf="!docTcm.apotId" (click)="updateDocTcm(docTcm)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+										</td>
+									</tr>
+								</ng-container>
+							</tbody>
+							<span noResult>暂无中药处方信息</span>
+						</nz-table>
+					</div>
+					<div *ngIf="selectedTab == 4">
+						<ng-template #nzTabHeading>
+							随访
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'" class="mt10 mb20">
+							<button (click)="addFollowups()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增随访</button>
+						</div>
+						<nz-table *ngIf="hasFollowupsData" #nzTable [nzDataSource]="followupsList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+							<thead nz-thead>
+								<tr>
+									<th class="w10">随访时间</th>
+									<th class="w25">随访内容和原因</th>
+									<th class="w20">备注</th>
+									<th class="w25">结果</th>
+									<th class="w10">状态</th>
+								</tr>
+							</thead>
+							<tbody nz-tbody>
+								<tr *ngFor="let followups of followupsList">
+									<td>{{followups.time}}</td>
+									<td>
+										<div class="td-text">{{followups.account}}</div>
+									</td>
+									<td>
+										<div class="td-text">{{followups.remarks}}</div>
+									</td>
+									<td>
+										<div class="td-text">{{followups.results}}</div>
+									</td>
+									<td>{{followups.status}}</td>
+								</tr>
+							</tbody>
+							<span noResult>暂无随访信息</span>
+						</nz-table>
+					</div>
+					<div *ngIf="selectedTab == 5">
+						<ng-template #nzTabHeading>
+							费用列表
+						</ng-template>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div *ngIf="canEdit && booking.status != '5'" class="mt10 mb20">
+								<button *ngIf="addFeeInfo.editType == ''" (click)="addfee()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加其它费用</button>
 							</div>
-							<nz-table *ngIf="hasFollowupsData" #nzTable [nzDataSource]="followupsList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
-								<thead nz-thead>
-									<tr>
-										<th class="w10">随访时间</th>
-										<th class="w25">随访内容和原因</th>
-										<th class="w20">备注</th>
-										<th class="w25">结果</th>
-										<th class="w10">状态</th>
-									</tr>
-								</thead>
-								<tbody nz-tbody>
-									<tr *ngFor="let followups of followupsList">
-										<td>{{followups.time}}</td>
+						</div>
+						<nz-table #nzTable [nzDataSource]="booking.fees" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+							<thead nz-thead>
+								<tr>
+									<th class="w20">
+										<span>消费项目</span>
+										<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
+									</th>
+									<th class="w10">
+										<span>单价</span>
+										<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
+									</th>
+									<th class="w10">
+										<span>数量</span>
+										<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
+									</th>
+									<th class="w10">
+										<span>费用</span>
+										<span *ngIf="addFeeInfo.editType == 'update'" class="required">*</span>
+									</th>
+									<th class="w30">备注说明<span *ngIf="addFeeInfo.editType == 'update'">（最多200字）</span></th>
+									<th class="w20">操作</th>
+								</tr>
+							</thead>
+							<tbody nz-tbody>
+								<tr *ngFor="let fee of booking.fees">
+									<ng-container *ngIf="fee.type != 'booking'">
 										<td>
-											<div class="td-text">{{followups.account}}</div>
+											<!-- 展示 -->
+											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.projectName}}</div>
+											<!-- 编辑 -->
+											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+												<nz-input [nzSize]="'large'" [(ngModel)]="addFeeInfo.project_name" [nzPlaceHolder]="'请输入消费项目名'" [nzDisabled]="addFeeInfo.editType == 'update'"></nz-input>
+											</div>
 										</td>
 										<td>
-											<div class="td-text">{{followups.remarks}}</div>
+											<!-- 展示 -->
+											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.price}}</div>
+											<!-- 编辑 -->
+											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+												<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.price" (ngModelChange)="addFeeInfo.price=$event;changeFee()" [nzPlaceHolder]="'请输入单价'" [nzDisabled]="addFeeInfo.editType == 'update'" class="w100"></nz-input-number>
+											</div>
 										</td>
 										<td>
-											<div class="td-text">{{followups.results}}</div>
+											<!-- 展示 -->
+											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.number}}</div>
+											<!-- 编辑 -->
+											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+												<nz-input-number [nzStep]="1" [nzSize]="'large'" [ngModel]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" class="w100" [nzDisabled]="addFeeInfo.editType == 'update' && addFeeInfo.type == 'service'"></nz-input-number>
+											</div>
 										</td>
-										<td>{{followups.status}}</td>
-									</tr>
-								</tbody>
-								<span noResult>暂无随访信息</span>
-							</nz-table>
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="goSection('docbooking/casehistory')">
-			        		<ng-template #nzTabHeading>
-			          			病历
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="goSection('docbooking/healthrecord')">
-			        		<ng-template #nzTabHeading>
-			          			儿保记录
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="goSection('docbooking/growthChart')">
-			        		<ng-template #nzTabHeading>
-			          			成长曲线
-			        		</ng-template>
-
-			      		</nz-tab>
-			      		<nz-tab (nzClick)="goSection('docbooking/growthEvaluation')">
-			        		<ng-template #nzTabHeading>
-			          			成长测评
-			        		</ng-template>
-
-			      		</nz-tab>
-			    	</nz-tabset>
+										<td>
+											<!-- 展示 -->
+											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">{{fee.originFee}}</div>
+											<!-- 编辑 -->
+											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+												<nz-input-number [nzStep]="1" [nzSize]="'large'" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzDisabled]="addFeeInfo.editType == 'update'" class="w100"></nz-input-number>
+											</div>
+										</td>
+										<td>
+											<!-- 展示 -->
+											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="td-text">{{fee.remark}}</div>
+											<!-- 编辑 -->
+											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+												<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" class="w100"></nz-input>
+											</div>
+										</td>
+										<td>
+											<!-- pageType 空为医生接诊， history为查看 -->
+											<div *ngIf="pageType != 'history'">
+												<!-- 订单未完成，可操作 -->
+												<ng-container *ngIf="booking.status != '5'">
+													<!-- 展示 -->
+													<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId">
+														<button (click)="updateFee(fee)" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
+													</div>
+													<!-- 编辑 -->
+													<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
+														<button *ngIf="addFeeInfo.editType != ''" (click)="removeFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+														<button *ngIf="addFeeInfo.editType != ''" (click)="editFee()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+													</div>
+												</ng-container>
+											</div>
+										</td>
+									</ng-container>
+								</tr>
+							</tbody>
+						</nz-table>
+						<div class="mt10">
+							<nz-alert [nzType]="'info'" [nzMessage]="'总费用：' + booking.totalFee + '元'"></nz-alert>
+						</div>
+						<!-- pageType 空为医生接诊， history为查看 -->
+						<div *ngIf="pageType != 'history'">
+							<div *ngIf="addFeeInfo.editType == 'create'" nz-row [nzGutter]="30" class="mt20">
+								<div nz-col [nzSpan]="5">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>消费项目名<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input [(ngModel)]="addFeeInfo.project_name" [nzPlaceHolder]="'请输入消费项目名'" [nzSize]="'large'" class="w100"></nz-input>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>单价<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.price" (ngModelChange)="addFeeInfo.price=$event;changeFee()" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>数量<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.number" (ngModelChange)="addFeeInfo.number=$event;changeFee()" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="4">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>费用<span class="required">*</span></label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input-number [nzStep]="1" [(ngModel)]="addFeeInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
+										</div>
+									</div>
+								</div>
+								<div nz-col [nzSpan]="7">
+									<div nz-form-item>
+										<div nz-form-label>
+											<label>备注说明（最多200字）</label>
+										</div>
+										<div nz-form-control class="mt10">
+											<nz-input [nzType]="'textarea'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'"></nz-input>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 订单未完成，可操作 -->
+							<ng-container *ngIf="booking.status != '5'">
+								<div *ngIf="canEdit" class="mt10">
+									<button *ngIf="addFeeInfo.editType == 'create'" (click)="removeFee()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									<button *ngIf="addFeeInfo.editType == 'create'" (click)="editFee()" nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="btnCanEdit">保存</button>
+								</div>
+							</ng-container>
+						</div>
+					</div>
 				</ng-template>
 			</nz-card>
 		</div>
