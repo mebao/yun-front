@@ -387,7 +387,6 @@ export class BookingPhyexam {
                         }
                         sessionStorage.setItem('bookingPhyexamData', JSON.stringify(results.list[0].infos));
                         this.menuList = results.list[0].infos;
-                        console.log(this.menuList);
                     }
                 }
                 this.loadingShow = false;

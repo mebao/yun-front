@@ -140,9 +140,9 @@
               <a *ngIf="moduleAuthority.receive || moduleAuthority.receiveAll" class="edit flex-1 pad10 text-center" (click)="info(booking, service)">
                 接诊
               </a>
-              <!-- 权限、该科室下关联体检套餐、尚未选择体检套餐 -->
-              <a *ngIf="moduleAuthority.phyexam && service.hasPack == '1' && booking.hasPhypack == '0'" class="edit flex-1 pad10 text-center" (click)="phyexam(booking, service)">
-                体检套餐
+              <!-- 权限、该科室下关联体检套餐 -->
+              <a *ngIf="moduleAuthority.phyexam && service.hasPack == '1'" class="edit flex-1 pad10 text-center" (click)="phyexam(booking, service)">
+                {{booking.hasPhypack == '0' ? '体检套餐' : '已选择体检套餐'}}
               </a>
             </div>
           </div>

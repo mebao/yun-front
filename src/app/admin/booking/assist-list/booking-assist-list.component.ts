@@ -284,7 +284,6 @@ export class BookingAssistList {
             finishNum: '',
         }
         this.modalFinishTab = true;
-        console.log(12);
     }
 
     closeFinish() {

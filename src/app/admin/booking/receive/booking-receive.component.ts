@@ -325,26 +325,30 @@ export class BookingReceiveComponent {
 	}
 
 	phyexam(booking, service) {
-		this.loadingShow = true;
-		var urlOptions = this.url + '&service_id=' + service.serviceId;
-		this.adminService.searchphypage(urlOptions).then((data) => {
-			if (data.status == 'no') {
-				this.loadingShow = false;
-				this._message.error(data.errorMsg);
-			} else {
-				var results = JSON.parse(JSON.stringify(data.results));
-				this.loadingShow = false;
-				this.phyexamList = results.list;
-				this.selectedInfo = {
-					booking: booking,
-					phyexam: '',
+		if(booking.hasPhypack == '0'){
+			this.loadingShow = true;
+			var urlOptions = this.url + '&service_id=' + service.serviceId;
+			this.adminService.searchphypage(urlOptions).then((data) => {
+				if (data.status == 'no') {
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
+				} else {
+					var results = JSON.parse(JSON.stringify(data.results));
+					this.loadingShow = false;
+					this.phyexamList = results.list;
+					this.selectedInfo = {
+						booking: booking,
+						phyexam: '',
+					}
+					this.modalTab = true;
 				}
-				this.modalTab = true;
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-			this._message.error('服务器错误');
-		});
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+			});
+		}else{
+			this._message.error('已选择体检套餐，请前往体检套餐中填写结果');
+		}
 	}
 
 	close() {

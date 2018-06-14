@@ -3,7 +3,7 @@
   <top-bar [data]="topBar"></top-bar>
 
   <nz-tabset>
-    <nz-tab>
+    <nz-tab (nzClick)="search()">
       <ng-template #nzTabHeading>
         辅助治疗列表
       </ng-template>
@@ -112,8 +112,8 @@
               <button (click)="showInfo(bookingAssist)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
               <button *ngIf="moduleAuthority.confirm && bookingAssist.number != bookingAssist.finishNum" (click)="finish(bookingAssist)"
                 nz-button [nzType]="'primary'" [nzSize]="'large'">完成</button>
-              <button *ngIf="moduleAuthority.back && bookingAssist.status == '5'" (click)="back(bookingAssist)"
-                nz-button [nzType]="'danger'" [nzSize]="'large'">退返</button>
+              <button *ngIf="moduleAuthority.back && bookingAssist.status == '5'" (click)="back(bookingAssist)" nz-button [nzType]="'danger'"
+                [nzSize]="'large'">退返</button>
             </td>
           </tr>
         </tbody>
@@ -180,14 +180,14 @@
     </nz-tab>
   </nz-tabset>
 </div>
-<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm"
-  (nzOnCancel)="closeConfirm()" (nzOnOk)="confirm()">
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()"
+  (nzOnOk)="confirm()">
   <ng-template #contentConfirm>
     <p>{{confirmInfo.text}}</p>
   </ng-template>
 </nz-modal>
-<nz-modal [nzVisible]="modalFinishTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalFinishContent"
-  (nzOnCancel)="closeFinish()" (nzOnOk)="finishAssist()">
+<nz-modal [nzVisible]="modalFinishTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="modalFinishContent" (nzOnCancel)="closeFinish()"
+  (nzOnOk)="finishAssist()">
   <ng-template #modalFinishContent>
     <p>宝宝姓名：{{selectedInfo.assist.childName}}</p>
     <p class="mt10">辅助治疗：{{selectedInfo.assist.assistName}}</p>
@@ -198,7 +198,8 @@
         <label>完成次数：</label>
       </div>
       <div nz-form-control class="mt5">
-        <nz-input-number [nzMin]="0" [nzStep]="1" [(ngModel)]="selectedInfo.finishNum" [nzSize]="'large'" [nzPlaceHolder]="'请输入完成次数'" class="w100"></nz-input-number>
+        <nz-input-number [nzMin]="0" [nzStep]="1" [(ngModel)]="selectedInfo.finishNum" [nzSize]="'large'" [nzPlaceHolder]="'请输入完成次数'"
+          class="w100"></nz-input-number>
       </div>
     </div>
   </ng-template>
@@ -280,6 +281,7 @@
           <th>退返人员</th>
           <th>退返次数</th>
           <th>退返时间</th>
+          <th class="w15">退返原因</th>
         </tr>
       </thead>
       <tbody nz-tbody>
@@ -287,6 +289,9 @@
           <td>{{info.name}}</td>
           <td>{{info.num}}</td>
           <td>{{info.time}}</td>
+          <td>
+            <div class="td-text">{{info.remark}}</div>
+          </td>
         </tr>
       </tbody>
       <span noResult>暂无退返信息</span>
