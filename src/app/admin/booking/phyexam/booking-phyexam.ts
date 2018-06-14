@@ -291,6 +291,16 @@ export class BookingPhyexam {
             this._message.error('家族遗传疾病史不可为空');
             return;
         }
+        if (this.info.is_vaccinate == '1'){
+            if(this.info.vaccinate_name == ''){
+                this._message.error('接种下，接种疫苗不可为空');
+                return;
+            }
+            if(!this.info.vaccinate_date){
+                this._message.error('接种下，接种疫苗时间不可为空');
+                return;
+            }
+        }
         this.loadingShow = true;
         this.isSaveLoading = true;
         var params = {
@@ -309,7 +319,7 @@ export class BookingPhyexam {
             vaccinate_name: this.info.vaccinate_name,
             vaccinate_date: this.info.vaccinate_date ? this.as.getDayByDate(new Date(this.info.vaccinate_date)) : null,
             fhohd: this.info.fhohd,
-            id: this.info.id,
+            id: this.info.id && this.info.id != '' ? this.info.id : null,
         }
         this.as.childhealth(params).then((data) => {
             if (data.status == 'no') {

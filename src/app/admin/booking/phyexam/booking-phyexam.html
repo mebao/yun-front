@@ -118,27 +118,6 @@
       <div nz-form-item nz-row class="mt20">
         <div nz-form-label nz-col [nzSpan]="7" class="text-right">
           <label>
-            <span class="required">*</span>是否接种：</label>
-        </div>
-        <div nz-col [nzSpan]="12" nz-form-control>
-          <ng-container *ngIf="editTypeHealth == 'view'">
-            {{info.is_vaccinate_text}}
-          </ng-container>
-          <ng-container *ngIf="editTypeHealth == 'edit'">
-            <nz-radio-group [(ngModel)]="info.is_vaccinate" [nzSize]="'large'">
-              <label nz-radio [nzValue]="'0'">
-                <span>未接种</span>
-              </label>
-              <label nz-radio [nzValue]="'1'">
-                <span>接种</span>
-              </label>
-            </nz-radio-group>
-          </ng-container>
-        </div>
-      </div>
-      <div nz-form-item nz-row class="mt20">
-        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
-          <label>
             <span class="required">*</span>家族遗传疾病史：</label>
         </div>
         <div nz-col [nzSpan]="12" nz-form-control>
@@ -152,31 +131,54 @@
       </div>
       <div nz-form-item nz-row class="mt20">
         <div nz-form-label nz-col [nzSpan]="7" class="text-right">
-          <label>接种疫苗名：</label>
+          <label>
+            <span class="required">*</span>是否接种：</label>
         </div>
         <div nz-col [nzSpan]="12" nz-form-control>
           <ng-container *ngIf="editTypeHealth == 'view'">
-            {{info.vaccinate_name_text}}
+            {{info.is_vaccinate_text == '0' ? '未接种' : '接种'}}
           </ng-container>
           <ng-container *ngIf="editTypeHealth == 'edit'">
-            <nz-input [(ngModel)]="info.vaccinate_name" [nzSize]="'large'" [nzPlaceHolder]="'请输入接种疫苗名'"></nz-input>
+            <nz-radio-group [(ngModel)]="info.is_vaccinate" [nzSize]="'large'">
+              <label nz-radio [nzValue]="'0'">
+                <span>未接种</span>
+              </label>
+              <label nz-radio [nzValue]="'1'">
+                <span>接种</span>
+              </label>
+            </nz-radio-group>
           </ng-container>
         </div>
       </div>
-      <div nz-form-item nz-row class="mt20">
-        <div nz-form-label nz-col [nzSpan]="7" class="text-right">
-          <label>接种疫苗时间：</label>
+      <ng-container *ngIf="info.is_vaccinate == '1'">
+        <div nz-form-item nz-row class="mt20">
+          <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+            <label>接种疫苗名：</label>
+          </div>
+          <div nz-col [nzSpan]="12" nz-form-control>
+            <ng-container *ngIf="editTypeHealth == 'view'">
+              {{info.vaccinate_name_text}}
+            </ng-container>
+            <ng-container *ngIf="editTypeHealth == 'edit'">
+              <nz-input [(ngModel)]="info.vaccinate_name" [nzSize]="'large'" [nzPlaceHolder]="'请输入接种疫苗名'"></nz-input>
+            </ng-container>
+          </div>
         </div>
-        <div nz-col [nzSpan]="12" nz-form-control>
-          <ng-container *ngIf="editTypeHealth == 'view'">
-            {{info.vaccinate_date_text ? info.vaccinate_date_text : ''}}
-          </ng-container>
-          <ng-container *ngIf="editTypeHealth == 'edit'">
-            <nz-datepicker (ngModelChange)="info.vaccinate_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.vaccinate_date"
-              [nzDisabledDate]="_disabledDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请输入接种疫苗时间'"></nz-datepicker>
-          </ng-container>
+        <div nz-form-item nz-row class="mt20">
+          <div nz-form-label nz-col [nzSpan]="7" class="text-right">
+            <label>接种疫苗时间：</label>
+          </div>
+          <div nz-col [nzSpan]="12" nz-form-control>
+            <ng-container *ngIf="editTypeHealth == 'view'">
+              {{info.vaccinate_date_text ? info.vaccinate_date_text : ''}}
+            </ng-container>
+            <ng-container *ngIf="editTypeHealth == 'edit'">
+              <nz-datepicker (ngModelChange)="info.vaccinate_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.vaccinate_date"
+                [nzDisabledDate]="_disabledDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请输入接种疫苗时间'"></nz-datepicker>
+            </ng-container>
+          </div>
         </div>
-      </div>
+      </ng-container>
       <div nz-row class="mt20">
         <div nz-col [nzSpan]="12" [nzOffset]="7">
           <button *ngIf="editTypeHealth == 'view'" (click)="changeTypeHealth()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
@@ -265,7 +267,8 @@
                     <!-- input -->
                     <ng-container *ngIf="item.inputType == 'input' || item.inputType == 'defaultinput'">
                       <div nz-col [nzSpan]="12" nz-form-control>
-                        <textarea nz-input rows="item.rowNum" (keyup)="changeRow($event, indexMenu, indexItem)" [(ngModel)]="item.result" [nzSize]="'large'" maxlength="200" placeholder="{{'请输入' + item.infoName}}"></textarea>
+                        <textarea nz-input rows="item.rowNum" (keyup)="changeRow($event, indexMenu, indexItem)" [(ngModel)]="item.result" [nzSize]="'large'"
+                          maxlength="200" placeholder="{{'请输入' + item.infoName}}"></textarea>
                       </div>
                     </ng-container>
                     <!-- radio -->
