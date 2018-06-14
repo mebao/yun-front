@@ -45,6 +45,7 @@ export class BookingListComponent implements OnInit{
 		statuslist: string,
 		status: string,
 		has_sms: string,
+		has_print: string,
 	}
 	bookinglist: any[];
 	weeklist: any[];
@@ -202,6 +203,7 @@ export class BookingListComponent implements OnInit{
 			statuslist: '',
 			status: '',
 			has_sms: '',
+			has_print: '',
 		}
 
 		this.use = true;
@@ -815,6 +817,9 @@ export class BookingListComponent implements OnInit{
 		}
 		if(this.searchInfo.has_sms && this.searchInfo.has_sms != ''){
 			urlOptions += '&has_sms=' + this.searchInfo.has_sms;
+		}
+		if(this.searchInfo.has_print && this.searchInfo.has_print != ''){
+			urlOptions += '&has_print=' + this.searchInfo.has_print;
 		}
 		if(this.searchInfo.statuslist && this.searchInfo.statuslist != ''){
 			urlOptions += '&statuslist=' + this.searchInfo.statuslist;
