@@ -42,7 +42,7 @@
 												<button (click)="selectedTypeAnswer('')" nz-button [nzType]="!growthResult.typeAnswer.type_id ? 'primary' : 'default'" [nzSize]="'large'" class="mr20">综合</button>
 												<button (click)="selectedTypeAnswer(type)" *ngFor="let type of growthResult.selected.typeAnswer" nz-button [nzType]="growthResult.typeAnswer.type_id == type.type_id ? 'primary' : 'default'" [nzSize]="'large'" class="mr10">{{type.type_name}}</button>
 											</div>
-											<button (click)="getGrowthEvaluationQst()" nz-button [nzType]="'primary'" [nzSize]="'large'">重新测评</button>
+											<button *ngIf="pageType != 'history'" (click)="getGrowthEvaluationQst()" nz-button [nzType]="'primary'" [nzSize]="'large'">重新测评</button>
 										</div>
 										<div echarts [options]="growthResult.echart"></div>
 										<div>测评于：{{growthResult.selected.time}}</div>
@@ -82,7 +82,7 @@
 							<ng-container *ngIf="!hasEvaluationResults">
 								<nodata title="还未测评,请点击按钮开始测评"></nodata>
 								<div class="mt20 text-center">
-									<button (click)="getGrowthEvaluationQst()" nz-button [nzType]="'primary'" [nzSize]="'large'">开始测评</button>
+									<button *ngIf="pageType != 'history'" (click)="getGrowthEvaluationQst()" nz-button [nzType]="'primary'" [nzSize]="'large'">开始测评</button>
 								</div>
 							</ng-container>
 						</div>

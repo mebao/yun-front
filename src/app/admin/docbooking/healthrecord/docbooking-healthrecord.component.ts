@@ -658,9 +658,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 
 	structureData(healthrecord){
 		var todayDate = this.adminService.getDayByDate(new Date());
-		if(this.editType == 'view'){
-			this.loadingShow = false;
-		}else if(this.editType == 'update' || this.pageType == 'examine'){
+		if(this.editType == 'view' || this.editType == 'update' || this.pageType == 'examine'){
 			this.info = {
 				id: healthrecord.id,
 				child_id: this.booking.childId,
