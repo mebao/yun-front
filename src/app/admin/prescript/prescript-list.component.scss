@@ -29,3 +29,16 @@
 		color: #fff;
 	}
 }
+.modal .container{
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	.title{
+		height: 64px;
+	}
+	.content{
+		flex: 1;
+		overflow: auto;
+	}
+}

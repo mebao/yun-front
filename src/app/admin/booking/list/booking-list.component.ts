@@ -90,7 +90,8 @@ export class BookingListComponent implements OnInit{
 			id: string,
 			amount: string,
 			wayText: string,
-		}
+		},
+		cancel_cause: string,
 	};
 	hasData: boolean;
 	// 家长
@@ -380,7 +381,8 @@ export class BookingListComponent implements OnInit{
 				id: '',
 				amount: '',
 				wayText: '',
-			}
+			},
+			cancel_cause: '',
 		};
 	}
 

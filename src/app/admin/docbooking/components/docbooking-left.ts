@@ -59,8 +59,8 @@ export class DocbookingLeft{
 		this.searchInfo = {
 			doctor_id: '',
 			service_id: '',
-			bdate_less: new Date(),
-			bdate_big: new Date(),
+			bdate_less: null,
+			bdate_big: null,
 		}
         this._isSpinning = false;
 		this.modalTab = false;
@@ -180,7 +180,7 @@ export class DocbookingLeft{
 	//查询
 	showHistory() {
 		//列表
-		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';
+		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11' + '&jiuzhen=1';
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptionsList += '&doctor_id=' + this.searchInfo.doctor_id;
 		}

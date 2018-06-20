@@ -53,6 +53,7 @@ export class BookingInfoComponent{
 		refereeId: string,
 		refereeName: string,
 		genderText: string,
+		cancel_cause: string,
 	};
 	canEdit: boolean;
 	selectorBooking: {
@@ -127,6 +128,7 @@ export class BookingInfoComponent{
 			refereeId: '',
 			refereeName: '',
 			genderText: '',
+			cancel_cause: '',
 		};
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token

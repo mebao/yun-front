@@ -87,8 +87,8 @@
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.giveAmount}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
+						<td>{{tran.truepay}}</td>
+						<td>{{tran.money}}</td>
 						<td>{{tran.online}}</td>
 						<td>{{tran.balance}}</td>
 						<td>{{tran.time}}</td>
@@ -97,8 +97,8 @@
 					<tr class="bg-gray" *ngIf="tranList.length > 0">
 						<td>总计</td>
 						<td>{{total.giveAmount}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
 						<td>{{total.online}}</td>
 						<td>{{total.balance}}</td>
 						<td >--</td>
@@ -130,8 +130,8 @@
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.needAmount}}</td>
-						<td>{{tran.paidUp}}</td>
-						<td>{{tran.cash}}</td>
+						<td>{{tran.truepay}}</td>
+						<td>{{tran.money}}</td>
 						<td>{{tran.online}}</td>
 						<td>{{tran.balance}}</td>
 						<td>{{tran.time}}</td>
@@ -140,8 +140,8 @@
 					<tr class="bg-gray" *ngIf="tranList.length > 0">
 						<td>总计</td>
 						<td>{{total.needAmount}}</td>
-						<td>{{total.paidUp}}</td>
-						<td>{{total.cash}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
 						<td>{{total.online}}</td>
 						<td>{{total.balance}}</td>
 						<td >--</td>

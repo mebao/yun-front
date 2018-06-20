@@ -599,7 +599,14 @@
 					</div>
 				</div>
 				<div class="item flex bb-default mb20">
-					<p class="mt10 mb10">备注：{{booking.remark}}</p>
+					<div class="flex-1 mt10 mb10 flex">
+						<div>备注：</div>
+						<div class="flex-1">{{booking.remark}}</div>
+					</div>
+					<div class="flex-1 mt10 mb10 flex">
+						<div>取消原因：</div>
+						<div class="flex-1">{{booking.cancel_cause}}</div>
+					</div>
 				</div>
 				<nz-table #nzTable [nzDataSource]="booking.fees" [nzBordered]="true" [nzIsPagination]="false">
 					<thead nz-thead>

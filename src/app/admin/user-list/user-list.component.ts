@@ -24,6 +24,7 @@ export class UserListComponent{
 		member: boolean,
 		recharge: boolean,
 		callPhone: boolean,
+		deleteMember: boolean,
 	}
 	loadingShow: boolean;
 	hasData: boolean;
@@ -43,6 +44,7 @@ export class UserListComponent{
 		give_amount: string,
 		pay_way: string,
 		actcard: any,
+		type: string,
 	}
 	searchInfo: {
 		name: string,
@@ -84,6 +86,7 @@ export class UserListComponent{
 			member: false,
 			recharge: false,
 			callPhone: false,
+			deleteMember: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色
 		// 如果是超级管理员，获取所有权限
@@ -115,6 +118,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: '',
 			actcard: {},
+			type: '',
 		}
 
 		if(JSON.parse(sessionStorage.getItem('search-userList'))){
@@ -229,6 +233,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: '',
 			actcard: {},
+			type: 'deleteUser',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -240,21 +245,51 @@ export class UserListComponent{
 	confirm() {
 		this.btnCanEdit = true;
 		this.modalConfirmTab = false;
-		var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token;
-		this.adminService.deleteuser(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this._message.error(data.errorMsg);
+		this.loadingShow = true;
+		if(this.selector.type == 'deleteUser'){
+			var urlOptions = this.selector.id + '?username=' + this.adminService.getUser().username
+				 + '&token=' + this.adminService.getUser().token;
+			this.adminService.deleteuser(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
+					this.btnCanEdit = false;
+				}else{
+					this.loadingShow = false;
+					this.search();
+					this._message.success('删除成功');
+					this.btnCanEdit = false;
+					this.closeActcard();
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
 				this.btnCanEdit = false;
-			}else{
-				this.search();
-				this._message.success('删除成功');
-				this.btnCanEdit = false;
+			});
+		}else if(this.selector.type == 'deleteMember'){
+			var params = {
+				username: this.adminService.getUser().username,
+				token: this.adminService.getUser().token,
+				clinic_id: this.adminService.getUser().clinicId,
 			}
-		}).catch(() => {
-			this._message.error('服务器错误');
-			this.btnCanEdit = false;
-		});
+			this.adminService.setmember(this.selector.id, params).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
+					this.btnCanEdit = false;
+				}else{
+					this.loadingShow = false;
+					this._message.success('撤销会员成功');
+					this.btnCanEdit = false;
+					this.search();
+					this.closeActcard();
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+				this.btnCanEdit = false;
+			});
+		}
 	}
 
 	// 会员卡升级
@@ -295,6 +330,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: this.selector.pay_way == '' ? null : '',
 			actcard: {},
+			type: '',
 		}
 	}
 
@@ -330,6 +366,7 @@ export class UserListComponent{
 						give_amount: '',
 						pay_way: this.selector.pay_way == '' ? null : '',
 						actcard: {},
+						type: '',
 					}
 				}
 			}).catch(() => {
@@ -446,6 +483,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: '',
 			actcard: {},
+			type: '',
 		}
 	}
 
@@ -482,6 +520,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: '',
 			actcard: {},
+			type: '',
 		}
 	}
 
@@ -500,6 +539,7 @@ export class UserListComponent{
 			give_amount: '',
 			pay_way: this.selector.pay_way == null ? '' : null,
 			actcard: null,
+			type: '',
 		}
 	}
 
@@ -553,5 +593,25 @@ export class UserListComponent{
 
 	call(user) {
 		window.open('./admin/userInfo?id=' + user.id + '&pageType=call');
+	}
+
+	// 撤销会员
+	deleteMember(user) {
+		this.selector = {
+			id: user.id,
+			start_amount: '',
+			give_scale: '',
+			upgradeMember: {},
+			member: '',
+			member_id: '',
+			text: `确认撤销-${user.name}-${user.memberName}？`,
+			userBalance: '',
+			amount: '',
+			give_amount: '',
+			pay_way: '',
+			actcard: {},
+			type: 'deleteMember',
+		}
+		this.modalConfirmTab = true;
 	}
 }

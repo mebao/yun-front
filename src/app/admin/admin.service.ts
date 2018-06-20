@@ -807,7 +807,7 @@ export class AdminService{
 			.catch();
 	}
 
-	//设置会员
+	//撤销会员
 	private setmemberUrl = this.url + '/mebcrm/setmember/';
 	setmember(urlOptions, params): Promise<Data>{
 		return this.http.post(this.setmemberUrl + urlOptions, JSON.stringify(params))

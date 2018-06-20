@@ -66,7 +66,18 @@
 					推荐人：{{booking.refereeName}}
 				</div>
 				<div nz-col [nzSpan]="8">
-					备注：{{booking.remark}}
+					<div class="flex">
+						<div>备注：</div>
+						<div class="flex-1">{{booking.remark}}</div>
+					</div>
+				</div>
+			</div>
+			<div nz-row [nzGutter]="30" class="mt10">
+				<div nz-col [nzSpan]="8">
+					<div class="flex">
+						<div>取消原因：</div>
+						<div class="flex-1">{{booking.cancel_cause}}</div>
+					</div>
 				</div>
 			</div>
 			<div class="mt20">

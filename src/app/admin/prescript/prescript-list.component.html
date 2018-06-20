@@ -171,7 +171,23 @@
 <div class="modal prescript-list-modal" *ngIf="modalPrintConfirmTab">
 	<div class="modal-mask" (click)="closePrintConfirm()"></div>
 	<div class="container mobile">
-		<div class="title">选择打印</div>
+		<div class="title">
+			<div class="flex">
+				<div>选择打印</div>
+				<div class="flex-1 text-right">
+					<button (click)="closePrintConfirm()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
+					<e-ngx-print #print1
+					[printHTML]="printInfo_div"
+					[printStyle]="printStyle"
+					[showBtn]="false"  (printComplete)="printComplete()">
+					</e-ngx-print>
+					<button (click)="customPrint()" nz-button [nzType]="'primary'" [nzSize]="'large'">
+						<i class="anticon anticon-printer"></i>
+						<span>打印</span>
+					</button>
+				</div>
+			</div>
+		</div>
 		<div class="content pad10">
 			<nz-table #nzTablePrint [nzDataSource]="modalList" [nzBordered]="true" [nzIsPagination]="false">
 				<thead nz-thead>
@@ -280,18 +296,6 @@
 					</div>
 				</ng-container>
 			</div>
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closePrintConfirm()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
-			<e-ngx-print #print1
-			[printHTML]="printInfo_div"
-			[printStyle]="printStyle"
-			[showBtn]="false"  (printComplete)="printComplete()">
-			</e-ngx-print>
-			<button (click)="customPrint()" nz-button [nzType]="'primary'">
-				<i class="anticon anticon-printer"></i>
-				<span>打印</span>
-			</button>
 		</div>
 	</div>
 </div>

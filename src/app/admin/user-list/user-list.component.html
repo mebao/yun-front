@@ -120,11 +120,11 @@
 				</td>
 				<td>
 					<div nz-row>
-						<div nz-col [nzSpan]="12" class="mb10">
-							<button *ngIf="moduleAuthority.info" (click)="goInfo(user.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
+						<div *ngIf="moduleAuthority.info" nz-col [nzSpan]="12" class="mb10">
+							<button (click)="goInfo(user.id)" nz-button [nzType]="'primary'" [nzSize]="'large'">详情</button>
 						</div>
-						<div nz-col [nzSpan]="12" class="mb10">
-							<button *ngIf="moduleAuthority.recharge" (click)="charge(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
+						<div *ngIf="moduleAuthority.recharge" nz-col [nzSpan]="12" class="mb10">
+							<button (click)="charge(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">充值</button>
 						</div>
 						<div nz-col [nzSpan]="12" class="mb10">
 							<button (click)="setUpActcard(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">购买活动卡</button>
@@ -135,8 +135,11 @@
 						<div *ngIf="moduleAuthority.callPhone" nz-col [nzSpan]="12" class="mb10">
 							<button (click)="call(user)" nz-button [nzType]="'primary'" [nzSize]="'large'">网络电话</button>
 						</div>
-						<div nz-col [nzSpan]="12" class="mb10">
-							<button *ngIf="moduleAuthority.delete" (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+						<div *ngIf="moduleAuthority.deleteMember && user.memberId != null" nz-col [nzSpan]="12" class="mb10">
+							<button (click)="deleteMember(user)" nz-button [nzType]="'danger'" [nzSize]="'large'">撤销会员</button>
+						</div>
+						<div *ngIf="moduleAuthority.delete" nz-col [nzSpan]="12" class="mb10">
+							<button (click)="delete(user.id)" nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 						</div>
 					</div>
 				</td>
