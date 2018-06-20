@@ -24,6 +24,7 @@ export class DocbookingLeft{
 		service_id: string;
 		bdate_less: Date,
 		bdate_big: Date,
+		first: boolean,
 	};
     // 就诊记录
     _isSpinning: boolean;
@@ -61,6 +62,7 @@ export class DocbookingLeft{
 			service_id: '',
 			bdate_less: null,
 			bdate_big: null,
+			first: true,
 		}
         this._isSpinning = false;
 		this.modalTab = false;
@@ -180,9 +182,14 @@ export class DocbookingLeft{
 	//查询
 	showHistory() {
 		//列表
-		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11' + '&jiuzhen=1';
+		var urlOptionsList = this.url + '&child_id=' + this.booking.childId + '&statuslist=1,2,3,4,5,11';
 		if(this.searchInfo.doctor_id && this.searchInfo.doctor_id != ''){
 			urlOptionsList += '&doctor_id=' + this.searchInfo.doctor_id;
+		}
+		// 第一次查询，默认查询当前预约的科室
+		if(this.searchInfo.first){
+			this.searchInfo.first = false;
+			this.searchInfo.service_id = this.booking.services.length > 0 ? this.booking.services[0].serviceId : '';
 		}
 		if(this.searchInfo.service_id && this.searchInfo.service_id != ''){
 			urlOptionsList += '&service_id=' + this.searchInfo.service_id;

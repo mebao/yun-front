@@ -659,6 +659,11 @@ export class DoctorPrescriptComponent{
 				}
 			}
 			if(this.secondType == '' || this.secondType == 'update'){
+				if(plist.length == 0){
+					this._message.error('药品不可为空');
+					this.isLoadingSave = false;
+					return;
+				}
 				if(this.editType == 'create'){
 					var params = {
 						username: this.adminService.getUser().username,

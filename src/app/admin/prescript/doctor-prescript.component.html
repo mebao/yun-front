@@ -25,14 +25,14 @@
 	</nz-card>
     <nz-card class="w100 mt20">
         <ng-template #title>
-            药方详情{{mPrescriptList.length}}
+            药方详情
         </ng-template>
         <ng-template #body>
 			<nz-alert *ngIf="this.secondType == 'back'" [nzType]="'warning'" [nzMessage]="'退药提醒'" [nzDescription]="'留下的药品为用户需要退的药品'" nzShowIcon class="mb10"></nz-alert>
 		    <form nz-form [formGroup]="validateForm">
 				<nz-collapseset>
 					<nz-collapse *ngFor="let medical_info of mPrescriptList; let index=index;" [nzTitle]="'药品'" [nzActive]="medical_info.isActive">
-						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update') && medical_info.id != 0) || (secondType == 'continueAdd' && !medical_info.isOut)" class="mt10 mb10 text-right">
+						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update')) || (secondType == 'continueAdd' && !medical_info.isOut)" class="mt10 mb10 text-right">
 							<nz-popconfirm [nzTitle]="'确定要删除这个药品吗？'" (nzOnConfirm)="removeField(medical_info)">
 								<button nz-popconfirm nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
 						    </nz-popconfirm>
