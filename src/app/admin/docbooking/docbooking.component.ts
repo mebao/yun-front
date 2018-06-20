@@ -102,7 +102,7 @@ export class DocbookingComponent implements OnInit{
 		text: string,
 		type: string,
 	}
-	//随访
+	//回访
 	hasFollowupsData: boolean;
 	followupsList: any[];
 	// pageType 空为医生接诊，history为查看
@@ -244,7 +244,7 @@ export class DocbookingComponent implements OnInit{
 		this.prescriptList = [];
 		this.getPrescriptData();
 
-		//随访
+		//回访
 		this.hasFollowupsData = false;
 		this.followupsList = [];
 		var userfollowupsUrl = this.url + '&booking_id=' + this.id;
@@ -1024,7 +1024,7 @@ export class DocbookingComponent implements OnInit{
 		sessionStorage.setItem('doctorBookingTab', _value);
 	}
 
-	//新增随访
+	//新增回访
 	addFollowups() {
 		if(this.actualOperator.use && this.operator == ''){
 			this._message.error('请选择实际操作人');

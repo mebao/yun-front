@@ -177,10 +177,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
         immunization: string,
         disease_prevention: string,
         answering_questions: string,
-        record: string,
-        review_date: string,
-		review_date_num: number,
+		record: string,
+        review_date: Date,
         review_date_text: string,
+		review_date_session: Date,
 		files: any[],
 		checkId: string,
     }
@@ -388,9 +388,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			disease_prevention: '',
 			answering_questions: '',
 			record: '',
-			review_date: '',
-			review_date_num: 0,
+			review_date: null,
 			review_date_text: '',
+			review_date_session: null,
 			files: [],
 			checkId: null,
 		}
@@ -764,9 +764,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				disease_prevention: healthrecord.diseasePrevention,
 				answering_questions: healthrecord.answeringQuestions,
 				record: healthrecord.record,
-				review_date: healthrecord.reviewDate ? this.adminService.dateFormatHasWord(healthrecord.reviewDate) : healthrecord.reviewDate,
-				review_date_num: new Date(todayDate).getTime(),
+				review_date: healthrecord.reviewDate ? new Date(this.adminService.dateFormatHasWord(healthrecord.reviewDate)) : null,
 				review_date_text: healthrecord.reviewDate,
+				review_date_session: healthrecord.reviewDate ? new Date(this.adminService.dateFormatHasWord(healthrecord.reviewDate)) : null,
 				files: healthrecord.files,
 				checkId: healthrecord.checkId,
 			}
@@ -890,9 +890,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				disease_prevention: null,
 				answering_questions: null,
 				record: null,
-				review_date: '',
-				review_date_num: new Date(todayDate).getTime(),
+				review_date: null,
 				review_date_text: '',
+				review_date_session: null,
 				files: [],
 				checkId: null,
 			}
@@ -1252,10 +1252,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		return true;
 	}
 
-    // 选择日期
-    changeDate(_value) {
-        this.info.review_date = JSON.parse(_value).value;
-    }
+    _disabledDate = (endValue) => {
+        if (!endValue || !new Date()) {
+            return false;
+        }
+        return endValue.getTime() < new Date().getTime();
+    };
 
 	cancel() {
 		this.editType = 'view';
@@ -1395,7 +1397,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 		// 	return false;
 		// }
 		// 当复查日期存在是，诊疗记录不可为空
-		if(this.editType == 'create' && this.info.review_date != '' && this.info.record == ''){
+		if(this.editType == 'create' && this.info.review_date && this.info.record == ''){
 			this._message.error('复查日期存在时，诊疗记录不可为空');
             this.btnCanEdit = false;
 			return false;
@@ -1468,7 +1470,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             disease_prevention: this.info.disease_prevention,
             answering_questions: this.info.answering_questions,
             record: this.info.record,
-            review_date: this.info.review_date == '' ? null : this.info.review_date,
+            review_date: !this.info.review_date ? null : this.adminService.getDayByDate(new Date(this.info.review_date)),
 			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
 			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
 			is_check: type == '' ? null : '1',
@@ -1487,16 +1489,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 	            }else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					this.healthrecord_id = results.id;
-	                if(this.editType == 'create'){
-						if(this.info.review_date == ''){
-							this.uploadService.startUpload();
-						}else{
-							// 新增，并且复查日期不为空时，增加随访
-							this.addFollowups();
-						}
-	                }else{
+
+					// 新增，并且复查日期不为空时，增加回访
+					if(this.info.review_date_session == null && this.info.review_date != null){
+						this.addFollowups();
+					}else{
 						this.uploadService.startUpload();
-	                }
+					}
 	            }
 	        }).catch(() => {
 				this.loadingShow = false;
@@ -1533,7 +1532,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
 			booking_id: this.id,
-			time: this.info.review_date,
+			time: this.adminService.getDayByDate(new Date(this.info.review_date)),
 			account: this.info.record,
 			remarks: '',
 			child_id: this.booking.childId,

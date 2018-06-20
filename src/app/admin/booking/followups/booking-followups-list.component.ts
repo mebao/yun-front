@@ -46,7 +46,7 @@ export class BookingFollowupsListComponent{
 
 	ngOnInit(): void {
 		this.topBar = {
-			title: '随访管理',
+			title: '回访管理',
 			back: false,
 		}
 
@@ -67,7 +67,7 @@ export class BookingFollowupsListComponent{
 			}
 		}
 
-		//随访列表
+		//回访列表
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
@@ -148,7 +148,7 @@ export class BookingFollowupsListComponent{
 	cancel(followups) {
 		this.selector = {
 			value: JSON.stringify(followups),
-			text: '确定删除该随访？',
+			text: '确定删除该回访？',
 		}
 		this.modalConfirmTab = true;
 	}
@@ -173,7 +173,7 @@ export class BookingFollowupsListComponent{
 				this._message.error(data.errorMsg);
 				this.btnCanEdit = false;
 			}else{
-				this._message.success('该随访取消成功');
+				this._message.success('该回访取消成功');
 				this.search();
 				this.btnCanEdit = false;
 			}

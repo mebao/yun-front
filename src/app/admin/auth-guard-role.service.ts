@@ -244,7 +244,7 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
-							// 随访
+							// 回访
 							{
 								url: '/admin/bookingFollowups',
 								authority: 'receive',

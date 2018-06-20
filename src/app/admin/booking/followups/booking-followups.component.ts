@@ -57,7 +57,7 @@ export class BookingFollowupsComponent{
 		});
 
 		this.topBar = {
-			title: this.editType == 'create' ? '新增随访' : '随访',
+			title: this.editType == 'create' ? '新增回访' : '回访',
 			back: true,
 		}
 
@@ -137,17 +137,17 @@ export class BookingFollowupsComponent{
 		this.btnCanEdit = true;
 		if(this.editType == 'create'){
 			if(this.from == 'bookingFollowupsList' && this.info.child == ''){
-				this._message.error('随访宝宝不可为空');
+				this._message.error('回访宝宝不可为空');
 				this.btnCanEdit = false;
 				return
 			}
 			if(!this.info.time){
-				this._message.error('随访日期不可为空');
+				this._message.error('回访日期不可为空');
 				this.btnCanEdit = false;
 				return;
 			}
 			if(this.adminService.isFalse(this.info.account)){
-				this._message.error('随访内容和原因不可为空');
+				this._message.error('回访内容和原因不可为空');
 				this.btnCanEdit = false;
 				return;
 			}
@@ -166,7 +166,7 @@ export class BookingFollowupsComponent{
 					this._message.error(data.errorMsg);
 					this.btnCanEdit = false;
 				}else{
-					this._message.success('随访创建成功');
+					this._message.success('回访创建成功');
 					setTimeout(() => {
 						if(this.from == 'bookingFollowupsList'){
 							this.router.navigate(['./admin/bookingFollowups/list']);
@@ -181,12 +181,12 @@ export class BookingFollowupsComponent{
             });
 		}else{
 			if(this.adminService.isFalse(this.info.account)){
-				this._message.error('随访内容和原因不可为空');
+				this._message.error('回访内容和原因不可为空');
 				this.btnCanEdit = false;
 				return;
 			}
 			if(this.adminService.isFalse(this.info.results)){
-				this._message.error('随访结果不可为空');
+				this._message.error('回访结果不可为空');
 				this.btnCanEdit = false;
 				return;
 			}
@@ -202,7 +202,7 @@ export class BookingFollowupsComponent{
 					this._message.error(data.errorMsg);
 					this.btnCanEdit = false;
 				}else{
-					this._message.success('随访修改成功');
+					this._message.success('回访修改成功');
 					setTimeout(() => {
 						this.router.navigate(['./admin/bookingFollowups/list']);
 					}, 2000);

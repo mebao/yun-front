@@ -157,7 +157,7 @@ export class LeftNavComponent{
 			authority: any[],
 			infos: any[],
 		},
-		//随访管理
+		//回访管理
 		bookingFollowupsList: {
 			use: string,
 			authority: any[],

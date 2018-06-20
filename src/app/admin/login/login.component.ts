@@ -186,7 +186,7 @@ export class LoginComponent{
 			url: string,
 			infos: any[],
 		},
-		//随访管理
+		//回访管理
 		bookingFollowupsList: {
 			use: string,
 			authority: any[],

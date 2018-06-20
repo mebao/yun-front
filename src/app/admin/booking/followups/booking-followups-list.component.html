@@ -2,13 +2,13 @@
 <div class="content-section admin-clinicroom-list">
 	<top-bar [data]="topBar"></top-bar>
 	<div class="second-bar-tab flex">
-		<div class="item" (click)="searchStatus('')" [ngClass]="{'active': searchInfo.status == ''}">全部随访</div>
-		<div class="item" (click)="searchStatus('2')" [ngClass]="{'active': searchInfo.status == '2'}">已随访</div>
-		<div class="item" (click)="searchStatus('1')" [ngClass]="{'active': searchInfo.status == '1'}" [ngClass]="{'active': searchInfo.status == ''}">待随访</div>
+		<div class="item" (click)="searchStatus('')" [ngClass]="{'active': searchInfo.status == ''}">全部回访</div>
+		<div class="item" (click)="searchStatus('2')" [ngClass]="{'active': searchInfo.status == '2'}">已回访</div>
+		<div class="item" (click)="searchStatus('1')" [ngClass]="{'active': searchInfo.status == '1'}" [ngClass]="{'active': searchInfo.status == ''}">待回访</div>
 		<div class="item" (click)="searchStatus('3')" [ngClass]="{'active': searchInfo.status == '3'}">已取消</div>
 	</div>
 	<div class="mt10 mb10">
-		<button (click)="addFollowups()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增随访</button>
+		<button (click)="addFollowups()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增回访</button>
 	</div>
 	<div nz-row class="mt10">
 		<div nz-col [nzSpan]="6" [nzOffset]="18">
@@ -30,8 +30,8 @@
 			<tr>
 				<th nz-th class="w70p"></th>
 				<th nz-th>宝宝姓名</th>
-				<th nz-th>随访时间</th>
-				<th nz-th class="w15">随访内容和原因</th>
+				<th nz-th>回访时间</th>
+				<th nz-th class="w15">回访内容和原因</th>
 				<th nz-th class="w15">备注</th>
 				<th nz-th class="w15">结果</th>
 				<th nz-th>状态</th>

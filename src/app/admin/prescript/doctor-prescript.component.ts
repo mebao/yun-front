@@ -568,94 +568,94 @@ export class DoctorPrescriptComponent{
 						days: '',
 						remark: '',
 					};
-					this.validateForm.controls['remark' + i].setValue(this.adminService.trim(this.validateForm.controls['remark' + i].value));
-					if(this.validateForm.controls['medical' + i].value == ''){
+					this.validateForm.controls['remark' + this.mPrescriptList[i].id].setValue(this.adminService.trim(this.validateForm.controls['remark' + this.mPrescriptList[i].id].value));
+					if(this.validateForm.controls['medical' + this.mPrescriptList[i].id].value == ''){
 						this._message.error('第' + num + '条药品名不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					if(this.adminService.isFalse(this.validateForm.controls['batch' + i].value)){
+					if(this.adminService.isFalse(this.validateForm.controls['batch' + this.mPrescriptList[i].id].value)){
 						this._message.error('第' + num + '条批次不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.sinfo_id = this.validateForm.controls['batch' + i].value.id;
-					p.name = this.validateForm.controls['medical' + i].value.name;
-					p.unit = this.validateForm.controls['medical' + i].value.unit;
-					p.one_unit = this.validateForm.controls['medical' + i].value.oneUnit;
-					if(this.adminService.isFalse(this.validateForm.controls['oneNum' + i].value)){
+					p.sinfo_id = this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.id;
+					p.name = this.validateForm.controls['medical' + this.mPrescriptList[i].id].value.name;
+					p.unit = this.validateForm.controls['medical' + this.mPrescriptList[i].id].value.unit;
+					p.one_unit = this.validateForm.controls['medical' + this.mPrescriptList[i].id].value.oneUnit;
+					if(this.adminService.isFalse(this.validateForm.controls['oneNum' + this.mPrescriptList[i].id].value)){
 						this._message.error('第' + num + '条单位剂量不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					if(parseFloat(this.validateForm.controls['oneNum' + i].value) <= 0){
+					if(parseFloat(this.validateForm.controls['oneNum' + this.mPrescriptList[i].id].value) <= 0){
 						this._message.error('第' + num + '条单次计量应大于0');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.one_num = this.validateForm.controls['oneNum' + i].value;
-					if(!(this.validateForm.controls['usage' + i].value) || this.validateForm.controls['usage' + i].value == ''){
+					p.one_num = this.validateForm.controls['oneNum' + this.mPrescriptList[i].id].value;
+					if(!(this.validateForm.controls['usage' + this.mPrescriptList[i].id].value) || this.validateForm.controls['usage' + this.mPrescriptList[i].id].value == ''){
 						this._message.error('第' + num + '条用法不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.usage = this.validateForm.controls['usage' + i].value;
-					if(!(this.validateForm.controls['frequency' + i].value) || this.validateForm.controls['frequency' + i].value == ''){
+					p.usage = this.validateForm.controls['usage' + this.mPrescriptList[i].id].value;
+					if(!(this.validateForm.controls['frequency' + this.mPrescriptList[i].id].value) || this.validateForm.controls['frequency' + this.mPrescriptList[i].id].value == ''){
 						this._message.error('第' + num + '条用药频次不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.frequency = this.validateForm.controls['frequency' + i].value;
-					// if(this.adminService.isFalse(this.validateForm.controls['days' + i].value)){
+					p.frequency = this.validateForm.controls['frequency' + this.mPrescriptList[i].id].value;
+					// if(this.adminService.isFalse(this.validateForm.controls['days' + this.mPrescriptList[i].id].value)){
 					// 	this._message.error('第' + num + '条天数不可为空');
 					// 	this.isLoadingSave = false;
 					// 	return;
 					// }
-					if(!this.adminService.isFalse(this.validateForm.controls['days' + i].value) && Number(this.validateForm.controls['days' + i].value) <=0 || Number(this.validateForm.controls['days' + i].value) % 1 != 0){
+					if(!this.adminService.isFalse(this.validateForm.controls['days' + this.mPrescriptList[i].id].value) && Number(this.validateForm.controls['days' + this.mPrescriptList[i].id].value) <=0 || Number(this.validateForm.controls['days' + this.mPrescriptList[i].id].value) % 1 != 0){
 						this._message.error('第' + num + '条天数应为大于0的整数');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.days = this.adminService.isFalse(this.validateForm.controls['days' + i].value) ? null :  this.validateForm.controls['days' + i].value;
-					if(this.adminService.isFalse(this.validateForm.controls['num' + i].value)){
+					p.days = this.adminService.isFalse(this.validateForm.controls['days' + this.mPrescriptList[i].id].value) ? null :  this.validateForm.controls['days' + this.mPrescriptList[i].id].value;
+					if(this.adminService.isFalse(this.validateForm.controls['num' + this.mPrescriptList[i].id].value)){
 						this._message.error('第' + num + '条药单总量不可为空');
 						this.isLoadingSave = false;
 						return;
 					}
-					if(Number(this.validateForm.controls['num' + i].value) <= 0 || Number(this.validateForm.controls['num' + i].value) % 1 != 0){
+					if(Number(this.validateForm.controls['num' + this.mPrescriptList[i].id].value) <= 0 || Number(this.validateForm.controls['num' + this.mPrescriptList[i].id].value) % 1 != 0){
 						this._message.error('第' + num + '条药单总量应为大于0的整数');
 						this.isLoadingSave = false;
 						return;
 					}
-					p.num = this.validateForm.controls['num' + i].value;
-					if(Number(this.validateForm.controls['batch' + i].value.price) == 0){
+					p.num = this.validateForm.controls['num' + this.mPrescriptList[i].id].value;
+					if(Number(this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.price) == 0){
 						this.selected = {
-							text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，尚未设置售价，请先设置售价，再开方',
+							text: p.name + this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.batch + '批次，尚未设置售价，请先设置售价，再开方',
 						}
 						this.modalConfirmTab = true;
 						this.isLoadingSave = false;
 						return;
 					}
-					p.price = this.validateForm.controls['batch' + i].value.price;
+					p.price = this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.price;
 
 					//判断可用或未出药（判断所选数量是否超过现有库存）
                     if(this.adminService.isFalse(this.mPrescriptList[i].isOut) || (this.mPrescriptList[i].isOut == '0' && this.secondType == 'update')){
-    					if(Number(p.num) > Number(this.validateForm.controls['batch' + i].value.stock)){
+    					if(Number(p.num) > Number(this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.stock)){
     						this.selected = {
-    							text: p.name + this.validateForm.controls['batch' + i].value.batch + '批次，库存' + this.validateForm.controls['batch' + i].value.stock + p.unit + '，所选药品数量超过库存现有量',
+    							text: p.name + this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.batch + '批次，库存' + this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.stock + p.unit + '，所选药品数量超过库存现有量',
     						}
     						this.modalConfirmTab = true;
     						this.isLoadingSave = false;
     						return;
     					}
                     }
-					p.remark = this.validateForm.controls['remark' + i].value ? this.validateForm.controls['remark' + i].value : '';
+					p.remark = this.validateForm.controls['remark' + this.mPrescriptList[i].id].value ? this.validateForm.controls['remark' + this.mPrescriptList[i].id].value : '';
 
 					//判断可用或未出药
 					if(this.adminService.isFalse(this.mPrescriptList[i].isOut) || (this.mPrescriptList[i].isOut == '0' && this.secondType == 'update')){
 					    plist.push(p);
                     }
-					feeAll += parseFloat(this.validateForm.controls['batch' + i].value.price) * Number(p.num);
+					feeAll += parseFloat(this.validateForm.controls['batch' + this.mPrescriptList[i].id].value.price) * Number(p.num);
 				}
 			}
 			if(this.secondType == '' || this.secondType == 'update'){
