@@ -19,7 +19,7 @@
 			      		<nz-select [formControlName]="tcmLost.unit" [nzPlaceHolder]="'请选择单位'" class="w20" [nzDisabled]="true">
 							<nz-option [nzLabel]="tcmLost.selectedUnit" [nzValue]="tcmLost.selectedUnit"></nz-option>
 			      		</nz-select>
-						<nz-input [formControlName]="tcmLost.remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="mt10"></nz-input>
+						<textarea nz-input [formControlName]="tcmLost.remark" placeHolder="请输入备注" [nzSize]="'large'" class="mt10" maxlength="200"></textarea>
 			    	</nz-input-group>
 	            </div>
 				<i *ngIf="tcmLost.id != 0" class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeField(tcmLost, $event)"></i>

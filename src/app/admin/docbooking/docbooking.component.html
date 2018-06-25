@@ -322,7 +322,7 @@
 											<label>备注（最多200字）</label>
 										</div>
 										<div nz-form-control class="mt10">
-											<nz-input [nzType]="'textarea'" [(ngModel)]="addAssistInfo.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'" class="w100"></nz-input>
+											<textarea nz-input [(ngModel)]="addAssistInfo.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
 										</div>
 									</div>
 								</div>
@@ -593,7 +593,7 @@
 											<div *ngIf="addFeeInfo.editType != 'update' || addFeeInfo.feeId != fee.feeId" class="td-text">{{fee.remark}}</div>
 											<!-- 编辑 -->
 											<div *ngIf="addFeeInfo.editType == 'update' && addFeeInfo.feeId == fee.feeId">
-												<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" class="w100"></nz-input>
+												<textarea nz-input [nzSize]="'large'" [(ngModel)]="addFeeInfo.remarks" placeHolder="请输入备注说明" maxlength="200"></textarea>
 											</div>
 										</td>
 										<td>
@@ -669,7 +669,7 @@
 											<label>备注说明（最多200字）</label>
 										</div>
 										<div nz-form-control class="mt10">
-											<nz-input [nzType]="'textarea'" [(ngModel)]="addFeeInfo.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'"></nz-input>
+											<textarea nz-input [(ngModel)]="addFeeInfo.remarks" placeHolder="请输入备注说明" [nzSize]="'large'" maxlength="200"></textarea>
 										</div>
 									</div>
 								</div>

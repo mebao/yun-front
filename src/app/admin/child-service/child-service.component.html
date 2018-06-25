@@ -14,7 +14,7 @@
 			<label>科室说明（最多200字）：</label>
 		</div>
 		<div nz-form-control nz-col [nzSpan]="12">
-			<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="childService.description" [nzPlaceHolder]="'请输入科室说明'"></nz-input>
+			<textarea nz-input [nzSize]="'large'" [(ngModel)]="childService.description" placeHolder="请输入科室说明" maxlength="200"></textarea>
 		</div>
 	</div>
 	<div nz-row class="mt10">

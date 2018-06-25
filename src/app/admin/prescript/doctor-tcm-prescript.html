@@ -81,7 +81,7 @@
                 <label>备注：</label>
             </div>
             <div nz-col [nzSpan]="12" nz-form-control>
-                <nz-input formControlName="remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+                <textarea nz-input formControlName="remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
             </div>
         </div>
         <div nz-form-item nz-row class="mt10">

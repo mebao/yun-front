@@ -84,7 +84,7 @@
 						<label>医生简介（最多500字）：</label>
 					</div>
 					<div nz-form-control class="mt5">
-						<nz-input [(ngModel)]="userInfo.description" [nzType]="'textarea'" [nzPlaceHolder]="'请输入医生简介'" [nzSize]="'large'"></nz-input>
+						<textarea nz-input [(ngModel)]="userInfo.description" placeHolder="请输入医生简介" [nzSize]="'large'" maxlength="500"></textarea>
 					</div>
 				</div>
 				<div class="text-center mt10">

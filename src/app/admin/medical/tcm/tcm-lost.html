@@ -36,7 +36,7 @@
                 <label nz-form-item-required>报损原因：</label>
             </div>
             <div nz-col [nzSpan]="12" nz-form-control>
-                <nz-input class="w100" formControlName="remark" [nzType]="'textarea'" [nzPlaceHolder]="'请输入报损原因'" [nzSize]="'large'"></nz-input>
+                <textarea nz-input class="w100" formControlName="remark" placeHolder="请输入报损原因" [nzSize]="'large'" maxlength="200"></textarea>
                 <div nz-form-explain *ngIf="getFormControl('remark').dirty && getFormControl('remark').hasError('required')">报损原因不可为空</div>
             </div>
         </div>

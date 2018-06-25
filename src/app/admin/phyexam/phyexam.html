@@ -62,7 +62,7 @@
       <label>备注：</label>
     </div>
     <div nz-col [nzSpan]="12" nz-form-control>
-      <nz-input [nzType]="'textarea'" [nzRows]="3" [(ngModel)]="info.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+      <textarea nz-input [(ngModel)]="info.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
     </div>
   </div>
   <ng-container *ngFor="let hasP of hasProjectList; let index=index;">

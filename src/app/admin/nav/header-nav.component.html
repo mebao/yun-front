@@ -114,7 +114,7 @@
 	          	<label nz-form-item-required>消息反馈</label>
 	        </div>
 	        <div nz-form-control class="mt10">
-	          	<nz-input [nzType]="'textarea'" [(ngModel)]="selectedMessage.feedback" [nzSize]="'large'" [nzPlaceHolder]="'请输入消息反馈'"></nz-input>
+	          	<textarea nz-input [(ngModel)]="selectedMessage.feedback" [nzSize]="'large'" placeHolder="请输入消息反馈" maxlength="200"></textarea>
 	        </div>
       </div>
     </ng-template>

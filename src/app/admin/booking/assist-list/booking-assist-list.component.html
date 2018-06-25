@@ -240,7 +240,7 @@
         <label>退还原因：</label>
       </div>
       <div nz-col [nzSpan]="12" nz-form-control>
-        <nz-input [nzType]="'textarea'" [(ngModel)]="backInfo.remark" [nzSize]="'large'" [nzPlaceHolder]="'请输入退还原因'"></nz-input>
+        <textarea nz-input [(ngModel)]="backInfo.remark" [nzSize]="'large'" placeHolder="请输入退还原因" maxlength="200"></textarea>
       </div>
     </div>
   </ng-template>

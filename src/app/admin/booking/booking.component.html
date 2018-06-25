@@ -207,7 +207,7 @@
 					</label>
             	</div>
             	<div nz-form-control class="mt10">
-					<nz-input [(ngModel)]="bookingInfo.remark" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入备注'"></nz-input>
+					<textarea nz-input [(ngModel)]="bookingInfo.remark" [nzSize]="'large'" placeHolder="请输入备注" maxlength="200"></textarea>
 				</div>
 			</div>
 		</div>

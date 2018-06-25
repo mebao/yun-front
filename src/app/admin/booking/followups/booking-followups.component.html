@@ -34,7 +34,7 @@
 			<label>回访内容和原因（最长200字）<span class="required">*</span></label>
 		</div>
 		<div nz-form-control nz-col [nzSpan]="12">
-			<nz-input [nzType]="'textarea'" [(ngModel)]="info.account" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'" [nzRows]="4"></nz-input>
+			<textarea nz-input [(ngModel)]="info.account" placeHolder="请输入备注说明" [nzSize]="'large'" maxlength="200"></textarea>
 		</div>
 	</div>
 	<div nz-form-item nz-row [nzGutter]="30" class="mt20">
@@ -42,7 +42,7 @@
 			<label>备注说明（最长200字）</label>
 		</div>
 		<div nz-form-control nz-col [nzSpan]="12">
-			<nz-input [nzType]="'textarea'" [(ngModel)]="info.remarks" [nzPlaceHolder]="'请输入备注说明'" [nzSize]="'large'" [nzRows]="4"></nz-input>
+			<textarea nz-input [(ngModel)]="info.remarks" placeHolder="请输入备注说明" [nzSize]="'large'" maxlength="200"></textarea>
 		</div>
 	</div>
 	<div *ngIf="editType == 'update'" nz-form-item nz-row [nzGutter]="30" class="mt20">
@@ -50,7 +50,7 @@
 			<label>回访结果（最长200字）<span class="required">*</span></label>
 		</div>
 		<div nz-form-control nz-col [nzSpan]="12">
-			<nz-input [nzType]="'textarea'" [(ngModel)]="info.results" [nzPlaceHolder]="'请输入回访结果'" [nzSize]="'large'" [nzRows]="4"></nz-input>
+			<textarea nz-input [(ngModel)]="info.results" placeHolder="请输入回访结果" [nzSize]="'large'" maxlength="200"></textarea>
 		</div>
 	</div>
 	<div *ngIf="editType == 'update'" nz-form-item nz-row [nzGutter]="30" class="mt20">

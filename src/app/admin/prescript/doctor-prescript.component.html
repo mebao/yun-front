@@ -174,7 +174,7 @@
 										<label nz-form-item-required>一般用法：</label>
 									</div>
 									<div nz-form-control>
-										<nz-input [formControlName]="medical_info.ms_usage" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入一般用法'" nzDisabled></nz-input>
+										<textarea nz-input [formControlName]="medical_info.ms_usage" [nzSize]="'large'" placeHolder="请输入一般用法" nzDisabled maxlength="50"></textarea>
 									</div>
 								</div>
 							</div>
@@ -184,7 +184,7 @@
 										<label>注意事项：</label>
 									</div>
 									<div nz-form-control>
-										<nz-input [formControlName]="medical_info.remark" [nzType]="'textarea'" [nzSize]="'large'" [nzPlaceHolder]="'请输入注意事项'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"></nz-input>
+										<textarea nz-input [formControlName]="medical_info.remark" [nzSize]="'large'" placeHolder="请输入注意事项" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" maxlength="200"></textarea>
 									</div>
 								</div>
 							</div>
@@ -205,7 +205,7 @@
 								<label *ngIf="!(secondType == '' || secondType == 'continueAdd' || secondType == 'update')" nz-form-item-required>退药说明</label>
 							</div>
 							<div nz-form-control>
-								<nz-input formControlName="remark" [nzPlaceHolder]="'请输入'" [nzType]="'textarea'" [nzSize]="'large'"></nz-input>
+								<textarea nz-input formControlName="remark" placeHolder="请输入" [nzSize]="'large'" maxlength="100"></textarea>
 							</div>
 						</div>
 					</div>

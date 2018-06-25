@@ -332,12 +332,12 @@
 												<div class="td-text">{{info.remark}}</div>
 											</ng-container>
 											<ng-container *ngIf="updatePrescript.pid == info.pid">
-												<nz-input class="w100"
+												<textarea nz-input
 												(ngModelChange)="updatePrescript.remark=$event"
 												[nzSize]="'large'"
-												[nzPlaceHolder]="'请输入注意事项'"
-												[nzType]="'textarea'"
-												[ngModel]="updatePrescript.remark"></nz-input>
+												placeHolder="请输入注意事项"
+												[ngModel]="updatePrescript.remark"
+												maxlength="200"></textarea>
 											</ng-container>
 										</td>
 										<td>
@@ -482,7 +482,7 @@
 											-
 										</ng-container>
 										<ng-container *ngIf="tran.type != '3'">
-											<nz-input [(ngModel)]="updateTran.remark" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+											<textarea nz-input [(ngModel)]="updateTran.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
 										</ng-container>
 									</ng-container>
 								</td>

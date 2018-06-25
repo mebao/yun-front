@@ -110,7 +110,7 @@
 				<label>取消原因：</label>
 			</div>
 			<div nz-form-control class="mt5">
-				<nz-input [nzType]="'textarea'" [(ngModel)]="selectorBooking.cancel_cause" [nzSize]="'large'" [nzPlaceHolder]="'请输入取消原因'"></nz-input>
+				<textarea nz-input [(ngModel)]="selectorBooking.cancel_cause" [nzSize]="'large'" placeHolder="请输入取消原因" maxlength="200"></textarea>
 			</div>
 		</div>
 	</ng-template>
@@ -146,7 +146,7 @@
 				<label>失约原因：</label>
 			</div>
 			<div nz-form-control nz-col [nzSpan]="12">
-				<nz-input [nzType]="'textarea'" [nzSize]="'large'" [(ngModel)]="booking.backRemark" [nzPlaceHolder]="'请输入失约原因'"></nz-input>
+				<textarea nz-input [nzSize]="'large'" [(ngModel)]="booking.backRemark" placeHolder="请输入失约原因" maxlength="200"></textarea>
 			</div>
 		</div>
 		<div *ngIf="booking.yyj.amount == '0.00'" class="mt10">
