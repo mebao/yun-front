@@ -3,20 +3,17 @@ import { Router }                                from '@angular/router';
 
 import { AdminService }                          from '../../admin.service';
 import { config }                                from '../../../config';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-material-has-list',
 	templateUrl: './material-has-list.component.html',
+  styleUrls: ['../../../../assets/css/ant-common.scss']
 })
 export class MaterialHasListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -27,11 +24,12 @@ export class MaterialHasListComponent{
 		seeLost: boolean,
 		seeCheck: boolean,
 	}
+  selectedIndex: number;
 	loadingShow: boolean;
 	hasData: boolean;
 	list: any[];
 	url: string;
-	info: {
+	searchInfo: {
 		name: string,
 		type: string,
 		l_stock: string,
@@ -39,7 +37,8 @@ export class MaterialHasListComponent{
 	}
 
 	constructor(
-		public adminService: AdminService,
+    private message: NzMessageService,
+    public adminService: AdminService,
 		private router: Router,
 	) {}
 
@@ -47,11 +46,6 @@ export class MaterialHasListComponent{
 		this.topBar = {
 			title: '物资管理',
 			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -75,16 +69,22 @@ export class MaterialHasListComponent{
 			}
 		}
 
+    this.selectedIndex = 0;
+    if(this.moduleAuthority.see){
+      this.selectedIndex++;
+    }
+    if(this.moduleAuthority.seePut){
+      this.selectedIndex++;
+    }
+
 		this.loadingShow = false;
-
 		this.hasData = false;
-
 		this.list = [];
 
 		if(JSON.parse(sessionStorage.getItem('search-materialHasList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-materialHasList'));
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-materialHasList'));
 		}else{
-			this.info = {
+			this.searchInfo = {
 				name: '',
 				type: '3,4',
 				l_stock: '',
@@ -103,7 +103,7 @@ export class MaterialHasListComponent{
 		this.adminService.searchsupplies(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+        this.message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
@@ -121,25 +121,25 @@ export class MaterialHasListComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+      this.message.error('服务器错误');
         });
 	}
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-materialHasList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-materialHasList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.searchInfo.name != ''){
+			urlOptions += '&name=' + this.searchInfo.name;
 		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
+		if(this.searchInfo.type != ''){
+			urlOptions += '&type=' + this.searchInfo.type;
 		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
+		if(this.searchInfo.l_stock && this.searchInfo.l_stock != ''){
+			urlOptions += '&l_stock=' + this.searchInfo.l_stock;
 		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
+		if(this.searchInfo.b_stock && this.searchInfo.b_stock != ''){
+			urlOptions += '&b_stock=' + this.searchInfo.b_stock;
 		}
 		this.getData(urlOptions);
 	}
@@ -147,22 +147,23 @@ export class MaterialHasListComponent{
 	export() {
 		var urlOptions=this.url;
 		urlOptions += '&stockType=2';
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.searchInfo.name != ''){
+			urlOptions += '&name=' + this.searchInfo.name;
 		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
+		if(this.searchInfo.type != ''){
+			urlOptions += '&type=' + this.searchInfo.type;
 		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
+		if(this.searchInfo.l_stock && this.searchInfo.l_stock != ''){
+			urlOptions += '&l_stock=' + this.searchInfo.l_stock;
 		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
+		if(this.searchInfo.b_stock && this.searchInfo.b_stock != ''){
+			urlOptions += '&b_stock=' + this.searchInfo.b_stock;
 		}
 		window.location.href = config.baseHTTP() + '/mebcrm/stockexport'+ urlOptions;
 	}
 
 	goUrl(_url) {
+        this.loadingShow = true;
 		sessionStorage.removeItem('search-materialList');
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialLostList');
@@ -172,20 +173,5 @@ export class MaterialHasListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/material/has'], {queryParams: {id: _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

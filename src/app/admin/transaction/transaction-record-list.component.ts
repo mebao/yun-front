@@ -25,9 +25,8 @@ export class TransactionRecordListComponent{
 		l_amount: string,
 		type: string,
 		pay_way: string,
+		date: [Date, Date]
 	}
-    _startDate = null;
-    _endDate = null;
 	commonList: any[];
 	amount: string;
 
@@ -55,9 +54,8 @@ export class TransactionRecordListComponent{
 			l_amount: '',
 			type: '',
 			pay_way: '',
+			date: [new Date(), new Date()]
 		}
-        this._startDate = new Date();
-        this._endDate = new Date();
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-transactionRecordList'));
         if(sessionSearch){
 			this.searchInfo = {
@@ -65,10 +63,9 @@ export class TransactionRecordListComponent{
 	            b_amount: sessionSearch.b_amount,
 	            l_amount: sessionSearch.l_amount,
 	            type: sessionSearch.type,
-	            pay_way: sessionSearch.pay_way,
+				pay_way: sessionSearch.pay_way,
+				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
             }
-            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
-            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
 		this.commonList = [
@@ -86,24 +83,16 @@ export class TransactionRecordListComponent{
 
 	search(type) {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-transactionRecordList', JSON.stringify({
-            user_name: this.searchInfo.user_name,
-            b_amount: this.searchInfo.b_amount,
-            l_amount: this.searchInfo.l_amount,
-            type: this.searchInfo.type,
-            pay_way: this.searchInfo.pay_way,
-            _startDate: this._startDate,
-            _endDate: this._endDate,
-        }));
+		sessionStorage.setItem('search-transactionRecordList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-        if(this._startDate){
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this._endDate){
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
         }
 		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
@@ -125,20 +114,6 @@ export class TransactionRecordListComponent{
 			this.loadingShow = false;
 		}
 	}
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
 	getData(urlOptions) {
 		this.adminService.searchtran(urlOptions).then((data) => {

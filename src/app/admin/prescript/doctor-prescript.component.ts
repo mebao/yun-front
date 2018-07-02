@@ -1,4 +1,5 @@
-import { Component, OnInit }                     from '@angular/core';
+import { Component, OnInit, Inject }             from '@angular/core';
+import { DOCUMENT }                              from '@angular/common';
 import {
     FormBuilder,
     FormGroup,
@@ -75,7 +76,14 @@ export class DoctorPrescriptComponent{
     mPrescriptInfoList: any[];
     // 删除的药品
     mPrescriptDelList: any[];
-    mPrescriptListOld: any;
+	mPrescriptListOld: any;
+	contentDom: Element = null;
+	doc: Document;
+	tabForm: {
+		modalTab: boolean,
+		medical_info: any,
+		index: number,
+	}
 
 	constructor(
 		public adminService: AdminService,
@@ -83,11 +91,14 @@ export class DoctorPrescriptComponent{
 		private router: Router,
 		private _message: NzMessageService,
         private fb: FormBuilder,
-        private dialogService: DialogService,
+		private dialogService: DialogService,
+        @Inject(DOCUMENT) doc: any
 	) {
         this.validateForm = this.fb.group({
 			remark: [ '', [ Validators.required ]],
 		});
+		this.doc = doc;
+		this.contentDom = this.doc.querySelector('.right-content');
 	}
 
 	ngOnInit() {
@@ -246,7 +257,7 @@ export class DoctorPrescriptComponent{
         });
 
 		//查看库存
-		var searchsuppliesUrl = this.url + '&type=1,2';
+		var searchsuppliesUrl = this.url + '&type=1,2&doctor_use=1';
 		this.adminService.searchsupplies(searchsuppliesUrl).then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
@@ -323,6 +334,12 @@ export class DoctorPrescriptComponent{
 		this.isLoadingSave = false;
 		this.createTab = false;
 		this.form = '';
+		this.tabForm = {
+			modalTab: false,
+			medical_info: {},
+			index: 0,
+		}
+
 		sessionStorage.setItem('canDeactivate', 'doctorPrescript');
 	}
 
@@ -394,8 +411,15 @@ export class DoctorPrescriptComponent{
                 this.numberList.push({key: medical.num, value: medical.num});
                 this.numberOldList.push({key: medical.num, value: medical.num});
             }
-        }
-    }
+		}
+
+		console.log(this.mPrescriptList);
+		
+		// 滚动条滚动到底部
+		setTimeout(() => {
+			this.contentDom.scrollTo(0, this.contentDom.scrollHeight);
+		}, 100);
+	}
 
     removeField(i) {
         this.mPrescriptDelList.push(i);
@@ -417,15 +441,20 @@ export class DoctorPrescriptComponent{
     			this.validateForm.removeControl(i.remark);
             }
         }
+	}
+	
+    getFormControl(name) {
+        return this.validateForm.controls[ name ];
     }
 
 	msChange(_index) {
         var selectedOneUnit = this.validateForm.controls['medical' + _index].value.oneUnit ? this.validateForm.controls['medical' + _index].value.oneUnit : '';
         var selectedUnit = this.validateForm.controls['medical' + _index].value.unit ? this.validateForm.controls['medical' + _index].value.unit : '';
-        var selectedUsage = this.validateForm.controls['medical' + _index].value.usage ? this.validateForm.controls['medical' + _index].value.usage : '';
+		var selectedUsage = this.validateForm.controls['medical' + _index].value.usage ? this.validateForm.controls['medical' + _index].value.usage : '';
 		this.mPrescriptList[_index].batchList = this.validateForm.controls['medical' + _index].value.others;
         this.mPrescriptList[_index].selectedOneUnit = selectedOneUnit;
-        this.mPrescriptList[_index].selectedUnit = selectedUnit;
+		this.mPrescriptList[_index].selectedUnit = selectedUnit;
+        this.validateForm.controls['batch' + _index].setValue(this.validateForm.controls['batch' + _index].value == '' ? null : '');
         this.validateForm.controls['oneUnit' + _index].setValue(selectedUnit);
         this.validateForm.controls['unit' + _index].setValue(selectedUnit);
         this.validateForm.controls['ms_usage' + _index].setValue(selectedUsage);
@@ -444,6 +473,22 @@ export class DoctorPrescriptComponent{
             this.numberList.push({key: _value, value: _value});
         }
     }
+	
+	showForm(medical_info, index) {
+		this.tabForm = {
+			modalTab: true,
+			medical_info: medical_info,
+			index: index,
+		}
+	}
+
+	closeForm() {
+		this.tabForm = {
+			modalTab: false,
+			medical_info: {},
+			index: 0,
+		}
+	}
 
 	confirmCreate(){
 		this.createTab = true;
@@ -542,6 +587,7 @@ export class DoctorPrescriptComponent{
 	}
 
 	create() {
+		console.log(this.validateForm.controls);
 		if(this.actualOperator.use && this.adminService.isFalse(this.actualOperator.name)){
 			this._message.error('请先选择实际操作人');
 			return;

@@ -1617,6 +1617,24 @@ export class AdminService{
 			.catch();
 	}
 
+	// 查询拨打电话的记录
+	searchcall(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/searchcall' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
+	// 获取电话录音地址
+	callfile(urlOptions): Promise<Data>{
+		var url = this.url + '/mebcrm/callfile' + urlOptions;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as Data)
+			.catch();
+	}
+
 	getUser(){
 		return JSON.parse(this.getCookie('user'));
 	}

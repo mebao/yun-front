@@ -36,10 +36,9 @@ export class PrescriptTcmList{
 		today: string,
 		doctor_name: string,
 		user_name: string,
-		child_name: string,
+        child_name: string,
+        date: [Date, Date],
 	};
-	_startDate = null;
-	_endDate = null;
     loadingShow: boolean;
     hasData: boolean;
     prescriptTcmList: any[];
@@ -98,11 +97,9 @@ export class PrescriptTcmList{
  			today: '',
  			doctor_name: '',
  			user_name: '',
- 			child_name: '',
+            child_name: '',
+            date: [new Date(), new Date()]
  		}
-        this._startDate = new Date();
-        this._endDate = new Date();
-
         this.loadingShow = false;
         this.hasData = false;
         this.prescriptTcmList = [];
@@ -127,11 +124,11 @@ export class PrescriptTcmList{
         if(this.searchInfo.today != ''){
             urlOptions += ('&today=' + this.searchInfo.today);
         }
-        if(this._startDate){
-            urlOptions += '&b_time=' + this.as.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&b_time=' + this.as.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this._endDate){
-            urlOptions += '&l_time=' + this.as.getDayByDate(new Date(this._endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&l_time=' + this.as.getDayByDate(new Date(this.searchInfo.date[1]));
         }
         if(this.searchInfo.doctor_name != ''){
             urlOptions += ('&doctor_name=' + this.searchInfo.doctor_name);
@@ -161,20 +158,6 @@ export class PrescriptTcmList{
             this._message.error('服务器错误');
         });
     }
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
     selectPrescript(prescript) {
         this.outTcm = {

@@ -7,8 +7,8 @@
 		</ng-template>
 		<ng-template #extra>
 			<button *ngIf="editType != 'updateuser'" (click)="updateuser()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-			<button *ngIf="pageType == 'call' && !calling" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
-			<button *ngIf="pageType == 'call' && calling" (click)="hangupuser('')" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
+			<button *ngIf="pageType == 'call' && userInfo.call_sid == ''" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
+			<button *ngIf="pageType == 'call' && userInfo.call_sid != ''" (click)="hangupuser()" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
 		</ng-template>
 		<ng-template #body>
 			<p>姓名：{{olduserInfo.name}}</p>
@@ -312,7 +312,7 @@
 									<label>备注</label>
 								</div>
 								<div nz-form-control>
-									<nz-input [nzType]="'textarea'" [(ngModel)]="childInfo.remark" [nzPlaceHolder]="'请输入备注'" [nzSize]="'large'"></nz-input>
+									<textarea nz-input [(ngModel)]="childInfo.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
 								</div>
 							</div>
 						</div>

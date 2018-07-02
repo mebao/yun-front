@@ -24,9 +24,8 @@ export class BookingUpdate implements OnInit{
         service: string,
         doctor: string,
         status: string,
+        date: [Date, Date],
     }
-    _startDate = null;
-    _endDate = null;
     childList: any[];
     doctorList: any[];
     serviceList: any[];
@@ -54,9 +53,8 @@ export class BookingUpdate implements OnInit{
             service: '',
             doctor: '',
             status: '',
+            date: [new Date(), new Date()],
         }
-        this._startDate = new Date();
-        this._endDate = new Date();
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingUpdate'));
         if(sessionSearch){
 			this.searchInfo = {
@@ -64,9 +62,8 @@ export class BookingUpdate implements OnInit{
                 service: sessionSearch.service,
                 doctor: sessionSearch.doctor,
                 status: sessionSearch.status,
+                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
             }
-            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
-            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
         this.childList = [];
@@ -90,14 +87,7 @@ export class BookingUpdate implements OnInit{
     search() {
         this.loadingShow = true;
         var urlOptions = this.url;
-		sessionStorage.setItem('search-bookingUpdate', JSON.stringify({
-            child: this.searchInfo.child,
-            service: this.searchInfo.service,
-            doctor: this.searchInfo.doctor,
-            status: this.searchInfo.status,
-            _startDate: this._startDate,
-            _endDate: this._endDate,
-        }));
+		sessionStorage.setItem('search-bookingUpdate', JSON.stringify(this.searchInfo));
         if(this.searchInfo.child && this.searchInfo.child != ''){
             urlOptions += '&child_id=' + this.searchInfo.child;
         }
@@ -107,11 +97,11 @@ export class BookingUpdate implements OnInit{
         if(this.searchInfo.doctor && this.searchInfo.doctor != ''){
             urlOptions += '&doctor_id=' + this.searchInfo.doctor;
         }
-        if(this._startDate){
-            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this._endDate){
-            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this._endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this.searchInfo.date[1]));
         }
         if(this.searchInfo.status && this.searchInfo.status != ''){
             urlOptions += '&status=' + this.searchInfo.status;
@@ -174,32 +164,6 @@ export class BookingUpdate implements OnInit{
             this._message.error('服务器错误');
         });
     }
-
-    _startValueChange = () => {
-        if (this._startDate > this._endDate) {
-            this._endDate = null;
-        }
-    };
-
-    _endValueChange = () => {
-        if (this._startDate > this._endDate) {
-            this._startDate = null;
-        }
-    };
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
     info(booking) {
         this.router.navigate(['./admin/bookingUpdateInfo'], {queryParams: {id: booking.bookingId}});

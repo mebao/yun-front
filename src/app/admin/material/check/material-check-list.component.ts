@@ -1,177 +1,167 @@
-import { Component }                       from '@angular/core';
-import { Router }                          from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { AdminService }                    from '../../admin.service';
+import { AdminService } from '../../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
-	selector: 'admin-material-check-list',
-	templateUrl: './material-check-list.component.html'
+    selector: 'admin-material-check-list',
+    templateUrl: './material-check-list.component.html',
+    styleUrls: ['../../../../assets/css/ant-common.scss'],
 })
-export class MaterialCheckListComponent{
-	topBar: {
-		title: string,
-		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-	// 权限
-	moduleAuthority: {
-		see: boolean,
-		seePut: boolean,
-		seeHas: boolean,
-		seeLost: boolean,
-		seeCheck: boolean,
-		addCheck: boolean,
-	}
-	loadingShow: boolean;
-	url: string;
-	stockList: any[];
-	hasData: boolean;
-	info: {
-		name: string,
-		type: string,
-		b_time: string,
-		b_time_num: number,
-		l_time: string,
-		l_time_num: number,
-	}
+export class MaterialCheckListComponent {
+    topBar: {
+        title: string,
+        back: boolean,
+    };
+    // 权限
+    moduleAuthority: {
+        see: boolean,
+        seePut: boolean,
+        seeHas: boolean,
+        seeLost: boolean,
+        seeCheck: boolean,
+        addCheck: boolean,
+    }
+    selectedIndex: number;
+    loadingShow: boolean;
+    url: string;
+    stockList: any[];
+    hasData: boolean;
+    searchInfo: {
+        name: string,
+        type: string,
+        date: [Date, Date]
+    }
 
-	constructor(
-		public adminService: AdminService,
-		private router: Router,
-	) {}
+    constructor(
+        private message: NzMessageService,
+        public adminService: AdminService,
+        private router: Router,
+    ) { }
 
-	ngOnInit() {
-		this.topBar = {
-			title: '物资管理',
-			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
+    ngOnInit() {
+        this.topBar = {
+            title: '物资管理',
+            back: true,
+        }
 
-		this.moduleAuthority = {
-			see: false,
-			seePut: false,
-			seeHas: false,
-			seeLost: false,
-			seeCheck: false,
-			addCheck: false,
-		}
-		// 那段角色，是超级管理员0还是普通角色
-		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
-			for(var key in this.moduleAuthority){
-				this.moduleAuthority[key] = true;
-			}
-		}else{
-			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
-			for(var i = 0; i < authority.infos.length; i++){
-				this.moduleAuthority[authority.infos[i].keyName] = true;
-			}
-		}
+        this.moduleAuthority = {
+            see: false,
+            seePut: false,
+            seeHas: false,
+            seeLost: false,
+            seeCheck: false,
+            addCheck: false,
+        }
+        // 那段角色，是超级管理员0还是普通角色
+        // 如果是超级管理员，获取所有权限
+        if (this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') {
+            for (var key in this.moduleAuthority) {
+                this.moduleAuthority[key] = true;
+            }
+        } else {
+            var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+            for (var i = 0; i < authority.infos.length; i++) {
+                this.moduleAuthority[authority.infos[i].keyName] = true;
+            }
+        }
 
-		this.loadingShow = false;
+        this.selectedIndex = 0;
+        if (this.moduleAuthority.see) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seePut) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seeHas) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seeLost) {
+            this.selectedIndex++;
+        }
 
-		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+        this.loadingShow = false;
 
-		this.info = {
-			name: '',
-			type: '3,4',
-			b_time: '',
-			b_time_num: 0,
-			l_time: '',
-			l_time_num: 0,
-		}
+        this.url = '?username=' + this.adminService.getUser().username
+            + '&token=' + this.adminService.getUser().token
+            + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-		this.stockList = [];
-		this.hasData = false;
-		this.search();
-	}
+        this.searchInfo = {
+            name: '',
+            type: '3,4',
+            date: [null, null],
+        }
+        const sessionSearch = JSON.parse(sessionStorage.getItem('search-materialCheckList'));
+        if (sessionSearch) {
+            this.searchInfo = {
+                name: sessionSearch.name,
+                type: sessionSearch.type,
+                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
+            }
+        }
 
-	goUrl(_url) {
-		sessionStorage.removeItem('search-materialList');
-		sessionStorage.removeItem('search-materialPurchaseList');
-		sessionStorage.removeItem('search-materialHasList');
-		sessionStorage.removeItem('search-materialLostList');
-		this.router.navigate([_url]);
-	}
+        this.stockList = [];
+        this.hasData = false;
+        this.search();
+    }
 
-	add() {
-		this.router.navigate(['./admin/material/check']);
-	}
+    goUrl(_url) {
+        this.loadingShow = true;
+        sessionStorage.removeItem('search-materialList');
+        sessionStorage.removeItem('search-materialPurchaseList');
+        sessionStorage.removeItem('search-materialHasList');
+        sessionStorage.removeItem('search-materialLostList');
+        this.router.navigate([_url]);
+    }
 
-	search() {
-		this.loadingShow = true;
-		sessionStorage.setItem('search-materialCheckList', JSON.stringify(this.info));
-		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
-		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
-		}
-		if(this.info.b_time != ''){
-			urlOptions += '&b_time=' + this.info.b_time;
-		}
-		if(this.info.l_time != ''){
-			urlOptions += '&l_time=' + this.info.l_time;
-		}
-		this.getData(urlOptions);
-	}
+    add() {
+        this.router.navigate(['./admin/material/check']);
+    }
 
-	// 选择日期
-	changeDate(_value, key) {
-		this.info[key] = JSON.parse(_value).value;
-		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-	}
+    search() {
+        this.loadingShow = true;
+        sessionStorage.setItem('search-materialCheckList', JSON.stringify(this.searchInfo));
+        var urlOptions = this.url;
+        if (this.searchInfo.name != '') {
+            urlOptions += '&name=' + this.searchInfo.name;
+        }
+        if (this.searchInfo.type != '') {
+            urlOptions += '&type=' + this.searchInfo.type;
+        }
+        if (this.searchInfo.date[0]) {
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        }
+        if (this.searchInfo.date[1]) {
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        }
+        this.getData(urlOptions);
+    }
 
-	getData(urlOptions) {
-		this.adminService.searchstock(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].deviation = Number(results.list[i].realityStock) - Number(results.list[i].stock);
-					}
-				}
-				this.stockList = results.list;
-				this.hasData = true;
-				this.loadingShow = false;
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+    getData(urlOptions) {
+        this.adminService.searchstock(urlOptions).then((data) => {
+            if (data.status == 'no') {
+                this.loadingShow = false;
+                this.message.error(data.errorMsg);
+            } else {
+                var results = JSON.parse(JSON.stringify(data.results));
+                if (results.list.length > 0) {
+                    for (var i = 0; i < results.list.length; i++) {
+                        results.list[i].deviation = Number(results.list[i].realityStock) - Number(results.list[i].stock);
+                    }
+                }
+                this.stockList = results.list;
+                this.hasData = true;
+                this.loadingShow = false;
+            }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.message.error('服务器错误');
         });
-	}
-
-	update(material) {
-		sessionStorage.setItem('materialCheck', JSON.stringify(material));
-		this.router.navigate(['./admin/material/check'], {queryParams: {id: material.id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
+    }
+    /*
+        update(material) {
+            sessionStorage.setItem('materialCheck', JSON.stringify(material));
+            this.router.navigate(['./admin/material/check'], {queryParams: {id: material.id}});
+        }*/
 }

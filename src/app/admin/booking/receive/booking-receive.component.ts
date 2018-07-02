@@ -34,11 +34,9 @@ export class BookingReceiveComponent {
 		mobile: string,
 		creator_name: string,
 		child_id: string,
+		cdate: [Date, Date],
+		bdate: [Date, Date],
 	}
-	cdate_less = null;
-	cdate_big = null;
-	bdate_less = null;
-	bdate_big = null;
 	bookinglist: any[];
 	hasData: boolean;
 	// 预约体检套餐
@@ -109,11 +107,9 @@ export class BookingReceiveComponent {
 			mobile: '',
 			creator_name: '',
 			child_id: '',
+			cdate: [null, null],
+			bdate: [new Date(), new Date()],
 		}
-		this.cdate_less = null;
-		this.cdate_big = null;
-		this.bdate_less = new Date();
-		this.bdate_big = new Date();
 
 		// 获取页面来源
 		this.route.queryParams.subscribe((params) => {
@@ -123,8 +119,8 @@ export class BookingReceiveComponent {
 			}
 		});
 		if(this.searchInfo.typeFrom == 'message'){
-			this.bdate_less = null;
-			this.bdate_big = new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000));
+			this.searchInfo.bdate[0] = new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000));
+			this.searchInfo.bdate[1] = null;
 		}
 
 		var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingReceive'));
@@ -136,11 +132,9 @@ export class BookingReceiveComponent {
 				mobile: sessionSearch.mobile,
 				creator_name: sessionSearch.creator_name,
 				child_id: sessionSearch.child_id,
+				cdate: [sessionSearch.cdate[0] ? new Date(sessionSearch.cdate[0]) : null, sessionSearch.cdate[1] ? new Date(sessionSearch.cdate[1]) : null],
+				bdate: [sessionSearch.bdate[0] ? new Date(sessionSearch.bdate[0]) : null, sessionSearch.bdate[1] ? new Date(sessionSearch.bdate[1]) : null],
 			}
-			this.cdate_less = sessionSearch.cdate_less ? new Date(sessionSearch.cdate_less) : null;
-			this.cdate_big = sessionSearch.cdate_big ? new Date(sessionSearch.cdate_big) : null;
-			this.bdate_less = sessionSearch.bdate_less ? new Date(sessionSearch.bdate_less) : null;
-			this.bdate_big = sessionSearch.bdate_big ? new Date(sessionSearch.bdate_big) : null;
 		}
 
 		this.search();
@@ -224,65 +218,27 @@ export class BookingReceiveComponent {
 	search() {
 		this.loadingShow = true;
 		// 记录搜索条件
-		sessionStorage.setItem('search-bookingReceive', JSON.stringify({
-			doctor_id: this.searchInfo.doctor_id,
-			service_id: this.searchInfo.service_id,
-			mobile: this.searchInfo.mobile,
-			creator_name: this.searchInfo.creator_name,
-			child_id: this.searchInfo.child_id,
-			cdate_less: this.cdate_less,
-			cdate_big: this.cdate_big,
-			bdate_less: this.bdate_less,
-			bdate_big: this.bdate_big,
-		}));
+		sessionStorage.setItem('search-bookingReceive', JSON.stringify(this.searchInfo));
 		//列表
 		var urlOptionsList = this.getUrlOptios();
 		//接诊个人和接诊所有
 		if (this.moduleAuthority.receive && !this.moduleAuthority.receiveAll) {
 			urlOptionsList += '&mybooking=1';
 		}
-		if (this.cdate_less) {
-			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.cdate_less));
+		if (this.searchInfo.cdate[0]) {
+			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[0]));
 		}
-		if (this.cdate_big) {
-			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.cdate_big));
+		if (this.searchInfo.cdate[1]) {
+			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[1]));
 		}
-		if (this.bdate_less) {
-			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.bdate_less));
+		if (this.searchInfo.bdate[0]) {
+			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[0]));
 		}
-		if (this.bdate_big) {
-			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.bdate_big));
+		if (this.searchInfo.bdate[1]) {
+			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[1]));
 		}
 		this.getList(urlOptionsList);
 	}
-
-	_disabledCdateLess = (endValue) => {
-		if (!endValue || !this.cdate_big) {
-			return false;
-		}
-		return endValue.getTime() < this.cdate_big.getTime();
-	};
-
-	_disabledCdateBig = (startValue) => {
-		if (!startValue || !this.cdate_less) {
-			return false;
-		}
-		return startValue.getTime() > this.cdate_less.getTime();
-	};
-
-	_disabledBdateLess = (endValue) => {
-		if (!endValue || !this.bdate_big) {
-			return false;
-		}
-		return endValue.getTime() < this.bdate_big.getTime();
-	};
-
-	_disabledBdateBig = (startValue) => {
-		if (!startValue || !this.bdate_less) {
-			return false;
-		}
-		return startValue.getTime() > this.bdate_less.getTime();
-	};
 
 	//查看
 	info(booking, service) {

@@ -607,7 +607,7 @@ export class BookingInComponent{
 	//登记
 	editIn() {
 		this.canEdit = true;
-		if(this.booking.refNo == '' && this.bookingInfo.child == ''){
+		if(this.booking.refNo == '' && (!this.bookingInfo.child || this.bookingInfo.child == '')){
 			this._message.error('宝宝不可为空');
 			this.canEdit = false;
 			return;

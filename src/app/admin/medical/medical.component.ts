@@ -29,7 +29,8 @@ export class MedicalComponent{
 		otc: string,
 		code: string,
 		can_discount: string,
-		is_prescribed: string,
+        is_prescribed: string,
+        doctor_use: string,
 		usage: string,
 		price: string,
 		remark: string,
@@ -69,7 +70,8 @@ export class MedicalComponent{
 			otc: '',
 			code: '',
 			can_discount: '',
-			is_prescribed: '',
+            is_prescribed: '',
+            doctor_use: '',
 			usage: '',
 			price: '',
 			remark: '',
@@ -98,6 +100,7 @@ export class MedicalComponent{
 								this.info.trade_name = results.medicalSupplies[i].tradeName;
 								this.info.can_discount = results.medicalSupplies[i].canDiscount;
 								this.info.is_prescribed = results.medicalSupplies[i].isPrescribed;
+								this.info.doctor_use = results.medicalSupplies[i].doctorUse;
 							}
 						}
 					}
@@ -209,6 +212,11 @@ export class MedicalComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(this.adminService.isFalse(f.value.doctor_use) || f.value.doctor_use == ''){
+			this.toastTab('医生是否可用不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(this.adminService.isFalse(f.value.usage) || f.value.usage == ''){
 			this.toastTab('一般用法不可为空', 'error');
 			this.btnCanEdit = false;
@@ -234,7 +242,8 @@ export class MedicalComponent{
 			code: f.value.code,
 			price: f.value.price.toString(),
 			can_discount: f.value.can_discount,
-			is_prescribed: f.value.is_prescribed,
+            is_prescribed: f.value.is_prescribed,
+            doctor_use: f.value.doctor_use,
 			one_unit: f.value.one_unit,
 			remark: f.value.remark,
 		}

@@ -5,7 +5,6 @@ import { AuthGuardRole }                          from '../../auth-guard-role.se
 
 import { MedicalPurchaseComponent }               from './medical-purchase.component';
 import { MedicalPurchaseListComponent }           from './medical-purchase-list.component';
-import { MedicalPurchaseInfoComponent }           from './medical-purchase-info.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -18,11 +17,6 @@ import { MedicalPurchaseInfoComponent }           from './medical-purchase-info.
             path: 'list',
             canActivate: [AuthGuardRole],
             component: MedicalPurchaseListComponent,
-        },
-        {
-            path: 'info',
-            canActivate: [AuthGuardRole],
-            component: MedicalPurchaseInfoComponent,
         },
     ])],
     exports: [RouterModule]

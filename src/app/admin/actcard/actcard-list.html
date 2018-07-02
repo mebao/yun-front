@@ -5,7 +5,7 @@
 		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增活动卡</button>
 	</div>
 	<div nz-row class="mt10 mb10">
-		<div nz-col [nzSpan]="6" [nzOffset]="18">
+		<div nz-col [nzSpan]="8" [nzOffset]="16">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="name">活动卡名：</label>
@@ -19,7 +19,10 @@
 	<div class="text-right mt10 mb10">
 		<button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
-	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="actcardList" [nzBordered]="true" [nzIsPagination]="false">
+	<div class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到活动卡' + actcardList.length + '条'"></nz-alert>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="actcardList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
 				<th>活动卡名</th>
@@ -44,6 +47,7 @@
 				</td>
 			</tr>
 		</tbody>
+		<span noResult>暂无活动卡信息</span>
 	</nz-table>
 </div>
 <loading [show]="loadingShow"></loading>

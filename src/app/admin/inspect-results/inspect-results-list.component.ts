@@ -29,9 +29,8 @@ export class InspectResultsListComponent{
 		doctor_name: string,
 		child_name: string,
 		ischeck: string,
+		date: [Date, Date]
 	}
-    _startDate = null;
-    _endDate = null;
 	url: string;
 
 	constructor(
@@ -70,9 +69,8 @@ export class InspectResultsListComponent{
 			doctor_name: '',
 			child_name: '',
 			ischeck: '0',
+			date: [new Date(), new Date()]
 		}
-		this._startDate = new Date();
-		this._endDate = new Date();
 		var todayDate = this.adminService.getDayByDate(new Date());
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-inspectResultsList'));
         if(sessionSearch){
@@ -80,10 +78,9 @@ export class InspectResultsListComponent{
                 check_name: sessionSearch.check_name,
                 doctor_name: sessionSearch.doctor_name,
                 child_name: sessionSearch.child_name,
-                ischeck: sessionSearch.ischeck,
+				ischeck: sessionSearch.ischeck,
+				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]): null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
             }
-            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
-            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
 		}
 
 		this.hasData = false;
@@ -152,14 +149,7 @@ export class InspectResultsListComponent{
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-inspectResultsList', JSON.stringify({
-            check_name: this.searchInfo.check_name,
-            doctor_name: this.searchInfo.doctor_name,
-            child_name: this.searchInfo.child_name,
-            ischeck: this.searchInfo.ischeck,
-            _startDate: this._startDate,
-            _endDate: this._endDate,
-        }));
+		sessionStorage.setItem('search-inspectResultsList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
 		if(this.searchInfo.check_name && this.searchInfo.check_name != ''){
 			urlOptions += '&check_name=' + this.searchInfo.check_name;
@@ -173,28 +163,14 @@ export class InspectResultsListComponent{
 		if(this.searchInfo.ischeck && this.searchInfo.ischeck != ''){
 			urlOptions += '&ischeck=' + this.searchInfo.ischeck;
 		}
-        if(this._startDate){
-            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this._endDate){
-            urlOptions += '&e_date=' + this.adminService.getDayByDate(new Date(this._endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&e_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
         }
 		this.getData(urlOptions);
 	}
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
 	check(_id) {
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});

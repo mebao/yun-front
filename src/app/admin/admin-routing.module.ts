@@ -18,6 +18,7 @@ import { DoctorTcmPrescript }               from './prescript/doctor-tcm-prescri
 import { Repage }                           from './booking/repage';
 import { UpdatepwdComponent }               from './user/updatepwd.component';
 import { Message }                          from './setup/message.component';
+import { CallRecord }                       from './setup/call-record';
 
 const adminRoutes: Routes = [
 	{
@@ -256,6 +257,11 @@ const adminRoutes: Routes = [
 					{
 						path: 'setupMessage',
 						component: Message
+					},
+					{
+						path: 'callRecord',
+						canActivate: [AuthGuardRole],
+						component: CallRecord
 					},
 					{
 						path: 'actcard',

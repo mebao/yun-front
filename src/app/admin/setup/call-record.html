@@ -1,0 +1,59 @@
+<!-- <header-nav></header-nav> -->
+<div class="content-section admin-clinicroom">
+	<top-bar [data]="topBar"></top-bar>
+	<!-- <div nz-row class="mt10 mb10">
+		<div nz-col [nzSpan]="8">
+			<div nz-form-item nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="name">辅助治疗名：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-input [(ngModel)]="searchInfo.name" [nzPlaceHolder]="'请输入辅助治疗名'" [nzSize]="'large'"></nz-input>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<div class="text-right mt10 mb10">
+        <button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+	</div>
+	<div *ngIf="hasData && callRecordList.length > 0" class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到通话记录' + callRecordList.length + '条'"></nz-alert>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="callRecordList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+		<thead nz-thead>
+			<tr>
+				<th>家长姓名</th>
+				<th>手机号码</th>
+				<th>开始时间</th>
+				<th>结束时间</th>
+				<th>通话人</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody nz-tbody>
+			<tr *ngFor="let callRecord of callRecordList">
+				<td>{{callRecord.userName}}</td>
+				<td>{{callRecord.mobile}}</td>
+				<td>{{callRecord.startTime}}</td>
+				<td>{{callRecord.endTime}}</td>
+				<td>{{callRecord.adminName}}</td>
+				<td>
+					<button (click)="callfile(callRecord)" nz-button [nzType]="'primary'" [nzSize]="'large'">电话录音</button>
+				</td>
+			</tr>
+		</tbody>
+		<span noResult>暂无通话记录信息</span>
+	</nz-table>
+</div>
+<nz-modal [nzVisible]="modalTab" [nzWidth]="900" [nzTitle]="'电话录音'" [nzContent]="contentTab" [nzFooter]="footerTab" (nzOnCancel)="close()">
+	<ng-template #contentTab>
+    	<audio controls loop #fileDom>
+			<source type="audio/ogg" src="{{fileUrl}}">
+			<source type="audio/mpeg" src="{{fileUrl}}">
+		</audio>
+	</ng-template>
+	<ng-template #footerTab>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()">关闭</button>
+	</ng-template>
+</nz-modal>
+<loading [show]="loadingShow"></loading>

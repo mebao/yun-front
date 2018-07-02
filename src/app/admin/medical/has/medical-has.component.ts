@@ -31,7 +31,8 @@ export class MedicalHasComponent{
 		bid: string,
 		isPrescribed: string,
 		price: string,
-		canDiscount: string,
+        canDiscount: string,
+        doctor_use: string,
 		unit: string,
 		one_unit: string,
 		otc: string,
@@ -75,7 +76,8 @@ export class MedicalHasComponent{
 			bid: '',
 			isPrescribed: '',
 			price: '',
-			canDiscount: '',
+            canDiscount: '',
+            doctor_use: '',
 			unit: '',
 			one_unit: '',
 			otc: '',
@@ -113,7 +115,8 @@ export class MedicalHasComponent{
 							bid: results.list[0].others[0].bid,
 							isPrescribed: results.list[0].others[0].isPrescribed,
 							price: results.list[0].others[0].price,
-							canDiscount: results.list[0].others[0].canDiscount,
+                            canDiscount: results.list[0].others[0].canDiscount,
+                            doctor_use: results.list[0].others[0].doctorUse,
 							unit: results.list[0].unit,
 							one_unit: results.list[0].oneUnit,
 							otc: results.list[0].others[0].otc,
@@ -230,6 +233,11 @@ export class MedicalHasComponent{
 			this.btnCanEdit = false;
 			return;
 		}
+		if(this.adminService.isFalse(f.value.doctor_use) || f.value.doctor_use == ''){
+			this.toastTab('医生是否可用不可为空', 'error');
+			this.btnCanEdit = false;
+			return;
+		}
 		if(this.adminService.isFalse(f.value.price)){
 			this.toastTab('售价不可为空', 'error');
 			this.btnCanEdit = false;
@@ -259,7 +267,8 @@ export class MedicalHasComponent{
 			remark: f.value.remark,
 			price: f.value.price.toString(),
 			can_discount: f.value.canDiscount,
-			is_prescribed: f.value.is_prescribed,
+            is_prescribed: f.value.is_prescribed,
+            doctor_use: f.value.doctor_use,
 			expiring_date: this.info.expiring_date,
 		}
 

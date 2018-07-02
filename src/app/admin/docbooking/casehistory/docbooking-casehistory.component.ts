@@ -181,6 +181,11 @@ export class DocbookingCasehistoryComponent implements OnInit{
 	printCSS:any;
 	printStyle:any;
 	hasTemplet:boolean;
+	caseHistory: {
+		hasData: boolean,
+		showTab: boolean,
+		list: any[],
+	}
 
 	constructor(
 		private _message: NzMessageService,
@@ -414,6 +419,11 @@ export class DocbookingCasehistoryComponent implements OnInit{
 		this.showExamination = false;
 
 		this.btnCanEdit = false;
+		this.caseHistory = {
+			hasData: false,
+			showTab: false,
+			list: [],
+		}
 
 		sessionStorage.setItem('canDeactivate', 'casehistory');
 	}
@@ -1333,5 +1343,220 @@ export class DocbookingCasehistoryComponent implements OnInit{
 				this.editType = 'view';
 			}, 2000);
 		}
+	}
+
+	// 往期病例
+	showCaseHistory() {
+		if(!this.caseHistory.hasData){
+			this.loadingShow = true;
+			var urlOptions = this.url + '&child_id=' + this.booking.childId + '&doctor_id=' + this.doctorId + '&unchecked=0';
+			this.adminService.searchcasehistory(urlOptions).then((data) => {
+				if(data.status == 'no'){
+					this.loadingShow = false;
+					this._message.error(data.errorMsg);
+				}else{
+					var results = JSON.parse(JSON.stringify(data.results));
+					if(results.list.length > 0){
+						for(var i = 0; i < results.list.length; i++){
+							results.list[i].time = results.list[i].time ? this.adminService.dateFormat(results.list[i].time) : results.list[i].time;
+						}
+					}
+					this.loadingShow = false;
+					this.caseHistory = {
+						hasData: true,
+						showTab: true,
+						list: results.list,
+					}
+				}
+			}).catch(() => {
+				this.loadingShow = false;
+				this._message.error('服务器错误');
+			});
+		}else{
+			this.caseHistory.showTab = true;
+		}
+	}
+
+	closeCaseHistory() {
+		this.caseHistory.showTab = false;
+	}
+
+	copyCase(caseH) {
+		var keyList = [
+			{
+				info_key: 'weight',
+				key: 'weight',
+			},
+			{
+				info_key: 'mid_weight',
+				key: 'midWeight',
+			},
+			{
+				info_key: 'compare_weight',
+				key: 'compareWeight',
+			},
+			{
+				info_key: 'height',
+				key: 'height',
+			},
+			{
+				info_key: 'mid_height',
+				key: 'midHeight',
+			},
+			{
+				info_key: 'compare_height',
+				key: 'compareHeight',
+			},
+			{
+				info_key: 'head_circum',
+				key: 'headCircum',
+			},
+			{
+				info_key: 'breast_circum',
+				key: 'breastCircum',
+			},
+			{
+				info_key: 'teeth',
+				key: 'teeth',
+			},
+			{
+				info_key: 'topic_comment',
+				key: 'topicComment',
+			},
+			{
+				info_key: 'check_result',
+				key: 'checkResult',
+			},
+			{
+				info_key: 'present_illness',
+				key: 'presentIllness',
+			},
+			{
+				info_key: 'previous_history',
+				key: 'previousHistory',
+			},
+			{
+				info_key: 'allergy',
+				key: 'allergy',
+			},
+			{
+				info_key: 'family_history',
+				key: 'familyHistory',
+			},
+			{
+				info_key: 'breed_history',
+				key: 'breedHistory',
+			},
+			{
+				info_key: 'growth_history',
+				key: 'growthHistory',
+			},
+			{
+				info_key: 'physical_check',
+				key: 'physicalCheck',
+			},
+			{
+				info_key: 'body_temperature',
+				key: 'bodyTemperature',
+			},
+			{
+				info_key: 'breathe',
+				key: 'breathe',
+			},
+			{
+				info_key: 'blood_pressure',
+				key: 'bloodPressure',
+			},
+			{
+				info_key: 'face_neck',
+				key: 'faceNeck',
+			},
+			{
+				info_key: 'face_neck_other',
+				key: 'faceNeck',
+			},
+			{
+				info_key: 'heart_lung',
+				key: 'heartLung',
+			},
+			{
+				info_key: 'heart_lung_other',
+				key: 'heartLung',
+			},
+			{
+				info_key: 'abdomen',
+				key: 'abdomen',
+			},
+			{
+				info_key: 'abdomen_other',
+				key: 'abdomen',
+			},
+			{
+				info_key: 'limbs',
+				key: 'limbs',
+			},
+			{
+				info_key: 'limbs_other',
+				key: 'limbs',
+			},
+			{
+				info_key: 'nervous_system',
+				key: 'nervousSystem',
+			},
+			{
+				info_key: 'nervous_system_other',
+				key: 'nervousSystem',
+			},
+			{
+				info_key: 'blood_routine_examination',
+				key: 'bloodRoutineExamination',
+			},
+			{
+				info_key: 'blood_routine_examination_other',
+				key: 'bloodRoutineExamination',
+			},
+			{
+				info_key: 'routine_urine',
+				key: 'routineUrine',
+			},
+			{
+				info_key: 'routine_urine_other',
+				key: 'routineUrine',
+			},
+			{
+				info_key: 'bone_density',
+				key: 'boneDensity',
+			},
+			{
+				info_key: 'BALP',
+				key: 'BALP',
+			},
+			{
+				info_key: 'BALP_other',
+				key: 'BALP',
+			},
+			{
+				info_key: 'trace_element',
+				key: 'traceElement',
+			},
+			{
+				info_key: 'trace_element_other',
+				key: 'traceElement',
+			},
+			{
+				info_key: 'diagnosis',
+				key: 'diagnosis',
+			},
+			{
+				info_key: 'advise',
+				key: 'advise',
+			},
+		]
+		for(var key of keyList){
+			if(this.info[key.info_key] != null && caseH[key.key] != null){
+				this.info[key.info_key] = caseH[key.key];
+			}
+		}
+		this.caseHistory.showTab = false;
 	}
 }

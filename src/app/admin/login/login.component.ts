@@ -261,7 +261,13 @@ export class LoginComponent{
             authority: any[],
             url: string,
             infos: any[],
-        }
+		},
+		callRecord: {
+            use: string,
+            authority: any[],
+            url: string,
+            infos: any[],
+		}
 	}
 
 	constructor(
@@ -489,6 +495,12 @@ export class LoginComponent{
                 use: '',
                 authority: ['see'],
                 url: '/admin/mout/list',
+                infos: [],
+            },
+            callRecord: {
+                use: '',
+                authority: ['see'],
+                url: '/admin/callRecord',
                 infos: [],
             }
 		}

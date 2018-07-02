@@ -239,6 +239,11 @@ export class LeftNavComponent{
 			use: string,
 			authority: any[],
 			infos: any[],
+		},
+		callRecord: {
+			use: string,
+			authority: any[],
+			infos: any[],
 		}
 	}
 
@@ -511,6 +516,11 @@ export class LeftNavComponent{
 				infos: [],
 			},
 			moutList: {
+				use: '',
+				authority: ['see'],
+				infos: [],
+			},
+			callRecord: {
 				use: '',
 				authority: ['see'],
 				infos: [],

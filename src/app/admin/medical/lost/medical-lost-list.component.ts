@@ -1,166 +1,153 @@
-import { Component, OnInit }                      from '@angular/core';
-import { Router }                                 from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { AdminService }                           from '../../admin.service';
+import { AdminService } from '../../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
-	selector: 'app-medical-lost-list',
-	templateUrl: './medical-lost-list.component.html',
-	styleUrls: ['./medical-lost-list.component.scss'],
+    selector: 'app-medical-lost-list',
+    templateUrl: './medical-lost-list.component.html',
+    styleUrls: ['../../../../assets/css/ant-common.scss'],
 })
-export class MedicalLostListComponent{
-	topBar: {
-		title: string,
-		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-	// 权限
-	moduleAuthority: {
-		see: boolean,
-		seePut: boolean,
-		seeHas: boolean,
-		seeLost: boolean,
-		editLost: boolean,
-		seeCheck: boolean,
-	}
-	loadingShow: boolean;
-	hasData: boolean;
-	list: any[];
-	url: string;
-	info: {
-		b_date: string,
-		b_date_num: number,
-		l_date: string,
-		l_date_num: number,
-		type: string,
-	}
+export class MedicalLostListComponent {
+    topBar: {
+        title: string,
+        back: boolean,
+    };
+    // 权限
+    moduleAuthority: {
+        see: boolean,
+        seePut: boolean,
+        seeHas: boolean,
+        seeLost: boolean,
+        editLost: boolean,
+        seeCheck: boolean,
+    }
+    selectedIndex: number;
+    loadingShow: boolean;
+    hasData: boolean;
+    list: any[];
+    url: string;
+    searchInfo: {
+        date: [Date, Date],
+        type: string,
+    }
 
-	constructor(
-		public adminService: AdminService,
-		private router: Router,
-	) {}
+    constructor(
+        private message: NzMessageService,
+        public adminService: AdminService,
+        private router: Router,
+    ) { }
 
-	ngOnInit() {
-		this.topBar = {
-			title: '药房管理',
-			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
+    ngOnInit() {
+        this.topBar = {
+            title: '药房管理',
+            back: true,
+        }
 
-		this.moduleAuthority = {
-			see: false,
-			seePut: false,
-			seeHas: false,
-			seeLost: false,
-			editLost: false,
-			seeCheck: false,
-		}
-		// 那段角色，是超级管理员0还是普通角色
-		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
-			for(var key in this.moduleAuthority){
-				this.moduleAuthority[key] = true;
-			}
-		}else{
-			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
-			for(var i = 0; i < authority.infos.length; i++){
-				this.moduleAuthority[authority.infos[i].keyName] = true;
-			}
-		}
+        this.moduleAuthority = {
+            see: false,
+            seePut: false,
+            seeHas: false,
+            seeLost: false,
+            editLost: false,
+            seeCheck: false,
+        }
+        // 那段角色，是超级管理员0还是普通角色
+        // 如果是超级管理员，获取所有权限
+        if (this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') {
+            for (var key in this.moduleAuthority) {
+                this.moduleAuthority[key] = true;
+            }
+        } else {
+            var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+            for (var i = 0; i < authority.infos.length; i++) {
+                this.moduleAuthority[authority.infos[i].keyName] = true;
+            }
+        }
 
-		this.loadingShow = false;
+        this.selectedIndex = 0;
+        if (this.moduleAuthority.see) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seePut) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seeHas) {
+            this.selectedIndex++;
+        }
 
-		this.hasData = false;
+        this.loadingShow = false;
 
-		this.list = [];
-		this.info = {
-			b_date: '',
-			b_date_num: 0,
-			l_date: '',
-			l_date_num: 0,
-			type: '1,2',
-		}
+        this.hasData = false;
 
-		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+        this.list = [];
+        
+        this.searchInfo = {
+            date: [null, null],
+            type: '1,2',
+        }
+        const sessionSearch = JSON.parse(sessionStorage.getItem('search-medicalPurchaseList'));
+        if (sessionSearch) {
+            this.searchInfo = {
+                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
+                type: sessionSearch.type
+            }
+        }
 
-		this.search();
+        this.url = '?username=' + this.adminService.getUser().username
+            + '&token=' + this.adminService.getUser().token
+            + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-	}
+        this.search();
+    }
 
-	getData(urlOptions) {
-		this.adminService.searchmslost(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						results.list[i].infoLength = results.list[i].info.length;
-					}
-				}
-				this.list = results.list;
-				this.hasData = true;
-				this.loadingShow = false;
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+    getData(urlOptions) {
+        this.adminService.searchmslost(urlOptions).then((data) => {
+            if (data.status == 'no') {
+                this.loadingShow = false;
+                this.message.error(data.errorMsg);
+            } else {
+                var results = JSON.parse(JSON.stringify(data.results));
+                if (results.list.length > 0) {
+                    for (var i = 0; i < results.list.length; i++) {
+                        results.list[i].infoLength = results.list[i].info.length;
+                    }
+                }
+                this.list = results.list;
+                this.hasData = true;
+                this.loadingShow = false;
+            }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.message.error('服务器错误');
         });
-	}
+    }
 
-	search() {
-		this.loadingShow = true;
-		sessionStorage.setItem('search-medicalLostList', JSON.stringify(this.info));
-		var urlOptions = this.url;
-		if(this.info.b_date != ''){
-			urlOptions += '&b_date=' + this.info.b_date;
-		}
-		if(this.info.l_date != ''){
-			urlOptions += '&l_date=' + this.info.l_date;
-		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
-		}
-		this.getData(urlOptions);
-	}
+    search() {
+        this.loadingShow = true;
 
-	// 选择日期
-	changeDate(_value, key) {
-		this.info[key] = JSON.parse(_value).value;
-		this.info[key + '_num'] = new Date(JSON.parse(_value).value).getTime();
-	}
+        sessionStorage.setItem('search-medicalLostList', JSON.stringify(this.searchInfo));
+        var urlOptions = this.url;
+        if (this.searchInfo.date[0]) {
+            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        }
+        if (this.searchInfo.date[1]) {
+            urlOptions += '&l_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        }
+        if (this.searchInfo.type != '') {
+            urlOptions += '&type=' + this.searchInfo.type;
+        }
+        this.getData(urlOptions);
+    }
 
-	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList');
-		sessionStorage.removeItem('search-medicalPurchaseList');
-		sessionStorage.removeItem('search-medicalHasList');
-		sessionStorage.removeItem('search-medicalCheckList');
-		this.router.navigate([_url]);
-	}
+    goUrl(_url) {
+        this.loadingShow = true;
+        sessionStorage.removeItem('search-medicalList');
+        sessionStorage.removeItem('search-medicalPurchaseList');
+        sessionStorage.removeItem('search-medicalHasList');
+        sessionStorage.removeItem('search-medicalCheckList');
+        this.router.navigate([_url]);
+    }
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

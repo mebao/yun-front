@@ -33,15 +33,13 @@ export class BookingListComponent implements OnInit{
 	doctorlist: any[];
 	servicelist: any[];
 	searchInfo: {
-		doctor_id: string;
-		service_id: string;
+		doctor_id: string,
+		service_id: string,
 		mobile: string,
 		child_id: string,
 		creator_name: string,
-		cdate_less: Date,
-		cdate_big: Date,
-		bdate_less: Date,
-		bdate_big: Date,
+		cdate: [Date, Date],
+		bdate: [Date, Date],
 		statuslist: string,
 		status: string,
 		has_sms: string,
@@ -57,6 +55,7 @@ export class BookingListComponent implements OnInit{
 	modalTab: boolean;
 	modalConfirmTab: boolean;
 	booking: {
+		adminName: string,
 		mobile: string,
 		genderText: string,
 		age: string,
@@ -92,6 +91,7 @@ export class BookingListComponent implements OnInit{
 			wayText: string,
 		},
 		cancel_cause: string,
+		call_sid: string,
 	};
 	hasData: boolean;
 	// 家长
@@ -111,8 +111,6 @@ export class BookingListComponent implements OnInit{
     // 禁止支付按钮连续提交
     btnCanEdit: boolean;
 	printStyle: string;
-	// 网络电话
-	calling: boolean;
 	// 确认打印
 	modalTabPrint: boolean;
 
@@ -197,10 +195,8 @@ export class BookingListComponent implements OnInit{
 			mobile: '',
 			child_id: '',
 			creator_name: '',
-			cdate_less: null,
-			cdate_big: null,
-			bdate_less: new Date(),
-			bdate_big: new Date(),
+			cdate: [null, null],
+			bdate: [new Date(), new Date()],
 			statuslist: '',
 			status: '',
 			has_sms: '',
@@ -286,6 +282,7 @@ export class BookingListComponent implements OnInit{
 			 + '&token=' + this.adminService.getUser().token
 			 + '&clinic_id=' + this.adminService.getUser().clinicId;
 
+		this.doctorlist = [];
 		this.getDoctorList();
 		this.servicelist = [];
 		this.getServiceList();
@@ -340,7 +337,6 @@ export class BookingListComponent implements OnInit{
 		this.modalBackBookingFee = false;
 		this.btnCanEdit = false;
 
-		this.calling = false;
 		this.modalTabPrint = false;
 	}
 
@@ -350,6 +346,7 @@ export class BookingListComponent implements OnInit{
 
 	initBooking() {
 		this.booking = {
+			adminName: '',
 			mobile: '',
 			genderText: '',
 			age: '',
@@ -383,6 +380,7 @@ export class BookingListComponent implements OnInit{
 				wayText: '',
 			},
 			cancel_cause: '',
+			call_sid: '',
 		};
 	}
 
@@ -660,48 +658,20 @@ export class BookingListComponent implements OnInit{
 		this.getList(urlOptions + '&weekindex=' + this.weekNum, 'week');
 		//列表
 		var urlOptionsList = this.getUrlOptios();
-		if(this.searchInfo.cdate_less){
-			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_less));
+		if(this.searchInfo.cdate[0]){
+			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[0]));
 		}
-		if(this.searchInfo.cdate_big){
-			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_big));
+		if(this.searchInfo.cdate[1]){
+			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[1]));
 		}
-		if(this.searchInfo.bdate_less){
-			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_less));
+		if(this.searchInfo.bdate[0]){
+			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[0]));
 		}
-		if(this.searchInfo.bdate_big){
-			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_big));
+		if(this.searchInfo.bdate[1]){
+			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[1]));
 		}
 		this.getList(urlOptionsList, 'list');
 	}
-
-    _disabledStartCDate = (startValue) => {
-        if (!startValue || !this.searchInfo.cdate_less) {
-            return false;
-        }
-        return startValue.getTime() > this.searchInfo.cdate_less.getTime();
-    };
-
-    _disabledEndCDate = (endValue) => {
-        if (!endValue || !this.searchInfo.cdate_big) {
-            return false;
-        }
-        return endValue.getTime() < this.searchInfo.cdate_big.getTime();
-    };
-
-    _disabledStartBDate = (startValue) => {
-        if (!startValue || !this.searchInfo.bdate_less) {
-            return false;
-        }
-        return startValue.getTime() > this.searchInfo.bdate_less.getTime();
-    };
-
-    _disabledEndBDate = (endValue) => {
-        if (!endValue || !this.searchInfo.bdate_big) {
-            return false;
-        }
-        return endValue.getTime() < this.searchInfo.bdate_big.getTime();
-    };
 
 	//查询今天
 	// today() {
@@ -968,51 +938,44 @@ export class BookingListComponent implements OnInit{
 
 	
 	calluser() {
-		if(localStorage.getItem('call_sid')){
-			this._message.error('正在结束上次未关闭通话');
-			this.hangupuser('pre');
-		}else{
-			this.loadingShow = true;
-			var params = {
-				username: this.adminService.getUser().username,
-				token: this.adminService.getUser().token,
-				clinic_id: this.adminService.getUser().clinicId,
-				mobile: this.booking.mobile,
-				user_id: this.booking.creatorId,
-			}
-
-			this.adminService.calluser(params).then((data) => {
-				this.loadingShow = false;
-				if(data.status == 'no'){
-					this._message.error(data.errorMsg);
-				}else{
-					var results = JSON.parse(JSON.stringify(data.results));
-					localStorage.setItem('call_sid', results.call_sid);
-					this._message.success('网络电话拨打成功');
-					this.calling = true;
-				}
-			}).catch(() => {
-				this.loadingShow = false;
-				this._message.error('服务器错误');
-			});
+		this.loadingShow = true;
+		var params = {
+			username: this.adminService.getUser().username,
+			token: this.adminService.getUser().token,
+			clinic_id: this.adminService.getUser().clinicId,
+			mobile: this.booking.mobile,
+			user_id: this.booking.creatorId,
 		}
+
+		this.adminService.calluser(params).then((data) => {
+			this.loadingShow = false;
+			if(data.status == 'no'){
+				this._message.error(data.errorMsg);
+			}else{
+				var results = JSON.parse(JSON.stringify(data.results));
+				this.booking.call_sid = results.call_sid;
+				this._message.success('网络电话拨打成功');
+			}
+		}).catch(() => {
+			this.loadingShow = false;
+			this._message.error('服务器错误');
+		});
 	}
 
-	hangupuser(type) {
+	hangupuser() {
 		this.loadingShow = true;
 		var urlOptions = '?username=' + this.adminService.getUser().username
 			+ '&token=' + this.adminService.getUser().token
 			+ '&clinic_id=' + this.adminService.getUser().clinicId
-			+ '&callSid=' + localStorage.getItem('call_sid');
+			+ '&callSid=' + this.booking.call_sid;
 
 		this.adminService.hangupuser(urlOptions).then((data) => {
 			this.loadingShow = false;
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);
 			}else{
-				localStorage.removeItem('call_sid');
-				this._message.success('网络电话已挂断' + (type == '' ? '' : '，请重新拨打电话'));
-				this.calling = false;
+				this.booking.call_sid = '';
+				this._message.success('网络电话已挂断');
 			}
 		}).catch(() => {
 			this.loadingShow = false;

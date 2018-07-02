@@ -11,20 +11,20 @@ import { AngCommonModule }      from '../../common/ang-common.module';
 import { HeaderNavComponent }   from './header-nav.component';
 import { LeftNavComponent }     from './left-nav.component';
 import { TopBarComponent }      from './top-bar.component';
-import { MouseInDirective }     from '../../directive/mouse-in';
+import { NllEventListenerDirective }  from '../../directive/nll-event-listener';
 
 @NgModule({
     declarations: [
         HeaderNavComponent,
         LeftNavComponent,
         TopBarComponent,
-        MouseInDirective,
+        NllEventListenerDirective,
     ],
     exports: [
         HeaderNavComponent,
         LeftNavComponent,
         TopBarComponent,
-        MouseInDirective,
+        NllEventListenerDirective,
     ],
     imports: [
         CommonModule,

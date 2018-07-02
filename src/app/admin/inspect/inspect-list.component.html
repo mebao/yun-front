@@ -4,7 +4,10 @@
 	<div *ngIf="moduleAuthority.edit" class="mb10">
 		<button (click)="add()" nz-button [nzType]="'primary'" [nzSize]="'large'">新增检查项目</button>
 	</div>
-	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="projectlist" [nzBordered]="true" [nzIsPagination]="false">
+	<div class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到检查项目' + projectlist.length + '条'"></nz-alert>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="projectlist" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
 				<th nz-th>项目名</th>
@@ -25,6 +28,7 @@
 				</td>
 			</tr>
 		</tbody>
+		<span noResult>暂无检查项目信息</span>
 	</nz-table>
 </div>
 <loading [show]="loadingShow"></loading>

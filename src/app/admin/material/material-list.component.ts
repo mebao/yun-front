@@ -2,20 +2,17 @@ import { Component, OnInit }                   from '@angular/core';
 import { Router }                              from '@angular/router';
 
 import { AdminService }                        from '../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-material-list',
 	templateUrl: './material-list.component.html',
+    styleUrls: ['../../../assets/css/ant-common.scss'],
 })
 export class MaterialListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -30,12 +27,13 @@ export class MaterialListComponent{
 	hasData: boolean;
 	url: string;
 	materialSupplies: any[];
-	info: {
+	serachInfo: {
 		name: string,
 		type: string,
-	}
+	};
 
 	constructor(
+    private message: NzMessageService,
 		public adminService: AdminService,
 		private router: Router,
 	) {}
@@ -44,11 +42,6 @@ export class MaterialListComponent{
 		this.topBar = {
 			title: '物资管理',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		// 权限
@@ -74,13 +67,12 @@ export class MaterialListComponent{
 		}
 
 		this.loadingShow = false;
-
 		this.hasData = false;
 
 		if(JSON.parse(sessionStorage.getItem('search-materialList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-materialList'));
+			this.serachInfo = JSON.parse(sessionStorage.getItem('search-materialList'));
 		}else{
-			this.info = {
+			this.serachInfo = {
 				name: '',
 				type: '3,4',
 			}
@@ -98,7 +90,7 @@ export class MaterialListComponent{
 		this.adminService.medicalsupplieslist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+        this.message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.materialSupplies = results.medicalSupplies;
@@ -107,24 +99,25 @@ export class MaterialListComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+      this.message.error('服务器错误');
         });
 	}
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-materialList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-materialList', JSON.stringify(this.serachInfo));
 		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.serachInfo.name != ''){
+			urlOptions += '&name=' + this.serachInfo.name;
 		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
+		if(this.serachInfo.type != ''){
+			urlOptions += '&type=' + this.serachInfo.type;
 		}
 		this.getData(urlOptions);
 	}
 
 	goUrl(_url) {
+        this.loadingShow = true;
 		sessionStorage.removeItem('search-materialPurchaseList');
 		sessionStorage.removeItem('search-materialHasList');
 		sessionStorage.removeItem('search-materialLostList');
@@ -138,20 +131,5 @@ export class MaterialListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/material/index'], {queryParams: {id: _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

@@ -54,7 +54,10 @@
 	<div class="text-right mt10 mb10">
         <button (click)="search()" nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
 	</div>
-	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="assistList" [nzBordered]="true" [nzIsPagination]="false">
+	<div class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到辅助治疗' + assistList.length + '条'"></nz-alert>
+	</div>
+	<nz-table *ngIf="hasData" #nzTable [nzDataSource]="assistList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
 		<thead nz-thead>
 			<tr>
 				<th nz-th>辅助治疗名</th>
@@ -99,6 +102,7 @@
 				</ng-container>
 			</ng-container>
 		</tbody>
+		<span noResult>暂无辅助治疗信息</span>
 	</nz-table>
 </div>
 <loading [show]="loadingShow"></loading>

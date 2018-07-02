@@ -1,191 +1,180 @@
-import { Component, OnInit }                     from '@angular/core';
-import { Router }                                from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { AdminService }                          from '../../admin.service';
-import { config }                                from '../../../config';
+import { AdminService } from '../../admin.service';
+import { config } from '../../../config';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
-	selector: 'app-medical-has-list',
-	templateUrl: './medical-has-list.component.html',
+    selector: 'app-medical-has-list',
+    templateUrl: './medical-has-list.component.html',
+    styleUrls: ['../../../../assets/css/ant-common.scss']
 })
-export class MedicalHasListComponent{
-	topBar: {
-		title: string,
-		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
-	};
-	// 权限
-	moduleAuthority: {
-		see: boolean,
-		seePut: boolean,
-		seeHas: boolean,
-		editHas: boolean,
-		seeLost: boolean,
-		seeCheck: boolean,
-	}
-	loadingShow: boolean;
-	hasData: boolean;
-	list: any[];
-	url: string;
-	info: {
-		name: string,
-		type: string,
-		l_stock: string,
-		b_stock: string,
-	}
+export class MedicalHasListComponent {
+    topBar: {
+        title: string,
+        back: boolean,
+    };
 
-	constructor(
-		public adminService: AdminService,
-		private router: Router,
-	) {}
+    // 权限
+    moduleAuthority: {
+        see: boolean,
+        seePut: boolean,
+        seeHas: boolean,
+        editHas: boolean,
+        seeLost: boolean,
+        seeCheck: boolean,
+    }
+    selectedIndex: number;
+    loadingShow: boolean;
+    hasData: boolean;
+    list: any[];
+    url: string;
+    searchInfo: {
+        name: string,
+        type: string,
+        l_stock: string,
+        b_stock: string,
+    }
 
-	ngOnInit() {
-		this.topBar = {
-			title: '药房管理',
-			back: true,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
-		}
+    constructor(
+        private message: NzMessageService,
+        public adminService: AdminService,
+        private router: Router,
+    ) { }
 
-		this.moduleAuthority = {
-			see: false,
-			seePut: false,
-			seeHas: false,
-			editHas: false,
-			seeLost: false,
-			seeCheck: false,
-		}
-		// 那段角色，是超级管理员0还是普通角色
-		// 如果是超级管理员，获取所有权限
-		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
-			for(var key in this.moduleAuthority){
-				this.moduleAuthority[key] = true;
-			}
-		}else{
-			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
-			for(var i = 0; i < authority.infos.length; i++){
-				this.moduleAuthority[authority.infos[i].keyName] = true;
-			}
-		}
+    ngOnInit() {
+        this.topBar = {
+            title: '药房管理',
+            back: true,
+        }
 
-		this.loadingShow = false;
+        this.moduleAuthority = {
+            see: false,
+            seePut: false,
+            seeHas: false,
+            editHas: false,
+            seeLost: false,
+            seeCheck: false,
+        }
 
-		this.hasData = false;
+        // 那段角色，是超级管理员0还是普通角色
+        // 如果是超级管理员，获取所有权限
+        if (this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9') {
+            for (var key in this.moduleAuthority) {
+                this.moduleAuthority[key] = true;
+            }
+        } else {
+            var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+            for (var i = 0; i < authority.infos.length; i++) {
+                this.moduleAuthority[authority.infos[i].keyName] = true;
+            }
+        }
 
-		this.list = [];
+        this.selectedIndex = 0;
+        if (this.moduleAuthority.see) {
+            this.selectedIndex++;
+        }
+        if (this.moduleAuthority.seePut) {
+            this.selectedIndex++;
+        }
 
-		if(JSON.parse(sessionStorage.getItem('search-medicalHasList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-medicalHasList'));
-		}else{
-			this.info = {
-				name: '',
-				type: '1,2',
-				l_stock: '',
-				b_stock: '',
-			}
-		}
+        this.loadingShow = false;
+        this.hasData = false;
+        this.list = [];
 
-		this.url = '?username=' + this.adminService.getUser().username
-			 + '&token=' + this.adminService.getUser().token
-			 + '&clinic_id=' + this.adminService.getUser().clinicId;
+        if (JSON.parse(sessionStorage.getItem('search-medicalHasList'))) {
+            this.searchInfo = JSON.parse(sessionStorage.getItem('search-medicalHasList'));
+        } else {
+            this.searchInfo = {
+                name: '',
+                type: '1,2',
+                l_stock: '',
+                b_stock: '',
+            }
+        }
 
-		this.search();
-	}
+        this.url = '?username=' + this.adminService.getUser().username
+            + '&token=' + this.adminService.getUser().token
+            + '&clinic_id=' + this.adminService.getUser().clinicId;
 
-	getData(urlOptions) {
-		this.adminService.searchsupplies(urlOptions).then((data) => {
-			if(data.status == 'no'){
-				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
-			}else{
-				var results = JSON.parse(JSON.stringify(data.results));
-				if(results.list.length > 0){
-					for(var i = 0; i < results.list.length; i++){
-						if(results.list[i].others.length){
-							for(var j = 0; j < results.list[i].others.length; j++){
-								results.list[i].others[j].expiringDate = results.list[i].others[j].expiringDate ? this.adminService.dateFormat(results.list[i].others[j].expiringDate) : '';
-							}
-						}
-					}
-				}
-				this.list = results.list;
-				this.hasData = true;
-				this.loadingShow = false;
-			}
-		}).catch(() => {
-			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+        this.search();
+    }
+
+    getData(urlOptions) {
+        this.adminService.searchsupplies(urlOptions).then((data) => {
+            if (data.status == 'no') {
+                this.loadingShow = false;
+                this.message.error(data.errorMsg);
+            } else {
+                var results = JSON.parse(JSON.stringify(data.results));
+                if (results.list.length > 0) {
+                    for (var i = 0; i < results.list.length; i++) {
+                        if (results.list[i].others.length) {
+                            for (var j = 0; j < results.list[i].others.length; j++) {
+                                results.list[i].others[j].expiringDate = results.list[i].others[j].expiringDate ? this.adminService.dateFormat(results.list[i].others[j].expiringDate) : '';
+                            }
+                        }
+                    }
+                }
+                this.list = results.list;
+                this.hasData = true;
+                this.loadingShow = false;
+            }
+        }).catch(() => {
+            this.loadingShow = false;
+            this.message.error('服务器错误');
         });
-	}
+    }
 
-	search() {
-		this.loadingShow = true;
-		sessionStorage.setItem('search-medicalHasList', JSON.stringify(this.info));
-		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
-		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
-		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
-		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
-		}
-		this.getData(urlOptions);
-	}
+    search() {
+        this.loadingShow = true;
+        sessionStorage.setItem('search-medicalHasList', JSON.stringify(this.searchInfo));
+        var urlOptions = this.url;
+        if (this.searchInfo.name != '') {
+            urlOptions += '&name=' + this.searchInfo.name;
+        }
+        if (this.searchInfo.type != '') {
+            urlOptions += '&type=' + this.searchInfo.type;
+        }
+        if (this.searchInfo.l_stock && this.searchInfo.l_stock != '') {
+            urlOptions += '&l_stock=' + this.searchInfo.l_stock;
+        }
+        if (this.searchInfo.b_stock && this.searchInfo.b_stock != '') {
+            urlOptions += '&b_stock=' + this.searchInfo.b_stock;
+        }
+        this.getData(urlOptions);
+    }
 
-	export() {
-		var urlOptions=this.url;
-		urlOptions += '&stockType=1';
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
-		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
-		}
-		if(this.info.l_stock && this.info.l_stock != ''){
-			urlOptions += '&l_stock=' + this.info.l_stock;
-		}
-		if(this.info.b_stock && this.info.b_stock != ''){
-			urlOptions += '&b_stock=' + this.info.b_stock;
-		}
-		window.location.href = config.baseHTTP() + '/mebcrm/stockexport'+ urlOptions;
-	}
+    export() {
+        var urlOptions = this.url;
+        urlOptions += '&stockType=1';
+        if (this.searchInfo.name != '') {
+            urlOptions += '&name=' + this.searchInfo.name;
+        }
+        if (this.searchInfo.type != '') {
+            urlOptions += '&type=' + this.searchInfo.type;
+        }
+        if (this.searchInfo.l_stock && this.searchInfo.l_stock != '') {
+            urlOptions += '&l_stock=' + this.searchInfo.l_stock;
+        }
+        if (this.searchInfo.b_stock && this.searchInfo.b_stock != '') {
+            urlOptions += '&b_stock=' + this.searchInfo.b_stock;
+        }
+        window.location.href = config.baseHTTP + '/mebcrm/stockexport' + urlOptions;
+    }
 
-	goUrl(_url) {
-		sessionStorage.removeItem('search-medicalList');
-		sessionStorage.removeItem('search-medicalPurchaseList');
-		sessionStorage.removeItem('search-medicalLostList');
-		sessionStorage.removeItem('search-medicalCheckList');
-		this.router.navigate([_url]);
-	}
+    goUrl(_url) {
+        this.loadingShow = true;
+        sessionStorage.removeItem('search-medicalList');
+        sessionStorage.removeItem('search-medicalPurchaseList');
+        sessionStorage.removeItem('search-medicalLostList');
+        sessionStorage.removeItem('search-medicalCheckList');
+        this.router.navigate([_url]);
+    }
 
-	update(_id) {
-		this.router.navigate(['./admin/medical/has'], {queryParams: {id: _id}});
-	}
+    update(_id) {
+        this.router.navigate(['./admin/medical/has'], { queryParams: { id: _id } });
+    }
 
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
-	}
 }

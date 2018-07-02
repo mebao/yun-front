@@ -183,6 +183,22 @@
 				</div>
 			</div>
 			<div class="pure-g pure-tab">
+                <div class="pure-u-8-24">
+                    <div class="pure-control-group">
+                        <label for="doctor_use">
+                            <span>医生是否可用</span>
+                        </label>
+						<select id="doctor_use" name="doctor_use" #doctor_use="ngModel" [(ngModel)]="info.doctor_use" required="">
+							<option value="0">不可用</option>
+							<option value='1'>可用</option>
+						</select>
+                        <div *ngIf="doctor_use.errors && (doctor_use.dity || doctor_use.touched)" class="alert alert-danger">
+                            <div [hidden]="!doctor_use.errors.required">
+                                医生是否可用不可为空
+                            </div>
+                        </div>
+                    </div>
+                </div>
 				<div class="pure-u-8-24">
 					<div class="pure-control-group">
 						<label for="usage">

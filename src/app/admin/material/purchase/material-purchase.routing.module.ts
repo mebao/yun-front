@@ -5,7 +5,6 @@ import { AuthGuardRole }                          from '../../auth-guard-role.se
 
 import { MaterialPurchaseComponent }              from './material-purchase.component';
 import { MaterialPurchaseListComponent }          from './material-purchase-list.component';
-import { MaterialPurchaseInfoComponent }          from './material-purchase-info.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -18,11 +17,6 @@ import { MaterialPurchaseInfoComponent }          from './material-purchase-info
             path: 'list',
             canActivate: [AuthGuardRole],
             component: MaterialPurchaseListComponent,
-        },
-        {
-            path: 'info',
-            canActivate: [AuthGuardRole],
-            component: MaterialPurchaseInfoComponent,
         },
     ])],
     exports: [RouterModule]

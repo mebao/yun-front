@@ -2,13 +2,15 @@ import { Directive, ElementRef, HostListener, EventEmitter, Output} from '@angul
 
 
 @Directive({
-    selector: '[mouseIn]'
+    selector: '[nllEventListener]'
 })
 
-export class MouseInDirective {
+export class NllEventListenerDirective {
     private element: HTMLElement;
     private size: string;
-	@Output() mouseHandler = new EventEmitter<string>();
+	@Output() mouseEnter = new EventEmitter<string>();
+	@Output() mouseLeave = new EventEmitter<string>();
+	@Output() dblClick = new EventEmitter<string>();
 
     constructor(elementRef: ElementRef) {
         this.element = elementRef.nativeElement;
@@ -17,15 +19,16 @@ export class MouseInDirective {
 
     @HostListener('mouseenter')
     onMouseEnter() {
-        this.setHandler('enter');
+        this.mouseEnter.emit();
     }
 
     @HostListener('mouseleave')
     onMouseLeave() {
-        this.setHandler('leave');
+        this.mouseLeave.emit();
     }
 
-    setHandler(handler: string) {
-        this.mouseHandler.emit(handler);
+    @HostListener('dblclick')
+    onDblClick() {
+        this.dblClick.emit();
     }
 }

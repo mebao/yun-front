@@ -35,9 +35,8 @@ export class BookingAssistList {
         doctor_name: string,
         child_name: string,
         is_finish: string,
+        date: [Date, Date],
     }
-    _startDate = null;
-    _endDate = null;
     url: string;
     // 完成次数
     modalFinishTab: boolean;
@@ -112,9 +111,8 @@ export class BookingAssistList {
             doctor_name: '',
             child_name: '',
             is_finish: '0',
+            date: [new Date(), new Date()],
         }
-        this._startDate = new Date();
-        this._endDate = new Date();
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingAssistList'));
         if (sessionSearch) {
             this.searchInfo = {
@@ -122,9 +120,8 @@ export class BookingAssistList {
                 doctor_name: sessionSearch.doctor_name,
                 child_name: sessionSearch.child_name,
                 is_finish: sessionSearch.is_finish,
+                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
             }
-            this._startDate = sessionSearch._startDate ? new Date(sessionSearch._startDate) : null;
-            this._endDate = sessionSearch._endDate ? new Date(sessionSearch._endDate) : null;
         }
 
         this.hasData = false;
@@ -217,13 +214,7 @@ export class BookingAssistList {
 
     search() {
         this.loadingShow = true;
-        sessionStorage.setItem('search-bookingAssistList', JSON.stringify({
-            assist_id: this.searchInfo.assist_id,
-            doctor_name: this.searchInfo.doctor_name,
-            child_name: this.searchInfo.child_name,
-            _startDate: this._startDate,
-            _endDate: this._endDate,
-        }));
+        sessionStorage.setItem('search-bookingAssistList', JSON.stringify(this.searchInfo));
         var urlOptions = this.url;
         if (this.searchInfo.assist_id && this.searchInfo.assist_id != '') {
             urlOptions += '&assist_id=' + this.searchInfo.assist_id;
@@ -237,28 +228,14 @@ export class BookingAssistList {
         if (this.searchInfo.is_finish && this.searchInfo.is_finish != '') {
             urlOptions += '&is_finish=' + this.searchInfo.is_finish;
         }
-        if (this._startDate) {
-            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this._startDate));
+        if (this.searchInfo.date[0]) {
+            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if (this._endDate) {
-            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this._endDate));
+        if (this.searchInfo.date[1]) {
+            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
         }
         this.getData(urlOptions);
     }
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
     getPaywayList(clinicdata) {
         if (clinicdata == 'error') {

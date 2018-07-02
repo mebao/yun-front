@@ -28,8 +28,70 @@
             药方详情
         </ng-template>
         <ng-template #body>
+			<nz-alert [nzType]="'info'" [nzMessage]="'药方提醒'" [nzDescription]="'双击药品信息进入编辑状态'" nzShowIcon class="mb10"></nz-alert>
 			<nz-alert *ngIf="this.secondType == 'back'" [nzType]="'warning'" [nzMessage]="'退药提醒'" [nzDescription]="'留下的药品为用户需要退的药品'" nzShowIcon class="mb10"></nz-alert>
+			<nz-table #nzTable [nzDataSource]="mPrescriptList" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+				<thead nz-thead>
+					<tr>
+						<th>药品名</th>
+						<th>批次</th>
+						<th>单次计量</th>
+						<th>用法</th>
+						<th>用药频次</th>
+						<th>天数</th>
+						<th>总量</th>
+						<th>一般用法</th>
+						<th>注意事项</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody nz-tbody>
+					<tr *ngFor="let medical_info of mPrescriptList; let index=index;">
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{(getFormControl(medical_info.medical).value && getFormControl(medical_info.medical).value != '') ? (getFormControl(medical_info.medical).value.name + (getFormControl(medical_info.medical).value.others.length == 0 ? '（库存为0）' : '') + '（规格：' + getFormControl(medical_info.medical).value.format + '）') : ''}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{(getFormControl(medical_info.batch).value && getFormControl(medical_info.batch).value != '') ? (getFormControl(medical_info.batch).value.batch + '（库存：' + getFormControl(medical_info.batch).value.stock + medical_info.selectedUnit + '）') : ''}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{getFormControl(medical_info.oneNum).value + medical_info.selectedOneUnit}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{getFormControl(medical_info.usage).value}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{getFormControl(medical_info.frequency).value}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{getFormControl(medical_info.days).value}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">{{getFormControl(medical_info.num).value + medical_info.selectedUnit}}</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">
+							<div class="td-text">{{getFormControl(medical_info.ms_usage).value}}</div>
+						</td>
+						<td nllEventListener class="w10" (dblClick)="showForm(medical_info, index)">
+							<div class="td-text">{{getFormControl(medical_info.remark).value}}</div>
+						</td>
+						<td class="w10">
+							<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update')) || (secondType == 'continueAdd' && !medical_info.isOut)">
+								<nz-popconfirm [nzTitle]="'确定要删除这个药品吗？'" (nzOnConfirm)="removeField(medical_info)">
+									<button nz-popconfirm nz-button [nzType]="'danger'" [nzSize]="'large'">删除</button>
+								</nz-popconfirm>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</nz-table>
 		    <form nz-form [formGroup]="validateForm">
+				<div *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'" class="text-center mt20">
+					<button nz-button [nzType]="'dashed'" [nzSize]="'large'" class="w100" (click)="addField(null, $event)">
+							<i class="anticon anticon-plus"></i>
+							<span> 添加药品</span>
+					</button>
+				</div>
+				<div nz-row [nzGutter]="30">
+					<div nz-col [nzSpan]="12">
+						<div nz-form-item>
+							<div nz-form-label>
+								<label *ngIf="secondType == '' || secondType == 'continueAdd' || secondType == 'update'">备注</label>
+								<label *ngIf="!(secondType == '' || secondType == 'continueAdd' || secondType == 'update')" nz-form-item-required>退药说明</label>
+							</div>
+							<div nz-form-control>
+								<textarea nz-input formControlName="remark" placeHolder="请输入" [nzSize]="'large'" maxlength="100"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		    <!-- <form nz-form [formGroup]="validateForm">
 				<nz-collapseset>
 					<nz-collapse *ngFor="let medical_info of mPrescriptList; let index=index;" [nzTitle]="'药品'" [nzActive]="medical_info.isActive">
 						<div *ngIf="secondType == 'back' || ((secondType == '' || secondType == 'update')) || (secondType == 'continueAdd' && !medical_info.isOut)" class="mt10 mb10 text-right">
@@ -74,7 +136,7 @@
 											<ng-container *ngFor="let batch of medical_info.batchList">
 												<nz-option
 													[nzValue]="batch"
-													[nzLabel]="batch.batch + '（库存：' + batch.stock + medical_info	.selectedUnit + '）'"></nz-option>
+													[nzLabel]="batch.batch + '（库存：' + batch.stock + medical_info.selectedUnit + '）'"></nz-option>
 											</ng-container>
 										</nz-select>
 										<nz-input *ngIf="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')" [nzDisabled]="true" [nzPlaceHolder]="medical_info.selectedBatch.batch"></nz-input>
@@ -210,7 +272,7 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			</form> -->
 			<div class="text-center mt20">
 				<button *ngIf="this.secondType != '' && this.secondType != 'continueAdd' && this.secondType != 'update'" (click)="confirmCreate(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">退药</button>
 				<button *ngIf="this.secondType == '' || this.secondType == 'continueAdd' || this.secondType == 'update'" (click)="create(); $event.stopPropagation();" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isLoadingSave">保存</button>
@@ -225,5 +287,144 @@
 	<ng-template #footerTab>
 		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeConfirm()">取消</button>
 		<button *ngIf="createTab" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmPre()">确认</button>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="tabForm.modalTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentTabForm" [nzFooter]="footerTabForm" (nzOnCancel)="closeForm()">
+	<ng-template #contentTabForm>
+		<form nz-form [formGroup]="validateForm" *ngIf="tabForm.modalTab">
+			<div nz-form-item>
+				<div nz-form-label>
+					<label nz-form-item-required>药品名：</label>
+				</div>
+				<div nz-form-control>
+					<nz-select
+						[formControlName]="this.tabForm.medical_info.medical"
+						[nzPlaceHolder]="'请选择药品'"
+						(nzOpenChange)="msChange(this.tabForm.index)"
+						[nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')"
+						nzShowSearch>
+						<ng-container *ngFor="let medicalSupplie of medicalSupplies">
+							<nz-option
+								[nzValue]="medicalSupplie"
+								[nzLabel]="medicalSupplie.name + (medicalSupplie.others.length == 0 ? '（库存为0）' : '') + '（规格：' + medicalSupplie.format + '）'"
+								[nzDisabled]="medicalSupplie.others.length == 0"></nz-option>
+						</ng-container>
+					</nz-select>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>批次：</label>
+				</div>
+				<div nz-form-control>
+					<nz-select
+						*ngIf="!(secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != ''))"
+						[formControlName]="this.tabForm.medical_info.batch"
+						[nzPlaceHolder]="'请选择批次'"
+						nzShowSearch>
+						<ng-container *ngFor="let batch of this.tabForm.medical_info.batchList">
+							<nz-option
+								[nzValue]="batch"
+								[nzLabel]="batch.batch + '（库存：' + batch.stock + this.tabForm.medical_info.selectedUnit + '）'"></nz-option>
+						</ng-container>
+					</nz-select>
+					<nz-input *ngIf="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="true" [nzPlaceHolder]="this.tabForm.medical_info.selectedBatch.batch"></nz-input>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>单次计量：</label>
+				</div>
+				<div nz-form-control>
+					<nz-input-group [nzSize]="'large'" nzCompact>
+						<nz-select [formControlName]="this.tabForm.medical_info.oneNum" [nzPlaceHolder]="'请选择单次计量'" class="w50" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" nzShowSearch (nzSearchChange)="searchOneNum($event)">
+							<ng-container *ngFor="let number of oneNumList">
+								<nz-option [nzLabel]="number.value" [nzValue]="number.key"></nz-option>
+							</ng-container>
+						</nz-select>
+						<nz-select [formControlName]="this.tabForm.medical_info.oneUnit" [nzPlaceHolder]="'请选择单次计量单位'" class="w50" [nzDisabled]="true">
+							<nz-option [nzLabel]="this.tabForm.medical_info.selectedOneUnit" [nzValue]="this.tabForm.medical_info.selectedOneUnit"></nz-option>
+						</nz-select>
+					</nz-input-group>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>用法：</label>
+				</div>
+				<div nz-form-control>
+					<nz-select [formControlName]="this.tabForm.medical_info.usage" [nzPlaceHolder]="'请选择用法'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+						<ng-container *ngFor="let usage of usagelsit">
+							<nz-option [nzValue]="usage" [nzLabel]="usage"></nz-option>
+						</ng-container>
+					</nz-select>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>用药频次：</label>
+				</div>
+				<div nz-form-control>
+					<nz-select [formControlName]="this.tabForm.medical_info.frequency" [nzPlaceHolder]="'请选择用药频次'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+						<ng-container *ngFor="let frequency of frequencylist">
+							<nz-option [nzValue]="frequency" [nzLabel]="frequency"></nz-option>
+						</ng-container>
+					</nz-select>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label>天数：</label>
+				</div>
+				<div nz-form-control>
+					<nz-select [formControlName]="this.tabForm.medical_info.days" [nzPlaceHolder]="'请选择天数'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"
+					nzShowSearch
+					nzAllowClear
+					(nzSearchChange)="searchNum($event)">
+						<ng-container *ngFor="let number of numberList">
+							<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
+						</ng-container>
+					</nz-select>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>{{secondType == '' || secondType == 'continueAdd' || secondType == 'update' ? '总量' : '退药'}}：</label>
+				</div>
+				<div nz-form-control>
+					<nz-input-group [nzSize]="'large'" nzCompact>
+						<nz-select [formControlName]="this.tabForm.medical_info.num" [nzPlaceHolder]="'请选择总量'" [nzDisabled]="secondType == 'continueAdd' && this.tabForm.medical_info.isOut != ''" class="w50"
+						nzShowSearch
+						(nzSearchChange)="searchNum($event)">
+							<ng-container *ngFor="let number of numberList">
+								<nz-option [nzValue]="number.value" [nzLabel]="number.key"></nz-option>
+							</ng-container>
+						</nz-select>
+						<nz-select [formControlName]="this.tabForm.medical_info.unit" [nzPlaceHolder]="'请选择单位'" class="w50" [nzDisabled]="true">
+							<nz-option [nzLabel]="this.tabForm.medical_info.selectedUnit" [nzValue]="this.tabForm.medical_info.selectedUnit"></nz-option>
+						</nz-select>
+					</nz-input-group>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label nz-form-item-required>一般用法：</label>
+				</div>
+				<div nz-form-control>
+					<textarea nz-input [formControlName]="this.tabForm.medical_info.ms_usage" [nzSize]="'large'" placeHolder="请输入一般用法" nzDisabled maxlength="50"></textarea>
+				</div>
+			</div>
+			<div nz-form-item class="mt10">
+				<div nz-form-label>
+					<label>注意事项：</label>
+				</div>
+				<div nz-form-control>
+					<textarea nz-input [formControlName]="this.tabForm.medical_info.remark" [nzSize]="'large'" placeHolder="请输入注意事项" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" maxlength="200"></textarea>
+				</div>
+			</div>
+		</form>
+	</ng-template>
+	<ng-template #footerTabForm>
+		<button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="closeForm()">关闭</button>
 	</ng-template>
 </nz-modal>

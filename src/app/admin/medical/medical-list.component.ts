@@ -2,20 +2,17 @@ import { Component, OnInit }                   from '@angular/core';
 import { Router }                              from '@angular/router';
 
 import { AdminService }                        from '../admin.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
 	selector: 'app-medicalsupplies-list',
 	templateUrl: './medical-list.component.html',
+  styleUrls: ['../../../assets/css/ant-common.scss'],
 })
 export class MedicalListComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
-	toast: {
-		show: number,
-		text: string,
-		type:  string,
 	};
 	// 权限
 	moduleAuthority: {
@@ -30,13 +27,14 @@ export class MedicalListComponent{
 	hasData: boolean;
 	url: string;
 	medicalSupplies: any[];
-	info: {
+	searchInfo: {
 		name: string,
 		type: string,
 	}
 
 	constructor(
-		public adminService: AdminService,
+    private message: NzMessageService,
+    public adminService: AdminService,
 		private router: Router,
 	) {}
 
@@ -44,11 +42,6 @@ export class MedicalListComponent{
 		this.topBar = {
 			title: '药房管理',
 			back: false,
-		}
-		this.toast = {
-			show: 0,
-			text: '',
-			type: '',
 		}
 
 		this.moduleAuthority = {
@@ -77,9 +70,9 @@ export class MedicalListComponent{
 		this.hasData = false;
 
 		if(JSON.parse(sessionStorage.getItem('search-medicalList'))){
-			this.info = JSON.parse(sessionStorage.getItem('search-medicalList'));
+			this.searchInfo = JSON.parse(sessionStorage.getItem('search-medicalList'));
 		}else{
-			this.info = {
+			this.searchInfo = {
 				name: '',
 				type: '1,2',
 			}
@@ -97,7 +90,7 @@ export class MedicalListComponent{
 		this.adminService.medicalsupplieslist(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this.loadingShow = false;
-				this.toastTab(data.errorMsg, 'error');
+        this.message.error(data.errorMsg);
 			}else{
 				var results = JSON.parse(JSON.stringify(data.results));
 				this.medicalSupplies = results.medicalSupplies;
@@ -106,24 +99,25 @@ export class MedicalListComponent{
 			}
 		}).catch(() => {
 			this.loadingShow = false;
-            this.toastTab('服务器错误', 'error');
+      this.message.error('服务器错误');
         });
 	}
 
 	search() {
 		this.loadingShow = true;
-		sessionStorage.setItem('search-medicalList', JSON.stringify(this.info));
+		sessionStorage.setItem('search-medicalList', JSON.stringify(this.searchInfo));
 		var urlOptions = this.url;
-		if(this.info.name != ''){
-			urlOptions += '&name=' + this.info.name;
+		if(this.searchInfo.name != ''){
+			urlOptions += '&name=' + this.searchInfo.name;
 		}
-		if(this.info.type != ''){
-			urlOptions += '&type=' + this.info.type;
+		if(this.searchInfo.type != ''){
+			urlOptions += '&type=' + this.searchInfo.type;
 		}
 		this.getData(urlOptions);
 	}
 
 	goUrl(_url) {
+        this.loadingShow = true;
 		sessionStorage.removeItem('search-medicalPurchaseList');
 		sessionStorage.removeItem('search-medicalHasList');
 		sessionStorage.removeItem('search-medicalLostList');
@@ -137,20 +131,5 @@ export class MedicalListComponent{
 
 	update(_id) {
 		this.router.navigate(['./admin/medical/index'], {queryParams: {id: _id}});
-	}
-
-	toastTab(text, type) {
-		this.toast = {
-			show: 1,
-			text: text,
-			type: type,
-		}
-		setTimeout(() => {
-	    	this.toast = {
-				show: 0,
-				text: '',
-				type: '',
-			}
-	    }, 2000);
 	}
 }

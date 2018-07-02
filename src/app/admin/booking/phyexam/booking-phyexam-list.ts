@@ -29,8 +29,7 @@ export class BookingPhyexamList {
 		package_name: string,
 		child_name: string,
 		is_finish: string,
-		start: Date,
-		end: Date,
+		date: [Date, Date],
 	}
 
 	constructor(
@@ -69,22 +68,19 @@ export class BookingPhyexamList {
 		this.bookingPhyexamList = [];
 		this.hasData = false;
 
-		var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingPhyexamList'));
+        this.searchInfo = {
+            package_name: '',
+            child_name: '',
+            is_finish: '',
+            date: [new Date(), new Date()]
+        }
+        var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingPhyexamList'));
 		if(sessionSearch){
 			this.searchInfo = {
 				package_name: sessionSearch.package_name,
 				child_name: sessionSearch.child_name,
 				is_finish: sessionSearch.is_finish,
-				start: new Date(sessionSearch.start),
-				end: new Date(sessionSearch.end),
-			}
-		}else{
-			this.searchInfo = {
-				package_name: '',
-				child_name: '',
-				is_finish: '',
-				start: new Date(),
-				end: new Date(),
+				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
 			}
 		}
 		this.search();
@@ -103,28 +99,14 @@ export class BookingPhyexamList {
 		if (this.searchInfo.is_finish && this.searchInfo.is_finish != '') {
 			urlOptions += '&is_finish=' + this.searchInfo.is_finish;
 		}
-        if(this.searchInfo.start){
-            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this.searchInfo.start));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this.searchInfo.end){
-            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this.searchInfo.end));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this.searchInfo.date[1]));
         }
 		this.getData(urlOptions);
 	}
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this.searchInfo.end) {
-            return false;
-        }
-        return startValue.getTime() > this.searchInfo.end.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this.searchInfo.start) {
-            return false;
-        }
-        return endValue.getTime() < this.searchInfo.start.getTime();
-    };
 
 	getData(urlOptions) {
 		this.as.bookingphypage(urlOptions).then((data) => {

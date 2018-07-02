@@ -2,6 +2,8 @@ import { NgModule }                               from '@angular/core';
 import { CommonModule }                           from '@angular/common';
 import { FormsModule }                            from '@angular/forms';
 
+import { NgZorroAntdModule }                      from 'ng-zorro-antd';
+
 //nav
 import { NavModule }                              from '../../nav/nav.module';
 
@@ -12,22 +14,20 @@ import { MaterialPurchaseRoutingModule }          from './material-purchase.rout
 
 import { MaterialPurchaseComponent }              from './material-purchase.component';
 import { MaterialPurchaseListComponent }          from './material-purchase-list.component';
-import { MaterialPurchaseInfoComponent }          from './material-purchase-info.component';
 
 @NgModule({
     declarations: [
         MaterialPurchaseComponent,
         MaterialPurchaseListComponent,
-        MaterialPurchaseInfoComponent,
     ],
     exports: [
         MaterialPurchaseComponent,
         MaterialPurchaseListComponent,
-        MaterialPurchaseInfoComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
+        NgZorroAntdModule,
         NavModule,
         AngCommonModule,
         MaterialPurchaseRoutingModule,

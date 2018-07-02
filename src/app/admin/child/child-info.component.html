@@ -8,8 +8,8 @@
                     宝宝详情
                 </ng-template>
                 <ng-template #extra *ngIf="pageType == 'call'">
-                    <button *ngIf="!calling" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
-                    <button *ngIf="calling" (click)="hangupuser('')" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
+                    <button *ngIf="userInfo.call_sid == ''" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
+                    <button *ngIf="userInfo.call_sid != ''" (click)="hangupuser()" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
                 </ng-template>
                 <ng-template #body>
 					<div class="text-center">

@@ -47,6 +47,9 @@
 			</nz-card>
 		</div>
 	</div> -->
+	<div *ngIf="hasData && childServiceList.length > 0" class="mt10 mb10">
+		<nz-alert [nzType]="'info'" [nzMessage]="'共查询到宝宝科室' + childServiceList.length + '条'"></nz-alert>
+	</div>
 	<div *ngIf="childServiceList.length > 0" nz-row [nzGutter]="30">
 		<div nz-col [nzSpan]="8" class="child-service-tab pad10" *ngFor="let childService of childServiceList" [ngClass]="{'cancel': childService.status == 0}">
 			<div class="info pad10">

@@ -168,43 +168,17 @@
 						<label>创建时间：</label>
 					</div>
 					<div nz-form-control nz-col [nzSpan]="14">
-						<nz-datepicker (ngModelChange)="searchInfo.cdate_big=$event"
-						[nzSize]="'large'" class="w100" [ngModel]="searchInfo.cdate_big" [nzDisabledDate]="_disabledStartCDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+						<nz-rangepicker [(ngModel)]="searchInfo.cdate" [nzSize]="'large'" [nzPlaceholder]="['请选择开始日期', '请选择结束日期']"></nz-rangepicker>
 					</div>
 				</div>
 			</div>
 			<div nz-col [nzSpan]="8">
 				<div nz-form-item nz-row>
 					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-						<label>至：</label>
-					</div>
-					<div nz-form-control nz-col [nzSpan]="14">
-						<nz-datepicker (ngModelChange)="searchInfo.cdate_less=$event"
-						[nzSize]="'large'" class="w100" [ngModel]="searchInfo.cdate_less" [nzDisabledDate]="_disabledEndCDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div nz-row [nzGutter]="30" class="mt10">
-	    	<div nz-col [nzSpan]="8" [nzOffset]="8">
-				<div nz-form-item nz-row>
-					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 						<label>预约时间：</label>
 					</div>
 					<div nz-form-control nz-col [nzSpan]="14">
-						<nz-datepicker (ngModelChange)="searchInfo.bdate_big=$event"
-						[nzSize]="'large'" class="w100" [ngModel]="searchInfo.bdate_big" [nzDisabledDate]="_disabledStartBDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
-					</div>
-				</div>
-			</div>
-	    	<div nz-col [nzSpan]="8">
-				<div nz-form-item nz-row>
-					<div nz-form-label nz-col [nzSpan]="10" class="text-right">
-						<label>至：</label>
-					</div>
-					<div nz-form-control nz-col [nzSpan]="14">
-						<nz-datepicker (ngModelChange)="searchInfo.bdate_less=$event"
-						[nzSize]="'large'" class="w100" [ngModel]="searchInfo.bdate_less" [nzDisabledDate]="_disabledEndBDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
+						<nz-rangepicker [(ngModel)]="searchInfo.bdate" [nzSize]="'large'" [nzPlaceholder]="['请选择开始日期', '请选择结束日期']"></nz-rangepicker>
 					</div>
 				</div>
 			</div>
@@ -538,8 +512,8 @@
 		<div class="content pad10 admin-booking-info">
 			<div class="mb10">
 				<button *ngIf="moduleAuthority.update && (booking.status == '1' || booking.status == '2' || booking.status == '3') && use" (click)="updateBooking()" nz-button [nzType]="'primary'" [nzSize]="'large'">修改</button>
-				<button *ngIf="moduleAuthority.callPhone && !calling" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
-				<button *ngIf="moduleAuthority.callPhone && calling" (click)="hangupuser('')" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
+				<button *ngIf="moduleAuthority.callPhone && booking.call_sid == ''" (click)="calluser()" nz-button [nzType]="'primary'" [nzSize]="'large'">拨打电话</button>
+				<button *ngIf="moduleAuthority.callPhone && booking.call_sid != ''" (click)="hangupuser()" nz-button [nzType]="'danger'" [nzSize]="'large'">挂断电话</button>
 			</div>
 			<div class="tab">
 				<div class="item flex bb-default">
@@ -598,11 +572,16 @@
 						<p class="mt10 mb10">推荐人：{{booking.refereeName}}</p>
 					</div>
 				</div>
-				<div class="item flex bb-default mb20">
+				<div class="item flex bb-default">
+					<div class="flex-1 mt10 mb10">
+						<p>创建人：{{booking.adminName}}</p>
+					</div>
 					<div class="flex-1 mt10 mb10 flex">
 						<div>备注：</div>
 						<div class="flex-1">{{booking.remark}}</div>
 					</div>
+				</div>
+				<div class="item flex bb-default mb20">
 					<div class="flex-1 mt10 mb10 flex">
 						<div>取消原因：</div>
 						<div class="flex-1">{{booking.cancel_cause}}</div>
@@ -638,7 +617,7 @@
 				<label>取消原因</label>
 			</div>
 			<div nz-form-control class="mt10">
-				<nz-input [nzType]="'textarea'" [(ngModel)]="selectorBooking.cancel_cause" [nzPlaceHolder]="'请输入取消原因'" [nzSize]="'large'"></nz-input>
+				<textarea nz-input [(ngModel)]="selectorBooking.cancel_cause" placeHolder="请输入取消原因" [nzSize]="'large'" maxlength="200"></textarea>
 			</div>
 		</div>
 	</ng-template>
@@ -674,7 +653,7 @@
 				<label>失约原因：</label>
 			</div>
 			<div nz-form-control nz-col [nzSpan]="12">
-				<nz-input [nzType]="'textarea'" [(ngModel)]="booking.backRemark" [nzPlaceHolder]="'请输入失约原因'" [nzSize]="'large'"></nz-input>
+				<textarea nz-input [(ngModel)]="booking.backRemark" placeHolder="请输入失约原因" [nzSize]="'large'" maxlength="200"></textarea>
 			</div>
 		</div>
 		<div *ngIf="booking.yyj.amount == '0.00'" class="mt20">

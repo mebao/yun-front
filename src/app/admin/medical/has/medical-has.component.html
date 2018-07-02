@@ -134,6 +134,18 @@
 						</div>
 					</div>
 					<div class="pure-control-group">
+						<label for="doctor_use">医生是否可用</label>
+						<select id="doctor_use" name="doctor_use" #doctor_use="ngModel" [(ngModel)]="info.doctor_use" required="">
+							<option value="0">不可用</option>
+							<option value="1">可用</option>
+						</select>
+						<div *ngIf="doctor_use.errors && (doctor_use.dity || doctor_use.touched)" class="alert alert-danger">
+							<div [hidden]="!doctor_use.errors.required">
+                                医生是否可用不可为空
+							</div>
+						</div>
+					</div>
+					<div class="pure-control-group">
 						<label for="price">售价</label>
 						<input type="number" step="0.01" name="price" #price="ngModel" [(ngModel)]="info.price" placeholder="请输入售价" required="">
 						<div *ngIf="price.errors && (price.dity || price.touched)" class="alert alert-danger">

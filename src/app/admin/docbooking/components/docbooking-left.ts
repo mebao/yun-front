@@ -160,7 +160,11 @@ export class DocbookingLeft{
 	}
 
 	getHistoryHealthRList() {
-		var urlOptions = this.url + '&child_id=' + this.booking.childId + '&latestEarliest=1';
+		var doctor_id = '';
+		if(this.booking.services.length > 0){
+			doctor_id = '&doctor_id=' + this.booking.services[0].userDoctorId;
+		}
+		var urlOptions = this.url + '&child_id=' + this.booking.childId + doctor_id + '&latestEarliest=1';
 		this.adminService.searchhealthrecord(urlOptions).then((data) => {
 			if(data.status == 'no'){
 				this._message.error(data.errorMsg);

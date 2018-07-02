@@ -273,6 +273,7 @@
 						<!-- pageType 空为医生接站， history为查看 -->
 						<div *ngIf="pageType != 'history'">
 							<div *ngIf="hasCasehistoryData && casehistoryList.length == 0" class="mt20 pure-form pure-form-stacked">
+								<button (click)="showCaseHistory()" nz-button [nzType]="'primary'" [nzSize]="'large'">往期病例</button>
 								<div nz-form-item>
 									<div nz-form-label>
 										<label>模板（模板若为空，请前往医生列表，添加病历模板）</label>
@@ -622,18 +623,46 @@
 		</div>
 	</div>
 </div>
-<div class="modal" *ngIf="modalConfirmTab">
-	<div class="modal-mask" (click)="closeConfirm()"></div>
-	<div class="container">
-		<div class="title">提示</div>
-		<div class="content pad10">
-			确认删除该文件
-		</div>
-		<div class="button-tab pad10 text-right">
-			<button (click)="closeConfirm()" class="pure-button">关闭</button>
-			<button (click)="confirmDelete()" class="pure-button pure-button-primary">确认</button>
-		</div>
-	</div>
-</div>
+<nz-modal [nzVisible]="modalConfirmTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentConfirm" (nzOnCancel)="closeConfirm()" (nzOnOk)="confirmDelete()">
+	<ng-template #contentConfirm>
+    	<p>确认删除该文件</p>
+	</ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="caseHistory.showTab" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentCaseHistory" [nzFooter]="footerCaseHistory" (nzOnCancel)="closeCaseHistory()">
+	<ng-template #contentCaseHistory>
+		<nz-table #nzTable [nzDataSource]="caseHistory.list" [nzBordered]="true" [nzIsPagination]="false" [nzCustomNoResult]="true">
+			<thead nz-thead>
+				<tr>
+					<th class="w20">主诉</th>
+					<th class="w20">体格检查</th>
+					<th class="w20">诊断</th>
+					<th>时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody nz-tbody>
+				<tr nz-tbody-tr *ngFor="let caseH of caseHistory.list;">
+					<td>
+						<div class="td-text">{{caseH.topicComment}}</div>
+					</td>
+					<td>
+						<div class="td-text">{{caseH.physicalCheck}}</div>
+					</td>
+					<td>
+						<div class="td-text">{{caseH.diagnosis}}</div>
+					</td>
+					<td>{{caseH.time}}</td>
+					<td>
+						<button (click)="copyCase(caseH)" nz-button [nzType]="'primary'" [nzSize]="'large'">复制病例</button>
+					</td>
+				</tr>
+			</tbody>
+			<span noResult>暂无病例信息</span>
+		</nz-table>
+	</ng-template>
+	<ng-template #footerCaseHistory>
+		<button (click)="closeCaseHistory()" nz-button [nzType]="'default'" [nzSize]="'large'">关闭</button>
+	</ng-template>
+</nz-modal>
 <modal-img url="{{selectFile.url}}" showImg="{{selectFile.showImg}}" (onVoted)="closeImg()"></modal-img>
 <loading [show]="loadingShow"></loading>

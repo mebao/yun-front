@@ -22,9 +22,8 @@ export class BookingExamineRecord{
         doctor_name: string,
         check: string,
         service_name:string,
+        date: [Date, Date]
     }
-    _startDate = null;
-    _endDate = null;
     recordList: any[];
     hasData: boolean;
 	moduleAuthority:  {
@@ -65,9 +64,8 @@ export class BookingExamineRecord{
             doctor_name: '',
             check: '1',
             service_name:'',
+            date: [new Date(), new Date()]
         }
-        this._startDate = new Date();
-        this._endDate = new Date();
         this.recordList = [];
         this.hasData = false;
         this.search();
@@ -86,31 +84,17 @@ export class BookingExamineRecord{
         if(this.searchInfo.check && this.searchInfo.check != ''){
             urlOptions += '&unchecked=' + this.searchInfo.check;
         }
-        if(this._startDate){
-			urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+			urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
 		}
-		if(this._endDate){
-			urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+		if(this.searchInfo.date[1]){
+			urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
 		}
         if(this.searchInfo.service_name != ''){
 			urlOptions += '&service_name=' + this.searchInfo.service_name;
 		}
         this.getData(urlOptions);
     }
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
     getData(urlOptions) {
         this.loadingShow = true;

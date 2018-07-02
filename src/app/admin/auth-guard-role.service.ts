@@ -583,13 +583,6 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							},
-							// 入库详情
-							{
-								url: '/admin/material/purchase/info',
-								authority: 'infoPut',
-								queryType: '',
-								queryParams: '',
-							},
 							// 库存管理
 							{
 								url: '/admin/material/has/list',
@@ -664,13 +657,6 @@ export class AuthGuardRole implements CanActivate{
 							{
 								url: '/admin/medical/purchase',
 								authority: 'addPut',
-								queryType: '',
-								queryParams: '',
-							},
-							// 入库详情
-							{
-								url: '/admin/medical/purchase/info',
-								authority: 'infoPut',
 								queryType: '',
 								queryParams: '',
 							},
@@ -1237,6 +1223,19 @@ export class AuthGuardRole implements CanActivate{
 								queryType: '',
 								queryParams: '',
 							}
+						]
+					},
+					{
+						firstKey: 'callRecord',
+						firstUrl: '/admin/callRecord',
+						authority: [],
+						second: [
+							{
+								url: '/admin/callRecord',
+								authority: 'see',
+								queryType: '',
+								queryParams: '',
+							},
 						]
 					},
 				];

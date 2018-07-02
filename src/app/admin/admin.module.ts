@@ -34,6 +34,7 @@ import { DoctorTcmPrescript }              from './prescript/doctor-tcm-prescrip
 import { Repage }                          from './booking/repage';
 import { UpdatepwdComponent }              from './user/updatepwd.component';
 import { Message }                         from './setup/message.component';
+import { CallRecord }                      from './setup/call-record';
 
 import { AdminService }                    from './admin.service';
 import { NewService }                      from './new.service';
@@ -62,6 +63,7 @@ import { DoctorService }                   from './doctor/doctor.service';
 		Repage,
 		UpdatepwdComponent,
 		Message,
+		CallRecord,
 	],
 	providers: [
 		AdminService,

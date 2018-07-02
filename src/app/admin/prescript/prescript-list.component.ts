@@ -45,9 +45,8 @@ export class PrescriptListComponent{
 		doctor_name: string,
 		user_name: string,
 		child_name: string,
+		date: [Date, Date],
 	};
-	_startDate = null;
-	_endDate = null;
 	printStyle:string;
 	allChecked: boolean;
 	indeterminate: boolean;
@@ -195,10 +194,9 @@ export class PrescriptListComponent{
  			today: '',
  			doctor_name: '',
  			user_name: '',
- 			child_name: '',
+			child_name: '',
+			date: [new Date(), new Date()]
  		}
-        this._startDate = new Date();
-        this._endDate = new Date();
 
 		this.search();
 		this.allChecked = true;
@@ -253,11 +251,11 @@ export class PrescriptListComponent{
 		if(this.searchInfo.today != ''){
 			urlOptions += ('&today=' + this.searchInfo.today);
 		}
-        if(this._startDate){
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this._startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this._endDate){
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this._endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
         }
 		if(this.searchInfo.doctor_name != ''){
 			urlOptions += ('&doctor_name=' + this.searchInfo.doctor_name);
@@ -271,20 +269,6 @@ export class PrescriptListComponent{
 		this.searchUrl = urlOptions;
 		this.getData(urlOptions);
 	}
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this._endDate) {
-            return false;
-        }
-        return startValue.getTime() > this._endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this._startDate) {
-            return false;
-        }
-        return endValue.getTime() < this._startDate.getTime();
-    };
 
 	goUrl(_url) {
 		this.router.navigate([_url]);

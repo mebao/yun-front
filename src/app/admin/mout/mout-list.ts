@@ -30,8 +30,7 @@ export class MoutList{
 	moutList: any[];
 	searchInfo: {
 		name: string,
-		startDate: Date,
-		endDate: Date,
+		date: [Date, Date]
 	}
 
 	constructor(
@@ -79,14 +78,12 @@ export class MoutList{
 		if(sessionSearch){
 			this.searchInfo = {
 				name: sessionSearch.name,
-				startDate: new Date(sessionSearch.startDate),
-				endDate: new Date(sessionSearch.endDate),
+				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
 			}
 		}else{
 			this.searchInfo = {
 				name: '',
-				startDate: new Date(),
-				endDate: new Date(),
+				date: [new Date(), new Date()]
 			}
 		}
 
@@ -117,28 +114,14 @@ export class MoutList{
 		if(this.searchInfo.name && this.searchInfo.name != ''){
 			urlOptions += '&name=' + this.searchInfo.name;
 		}
-        if(this.searchInfo.startDate){
-            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.startDate));
+        if(this.searchInfo.date[0]){
+            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
         }
-        if(this.searchInfo.endDate){
-            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.endDate));
+        if(this.searchInfo.date[1]){
+            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
         }
 		this.getData(urlOptions);
 	}
-
-    _disabledStartDate = (startValue) => {
-        if (!startValue || !this.searchInfo.endDate) {
-            return false;
-        }
-        return startValue.getTime() > this.searchInfo.endDate.getTime();
-    };
-
-    _disabledEndDate = (endValue) => {
-        if (!endValue || !this.searchInfo.startDate) {
-            return false;
-        }
-        return endValue.getTime() < this.searchInfo.startDate.getTime();
-    };
 
 	add() {
 		this.router.navigate(['./admin/mout']);
