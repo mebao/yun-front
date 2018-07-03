@@ -415,8 +415,9 @@ export class DoctorPrescriptComponent{
 		
 		// 滚动条滚动到底部
 		setTimeout(() => {
-			this.contentDom.scrollTo(0, this.contentDom.scrollHeight);
-		}, 100);
+            this.contentDom.scrollTop = this.contentDom.scrollHeight;
+        }, 100);
+        
 	}
 
     removeField(i) {
