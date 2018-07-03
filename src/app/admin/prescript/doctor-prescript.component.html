@@ -300,7 +300,7 @@
 					<nz-select
 						[formControlName]="this.tabForm.medical_info.medical"
 						[nzPlaceHolder]="'请选择药品'"
-						(nzOpenChange)="msChange(this.tabForm.index)"
+						(nzOpenChange)="msChange(this.tabForm.medical_info.id, this.tabForm.index)"
 						[nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')"
 						nzShowSearch>
 						<ng-container *ngFor="let medicalSupplie of medicalSupplies">

@@ -81,8 +81,8 @@ export class DoctorPrescriptComponent{
 	doc: Document;
 	tabForm: {
 		modalTab: boolean,
-		medical_info: any,
-		index: number,
+        medical_info: any,
+        index: number,
 	}
 
 	constructor(
@@ -336,8 +336,8 @@ export class DoctorPrescriptComponent{
 		this.form = '';
 		this.tabForm = {
 			modalTab: false,
-			medical_info: {},
-			index: 0,
+            medical_info: {},
+            index: 0,
 		}
 
 		sessionStorage.setItem('canDeactivate', 'doctorPrescript');
@@ -446,17 +446,17 @@ export class DoctorPrescriptComponent{
         return this.validateForm.controls[ name ];
     }
 
-	msChange(_index) {
-        var selectedOneUnit = this.validateForm.controls['medical' + _index].value.oneUnit ? this.validateForm.controls['medical' + _index].value.oneUnit : '';
-        var selectedUnit = this.validateForm.controls['medical' + _index].value.unit ? this.validateForm.controls['medical' + _index].value.unit : '';
-		var selectedUsage = this.validateForm.controls['medical' + _index].value.usage ? this.validateForm.controls['medical' + _index].value.usage : '';
-		this.mPrescriptList[_index].batchList = this.validateForm.controls['medical' + _index].value.others;
+	msChange(_id, _index) {
+        var selectedOneUnit = this.validateForm.controls['medical' + _id].value.oneUnit ? this.validateForm.controls['medical' + _id].value.oneUnit : '';
+        var selectedUnit = this.validateForm.controls['medical' + _id].value.unit ? this.validateForm.controls['medical' + _id].value.unit : '';
+		var selectedUsage = this.validateForm.controls['medical' + _id].value.usage ? this.validateForm.controls['medical' + _id].value.usage : '';
+		this.mPrescriptList[_index].batchList = this.validateForm.controls['medical' + _id].value.others;
         this.mPrescriptList[_index].selectedOneUnit = selectedOneUnit;
 		this.mPrescriptList[_index].selectedUnit = selectedUnit;
-        this.validateForm.controls['batch' + _index].setValue(this.validateForm.controls['batch' + _index].value == '' ? null : '');
-        this.validateForm.controls['oneUnit' + _index].setValue(selectedUnit);
-        this.validateForm.controls['unit' + _index].setValue(selectedUnit);
-        this.validateForm.controls['ms_usage' + _index].setValue(selectedUsage);
+        this.validateForm.controls['batch' + _id].setValue(this.validateForm.controls['batch' + _id].value == '' ? null : '');
+        this.validateForm.controls['oneUnit' + _id].setValue(selectedUnit);
+        this.validateForm.controls['unit' + _id].setValue(selectedUnit);
+        this.validateForm.controls['ms_usage' + _id].setValue(selectedUsage);
 	}
 
     searchOneNum(_value) {
@@ -476,16 +476,16 @@ export class DoctorPrescriptComponent{
 	showForm(medical_info, index) {
 		this.tabForm = {
 			modalTab: true,
-			medical_info: medical_info,
-			index: index,
+            medical_info: medical_info,
+            index: index,
 		}
 	}
 
 	closeForm() {
 		this.tabForm = {
 			modalTab: false,
-			medical_info: {},
-			index: 0,
+            medical_info: {},
+            index: 0,
 		}
 	}
 

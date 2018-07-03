@@ -211,7 +211,8 @@ export class MedicalPurchaseComponent{
 						otc: '',
 						code: '',
 						batch: '',
-						expiring_date: '',
+                        expiring_date: '',
+                        doctor_use: '',
 					}
 					var key = this.mslist[i].key;
 					num++;
@@ -231,6 +232,7 @@ export class MedicalPurchaseComponent{
 					msParams.remark = JSON.parse(f.value['ms_' + key]).remark;
 					msParams.one_unit = JSON.parse(f.value['ms_' + key]).oneUnit;
 					msParams.price = JSON.parse(f.value['ms_' + key]).price;
+					msParams.doctor_use = JSON.parse(f.value['ms_' + key]).doctorUse;
 					if(this.adminService.isFalse(f.value['num_' + key])){
 						this.toastTab('第' + num + '条药品入库数量不可为空', 'error');
 						this.btnCanEdit = false;
