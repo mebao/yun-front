@@ -813,7 +813,7 @@ export class DocbookingComponent implements OnInit{
     }
 
     removeAssist(index) {
-        if(this.addAssistInfo.projectList.length == 0){
+        if(this.addAssistInfo.projectList.length == 1){
             this._message.error('辅助治疗不可为空');
             return;
         }

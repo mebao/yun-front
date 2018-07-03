@@ -1297,8 +1297,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
             this.info[_key.slice(0, _key.indexOf('_other'))] = '';
             return;
         }
-        this.info[_key + '_other'] = '';
-		this.info[_key] = _value;
+        if(this.info[_key] == _value){
+            this.info[_key] = '';
+        }else{
+            this.info[_key + '_other'] = '';
+            this.info[_key] = _value;
+        }
 	}
 
 	validateNumber(type, info) {
