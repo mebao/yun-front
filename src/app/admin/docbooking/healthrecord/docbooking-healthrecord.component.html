@@ -41,6 +41,36 @@
 									</div>
 								</div>
 								<ng-template #viewTab>
+                                    <div
+										*ngIf="healthrecord.birthWeight != null || healthrecord.productionStatus != null || healthrecord.productionWay != null"
+										class="section">
+										<div class="title">出生时情况</div>
+										<div class="pure-g">
+											<div *ngIf="healthrecord.birthWeight != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">出生时体重：</label>
+												<div class="flex-1">
+													{{healthrecord.birthWeight}}
+													<span *ngIf="healthrecord.birthWeight != ''" class="pl5">kg</span>
+												</div>
+											</div>
+											<div *ngIf="healthrecord.productionStatus != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">生产状态：</label>
+												<div class="flex-1">
+													{{healthrecord.productionStatus}}
+												</div>
+											</div>
+											<div *ngIf="healthrecord.productionStatus != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">孕周：</label>
+												<div class="flex-1">
+													{{(healthrecord.gestationalWeeks != '' && healthrecord.gestationalWeeks != 0 ? healthrecord.gestationalWeeks + '周' : '') + (healthrecord.gestationalWeeks != '' && healthrecord.gestationalDays != 0 ? healthrecord.gestationalDays + '天' : '')}}
+												</div>
+											</div>
+											<div *ngIf="healthrecord.productionWay != null" class="pure-u-8-24 bt info flex">
+												<label class="w150pp">生产方式：</label>
+												<div class="flex-1">{{healthrecord.productionWayText}}</div>
+											</div>
+										</div>
+									</div>
 									<div
 										*ngIf="healthrecord.height != null || healthrecord.mediumHeight != null || healthrecord.weight != null || healthrecord.mediumWeight != null || healthrecord.headCircum != null || healthrecord.breastCircum != null"
 										class="section">
@@ -499,7 +529,83 @@
 										<input type="hidden" id="age" name="age" #age="ngModel" [(ngModel)]="info.age" disabled="">
 									</div>
 								</div>
-							</div>
+                            </div>
+                            <div
+                                *ngIf="baseInfo.birth_weight != null || info.production_status != null || info.production_way != null || baseInfo.gestational_days != null"
+                                class="bg-title mt10 mb20">
+                                出生时情况
+                            </div>
+                            <div class="pure-g">
+                                <!-- 根据null判断该字段是否属于模板 -->
+                                <div *ngIf="baseInfo.birth_weight != null" class="pure-u-8-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="birth_weight" class="w150pp">出生时体重（kg）：</label>
+                                        <input type="number" id="birth_weight" name="birth_weight" step="0.01" [(ngModel)]="info.birth_weight" class="flex-1">
+                                    </div>
+                                </div>
+								<div *ngIf="info.production_status != null" class="pure-u-8-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="production_status" class="w150pp">生产状态：</label>
+                                        <div class="flex-1 flex pt10">
+                                            <div class="radio mr10 flex" (click)="changeRedio('足月', 'production_status')" [ngClass]="{'active': info.production_status == '足月'}">
+                                                <div class="radioTab mr10"></div>
+                                                <div class="flex-1">足月</div>
+                                            </div>
+                                            <div class="radio mr10 flex" (click)="changeRedio('早产', 'production_status')" [ngClass]="{'active': info.production_status == '早产'}">
+                                                <div class="radioTab mr10"></div>
+                                                <div class="flex-1">早产</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="info.gestational_days != null" class="pure-u-8-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="production_status" class="w150pp">孕周：</label>
+                                        <div class="flex-1 flex">
+                                            <div class="pure-control-group flex">
+                                                <input type="number" id="gestational_weeks" name="gestational_weeks" step="0.01" [(ngModel)]="info.gestational_weeks" class="flex-1">
+                                                <label for="gestational_weeks" class="w150pp pl10">周</label>
+                                            </div>
+                                            <div class="pure-control-group flex pl10">
+                                                <input type="number" id="gestational_days" name="gestational_days" step="0.01" [(ngModel)]="info.gestational_days" class="flex-1">
+                                                <label for="gestational_days" class="w150pp pl10">天</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								<div *ngIf="info.production_way != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="production_way" class="w150pp">生产方式：</label>
+                                        <div class="flex-1">
+                                            <div class="flex pt10">
+                                                <div class="radio mr10 flex" (click)="changeRedio('顺产', 'production_way')" [ngClass]="{'active': info.production_way == '顺产'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">顺产</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('剖腹产', 'production_way')" [ngClass]="{'active': info.production_way == '剖腹产'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">剖腹产</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex pt10">
+                                                <div class="radio mr10 flex" (click)="changeRedio('双胎', 'production_way_othe1')" [ngClass]="{'active': info.production_way_othe1 == '双胎'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">双胎</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('多胎', 'production_way_othe1')" [ngClass]="{'active': info.production_way_othe1 == '多胎'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">多胎</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex pt10">
+                                                <div class="flex-1" (click)="changeRedio('', 'production_way_othe2')">
+                                                    <textarea name="production_way_othe2" maxlength="10" rows="1" #production_way_othe2="ngModel" [(ngModel)]="info.production_way_othe2" placeholder="其他" class="mt0 mb0 auto"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 							<div
 								*ngIf="baseInfo.height != null || baseInfo.medium_height != null || baseInfo.weight != null || baseInfo.medium_weight != null || baseInfo.head_circum != null || baseInfo.breast_circum != null"
 								class="bg-title mt10 mb20">

@@ -156,7 +156,7 @@ export class DoctorRecordTempletComponent{
         }
         for(var i = 0; i < this.rkList.length; i++){
             var key = JSON.parse(this.rkList[i].value).key;
-            if(key=='height' || key=='medium_height' || key=='weight' || key=='medium_weight' ||key=='head_circum' ||key=='breast_circum' ||key=='breathe' ||key=='blood_pressure' ||key=='body_temperature' || key == 'pulse' || key == 'blood_routine_examination' || key == 'stool_routine_examination' || key == 'trace_element' || key == 'heavy_metal' || key == 'teeth_num'){
+            if(key=='height' || key=='medium_height' || key=='weight' || key=='medium_weight' ||key=='head_circum' ||key=='breast_circum' ||key=='breathe' ||key=='blood_pressure' ||key=='body_temperature' || key == 'pulse' || key == 'blood_routine_examination' || key == 'stool_routine_examination' || key == 'trace_element' || key == 'heavy_metal' || key == 'teeth_num' || key == 'birth_weight' || key == 'production_status' || key == 'production_way' || key == 'gestational_days'){
                 this.rkList[i].rkValueDisabled = true;
             }
             if(this.rkList[i].use == false){

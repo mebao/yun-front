@@ -54,10 +54,7 @@ export class DocbookingComponent implements OnInit{
 	};
 	//添加检查单
 	addCheckInfo: {
-		booking_id: string,
-		check_id: string,
-		check_name: string,
-		check: string,
+        checkList: any[],
 		editType: string,
 	};
 	checklist: any[];
@@ -113,12 +110,13 @@ export class DocbookingComponent implements OnInit{
 	hasAssistData: boolean;
 	addAssistInfo: {
 		editType: string,
-		editProjectId: string,
+        editProjectId: string,
 		project: string,
 		price: string,
 		number: string,
 		fee: string,
 		remark: string,
+        projectList: any[],
 	};
 	// 不可连续点击
 	btnCanEdit: boolean;
@@ -220,10 +218,7 @@ export class DocbookingComponent implements OnInit{
 
 		//添加检查
 		this.addCheckInfo = {
-			booking_id: '',
-			check_id: '',
-			check_name: '',
-			check: '',
+            checkList: [],
 			editType: '',
 		}
 
@@ -272,7 +267,8 @@ export class DocbookingComponent implements OnInit{
 			}
 		}).catch(() => {
 			this._message.error('服务器错误');
-		});
+        });
+        
 		// 预约辅助治疗
 		this.hasAssistData = false;
 		this.assistList = [];
@@ -283,7 +279,8 @@ export class DocbookingComponent implements OnInit{
 			price: '',
 			number: '',
 			fee: '',
-			remark: '',
+            remark: '',
+            projectList: [],
 		}
 		this.getBookingAssistData();
 
@@ -654,13 +651,30 @@ export class DocbookingComponent implements OnInit{
 		});
 	}
 
-	addCheck() {
+	addCheckTab() {
 		if(this.actualOperator.use && this.operator == ''){
 			this._message.error('请选择实际操作人');
 			return;
-		}
+        }
+        this.addCheckInfo.checkList = [{
+            check: ''
+        }];
 		this.addCheckInfo.editType = 'create';
-	}
+    }
+    
+    addCheck() {
+        this.addCheckInfo.checkList.push({
+            check: ''
+        });
+    }
+
+    removeCheck(index) {
+        if(this.addCheckInfo.checkList.length == 1){
+            this._message.error('实验室检查不可为空');
+            return;
+        }
+        this.addCheckInfo.checkList.splice(index, 1);
+    }
 
 	// 删除检查
 	deleteCheck(check) {
@@ -676,35 +690,45 @@ export class DocbookingComponent implements OnInit{
 		this.modalConfirmTab = true;
 	}
 
-	removeCheck() {
+	removeCheckTab() {
 		//取消检查单操作
 		this.addCheckInfo = {
-			booking_id: '',
-			check_id: '',
-			check_name: '',
-			check: '',
+            checkList: [],
 			editType: '',
 		}
 	}
 
-	editCheck() {
+	editCheckTab() {
 		if(this.actualOperator.use && this.operator == ''){
 			this._message.error('请选择实际操作人');
 			return;
 		}
-		this.btnCanEdit = true;
-		if(!this.addCheckInfo.check || this.addCheckInfo.check == ''){
+        this.btnCanEdit = true;
+        var checkList = [];
+		if(this.addCheckInfo.checkList.length > 0){
+            for(var i = 0; i < this.addCheckInfo.checkList.length; i++){
+                if(!this.addCheckInfo.checkList[i].check || this.addCheckInfo.checkList[i].check == ''){
+                    this._message.error('实验室检查不可为空');
+                    this.btnCanEdit = false;
+                    return;
+                }else{
+                    checkList.push({
+                        check_id: this.addCheckInfo.checkList[i].check.project_id,
+                        check_name: this.addCheckInfo.checkList[i].check.name
+                    })
+                }
+            }
+        }else{
 			this._message.error('实验室检查未选择');
 			this.btnCanEdit = false;
 			return;
-		}
+        }
 		var params = {
 			username: this.adminService.getUser().username,
 			token: this.adminService.getUser().token,
 			clinic_id: this.adminService.getUser().clinicId,
-			booking_id: this.id,
-			check_id: this.addCheckInfo.check['project_id'],
-			check_name: this.addCheckInfo.check['name'],
+            booking_id: this.id,
+            checklist: JSON.stringify(checkList),
 		}
 		this.adminService.usercheckproject(params).then((data) => {
 			if(data.status == 'no'){
@@ -714,7 +738,7 @@ export class DocbookingComponent implements OnInit{
 				this._message.success('检查创建成功');
 				this.getCheckData();
 				//清空检查信息
-				this.removeCheck();
+				this.removeCheckTab();
 				this.btnCanEdit = false;
 			}
 		}).catch(() => {
@@ -753,49 +777,91 @@ export class DocbookingComponent implements OnInit{
 		}).catch(() => {
 			this._message.error('服务器错误');
 		});
-	}
-	addAssist() {
+    }
+    
+	addAssistTab() {
 		if(this.actualOperator.use && this.operator == ''){
 			this._message.error('请选择实际操作人');
 			return;
 		}
-		this.addAssistInfo.editType = 'add';
-		this.addAssistInfo.editProjectId = '';
-		this.addAssistInfo.project = '';
-		this.addAssistInfo.price = '';
-		this.addAssistInfo.number = '';
-		this.addAssistInfo.fee = '';
-		this.addAssistInfo.remark = '';
+		this.addAssistInfo = {
+            editType: 'add',
+            editProjectId: '',
+            project: '',
+            price: '',
+            number: '',
+            fee: '',
+            remark: '',
+            projectList: [{
+                project: '',
+                price: '',
+                number: '',
+                fee: '',
+                remark: '',
+            }]
+        }
+    }
+    
+    addAssist() {
+        this.addAssistInfo.projectList.push({
+            project: '',
+            price: '',
+            number: '',
+            fee: '',
+            remark: '',
+        });
+    }
+
+    removeAssist(index) {
+        if(this.addAssistInfo.projectList.length == 0){
+            this._message.error('辅助治疗不可为空');
+            return;
+        }
+        this.addAssistInfo.projectList.splice(index, 1);
+    }
+
+	removeAssistTab() {
+		this.addAssistInfo = {
+            editType: '',
+            editProjectId: '',
+            project: '',
+            price: '',
+            number: '',
+            fee: '',
+            remark: '',
+            projectList: []
+        }
 	}
 
-	removeAssist() {
-		this.addAssistInfo.editType = '';
-		this.addAssistInfo.editProjectId = '';
-		this.addAssistInfo.project = '';
-		this.addAssistInfo.price = '';
-		this.addAssistInfo.number = '';
-		this.addAssistInfo.fee = '';
-		this.addAssistInfo.remark = '';
-	}
-
-	changeAssist() {
-		if(this.addAssistInfo.project['id']){
-			this.addAssistInfo.price = this.addAssistInfo.project['price'];
-			this.changeAssistNumber();
+	changeAssist(index) {
+		if(this.addAssistInfo.projectList[index].project['id']){
+			this.addAssistInfo.projectList[index].price = this.addAssistInfo.projectList[index].project['price'];
+			this.changeAssistNumber('list', index);
 		}
 	}
 
-	changeAssistNumber() {
-		if(!this.adminService.isFalse(this.addAssistInfo.number) && (Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0)){
-			this._message.error('数量应为大于0的整数');
-			return;
-		}
-		if(!this.adminService.isFalse(this.addAssistInfo.price)){
-			this.addAssistInfo.fee = this.adminService.toDecimal2(Number(this.addAssistInfo.number) * parseFloat(this.addAssistInfo.price));
-		}
+	changeAssistNumber(type, index) {
+        if(type == 'list'){
+            var projectInfo = this.addAssistInfo.projectList[index];
+            if(!this.adminService.isFalse(projectInfo.number) && (Number(projectInfo.number) <= 0 || Number(projectInfo.number) % 1 != 0)){
+                this._message.error('数量应为大于0的整数');
+                return;
+            }
+            if(!this.adminService.isFalse(projectInfo.price)){
+                this.addAssistInfo.projectList[index].fee = this.adminService.toDecimal2(Number(projectInfo.number) * parseFloat(projectInfo.price));
+            }
+        }else{
+            if(!this.adminService.isFalse(this.addAssistInfo.number) && (Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0)){
+                this._message.error('数量应为大于0的整数');
+                return;
+            }
+            if(!this.adminService.isFalse(this.addAssistInfo.price)){
+                this.addAssistInfo.fee = this.adminService.toDecimal2(Number(this.addAssistInfo.number) * parseFloat(this.addAssistInfo.price));
+            }
+        }
 	}
 
-	updateAddAssist(assist) {
+	updateAddAssistTab(assist) {
 		if(this.actualOperator.use && this.operator == ''){
 			this._message.error('请选择实际操作人');
 			return;
@@ -809,32 +875,65 @@ export class DocbookingComponent implements OnInit{
 		this.addAssistInfo.remark = assist.remark;
 	}
 
-	editAssist() {
-		this.btnCanEdit = true;
+	editAssistTab() {
+        this.btnCanEdit = true;
+        var assistlist = [];
 		if(this.addAssistInfo.editType == 'add'){
-			if(this.adminService.isFalse(this.addAssistInfo.project)){
-				this._message.error('辅助治疗不可为空');
+            if(this.addAssistInfo.projectList.length > 0){
+                for(var i = 0; i < this.addAssistInfo.projectList.length; i++){
+                    var projectInfo = this.addAssistInfo.projectList[i];
+                    // 新增
+                    if(this.adminService.isFalse(projectInfo.project)){
+                        this._message.error('辅助治疗不可为空');
+                        this.btnCanEdit = false;
+                        return;
+                    }
+                    if(this.adminService.isFalse(projectInfo.number)){
+                        this._message.error('数量不可为空');
+                        this.btnCanEdit = false;
+                        return;
+                    }
+                    if(Number(projectInfo.number) <= 0 || Number(projectInfo.number) % 1 != 0){
+                        this._message.error('数量应为大于0的整数');
+                        this.btnCanEdit = false;
+                        return;
+                    }
+                    assistlist.push({
+                        assist_id: projectInfo.project['id'],
+                        num: projectInfo.number,
+                        remark: this.adminService.trim(projectInfo.remark),
+                    })
+                }
+            }else{
+                this._message.error('辅助治疗未添加');
 				this.btnCanEdit = false;
 				return;
-			}
+            }
 		}else{
+            // 修改
 			if(this.assistProjects.length > 0){
 				for(var i = 0; i < this.assistProjects.length; i++){
 					if(this.assistProjects[i].id == this.addAssistInfo.project['id']){
 						this.addAssistInfo.project = this.assistProjects[i];
 					}
 				}
-			}
-		}
-		if(this.adminService.isFalse(this.addAssistInfo.number)){
-			this._message.error('数量不可为空');
-			this.btnCanEdit = false;
-			return;
-		}
-		if(Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0){
-			this._message.error('数量应为大于0的整数');
-			this.btnCanEdit = false;
-			return;
+            }
+            if(this.adminService.isFalse(this.addAssistInfo.number)){
+                this._message.error('数量不可为空');
+                this.btnCanEdit = false;
+                return;
+            }
+            if(Number(this.addAssistInfo.number) <= 0 || Number(this.addAssistInfo.number) % 1 != 0){
+                this._message.error('数量应为大于0的整数');
+                this.btnCanEdit = false;
+                return;
+            }
+            assistlist.push({
+                id: this.addAssistInfo.editProjectId,
+                assist_id: this.addAssistInfo.project['id'],
+                num: this.addAssistInfo.number,
+                remark: this.adminService.trim(this.addAssistInfo.remark),
+            })
 		}
 
 		var params = {
@@ -843,10 +942,7 @@ export class DocbookingComponent implements OnInit{
 			clinic_id: this.adminService.getUser().clinicId,
 			booking_id: this.id,
 			child_id: this.booking.childId,
-			assist_id: this.addAssistInfo.project['id'],
-			num: this.addAssistInfo.number,
-			remark: this.adminService.trim(this.addAssistInfo.remark),
-			id: this.addAssistInfo.editType == 'update' ? this.addAssistInfo.editProjectId : null,
+			assistlist: JSON.stringify(assistlist),
 		}
 
 		this.adminService.addassist(params).then((data) => {
@@ -859,7 +955,7 @@ export class DocbookingComponent implements OnInit{
 				}else{
 					this._message.success('辅助治疗添加成功');
 				}
-				this.removeAssist();
+				this.removeAssistTab();
 				this.getBookingAssistData();
 				this.getBookingData();
 				this.btnCanEdit = false;
@@ -988,10 +1084,7 @@ export class DocbookingComponent implements OnInit{
 					this.getCheckData();
 					//清空检查信息
 					this.addCheckInfo = {
-						booking_id: '',
-						check_id: '',
-						check_name: '',
-						check: '',
+                        checkList: [],
 						editType: '',
 					}
 				}
@@ -1010,7 +1103,7 @@ export class DocbookingComponent implements OnInit{
 					this._message.success('辅助治疗删除成功');
 					this.getBookingAssistData();
 					//清空辅助治疗信息
-					this.removeAssist();
+					this.removeAssistTab();
 					this.getBookingData();
 				}
 			}).catch(() => {

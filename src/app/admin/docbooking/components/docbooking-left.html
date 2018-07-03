@@ -90,6 +90,19 @@
                 <div class="item">
                     就诊日期：{{historyHealthR[0].bookingDate}}
                 </div>
+                <div *ngIf="historyHealthR[0].birthWeight != null && historyHealthR[0].birthWeight != '0'" class="item">
+                    出生时体重：{{historyHealthR[0].birthWeight}}
+                    <span *ngIf="historyHealthR[0].birthWeight != ''" class="pl5">kg</span>
+                </div>
+                <div *ngIf="historyHealthR[0].productionStatus != null" class="item">
+                    生产状态：{{historyHealthR[0].productionStatus}}
+                </div>
+                <div *ngIf="historyHealthR[0].productionStatus != null" class="item">
+                    孕周：{{(historyHealthR[0].gestationalWeeks != '' && historyHealthR[0].gestationalWeeks != 0 ? historyHealthR[0].gestationalWeeks + '周' : '') + (historyHealthR[0].gestationalWeeks != '' && historyHealthR[0].gestationalDays != 0 ? historyHealthR[0].gestationalDays + '天' : '')}}
+                </div>
+                <div *ngIf="historyHealthR[0].productionWay != null" class="item">
+                    生产方式：{{historyHealthR[0].productionWayText}}
+                </div>
                 <div *ngIf="historyHealthR[0].height != null && historyHealthR[0].height != '0.00'" class="item">
                     身高：{{historyHealthR[0].height}}
                     <span *ngIf="historyHealthR[0].height != '0.00'" class="pl5">cm</span>
@@ -136,7 +149,7 @@
                     血压：{{historyHealthR[0].bloodPressure}}
                     <span *ngIf="historyHealthR[0].bloodPressure != '' && historyHealthR[0].bloodPressure != '0'" class="pl5">mmHg</span>
                 </div>
-                <div *ngIf="historyHealthR[0].spirit != null && historyHealthR[0].spirit != ''" class="item">
+                <div *ngIf="historyHealthR[0].spirit != null && historyHealthR[0].spirit != ''" class="flex item">
                     <div>精神及神志：</div>
                     <div class="flex-1">{{historyHealthR[0].spirit}}</div>
                 </div>

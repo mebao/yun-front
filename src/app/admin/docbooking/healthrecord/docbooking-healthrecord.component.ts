@@ -182,7 +182,14 @@ export class DocbookingHealthrecordComponent implements OnInit{
         review_date_text: string,
 		review_date_session: Date,
 		files: any[],
-		checkId: string,
+        checkId: string,
+        birth_weight: string,
+        production_status: string,
+        production_way: string,
+        production_way_othe1: string,
+        production_way_othe2: string,
+        gestational_days: string,
+        gestational_weeks: string,
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
     baseInfo: {
@@ -197,6 +204,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
         breathe: string,
         blood_pressure: string,
 		teeth_num: string,
+        birth_weight: string,
+        gestational_days: string,
     }
     editType: string;
 	// 不可连续点击
@@ -393,6 +402,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			review_date_session: null,
 			files: [],
 			checkId: null,
+            birth_weight: '',
+            production_status: '',
+            production_way: '',
+            production_way_othe1: '',
+            production_way_othe2: '',
+            gestational_days: '',
+            gestational_weeks: '',
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
 		this.infoTime = JSON.parse(JSON.stringify(this.info));
@@ -408,6 +424,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			breathe: '',
 			blood_pressure: '',
 			teeth_num: '',
+            birth_weight: '',
+            gestational_days: '',
 		}
 
 		this.loadingShow = true;
@@ -600,7 +618,22 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
+                        results.list[i].reviewDate = results.list[i].reviewDate ? this.adminService.dateFormat(results.list[i].reviewDate) : results.list[i].reviewDate;
+                        if(results.list[i].productionWay){
+                            var productionWayList = results.list[i].productionWay.split('`');
+                            var productionWayText = '';
+                            if(productionWayList.length > 0){
+                                for(var j = 0; j < productionWayList.length; j++){
+                                    if(productionWayList[j] != ''){
+                                        productionWayText += productionWayList[j] + '，';
+                                    }
+                                }
+                            }
+                            if(productionWayText.length > 0){
+                                productionWayText = productionWayText.slice(0, productionWayText.length - 1);
+                            }
+                            results.list[i].productionWayText = productionWayText;
+                        }
 					}
 					sessionStorage.setItem('healthrecord', JSON.stringify(results.list[0]));
 				}
@@ -768,8 +801,16 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				review_date_text: healthrecord.reviewDate,
 				review_date_session: healthrecord.reviewDate ? new Date(this.adminService.dateFormatHasWord(healthrecord.reviewDate)) : null,
 				files: healthrecord.files,
-				checkId: healthrecord.checkId,
-			}
+                checkId: healthrecord.checkId,
+                birth_weight: healthrecord.birthWeight,
+                production_status: healthrecord.productionStatus,
+                production_way: healthrecord.productionWay != null ? healthrecord.productionWay.split('`')[0] : null,
+                production_way_othe1: healthrecord.productionWay != null ? healthrecord.productionWay.split('`')[1] : '',
+                production_way_othe2: healthrecord.productionWay != null ? healthrecord.productionWay.split('`')[2] : '',
+                gestational_days: healthrecord.gestationalDays,
+                gestational_weeks: healthrecord.gestationalWeeks,
+            }
+            console.log(this.info);
 			this.baseInfo = {
 				height: healthrecord.height,
 				medium_height: healthrecord.mediumHeight,
@@ -782,6 +823,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				breathe: healthrecord.breathe,
 				blood_pressure: healthrecord.bloodPressure,
 				teeth_num: healthrecord.teeth_num,
+                birth_weight: healthrecord.birthWeight,
+                gestational_days: healthrecord.gestationalDays,
 			}
 			this.loadingShow = false;
 		}else if(this.editType == 'create'){
@@ -895,6 +938,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				review_date_session: null,
 				files: [],
 				checkId: null,
+                birth_weight: null,
+                production_status: null,
+                production_way: null,
+                production_way_othe1: '',
+                production_way_othe2: '',
+                gestational_days: null,
+                gestational_weeks: null,
 			}
 			this.baseInfo = {
 				height: null,
@@ -907,7 +957,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				pulse: null,
 				breathe: null,
 				blood_pressure: null,
-				teeth_num: null,
+                teeth_num: null,
+                birth_weight: null,
+                gestational_days: null,
 			}
 			//中等值身高体重
 			var childcontrastUrl = '?child_id=' + this.booking.childId;
@@ -1077,7 +1129,12 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}
 					if(recordTemplet.recordkeys[i].key=='nutritional_status' && recordTemplet.recordkeys[i].value == ''){
 							this.info.nutritional_status = '良好';
-					}
+					}if(recordTemplet.recordkeys[i].key=='heart' && recordTemplet.recordkeys[i].value == ''){
+							this.info.heart = '未见异常';
+                    }
+                    if(recordTemplet.recordkeys[i].key=='gestational_days'){
+                        this.info.gestational_weeks = '';
+                    }
 				}
 			}
 			this.infoOld = JSON.parse(JSON.stringify(this.info));
@@ -1351,6 +1408,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
         this.info.disease_prevention = this.adminService.trim(this.info.disease_prevention);
         this.info.answering_questions = this.adminService.trim(this.info.answering_questions);
         this.info.record = this.adminService.trim(this.info.record);
+		if(!this.validateNumber('birth_weight', '出生时体重')){
+            this.btnCanEdit = false;
+			return;
+		}
+		if(!this.validateNumber('gestational_weeks', '周')){
+            this.btnCanEdit = false;
+			return;
+		}
+		if(!this.validateNumber('gestational_days', '天')){
+            this.btnCanEdit = false;
+			return;
+		}
 		if(!this.validateNumber('height', '身高')){
             this.btnCanEdit = false;
 			return;
@@ -1472,7 +1541,11 @@ export class DocbookingHealthrecordComponent implements OnInit{
             record: this.info.record,
             review_date: !this.info.review_date ? null : this.adminService.getDayByDate(new Date(this.info.review_date)),
 			true_id: this.actualOperator.use ? JSON.parse(this.operator).id : null,
-			true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
+            true_name: this.actualOperator.use ? JSON.parse(this.operator).realName : null,
+            birth_weight: this.info.birth_weight,
+            production_status: this.info.production_status,
+            production_way: this.info.production_way == null ? null : (this.info.production_way + '`' + this.info.production_way_othe1 + '`' + this.info.production_way_othe2),
+            gestational_days: (this.info.gestational_days != null && this.info.gestational_days != '' ? Number(this.info.gestational_days) : 0) + (this.info.gestational_weeks != null && this.info.gestational_weeks != '' ? Number(this.info.gestational_weeks) * 7 : 0),
 			is_check: type == '' ? null : '1',
         }
 

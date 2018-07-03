@@ -172,7 +172,23 @@ export class DocbookingLeft{
 				var results = JSON.parse(JSON.stringify(data.results));
 				if(results.list.length > 0){
 					for(var i = 0; i < results.list.length; i++){
-						results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
+                        results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
+                        if(results.list[i].productionWay){
+                            var productionWayList = results.list[i].productionWay.split('`');
+                            console.log(productionWayList);
+                            var productionWayText = '';
+                            if(productionWayList.length > 0){
+                                for(var j = 0; j < productionWayList.length; j++){
+                                    if(productionWayList[j] != ''){
+                                        productionWayText += productionWayList[j] + '，';
+                                    }
+                                }
+                            }
+                            if(productionWayText.length > 0){
+                                productionWayText = productionWayText.slice(0, productionWayText.length - 1);
+                            }
+                            results.list[i].productionWayText = productionWayText;
+                        }
 					}
 					this.historyHealthR.push(results.list[0]);
 				}

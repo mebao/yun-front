@@ -29,36 +29,42 @@
 						</ng-template>
 						<!-- pageType 空为医生接诊， history为查看 -->
 						<div *ngIf="pageType != 'history'">
-							<div *ngIf="addCheckInfo.editType != ''" nz-row [nzGutter]="30">
-								<div nz-col [nzSpan]="8">
-									<div nz-form-item>
-										<div nz-form-label>
-											<label>实验室检查</label>
-										</div>
-										<div nz-form-control class="mt10">
-											<nz-select
-												class="w100"
-												[nzSize]="'large'"
-												[nzPlaceHolder]="'请选择实验室检查'"
-												[(ngModel)]="addCheckInfo.check"
-												nzShowSearch
-												[nzDisabled]="addCheckInfo.editType == 'update'">
-												<ng-container *ngFor="let check of checklist">
-													<ng-container *ngIf="check.canUse == '1'">
-														<nz-option [nzLabel]="check.name" [nzValue]="check"></nz-option>
-													</ng-container>
-												</ng-container>
-											</nz-select>
+							<div *ngIf="addCheckInfo.editType != ''">
+                                <div nz-form-item *ngFor="let checkInfo of addCheckInfo.checkList; let index=index;">
+                                    <div nz-form-label class="mt10">
+                                        <label>实验室检查</label>
+                                    </div>
+                                    <div nz-form-control class="mt10">
+                                        <div nz-row [nzGutter]="30">
+                                            <div nz-col [nzSpan]="8">
+                                                <nz-select
+                                                    class="w100"
+                                                    [nzSize]="'large'"
+                                                    [nzPlaceHolder]="'请选择实验室检查'"
+                                                    [(ngModel)]="checkInfo.check"
+                                                    nzShowSearch
+                                                    [nzDisabled]="addCheckInfo.editType == 'update'">
+                                                    <ng-container *ngFor="let check of checklist">
+                                                        <ng-container *ngIf="check.canUse == '1'">
+                                                            <nz-option [nzLabel]="check.name" [nzValue]="check"></nz-option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </nz-select>
+                                            </div>
+                                            <div nz-col [nzSpan]="16">
+                                                <button (click)="removeCheck(index)" nz-button [nzSize]="'large'" [nzType]="'danger'">移除</button>
+                                                <button (click)="addCheck()" nz-button [nzSize]="'large'" [nzType]="'primary'">添加</button>
+                                            </div>
 										</div>
 									</div>
-								</div>
+                                </div>
 							</div>
 							<!-- 订单未完成，可操作 -->
 							<ng-container *ngIf="booking.status != '5'">
 								<div *ngIf="canEdit" class="mt10">
-									<button *ngIf="addCheckInfo.editType == ''" (click)="addCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加检查</button>
-									<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheck()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-									<button *ngIf="addCheckInfo.editType != ''" (click)="editCheck()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+									<button *ngIf="addCheckInfo.editType == ''" (click)="addCheckTab()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加检查</button>
+									<button *ngIf="addCheckInfo.editType != ''" (click)="removeCheckTab()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									<button *ngIf="addCheckInfo.editType != ''" (click)="editCheckTab()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
 								</div>
 							</ng-container>
 						</div>
@@ -119,7 +125,7 @@
 								</nz-tab>
 							</nz-tabset>
 						</div>
-						<div *ngIf="hasCheckData && checkDataList.length == 0" class="mt10">
+						<div *ngIf="hasCheckData && checkDataList.length == 0 && addCheckInfo.editType == ''" class="mt10">
 							<nz-alert [nzType]="'info'" [nzMessage]="'暂无实验室检查信息'"></nz-alert>
 						</div>
 					</div>
@@ -132,7 +138,7 @@
 							<!-- 订单未完成，可操作 -->
 							<ng-container *ngIf="booking.status != '5'">
 								<div *ngIf="canEdit" class="mt10 mb20">
-									<button *ngIf="addAssistInfo.editType == ''" (click)="addAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加辅助治疗</button>
+									<button *ngIf="addAssistInfo.editType == ''" (click)="addAssistTab()" nz-button [nzType]="'primary'" [nzSize]="'large'">添加辅助治疗</button>
 								</div>
 							</ng-container>
 						</div>
@@ -163,7 +169,7 @@
 											</ng-container>
 											<!-- 修改 -->
 											<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-												<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
+												<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber('', '')">
 											</ng-container>
 										</td>
 										<td>
@@ -216,7 +222,7 @@
 												</ng-container>
 												<!-- 修改 -->
 												<ng-container *ngIf="addAssistInfo.editType == 'update' && addAssistInfo.editProjectId == assist.id">
-													<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber()">
+													<input type="number" name="number" [(ngModel)]="addAssistInfo.number" placeholder="请输入数量" (change)="changeAssistNumber('', '')">
 												</ng-container>
 											</td>
 											<td [attr.rowspan]="assist.drugs.length" *ngIf="indexDrug == 0">
@@ -262,8 +268,8 @@
 							<span noResult>暂无辅助治疗信息</span>
 						</nz-table>
 						<!-- pageType 空为医生接诊， history为查看 -->
-						<div *ngIf="pageType != 'history'">
-							<div *ngIf="addAssistInfo.editType == 'add'" nz-row [nzGutter]="30" class="mt20">
+						<div *ngIf="pageType != 'history' && addAssistInfo.editType == 'add'">
+							<div *ngFor="let assistInfo of addAssistInfo.projectList; let index=index;" nz-row [nzGutter]="20" class="mt20">
 								<div nz-col [nzSpan]="5">
 									<div nz-form-item>
 										<div nz-form-label>
@@ -272,10 +278,10 @@
 										<div nz-form-control class="mt10">
 											<nz-select
 												class="w100"
-												(ngModelChange)="addAssistInfo.project=$event;changeAssist()"
+												(ngModelChange)="assistInfo.project=$event;changeAssist(index)"
 												[nzSize]="'large'"
 												[nzPlaceHolder]="'请选择辅助治疗'"
-												[ngModel]="addAssistInfo.project"
+												[ngModel]="assistInfo.project"
 												nzShowSearch>
 												<nz-option
 													*ngFor="let assist of assistProjects"
@@ -286,23 +292,23 @@
 										</div>
 									</div>
 								</div>
-								<div nz-col [nzSpan]="4">
+								<div nz-col [nzSpan]="3">
 									<div nz-form-item>
 										<div nz-form-label>
 											<label>单价<span class="required">*</span></label>
 										</div>
 										<div nz-form-control class="mt10">
-											<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.price" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
+											<nz-input-number [nzStep]="1" [(ngModel)]="assistInfo.price" [nzPlaceHolder]="'请输入单价'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
 										</div>
 									</div>
 								</div>
-								<div nz-col [nzSpan]="4">
+								<div nz-col [nzSpan]="3">
 									<div nz-form-item>
 										<div nz-form-label>
-											<label>数量<span class="required">*</span></label>
+											<label>次数<span class="required">*</span></label>
 										</div>
 										<div nz-form-control class="mt10">
-											<nz-input-number [nzStep]="1" [ngModel]="addAssistInfo.number" (ngModelChange)="addAssistInfo.number=$event;changeAssistNumber()" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
+											<nz-input-number [nzStep]="1" [ngModel]="assistInfo.number" (ngModelChange)="assistInfo.number=$event;changeAssistNumber('list', index)" [nzPlaceHolder]="'请输入数量'" [nzSize]="'large'" class="w100"></nz-input-number>
 										</div>
 									</div>
 								</div>
@@ -312,17 +318,25 @@
 											<label>费用<span class="required">*</span></label>
 										</div>
 										<div nz-form-control class="mt10">
-											<nz-input-number [nzStep]="1" [(ngModel)]="addAssistInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
+											<nz-input-number [nzStep]="1" [(ngModel)]="assistInfo.fee" [nzPlaceHolder]="'请输入费用'" [nzSize]="'large'" [nzDisabled]="true" class="w100"></nz-input-number>
 										</div>
 									</div>
 								</div>
-								<div nz-col [nzSpan]="7">
+								<div nz-col [nzSpan]="9">
 									<div nz-form-item>
 										<div nz-form-label>
 											<label>备注（最多200字）</label>
 										</div>
 										<div nz-form-control class="mt10">
-											<textarea nz-input [(ngModel)]="addAssistInfo.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
+                                            <div nz-row [nzGutter]="20">
+                                                <div nz-col [nzSpan]="12">
+                                                    <textarea nz-input [(ngModel)]="assistInfo.remark" placeHolder="请输入备注" [nzSize]="'large'" maxlength="200"></textarea>
+                                                </div>
+                                                <div nz-col [nzSpan]="12">
+                                                    <button (click)="removeAssist(index)" nz-button [nzSize]="'large'" [nzType]="'danger'">移除</button>
+                                                    <button (click)="addAssist()" nz-button [nzSize]="'large'" [nzType]="'primary'">添加</button>
+                                                </div>
+                                            </div>
 										</div>
 									</div>
 								</div>
@@ -330,8 +344,8 @@
 							<!-- 订单未完成，可操作 -->
 							<ng-container *ngIf="booking.status != '5'">
 								<div *ngIf="canEdit" class="mt10">
-									<button *ngIf="addAssistInfo.editType == 'add'" (click)="removeAssist()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
-									<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssist()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
+									<button *ngIf="addAssistInfo.editType == 'add'" (click)="removeAssistTab()" nz-button [nzType]="'default'" [nzSize]="'large'">取消</button>
+									<button *ngIf="addAssistInfo.editType == 'add'" (click)="editAssistTab()" nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="btnCanEdit">保存</button>
 								</div>
 							</ng-container>
 						</div>
