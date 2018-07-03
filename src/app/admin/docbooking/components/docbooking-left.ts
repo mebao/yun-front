@@ -175,7 +175,6 @@ export class DocbookingLeft{
                         results.list[i].bookingDate = this.adminService.dateFormat(results.list[i].bookingDate);
                         if(results.list[i].productionWay){
                             var productionWayList = results.list[i].productionWay.split('`');
-                            console.log(productionWayList);
                             var productionWayText = '';
                             if(productionWayList.length > 0){
                                 for(var j = 0; j < productionWayList.length; j++){

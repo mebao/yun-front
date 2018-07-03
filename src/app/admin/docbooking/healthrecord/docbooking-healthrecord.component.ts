@@ -810,7 +810,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 gestational_days: healthrecord.gestationalDays,
                 gestational_weeks: healthrecord.gestationalWeeks,
             }
-            console.log(this.info);
 			this.baseInfo = {
 				height: healthrecord.height,
 				medium_height: healthrecord.mediumHeight,

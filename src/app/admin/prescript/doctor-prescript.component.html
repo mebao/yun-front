@@ -318,7 +318,7 @@
 				</div>
 				<div nz-form-control>
 					<nz-select
-						*ngIf="!(secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != ''))"
+						*ngIf="!(secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != ''))"
 						[formControlName]="this.tabForm.medical_info.batch"
 						[nzPlaceHolder]="'请选择批次'"
 						nzShowSearch>
@@ -353,7 +353,7 @@
 					<label nz-form-item-required>用法：</label>
 				</div>
 				<div nz-form-control>
-					<nz-select [formControlName]="this.tabForm.medical_info.usage" [nzPlaceHolder]="'请选择用法'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+					<nz-select [formControlName]="this.tabForm.medical_info.usage" [nzPlaceHolder]="'请选择用法'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')">
 						<ng-container *ngFor="let usage of usagelsit">
 							<nz-option [nzValue]="usage" [nzLabel]="usage"></nz-option>
 						</ng-container>
@@ -365,7 +365,7 @@
 					<label nz-form-item-required>用药频次：</label>
 				</div>
 				<div nz-form-control>
-					<nz-select [formControlName]="this.tabForm.medical_info.frequency" [nzPlaceHolder]="'请选择用药频次'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')">
+					<nz-select [formControlName]="this.tabForm.medical_info.frequency" [nzPlaceHolder]="'请选择用药频次'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')">
 						<ng-container *ngFor="let frequency of frequencylist">
 							<nz-option [nzValue]="frequency" [nzLabel]="frequency"></nz-option>
 						</ng-container>
@@ -377,7 +377,7 @@
 					<label>天数：</label>
 				</div>
 				<div nz-form-control>
-					<nz-select [formControlName]="this.tabForm.medical_info.days" [nzPlaceHolder]="'请选择天数'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && medical_info.isOut != '')"
+					<nz-select [formControlName]="this.tabForm.medical_info.days" [nzPlaceHolder]="'请选择天数'" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')" [nzDisabled]="secondType == 'back' || (secondType == 'continueAdd' && this.tabForm.medical_info.isOut != '')"
 					nzShowSearch
 					nzAllowClear
 					(nzSearchChange)="searchNum($event)">

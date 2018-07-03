@@ -134,7 +134,7 @@ export class CallRecord{
                     this._message.error('暂无电话录音');
                 }else{
                     this.modalTab = true;
-                    this.fileUrl = 'http://ting.meb.jiabaokangle.com/newmusic350540085';
+                    this.fileUrl = JSON.parse(JSON.stringify(data.results)).fileUrl;
                     this.fileEle.nativeElement.load();
                 }
             }

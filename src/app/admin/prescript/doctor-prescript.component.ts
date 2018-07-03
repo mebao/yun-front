@@ -412,8 +412,6 @@ export class DoctorPrescriptComponent{
                 this.numberOldList.push({key: medical.num, value: medical.num});
             }
 		}
-
-		console.log(this.mPrescriptList);
 		
 		// 滚动条滚动到底部
 		setTimeout(() => {
@@ -587,7 +585,6 @@ export class DoctorPrescriptComponent{
 	}
 
 	create() {
-		console.log(this.validateForm.controls);
 		if(this.actualOperator.use && this.adminService.isFalse(this.actualOperator.name)){
 			this._message.error('请先选择实际操作人');
 			return;
