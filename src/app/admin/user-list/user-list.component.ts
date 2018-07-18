@@ -19,7 +19,8 @@ export class UserListComponent{
 	moduleAuthority: {
 		see: boolean,
 		add: boolean,
-		info: boolean,
+        info: boolean,
+        seePhone: boolean,
 		delete: boolean,
 		member: boolean,
 		recharge: boolean,
@@ -81,7 +82,8 @@ export class UserListComponent{
 		this.moduleAuthority = {
 			see: false,
 			add: false,
-			info: false,
+            info: false,
+            seePhone: false,
 			delete: false,
 			member: false,
 			recharge: false,

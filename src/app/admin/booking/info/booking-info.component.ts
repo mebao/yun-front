@@ -17,7 +17,8 @@ export class BookingInfoComponent{
 	};
 	//权限
 	moduleAuthority: {
-		see: boolean,
+        see: boolean,
+        seePhone: boolean,
 		info: boolean,
 		add: boolean,
 		update: boolean,
@@ -53,7 +54,8 @@ export class BookingInfoComponent{
 		refereeId: string,
 		refereeName: string,
 		genderText: string,
-		cancel_cause: string,
+        cancel_cause: string,
+        mobile: string,
 	};
 	canEdit: boolean;
 	selectorBooking: {
@@ -83,7 +85,8 @@ export class BookingInfoComponent{
 		//权限
 		this.moduleAuthority = {
 			see: false,
-			info: false,
+            info: false,
+            seePhone: false,
 			add: false,
 			update: false,
 		}
@@ -128,7 +131,8 @@ export class BookingInfoComponent{
 			refereeId: '',
 			refereeName: '',
 			genderText: '',
-			cancel_cause: '',
+            cancel_cause: '',
+            mobile: '',
 		};
 		this.url = '?username=' + this.adminService.getUser().username
 			 + '&token=' + this.adminService.getUser().token

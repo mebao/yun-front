@@ -21,7 +21,8 @@ export class BookingListComponent implements OnInit{
 	//权限
 	moduleAuthority: {
 		see: boolean,
-		info: boolean,
+        info: boolean,
+        seePhone: boolean,
 		add: boolean,
 		update: boolean,
 		sendSms: boolean,
@@ -37,9 +38,11 @@ export class BookingListComponent implements OnInit{
 		service_id: string,
 		mobile: string,
 		child_id: string,
-		creator_name: string,
-		cdate: [Date, Date],
-		bdate: [Date, Date],
+        creator_name: string,
+        cdate_big: Date,
+        cdate_less: Date,
+        bdate_big: Date,
+        bdate_less: Date,
 		statuslist: string,
 		status: string,
 		has_sms: string,
@@ -163,7 +166,8 @@ export class BookingListComponent implements OnInit{
 		//权限
 		this.moduleAuthority = {
 			see: false,
-			info: false,
+            info: false,
+            seePhone: false,
 			add: false,
 			update: false,
 			sendSms: false,
@@ -195,8 +199,10 @@ export class BookingListComponent implements OnInit{
 			mobile: '',
 			child_id: '',
 			creator_name: '',
-			cdate: [null, null],
-			bdate: [new Date(), new Date()],
+            cdate_big: null,
+            cdate_less: null,
+            bdate_big: new Date(),
+            bdate_less: new Date(),
 			statuslist: '',
 			status: '',
 			has_sms: '',
@@ -658,20 +664,48 @@ export class BookingListComponent implements OnInit{
 		this.getList(urlOptions + '&weekindex=' + this.weekNum, 'week');
 		//列表
 		var urlOptionsList = this.getUrlOptios();
-		if(this.searchInfo.cdate[0]){
-			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[0]));
+		if(this.searchInfo.cdate_big){
+			urlOptionsList += '&cdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_big));
 		}
-		if(this.searchInfo.cdate[1]){
-			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate[1]));
+		if(this.searchInfo.cdate_less){
+			urlOptionsList += '&cdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.cdate_less));
 		}
-		if(this.searchInfo.bdate[0]){
-			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[0]));
+		if(this.searchInfo.bdate_big){
+			urlOptionsList += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_big));
 		}
-		if(this.searchInfo.bdate[1]){
-			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate[1]));
+		if(this.searchInfo.bdate_less){
+			urlOptionsList += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.bdate_less));
 		}
 		this.getList(urlOptionsList, 'list');
-	}
+    }
+
+    _disabledStartCDate = (startValue) => {
+        if (!startValue || !this.searchInfo.cdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.cdate_less.getTime();
+    };
+
+    _disabledEndCDate = (endValue) => {
+        if (!endValue || !this.searchInfo.cdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.cdate_big.getTime();
+    };
+
+    _disabledStartBDate = (startValue) => {
+        if (!startValue || !this.searchInfo.bdate_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.bdate_less.getTime();
+    };
+
+    _disabledEndBDate = (endValue) => {
+        if (!endValue || !this.searchInfo.bdate_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.bdate_big.getTime();
+    };
 
 	//查询今天
 	// today() {

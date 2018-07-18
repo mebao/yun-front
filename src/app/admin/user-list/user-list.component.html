@@ -15,7 +15,7 @@
 				</div>
 			</div>
 		</div>
-		<div nz-col [nzSpan]="8">
+		<div nz-col [nzSpan]="8" *ngIf="moduleAuthority.seePhone">
 			<div nz-form-item nz-row>
 				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
 					<label for="mobile">手机号码：</label>
@@ -92,7 +92,7 @@
 		<thead nz-thead>
 			<tr>
 				<th>家长姓名</th>
-				<th>手机号码</th>
+				<th *ngIf="moduleAuthority.seePhone">手机号码</th>
 				<th>性别</th>
 				<th class="w10">地址</th>
 				<th>会员</th>
@@ -105,7 +105,7 @@
 		<tbody nz-tbody>
 			<tr nz-tbody-tr *ngFor="let user of users">
 				<td>{{user.name}}</td>
-				<td>{{user.mobile}}</td>
+				<td *ngIf="moduleAuthority.seePhone">{{user.mobile}}</td>
 				<td>{{user.gender == 'M' ? '男' : '女'}}</td>
 				<td>
 					<div class="td-text">{{user.address}}</div>

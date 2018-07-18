@@ -142,7 +142,7 @@
 						<tr>
 							<th>预约科室</th>
 							<th>宝宝姓名</th>
-							<th>手机号码</th>
+							<th *ngIf="moduleAuthority.seePhone">手机号码</th>
 							<th>预约时间</th>
 							<th class="th-width">备注</th>
 							<th>操作</th>
@@ -152,7 +152,7 @@
 						<tr *ngFor="let showBooking of showBookinglist">
 							<td>{{showBooking.serviceName}}</td>
 							<td>{{showBooking.childName}}</td>
-							<td>{{showBooking.mobile}}</td>
+							<td *ngIf="moduleAuthority.seePhone">{{showBooking.mobile}}</td>
 							<td>
 								<span>{{showBooking.bookingDate}}</span>
 								<span>{{showBooking.time}}</span>

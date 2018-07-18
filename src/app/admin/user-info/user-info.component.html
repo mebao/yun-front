@@ -12,7 +12,7 @@
 		</ng-template>
 		<ng-template #body>
 			<p>姓名：{{olduserInfo.name}}</p>
-			<p class="mt10">手机号码：{{olduserInfo.mobile}}</p>
+			<p *ngIf="moduleAuthority.seePhone" class="mt10">手机号码：{{olduserInfo.mobile}}</p>
 			<p class="mt10">性别：{{olduserInfo.gender == 'M' ? '男' : '女'}}</p>
 			<div class="flex mt10">
 				<div>地址：</div>
@@ -37,7 +37,7 @@
 	                <nz-input [(ngModel)]="userInfo.name" [nzPlaceHolder]="'请输入姓名'" [nzSize]="'large'"></nz-input>
 	            </div>
 	        </div>
-			<div nz-form-item>
+			<div nz-form-item *ngIf="moduleAuthority.seePhone">
 	            <div nz-form-label>
 	                <label><span class="required">*</span>手机号码</label>
 	            </div>

@@ -15,65 +15,58 @@
       	</ng-template>
 		<ng-template #body>
 			<div nz-row [nzGutter]="30">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					家长姓名：{{booking.creatorName}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					宝宝姓名：{{booking.childName}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10" *ngIf="moduleAuthority.seePhone">
+					手机号码：{{booking.mobile}}
+				</div>
+				<div nz-col [nzSpan]="8" class="mb10">
 					年龄：{{booking.age}}
 				</div>
-			</div>
-			<div nz-row [nzGutter]="30" class="mt10">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					性别：{{booking.genderText}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					预约科室：{{booking.services.length > 0 ? booking.services[0].serviceName : ''}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					预约医生：{{booking.services.length > 0 ? booking.services[0].userDoctorName : ''}}
 				</div>
-			</div>
-			<div nz-row [nzGutter]="30" class="mt10">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					预约日期：{{booking.services.length > 0 ? booking.services[0].serviceDate : ''}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					预约时间：{{booking.services.length > 0 ? booking.services[0].serviceTime : ''}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					状态：{{booking.statusText}}
 				</div>
-			</div>
-			<div nz-row [nzGutter]="30" class="mt10">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					就诊开始时间：{{booking.services.length > 0 ? booking.services[0].begin : ''}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					就诊结束时间：{{booking.services.length > 0 ? booking.services[0].end : ''}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					就诊时间：{{booking.services.length > 0 ? booking.services[0].mins : ''}}
 				</div>
-			</div>
-			<div nz-row [nzGutter]="30" class="mt10">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					预约金支付时间：{{booking.yyj.time}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					推荐人：{{booking.refereeName}}
 				</div>
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					<div class="flex">
 						<div>备注：</div>
 						<div class="flex-1">{{booking.remark}}</div>
 					</div>
 				</div>
-			</div>
-			<div nz-row [nzGutter]="30" class="mt10">
-				<div nz-col [nzSpan]="8">
+				<div nz-col [nzSpan]="8" class="mb10">
 					<div class="flex">
 						<div>取消原因：</div>
 						<div class="flex-1">{{booking.cancel_cause}}</div>

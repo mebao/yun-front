@@ -18,7 +18,8 @@ export class ChildListComponent{
 	// 权限
 	moduleAuthority: {
 		see: boolean,
-		info: boolean,
+        info: boolean,
+        seePhone: boolean,
 		booking: boolean,
 		bookingHistory: boolean,
 		callPhone: boolean,
@@ -46,7 +47,8 @@ export class ChildListComponent{
 
 		this.moduleAuthority = {
 			see: false,
-			info: false,
+            info: false,
+            seePhone: false,
 			booking: false,
 			bookingHistory: false,
 			callPhone: false,

@@ -17,6 +17,7 @@ export class UserInfoComponent{
 	};
 	// 权限
 	moduleAuthority: {
+        seePhone: boolean,
 		info_delete: boolean,
 	}
 	loadingShow: boolean;
@@ -90,6 +91,7 @@ export class UserInfoComponent{
 
 		// 权限
 		this.moduleAuthority = {
+            seePhone: false,
 			info_delete: false,
 		}
 		// 那段角色，是超级管理员0还是普通角色

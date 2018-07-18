@@ -14,7 +14,11 @@ export class ChildInfoComponent{
 	topBar: {
 		title: string,
 		back: boolean,
-	};
+    };
+	// 权限
+	moduleAuthority: {
+		seePhone: boolean,
+	}
 	loadingShow: boolean;
 	userInfo: {
 		id: string,
@@ -63,6 +67,22 @@ export class ChildInfoComponent{
 		this.topBar = {
 			title: '宝宝详情',
 			back: true,
+        }
+        
+		this.moduleAuthority = {
+			seePhone: false,
+		}
+		// 那段角色，是超级管理员0还是普通角色
+		// 如果是超级管理员，获取所有权限
+		if(this.adminService.getUser().role == '0' || this.adminService.getUser().role == '9'){
+			for(var key in this.moduleAuthority){
+				this.moduleAuthority[key] = true;
+			}
+		}else{
+			var authority = JSON.parse(sessionStorage.getItem('userClinicRolesInfos'));
+			for(var i = 0; i < authority.infos.length; i++){
+				this.moduleAuthority[authority.infos[i].keyName] = true;
+			}
 		}
 
 		this.loadingShow = true;
