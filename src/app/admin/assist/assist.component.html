@@ -45,10 +45,10 @@
 					        <div nz-form-label class="w100 text-left">
 								<div class="flex">
 									<div class="w30">药品：</div>
-									<div class="w15">计量数量：</div>
-									<div class="w20">计量单位：</div>
-									<div class="w15">实际数量：</div>
-									<div class="w20">实际单位：</div>
+									<div class="w15">规格数量：</div>
+									<div class="w20">规格单位：</div>
+									<div class="w15">剂量数量：</div>
+									<div class="w20">剂量单位：</div>
 								</div>
 					        </div>
 					        <div nz-form-control>
@@ -58,14 +58,14 @@
 						        			<nz-option [nzLabel]="medical.name" [nzValue]="medical.name"></nz-option>
 										</ng-container>
 						      		</nz-select>
-									<nz-input-number [formControlName]="medical_info.show_num" [nzSize]="'large'" [nzMin]="0" [nzStep]="1" class="w15 mr0" [nzPlaceHolder]="'计量数量'"></nz-input-number>
-						      		<nz-select [formControlName]="medical_info.show_unit" [nzSize]="'large'" class="w20" [nzPlaceHolder]="'计量单位'">
+									<nz-input-number [formControlName]="medical_info.show_num" [nzSize]="'large'" [nzMin]="0" [nzStep]="1" class="w15 mr0" [nzPlaceHolder]="'规格数量'"></nz-input-number>
+						      		<nz-select [formControlName]="medical_info.show_unit" [nzSize]="'large'" class="w20" [nzPlaceHolder]="'规格单位'">
 										<ng-container *ngFor="let unit of unitList">
 						        			<nz-option [nzLabel]="unit.value" [nzValue]="unit.value"></nz-option>
 										</ng-container>
 						      		</nz-select>
-									<nz-input-number [formControlName]="medical_info.num" [nzSize]="'large'" [nzMin]="0" [nzStep]="1" class="w15 mr0" [nzPlaceHolder]="'实际数量'"></nz-input-number>
-						      		<nz-select [formControlName]="medical_info.unit" [nzSize]="'large'" class="w20" [nzPlaceHolder]="'实际单位'">
+									<nz-input-number [formControlName]="medical_info.num" [nzSize]="'large'" [nzMin]="0" [nzStep]="1" class="w15 mr0" [nzPlaceHolder]="'剂量数量'"></nz-input-number>
+						      		<nz-select [formControlName]="medical_info.unit" [nzSize]="'large'" class="w20" [nzPlaceHolder]="'剂量单位'">
 										<ng-container *ngFor="let unit of unitList">
 						        			<nz-option [nzLabel]="unit.value" [nzValue]="unit.value"></nz-option>
 										</ng-container>
