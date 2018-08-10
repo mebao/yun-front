@@ -376,15 +376,13 @@ export class InspectResultsComponent{
 				if(parseFloat(result.values) < 0){
 					this._message.error(result.checkInfoKey + '检查结果应大于等于0');
 					return;
-				}
-				if(parseFloat(result.values) < parseFloat(result.low)){
+                }
+                this.checkProjectList[indexCheck].resultList[indexResult].compare = '';
+				if(result.low && parseFloat(result.values) < parseFloat(result.low)){
 					this.checkProjectList[indexCheck].resultList[indexResult].compare = 'low';
 				}
-				if(parseFloat(result.values) > parseFloat(result.high)){
+				if(result.high && parseFloat(result.values) > parseFloat(result.high)){
 					this.checkProjectList[indexCheck].resultList[indexResult].compare = 'high';
-				}
-				if(parseFloat(result.values) >= parseFloat(result.low) && parseFloat(result.values) <= parseFloat(result.high)){
-					this.checkProjectList[indexCheck].resultList[indexResult].compare = '';
 				}
 			}else{
 				this.checkProjectList[indexCheck].resultList[indexResult].compare = '';
