@@ -46,7 +46,15 @@ export class AuthGuardRole implements CanActivate{
 				 + '&role_id=' + this.adminService.getUser().clinicRoleId;
 			this.adminService.authoritylist(urlOptions).then((data) => {
 				if(data.status == 'no'){
-					alert(data.errorMsg);
+					if(data.errorMsg == '用户名或token不正确!'){
+                        this.adminService.delCookie('user');
+                        sessionStorage.removeItem('userClinicRoles');
+                        sessionStorage.removeItem('userClinicRolesInfos');
+                        this.router.navigate(['./login']);
+                        return true;
+                    }else{
+                        console.log(data.errorMsg);
+                    }
 				}else{
 					var results = JSON.parse(JSON.stringify(data.results));
 					//构造角色权限数据

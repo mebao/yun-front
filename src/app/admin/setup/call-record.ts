@@ -42,7 +42,7 @@ export class CallRecord{
 
 	ngOnInit() {
 		this.topBar = {
-			title: '辅助治疗列表',
+			title: '通话记录',
 			back: false,
 		}
 

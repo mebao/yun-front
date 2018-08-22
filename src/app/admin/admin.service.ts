@@ -19,7 +19,7 @@ export class AdminService{
 		//初始化缓存数据
 		this.clinicdata().then((data) => {
 			if(data.status == 'no'){
-				alert(data.errorMsg);
+				console.log(data.errorMsg);
 			}else{
 				sessionStorage.setItem('clinicdata', JSON.stringify(data.results));
 			}
