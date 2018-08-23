@@ -201,10 +201,10 @@
 				</li>
 			</ul>
 		</li>
-		<li nz-submenu *ngIf="clinicRole.childServiceList.use != '' || clinicRole.setupInspectList.use != '' || clinicRole.assistList.use != '' || clinicRole.memberList.use != ''">
+		<li nz-submenu *ngIf="clinicRole.childServiceList.use != '' || clinicRole.setupInspectList.use != '' || clinicRole.assistList.use != '' || clinicRole.memberList.use != '' || clinicRole.crmRoleList.use != '' || clinicRole.medicalSupplierList.use != ''">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>诊所设置</span>
+				<span>诊所管理</span>
 			</span>
 			<ul>
 				<li nz-menu-item
@@ -264,303 +264,310 @@
 						<!-- <i class="anticon anticon-mail"></i> -->
 						<span>活动卡管理</span>
 					</span>
-				</li>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.crmRoleList.use != ''"
+                    routerLink="./crmRole/list"
+                    routerLinkActive="ant-menu-item-selected">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>角色管理</span>
+                    </span>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.medicalSupplierList.use != ''"
+                    routerLink="./medical/supplier/list"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('supplierList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>供应商管理</span>
+                    </span>
+                </li>
 			</ul>
 		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.medicalSupplierList.use != ''"
-			routerLink="./medical/supplier/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('supplierList')">
+		<li nz-submenu *ngIf="clinicRole.materialList.use != '' || clinicRole.medicalList.use != '' || clinicRole.tcm.use != '' || clinicRole.moutList.use != ''">
 			<span title>
 				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>供应商管理</span>
-			</span>
-		</li>
-		<li nz-submenu *ngIf="clinicRole.materialList.use != ''">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>物资管理</span>
+				<span>库存管理</span>
 			</span>
 			<ul>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.seeSale.use != ''"
-					routerLink="./material/sale/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialSaleList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>物资零售</span>
-					</span>
-				</li>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.see.use != ''"
-					routerLink="./material/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>物资管理</span>
-					</span>
-				</li>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.seePut.use != ''"
-					routerLink="./material/purchase/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialPurchaseList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>入库管理</span>
-					</span>
-				</li>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.seeHas.use != ''"
-					routerLink="./material/has/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialHasList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>库存管理</span>
-					</span>
-				</li>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.seeLost.use != ''"
-					routerLink="./material/lost/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialLostList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>报损管理</span>
-					</span>
-				</li>
-				<li nz-menu-item
-					*ngIf="clinicRole.materialList.twoLevel.seeCheck.use != ''"
-					routerLink="./material/check/list"
-					routerLinkActive="ant-menu-item-selected"
-					(click)="goPage('materialCheckList')">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>盘点管理</span>
-					</span>
-				</li>
-			</ul>
-		</li>
-		<li nz-submenu *ngIf="clinicRole.medicalList.use != '' || clinicRole.tcm.use != ''">
-			<span title>
-				<!-- <i class="anticon anticon-appstore"></i> -->
-				<span>药房</span>
-			</span>
-			<ul>
-				<li nz-submenu *ngIf="clinicRole.medicalList.use != ''">
-					<span title>
-						<!-- <i class="anticon anticon-mail"></i> -->
-						<span>西/中成药管理</span>
-					</span>
-					<ul>
-						<li nz-menu-item
-							*ngIf="clinicRole.medicalList.twoLevel.see.use != ''"
-							routerLink="./medical/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('medicalList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>药品管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.medicalList.twoLevel.seePut.use != ''"
-							routerLink="./medical/purchase/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('medicalPurchaseList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>入库管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.medicalList.twoLevel.seeHas.use != ''"
-							routerLink="./medical/has/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('medicalHasList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>库存管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.medicalList.twoLevel.seeLost.use != ''"
-							routerLink="./medical/lost/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('medicalLostList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>报损管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.medicalList.twoLevel.seeCheck.use != ''"
-							routerLink="./medical/check/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('medicalCheckList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>盘点管理</span>
-							</span>
-						</li>
-					</ul>
-				</li>
-				<li nz-submenu *ngIf="clinicRole.tcm.use != ''">
-					<span title>中药管理</span>
-					<ul>
-						<li nz-menu-item
-							*ngIf="clinicRole.tcm.twoLevel.see.use != ''"
-							routerLink="./medical/tcm/list"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('tcmList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>中药管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.tcm.twoLevel.seePut.use != ''"
-							routerLink="./medical/tcm/purchaseList"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('tcmPurchaseList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>入库管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.tcm.twoLevel.seeHas.use != ''"
-							routerLink="./medical/tcm/hasList"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('tcmHasList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>库存管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.tcm.twoLevel.seeLost.use != ''"
-							routerLink="./medical/tcm/lostList"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('tcmLostList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>报损管理</span>
-							</span>
-						</li>
-						<li nz-menu-item
-							*ngIf="clinicRole.tcm.twoLevel.seeCheck.use != ''"
-							routerLink="./medical/tcm/checkList"
-							routerLinkActive="ant-menu-item-selected"
-							(click)="goPage('tcmCheckList')">
-							<span title>
-								<!-- <i class="anticon anticon-mail"></i> -->
-								<span>盘点管理</span>
-							</span>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.moutList.use != ''"
-			routerLink="./mout/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('moutList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>手动出库管理</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.userList.use != ''"
-			routerLink="./userList"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('userList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>用户管理</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.childList.use != ''"
-			routerLink="./child/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('childList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>病人库</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.crmRoleList.use != ''"
-			routerLink="./crmRole/list"
-			routerLinkActive="ant-menu-item-selected">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>角色管理</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.crmUserList.use != ''"
-			routerLink="./crmuser/list"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('crmuserList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>员工管理</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.doctorList.use != ''"
-			routerLink="./doctor/list"
-			routerLinkActive="ant-menu-item-selected">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>医生列表</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.transactionRecordList.use != ''"
-			routerLink="./transaction/recordList"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('transactionRecordList')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>交易记录</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.transactionStatistics.use != ''"
-			routerLink="./transaction/statistics"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('transactionStatistics')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>交易统计</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			*ngIf="clinicRole.callRecord.use != ''"
-			routerLink="./callRecord"
-			routerLinkActive="ant-menu-item-selected"
-			(click)="goPage('callRecord')">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>通话记录</span>
-			</span>
-		</li>
-		<li nz-menu-item
-			routerLink="./updatepwd"
-			routerLinkActive="ant-menu-item-selected">
-			<span title>
-				<!-- <i class="anticon anticon-mail"></i> -->
-				<span>修改密码</span>
-			</span>
-		</li>
+                <li nz-submenu *ngIf="clinicRole.materialList.use != ''">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>物资管理</span>
+                    </span>
+                    <ul>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.seeSale.use != ''"
+                            routerLink="./material/sale/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialSaleList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>物资零售</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.see.use != ''"
+                            routerLink="./material/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>物资管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.seePut.use != ''"
+                            routerLink="./material/purchase/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialPurchaseList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>入库管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.seeHas.use != ''"
+                            routerLink="./material/has/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialHasList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>库存管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.seeLost.use != ''"
+                            routerLink="./material/lost/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialLostList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>报损管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.materialList.twoLevel.seeCheck.use != ''"
+                            routerLink="./material/check/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('materialCheckList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>盘点管理</span>
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li nz-submenu *ngIf="clinicRole.medicalList.use != ''">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>西/中成药管理</span>
+                    </span>
+                    <ul>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.medicalList.twoLevel.see.use != ''"
+                            routerLink="./medical/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('medicalList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>药品管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.medicalList.twoLevel.seePut.use != ''"
+                            routerLink="./medical/purchase/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('medicalPurchaseList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>入库管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.medicalList.twoLevel.seeHas.use != ''"
+                            routerLink="./medical/has/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('medicalHasList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>库存管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.medicalList.twoLevel.seeLost.use != ''"
+                            routerLink="./medical/lost/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('medicalLostList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>报损管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.medicalList.twoLevel.seeCheck.use != ''"
+                            routerLink="./medical/check/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('medicalCheckList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>盘点管理</span>
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li nz-submenu *ngIf="clinicRole.tcm.use != ''">
+                    <span title>中药管理</span>
+                    <ul>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.tcm.twoLevel.see.use != ''"
+                            routerLink="./medical/tcm/list"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('tcmList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>中药管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.tcm.twoLevel.seePut.use != ''"
+                            routerLink="./medical/tcm/purchaseList"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('tcmPurchaseList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>入库管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.tcm.twoLevel.seeHas.use != ''"
+                            routerLink="./medical/tcm/hasList"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('tcmHasList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>库存管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.tcm.twoLevel.seeLost.use != ''"
+                            routerLink="./medical/tcm/lostList"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('tcmLostList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>报损管理</span>
+                            </span>
+                        </li>
+                        <li nz-menu-item
+                            *ngIf="clinicRole.tcm.twoLevel.seeCheck.use != ''"
+                            routerLink="./medical/tcm/checkList"
+                            routerLinkActive="ant-menu-item-selected"
+                            (click)="goPage('tcmCheckList')">
+                            <span title>
+                                <!-- <i class="anticon anticon-mail"></i> -->
+                                <span>盘点管理</span>
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.moutList.use != ''"
+                    routerLink="./mout/list"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('moutList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>手动出库管理</span>
+                    </span>
+                </li>
+            </ul>
+        </li>
+        <li nz-submenu *ngIf="clinicRole.userList.use != '' || clinicRole.childList.use != '' || clinicRole.callRecord.use != ''">
+            <span title>用户管理</span>
+            <ul>
+                <li nz-menu-item
+                    *ngIf="clinicRole.userList.use != ''"
+                    routerLink="./userList"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('userList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>用户列表</span>
+                    </span>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.childList.use != ''"
+                    routerLink="./child/list"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('childList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>病人库</span>
+                    </span>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.callRecord.use != ''"
+                    routerLink="./callRecord"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('callRecordList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>通话记录</span>
+                    </span>
+                </li>
+            </ul>
+        </li>
+        <li nz-submenu *ngIf="clinicRole.crmUserList.use != '' || clinicRole.doctorList.use != ''">
+            <span title>员工管理</span>
+            <ul>
+                <li nz-menu-item
+                    *ngIf="clinicRole.crmUserList.use != ''"
+                    routerLink="./crmuser/list"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('crmuserList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>员工列表</span>
+                    </span>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.doctorList.use != ''"
+                    routerLink="./doctor/list"
+                    routerLinkActive="ant-menu-item-selected">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>医生列表</span>
+                    </span>
+                </li>
+            </ul>
+        </li>
+        <li nz-submenu *ngIf="clinicRole.transactionRecordList.use != '' || clinicRole.transactionStatistics.use != ''">
+            <span title>交易管理</span>
+            <ul>
+                <li nz-menu-item
+                    *ngIf="clinicRole.transactionRecordList.use != ''"
+                    routerLink="./transaction/recordList"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('transactionRecordList')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>交易记录</span>
+                    </span>
+                </li>
+                <li nz-menu-item
+                    *ngIf="clinicRole.transactionStatistics.use != ''"
+                    routerLink="./transaction/statistics"
+                    routerLinkActive="ant-menu-item-selected"
+                    (click)="goPage('transactionStatistics')">
+                    <span title>
+                        <!-- <i class="anticon anticon-mail"></i> -->
+                        <span>交易统计</span>
+                    </span>
+                </li>
+            </ul>
+        </li>
 	</ul>
 </div>

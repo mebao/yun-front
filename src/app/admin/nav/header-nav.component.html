@@ -1,7 +1,13 @@
 <nz-header>
 	<div class="clinic-title">{{clinicName}}</div>
 	<ul nz-menu [nzMode]="'horizontal'" style="line-height: 64px;">
-		<li nz-menu-item (click)="logout()">退出</li>
+        <li nz-submenu>
+            <span title>{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</span>
+            <ul>
+                <li nz-menu-item (click)="goUrl('setupMessage')">修改密码</li>
+                <li nz-menu-item (click)="logout()">退出</li>
+            </ul>
+        </li>
 		<li nz-submenu>
         	<span title>主题({{theme_name}})</span>
         	<ul>
@@ -36,7 +42,6 @@
 		      	</ng-template>
 		    </nz-badge>
 		</li>
-		<li nz-menu-item class="username">{{clinicRole && clinicRole != '' ? clinicRole + '--' : ''}}{{username}}</li>
 	</ul>
 </nz-header>
 <nz-modal [nzVisible]="modalTabMessage" [nzWidth]="900" [nzTitle]="'消息'" [nzContent]="contentMessage" [nzFooter]="footerMessage" (nzOnCancel)="closeMessage()">
