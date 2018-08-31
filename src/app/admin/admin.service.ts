@@ -12,10 +12,10 @@ export class AdminService{
 	yebkUrl = config.yebkHttp();
 
 	constructor(
-		private http: Http,
+        private http: Http,
 	) {
 		sessionStorage.removeItem('userClinicRoles');
-		sessionStorage.removeItem('userClinicRolesInfos');
+        sessionStorage.removeItem('userClinicRolesInfos');
 		//初始化缓存数据
 		this.clinicdata().then((data) => {
 			if(data.status == 'no'){
@@ -1636,7 +1636,13 @@ export class AdminService{
 	}
 
 	getUser(){
-		return JSON.parse(this.getCookie('user'));
+        try{
+            JSON.parse(this.getCookie('user'))
+            return JSON.parse(this.getCookie('user'));
+        }catch(e) {
+            this.delCookie('user');
+            return null;
+        }
 	}
 
 	// 去除左右空格
@@ -1783,19 +1789,22 @@ export class AdminService{
 
 	//设置cookie
 	setCookie(name, value, time){
+        // safari cookie不支持中文
+        var _value = encodeURIComponent(value);
 		var Days = time;
 		var exp = new Date();
 		exp.setTime(exp.getTime() + Days*24*60*60*1000);
-		document.cookie = name + "=" + value + ";expires=" + exp + ";Path=/";
+		document.cookie = name + "=" + _value + ";expires=" + exp + ";Path=/";
 	}
 
 	//读取cookie
 	getCookie(name){
         var arr, reg = new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-        if(arr=document.cookie.match(reg))
-        return arr[2];
-        else
-        return null;
+        if(arr=document.cookie.match(reg)){
+            return decodeURIComponent(arr[2]);
+        }else{
+            return null;
+        }
     }
 
 	// 非空

@@ -17,7 +17,6 @@ import { AdminModule }                    from './admin/admin.module';
 import { AuthGuard }                      from './auth-guard.service';
 import { AuthService }                    from './auth.service';
 
-import { LoginRoutingModule }             from './admin/login/login-routing.module';
 import { LoginComponent }                 from './admin/login/login.component';
 import { ForgetpwdComponent }             from './admin/login/forgetpwd.component';
 
@@ -40,7 +39,6 @@ import { ForgetpwdComponent }             from './admin/login/forgetpwd.componen
 	    }),
 		AppRoutingModule,
 		AdminModule,
-		LoginRoutingModule,
 		NgZorroAntdModule.forRoot(),
 		LoadingBarRouterModule,
 	],

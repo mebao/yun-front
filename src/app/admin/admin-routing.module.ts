@@ -8,6 +8,8 @@ import { CanDeactivateGuard }               from './can-deactivate-guard.service
 
 import { SelectivePreloadingStrategy }      from '../selective-preloading-strategy';
 
+import { LoginComponent }                   from './login/login.component';
+import { ForgetpwdComponent }               from './login/forgetpwd.component';
 import { HomeComponent }                    from './home/home.component';
 import { BookingComponent }                 from './booking/booking.component';
 import { PageNotFoundComponent }            from '../error/page-not-found.component';
@@ -21,6 +23,8 @@ import { Message }                          from './setup/message.component';
 import { CallRecord }                       from './setup/call-record';
 
 const adminRoutes: Routes = [
+	{path: 'login', canActivate: [AuthGuardRole], component: LoginComponent},
+	{path: 'forgetpwd', component: ForgetpwdComponent},
 	{
 		path: 'admin',
 		component: AdminComponent,
@@ -267,14 +271,14 @@ const adminRoutes: Routes = [
 						path: 'actcard',
 						loadChildren: './actcard/actcard.module#ActcardModule',
 					},
-					{
-						path: '**',
-						component: PageNotFoundComponent
-					},
 				]
 			}
 		]
 	},
+    {
+        path: '**',
+        component: PageNotFoundComponent
+    },
 ]
 
 @NgModule({

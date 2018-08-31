@@ -20,22 +20,54 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     checkLogin(url: string): boolean{
-        const user = this.getCookie('user');
-    	if(user && user != ''){
-    		return true;
-    	}
-
-    	this.authService.redirectUrl = url;
-
-    	this.router.navigate(['/login']);
-    	return false;
+        try{
+            const user = this.getCookie('user');
+            JSON.parse(this.getCookie('user'));
+            if(user && user != ''){
+                return true;
+            }
+    
+            this.authService.redirectUrl = url;
+    
+            this.router.navigate(['/login']);
+            return false;
+        }catch(e) {
+            this.delCookie('user');
+            this.router.navigate(['/login']);
+            return false;
+        }
     }
 
     getCookie(name){
         var arr, reg = new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-        if(arr=document.cookie.match(reg))
-        return arr[2];
-        else
-        return null;
+        if(arr=document.cookie.match(reg)){
+            return decodeURIComponent(arr[2]);
+        }else{
+            return null;
+        }
     }
+    
+    delCookie(name) {
+		var exp = new Date();
+		exp.setTime(exp.getTime() - 2*24*60*60*1000);
+		var cval= this.getCookie(name);
+		if(cval!=null){
+			var pathList = [
+				'/',
+				'/admin',
+				'/admin/workbench',
+				'/admin/material',
+				'/admin/medical',
+				'/admin/scheduling',
+				'/admin/prescript',
+				'/admin/authorize',
+				'/admin/doctor',
+				'/admin/crmuser',
+				'/admin/docbooking',
+			]
+			for(var i in pathList){
+				document.cookie = name + "=" + cval + ";expires=" + exp + ";Path=" + pathList[i];
+			}
+		}
+	}
 }
