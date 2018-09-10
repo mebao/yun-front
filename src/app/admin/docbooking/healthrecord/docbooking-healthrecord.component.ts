@@ -859,7 +859,6 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 gestational_days: healthrecord.gestationalDays,
 			}
             this.loadingShow = false;
-            console.log(this.info);
 		}else if(this.editType == 'create'){
 			this.info = {
 				id: '',
@@ -1033,10 +1032,11 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					if(recordTemplet.recordkeys[i].value == null){
 						this.info[recordTemplet.recordkeys[i].key] = '';
 					}else{
-						if(this.info[recordTemplet.recordkeys[i].key+'_other'] != 'undefined'){
+                        // 特殊情况：feeding 和 feeding_other 为模板中的两个字段
+						if(recordTemplet.recordkeys[i].key != 'feeding' && this.info[recordTemplet.recordkeys[i].key+'_other'] != 'undefined'){
 							this.info[recordTemplet.recordkeys[i].key+'_other'] = recordTemplet.recordkeys[i].value;
 						}
-							this.info[recordTemplet.recordkeys[i].key]	= recordTemplet.recordkeys[i].value;
+                        this.info[recordTemplet.recordkeys[i].key]	= recordTemplet.recordkeys[i].value;
 					}
 					// this.info[recordTemplet.recordkeys[i].key] = '';
 					this.baseInfo[recordTemplet.recordkeys[i].key] = '';
