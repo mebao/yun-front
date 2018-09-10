@@ -42,7 +42,7 @@
 								</div>
 								<ng-template #viewTab>
                                     <div
-										*ngIf="healthrecord.birthWeight != null || healthrecord.productionStatus != null || healthrecord.productionWay != null"
+										*ngIf="healthrecord.birthWeight != null || healthrecord.productionStatus != null || healthrecord.productionWay != null || healthrecord.feedingWay != null || healthrecord.vitD != null || healthrecord.feedingOther != null || healthrecord.stapleFood != null || healthrecord.solidFood != null"
 										class="section">
 										<div class="title">出生时情况</div>
 										<div class="pure-g">
@@ -54,7 +54,7 @@
 												</div>
 											</div>
 											<div *ngIf="healthrecord.productionStatus != null" class="pure-u-8-24 bt info flex">
-												<label class="w150pp">生产状态：</label>
+												<label class="w150pp">分娩状态：</label>
 												<div class="flex-1">
 													{{healthrecord.productionStatus}}
 												</div>
@@ -66,8 +66,28 @@
 												</div>
 											</div>
 											<div *ngIf="healthrecord.productionWay != null" class="pure-u-8-24 bt info flex">
-												<label class="w150pp">生产方式：</label>
+												<label class="w150pp">分娩方式：</label>
 												<div class="flex-1">{{healthrecord.productionWayText}}</div>
+											</div>
+											<div *ngIf="healthrecord.feedingWay != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">喂养方式：</label>
+												<div class="flex-1">{{healthrecord.feedingWay}}</div>
+											</div>
+											<div *ngIf="healthrecord.vitD != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">补充VitD制剂：</label>
+												<div class="flex-1">{{healthrecord.vitD}}</div>
+											</div>
+											<div *ngIf="healthrecord.feedingOther != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">其他：</label>
+												<div class="flex-1">{{healthrecord.feedingOther}}</div>
+											</div>
+											<div *ngIf="healthrecord.stapleFood != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">主食：</label>
+												<div class="flex-1">{{healthrecord.stapleFood}}</div>
+											</div>
+											<div *ngIf="healthrecord.solidFood != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">辅食：</label>
+												<div class="flex-1">{{healthrecord.solidFood}}</div>
 											</div>
 										</div>
 									</div>
@@ -384,6 +404,29 @@
 										</div>
 									</div>
 									<div
+										*ngIf="healthrecord.individualSociety != null || healthrecord.language != null || healthrecord.fineMovement != null || healthrecord.greatSport != null"
+										class="section">
+										<div class="title">发育筛查</div>
+										<div class="pure-g">
+											<div *ngIf="healthrecord.individualSociety != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">个人与社会：</label>
+												<div class="flex-1">{{healthrecord.individualSociety}}</div>
+											</div>
+											<div *ngIf="healthrecord.language != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">语言：</label>
+												<div class="flex-1">{{healthrecord.language}}</div>
+											</div>
+											<div *ngIf="healthrecord.fineMovement != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">精细动作：</label>
+												<div class="flex-1">{{healthrecord.fineMovement}}</div>
+											</div>
+											<div *ngIf="healthrecord.greatSport != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">大运动：</label>
+												<div class="flex-1">{{healthrecord.greatSport}}</div>
+											</div>
+										</div>
+									</div>
+									<div
 										*ngIf="healthrecord.feeding != null"
 										class="section">
 										<div class="title">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导）</div>
@@ -456,6 +499,10 @@
 											<div *ngIf="healthrecord.record != null" class="pure-u-24-24 bt info flex">
 												<label class="w150pp">诊疗记录：</label>
 												<div class="flex-1">{{healthrecord.record}}</div>
+											</div>
+											<div *ngIf="healthrecord.other != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">其他：</label>
+												<div class="flex-1">{{healthrecord.other}}</div>
 											</div>
 											<div class="pure-u-24-24 bt info flex">
 												<label class="w150pp">复查日期：</label>
@@ -531,7 +578,7 @@
 								</div>
                             </div>
                             <div
-                                *ngIf="baseInfo.birth_weight != null || info.production_status != null || info.production_way != null || baseInfo.gestational_days != null"
+                                *ngIf="baseInfo.birth_weight != null || info.production_status != null || info.production_way != null || baseInfo.gestational_days != null || info.feeding_way != null || info.vit_d != null || info.feeding_other != null || info.staple_food != null || info.solid_food != null"
                                 class="bg-title mt10 mb20">
                                 出生时情况
                             </div>
@@ -545,7 +592,7 @@
                                 </div>
 								<div *ngIf="info.production_status != null" class="pure-u-8-24">
                                     <div class="pure-control-group flex">
-                                        <label for="production_status" class="w150pp">生产状态：</label>
+                                        <label for="production_status" class="w150pp">分娩状态：</label>
                                         <div class="flex-1 flex pt10">
                                             <div class="radio mr10 flex" (click)="changeRedio('足月', 'production_status')" [ngClass]="{'active': info.production_status == '足月'}">
                                                 <div class="radioTab mr10"></div>
@@ -575,16 +622,24 @@
                                 </div>
 								<div *ngIf="info.production_way != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">
-                                        <label for="production_way" class="w150pp">生产方式：</label>
+                                        <label for="production_way" class="w150pp">分娩方式：</label>
                                         <div class="flex-1">
                                             <div class="flex pt10">
                                                 <div class="radio mr10 flex" (click)="changeRedio('顺产', 'production_way')" [ngClass]="{'active': info.production_way == '顺产'}">
                                                     <div class="radioTab mr10"></div>
                                                     <div class="flex-1">顺产</div>
                                                 </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('钳', 'production_way')" [ngClass]="{'active': info.production_way == '钳'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">钳</div>
+                                                </div>
                                                 <div class="radio mr10 flex" (click)="changeRedio('剖腹产', 'production_way')" [ngClass]="{'active': info.production_way == '剖腹产'}">
                                                     <div class="radioTab mr10"></div>
                                                     <div class="flex-1">剖腹产</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('胎吸', 'production_way')" [ngClass]="{'active': info.production_way == '胎吸'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">胎吸</div>
                                                 </div>
                                             </div>
                                             <div class="flex pt10">
@@ -605,6 +660,65 @@
                                         </div>
                                     </div>
                                 </div>
+								<div *ngIf="info.feeding_way != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="feeding_way" class="w150pp">喂养方式：</label>
+                                        <div class="flex-1">
+                                            <div class="flex pt10">
+                                                <div class="radio mr10 flex" (click)="changeRedio('母乳', 'feeding_way')" [ngClass]="{'active': info.feeding_way == '母乳'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">母乳</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('人工', 'feeding_way')" [ngClass]="{'active': info.feeding_way == '人工'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">人工</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('部分母乳', 'feeding_way')" [ngClass]="{'active': info.feeding_way == '部分母乳'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">部分母乳</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								<div *ngIf="info.vit_d != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="vit_d" class="w150pp">补充VitD制剂：</label>
+                                        <div class="flex-1">
+                                            <div class="flex pt10">
+                                                <div class="radio mr10 flex" (click)="changeRedio('是', 'vit_d')" [ngClass]="{'active': info.vit_d == '是'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">是</div>
+                                                </div>
+                                                <div class="radio mr10 flex" (click)="changeRedio('否', 'vit_d')" [ngClass]="{'active': info.vit_d == '否'}">
+                                                    <div class="radioTab mr10"></div>
+                                                    <div class="flex-1">否</div>
+                                                </div>
+                                                <div class="flex-1" (click)="changeRedio('', 'vit_d_other')">
+                                                    <textarea maxlength="200" name="vit_d_other" #vit_d_other="ngModel" [(ngModel)]="info.vit_d_other" rows="1" placeholder="其他" class="mt0 mb0 auto"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="info.feeding_other != null" class="pure-u-24-24">
+									<div class="pure-control-group flex">
+										<label for="feeding_other" class="w150pp">其他：</label>
+										<textarea id="feeding_other" maxlength="200" rows="1" name="feeding_other" [(ngModel)]="info.feeding_other" class="auto flex-1"></textarea>
+									</div>
+								</div>
+                                <div *ngIf="info.staple_food != null" class="pure-u-24-24">
+									<div class="pure-control-group flex">
+										<label for="staple_food" class="w150pp">主食：</label>
+										<textarea id="staple_food" maxlength="200" rows="1" name="staple_food" [(ngModel)]="info.staple_food" class="auto flex-1"></textarea>
+									</div>
+								</div>
+                                <div *ngIf="info.solid_food != null" class="pure-u-24-24">
+									<div class="pure-control-group flex">
+										<label for="solid_food" class="w150pp">辅食：</label>
+										<textarea id="solid_food" maxlength="200" rows="1" name="solid_food" [(ngModel)]="info.solid_food" class="auto flex-1"></textarea>
+									</div>
+								</div>
                             </div>
 							<div
 								*ngIf="baseInfo.height != null || baseInfo.medium_height != null || baseInfo.weight != null || baseInfo.medium_weight != null || baseInfo.head_circum != null || baseInfo.breast_circum != null"
@@ -1320,7 +1434,36 @@
 										</div>
 									</div>
 								</div>
-							</div>
+                            </div>
+                            <div
+                                *ngIf="info.individual_society != null || info.language != null || info.fine_movement != null || info.great_sport != null"
+                                class="bg-title mt10">发育筛查</div>
+                            <div class="pure-g">
+								<div *ngIf="info.individual_society != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="individual_society" class="w150pp">个人与社会：</label>
+                                        <textarea id="individual_society" maxlength="200" rows="1" name="individual_society" [(ngModel)]="info.individual_society" class="auto flex-1"></textarea>
+                                    </div>
+                                </div>
+								<div *ngIf="info.language != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="language" class="w150pp">语言：</label>
+                                        <textarea id="language" maxlength="200" rows="1" name="language" [(ngModel)]="info.language" class="auto flex-1"></textarea>
+                                    </div>
+                                </div>
+								<div *ngIf="info.fine_movement != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="fine_movement" class="w150pp">精细动作：</label>
+                                        <textarea id="fine_movement" maxlength="200" rows="1" name="fine_movement" [(ngModel)]="info.fine_movement" class="auto flex-1"></textarea>
+                                    </div>
+                                </div>
+								<div *ngIf="info.great_sport != null" class="pure-u-24-24">
+                                    <div class="pure-control-group flex">
+                                        <label for="great_sport" class="w150pp">大运动：</label>
+                                        <textarea id="great_sport" maxlength="200" rows="1" name="great_sport" [(ngModel)]="info.great_sport" class="auto flex-1"></textarea>
+                                    </div>
+                                </div>
+                            </div>
 							<div
 								*ngIf="info.feeding != null"
 								class="bg-title mt10">喂养指导（宝宝饮食状况调查、针对性喂养指导、营养指导）</div>
@@ -1400,15 +1543,21 @@
 									</div>
 								</div>
 							</div>
+                            <div *ngIf="info.other != null" class="pure-u-24-24">
+                                <div class="pure-control-group flex">
+                                    <label for="other" class="w150pp">其他：</label>
+                                    <textarea id="other" maxlength="200" rows="1" name="other" [(ngModel)]="info.other" class="auto flex-1"></textarea>
+                                </div>
+                            </div>
 						</div>
-						<div nz-form-item>
-							<div nz-form-label>
-								<label>复查日期：</label>
-							</div>
-							<div nz-form-control>
-								<nz-datepicker (ngModelChange)="info.review_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.review_date" [nzDisabledDate]="_disabledDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择复查日期'"></nz-datepicker>
-							</div>
-						</div>
+                        <div nz-form-item>
+                            <div nz-form-label>
+                                <label>复查日期：</label>
+                            </div>
+                            <div nz-form-control>
+                                <nz-datepicker (ngModelChange)="info.review_date=$event" [nzSize]="'large'" class="w100" [ngModel]="info.review_date" [nzDisabledDate]="_disabledDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择复查日期'"></nz-datepicker>
+                            </div>
+                        </div>
 						<div class="text-center mt10">
 							<button (click)="create('')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w100p" [disabled]="btnCanEdit">保存</button>
 							<button *ngIf="pageType == 'examine' && info.checkId == null" (click)="create('examine')" nz-button [nzType]="'primary'" [nzSize]="'large'" class="w160p" [disabled]="btnCanEdit">保存并审核通过</button>

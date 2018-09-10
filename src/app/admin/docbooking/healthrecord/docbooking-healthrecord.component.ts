@@ -190,6 +190,17 @@ export class DocbookingHealthrecordComponent implements OnInit{
         production_way_othe2: string,
         gestational_days: string,
         gestational_weeks: string,
+        feeding_way: string,
+        vit_d: string,
+        vit_d_other: string,
+        feeding_other: string,
+        staple_food: string,
+        solid_food: string,
+        individual_society: string,
+        language: string,
+        fine_movement: string,
+        great_sport: string,
+        other: string,
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
     baseInfo: {
@@ -409,6 +420,17 @@ export class DocbookingHealthrecordComponent implements OnInit{
             production_way_othe2: '',
             gestational_days: '',
             gestational_weeks: '',
+            feeding_way: '',
+            vit_d: '',
+            vit_d_other: '',
+            feeding_other: '',
+            staple_food: '',
+            solid_food: '',
+            individual_society: '',
+            language: '',
+            fine_movement: '',
+            great_sport: '',
+            other: '',
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
 		this.infoTime = JSON.parse(JSON.stringify(this.info));
@@ -546,7 +568,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					this.create('');
 				}
 	    	}
-		}, 60000);
+        }, 60000 * 5);
 	}
 
 	intervalChange() {
@@ -809,6 +831,17 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 production_way_othe2: healthrecord.productionWay != null ? healthrecord.productionWay.split('`')[2] : '',
                 gestational_days: healthrecord.gestationalDays,
                 gestational_weeks: healthrecord.gestationalWeeks,
+                feeding_way: healthrecord.feedingWay,
+                vit_d: healthrecord.vitD,
+                vit_d_other: healthrecord.vitD,
+                feeding_other: healthrecord.feedingOther,
+                staple_food: healthrecord.stapleFood,
+                solid_food: healthrecord.solidFood,
+                individual_society: healthrecord.individualSociety,
+                language: healthrecord.language,
+                fine_movement: healthrecord.fineMovement,
+                great_sport: healthrecord.greatSport,
+                other: healthrecord.other,
             }
 			this.baseInfo = {
 				height: healthrecord.height,
@@ -825,7 +858,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 birth_weight: healthrecord.birthWeight,
                 gestational_days: healthrecord.gestationalDays,
 			}
-			this.loadingShow = false;
+            this.loadingShow = false;
+            console.log(this.info);
 		}else if(this.editType == 'create'){
 			this.info = {
 				id: '',
@@ -944,6 +978,17 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 production_way_othe2: '',
                 gestational_days: null,
                 gestational_weeks: null,
+                feeding_way: null,
+                vit_d: null,
+                vit_d_other: null,
+                feeding_other: null,
+                staple_food: null,
+                solid_food: null,
+                individual_society: null,
+                language: null,
+                fine_movement: null,
+                great_sport: null,
+                other: null,
 			}
 			this.baseInfo = {
 				height: null,
@@ -1549,6 +1594,16 @@ export class DocbookingHealthrecordComponent implements OnInit{
             production_status: this.info.production_status,
             production_way: this.info.production_way == null ? null : (this.info.production_way + '`' + this.info.production_way_othe1 + '`' + this.info.production_way_othe2),
             gestational_days: (this.info.gestational_days != null && this.info.gestational_days != '' ? Number(this.info.gestational_days) : 0) + (this.info.gestational_weeks != null && this.info.gestational_weeks != '' ? Number(this.info.gestational_weeks) * 7 : 0),
+            feeding_way: this.info.feeding_way,
+            vit_d: this.info.vit_d != '' ? this.info.vit_d : this.info.vit_d_other,
+            feeding_other: this.info.feeding_other,
+            staple_food: this.info.staple_food,
+            solid_food: this.info.solid_food,
+            individual_society: this.info.individual_society,
+            language: this.info.language,
+            fine_movement: this.info.fine_movement,
+            great_sport: this.info.great_sport,
+            other: this.info.other,
 			is_check: type == '' ? null : '1',
         }
 

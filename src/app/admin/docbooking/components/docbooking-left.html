@@ -95,13 +95,28 @@
                     <span *ngIf="historyHealthR[0].birthWeight != ''" class="pl5">kg</span>
                 </div>
                 <div *ngIf="historyHealthR[0].productionStatus != null" class="item">
-                    生产状态：{{historyHealthR[0].productionStatus}}
+                    分娩状态：{{historyHealthR[0].productionStatus}}
                 </div>
                 <div *ngIf="historyHealthR[0].productionStatus != null" class="item">
                     孕周：{{(historyHealthR[0].gestationalWeeks != '' && historyHealthR[0].gestationalWeeks != 0 ? historyHealthR[0].gestationalWeeks + '周' : '') + (historyHealthR[0].gestationalWeeks != '' && historyHealthR[0].gestationalDays != 0 ? historyHealthR[0].gestationalDays + '天' : '')}}
                 </div>
                 <div *ngIf="historyHealthR[0].productionWay != null" class="item">
-                    生产方式：{{historyHealthR[0].productionWayText}}
+                    分娩方式：{{historyHealthR[0].productionWayText}}
+                </div>
+                <div *ngIf="historyHealthR[0].feedingWay != null && historyHealthR[0].feedingWay != ''" class="item">
+                    喂养方式：{{historyHealthR[0].feedingWay}}
+                </div>
+                <div *ngIf="historyHealthR[0].vitD != null && historyHealthR[0].vitD != ''" class="item">
+                    补充VitD制剂：{{historyHealthR[0].vitD}}
+                </div>
+                <div *ngIf="historyHealthR[0].feedingOther != null && historyHealthR[0].feedingOther != ''" class="item">
+                    其他：{{historyHealthR[0].feedingOther}}
+                </div>
+                <div *ngIf="historyHealthR[0].stapleFood != null && historyHealthR[0].stapleFood != ''" class="item">
+                    主食：{{historyHealthR[0].stapleFood}}
+                </div>
+                <div *ngIf="historyHealthR[0].solidFood != null && historyHealthR[0].solidFood != ''" class="item">
+                    辅食：{{historyHealthR[0].solidFood}}
                 </div>
                 <div *ngIf="historyHealthR[0].height != null && historyHealthR[0].height != '0.00'" class="item">
                     身高：{{historyHealthR[0].height}}
@@ -316,6 +331,22 @@
                     <div>ABO血型鉴定：</div>
                     <div class="flex-1">{{historyHealthR[0].bloodType}}</div>
                 </div>
+                <div *ngIf="historyHealthR[0].individualSociety != null && historyHealthR[0].individualSociety != ''" class="flex item">
+                    <div>个人与社会：</div>
+                    <div class="flex-1">{{historyHealthR[0].individualSociety}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].language != null && historyHealthR[0].language != ''" class="flex item">
+                    <div>语言：</div>
+                    <div class="flex-1">{{historyHealthR[0].language}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].fineMovement != null && historyHealthR[0].fineMovement != ''" class="flex item">
+                    <div>精细动作：</div>
+                    <div class="flex-1">{{historyHealthR[0].fineMovement}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].greatSport != null && historyHealthR[0].greatSport != ''" class="flex item">
+                    <div>大运动：</div>
+                    <div class="flex-1">{{historyHealthR[0].greatSport}}</div>
+                </div>
                 <div *ngIf="historyHealthR[0].feeding != null && historyHealthR[0].feeding != ''" class="flex item">
                     <div>喂养指导：</div>
                     <div class="flex-1">{{historyHealthR[0].feeding}}</div>
@@ -350,6 +381,10 @@
                 <div *ngIf="historyHealthR[0].record != null && historyHealthR[0].record != ''" class="flex item">
                     <div>诊疗记录：</div>
                     <div class="flex-1">{{historyHealthR[0].record}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].other != null && historyHealthR[0].other != ''" class="flex item">
+                    <div>其他：</div>
+                    <div class="flex-1">{{historyHealthR[0].other}}</div>
                 </div>
                 <div *ngIf="historyHealthR[0].reviewDate != null && historyHealthR[0].reviewDate != ''" class="flex item">
                     <div>复查日期：</div>

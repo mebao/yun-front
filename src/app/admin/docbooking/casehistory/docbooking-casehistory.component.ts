@@ -439,7 +439,7 @@ export class DocbookingCasehistoryComponent implements OnInit{
 					this.create('');
 				}
 	    	}
-		}, 60000);
+        }, 60000 * 5);
 	}
 
 	intervalChange() {
