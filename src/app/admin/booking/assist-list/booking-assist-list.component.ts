@@ -35,7 +35,8 @@ export class BookingAssistList {
         doctor_name: string,
         child_name: string,
         is_finish: string,
-        date: [Date, Date],
+        date_big: Date,
+        date_less: Date,
     }
     url: string;
     // 完成次数
@@ -105,13 +106,13 @@ export class BookingAssistList {
 
         this.loadingShow = false;
 
-        var todayDate = this.adminService.getDayByDate(new Date());
         this.searchInfo = {
             assist_id: '',
             doctor_name: '',
             child_name: '',
             is_finish: '0',
-            date: [new Date(), new Date()],
+            date_big: new Date(),
+            date_less: new Date(),
         }
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingAssistList'));
         if (sessionSearch) {
@@ -120,7 +121,8 @@ export class BookingAssistList {
                 doctor_name: sessionSearch.doctor_name,
                 child_name: sessionSearch.child_name,
                 is_finish: sessionSearch.is_finish,
-                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
         }
 
@@ -228,14 +230,28 @@ export class BookingAssistList {
         if (this.searchInfo.is_finish && this.searchInfo.is_finish != '') {
             urlOptions += '&is_finish=' + this.searchInfo.is_finish;
         }
-        if (this.searchInfo.date[0]) {
-            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if (this.searchInfo.date_big) {
+            urlOptions += '&bdate_big=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if (this.searchInfo.date[1]) {
-            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if (this.searchInfo.date_less) {
+            urlOptions += '&bdate_less=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
     getPaywayList(clinicdata) {
         if (clinicdata == 'error') {

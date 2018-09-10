@@ -31,7 +31,8 @@ export class MedicalCheckListComponent {
     searchInfo: {
         name: string,
         type: string,
-        date: [Date, Date]
+        date_big: Date,
+        date_less: Date,
     }
 
     constructor(
@@ -90,14 +91,16 @@ export class MedicalCheckListComponent {
         this.searchInfo = {
             name: '',
             type: '1,2',
-            date: [null, null]
+            date_big: null,
+            date_less: null,
         }
         const sessionSearch = JSON.parse(sessionStorage.getItem('search-medicalCheckList'));
         if (sessionSearch) {
             this.searchInfo = {
                 name: sessionSearch.name,
                 type: sessionSearch.type,
-                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
         }
 
@@ -129,15 +132,29 @@ export class MedicalCheckListComponent {
         if (this.searchInfo.type != '') {
             urlOptions += '&type=' + this.searchInfo.type;
         }
-        if (this.searchInfo.date[0]) {
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if (this.searchInfo.date_big) {
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if (this.searchInfo.date[1]) {
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if (this.searchInfo.date_less) {
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
 
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
     getData(urlOptions) {
         this.adminService.searchstock(urlOptions).then((data) => {

@@ -37,7 +37,8 @@ export class PrescriptTcmList{
 		doctor_name: string,
 		user_name: string,
         child_name: string,
-        date: [Date, Date],
+        date_big: Date,
+        date_less: Date,
 	};
     loadingShow: boolean;
     hasData: boolean;
@@ -98,7 +99,8 @@ export class PrescriptTcmList{
  			doctor_name: '',
  			user_name: '',
             child_name: '',
-            date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
  		}
         this.loadingShow = false;
         this.hasData = false;
@@ -124,11 +126,11 @@ export class PrescriptTcmList{
         if(this.searchInfo.today != ''){
             urlOptions += ('&today=' + this.searchInfo.today);
         }
-        if(this.searchInfo.date[0]){
-            urlOptions += '&b_time=' + this.as.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&b_time=' + this.as.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&l_time=' + this.as.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&l_time=' + this.as.getDayByDate(new Date(this.searchInfo.date_less));
         }
         if(this.searchInfo.doctor_name != ''){
             urlOptions += ('&doctor_name=' + this.searchInfo.doctor_name);
@@ -141,6 +143,20 @@ export class PrescriptTcmList{
         }
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_less.getTime();
+    };
 
     getData(urlOptions) {
         this.as.searchtcmprescript(urlOptions).then((data) => {

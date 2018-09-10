@@ -24,7 +24,8 @@ export class BookingUpdate implements OnInit{
         service: string,
         doctor: string,
         status: string,
-        date: [Date, Date],
+        date_big: Date,
+        date_less: Date,
     }
     childList: any[];
     doctorList: any[];
@@ -53,7 +54,8 @@ export class BookingUpdate implements OnInit{
             service: '',
             doctor: '',
             status: '',
-            date: [new Date(), new Date()],
+            date_big: new Date(),
+            date_less: new Date(),
         }
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-bookingUpdate'));
         if(sessionSearch){
@@ -62,7 +64,8 @@ export class BookingUpdate implements OnInit{
                 service: sessionSearch.service,
                 doctor: sessionSearch.doctor,
                 status: sessionSearch.status,
-                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
 		}
 
@@ -97,17 +100,31 @@ export class BookingUpdate implements OnInit{
         if(this.searchInfo.doctor && this.searchInfo.doctor != ''){
             urlOptions += '&doctor_id=' + this.searchInfo.doctor;
         }
-        if(this.searchInfo.date[0]){
-            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&bdate_big=' + this.as.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&bdate_less=' + this.as.getDayByDate(new Date(this.searchInfo.date_less));
         }
         if(this.searchInfo.status && this.searchInfo.status != ''){
             urlOptions += '&status=' + this.searchInfo.status;
         }
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
     getData(urlOptions) {
         this.as.searchbooking(urlOptions).then((data) => {

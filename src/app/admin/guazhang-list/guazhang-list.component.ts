@@ -25,7 +25,8 @@ export class GuazhangList{
 		l_amount: string,
         second_type: string,
         selectType: string,
-        date: [Date, Date]
+        date_big: Date,
+        date_less: Date,
 	}
     modalConfirmTab: boolean;
     selector: {
@@ -63,7 +64,8 @@ export class GuazhangList{
 			l_amount: '',
             second_type: '1',
             selectType: '1',
-            date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
 		}
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-guazhangList'));
         if(sessionSearch){
@@ -73,7 +75,8 @@ export class GuazhangList{
 	            l_amount: sessionSearch.l_amount,
 	            second_type: sessionSearch.second_type,
                 selectType: sessionSearch.selectType,
-                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
 		}
 
@@ -105,11 +108,11 @@ export class GuazhangList{
 		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-        if(this.searchInfo.date[0]){
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
 		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
@@ -122,6 +125,20 @@ export class GuazhangList{
 		}
 		this.getData(urlOptions);
 	}
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
 	getData(urlOptions) {
 		this.adminService.searchguazhang(urlOptions).then((data) => {

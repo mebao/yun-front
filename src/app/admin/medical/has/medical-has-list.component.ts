@@ -161,7 +161,7 @@ export class MedicalHasListComponent {
         if (this.searchInfo.b_stock && this.searchInfo.b_stock != '') {
             urlOptions += '&b_stock=' + this.searchInfo.b_stock;
         }
-        window.location.href = config.baseHTTP + '/mebcrm/stockexport' + urlOptions;
+        window.location.href = config.baseHTTP() + '/mebcrm/stockexport' + urlOptions;
     }
 
     goUrl(_url) {

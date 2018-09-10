@@ -29,7 +29,8 @@ export class MedicalLostListComponent {
     list: any[];
     url: string;
     searchInfo: {
-        date: [Date, Date],
+        date_big: Date,
+        date_less: Date,
         type: string,
     }
 
@@ -84,13 +85,15 @@ export class MedicalLostListComponent {
         this.list = [];
         
         this.searchInfo = {
-            date: [null, null],
+            date_big: null,
+            date_less: null,
             type: '1,2',
         }
         const sessionSearch = JSON.parse(sessionStorage.getItem('search-medicalPurchaseList'));
         if (sessionSearch) {
             this.searchInfo = {
-                date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null],
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
                 type: sessionSearch.type
             }
         }
@@ -129,17 +132,31 @@ export class MedicalLostListComponent {
 
         sessionStorage.setItem('search-medicalLostList', JSON.stringify(this.searchInfo));
         var urlOptions = this.url;
-        if (this.searchInfo.date[0]) {
-            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if (this.searchInfo.date_big) {
+            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if (this.searchInfo.date[1]) {
-            urlOptions += '&l_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if (this.searchInfo.date_less) {
+            urlOptions += '&l_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
         if (this.searchInfo.type != '') {
             urlOptions += '&type=' + this.searchInfo.type;
         }
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
     goUrl(_url) {
         this.loadingShow = true;

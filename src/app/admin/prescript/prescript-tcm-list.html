@@ -63,7 +63,19 @@
 					<label for="_startDate">创建时间：</label>
 				</div>
 				<div nz-form-control nz-col [nzSpan]="14">
-					<nz-rangepicker [(ngModel)]="searchInfo.date" [nzSize]="'large'" [nzPlaceholder]="['请选择开始日期', '请选择结束日期']"></nz-rangepicker>
+					<nz-datepicker (ngModelChange)="searchInfo.date_big=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="searchInfo.date_big" [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择开始日期'"></nz-datepicker>
+				</div>
+			</div>
+		</div>
+    	<div nz-col [nzSpan]="8">
+			<div nz-form-prescriptTcm nz-row>
+				<div nz-form-label nz-col [nzSpan]="10" class="text-right">
+					<label for="_endDate">至：</label>
+				</div>
+				<div nz-form-control nz-col [nzSpan]="14">
+					<nz-datepicker (ngModelChange)="searchInfo.date_less=$event"
+					[nzSize]="'large'" class="w100" [ngModel]="searchInfo.date_less" [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'请选择结束日期'"></nz-datepicker>
 				</div>
 			</div>
 		</div>

@@ -22,7 +22,8 @@ export class BookingExamineRecord{
         doctor_name: string,
         check: string,
         service_name:string,
-        date: [Date, Date]
+        date_big: Date,
+        date_less: Date,
     }
     recordList: any[];
     hasData: boolean;
@@ -64,7 +65,8 @@ export class BookingExamineRecord{
             doctor_name: '',
             check: '1',
             service_name:'',
-            date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
         }
         this.recordList = [];
         this.hasData = false;
@@ -84,17 +86,31 @@ export class BookingExamineRecord{
         if(this.searchInfo.check && this.searchInfo.check != ''){
             urlOptions += '&unchecked=' + this.searchInfo.check;
         }
-        if(this.searchInfo.date[0]){
-			urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+			urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
 		}
-		if(this.searchInfo.date[1]){
-			urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+		if(this.searchInfo.date_less){
+			urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
 		}
         if(this.searchInfo.service_name != ''){
 			urlOptions += '&service_name=' + this.searchInfo.service_name;
 		}
         this.getData(urlOptions);
     }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
     getData(urlOptions) {
         this.loadingShow = true;

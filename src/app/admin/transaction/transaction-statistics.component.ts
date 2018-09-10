@@ -43,8 +43,9 @@ export class TransactionStatisticsComponent{
 		b_amount: string,
 		l_amount: string,
 		type: string,
-		pay_way: string,
-		date: [Date, Date]
+        pay_way: string,
+        date_big: Date,
+        date_less: Date,
 	}
 	commonList: any[];
 	modalInfoTab: boolean = false;
@@ -96,7 +97,8 @@ export class TransactionStatisticsComponent{
 			l_amount: '',
 			type: '1,3,7',
 			pay_way: '',
-			date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
 		}
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-transactionStatistics'));
         if(sessionSearch){
@@ -108,7 +110,8 @@ export class TransactionStatisticsComponent{
 	            pay_way: sessionSearch.pay_way,
 	            service_id: sessionSearch.service_id,
 				doctor_id: sessionSearch.doctor_id,
-				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
 		}
 
@@ -148,11 +151,11 @@ export class TransactionStatisticsComponent{
 		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-        if(this.searchInfo.date[0]){
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
 		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
@@ -183,7 +186,21 @@ export class TransactionStatisticsComponent{
 			window.location.href = config.baseHTTP() + '/mebcrm/transtatisticsexport'+ urlOptions;
 			this.loadingShow = false;
 		}
-	}
+    }
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
 	getData(urlOptions) {
 		this.adminService.transtatistics(urlOptions).then((data) => {

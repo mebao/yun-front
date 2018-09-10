@@ -24,8 +24,9 @@ export class TransactionRecordListComponent{
 		b_amount: string,
 		l_amount: string,
 		type: string,
-		pay_way: string,
-		date: [Date, Date]
+        pay_way: string,
+        date_big: Date,
+        date_less: Date,
 	}
 	commonList: any[];
 	amount: string;
@@ -54,7 +55,8 @@ export class TransactionRecordListComponent{
 			l_amount: '',
 			type: '',
 			pay_way: '',
-			date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
 		}
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-transactionRecordList'));
         if(sessionSearch){
@@ -64,7 +66,8 @@ export class TransactionRecordListComponent{
 	            l_amount: sessionSearch.l_amount,
 	            type: sessionSearch.type,
 				pay_way: sessionSearch.pay_way,
-				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]) : null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
 		}
 
@@ -88,11 +91,11 @@ export class TransactionRecordListComponent{
 		if(this.searchInfo.user_name && this.searchInfo.user_name != ''){
 			urlOptions += '&user_name=' + this.searchInfo.user_name;
 		}
-        if(this.searchInfo.date[0]){
-            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&b_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&l_time=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
 		if(this.searchInfo.b_amount && this.searchInfo.b_amount != ''){
 			urlOptions += '&b_amount=' + this.searchInfo.b_amount;
@@ -114,6 +117,20 @@ export class TransactionRecordListComponent{
 			this.loadingShow = false;
 		}
 	}
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
 	getData(urlOptions) {
 		this.adminService.searchtran(urlOptions).then((data) => {

@@ -28,8 +28,9 @@ export class InspectResultsListComponent{
 		check_name: string,
 		doctor_name: string,
 		child_name: string,
-		ischeck: string,
-		date: [Date, Date]
+        ischeck: string,
+        date_big: Date,
+        date_less: Date,
 	}
 	url: string;
 
@@ -69,7 +70,8 @@ export class InspectResultsListComponent{
 			doctor_name: '',
 			child_name: '',
 			ischeck: '0',
-			date: [new Date(), new Date()]
+            date_big: new Date(),
+            date_less: new Date(),
 		}
 		var todayDate = this.adminService.getDayByDate(new Date());
         var sessionSearch = JSON.parse(sessionStorage.getItem('search-inspectResultsList'));
@@ -79,7 +81,8 @@ export class InspectResultsListComponent{
                 doctor_name: sessionSearch.doctor_name,
                 child_name: sessionSearch.child_name,
 				ischeck: sessionSearch.ischeck,
-				date: [sessionSearch.date[0] ? new Date(sessionSearch.date[0]): null, sessionSearch.date[1] ? new Date(sessionSearch.date[1]) : null]
+                date_big: sessionSearch.date_big ? new Date(sessionSearch.date_big) : null,
+                date_less: sessionSearch.date_less ? new Date(sessionSearch.date_less) : null,
             }
 		}
 
@@ -163,14 +166,28 @@ export class InspectResultsListComponent{
 		if(this.searchInfo.ischeck && this.searchInfo.ischeck != ''){
 			urlOptions += '&ischeck=' + this.searchInfo.ischeck;
 		}
-        if(this.searchInfo.date[0]){
-            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[0]));
+        if(this.searchInfo.date_big){
+            urlOptions += '&b_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_big));
         }
-        if(this.searchInfo.date[1]){
-            urlOptions += '&e_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date[1]));
+        if(this.searchInfo.date_less){
+            urlOptions += '&e_date=' + this.adminService.getDayByDate(new Date(this.searchInfo.date_less));
         }
 		this.getData(urlOptions);
 	}
+
+    _disabledStartDate = (startValue) => {
+        if (!startValue || !this.searchInfo.date_less) {
+            return false;
+        }
+        return startValue.getTime() > this.searchInfo.date_less.getTime();
+    };
+
+    _disabledEndDate = (endValue) => {
+        if (!endValue || !this.searchInfo.date_big) {
+            return false;
+        }
+        return endValue.getTime() < this.searchInfo.date_big.getTime();
+    };
 
 	check(_id) {
 		this.router.navigate(['./admin/inspectResults'], {queryParams: {id: _id}});
