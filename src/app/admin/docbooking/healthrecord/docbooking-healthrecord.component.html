@@ -365,6 +365,17 @@
 										</div>
 									</div>
 									<div
+										*ngIf="healthrecord.nervousSystem != null"
+										class="section">
+										<div class="title">神经系统检查</div>
+										<div class="pure-g">
+											<div *ngIf="healthrecord.nervousSystem != null" class="pure-u-24-24 bt info flex">
+												<label class="w150pp">神经系统检查：</label>
+												<div class="flex-1">{{healthrecord.nervousSystem}}</div>
+											</div>
+										</div>
+									</div>
+									<div
 										*ngIf="healthrecord.bloodRoutineExamination != null || healthrecord.routineUrine != null || healthrecord.stoolRoutineExamination != null || healthrecord.boneDensity != null || healthrecord.BALP != null || healthrecord.traceElement != null || healthrecord.heavyMetal != null || healthrecord.bloodType != null"
 										class="section">
 										<div class="title">辅助治疗 （收费项目，由医生建议）</div>
@@ -406,7 +417,7 @@
 									<div
 										*ngIf="healthrecord.individualSociety != null || healthrecord.language != null || healthrecord.fineMovement != null || healthrecord.greatSport != null"
 										class="section">
-										<div class="title">发育筛查</div>
+										<div class="title">神经心理发育筛查</div>
 										<div class="pure-g">
 											<div *ngIf="healthrecord.individualSociety != null" class="pure-u-24-24 bt info flex">
 												<label class="w150pp">个人与社会：</label>
@@ -1326,6 +1337,25 @@
 								</div>
 							</div>
 							<div
+								*ngIf="info.nervous_system != null"
+								class="bg-title mt10 mb20">神经系统检查</div>
+							<div class="pure-g">
+								<div *ngIf="info.nervous_system != null" class="pure-u-24-24">
+									<div class="pure-control-group flex">
+										<label for="nervous_system" class="w150pp">神经系统检查：</label>
+										<div class="flex-1 flex pt10">
+											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'nervous_system')" [ngClass]="{'active': info.nervous_system == '未见异常'}">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">未见异常</div>
+											</div>
+											<div class="flex-1" (click)="changeRedio('', 'nervous_system_other')">
+												<textarea maxlength="200" name="nervous_system_other" rows="1" [(ngModel)]="info.nervous_system_other" placeholder="其他" class="mt0 mb0 auto"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div
 								*ngIf="info.blood_routine_examination != null || info.routine_urine != null || info.stool_routine_examination != null || info.bone_density != null || info.BALP != null || info.trace_element != null || info.heavy_metal != null || info.blood_type != null"
 								class="bg-title mt10 mb20">辅助治疗 （收费项目，由医生建议）</div>
 							<div class="pure-g">
@@ -1437,7 +1467,7 @@
                             </div>
                             <div
                                 *ngIf="info.individual_society != null || info.language != null || info.fine_movement != null || info.great_sport != null"
-                                class="bg-title mt10">发育筛查</div>
+                                class="bg-title mt10">神经心理发育筛查</div>
                             <div class="pure-g">
 								<div *ngIf="info.individual_society != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">

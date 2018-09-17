@@ -157,6 +157,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
         anus_other: string,
         neurodevelopment: string,
         neurodevelopment_other: string,
+        nervous_system: string,
+        nervous_system_other: string,
         blood_routine_examination: string,
         blood_routine_examination_other: string,
         routine_urine: string,
@@ -391,6 +393,8 @@ export class DocbookingHealthrecordComponent implements OnInit{
 			anus_other: '',
 			neurodevelopment: '',
 			neurodevelopment_other: '',
+            nervous_system: '',
+            nervous_system_other: '',
 			blood_routine_examination: '',
 			blood_routine_examination_other: '',
 			routine_urine: '',
@@ -805,7 +809,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				anus: healthrecord.anus,
 				anus_other: healthrecord.anus == '未见异常' ? '' : healthrecord.anus,
 				neurodevelopment: healthrecord.neurodevelopment,
-				neurodevelopment_other: healthrecord.neurodevelopment == '未见异常' ? '' : healthrecord.neurodevelopment,
+                neurodevelopment_other: healthrecord.neurodevelopment == '未见异常' ? '' : healthrecord.neurodevelopment,
+                nervous_system: healthrecord.nervousSystem,
+                nervous_system_other: healthrecord.nervousSystem == '未见异常' ? '' : healthrecord.nervousSystem,
 				blood_routine_examination: healthrecord.bloodRoutineExamination,
 				blood_routine_examination_other: healthrecord.bloodRoutineExamination == '未见异常' || healthrecord.bloodRoutineExamination == '贫血' || healthrecord.bloodRoutineExamination == '白细胞高值' ? '' : healthrecord.bloodRoutineExamination,
 				routine_urine: healthrecord.routineUrine,
@@ -955,7 +961,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 				anus: null,
 				anus_other: '',
 				neurodevelopment: null,
-				neurodevelopment_other: '',
+                neurodevelopment_other: '',
+                nervous_system: null,
+                nervous_system_other: '',
 				blood_routine_examination: null,
 				blood_routine_examination_other: '',
 				routine_urine: null,
@@ -1165,6 +1173,9 @@ export class DocbookingHealthrecordComponent implements OnInit{
 					}
 					if(recordTemplet.recordkeys[i].key=='neurodevelopment' && recordTemplet.recordkeys[i].value == ''){
 							this.info.neurodevelopment = '未见异常';
+					}
+					if(recordTemplet.recordkeys[i].key=='nervous_system' && recordTemplet.recordkeys[i].value == ''){
+							this.info.nervous_system = '未见异常';
 					}
 					if(recordTemplet.recordkeys[i].key=='blood_routine_examination' && recordTemplet.recordkeys[i].value == ''){
 							this.info.blood_routine_examination = '红细胞数：     ，白细胞总数：     ，血小板总数：     ，血红蛋白：     ';
@@ -1601,6 +1612,7 @@ export class DocbookingHealthrecordComponent implements OnInit{
             genitalia: this.info.genitalia != '' ? this.info.genitalia : this.info.genitalia_other,
             anus: this.info.anus != '' ? this.info.anus : this.info.anus_other,
             neurodevelopment: this.info.neurodevelopment != '' ? this.info.neurodevelopment : this.info.neurodevelopment_other,
+            nervous_system: this.info.nervous_system != '' ? this.info.nervous_system : this.info.nervous_system_other,
             blood_routine_examination: this.info.blood_routine_examination != '' ? this.info.blood_routine_examination : this.info.blood_routine_examination_other,
             routine_urine: this.info.routine_urine != '' ? this.info.routine_urine : this.info.routine_urine_other,
             stool_routine_examination: this.info.stool_routine_examination != '' ? this.info.stool_routine_examination : this.info.stool_routine_examination_other,

@@ -295,8 +295,12 @@
                     <div class="flex-1">{{historyHealthR[0].anus}}</div>
                 </div>
                 <div *ngIf="historyHealthR[0].neurodevelopment != null && historyHealthR[0].neurodevelopment != '未见异常'" class="flex item">
-                    <div>神经发育：</div>
+                    <div>神经发育筛查：</div>
                     <div class="flex-1">{{historyHealthR[0].neurodevelopment}}</div>
+                </div>
+                <div *ngIf="historyHealthR[0].nervousSystem != null && historyHealthR[0].nervousSystem != '未见异常'" class="flex item">
+                    <div>神经系统检查：</div>
+                    <div class="flex-1">{{historyHealthR[0].nervousSystem}}</div>
                 </div>
                 <div *ngIf="historyHealthR[0].bloodRoutineExamination != null && historyHealthR[0].bloodRoutineExamination != '红细胞数： ，白细胞总数： ，血小板总数： ，血红蛋白：'" class="flex item">
                     <div>血常规：</div>
