@@ -654,7 +654,7 @@
                                             </div>
                                             <div class="flex pt10">
                                                 <div class="flex-1" (click)="changeRedio('', 'production_way_othe2')">
-                                                    <textarea name="production_way_othe2" maxlength="3" rows="1" #production_way_othe2="ngModel" [(ngModel)]="info.production_way_othe2" placeholder="其他" class="mt0 mb0 auto"></textarea>
+                                                    <textarea name="production_way_othe2" maxlength="40" rows="1" #production_way_othe2="ngModel" [(ngModel)]="info.production_way_othe2" placeholder="其他" class="mt0 mb0 auto"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -1442,25 +1442,57 @@
 								<div *ngIf="info.individual_society != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">
                                         <label for="individual_society" class="w150pp">个人与社会：</label>
-                                        <textarea id="individual_society" maxlength="200" rows="1" name="individual_society" [(ngModel)]="info.individual_society" class="auto flex-1"></textarea>
+										<div class="flex-1 flex pt10">
+											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'individual_society')" [ngClass]="{'active': info.individual_society == '未见异常'}">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">未见异常</div>
+											</div>
+											<div class="flex-1" (click)="changeRedio('', 'individual_society_other')">
+                                                <textarea id="individual_society_other" maxlength="200" rows="1" name="individual_society_other" [(ngModel)]="info.individual_society_other" class="auto flex-1"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 								<div *ngIf="info.language != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">
                                         <label for="language" class="w150pp">语言：</label>
-                                        <textarea id="language" maxlength="200" rows="1" name="language" [(ngModel)]="info.language" class="auto flex-1"></textarea>
+										<div class="flex-1 flex pt10">
+											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'language')" [ngClass]="{'active': info.language == '未见异常'}">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">未见异常</div>
+											</div>
+											<div class="flex-1" (click)="changeRedio('', 'language_other')">
+                                                <textarea id="language_other" maxlength="200" rows="1" name="language_other" [(ngModel)]="info.language_other" class="auto flex-1"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 								<div *ngIf="info.fine_movement != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">
                                         <label for="fine_movement" class="w150pp">精细动作：</label>
-                                        <textarea id="fine_movement" maxlength="200" rows="1" name="fine_movement" [(ngModel)]="info.fine_movement" class="auto flex-1"></textarea>
+										<div class="flex-1 flex pt10">
+											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'fine_movement')" [ngClass]="{'active': info.fine_movement == '未见异常'}">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">未见异常</div>
+											</div>
+											<div class="flex-1" (click)="changeRedio('', 'fine_movement_other')">
+                                                <textarea id="fine_movement_other" maxlength="200" rows="1" name="fine_movement_other" [(ngModel)]="info.fine_movement_other" class="auto flex-1"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 								<div *ngIf="info.great_sport != null" class="pure-u-24-24">
                                     <div class="pure-control-group flex">
                                         <label for="great_sport" class="w150pp">大运动：</label>
-                                        <textarea id="great_sport" maxlength="200" rows="1" name="great_sport" [(ngModel)]="info.great_sport" class="auto flex-1"></textarea>
+										<div class="flex-1 flex pt10">
+											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'great_sport')" [ngClass]="{'active': info.great_sport == '未见异常'}">
+												<div class="radioTab mr10"></div>
+												<div class="flex-1">未见异常</div>
+											</div>
+											<div class="flex-1" (click)="changeRedio('', 'great_sport_other')">
+                                                <textarea id="great_sport_other" maxlength="200" rows="1" name="great_sport_other" [(ngModel)]="info.great_sport_other" class="auto flex-1"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

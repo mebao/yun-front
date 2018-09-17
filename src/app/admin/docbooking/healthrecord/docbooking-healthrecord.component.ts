@@ -197,9 +197,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
         staple_food: string,
         solid_food: string,
         individual_society: string,
+        individual_society_other: string,
         language: string,
+        language_other: string,
         fine_movement: string,
+        fine_movement_other: string,
         great_sport: string,
+        great_sport_other: string,
         other: string,
     }
     // 用于判断input-number类型，因为当输入框被清空时，value会变成null导致输入框消失
@@ -427,9 +431,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
             staple_food: '',
             solid_food: '',
             individual_society: '',
+            individual_society_other: '',
             language: '',
+            language_other: '',
             fine_movement: '',
+            fine_movement_other: '',
             great_sport: '',
+            great_sport_other: '',
             other: '',
 		}
 		this.infoOld = JSON.parse(JSON.stringify(this.info));
@@ -838,9 +846,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 staple_food: healthrecord.stapleFood,
                 solid_food: healthrecord.solidFood,
                 individual_society: healthrecord.individualSociety,
+				individual_society_other: healthrecord.individualSociety == '未见异常' ? '' : healthrecord.individualSociety,
                 language: healthrecord.language,
+				language_other: healthrecord.language == '未见异常' ? '' : healthrecord.language,
                 fine_movement: healthrecord.fineMovement,
+				fine_movement_other: healthrecord.fineMovement == '未见异常' ? '' : healthrecord.fineMovement,
                 great_sport: healthrecord.greatSport,
+				great_sport_other: healthrecord.greatSport == '未见异常' ? '' : healthrecord.greatSport,
                 other: healthrecord.other,
             }
 			this.baseInfo = {
@@ -984,9 +996,13 @@ export class DocbookingHealthrecordComponent implements OnInit{
                 staple_food: null,
                 solid_food: null,
                 individual_society: null,
+                individual_society_other: null,
                 language: null,
+                language_other: null,
                 fine_movement: null,
+                fine_movement_other: null,
                 great_sport: null,
+                great_sport_other: null,
                 other: null,
 			}
 			this.baseInfo = {
@@ -1179,6 +1195,18 @@ export class DocbookingHealthrecordComponent implements OnInit{
                     if(recordTemplet.recordkeys[i].key=='gestational_days'){
                         this.info.gestational_weeks = '';
                     }
+					if(recordTemplet.recordkeys[i].key=='individual_society' && recordTemplet.recordkeys[i].value == ''){
+							this.info.individual_society = '未见异常';
+					}
+					if(recordTemplet.recordkeys[i].key=='language' && recordTemplet.recordkeys[i].value == ''){
+							this.info.language = '未见异常';
+					}
+					if(recordTemplet.recordkeys[i].key=='fine_movement' && recordTemplet.recordkeys[i].value == ''){
+							this.info.fine_movement = '未见异常';
+					}
+					if(recordTemplet.recordkeys[i].key=='great_sport' && recordTemplet.recordkeys[i].value == ''){
+							this.info.great_sport = '未见异常';
+					}
 				}
 			}
 			this.infoOld = JSON.parse(JSON.stringify(this.info));
@@ -1599,10 +1627,10 @@ export class DocbookingHealthrecordComponent implements OnInit{
             feeding_other: this.info.feeding_other,
             staple_food: this.info.staple_food,
             solid_food: this.info.solid_food,
-            individual_society: this.info.individual_society,
-            language: this.info.language,
-            fine_movement: this.info.fine_movement,
-            great_sport: this.info.great_sport,
+            individual_society: this.info.individual_society != '' ? this.info.individual_society : this.info.individual_society_other,
+            language: this.info.language != '' ? this.info.language : this.info.language_other,
+            fine_movement: this.info.fine_movement != '' ? this.info.fine_movement : this.info.fine_movement_other,
+            great_sport: this.info.great_sport != '' ? this.info.great_sport : this.info.great_sport_other,
             other: this.info.other,
 			is_check: type == '' ? null : '1',
         }
