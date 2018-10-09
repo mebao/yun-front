@@ -140,12 +140,26 @@
 </nz-modal>
 <nz-modal [nzVisible]="paymentInfo.qrcode" [nzWidth]="900" [nzTitle]="'提示'" [nzContent]="contentPay" [nzFooter]="footerPay" (nzOnCancel)="closeQrcode()">
 	<ng-template #contentPay>
-    	<div class="text-center">
-			<div class="mb20">
-				<nz-alert [nzType]="'info'" [nzMessage]="'扫码支付'"></nz-alert>
-			</div>
-			<qr-code [value]="paymentInfo.qrcodeUrl" [size]="200"></qr-code>
-		</div>
+        <div class="flex">
+            <div class="flex-1 text-center">
+                <qr-code [value]="paymentInfo.qrcodeUrl" [size]="200"></qr-code>
+            </div>
+            <div class="flex-1">
+                <nz-alert [nzType]="'info'" [nzMessage]="'微信支付'"></nz-alert>
+                <p class="mt10 mb10">
+                    长按二维码进行支付。
+                </p>
+                <nz-alert [nzType]="'info'" [nzMessage]="'支付宝支付'"></nz-alert>
+                <h3 class="mt10">1 保存支付二维码</h3>
+                <p>
+                    长按二维码，并保存图片。
+                </p>
+                <h3 class="mt10">2 支付宝</h3>
+                <p>
+                    打开支付宝，点击扫一扫，右上角相册选择支付二维码，进行支付。
+                </p>
+            </div>
+        </div>
 	</ng-template>
 	<ng-template #footerPay></ng-template>
 </nz-modal>

@@ -359,7 +359,7 @@
 										<div class="title">神经发育筛查 （有助于发现孩子神经发育上相关问题，尽早干预）</div>
 										<div class="pure-g">
 											<div *ngIf="healthrecord.neurodevelopment != null" class="pure-u-24-24 bt info flex">
-												<label class="w150pp">神经发育：</label>
+												<label class="w150pp">神经发育筛查：</label>
 												<div class="flex-1">{{healthrecord.neurodevelopment}}</div>
 											</div>
 										</div>
@@ -1323,7 +1323,7 @@
 							<div class="pure-g">
 								<div *ngIf="info.neurodevelopment != null" class="pure-u-24-24">
 									<div class="pure-control-group flex">
-										<label for="neurodevelopment" class="w150pp">神经发育：</label>
+										<label for="neurodevelopment" class="w150pp">神经发育筛查：</label>
 										<div class="flex-1 flex pt10">
 											<div class="radio mr10 flex" (click)="changeRedio('未见异常', 'neurodevelopment')" [ngClass]="{'active': info.neurodevelopment == '未见异常'}">
 												<div class="radioTab mr10"></div>
@@ -1478,7 +1478,7 @@
 												<div class="flex-1">未见异常</div>
 											</div>
 											<div class="flex-1" (click)="changeRedio('', 'individual_society_other')">
-                                                <textarea id="individual_society_other" maxlength="200" rows="1" name="individual_society_other" [(ngModel)]="info.individual_society_other" class="auto flex-1"></textarea>
+                                                <textarea id="individual_society_other" maxlength="200" rows="1" name="individual_society_other" [(ngModel)]="info.individual_society_other" placeholder="其他" class="auto flex-1"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1492,7 +1492,7 @@
 												<div class="flex-1">未见异常</div>
 											</div>
 											<div class="flex-1" (click)="changeRedio('', 'language_other')">
-                                                <textarea id="language_other" maxlength="200" rows="1" name="language_other" [(ngModel)]="info.language_other" class="auto flex-1"></textarea>
+                                                <textarea id="language_other" maxlength="200" rows="1" name="language_other" [(ngModel)]="info.language_other" placeholder="其他" class="auto flex-1"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1506,7 +1506,7 @@
 												<div class="flex-1">未见异常</div>
 											</div>
 											<div class="flex-1" (click)="changeRedio('', 'fine_movement_other')">
-                                                <textarea id="fine_movement_other" maxlength="200" rows="1" name="fine_movement_other" [(ngModel)]="info.fine_movement_other" class="auto flex-1"></textarea>
+                                                <textarea id="fine_movement_other" maxlength="200" rows="1" name="fine_movement_other" [(ngModel)]="info.fine_movement_other" placeholder="其他" class="auto flex-1"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1520,7 +1520,7 @@
 												<div class="flex-1">未见异常</div>
 											</div>
 											<div class="flex-1" (click)="changeRedio('', 'great_sport_other')">
-                                                <textarea id="great_sport_other" maxlength="200" rows="1" name="great_sport_other" [(ngModel)]="info.great_sport_other" class="auto flex-1"></textarea>
+                                                <textarea id="great_sport_other" maxlength="200" rows="1" name="great_sport_other" [(ngModel)]="info.great_sport_other" placeholder="其他" class="auto flex-1"></textarea>
                                             </div>
                                         </div>
                                     </div>

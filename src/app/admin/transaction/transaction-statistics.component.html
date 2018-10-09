@@ -27,6 +27,22 @@
 					</tr>
 				</thead>
 				<tbody nz-tbody>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.discount}}</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.bookingFee}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td>{{total.act}}</td>
+						<td>{{total.gua}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+						<td>--</td>
+					</tr>
 					<tr *ngFor="let tran of tranList; let index=index;">
 						<td>{{tran.childName ? tran.childName : tran.userName}}</td>
 						<td>{{tran.needAmount}}</td>
@@ -84,6 +100,16 @@
 					</tr>
 				</thead>
 				<tbody nz-tbody>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.giveAmount}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.giveAmount}}</td>
@@ -127,6 +153,16 @@
 					</tr>
 				</thead>
 				<tbody nz-tbody>
+					<tr class="bg-gray" *ngIf="tranList.length > 0">
+						<td>总计</td>
+						<td>{{total.needAmount}}</td>
+						<td>{{total.truepay}}</td>
+						<td>{{total.money}}</td>
+						<td>{{total.online}}</td>
+						<td>{{total.balance}}</td>
+						<td >--</td>
+						<td>{{total.total}}</td>
+					</tr>
 					<tr *ngFor="let tran of tranList">
 						<td>{{tran.userName}}</td>
 						<td>{{tran.needAmount}}</td>
